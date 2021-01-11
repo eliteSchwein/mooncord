@@ -1,0 +1,28 @@
+{
+  "name": "mooncord",
+  "version": "0.0.1",
+  "description": "Simple NPM Hardware and Software Info Rest Server",
+  "main": "index.js",
+  "scripts": {
+    "start": "node mooncord.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eliteSchwein/hsinfoserver.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/eliteSchwein/hsinfoserver/issues"
+  },
+  "homepage": "https://github.com/eliteSchwein/hsinfoserver#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "discord.js": "^12.5.1",
+    "express": "^4.17.1",
+    "image-to-base64": "^2.1.1",
+    "node-html-to-image": "^3.1.0",
+    "systeminformation": "^4.33.5"
+  }
+}
