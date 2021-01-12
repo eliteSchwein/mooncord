@@ -17,6 +17,8 @@ app.listen(PORT, () => {
     console.log(`Started listening on port `+PORT);
 });
 
+app.use(express.static('public'));
+
 modules(app,client)
 
 app.get('/', function (req, res) {

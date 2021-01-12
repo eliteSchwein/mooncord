@@ -2,6 +2,7 @@ var status = 'unknown'
 var klipperversion = ''
 var printfile = ''
 var printthumbnail = ''
+var printprogress = 50
 
 var getModule = (function(client){
     client.on('connect', function(connection) {
@@ -64,4 +65,7 @@ module.exports.getThumbnail = function(){
 }
 module.exports.getPrintFile = function(){
     return printfile
+}
+module.exports.getPrintProgress = function(){
+    return printprogress
 }
