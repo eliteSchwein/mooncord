@@ -1,0 +1,6 @@
+{
+    "moonrakersocketurl": "192.168.178.86/websocket",
+    "webcamsnapshoturl":"192.168.178.86/webcam/?action=snapshot",
+    "bottoken":"ODAxMTgzNDQ5NDMxNDA4NjYy.YAc-Ow.QTb36KTpy-qiLp1_9IRpS1xxpGo",
+    "masterid":"283708074408017920"
+}

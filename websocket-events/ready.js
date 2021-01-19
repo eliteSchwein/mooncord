@@ -1,27 +1,27 @@
 const imageToBase64 = require('image-to-base64');
 const nodeHtmlToImage = require('node-html-to-image');
 const fs = require('fs');
-var variables = require("./variables")
+var variables = require("../websocketevents")
+const config = require('../config.json');
 
 var template = '';
 
-var getModule = (function(express){
-        express.get('/test', async function (req, res) {
-            readTemplateFile('./templates/modules/test.html',async function (err,templatefile){
-                template=templatefile
-                template = await retrieveWebcam(template)
-                template = await retrieveThumbnail(template)
-                template = await retrieveOverlay(template)
-                template = await retrieveProgress(template)
-                template = await retrieveFile(template)
-                template = await retrieveRestTime(template)
-                template = await retrieveKlipperVersion(template)
-                const image = await nodeHtmlToImage({html:template})
-                //res.type("image/png")
-                //res.send(image)
-                res.send(template)
-            });
-        });
+var getModule = (async function(discordClient,discordDataBase){
+    discordClient.user.setActivity("GCODE File...",{type: "LISTENING"})
+    var image = null;
+    readTemplateFile('./templates/modules/test.html',async function (err,templatefile){
+        template=templatefile
+        template = await retrieveWebcam(template)
+        template = await retrieveThumbnail(template)
+        template = await retrieveOverlay(template)
+        template = await retrieveProgress(template)
+        template = await retrieveFile(template)
+        template = await retrieveRestTime(template)
+        template = await retrieveKlipperVersion(template)
+        image = await nodeHtmlToImage({html:template})
+        //res.type("image/png")
+        //res.send(image)
+    });
 })
 module.exports = getModule;
 
@@ -33,7 +33,7 @@ async function retrieveOverlay(inputtemplate){
 }
 
 async function retrieveWebcam(inputtemplate){
-    var base64cam = await imageToBase64("https://elitepr1nt3r.eliteschw31n.de/frontcam/?action=snapshot");
+    var base64cam = await imageToBase64(config.webcamsnapshoturl);
     var webcamtag = '{{webcam}}'
     inputtemplate = inputtemplate.replace(new RegExp(webcamtag,'g'),"data:image/gif;base64,"+base64cam)
     return inputtemplate
