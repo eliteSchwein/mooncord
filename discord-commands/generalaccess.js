@@ -2,7 +2,7 @@ const config = require('../config.json');
 const admin = false
 const master = true
 const discordDatabase = require('../discorddatabase')
-var executeCommand = (function(command,channel,user,guild,discordClient){
+var executeCommand = (function(command,channel,user,guild,discordClient,websocketClient){
     var database = discordDatabase.getGuildDatabase(guild)
     if(database.accesseveryone){
         database.accesseveryone=false

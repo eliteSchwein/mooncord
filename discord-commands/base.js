@@ -2,7 +2,7 @@ const config = require('../config.json');
 const admin = false
 const master = false
 const discordDatabase = require('../discorddatabase')
-var executeCommand = (function(command,channel,user,guild,discordClient){
+var executeCommand = (function(command,channel,user,guild,discordClient,websocketClient){
     channel.send("You found the template Command Module GG")
 })
 module.exports = executeCommand;

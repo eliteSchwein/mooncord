@@ -2,7 +2,7 @@ const fs = require('fs')
 const config = require('../../config.json')
 const discordDatabase = require('../discorddatabase')
 
-var executeCommands = (function(command,channel,user,guild,discordClient){
+var executeCommands = (function(command,channel,user,guild,discordClient,websocketClient){
     try {
         if (!fs.existsSync(__dirname+"/"+command.toLowerCase().split(" ")[0]+".js")) {
             channel.send("<@"+user.id+"> The following Command couldn´t be found! \n> "+config.prefix+command.split(' ')[0]+"\n use "+config.prefix+"help")
@@ -28,7 +28,7 @@ var executeCommands = (function(command,channel,user,guild,discordClient){
         channel.send("<@"+user.id+"> You are not allowed to execute the following Command! \n> "+config.prefix+command.split(" ")[0])
         return;
     }
-    commandModule(command,channel,user,guild,discordClient);
+    commandModule(command,channel,user,guild,discordClient,websocketClient);
 })
 module.exports = executeCommands;
 

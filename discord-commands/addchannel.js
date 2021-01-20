@@ -2,7 +2,7 @@ const config = require('../../config.json');
 const discordDatabase = require('../discorddatabase')
 const admin = true
 const master = false
-var executeCommand = (function(command,channel,user,guild,discordClient){
+var executeCommand = (function(command,channel,user,guild,discordClient,websocketClient){
     var database = discordDatabase.getGuildDatabase(guild)
     if(database.statuschannels.includes(channel.id)){
         channel.send("<@"+user.id+"> This Channel is already a Broadcast Channel!")

@@ -3,7 +3,7 @@ const admin = false
 const master = false
 const discordDatabase = require('../discorddatabase')
 const websocketevents = require('../websocketevents')
-var executeCommand = (function(command,channel,user,guild,discordClient){
+var executeCommand = (function(command,channel,user,guild,discordClient,websocketClient){
     channel.startTyping();
     websocketevents.triggerStatusUpdate(discordClient,channel)
     channel.stopTyping();

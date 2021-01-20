@@ -20,7 +20,7 @@ console.log("\n"+
 "Author: "+pjson.author+"\n"+
 "Homepage: "+pjson.homepage+"\n")
 
-var client = new WebSocketClient();
+var websocketClient = new WebSocketClient();
 
 
 console.log("Connect Discord Bot...\n")
@@ -36,23 +36,23 @@ discordClient.on('ready', () => {
 
 console.log("Enable Discord Events...\n")
 
-discordevents(discordClient)
+discordevents(discordClient,websocketClient)
 
 console.log("Connect Websocket...\n")
 
-client.on('connectFailed', function(error) {
+websocketClient.on('connectFailed', function(error) {
     console.log('Connect Error: ' + error.toString());
 });
 
-client.on('connect', function(connection) {
+websocketClient.on('connect', function(connection) {
     console.log('WebSocket Client Connected');
     connection.on('close', function() {
         console.log('WebSocket Connection Closed');
     });
 });
 
-client.connect(config.moonrakersocketurl);
+websocketClient.connect(config.moonrakersocketurl);
 
 console.log("Enable Websocket Events...\n")
 
-websocketevents(client,discordClient)
+websocketevents(websocketClient,discordClient)
