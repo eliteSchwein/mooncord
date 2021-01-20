@@ -5,16 +5,19 @@ var printfile = ''
 var printthumbnail = ''
 var printprogress = 0
 var restprinttime = ''
+var printtime = 0
 
 var getModule = (function(client,discordClient){
     var timer;
     this.discordClient=discordClient;
     
     client.on('connect', function(connection) {
+        let id = Math.floor(Math.random() * 10000) + 1
         timer = setInterval(function(){
             connection.send('{"jsonrpc": "2.0", "method": "printer.objects.query", "params": {"objects": {"webhooks": null, "virtual_sdcard": null, "print_stats": null}}, "id": '+id+'}')
         },1000)
         connection.on('message', function(message) {
+            id = Math.floor(Math.random() * 10000) + 1
             if (message.type === 'utf8') {
                 var messageJson = JSON.parse(message.utf8Data)
                 var methode = messageJson.method
@@ -76,12 +79,19 @@ var getModule = (function(client,discordClient){
                     if(typeof(result.thumbnails)!="undefined"){
                         printthumbnail=result.thumbnails[1].data
                     }
+                    if(typeof(result.estimated_time)!="undefined"){
+                        printtime=result.estimated_time
+                    }
                     if(typeof(result.status)!="undefined"){
                         var klipperstatus = result.status;
                         if(typeof(klipperstatus.virtual_sdcard)!="undefined"){
-                            printprogress=klipperstatus.virtual_sdcard.progress
+                            printprogress=klipperstatus.virtual_sdcard.progress*100
                         }
                         if(typeof(klipperstatus.print_stats)!="undefined"){
+                            var printduration = klipperstatus.print_stats.print_duration.toFixed(0)
+                            var remainingprinttime = printtime-printduration;
+                            restprinttime=formatDateTime(remainingprinttime*1000)
+                            console.log(printtime-printduration)
                             if(klipperstatus.print_stats.state=="paused"){
                                 status="pause";
                                 if(status!=oldStatus){
@@ -101,10 +111,10 @@ var getModule = (function(client,discordClient){
                 }
             }
         });
-        let id = Math.floor(Math.random() * 10000) + 1
         setTimeout(function(){
             connection.send('{"jsonrpc": "2.0", "method": "printer.info", "id": '+id+'}')
             connection.send('{"jsonrpc": "2.0", "method": "server.info", "id": '+id+'}')
+            connection.send('{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "'+printfile+'"}, "id": '+id+'}')
         },2000)
     });
     
@@ -116,6 +126,16 @@ function triggerStatusUpdate(discordClient,channel){
     var event = require('./websocket-events/'+status);
     event(discordClient,channel)
 
+}
+
+function formatDateTime(msec) {
+    const date = new Date(msec)
+    var hours = date.getHours()
+    hours=hours-1
+    const h = hours >= 10 ? hours : "0"+hours
+    const m = date.getMinutes() >= 10 ? date.getMinutes() : "0"+date.getMinutes()
+    console.log(h+":"+m)
+    return h+":"+m
 }
 
 module.exports.triggerStatusUpdate = function(discordClient,channel){
