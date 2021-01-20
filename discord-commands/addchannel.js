@@ -1,7 +1,7 @@
 const config = require('../config.json');
 const command = "addchannel"
 const admin = true;
-var executeCommand = (function(discordClient,discordDataBase){
+var executeCommand = (function(command,channel,user,discordClient,discordDataBase){
     
 })
 module.exports = executeCommand;

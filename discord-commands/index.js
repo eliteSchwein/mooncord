@@ -7,7 +7,7 @@ var executeCommands = (function(command,channel,user,discordClient,discordDataBa
             channel.send("<@"+user.id+"> You are not allowed to execute the following Command! \n> "+config.prefix+addChannel.getCommand())
             return;
         }
-        channel.send("<@"+user.id+"> WIP Command! \n> "+config.prefix+addChannel.getCommand())
+        addChannel(command,channel,user,discordClient,discordDataBase)
         return;
     }
     channel.send("<@"+user.id+"> The following Command couldn´t be found! \n> "+config.prefix+addChannel.getCommand()+"\n use "+config.prefix+"help")
