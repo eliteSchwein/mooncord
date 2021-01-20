@@ -10,7 +10,7 @@ var executeCommands = (function(command,channel,user,discordClient){
         addChannel(command,channel,user,discordClient)
         return;
     }
-    channel.send("<@"+user.id+"> The following Command couldn´t be found! \n> "+config.prefix+addChannel.getCommand()+"\n use "+config.prefix+"help")
+    channel.send("<@"+user.id+"> The following Command couldn´t be found! \n> "+command.split(' ')[0]+"\n use "+config.prefix+"help")
 })
 module.exports = executeCommands;
 
