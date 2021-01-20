@@ -2,7 +2,7 @@ const config = require('../config.json');
 const command = "base"
 const admin = false;
 const discordDataBase = require('../discorddatabase')
-var executeCommand = (function(command,channel,user,discordClient){
+var executeCommand = (function(command,channel,user,guild,discordClient){
     
 })
 module.exports = executeCommand;

@@ -3,7 +3,7 @@ const nodeHtmlToImage = require('node-html-to-image');
 const discordDataBase = require('../discorddatabase')
 const fs = require('fs');
 var variables = require("../websocketevents")
-const config = require('../config.json');
+const config = require('../../config.json');
 
 var template = '';
 
