@@ -8,8 +8,10 @@ const config = require('../../config.json');
 var template = '';
 
 var getModule = (async function(discordClient,channel){
+    if(variables.getPrintProgress().toFixed(0)==0){
+        return;
+    }
     var database = discordDatabase.getDatabase();
-    discordClient.user.setActivity("GCODE File...",{type: "LISTENING"})
     readTemplateFile('./templates/modules/print_running.html',async function (err,templatefile){
         template=templatefile
         template = await retrieveWebcam(template)
@@ -88,7 +90,7 @@ async function retrieveFile(inputtemplate){
 
 async function retrieveRestTime(inputtemplate){
     var resttimetag = '{{resttime}}'
-    inputtemplate = inputtemplate.replace(new RegExp(resttimetag,'g'),variables.getPrintTime())
+    inputtemplate = inputtemplate.replace(new RegExp(resttimetag,'g'),variables.getRestPrintTime())
     return inputtemplate
 }
 

@@ -9,7 +9,7 @@ var template = '';
 
 var getModule = (async function(discordClient,channel){
     var database = discordDatabase.getDatabase();
-    discordClient.user.setActivity("GCODE File...",{type: "LISTENING"})
+    discordClient.user.setActivity("Starting...",{type: "WATCHING"})
     readTemplateFile('./templates/modules/print_start.html',async function (err,templatefile){
         template=templatefile
         template = await retrieveWebcam(template)
@@ -17,7 +17,7 @@ var getModule = (async function(discordClient,channel){
         template = await retrieveOverlay(template)
         template = await retrieveProgress(template)
         template = await retrieveFile(template)
-        template = await retrieveRestTime(template)
+        template = await retrieveTime(template)
         template = await retrieveKlipperVersion(template)
         var image = await nodeHtmlToImage({html:template})
         if(typeof channel =="undefined"){
@@ -86,8 +86,8 @@ async function retrieveFile(inputtemplate){
     return inputtemplate
 }
 
-async function retrieveRestTime(inputtemplate){
-    var resttimetag = '{{resttime}}'
+async function retrieveTime(inputtemplate){
+    var resttimetag = '{{printtime}}'
     inputtemplate = inputtemplate.replace(new RegExp(resttimetag,'g'),variables.getPrintTime())
     return inputtemplate
 }

@@ -1,6 +1,7 @@
 const config = require('../../config.json');
 const discordDatabase = require('../discorddatabase')
-const command = "addaccess"
+const admin = false
+const master = true
 var executeCommand = (function(command,channel,user,guild,discordClient){
     var database = discordDatabase.getGuildDatabase(guild)
     var args = command.split(" ")
@@ -45,4 +46,5 @@ var executeCommand = (function(command,channel,user,guild,discordClient){
     
 })
 module.exports = executeCommand;
-module.exports.getCommand = function(){return command}
+module.exports.needAdmin = function(){return admin}
+module.exports.needMaster = function(){return master}

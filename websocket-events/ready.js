@@ -88,7 +88,7 @@ async function retrieveFile(inputtemplate){
 
 async function retrieveRestTime(inputtemplate){
     var resttimetag = '{{resttime}}'
-    inputtemplate = inputtemplate.replace(new RegExp(resttimetag,'g'),variables.getPrintTime())
+    inputtemplate = inputtemplate.replace(new RegExp(resttimetag,'g'),variables.getRestPrintTime())
     return inputtemplate
 }
 

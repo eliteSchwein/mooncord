@@ -1,6 +1,7 @@
 const config = require('../../config.json');
 const discordDatabase = require('../discorddatabase')
-const command = "removechannel"
+const admin = false
+const master = true
 var executeCommand = (function(command,channel,user,guild,discordClient){
     var database = discordDatabase.getGuildDatabase(guild)
     if(!database.statuschannels.includes(channel.id)){
@@ -16,4 +17,5 @@ var executeCommand = (function(command,channel,user,guild,discordClient){
     
 })
 module.exports = executeCommand;
-module.exports.getCommand = function(){return command}
+module.exports.needAdmin = function(){return admin}
+module.exports.needMaster = function(){return master}

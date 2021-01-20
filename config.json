@@ -3,5 +3,7 @@
     "webcamsnapshoturl":"http://127.0.0.1/webcam/?action=snapshot",
     "bottoken":"",
     "masterid":"",
-    "prefix":"mc!"
+    "prefix":"mc!",
+    "statusupdateinterval":10,
+    "statusupdatepercent":true
 }

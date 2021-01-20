@@ -1,5 +1,6 @@
 const config = require('../config.json');
-const command = "status"
+const admin = false
+const master = false
 const discordDatabase = require('../discorddatabase')
 const websocketevents = require('../websocketevents')
 var executeCommand = (function(command,channel,user,guild,discordClient){
@@ -8,4 +9,5 @@ var executeCommand = (function(command,channel,user,guild,discordClient){
     channel.stopTyping();
 })
 module.exports = executeCommand;
-module.exports.getCommand = function(){return command}
+module.exports.needAdmin = function(){return admin}
+module.exports.needMaster = function(){return master}
