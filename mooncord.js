@@ -22,6 +22,22 @@ console.log("\n"+
 
 var client = new WebSocketClient();
 
+
+console.log("Connect Discord Bot...\n")
+
+discordClient.login(config.bottoken)
+
+discordClient.on('ready', () => {
+    console.log("Discordbot Connected");
+    console.log("Name: "+discordClient.user.tag)
+    console.log("Invite: https://discord.com/oauth2/authorize?client_id="+discordClient.user.id+"&scope=bot&permissions=336063568")
+    discordClient.user.setActivity("Starting...",{type: "COMPETING"})
+});
+
+console.log("Enable Discord Events...\n")
+
+discordevents(discordClient)
+
 console.log("Connect Websocket...\n")
 
 client.on('connectFailed', function(error) {
@@ -40,18 +56,3 @@ client.connect(config.moonrakersocketurl);
 console.log("Enable Websocket Events...\n")
 
 websocketevents(client,discordClient)
-
-console.log("Connect Discord Bot...\n")
-
-discordClient.login(config.bottoken)
-
-discordClient.on('ready', () => {
-    console.log("Discordbot Connected");
-    console.log("Name: "+discordClient.user.tag)
-    console.log("Invite: https://discord.com/oauth2/authorize?client_id="+discordClient.user.id+"&scope=bot&permissions=336063568")
-    discordClient.user.setActivity("Starting...",{type: "COMPETING"})
-});
-
-console.log("Enable Discord Events...\n")
-
-discordevents(discordClient)

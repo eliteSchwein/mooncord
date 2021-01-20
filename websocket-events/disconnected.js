@@ -10,7 +10,7 @@ var template = '';
 var getModule = (async function(discordClient,channel){
     var database = discordDatabase.getDatabase();
     discordClient.user.setActivity("GCODE File...",{type: "LISTENING"})
-    readTemplateFile('./templates/modules/ready.html',async function (err,templatefile){
+    readTemplateFile('./templates/modules/disconnected.html',async function (err,templatefile){
         template=templatefile
         template = await retrieveWebcam(template)
         template = await retrieveThumbnail(template)

@@ -2,7 +2,6 @@ const config = require('../../config.json');
 const discordDatabase = require('../discorddatabase')
 const command = "addchannel"
 var executeCommand = (function(command,channel,user,guild,discordClient){
-    channel.send(guild.id)
     var database = discordDatabase.getGuildDatabase(guild)
     if(database.statuschannels.includes(channel.id)){
         channel.send("<@"+user.id+"> This Channel is already a Broadcast Channel!")

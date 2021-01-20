@@ -1,7 +1,7 @@
 const databasepath = "../discorddatabase.json"
 const fs = require('fs');
 
-module.exports.getGuildDatabase = function(guild){
+exports.getGuildDatabase = function(guild){
   var database = require(databasepath);
   if(typeof database[guild.id] == "undefined"){
     console.log("No Database for "+guild.name+" found!\nGenerate base config!")
@@ -9,7 +9,7 @@ module.exports.getGuildDatabase = function(guild){
       statuschannels : [],
       adminusers : [],
       adminroles : [],
-      accessusers : [],
+      accessrole : [],
       accessusers : [],
       accesseveryone : false
     }
@@ -17,10 +17,10 @@ module.exports.getGuildDatabase = function(guild){
   }
   return database[guild.id]
 };
-module.exports.getDatabase = function(){
+exports.getDatabase = function(){
   return require(databasepath)
 };
-module.exports.updateDatabase = function(data,guild){
+exports.updateDatabase = function(data,guild){
   var database = require(databasepath);
   database[guild.id]=data
   fs.writeFile(databasepath, JSON.stringify(database), (err) => {

@@ -10,7 +10,7 @@ var template = '';
 var getModule = (async function(discordClient,channel){
     var database = discordDatabase.getDatabase();
     discordClient.user.setActivity("GCODE File...",{type: "LISTENING"})
-    readTemplateFile('./templates/modules/ready.html',async function (err,templatefile){
+    readTemplateFile('./templates/modules/print_stop.html',async function (err,templatefile){
         template=templatefile
         template = await retrieveWebcam(template)
         template = await retrieveThumbnail(template)
@@ -76,7 +76,7 @@ async function retrieveThumbnail(inputtemplate){
 
 async function retrieveProgress(inputtemplate){
     var progresstag = '{{progress}}'
-    inputtemplate = inputtemplate.replace(new RegExp(progresstag,'g'),variables.getPrintProgress())
+    inputtemplate = inputtemplate.replace(new RegExp(progresstag,'g'),variables.getPrintProgress().toFixed(0))
     return inputtemplate
 }
 

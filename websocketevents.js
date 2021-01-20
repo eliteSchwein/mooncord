@@ -1,14 +1,19 @@
 var status = 'unknown'
+var oldStatus = 'unknown'
 var klipperversion = ''
 var printfile = ''
 var printthumbnail = ''
 var printprogress = 0
 var restprinttime = ''
 
-var ready_event = require('./websocket-events/ready');
-
 var getModule = (function(client,discordClient){
+    var timer;
+    this.discordClient=discordClient;
+    
     client.on('connect', function(connection) {
+        timer = setInterval(function(){
+            connection.send('{"jsonrpc": "2.0", "method": "printer.objects.query", "params": {"objects": {"webhooks": null, "virtual_sdcard": null, "print_stats": null}}, "id": '+id+'}')
+        },1000)
         connection.on('message', function(message) {
             if (message.type === 'utf8') {
                 var messageJson = JSON.parse(message.utf8Data)
@@ -16,12 +21,24 @@ var getModule = (function(client,discordClient){
                 var result = messageJson.result
                 if(methode=="notify_klippy_disconnected"){
                     status="disconnected"
+                    if(status!=oldStatus){
+                        oldStatus=status
+                        triggerStatusUpdate(discordClient)
+                    }
                 }
                 if(methode=="notify_klippy_shutdown"){
                     status="shutdown"
+                    if(status!=oldStatus){
+                        oldStatus=status
+                        triggerStatusUpdate(discordClient)
+                    }
                 }
                 if(methode=="notify_klippy_ready"){
                     status="ready"
+                    if(status!=oldStatus){
+                        oldStatus=status
+                        triggerStatusUpdate(discordClient)
+                    }
                 }
                 if(methode=="notify_gcode_response"){
                     var params = messageJson.params
@@ -30,15 +47,28 @@ var getModule = (function(client,discordClient){
                         var removeFileTag = removeSize.substring(12)
                         printfile=removeFileTag;
                         connection.send('{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "'+printfile+'"}, "id": '+id+'}')
+                        status="start"
+                        if(status!=oldStatus){
+                            oldStatus=status
+                            triggerStatusUpdate(discordClient)
+                        }
+                        status="printing"
+                    }
+                    if(params[0]=="// action:cancel"){
+                        status="stop"
+                        if(status!=oldStatus){
+                            oldStatus=status
+                            triggerStatusUpdate(discordClient)
+                        }
                     }
                 }
                 if(typeof(result)!="undefined"){
-                    if(typeof(result.state)!="undefined"){
-                        status=result.state
-                    }
-                    if(typeof(result.klippy_connected)!="undefined"){
-                        ready_event(discordClient)
-                        status="ready"
+                    if(typeof(result.klippy_state)!="undefined"){
+                        status=result.klippy_state
+                        if(status!=oldStatus){
+                            oldStatus=status
+                            triggerStatusUpdate(discordClient)
+                        }
                     }
                     if(typeof(result.software_version)!="undefined"){
                         klipperversion=result.software_version
@@ -46,9 +76,29 @@ var getModule = (function(client,discordClient){
                     if(typeof(result.thumbnails)!="undefined"){
                         printthumbnail=result.thumbnails[1].data
                     }
+                    if(typeof(result.status)!="undefined"){
+                        var klipperstatus = result.status;
+                        if(typeof(klipperstatus.virtual_sdcard)!="undefined"){
+                            printprogress=klipperstatus.virtual_sdcard.progress
+                        }
+                        if(typeof(klipperstatus.print_stats)!="undefined"){
+                            if(klipperstatus.print_stats.state=="paused"){
+                                status="pause";
+                                if(status!=oldStatus){
+                                    oldStatus=status
+                                    triggerStatusUpdate(discordClient)
+                                }
+                            }
+                            if(klipperstatus.print_stats.state=="printing"){
+                                status="printing";
+                                if(status!=oldStatus){
+                                    oldStatus=status
+                                    triggerStatusUpdate(discordClient)
+                                }
+                            }
+                        }
+                    }
                 }
-                console.log("Received: '" + message.utf8Data + "'");
-                console.log("method: "+messageJson.method)
             }
         });
         let id = Math.floor(Math.random() * 10000) + 1
@@ -60,6 +110,17 @@ var getModule = (function(client,discordClient){
     
 })
 module.exports = getModule;
+
+function triggerStatusUpdate(discordClient,channel){
+    console.log("Printer Status: "+status)
+    var event = require('./websocket-events/'+status);
+    event(discordClient,channel)
+
+}
+
+module.exports.triggerStatusUpdate = function(discordClient,channel){
+    triggerStatusUpdate(discordClient,channel);
+}
 
 module.exports.updateStatus = function(status){
     this.status = status
