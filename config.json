@@ -1,6 +1,6 @@
 {
-    "moonrakersocketurl": "127.0.0.1/websocket",
-    "webcamsnapshoturl":"127.0.0.1/webcam/?action=snapshot",
+    "moonrakersocketurl": "ws://127.0.0.1/websocket",
+    "webcamsnapshoturl":"http://127.0.0.1/webcam/?action=snapshot",
     "bottoken":"",
     "masterid":"",
     "prefix":"mc!"

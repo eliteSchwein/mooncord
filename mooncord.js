@@ -35,7 +35,7 @@ client.on('connect', function(connection) {
     });
 });
 
-client.connect('ws://'+config.moonrakersocketurl);
+client.connect(config.moonrakersocketurl);
 
 console.log("Enable Websocket Events...\n")
 
