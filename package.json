@@ -4,7 +4,8 @@
   "description": "Moonraker Discord Bot based on Discord.js",
   "main": "index.js",
   "scripts": {
-    "start": "node mooncord.js"
+    "start": "node mooncord.js",
+    "devstart": "node --trace-warnings mooncord.js"
   },
   "repository": {
     "type": "git",
