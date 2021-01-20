@@ -3,6 +3,10 @@ const config = require('../../config.json')
 const discordDatabase = require('../discorddatabase')
 
 var executeCommands = (function(command,channel,user,guild,discordClient,websocketClient){
+    if(command.toLowerCase().startsWith("index")){
+        channel.send("<@"+user.id+"> Ha you are so Funny!")
+        return;
+    }
     try {
         if (!fs.existsSync(__dirname+"/"+command.toLowerCase().split(" ")[0]+".js")) {
             channel.send("<@"+user.id+"> The following Command couldn´t be found! \n> "+config.prefix+command.split(' ')[0]+"\n use "+config.prefix+"help")
