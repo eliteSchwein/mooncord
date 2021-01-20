@@ -24,7 +24,6 @@ var getModule = (function(client,discordClient){
             if (message.type === 'utf8') {
                 var messageJson = JSON.parse(message.utf8Data)
                 var methode = messageJson.method
-                console.log(messageJson)
                 var result = messageJson.result
                 if(methode=="notify_klippy_disconnected"){
                     status="disconnected"
