@@ -8,6 +8,7 @@ const pjson = require('./package.json');
 const config = require('../config.json');
 const Discord = require('discord.js');
 const discordClient = new Discord.Client();
+var websocketConnection = ""
 
 console.log("\n"+
 "    __  __                    ____              _ \n"+
@@ -28,31 +29,31 @@ console.log("Connect Discord Bot...\n")
 discordClient.login(config.bottoken)
 
 discordClient.on('ready', () => {
-    console.log("Discordbot Connected");
+    console.log("Discordbot Connected\n");
     console.log("Name: "+discordClient.user.tag)
-    console.log("Invite: https://discord.com/oauth2/authorize?client_id="+discordClient.user.id+"&scope=bot&permissions=336063568")
+    console.log("Invite: https://discord.com/oauth2/authorize?client_id="+discordClient.user.id+"&scope=bot&permissions=336063568\n")
     discordClient.user.setActivity("Starting...",{type: "COMPETING"})
-});
 
-console.log("Enable Discord Events...\n")
+    console.log("Connect Websocket...\n")
 
-discordevents(discordClient,websocketClient)
-
-console.log("Connect Websocket...\n")
-
-websocketClient.on('connectFailed', function(error) {
-    console.log('Connect Error: ' + error.toString());
-});
-
-websocketClient.on('connect', function(connection) {
-    console.log('WebSocket Client Connected');
-    connection.on('close', function() {
-        console.log('WebSocket Connection Closed');
+    websocketClient.on('connectFailed', function(error) {
+        console.log('Connect Error: ' + error.toString());
     });
+
+    console.log("Enable Websocket Events...\n")
+    
+    websocketevents(websocketClient,discordClient)
+
+    websocketClient.on('connect', function(connection) {
+        console.log('WebSocket Client Connected\n');
+
+        console.log("Enable Discord Events...\n")
+        
+        discordevents(discordClient,connection)
+        connection.on('close', function() {
+            console.log('WebSocket Connection Closed');
+        });
+    });
+
+    websocketClient.connect(config.moonrakersocketurl);
 });
-
-websocketClient.connect(config.moonrakersocketurl);
-
-console.log("Enable Websocket Events...\n")
-
-websocketevents(websocketClient,discordClient)

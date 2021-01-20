@@ -19,14 +19,12 @@ var getModule = (function(client,discordClient){
     
     client.on('connect', function(connection) {
         let id = Math.floor(Math.random() * 10000) + 1
-        setInterval(function(){
-            connection.send('{"jsonrpc": "2.0", "method": "printer.objects.query", "params": {"objects": {"webhooks": null, "virtual_sdcard": null, "print_stats": null}}, "id": '+id+'}')
-        },1000)
         connection.on('message', function(message) {
             id = Math.floor(Math.random() * 10000) + 1
             if (message.type === 'utf8') {
                 var messageJson = JSON.parse(message.utf8Data)
                 var methode = messageJson.method
+                console.log(messageJson)
                 var result = messageJson.result
                 if(methode=="notify_klippy_disconnected"){
                     status="disconnected"
@@ -177,6 +175,7 @@ var getModule = (function(client,discordClient){
             }
         });
         setTimeout(function(){
+            connection.send('{"jsonrpc": "2.0", "method": "printer.objects.query", "params": {"objects": {"webhooks": null, "virtual_sdcard": null, "print_stats": null}}, "id": '+id+'}')
             connection.send('{"jsonrpc": "2.0", "method": "printer.info", "id": '+id+'}')
             connection.send('{"jsonrpc": "2.0", "method": "server.info", "id": '+id+'}')
             connection.send('{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "'+printfile+'"}, "id": '+id+'}')

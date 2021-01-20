@@ -2,7 +2,7 @@ const config = require('../../config.json');
 const discordDatabase = require('../discorddatabase')
 const admin = false
 const master = true
-var executeCommand = (function(command,channel,user,guild,discordClient,websocketClient){
+var executeCommand = (function(command,channel,user,guild,discordClient,websocketConnection){
     var database = discordDatabase.getGuildDatabase(guild)
     var args = command.split(" ")
     args.shift()

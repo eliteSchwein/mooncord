@@ -5,7 +5,7 @@ const discordDatabase = require('../discorddatabase')
 const Discord = require('discord.js');
 var fs = require('fs');
 var commands = ""
-var executeCommand = (function(command,channel,user,guild,discordClient,websocketClient){
+var executeCommand = (function(command,channel,user,guild,discordClient,websocketConnection){
     channel.startTyping();
     commands = ""
     fs.readdir(__dirname+"/", (err, files) => {

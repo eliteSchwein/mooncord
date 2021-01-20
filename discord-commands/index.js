@@ -2,7 +2,7 @@ const fs = require('fs')
 const config = require('../../config.json')
 const discordDatabase = require('../discorddatabase')
 
-var executeCommands = (function(command,channel,user,guild,discordClient,websocketClient){
+var executeCommands = (function(command,channel,user,guild,discordClient,websocketConnection){
     if(command.toLowerCase().startsWith("index")){
         channel.send("<@"+user.id+"> Ha you are so Funny (not)!")
         return;
@@ -32,7 +32,7 @@ var executeCommands = (function(command,channel,user,guild,discordClient,websock
         channel.send("<@"+user.id+"> You are not allowed to execute the following Command! \n> "+config.prefix+command.split(" ")[0])
         return;
     }
-    commandModule(command,channel,user,guild,discordClient,websocketClient);
+    commandModule(command,channel,user,guild,discordClient,websocketConnection);
 })
 module.exports = executeCommands;
 

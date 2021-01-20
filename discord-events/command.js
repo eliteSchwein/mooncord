@@ -1,7 +1,7 @@
 const { TextChannel } = require('discord.js');
 const config = require('../../config.json');
 const commandHandler = require("../discord-commands/index")
-var enableEvent = (function(discordClient,websocketClient){
+var enableEvent = (function(discordClient,websocketConnection){
     discordClient.on('message', msg => {
       if(msg.channel.type=="dm"){
         msg.author.send("DM is not Supportet!");
@@ -12,7 +12,7 @@ var enableEvent = (function(discordClient,websocketClient){
         return;
       }
       if (msg.toString().startsWith(config.prefix)) {
-        commandHandler(msg.toString().substring(config.prefix.length),msg.channel,msg.author,msg.channel.guild,discordClient,websocketClient)
+        commandHandler(msg.toString().substring(config.prefix.length),msg.channel,msg.author,msg.channel.guild,discordClient,websocketConnection)
       }
     });
 })
