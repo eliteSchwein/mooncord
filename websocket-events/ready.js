@@ -1,12 +1,13 @@
 const imageToBase64 = require('image-to-base64');
 const nodeHtmlToImage = require('node-html-to-image');
+const discordDataBase = require('../discorddatabase')
 const fs = require('fs');
 var variables = require("../websocketevents")
 const config = require('../config.json');
 
 var template = '';
 
-var getModule = (async function(discordClient,discordDataBase){
+var getModule = (async function(discordClient){
     discordClient.user.setActivity("GCODE File...",{type: "LISTENING"})
     var image = null;
     readTemplateFile('./templates/modules/test.html',async function (err,templatefile){

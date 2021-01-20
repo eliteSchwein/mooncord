@@ -1,5 +1,6 @@
 const config = require('../config.json');
-var enableEvent = (function(discordClient,discordDataBase){
+const discordDataBase = require('../discorddatabase')
+var enableEvent = (function(discordClient){
     
 })
 module.exports = enableEvent;

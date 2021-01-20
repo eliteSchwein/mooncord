@@ -1,13 +1,13 @@
 const addChannel = require("./addchannel")
 const config = require('../config.json')
 
-var executeCommands = (function(command,channel,user,discordClient,discordDataBase){
+var executeCommands = (function(command,channel,user,discordClient){
     if(command.toLowerCase().startsWith(addChannel.getCommand())){
         if(!isAdmin(user)){
             channel.send("<@"+user.id+"> You are not allowed to execute the following Command! \n> "+config.prefix+addChannel.getCommand())
             return;
         }
-        addChannel(command,channel,user,discordClient,discordDataBase)
+        addChannel(command,channel,user,discordClient)
         return;
     }
     channel.send("<@"+user.id+"> The following Command couldn´t be found! \n> "+config.prefix+addChannel.getCommand()+"\n use "+config.prefix+"help")

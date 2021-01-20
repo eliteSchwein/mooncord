@@ -7,7 +7,7 @@ var restprinttime = ''
 
 var ready_event = require('./websocket-events/ready');
 
-var getModule = (function(client,discordClient,discordDataBase){
+var getModule = (function(client,discordClient){
     client.on('connect', function(connection) {
         connection.on('message', function(message) {
             if (message.type === 'utf8') {
@@ -37,7 +37,7 @@ var getModule = (function(client,discordClient,discordDataBase){
                         status=result.state
                     }
                     if(typeof(result.klippy_connected)!="undefined"){
-                        ready_event(discordClient,discordDataBase)
+                        ready_event(discordClient)
                         status="ready"
                     }
                     if(typeof(result.software_version)!="undefined"){

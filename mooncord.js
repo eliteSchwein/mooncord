@@ -39,7 +39,7 @@ client.connect('ws://'+config.moonrakersocketurl);
 
 console.log("Enable Websocket Events...\n")
 
-websocketevents(client,discordClient,discordDataBase)
+websocketevents(client,discordClient)
 
 console.log("Connect Discord Bot...\n")
 
@@ -54,4 +54,4 @@ discordClient.on('ready', () => {
 
 console.log("Enable Discord Events...\n")
 
-discordevents(discordClient,discordDataBase)
+discordevents(discordClient)
