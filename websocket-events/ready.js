@@ -1,6 +1,6 @@
 const imageToBase64 = require('image-to-base64');
 const nodeHtmlToImage = require('node-html-to-image');
-const discordDataBase = require('../discorddatabase')
+const discordDatabase = require('../discorddatabase')
 const fs = require('fs');
 var variables = require("../websocketevents")
 const config = require('../../config.json');

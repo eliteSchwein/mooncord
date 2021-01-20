@@ -1,16 +1,19 @@
 const config = require('../../config.json');
 const discordDatabase = require('../discorddatabase')
-const command = "addchannel"
+const command = "removechannel"
 var executeCommand = (function(command,channel,user,guild,discordClient){
     channel.send(guild.id)
     var database = discordDatabase.getGuildDatabase(guild)
-    if(database.statuschannels.includes(channel.id)){
-        channel.send("<@"+user.id+"> This Channel is already a Broadcast Channel!")
+    if(!database.statuschannels.includes(channel.id)){
+        channel.send("<@"+user.id+"> This Channel is not a Broadcast Channel!")
         return;
     }
-    database.statuschannels.push(channel.id)
+    const index = database.statuschannels.indexOf(channel.id)
+    if(index > -1){
+        database.statuschannels.splice(index,1)
+    }
     discordDatabase.updateDatabase(database,guild)
-    channel.send("<@"+user.id+"> This Channel is now a Broadcast Channel!")
+    channel.send("<@"+user.id+"> This Channel is no longer a Broadcast Channel!")
     
 })
 module.exports = executeCommand;

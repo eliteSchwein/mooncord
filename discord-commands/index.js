@@ -1,4 +1,5 @@
 const addChannel = require("./addchannel")
+const removeChannel = require("./removechannel")
 const config = require('../../config.json')
 
 var executeCommands = (function(command,channel,user,guild,discordClient){
@@ -8,6 +9,14 @@ var executeCommands = (function(command,channel,user,guild,discordClient){
             return;
         }
         addChannel(command,channel,user,guild,discordClient)
+        return;
+    }
+    if(command.toLowerCase().startsWith(removeChannel.getCommand())){
+        if(!isAdmin(user)){
+            channel.send("<@"+user.id+"> You are not allowed to execute the following Command! \n> "+config.prefix+removeChannel.getCommand())
+            return;
+        }
+        removeChannel(command,channel,user,guild,discordClient)
         return;
     }
     channel.send("<@"+user.id+"> The following Command couldn´t be found! \n> "+config.prefix+command.split(' ')[0]+"\n use "+config.prefix+"help")

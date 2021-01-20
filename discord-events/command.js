@@ -1,7 +1,7 @@
 const { TextChannel } = require('discord.js');
 const config = require('../../config.json');
 const commandHandler = require("../discord-commands/index")
-const discordDataBase = require('../discorddatabase')
+const discordDatabase = require('../discorddatabase')
 var enableEvent = (function(discordClient){
     discordClient.on('message', msg => {
       if(msg.channel.type=="dm"){
