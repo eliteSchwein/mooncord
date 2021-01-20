@@ -4,7 +4,7 @@ const discordDatabase = require('../discorddatabase')
 
 var executeCommands = (function(command,channel,user,guild,discordClient,websocketClient){
     if(command.toLowerCase().startsWith("index")){
-        channel.send("<@"+user.id+"> Ha you are so Funny!")
+        channel.send("<@"+user.id+"> Ha you are so Funny (not)!")
         return;
     }
     try {
