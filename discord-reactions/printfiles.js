@@ -26,7 +26,6 @@ var executeReaction = (function(message,user,guild,emote,discordClient,websocket
     currentPage=parseInt(currentPageString)-1
     websocketConnection.send('{"jsonrpc": "2.0", "method": "server.files.list", "params": {"root": "gcodes"}, "id": '+id+'}')
     websocketConnection.on('message', handler);
-    console.log(message.embeds[0].author)
 })
 
 function handler(message){
