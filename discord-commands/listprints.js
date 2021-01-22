@@ -1,5 +1,5 @@
 const config = require('../config.json');
-const admin = false
+const admin = true
 const master = false
 const discordDatabase = require('../discorddatabase')
 const Discord = require('discord.js');
