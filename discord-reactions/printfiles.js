@@ -5,20 +5,28 @@ const discordDatabase = require('../discorddatabase')
 const Discord = require('discord.js');
 var id = Math.floor(Math.random() * 10000) + 1
 var wsConnection
-var messageChannel
+var dcMessage
 var requester
 var pageUp = false
 var currentPage = 1
 var maxEntries = 10
-var executeCommand = (function(command,channel,user,guild,discordClient,websocketConnection){
+var executeReaction = (function(message,user,guild,emote,discordClient,websocketConnection){
     requester=user
-    messageChannel=channel
+    dcMessage=message
     wsConnection=websocketConnection
-    channel.startTyping();
+    if(emote.name=="▶️"){
+        pageUp=true
+    }else if(emote.name=="◀️"){
+        pageUp=false
+    }else{
+        return
+    }
+    var pages = message.embeds[0].author.name
+    var currentPageString = pages.replace("Page ","").split("/")[0]
+    currentPage=parseInt(currentPageString)-1
     websocketConnection.send('{"jsonrpc": "2.0", "method": "server.files.list", "params": {"root": "gcodes"}, "id": '+id+'}')
-    
     websocketConnection.on('message', handler);
-    channel.stopTyping();
+    console.log(message.embeds[0].author)
 })
 
 function handler(message){
@@ -55,8 +63,8 @@ function sendPage(allFiles){
 	.setTimestamp()
 	.setFooter(requester.tag, requester.avatarURL());
 
-    messageChannel.send(exampleEmbed);
+    dcMessage.edit(exampleEmbed)
 }
-module.exports = executeCommand;
+module.exports = executeReaction;
 module.exports.needAdmin = function(){return admin}
 module.exports.needMaster = function(){return master}
