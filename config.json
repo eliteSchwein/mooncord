@@ -5,6 +5,7 @@
     "bottoken":"",
     "masterid":"",
     "prefix":"mc!",
+    "imagechannel":"guild/channel",
     "statusupdateinterval":10,
     "statusupdatepercent":true
 }

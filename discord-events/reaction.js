@@ -1,4 +1,4 @@
-const config = require('../config.json');
+const config = require('../../config.json');
 const discordDatabase = require('../discorddatabase')
 var wsConnection
 var dcClient
@@ -26,18 +26,18 @@ function handler(messageReaction){
     const reactionModule = require("../discord-reactions/"+id)
     if(reactionModule.needMaster()){
         if(user.id!=config.masterid){
-            channel.send("<@"+user.id+"> You are not allowed to execute the following Command! \n> "+config.prefix+command.split(" ")[0])
+            messageReaction.channel.send("<@"+user.id+"> You are not allowed to execute this Action! \n> "+config.prefix+command.split(" ")[0])
             return;
         }
     }
     if(reactionModule.needAdmin()){
         if(!isAdmin(user,guild)){
-            channel.send("<@"+user.id+"> You are not allowed to execute the following Command! \n> "+config.prefix+command.split(" ")[0])
+            messageReaction.channel.send("<@"+user.id+"> You are not allowed to execute this Action! \n> "+config.prefix+command.split(" ")[0])
             return;
         }
     }
     if(!isAllowed(user,guild)){
-        channel.send("<@"+user.id+"> You are not allowed to execute the following Command! \n> "+config.prefix+command.split(" ")[0])
+        messageReaction.channel.send("<@"+user.id+"> You are not allowed to execute this Action! \n> "+config.prefix+command.split(" ")[0])
         return;
     }
     reactionModule(message,user,guild,messageReaction.emoji,dcClient,wsConnection);

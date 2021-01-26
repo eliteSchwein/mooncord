@@ -17,7 +17,7 @@ var enableEvent = (function(discordClient,websocketConnection){
         return
       }
       var id = msg.embeds[0].title.toLowerCase().replace(" ","")
-      if (!fs.existsSync("../discord-commandreactions/"+id+".js")) {
+      if (!fs.existsSync(__dirname+"/../discord-commandreactions/"+id+".js")) {
         return
       }
       const emoteModule = require("../discord-commandreactions/"+id)
