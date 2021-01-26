@@ -16,7 +16,7 @@ var executeCommand = (function(command,channel,user,guild,discordClient,websocke
     setTimeout(function(){
         const embed = new Discord.MessageEmbed()
             .setColor('#0099ff')
-            .setAuthor('Help')
+            .setTitle('Help')
             .setThumbnail(discordClient.user.avatarURL())
             .setDescription('Aviable Commands:\n'+commands)
             .setTimestamp()
