@@ -22,7 +22,7 @@ var executeCommand = (function(command,channel,user,guild,discordClient,websocke
     }
     var statuslist = ""
     fs.readdirSync(__dirname+"/../websocket-events-test").forEach(status => {
-        statuslist = statuslist.concat("`"+status+"` ")
+        statuslist = statuslist.concat("`"+status.replace(".js","")+"` ")
     });
     var statuslistcheck = statuslist.split(" ")
     if(!statuslistcheck.includes("`"+args[1]+"`")){
