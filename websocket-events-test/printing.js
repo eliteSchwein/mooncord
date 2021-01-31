@@ -44,38 +44,38 @@ async function retrieveWebcam(inputtemplate){
 
 async function retrieveThumbnail(inputtemplate){
     var thumbnailtag = '{{thumbnail}}'
-    var thumbnail = variables.getThumbnail()
+    var thumbnail = await imageToBase64(__dirname+"/../logo.png");
     inputtemplate = inputtemplate.replace(new RegExp(thumbnailtag,'g'),"data:image/gif;base64,"+thumbnail)
-    return inputtemplate
-}
-
-async function retrieveProgress(inputtemplate){
-    var progresstag = '{{progress}}'
-    inputtemplate = inputtemplate.replace(new RegExp(progresstag,'g'),variables.getPrintProgress().toFixed(0))
-    return inputtemplate
-}
-
-async function retrieveFile(inputtemplate){
-    var filetag = '{{file}}'
-    inputtemplate = inputtemplate.replace(new RegExp(filetag,'g'),variables.getPrintFile())
     return inputtemplate
 }
 
 async function retrieveTime(inputtemplate){
     var resttimetag = '{{printtime}}'
-    inputtemplate = inputtemplate.replace(new RegExp(resttimetag,'g'),variables.getPrintTime())
+    inputtemplate = inputtemplate.replace(new RegExp(resttimetag,'g'),"01:59")
+    return inputtemplate
+}
+
+async function retrieveProgress(inputtemplate){
+    var progresstag = '{{progress}}'
+    inputtemplate = inputtemplate.replace(new RegExp(progresstag,'g'),75)
+    return inputtemplate
+}
+
+async function retrieveFile(inputtemplate){
+    var filetag = '{{file}}'
+    inputtemplate = inputtemplate.replace(new RegExp(filetag,'g'),"a_super_long_gcode_name.gcpde")
     return inputtemplate
 }
 
 async function retrieveRestTime(inputtemplate){
     var resttimetag = '{{resttime}}'
-    inputtemplate = inputtemplate.replace(new RegExp(resttimetag,'g'),variables.getRestPrintTime())
+    inputtemplate = inputtemplate.replace(new RegExp(resttimetag,'g'),"01:59")
     return inputtemplate
 }
 
 async function retrieveKlipperVersion(inputtemplate){
     var klipperversiontag = '{{klipper_version}}'
-    inputtemplate = inputtemplate.replace(new RegExp(klipperversiontag,'g'),variables.getKlipperVersion().substring(0,10))
+    inputtemplate = inputtemplate.replace(new RegExp(klipperversiontag,'g'),"v0.9.1-179")
     return inputtemplate
 }
 

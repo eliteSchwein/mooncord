@@ -12,7 +12,6 @@ var getModule = (async function(theme){
     await readTemplateFile('./themes/'+theme+'/templates/ready.html',async function (err,templatefile){
         template=templatefile
         template = await retrieveWebcam(template)
-        template = await retrieveThumbnail(template)
         template = await retrieveOverlay(template,theme)
         template = await retrieveKlipperVersion(template)
         feedback=template;
@@ -35,16 +34,9 @@ async function retrieveWebcam(inputtemplate){
     return inputtemplate
 }
 
-async function retrieveThumbnail(inputtemplate){
-    var thumbnailtag = '{{thumbnail}}'
-    var thumbnail = variables.getThumbnail()
-    inputtemplate = inputtemplate.replace(new RegExp(thumbnailtag,'g'),"data:image/gif;base64,"+thumbnail)
-    return inputtemplate
-}
-
 async function retrieveKlipperVersion(inputtemplate){
     var klipperversiontag = '{{klipper_version}}'
-    inputtemplate = inputtemplate.replace(new RegExp(klipperversiontag,'g'),variables.getKlipperVersion().substring(0,10))
+    inputtemplate = inputtemplate.replace(new RegExp(klipperversiontag,'g'),"v0.9.1-179")
     return inputtemplate
 }
 
