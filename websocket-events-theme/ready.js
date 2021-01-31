@@ -14,7 +14,7 @@ var getModule = (async function(discordClient,channel,theme){
         template=templatefile
         template = await retrieveWebcam(template)
         template = await retrieveThumbnail(template)
-        template = await retrieveOverlay(template)
+        template = await retrieveOverlay(template,theme)
         template = await retrieveKlipperVersion(template)
         var image = await nodeHtmlToImage({html:template})
         if(typeof channel =="undefined"){
@@ -50,7 +50,7 @@ var getModule = (async function(discordClient,channel,theme){
 })
 module.exports = getModule;
 
-async function retrieveOverlay(inputtemplate){
+async function retrieveOverlay(inputtemplate,theme){
     var base64overlay = await imageToBase64("./templates/"+theme+"/overlay.png");
     var overlaytag = '{{overlay}}'
     inputtemplate = inputtemplate.replace(new RegExp(overlaytag,'g'),"data:image/gif;base64,"+base64overlay)
