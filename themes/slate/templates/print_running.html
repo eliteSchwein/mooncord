@@ -13,6 +13,21 @@
     </style>
 </head>
 <body style="margin:0;height:1080;width:1920">
+    <img src="{{webcam}}" style="height: 100%; width: 100%;"/>
+    <div style="width: 170px;height: 200px;position: absolute;top: 20px;left: 655px;border-radius: 55px;background-color: #02b007;"></div>
+    <div style="width: 330px;height: 200px;position: absolute;top: 20px;left: 420px;border-radius: 55px;background-color: #048302;"></div>
+    <div style="width: 500px;height: 200px;position: absolute;top: 20px;left: 20px;border-radius: 55px;background-color: #343434;"></div>
+    <div style="font-family: 'Roboto', sans-serif;font-size: 50px;position: absolute;left: 68px;top: 58px;height: 10px;color: white;text-align: right;">Printer started!</div>
+    <div id="file" style="font-family: 'Roboto', sans-serif;font-size: 50px;position: absolute;left: 68px;top: 118px;height: 10px;color: white;text-align: right;"></div>
+    <div style="font-family: 'Roboto', sans-serif;font-size: 69px;position: absolute;left: 741px;top: 44px;height: 10px;color: white;text-align: center;width: 92;">&#9654;</div>
+    <div style="font-family: 'Roboto', sans-serif;font-size: 53px;position: absolute;left: 741px;top: 118px;height: 10px;color: white;text-align: center;width: 92;">&#128337;</div>
+    <div style="font-family: 'Roboto', sans-serif;font-size: 60px;position: absolute;left: 840px;top: 118px;height: 10px;color: white;">{{printtime}}</div>
+    <div style="position:absolute;left:540px;top:30px;height:0px"><img height="180px" width="180px" src="{{thumbnail}}"/></div>
+    <script>
+        var file = "{{file}}";
+        var shortname = file.substring(0,16);
+        document.getElementById("file").innerHTML = shortname;
+    </script>
     <img src="{{overlay}}" style="position:absolute;"/>
     <img src="{{webcam}}" style="height: 100%; width: 100%;"/>
     <div style="position:absolute;right:20px;top:20px;height:10px"><img height="200px" width="200px" src="{{thumbnail}}"/></div>

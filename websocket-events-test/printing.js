@@ -8,9 +8,6 @@ const config = require('../../config.json');
 var template = '';
 
 var getModule = (async function(theme){
-    if(variables.getPrintProgress().toFixed(0)==0){
-        return;
-    }
     var feedback = ""
     await readTemplateFile('./themes/'+theme+'/templates/print_running.html',async function (err,templatefile){
         template=templatefile
