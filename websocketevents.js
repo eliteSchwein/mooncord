@@ -195,7 +195,7 @@ function triggerStatusUpdate(discordClient,channel){
 
 function triggerStatusUpdateTest(discordClient,channel,theme,testStatus){
     console.log("Test Status: "+testStatus)
-    var event = require('./websocket-events-theme/'+theme+'/'+testStatus);
+    var event = require('./websocket-events-theme/'+testStatus);
     event(discordClient,channel,theme)
 
 }
