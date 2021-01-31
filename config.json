@@ -5,7 +5,7 @@
     "bottoken":"",
     "masterid":"",
     "prefix":"mc!",
-    "defaulttheme":"materium",
+    "defaulttheme":"slate",
     "imagechannel":"guild/channel",
     "statusupdateinterval":10,
     "statusupdatepercent":true
