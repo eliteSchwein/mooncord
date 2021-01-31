@@ -7,7 +7,7 @@ const config = require('../../config.json');
 
 var template = '';
 
-var getModule = (async function(discordClient,channel){
+var getModule = (async function(discordClient,channel,theme){
     if(variables.getPrintProgress().toFixed(0)==0){
         return;
     }

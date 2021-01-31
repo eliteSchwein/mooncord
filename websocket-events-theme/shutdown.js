@@ -7,7 +7,7 @@ const config = require('../../config.json');
 
 var template = '';
 
-var getModule = (async function(discordClient,channel){
+var getModule = (async function(discordClient,channel,theme){
     var database = discordDatabase.getDatabase();
     discordClient.user.setActivity("Shutdown...",{type: "LISTENING"})
     readTemplateFile('./templates/'+theme+'/modules/shutdown.html',async function (err,templatefile){

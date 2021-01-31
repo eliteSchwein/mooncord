@@ -7,7 +7,7 @@ const config = require('../../config.json');
 
 var template = '';
 
-var getModule = (async function(discordClient,channel){
+var getModule = (async function(discordClient,channel,theme){
     var database = discordDatabase.getDatabase();
     discordClient.user.setActivity("Starting...",{type: "WATCHING"})
     readTemplateFile('./templates/'+theme+'/modules/print_start.html',async function (err,templatefile){
