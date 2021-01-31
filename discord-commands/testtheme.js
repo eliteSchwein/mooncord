@@ -1,6 +1,7 @@
 const config = require('../../config.json');
 const admin = true
 const master = false
+const fs = require('fs');
 const discordDatabase = require('../discorddatabase')
 const websocketevents = require('../websocketevents')
 var executeCommand = (function(command,channel,user,guild,discordClient,websocketConnection){
