@@ -10,7 +10,7 @@ var template = '';
 var getModule = (async function(discordClient,channel){
     var database = discordDatabase.getDatabase();
     discordClient.user.setActivity("GCODE File...",{type: "LISTENING"})
-    readTemplateFile('./templates/modules/ready.html',async function (err,templatefile){
+    readTemplateFile('./templates/'+theme+'/modules/ready.html',async function (err,templatefile){
         template=templatefile
         template = await retrieveWebcam(template)
         template = await retrieveThumbnail(template)
@@ -51,7 +51,7 @@ var getModule = (async function(discordClient,channel){
 module.exports = getModule;
 
 async function retrieveOverlay(inputtemplate){
-    var base64overlay = await imageToBase64("./templates/overlay.png");
+    var base64overlay = await imageToBase64("./templates/"+theme+"/overlay.png");
     var overlaytag = '{{overlay}}'
     inputtemplate = inputtemplate.replace(new RegExp(overlaytag,'g'),"data:image/gif;base64,"+base64overlay)
     return inputtemplate

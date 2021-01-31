@@ -38,6 +38,10 @@ discordClient.on('ready', () => {
 
     websocketClient.on('connectFailed', function(error) {
         console.log('Connect Error: ' + error.toString());
+        console.log('Reconnect in 5 sec');
+        setTimeout(function(){
+            websocketClient.connect(config.moonrakersocketurl);
+        },5000)
     });
 
     console.log("Enable Websocket Events...\n")
@@ -52,6 +56,10 @@ discordClient.on('ready', () => {
         discordevents(discordClient,connection)
         connection.on('close', function() {
             console.log('WebSocket Connection Closed');
+            console.log('Reconnect in 5 sec');
+            setTimeout(function(){
+                websocketClient.connect(config.moonrakersocketurl);
+            },5000)
         });
     });
 

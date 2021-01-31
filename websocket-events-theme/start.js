@@ -9,12 +9,15 @@ var template = '';
 
 var getModule = (async function(discordClient,channel){
     var database = discordDatabase.getDatabase();
-    discordClient.user.setActivity("GCODE File...",{type: "LISTENING"})
-    readTemplateFile('./templates/modules/ready.html',async function (err,templatefile){
+    discordClient.user.setActivity("Starting...",{type: "WATCHING"})
+    readTemplateFile('./templates/'+theme+'/modules/print_start.html',async function (err,templatefile){
         template=templatefile
         template = await retrieveWebcam(template)
         template = await retrieveThumbnail(template)
         template = await retrieveOverlay(template)
+        template = await retrieveProgress(template)
+        template = await retrieveFile(template)
+        template = await retrieveTime(template)
         template = await retrieveKlipperVersion(template)
         var image = await nodeHtmlToImage({html:template})
         if(typeof channel =="undefined"){
@@ -51,7 +54,7 @@ var getModule = (async function(discordClient,channel){
 module.exports = getModule;
 
 async function retrieveOverlay(inputtemplate){
-    var base64overlay = await imageToBase64("./templates/overlay.png");
+    var base64overlay = await imageToBase64("./templates/"+theme+"/overlay.png");
     var overlaytag = '{{overlay}}'
     inputtemplate = inputtemplate.replace(new RegExp(overlaytag,'g'),"data:image/gif;base64,"+base64overlay)
     return inputtemplate
@@ -68,6 +71,24 @@ async function retrieveThumbnail(inputtemplate){
     var thumbnailtag = '{{thumbnail}}'
     var thumbnail = variables.getThumbnail()
     inputtemplate = inputtemplate.replace(new RegExp(thumbnailtag,'g'),"data:image/gif;base64,"+thumbnail)
+    return inputtemplate
+}
+
+async function retrieveProgress(inputtemplate){
+    var progresstag = '{{progress}}'
+    inputtemplate = inputtemplate.replace(new RegExp(progresstag,'g'),variables.getPrintProgress())
+    return inputtemplate
+}
+
+async function retrieveFile(inputtemplate){
+    var filetag = '{{file}}'
+    inputtemplate = inputtemplate.replace(new RegExp(filetag,'g'),variables.getPrintFile())
+    return inputtemplate
+}
+
+async function retrieveTime(inputtemplate){
+    var resttimetag = '{{printtime}}'
+    inputtemplate = inputtemplate.replace(new RegExp(resttimetag,'g'),variables.getPrintTime())
     return inputtemplate
 }
 

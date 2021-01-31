@@ -3,6 +3,7 @@ const admin = false
 const master = true
 const discordDatabase = require('../discorddatabase')
 const Discord = require('discord.js');
+var variables = require("../websocketevents")
 var id = Math.floor(Math.random() * 10000) + 1
 var wsConnection
 var dcMessage
@@ -11,6 +12,11 @@ var executeReaction = (function(message,user,guild,emote,discordClient,websocket
     requester=user
     dcMessage=message
     wsConnection=websocketConnection
+    if(variables.getStatus()!="ready"){
+        message.delete()
+        channel.send("<@"+user.id+"> the Printer is not ready!")
+        return;
+    }
     if(emote.name=="❌"){
         message.delete()
         message.channel.send("<@"+user.id+"> You cancel the Print!")

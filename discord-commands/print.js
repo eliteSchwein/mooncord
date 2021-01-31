@@ -4,6 +4,7 @@ const master = true
 const discordDatabase = require('../discorddatabase')
 const Discord = require('discord.js');
 const fs = require("fs");
+var variables = require("../websocketevents")
 var id = Math.floor(Math.random() * 10000) + 1
 var wsConnection
 var messageChannel
@@ -15,6 +16,10 @@ var executeCommand = (async function(command,channel,user,guild,discordClient,we
     messageChannel=channel
     wsConnection=websocketConnection
     dcClient=discordClient
+    if(variables.getStatus!="ready"){
+        channel.send("<@"+user.id+"> the Printer is not ready!")
+        return;
+    }
     var args = command.split(" ")
     args.shift()
     if(args.length==0){

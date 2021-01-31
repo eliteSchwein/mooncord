@@ -20,6 +20,7 @@ var getModule = (async function(discordClient,channel){
         template = await retrieveProgress(template)
         template = await retrieveFile(template)
         template = await retrieveRestTime(template)
+        template = await retrieveTime(template)
         template = await retrieveKlipperVersion(template)
         var image = await nodeHtmlToImage({html:template})
         if(typeof channel =="undefined"){
@@ -85,6 +86,12 @@ async function retrieveProgress(inputtemplate){
 async function retrieveFile(inputtemplate){
     var filetag = '{{file}}'
     inputtemplate = inputtemplate.replace(new RegExp(filetag,'g'),variables.getPrintFile())
+    return inputtemplate
+}
+
+async function retrieveTime(inputtemplate){
+    var resttimetag = '{{printtime}}'
+    inputtemplate = inputtemplate.replace(new RegExp(resttimetag,'g'),variables.getPrintTime())
     return inputtemplate
 }
 

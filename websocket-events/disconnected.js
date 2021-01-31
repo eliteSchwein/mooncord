@@ -13,12 +13,7 @@ var getModule = (async function(discordClient,channel){
     readTemplateFile('./templates/modules/disconnected.html',async function (err,templatefile){
         template=templatefile
         template = await retrieveWebcam(template)
-        template = await retrieveThumbnail(template)
         template = await retrieveOverlay(template)
-        template = await retrieveProgress(template)
-        template = await retrieveFile(template)
-        template = await retrieveRestTime(template)
-        template = await retrieveKlipperVersion(template)
         var image = await nodeHtmlToImage({html:template})
         if(typeof channel =="undefined"){
             for(var guildid in database){
@@ -64,37 +59,6 @@ async function retrieveWebcam(inputtemplate){
     var base64cam = await imageToBase64(config.webcamsnapshoturl);
     var webcamtag = '{{webcam}}'
     inputtemplate = inputtemplate.replace(new RegExp(webcamtag,'g'),"data:image/gif;base64,"+base64cam)
-    return inputtemplate
-}
-
-async function retrieveThumbnail(inputtemplate){
-    var thumbnailtag = '{{thumbnail}}'
-    var thumbnail = variables.getThumbnail()
-    inputtemplate = inputtemplate.replace(new RegExp(thumbnailtag,'g'),"data:image/gif;base64,"+thumbnail)
-    return inputtemplate
-}
-
-async function retrieveProgress(inputtemplate){
-    var progresstag = '{{progress}}'
-    inputtemplate = inputtemplate.replace(new RegExp(progresstag,'g'),variables.getRestPrintProgress())
-    return inputtemplate
-}
-
-async function retrieveFile(inputtemplate){
-    var filetag = '{{file}}'
-    inputtemplate = inputtemplate.replace(new RegExp(filetag,'g'),variables.getPrintFile())
-    return inputtemplate
-}
-
-async function retrieveRestTime(inputtemplate){
-    var resttimetag = '{{resttime}}'
-    inputtemplate = inputtemplate.replace(new RegExp(resttimetag,'g'),variables.getPrintTime())
-    return inputtemplate
-}
-
-async function retrieveKlipperVersion(inputtemplate){
-    var klipperversiontag = '{{klipper_version}}'
-    inputtemplate = inputtemplate.replace(new RegExp(klipperversiontag,'g'),variables.getKlipperVersion().substring(0,10))
     return inputtemplate
 }
 
