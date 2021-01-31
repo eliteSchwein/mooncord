@@ -9,6 +9,7 @@ const config = require('../config.json');
 const Discord = require('discord.js');
 const discordClient = new Discord.Client();
 var websocketConnection = ""
+var reconnect = false
 
 console.log("\n"+
 "    __  __                    ____              _ \n"+
@@ -50,13 +51,15 @@ discordClient.on('ready', () => {
 
     websocketClient.on('connect', function(connection) {
         console.log('WebSocket Client Connected\n');
-
-        console.log("Enable Discord Events...\n")
+        if(!reconnect){
+            console.log("Enable Discord Events...\n")
         
-        discordevents(discordClient,connection)
+            discordevents(discordClient,connection)
+        }
         connection.on('close', function() {
             console.log('WebSocket Connection Closed');
             console.log('Reconnect in 5 sec');
+            reconnect=true
             setTimeout(function(){
                 websocketClient.connect(config.moonrakersocketurl);
             },5000)
