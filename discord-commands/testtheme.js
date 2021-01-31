@@ -30,7 +30,6 @@ var executeCommand = (function(command,channel,user,guild,discordClient,websocke
         var template = require("../websocket-events-test/"+status.replace(".js",""))
         testServer.get('/'+status.replace(".js",""), async function (req, res) {
             var html = await template(theme);
-            console.log(html)
             res.set('Content-Type', 'text/html');
             res.send(Buffer.from(html))
         })
