@@ -213,6 +213,10 @@ module.exports.triggerStatusUpdate = function(discordClient,channel){
     triggerStatusUpdate(discordClient,channel);
 }
 
+module.exports.triggerStatusUpdateTest = function(discordClient,channel){
+    triggerStatusUpdateTest(discordClient,channel);
+}
+
 module.exports.updateStatus = function(status){
     this.status = status
 }

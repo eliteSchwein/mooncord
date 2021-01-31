@@ -6,8 +6,8 @@ const websocketevents = require('../websocketevents')
 var executeCommand = (function(command,channel,user,guild,discordClient,websocketConnection){
     var args = command.split(" ")
     args.shift()
-    if(args.length==0||args.length<=2){
-        channel.send("<@"+user.id+"> Missing Arguments! Usage:\n> "+config.prefix+command+" Theme Status")
+    if(args.length==0||args.length<=1){
+        channel.send("<@"+user.id+"> Missing Arguments! Usage:\n> "+config.prefix+command+" <theme> <status>")
         return;
     }
     channel.startTyping();
