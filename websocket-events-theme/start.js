@@ -9,8 +9,7 @@ var template = '';
 
 var getModule = (async function(discordClient,channel,theme){
     var database = discordDatabase.getDatabase();
-    discordClient.user.setActivity("Starting...",{type: "WATCHING"})
-    readTemplateFile('./templates/'+theme+'/modules/print_start.html',async function (err,templatefile){
+    readTemplateFile('./themes/'+theme+'/templates/print_start.html',async function (err,templatefile){
         template=templatefile
         template = await retrieveWebcam(template)
         template = await retrieveThumbnail(template)
@@ -54,7 +53,7 @@ var getModule = (async function(discordClient,channel,theme){
 module.exports = getModule;
 
 async function retrieveOverlay(inputtemplate,theme){
-    var base64overlay = await imageToBase64("./templates/"+theme+"/overlay.png");
+    var base64overlay = await imageToBase64("./themes/"+theme+"/overlay.png");
     var overlaytag = '{{overlay}}'
     inputtemplate = inputtemplate.replace(new RegExp(overlaytag,'g'),"data:image/gif;base64,"+base64overlay)
     return inputtemplate

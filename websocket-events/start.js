@@ -7,54 +7,59 @@ const config = require('../../config.json');
 
 var template = '';
 
-var getModule = (async function(discordClient,channel){
+var getModule = (async function(discordClient,channel,guild){
     var database = discordDatabase.getDatabase();
     discordClient.user.setActivity("Starting...",{type: "WATCHING"})
-    readTemplateFile('./templates/modules/print_start.html',async function (err,templatefile){
+    
+    if(typeof channel =="undefined"){
+        for(var guildid in database){
+            discordClient.guilds.fetch(guildid)
+            .then(function(guild){
+                var guilddatabase = database[guild.id]
+                var theme = config.defaulttheme
+                if(guilddatabase.theme!="default"){
+                    theme=guilddatabase.theme
+                }
+                var broadcastchannels = guilddatabase.statuschannels
+                for(var index in broadcastchannels){
+                    var channel = guild.channels.cache.get(broadcastchannels[index]);
+                    sendMessage(channel,theme)
+                }
+            })
+            .catch(console.error);
+        }
+    }else{
+        var guilddatabase = database[guild.id]
+        var theme = config.defaulttheme
+        if(guilddatabase.theme!="default"){
+            theme=guilddatabase.theme
+        }
+        sendMessage(channel,theme)
+    }
+})
+
+function sendMessage(channel,theme){
+    readTemplateFile('./themes/'+theme+'/templates/print_start.html',async function (err,templatefile){
         template=templatefile
         template = await retrieveWebcam(template)
         template = await retrieveThumbnail(template)
-        template = await retrieveOverlay(template)
-        template = await retrieveProgress(template)
+        template = await retrieveOverlay(template,theme)
         template = await retrieveFile(template)
         template = await retrieveTime(template)
         template = await retrieveKlipperVersion(template)
         var image = await nodeHtmlToImage({html:template})
-        if(typeof channel =="undefined"){
-            for(var guildid in database){
-                discordClient.guilds.fetch(guildid)
-                .then(function(guild){
-                    var guilddatabase = database[guild.id]
-                    var broadcastchannels = guilddatabase.statuschannels
-                    for(var index in broadcastchannels){
-                        var channel = guild.channels.cache.get(broadcastchannels[index]);
-                        channel.send({
-                            files:[{
-                                attachment: image,
-                                name: 'ready.png'
-                            }]
-                        })
-                    }
-                })
-                .catch(console.error);
-            }
-        }else{
-            channel.send({
-                files:[{
-                    attachment: image,
-                    name: 'ready.png'
-                }]
-            })
-        }
-        
-        //res.type("image/png")
-        //res.send(image)
+        channel.send({
+            files:[{
+                attachment: image,
+                name: 'ready.png'
+            }]
+        })
     });
-})
+}
 module.exports = getModule;
 
-async function retrieveOverlay(inputtemplate){
-    var base64overlay = await imageToBase64("./templates/overlay.png");
+async function retrieveOverlay(inputtemplate,theme){
+    var base64overlay = await imageToBase64("./themes/"+theme+"/overlay.png");
     var overlaytag = '{{overlay}}'
     inputtemplate = inputtemplate.replace(new RegExp(overlaytag,'g'),"data:image/gif;base64,"+base64overlay)
     return inputtemplate
@@ -71,12 +76,6 @@ async function retrieveThumbnail(inputtemplate){
     var thumbnailtag = '{{thumbnail}}'
     var thumbnail = variables.getThumbnail()
     inputtemplate = inputtemplate.replace(new RegExp(thumbnailtag,'g'),"data:image/gif;base64,"+thumbnail)
-    return inputtemplate
-}
-
-async function retrieveProgress(inputtemplate){
-    var progresstag = '{{progress}}'
-    inputtemplate = inputtemplate.replace(new RegExp(progresstag,'g'),variables.getPrintProgress())
     return inputtemplate
 }
 

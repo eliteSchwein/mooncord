@@ -11,6 +11,7 @@ exports.getGuildDatabase = function(guild){
       adminroles : [],
       accessrole : [],
       accessusers : [],
+      theme: "default",
       accesseveryone : false
     }
     this.updateDatabase(database[guild.id],guild)

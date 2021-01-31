@@ -1,4 +1,5 @@
 const config = require('../config.json');
+const discordDataBase = require('./discorddatabase')
 
 var status = 'unknown'
 var oldStatus = 'unknown'
@@ -186,10 +187,10 @@ var getModule = (function(client,discordClient){
 })
 module.exports = getModule;
 
-function triggerStatusUpdate(discordClient,channel){
+function triggerStatusUpdate(discordClient,channel,guild){
     console.log("Printer Status: "+status)
     var event = require('./websocket-events/'+status);
-    event(discordClient,channel)
+    event(discordClient,channel,guild)
 
 }
 
@@ -209,8 +210,8 @@ function formatDateTime(msec) {
     return h+":"+m
 }
 
-module.exports.triggerStatusUpdate = function(discordClient,channel){
-    triggerStatusUpdate(discordClient,channel);
+module.exports.triggerStatusUpdate = function(discordClient,channel,guild){
+    triggerStatusUpdate(discordClient,channel,guild);
 }
 
 module.exports.triggerStatusUpdateTest = function(discordClient,channel,theme,testStatus){
