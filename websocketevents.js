@@ -194,13 +194,6 @@ function triggerStatusUpdate(discordClient,channel,guild){
 
 }
 
-function triggerStatusUpdateTest(discordClient,channel,theme,testStatus){
-    console.log("Test Status: "+testStatus)
-    var event = require('./websocket-events-test/'+testStatus);
-    event(discordClient,channel,theme)
-
-}
-
 function formatDateTime(msec) {
     const date = new Date(msec)
     var hours = date.getHours()
@@ -212,10 +205,6 @@ function formatDateTime(msec) {
 
 module.exports.triggerStatusUpdate = function(discordClient,channel,guild){
     triggerStatusUpdate(discordClient,channel,guild);
-}
-
-module.exports.triggerStatusUpdateTest = function(discordClient,channel,theme,testStatus){
-    triggerStatusUpdateTest(discordClient,channel,theme,testStatus);
 }
 
 module.exports.updateStatus = function(status){
