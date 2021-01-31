@@ -17,7 +17,8 @@ var executeCommand = (function(command,channel,user,guild,discordClient,websocke
     fs.readdirSync(__dirname+"/../themes").forEach(theme => {
         themes = themes.concat("`"+theme+"` ")
     });
-    if(!themes.includes(args[0])){
+    var themecheck = themes.split(" ")
+    if(!themecheck.includes("`"+args[0]+"`")){
         channel.send("<@"+user.id+"> Invalid Theme: `"+args[0]+"`\nInstalled Themes:\n"+themes)
         return;
     }
