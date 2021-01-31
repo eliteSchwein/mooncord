@@ -3,51 +3,12 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet"> 
     <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
-    <style>
-        .progress-ring {
-        
-        }
-        .progress-ring__circle {
-            transform: rotate(-90deg);
-            transform-origin: 50% 50%;
-        }
-    </style>
 </head>
 <body style="margin:0;height:1080;width:1920">
-    <img src="{{overlay}}" style="position:absolute;"/>
     <img src="{{webcam}}" style="height: 100%; width: 100%;"/>
-    <div style="font-family: 'Roboto', sans-serif;font-size: 50px;position: absolute;right: 21px;top: 20px;height: 10px;color: white;width: 440px;text-align: right;">Klipper Offline!</div>
-    <div style="font-family: 'Roboto', sans-serif;font-size: 40px;position: absolute;right: 248px;top: 72px;height: 10px;color: white;width: 176px;text-align: center;"></div>
-    <div style="font-family: 'Anton', sans-serif;font-size: 82px;position: absolute;left: 43px;top: 29px;height: 10px;color: black;text-align: center;width: 92;z-index: 2;">!</div>
-    <div style="position:absolute;left:20px;top:20px;height:10px">
-    <svg
-        class="progress-ring"
-        width="140"
-        height="140">
-        <circle
-            class="progress-ring__circle"
-            stroke="#f00"
-            stroke-width="10"
-            fill="#fff"
-            r="62"
-            cx="70"
-            cy="70"
-            id="circle"/>
-        </svg>
-    </div>
-    <script type="text/javascript">
-        var circle = document.getElementById('circle');
-        var radius = circle.r.baseVal.value;
-        var circumference = radius * 2 * Math.PI;
-
-        circle.style.strokeDasharray = `${circumference} ${circumference}`;
-        circle.style.strokeDashoffset = `${circumference}`;
-
-        function setProgress(percent) {
-            const offset = circumference - percent / 100 * circumference;
-            circle.style.strokeDashoffset = offset;
-        }
-        setProgress(100)
-    </script>
+    <div style="width: 170px;height: 200px;position: absolute;top: 20px;left: 430px;border-radius: 55px;background-color: #4f0101;"></div>
+    <div style="width: 500px;height: 200px;position: absolute;top: 20px;left: 20px;border-radius: 55px;background-color: #343434;"></div>
+    <div style="font-family: 'Roboto', sans-serif;font-size: 50px;position: absolute;left: 109px;top: 89px;height: 10px;color: white;text-align: right;">Klipper Offline</div>
+    <div style="font-family: 'Roboto', sans-serif;font-size: 69px;position: absolute;left: 514px;top: 82px;height: 10px;color: white;text-align: center;width: 92;">!</div>
 </body>
 </html>
