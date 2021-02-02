@@ -15,6 +15,7 @@ var executeCommands = (function(command,channel,user,guild,discordClient,websock
     } catch(err) {
         console.error(err)
     }
+    delete require.cache[require.resolve("./"+command.split(" ")[0])]
     const commandModule = require("./"+command.split(" ")[0])
     if(commandModule.needMaster()){
         if(user.id!=config.masterid){
