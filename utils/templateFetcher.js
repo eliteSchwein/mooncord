@@ -1,19 +1,52 @@
 const imageToBase64 = require('image-to-base64');
 const config = require('../../config.json');
-var variables = require("../websocketevents")
+var variables = require("../websocketevents");
+const fs = require('fs');
 
 async function retrieveOverlay(inputtemplate,theme){
-    var base64overlay = await imageToBase64("./themes/"+theme+"/overlay.png");
-    var overlaytag = '{{overlay}}'
-    inputtemplate = inputtemplate.replace(new RegExp(overlaytag,'g'),"data:image/gif;base64,"+base64overlay)
-    return inputtemplate
+    try {
+        if (!fs.existsSync("./themes/"+theme+"/overlay.png")) {
+            var overlaytag = '{{overlay}}'
+            inputtemplate = inputtemplate.replace(new RegExp(overlaytag,'g'),"data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=")
+            return inputtemplate
+        }
+    } catch(err) {
+        console.log(err)
+    }
+    return imageToBase64("./themes/"+theme+"/overlay.png")
+        .then(
+            async (response)=> {
+                var overlaytag = '{{overlay}}'
+                inputtemplate = inputtemplate.replace(new RegExp(overlaytag,'g'),"data:image/gif;base64,"+response)
+                return inputtemplate
+            }
+        )
+        .catch(
+            async (error) =>{
+                var overlaytag = '{{overlay}}'
+                inputtemplate = inputtemplate.replace(new RegExp(overlaytag,'g'),"data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=")
+                return inputtemplate
+            }
+        )
 }
 
 async function retrieveWebcam(inputtemplate){
-    var base64cam = await imageToBase64(config.webcamsnapshoturl);
-    var webcamtag = '{{webcam}}'
-    inputtemplate = inputtemplate.replace(new RegExp(webcamtag,'g'),"data:image/gif;base64,"+base64cam)
-    return inputtemplate
+    return imageToBase64(config.webcamsnapshoturl)
+        .then(
+            async (response)=> {
+                var webcamtag = '{{webcam}}'
+                inputtemplate = inputtemplate.replace(new RegExp(webcamtag,'g'),"data:image/gif;base64,"+response)
+                return inputtemplate
+            }
+        )
+        .catch(
+            async (error) =>{
+                var base64error = await imageToBase64(__dirname+"/../snapshot-error.png");
+                var webcamtag = '{{webcam}}'
+                inputtemplate = inputtemplate.replace(new RegExp(webcamtag,'g'),"data:image/gif;base64,"+base64error)
+                return inputtemplate
+            }
+        )
 }
 
 async function retrieveThumbnail(inputtemplate){
