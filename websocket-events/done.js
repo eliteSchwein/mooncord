@@ -39,6 +39,10 @@ var getModule = (async function(discordClient,channel,guild){
 
 function sendMessage(channel,theme){
     readTemplateFile('./themes/'+theme+'/templates/print_done.html',async function (err,templatefile){
+        if(err){
+            channel.send("The File `templates/print_done.html` \ncouldn't be found in the Theme:\n`"+theme+"`")
+            return
+        }
         template=templatefile
         template = await fetcher.retrieveWebcam(template)
         template = await fetcher.retrieveThumbnail(template)
