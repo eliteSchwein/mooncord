@@ -1,3 +1,7 @@
+const imageToBase64 = require('image-to-base64');
+const config = require('../../config.json');
+var variables = require("../websocketevents")
+
 async function retrieveOverlay(inputtemplate,theme){
     var base64overlay = await imageToBase64("./themes/"+theme+"/overlay.png");
     var overlaytag = '{{overlay}}'

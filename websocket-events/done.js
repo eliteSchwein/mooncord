@@ -1,8 +1,7 @@
-const imageToBase64 = require('image-to-base64');
 const nodeHtmlToImage = require('node-html-to-image');
 const discordDatabase = require('../discorddatabase')
+const fetcher = require('../utils/templateFetcher')
 const fs = require('fs');
-var variables = require("../websocketevents")
 const config = require('../../config.json');
 
 var template = '';
@@ -41,14 +40,14 @@ var getModule = (async function(discordClient,channel,guild){
 function sendMessage(channel,theme){
     readTemplateFile('./themes/'+theme+'/templates/print_done.html',async function (err,templatefile){
         template=templatefile
-        template = await retrieveWebcam(template)
-        template = await retrieveThumbnail(template)
-        template = await retrieveOverlay(template,theme)
-        template = await retrieveProgress(template)
-        template = await retrieveFile(template)
-        template = await retrieveRestTime(template)
-        template = await retrieveTime(template)
-        template = await retrieveKlipperVersion(template)
+        template = await fetcher.retrieveWebcam(template)
+        template = await fetcher.retrieveThumbnail(template)
+        template = await fetcher.retrieveOverlay(template,theme)
+        template = await fetcher.retrieveProgress(template)
+        template = await fetcher.retrieveFile(template)
+        template = await fetcher.retrieveRestTime(template)
+        template = await fetcher.retrieveTime(template)
+        template = await fetcher.retrieveKlipperVersion(template)
         var image = await nodeHtmlToImage({html:template})
         channel.send({
             files:[{
@@ -59,57 +58,6 @@ function sendMessage(channel,theme){
     });
 }
 module.exports = getModule;
-
-async function retrieveOverlay(inputtemplate,theme){
-    var base64overlay = await imageToBase64("./themes/"+theme+"/overlay.png");
-    var overlaytag = '{{overlay}}'
-    inputtemplate = inputtemplate.replace(new RegExp(overlaytag,'g'),"data:image/gif;base64,"+base64overlay)
-    return inputtemplate
-}
-
-async function retrieveWebcam(inputtemplate){
-    var base64cam = await imageToBase64(config.webcamsnapshoturl);
-    var webcamtag = '{{webcam}}'
-    inputtemplate = inputtemplate.replace(new RegExp(webcamtag,'g'),"data:image/gif;base64,"+base64cam)
-    return inputtemplate
-}
-
-async function retrieveThumbnail(inputtemplate){
-    var thumbnailtag = '{{thumbnail}}'
-    var thumbnail = variables.getThumbnail()
-    inputtemplate = inputtemplate.replace(new RegExp(thumbnailtag,'g'),"data:image/gif;base64,"+thumbnail)
-    return inputtemplate
-}
-
-async function retrieveTime(inputtemplate){
-    var resttimetag = '{{printtime}}'
-    inputtemplate = inputtemplate.replace(new RegExp(resttimetag,'g'),variables.getPrintTime())
-    return inputtemplate
-}
-
-async function retrieveProgress(inputtemplate){
-    var progresstag = '{{progress}}'
-    inputtemplate = inputtemplate.replace(new RegExp(progresstag,'g'),variables.getPrintProgress())
-    return inputtemplate
-}
-
-async function retrieveFile(inputtemplate){
-    var filetag = '{{file}}'
-    inputtemplate = inputtemplate.replace(new RegExp(filetag,'g'),variables.getPrintFile())
-    return inputtemplate
-}
-
-async function retrieveRestTime(inputtemplate){
-    var resttimetag = '{{resttime}}'
-    inputtemplate = inputtemplate.replace(new RegExp(resttimetag,'g'),variables.getPrintTime())
-    return inputtemplate
-}
-
-async function retrieveKlipperVersion(inputtemplate){
-    var klipperversiontag = '{{klipper_version}}'
-    inputtemplate = inputtemplate.replace(new RegExp(klipperversiontag,'g'),variables.getKlipperVersion().substring(0,10))
-    return inputtemplate
-}
 
 function readTemplateFile(path, callback) {
     try {
