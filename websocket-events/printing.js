@@ -3,6 +3,7 @@ const discordDatabase = require('../discorddatabase')
 const fetcher = require('../utils/templateFetcher')
 const fs = require('fs');
 const config = require('../../config.json');
+const variables = require('../websocketevents')
 
 var template = '';
 
