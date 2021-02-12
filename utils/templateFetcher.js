@@ -52,6 +52,9 @@ async function retrieveWebcam(inputtemplate){
 async function retrieveThumbnail(inputtemplate){
     var thumbnailtag = '{{thumbnail}}'
     var thumbnail = variables.getThumbnail()
+    if(typeof(thumbnail)=="undefined"||thumbnail==""){
+        thumbnail = await imageToBase64(__dirname+"/../thumbnail_not_found.png");
+    }
     inputtemplate = inputtemplate.replace(new RegExp(thumbnailtag,'g'),"data:image/gif;base64,"+thumbnail)
     return inputtemplate
 }
