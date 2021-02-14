@@ -1,4 +1,4 @@
-const config = require('../../config.json');
+const config = require('../config.json');
 const discordDatabase = require('../discorddatabase')
 const https = require('https');
 const axios = require('axios')

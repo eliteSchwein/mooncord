@@ -2,7 +2,7 @@ const nodeHtmlToImage = require('node-html-to-image');
 const discordDatabase = require('../discorddatabase')
 const fetcher = require('../utils/templateFetcher')
 const fs = require('fs');
-const config = require('../../config.json');
+const config = require('../config.json');
 
 var template = '';
 

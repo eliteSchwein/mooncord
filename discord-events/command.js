@@ -1,5 +1,5 @@
 const { TextChannel } = require('discord.js');
-const config = require('../../config.json');
+const config = require('../config.json');
 const commandHandler = require("../discord-commands/index")
 var enableEvent = (function(discordClient,websocketConnection){
     discordClient.on('message', msg => {

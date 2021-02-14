@@ -1,4 +1,4 @@
-const config = require('../config.json');
+const config = require('./config.json');
 const discordDataBase = require('./discorddatabase')
 
 var status = 'unknown'

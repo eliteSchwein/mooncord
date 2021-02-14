@@ -1,4 +1,4 @@
-const databasepath = "../discorddatabase.json"
+const databasepath = "./discorddatabase.json"
 const fs = require('fs');
 
 exports.getGuildDatabase = function(guild){

@@ -1,5 +1,5 @@
 const fs = require('fs')
-const config = require('../../config.json')
+const config = require('../config.json')
 const discordDatabase = require('../discorddatabase')
 
 var executeCommands = (function(command,channel,user,guild,discordClient,websocketConnection){

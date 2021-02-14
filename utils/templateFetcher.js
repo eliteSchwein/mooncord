@@ -1,5 +1,5 @@
 const imageToBase64 = require('image-to-base64');
-const config = require('../../config.json');
+const config = require('../config.json');
 var variables = require("../websocketevents");
 const fs = require('fs');
 
