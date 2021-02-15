@@ -66,7 +66,7 @@ Start mooncord:
 
 ## Permissions
 
-  Groups:
+  Roles:
 
   * Access:
       * Can access the following Commands: 
