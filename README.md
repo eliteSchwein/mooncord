@@ -90,27 +90,27 @@ Start mooncord:
   
 ## Commands
   
-   Printing:
+   * Printing:
       * print: start a Print with Thumbnail Preview (needs image Channel to work!)
       * pause: pause a Print
       * stop: stop a Print
       * resume: resume a paused Print
       * listprints: list all GCode Files
       * status: shows the current Status of the Printer
-   Basic Commands:
+   * Basic Commands:
       * help: shows all commands
       * info: shows informations about the bot
-   Permissions:
+   * Permissions:
       _Note: its explained above with the roles_
       * generalaccess: allow everyone to the Access Role
       * addaccess <userORroletag>: add Access from a User or Role
       * removeaccess <userORroletag>: remove Access from a User or Role
       * addadmin <userORroletag>: add Admin from a User or Role
       * removeadmin <userORroletag>: remove Admin from a User or Role
-   Channel Managment:
+   * Channel Managment:
       * addchannel: add the Channel as Broadcast Channel
       * removechannel: remove the Channel as Broadcast Channel
-   Theme:
+   * Theme:
       * settheme: set Theme for the Discord Server
       * testtheme: test a Theme via the Build in Webserver (experimentell!)
    
