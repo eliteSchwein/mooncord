@@ -69,24 +69,24 @@ Start mooncord:
   Groups:
 
   * Access:
-      Can access the following Commands: 
+      * Can access the following Commands: 
          * Status
          * Help
          * Info
-      Access can be given to everyone via <prefix>generalaccess 
-      or per User via <prefix>addaccess <roleORusertag>, you can revoke the Access per User via <prefix>removeaccess <roleORusertag>
+      * Access can be given to everyone via <prefix>generalaccess 
+      * or per User via <prefix>addaccess <roleORusertag>, you can revoke the Access per User via <prefix>removeaccess <roleORusertag>
   * Admin:
-      Can access the following Commands: 
+      * Can access the following Commands: 
          * All Access Role Commands
          * Channel Managment Commands
          * Print Pause/Resume/Stop
          * List Print Files
          * Theme Command
-      Bot Admin can be given per User via <prefix>addadmin <roleORusertag>, you can revoke the Bot Admin per User via <prefix>removeadmin <roleORusertag>
+      * Bot Admin can be given per User via <prefix>addadmin <roleORusertag>, you can revoke the Bot Admin per User via <prefix>removeadmin <roleORusertag>
   * Master:
-      Can access the following Commands: 
+      * Can access the following Commands: 
          * All Commands
-      Can be configured in the config.json
+      * Can be configured in the config.json
   
 ## Commands
   
