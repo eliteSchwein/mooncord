@@ -5,7 +5,7 @@ a high customizable Moonraker Discord Bot
 
 Firstly make sure you've got a Bot Token, you get them here: [Tutorial](https://github.com/reactiflux/discord-irc/wiki/Creating-a-discord-bot-&-getting-a-token). 
 
-Install Git first
+#### Install Git first
 
     $ sudo apt install git
 
@@ -16,18 +16,18 @@ For the ARM V7 Pi's (Pi3 and higher) install Node via:
     $ sudo bash nodesource_setup.sh
     $ sudo apt install nodejs
     
-For the older Pi's use :
+For the older Pi's use:
 
     $ wget https://nodejs.org/download/release/v11.15.0/node-v11.15.0-linux-armv6l.tar.gz
     $ tar -xvf node-v11.15.0-linux-armv6l.tar.gz
     $ cd node-v11.15.0-linux-armv6l
     $ sudo cp -R * /usr/local/
 
-Next, clone this repository:
+#### Next, clone this repository:
 
     $ git clone https://github.com/eliteSchwein/mooncord.git
 
-Then install all node Modules:
+#### Then install all node Modules:
 
     $ cd mooncord
     $ npm i
