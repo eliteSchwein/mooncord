@@ -161,6 +161,7 @@ var getModule = (function(client,discordClient){
                                                 },1000*config.statusupdateinterval)
                                             },1000*config.statusupdateinterval)
                                         }
+                                        triggerStatusUpdate(discordClient)
                                     }
                                 }   
                             }
