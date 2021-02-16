@@ -57,7 +57,7 @@ async function handler(message){
         })
         formData.append('file',fs.createReadStream(__dirname+"/../temp/thumbnail.png"),gcodefile.name)
         axios
-            .post('https://api.imgur.com/3/image', formData,{
+            .post('https://api.put.re/upload', formData,{
                 headers: formData.getHeaders()
             })
             .then(res => {
