@@ -136,6 +136,7 @@ var getModule = (function(client,discordClient){
 
                         }
                         if(typeof(klipperstatus.print_stats)!="undefined"){
+                            printfile=klipperstatus.print_stats.filename
                             var printduration = klipperstatus.print_stats.print_duration.toFixed(0)
                             var remainingprinttime = printtime-printduration;
                             restprinttime=formatDateTime(remainingprinttime*1000)
@@ -147,18 +148,20 @@ var getModule = (function(client,discordClient){
                                     clearInterval(timer)
                                 }
                             }
-                            if(klipperstatus.print_stats.state=="printing"){   
-                                connection.send('{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "'+printfile+'"}, "id": '+id+'}')
-                                status="printing";
-                                if(status!=oldStatus){
-                                    oldStatus=status
-                                    if(!config.statusupdatepercent){
-                                        timer=setInterval(function(){
-                                            triggerStatusUpdate(discordClient)
-                                        },1000*config.statusupdateinterval)
+                            if(klipperstatus.print_stats.state=="printing"){
+                                if(typeof(filename)!="undefined"||filename!=""){
+                                    connection.send('{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "'+printfile+'"}, "id": '+id+'}')
+                                    status="printing";
+                                    if(status!=oldStatus){
+                                        oldStatus=status
+                                        if(!config.statusupdatepercent){
+                                            timer=setInterval(function(){
+                                                triggerStatusUpdate(discordClient)
+                                            },1000*config.statusupdateinterval)
+                                        }
+                                        triggerStatusUpdate(discordClient)
                                     }
-                                    triggerStatusUpdate(discordClient)
-                                }
+                                }   
                             }
                             if(klipperstatus.print_stats.state=="complete"){
                                 status="done";
