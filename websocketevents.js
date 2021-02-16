@@ -13,6 +13,7 @@ var restprinttime = ''
 var printtime = 0
 var formatedprinttime = ''
 var oldpercent = 0
+var percentStartupTrigger = false
 
 var getModule = (function(client,discordClient){
     var timer;
@@ -125,7 +126,7 @@ var getModule = (function(client,discordClient){
                                     if(oldpercent!=printprogress.toFixed(0)){
                                         oldpercent=printprogress.toFixed(0)
                                         discordClient.user.setActivity("Printing: "+printprogress.toFixed(0)+"%",{type: "WATCHING"})
-                                        if(config.statusupdatepercent){
+                                        if(config.statusupdatepercent&&!percentStartupTrigger){
                                             if(printprogress.toFixed(0) % config.statusupdateinterval === 0){
                                                 triggerStatusUpdate(discordClient)
                                             }
@@ -162,10 +163,11 @@ var getModule = (function(client,discordClient){
                                                 },1000*config.statusupdateinterval)
                                             },1000*config.statusupdateinterval)
                                         }else{
-                                            console.log(printprogress.toFixed(0))
-                                            if(printprogress.toFixed(0) % config.statusupdateinterval !== 0){
-                                                triggerStatusUpdate(discordClient)
-                                            }
+                                            percentStartupTrigger=true;
+                                            triggerStatusUpdate(discordClient)
+                                            setTimeout(()=>{
+                                                percentStartupTrigger=false;
+                                            },1000)
                                         }
                                     }
                                 }   
