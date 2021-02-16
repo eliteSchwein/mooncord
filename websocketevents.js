@@ -176,6 +176,7 @@ var getModule = (function(client,discordClient){
                                 status="done";
                                 if(status!=oldStatus){
                                     oldStatus=status
+                                    status="ready";
                                     triggerStatusUpdate(discordClient)
                                 }
                             }
