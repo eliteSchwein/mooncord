@@ -179,6 +179,7 @@ var getModule = (function(client,discordClient){
                                     triggerStatusUpdate(discordClient)
                                     setTimeout(function(){
                                         status="ready"
+                                        oldStatus=status
                                         triggerStatusUpdate(discordClient)
                                     },2000)
                                 }
