@@ -149,7 +149,7 @@ var getModule = (function(client,discordClient){
                                 }
                             }
                             if(klipperstatus.print_stats.state=="printing"){
-                                if(typeof(filename)!="undefined"||filename!=""){
+                                if(typeof(printfile)!="undefined"||printfile!=""){
                                     connection.send('{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "'+printfile+'"}, "id": '+id+'}')
                                     status="printing";
                                     if(status!=oldStatus){
