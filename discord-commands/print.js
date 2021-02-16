@@ -16,7 +16,7 @@ var executeCommand = (async function(command,channel,user,guild,discordClient,we
     messageChannel=channel
     wsConnection=websocketConnection
     dcClient=discordClient
-    if(variables.getStatus!="ready"){
+    if(variables.getStatus()!="ready"){
         channel.send("<@"+user.id+"> the Printer is not ready!")
         return;
     }
