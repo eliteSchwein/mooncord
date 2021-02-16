@@ -155,11 +155,11 @@ var getModule = (function(client,discordClient){
                                     if(status!=oldStatus){
                                         oldStatus=status
                                         if(!config.statusupdatepercent){
-                                            timer=setInterval(function(){
-                                                triggerStatusUpdate(discordClient)
+                                            setTimeout(function(){
+                                                timer=setInterval(function(){
+                                                    triggerStatusUpdate(discordClient)
+                                                },1000*config.statusupdateinterval)
                                             },1000*config.statusupdateinterval)
-                                        }else{
-                                            triggerStatusUpdate(discordClient)
                                         }
                                     }
                                 }   
