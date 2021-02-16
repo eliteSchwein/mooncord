@@ -177,11 +177,6 @@ var getModule = (function(client,discordClient){
                                 if(status!=oldStatus){
                                     oldStatus=status
                                     triggerStatusUpdate(discordClient)
-                                    setTimeout(function(){
-                                        status="ready"
-                                        oldStatus=status
-                                        triggerStatusUpdate(discordClient)
-                                    },2000)
                                 }
                             }
                         }
