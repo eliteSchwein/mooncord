@@ -162,7 +162,7 @@ var getModule = (function(client,discordClient){
                                                 },1000*config.statusupdateinterval)
                                             },1000*config.statusupdateinterval)
                                         }else{
-                                            if(printprogress.toFixed(0) % config.statusupdateinterval != 0){
+                                            if(printprogress.toFixed(0) % config.statusupdateinterval !== 0){
                                                 triggerStatusUpdate(discordClient)
                                             }
                                         }
