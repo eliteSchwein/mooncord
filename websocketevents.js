@@ -158,8 +158,9 @@ var getModule = (function(client,discordClient){
                                             timer=setInterval(function(){
                                                 triggerStatusUpdate(discordClient)
                                             },1000*config.statusupdateinterval)
+                                        }else{
+                                            triggerStatusUpdate(discordClient)
                                         }
-                                        triggerStatusUpdate(discordClient)
                                     }
                                 }   
                             }
