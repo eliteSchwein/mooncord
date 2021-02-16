@@ -4,6 +4,7 @@ const master = true
 const discordDatabase = require('../discorddatabase')
 const Discord = require('discord.js');
 const fs = require("fs");
+var FormData = require('form-data');
 var variables = require("../websocketevents")
 var id = Math.floor(Math.random() * 10000) + 1
 var wsConnection
@@ -54,6 +55,17 @@ async function handler(message){
         fs.writeFile(__dirname+"/../temp/thumbnail.png",thumbnail,"base64",function(err){
             console.log(err)
         })
+        formData.append('file',fs.createReadStream(__dirname+"/../temp/thumbnail.png"),gcodefile.name)
+        axios
+            .post('https://api.imgur.com/3/image', formData,{
+                headers: formData.getHeaders()
+            })
+            .then(res => {
+                console.log(res)
+            })
+            .catch(error => {
+                console.log(error)
+            })
         var uploadGuild = dcClient.guilds.cache.get(config.imagechannel.split("/")[0])
         var uploadChannel = uploadGuild.channels.cache.get(config.imagechannel.split("/")[1])
         uploadChannel.send({files:["temp/thumbnail.png"]})
