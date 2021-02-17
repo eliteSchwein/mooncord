@@ -23,7 +23,7 @@ var executeReaction = (function(message,user,guild,emote,discordClient,websocket
         return
     }
     if(emote.name=="✅"){
-        websocketConnection.send('{"jsonrpc": "2.0", "method": "printer.gcode.script", "params": {"script": "'+message.embeds[0].author.name+'"}, "id": '+id+'}')
+        websocketConnection.send('{"jsonrpc": "2.0", "method": "printer.print.start", "params": {"filename": "'+message.embeds[0].author.name+'"}, "id": '+id+'}')
         websocketConnection.on('message', handler);
         message.delete()
         return
