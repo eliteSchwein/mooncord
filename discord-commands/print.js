@@ -55,7 +55,6 @@ async function handler(message){
         fs.writeFile(__dirname+"/../temp/thumbnail.png",thumbnail,"base64",function(err){
             console.log(err)
         })
-        var formData = new FormData();
         uploader.setApiUrl("https://imagebin.ca/upload.php");
         uploader.upload(thumbnail, {mime:"image/png", headers: {}}, function(err, response){
             if (!err && response.statusCode == 200){
