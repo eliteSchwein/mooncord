@@ -57,7 +57,7 @@ async function handler(message){
             console.log(err)
         })
         var formData = new FormData();
-        formData.append('file',thumbnail,"thumbnail_"+file+".png");
+        formData.append('file',thumbnail,"@thumbnail_"+file+".png");
         console.log(formData)
         axios
             .post('https://imagebin.ca/upload.php', formData,{
