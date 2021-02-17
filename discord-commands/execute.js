@@ -21,7 +21,6 @@ var executeCommand = (function(command,channel,user,guild,discordClient,websocke
     const exampleEmbed = new Discord.MessageEmbed()
 	.setColor('#0099ff')
 	.setTitle('Execute GCode Commands')
-	.setAuthor('Do you want to execute the Following Commands?')
 	.setDescription(gcodeList)
     .attachFiles(__dirname+"/../execute.png")
     .setThumbnail(url="attachment://execute.png")
