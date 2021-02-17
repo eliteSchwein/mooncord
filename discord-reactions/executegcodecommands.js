@@ -51,7 +51,7 @@ function handler(message){
     if(messageJson.method=="notify_gcode_response"){
         if(messageJson.params[0].includes("Unknown command")){
             var command = messageJson.params[0].replace("// Unknown command:").replace(/\"/g,"")
-            console.log(command)
+            console.log(command+" "+messageJson.params[0])
             dcMessage.channel.send("<@"+requester.id+"> The Command `"+command+"` is unknown!")
             wsConnection.removeListener('message', handler)
             return;
