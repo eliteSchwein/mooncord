@@ -70,7 +70,7 @@ async function handler(message){
                 "description":"test",
                 "adult":"t",
                 "sfile":"Upload",
-                "url",""
+                "url":""
             })
             .then(res => {
                 console.log(res)
