@@ -9,7 +9,7 @@ var executeCommand = (function(command,channel,user,guild,discordClient,websocke
         return;
     }
     var gcodeCommands = command.replace(args[0]+" ","").split(",")
-    if(gcodeCommands.length<=20){
+    if(gcodeCommands.length>=20){
         channel.send("<@"+user.id+"> Too many GCode Commands! The current Limit is 20")
         return;
     }
