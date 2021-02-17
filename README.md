@@ -101,7 +101,7 @@ Start mooncord:
       * help: shows all commands
       * info: shows informations about the bot
    * Permissions:
-      _Note: its explained above with the roles_
+      _Note: The groups are explained above [URL](https://github.com/eliteSchwein/mooncord/blob/main/README.md#permissions)_
       * generalaccess: allow everyone to the Access Role
       * addaccess &#60;userORroletag&#62;: add Access from a User or Role
       * removeaccess &#60;userORroletag&#62;: remove Access from a User or Role
