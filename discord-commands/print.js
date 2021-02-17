@@ -66,16 +66,6 @@ async function handler(message){
               // handle errors
             }
           });
-        formData.append('file',thumbnail,"thumbnail_"+file+".png");
-        console.log(formData)
-        axios
-            .post('https://imagebin.ca/upload.php', formData)
-            .then(res => {
-                console.log(res)
-            })
-            .catch(error => {
-                console.log(error)
-            })
         var uploadGuild = dcClient.guilds.cache.get(config.imagechannel.split("/")[0])
         var uploadChannel = uploadGuild.channels.cache.get(config.imagechannel.split("/")[1])
         uploadChannel.send({files:["temp/thumbnail.png"]})
