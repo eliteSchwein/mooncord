@@ -95,7 +95,7 @@ function handler(message){
             wsConnection.removeListener('message', handler)
         }
         if(messageJson.params[0].includes("Error")){
-            var command = messageJson.params[0].replace("!! Error on:","").replace(/\'/g,"")
+            var command = messageJson.params[0].replace("!! Error on ","").replace(/\'/g,"")
             invalidCommands.push(command)
             wsConnection.removeListener('message', handler)
         }
