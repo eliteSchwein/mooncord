@@ -72,8 +72,8 @@ Start mooncord:
          * Status
          * Help
          * Info
-      * Access can be given to everyone via _prefix_generalaccess 
-      * or per User via _prefix_addaccess _roleORusertag_, you can revoke the Access per User via _prefix_removeaccess _roleORusertag_
+      * Access can be given to everyone via &#60;prefix&#62;generalaccess 
+      * or per User via &#60;prefix&#62;addaccess &#60;roleORusertag&#62;, you can revoke the Access per User via &#60;prefix&#62;removeaccess &#60;roleORusertag&#62;
   * Admin:
       * Can access the following Commands: 
          * All Access Role Commands
@@ -81,7 +81,7 @@ Start mooncord:
          * Print Pause/Resume/Stop
          * List Print Files
          * Theme Command
-      * Bot Admin can be given per User via _prefix_addadmin _roleORusertag_, you can revoke the Bot Admin per User via _prefix_removeadmin _roleORusertag_
+      * Bot Admin can be given per User via &#60;prefix&#62;addadmin &#60;roleORusertag&#62;, you can revoke the Bot Admin per User via &#60;prefix&#62;removeadmin &#60;roleORusertag&#62;
   * Master:
       * Can access the following Commands: 
          * All Commands
@@ -90,8 +90,8 @@ Start mooncord:
 ## Commands
   
    * Printing:
-      * print _filename_: start a Print with Thumbnail Preview
-      * fileinfo _filename_: shows Informations about a Print File with Thumbnail Preview
+      * print &#60;filename&#62;: start a Print with Thumbnail Preview
+      * fileinfo &#60;filename&#62;: shows Informations about a Print File with Thumbnail Preview
       * pause: pause a Print
       * stop: stop a Print
       * resume: resume a paused Print
@@ -103,10 +103,10 @@ Start mooncord:
    * Permissions:
       _Note: its explained above with the roles_
       * generalaccess: allow everyone to the Access Role
-      * addaccess _userORroletag_: add Access from a User or Role
-      * removeaccess _userORroletag_: remove Access from a User or Role
-      * addadmin _userORroletag_: add Admin from a User or Role
-      * removeadmin _userORroletag_: remove Admin from a User or Role
+      * addaccess &#60;userORroletag&#62;: add Access from a User or Role
+      * removeaccess &#60;userORroletag&#62;: remove Access from a User or Role
+      * addadmin &#60;userORroletag&#62;: add Admin from a User or Role
+      * removeadmin &#60;userORroletag&#62;: remove Admin from a User or Role
    * Channel Managment:
       * addchannel: add the Channel as Broadcast Channel
       * removechannel: remove the Channel as Broadcast Channel
