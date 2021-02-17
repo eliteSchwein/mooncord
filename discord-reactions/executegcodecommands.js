@@ -36,7 +36,7 @@ var executeReaction = (function(message,user,guild,emote,discordClient,websocket
             if(gcodePosition>gcodeCommands.length){
                 clearInterval(gcodeTimer)
             }
-            console.log(gcodePosition)
+            console.log(gcodePosition+" "+gcodeCommands.length)
             websocketConnection.send('{"jsonrpc": "2.0", "method": "printer.gcode.script", "params": {"script": "'+gcodeCommands[gcodePosition]+'"}, "id": '+id+'}')
             websocketConnection.on('message', handler);
             gcodePosition++
