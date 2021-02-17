@@ -16,7 +16,7 @@ var enableEvent = (function(discordClient,websocketConnection){
       if(msg.embeds.length==0){
         return
       }
-      var id = msg.embeds[0].title.toLowerCase().replace("/( )/g","")
+      var id = msg.embeds[0].title.toLowerCase().replace("/( )\w+/g","")
       if (!fs.existsSync(__dirname+"/../discord-commandreactions/"+id+".js")) {
         return
       }
