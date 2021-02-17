@@ -13,7 +13,7 @@ var executeCommand = (function(command,channel,user,guild,discordClient,websocke
     
     const exampleEmbed = new Discord.MessageEmbed()
     .setColor('#0099ff')
-    .setTitle('Info')
+    .setTitle('Informations')
     .setAuthor(discordClient.user.tag,discordClient.user.avatarURL())
     .setDescription(description)
     .attachFiles(__dirname+"/../logo.png")
