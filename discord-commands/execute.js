@@ -15,8 +15,8 @@ var executeCommand = (function(command,channel,user,guild,discordClient,websocke
         return;
     }
     var gcodeList = ""
-    for(var gcodeCommand in gcodeCommands){
-        gcodeList=gcodeList.concat("`"+gcodeCommand+"` ")
+    for(var i = 0; i<=gcodeCommands.length;i++){
+        gcodeList=gcodeList.concat("`"+gcodeCommands[i]+"` ")
     }
     const exampleEmbed = new Discord.MessageEmbed()
 	.setColor('#0099ff')
