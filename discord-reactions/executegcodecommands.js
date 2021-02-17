@@ -18,12 +18,15 @@ var executeReaction = (function(message,user,guild,emote,discordClient,websocket
         return;
     }
     if(emote.name=="❌"){
-        message.channel.send("<@"+user.id+"> You cancel the Print!")
+        message.channel.send("<@"+user.id+"> You cancel the GCode executions!")
         message.delete()
         return
     }
     if(emote.name=="✅"){
-        channel.send("<@"+user.id+"> The GCodes will be send to Moonraker!")
+        message.channel.send("<@"+user.id+"> The GCodes will be send to Moonraker!")
+        var gcodeCommands = []
+        gcodeCommands=message.description.replace(/(\`)/g,"").split(" ")
+        console.log(gcodeCommands)
         //websocketConnection.send('{"jsonrpc": "2.0", "method": "printer.gcode.script", "params": {"script": "'+message.embeds[0].author.name+'"}, "id": '+id+'}')
         //websocketConnection.on('message', handler);
         message.delete()
@@ -33,7 +36,7 @@ var executeReaction = (function(message,user,guild,emote,discordClient,websocket
 
 function handler(message){
     var messageJson = JSON.parse(message.utf8Data)
-    
+    console.log(messageJson)
     wsConnection.removeListener('message', handler)
 
 }
