@@ -36,7 +36,7 @@ var executeReaction = (function(message,user,guild,emote,discordClient,websocket
         gcodeTimer=setInterval(()=>{
             if(gcodePosition==gcodeCommands.length){
                 if(invalidCommands.length!=0){
-                    var gcodeList = (invalidCommands.length+1)+" GCode Commands couldn`t be executed:\n\n"
+                    var gcodeList = (invalidCommands.length+1)+" GCode Commands couldn't be executed:\n\n"
                     for(var i = 0; i<=invalidCommands.length-1;i++){
                         gcodeList=gcodeList.concat("`"+invalidCommands[i]+"` ")
                     }
