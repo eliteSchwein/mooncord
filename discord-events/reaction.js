@@ -22,7 +22,7 @@ function handler(messageReaction){
       return
     }
     messageReaction.users.remove(user)
-    var id = message.embeds[0].title.toLowerCase().replace(" ","")
+    var id = message.embeds[0].title.toLowerCase().replaceAll(" ","")
     const reactionModule = require("../discord-reactions/"+id)
     if(reactionModule.needMaster()){
         if(user.id!=config.masterid){
