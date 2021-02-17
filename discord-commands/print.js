@@ -70,6 +70,15 @@ async function handler(message){
         .setFooter(requester.tag, requester.avatarURL());
     
         messageChannel.send(exampleEmbed);
+
+        fs.unlink(__dirname+"/../temp/thumbnail.png", (err) => {
+            if (err) {
+                console.error(err)
+                
+                messageChannel.send("<@"+config.masterid+"> An error has occurred, Please Check the Console!")
+                return
+            }
+        })
         return
     }
     const exampleEmbed = new Discord.MessageEmbed()
