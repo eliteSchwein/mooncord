@@ -60,7 +60,7 @@ async function handler(message){
         formData.append('image',thumbnail,"@thumbnail_"+file+".png");
         console.log(formData)
         axios
-            .post('https://api.imgur.com/3/upload', formData,{
+            .post('https://api.imgur.com/3/upload.json', formData,{
                 headers: formData.getHeaders(),
             })
             .then(res => {
