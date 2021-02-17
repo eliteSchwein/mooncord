@@ -51,7 +51,7 @@ async function handler(message){
     description = description.concat("Height: "+messageJson.result.object_height+"mm")
     if(typeof(messageJson.result.thumbnails)!="undefined"){
         thumbnail=messageJson.result.thumbnails[1].data
-        fs.writeFile(__dirname+"/../temp/thumbnail.png",thumbnail,"base64",function(err){
+        fs.writeFile(__dirname+"/../temp/thumbnail"+file+".png",thumbnail,"base64",function(err){
             if(err){
                 console.log(err)
                 
