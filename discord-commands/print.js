@@ -54,23 +54,23 @@ async function handler(message){
     if(typeof(messageJson.result.thumbnails)!="undefined"){
         thumbnail=messageJson.result.thumbnails[1].data
         fs.writeFile(__dirname+"/../temp/thumbnail.png",thumbnail,"base64",function(err){
+            var formData = new FormData();
+            formData.append('file',fs.createReadStream(__dirname+"/../temp/thumbnail.png"),"thumbnail_"+file+".png");
+            console.log(formData)
+            axios
+                .post('https://imagebin.ca/upload.php', formData,{
+                    headers: {
+                      'Content-Type': 'multipart/form-data'
+                    }
+                })
+                .then(res => {
+                    console.log(res)
+                })
+                .catch(error => {
+                    console.log(error)
+                })
             console.log(err)
         })
-        var formData = new FormData();
-        formData.append('file',fs.createReadStream(__dirname+"/../temp/thumbnail.png"),"thumbnail_"+file+".png");
-        console.log(formData)
-        axios
-            .post('https://imagebin.ca/upload.php', formData,{
-                headers: {
-                  'Content-Type': 'multipart/form-data'
-                }
-            })
-            .then(res => {
-                console.log(res)
-            })
-            .catch(error => {
-                console.log(error)
-            })
         var uploadGuild = dcClient.guilds.cache.get(config.imagechannel.split("/")[0])
         var uploadChannel = uploadGuild.channels.cache.get(config.imagechannel.split("/")[1])
         uploadChannel.send({files:["temp/thumbnail.png"]})
