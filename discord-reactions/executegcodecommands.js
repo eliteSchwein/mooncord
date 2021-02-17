@@ -49,7 +49,7 @@ var executeReaction = (function(message,user,guild,emote,discordClient,websocket
 function handler(message){
     var messageJson = JSON.parse(message.utf8Data)
     console.log(messageJson)
-    wsConnection.removeListener('message', handler)
+    //wsConnection.removeListener('message', handler)
 
 }
 
