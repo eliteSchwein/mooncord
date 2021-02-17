@@ -58,7 +58,8 @@ function sendPage(allFiles){
 	.setTitle('Print Files')
 	.setAuthor('Page '+(newpage+1)+'/'+maxpage)
 	.setDescription(entries)
-	.setThumbnail('https://cdn.discordapp.com/attachments/665075819206541323/802235233444429855/icon-512-maskable.png')
+    .attachFiles(__dirname+"/../printlist.png")
+    .setThumbnail(url="attachment://printlist.png")
 	.setTimestamp()
 	.setFooter(requester.tag, requester.avatarURL());
 
