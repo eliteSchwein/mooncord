@@ -60,17 +60,8 @@ async function handler(message){
         formData.append('file',thumbnail,"@thumbnail_"+file+".png");
         console.log(formData)
         axios
-            .post('https://imagebin.ca/upload.php', formData,{
-                headers: {
-                  'Content-Type': 'multipart/form-data'
-                },
-                "t": "file",
-                "name": "mooncord",
-                "tags":"mooncord",
-                "description":"test",
-                "adult":"t",
-                "sfile":"Upload",
-                "url":""
+            .post('https://api.imgur.com/3/upload', formData,{
+                headers: formData.getHeaders(),
             })
             .then(res => {
                 console.log(res)
