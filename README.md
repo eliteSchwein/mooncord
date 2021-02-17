@@ -90,7 +90,8 @@ Start mooncord:
 ## Commands
   
    * Printing:
-      * print: start a Print with Thumbnail Preview (needs image Channel to work!)
+      * print <filename>: start a Print with Thumbnail Preview
+      * fileinfo <filename>: shows Informations about a Print File with Thumbnail Preview
       * pause: pause a Print
       * stop: stop a Print
       * resume: resume a paused Print
