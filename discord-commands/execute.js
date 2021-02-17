@@ -9,6 +9,25 @@ var executeCommand = (function(command,channel,user,guild,discordClient,websocke
         return;
     }
     var gcodeCommands = command.replace(args[0]+" ","").split(",")
+    if(gcodeCommands.length<=20){
+        channel.send("<@"+user.id+"> Too many GCode Commands! The current Limit is 20")
+        return;
+    }
+    var gcodeList = ""
+    for(var gcodeCommand in gcodeCommands){
+        gcodeList.concat("`"+gcodeCommand+"` ")
+    }
+    const exampleEmbed = new Discord.MessageEmbed()
+	.setColor('#0099ff')
+	.setTitle('Execute GCode Commands')
+	.setAuthor('Do you want to execute the Following Commands?')
+	.setDescription(gcodeList)
+    .attachFiles(__dirname+"/../execute.png")
+    .setThumbnail(url="attachment://execute.png")
+	.setTimestamp()
+	.setFooter(requester.tag, requester.avatarURL());
+
+    messageChannel.send(exampleEmbed);
     console.log(gcodeCommands)
 })
 module.exports = executeCommand;
