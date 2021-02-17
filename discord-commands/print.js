@@ -4,8 +4,6 @@ const master = true
 const discordDatabase = require('../discorddatabase')
 const Discord = require('discord.js');
 const fs = require("fs");
-const axios = require('axios');
-var FormData = require('form-data');
 var variables = require("../websocketevents")
 var id = Math.floor(Math.random() * 10000) + 1
 var wsConnection
