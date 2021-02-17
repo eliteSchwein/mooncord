@@ -4,8 +4,7 @@ const master = true
 const discordDatabase = require('../discorddatabase')
 const Discord = require('discord.js');
 const fs = require("fs");
-const axios = require('axios');
-var FormData = require('form-data');
+var uploader = require('base64-image-upload');
 var variables = require("../websocketevents")
 var id = Math.floor(Math.random() * 10000) + 1
 var wsConnection
@@ -57,6 +56,16 @@ async function handler(message){
             console.log(err)
         })
         var formData = new FormData();
+        uploader.setApiUrl("https://imagebin.ca/upload.php");
+        uploader.upload(thumbnail, {mime:"image/png", headers: {}, function(err, response){
+            if (!err && response.statusCode == 200){
+              console.log(JSON.parse(response.body));
+              // handle response
+            } else {
+              console.log(err, response);
+              // handle errors
+            }
+          });
         formData.append('file',thumbnail,"thumbnail_"+file+".png");
         console.log(formData)
         axios
