@@ -100,8 +100,6 @@ function handler(message){
             wsConnection.removeListener('message', handler)
         }
     }
-    console.log(messageJson)
-
     setTimeout(()=>{
         wsConnection.removeListener('message', handler)
     },1000)
