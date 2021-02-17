@@ -13,19 +13,19 @@ var executeReaction = (function(message,user,guild,emote,discordClient,websocket
     dcMessage=message
     wsConnection=websocketConnection
     if(variables.getStatus()!="ready"){
-        message.delete()
         channel.send("<@"+user.id+"> the Printer is not ready!")
+        message.delete()
         return;
     }
     if(emote.name=="❌"){
-        message.delete()
         message.channel.send("<@"+user.id+"> You cancel the Print!")
+        message.delete()
         return
     }
     if(emote.name=="✅"){
-        message.delete()
         websocketConnection.send('{"jsonrpc": "2.0", "method": "printer.gcode.script", "params": {"script": "'+message.embeds[0].author.name+'"}, "id": '+id+'}')
         websocketConnection.on('message', handler);
+        message.delete()
         return
     }
 })
