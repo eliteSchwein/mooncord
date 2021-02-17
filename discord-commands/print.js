@@ -56,7 +56,7 @@ async function handler(message){
             console.log(err)
         })
         var formData = new FormData();
-        formData.append('file',fs.createReadStream(__dirname+"/../temp/thumbnail.png"),gcodefile.name)
+        formData.append('file',fs.createReadStream(__dirname+"/../temp/thumbnail.png"),"thumbnail_"+file+".png")
         axios
             .post('https://api.put.re/upload', formData,{
                 headers: formData.getHeaders()
