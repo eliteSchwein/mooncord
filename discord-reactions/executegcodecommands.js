@@ -30,6 +30,16 @@ var executeReaction = (function(message,user,guild,emote,discordClient,websocket
         //websocketConnection.send('{"jsonrpc": "2.0", "method": "printer.gcode.script", "params": {"script": "'+message.embeds[0].author.name+'"}, "id": '+id+'}')
         //websocketConnection.on('message', handler);
         message.delete()
+        var gcodeTimer=0
+        var gcodePosition=0
+        gcodeTimer=setInterval(()=>{
+            if(gcodePosition>gcodeCommands.length){
+                clearInterval(gcodeTimer)
+            }
+            websocketConnection.send('{"jsonrpc": "2.0", "method": "printer.gcode.script", "params": {"script": "'+gcodeCommands[gcodePosition]+'"}, "id": '+id+'}')
+            websocketConnection.on('message', handler);
+            gcodePosition++
+        },500);
         return
     }
 })
