@@ -28,7 +28,7 @@ var executeCommand = (function(command,channel,user,guild,discordClient,websocke
 	.setTimestamp()
 	.setFooter(user.tag, user.avatarURL());
 
-    messageChannel.send(exampleEmbed);
+    channel.send(exampleEmbed);
     console.log(gcodeCommands)
 })
 module.exports = executeCommand;
