@@ -9,6 +9,7 @@ var wsConnection
 var dcMessage
 var requester
 var invalidCommands = []
+var unknownCommands = []
 var executeReaction = (function(message,user,guild,emote,discordClient,websocketConnection){
     requester=user
     dcMessage=message
@@ -27,6 +28,7 @@ var executeReaction = (function(message,user,guild,emote,discordClient,websocket
         message.channel.send("<@"+user.id+"> The GCodes will be send to Moonraker!")
         var gcodeCommands = []
         invalidCommands=[]
+        unknownCommands=[]
         gcodeCommands=message.embeds[0].description.replace(/(\`)/g,"").split(" ")
         console.log(gcodeCommands)
         //websocketConnection.send('{"jsonrpc": "2.0", "method": "printer.gcode.script", "params": {"script": "'+message.embeds[0].author.name+'"}, "id": '+id+'}')
@@ -35,21 +37,39 @@ var executeReaction = (function(message,user,guild,emote,discordClient,websocket
         var gcodePosition=0
         gcodeTimer=setInterval(()=>{
             if(gcodePosition==gcodeCommands.length){
-                if(invalidCommands.length!=0){
-                    var gcodeList = (invalidCommands.length)+" GCode Commands couldn't be executed:\n\n"
-                    for(var i = 0; i<=invalidCommands.length-1;i++){
-                        gcodeList=gcodeList.concat("`"+invalidCommands[i]+"` ")
+                if(unknownCommands.length!=0||invalidCommands.length!=0){
+                    if(unknownCommands.length!=0){
+                        var gcodeList = (unknownCommands.length)+" GCode Commands are unknown:\n\n"
+                        for(var i = 0; i<=unknownCommands.length-1;i++){
+                            gcodeList=gcodeList.concat("`"+unknownCommands[i]+"` ")
+                        }
+                        const exampleEmbed = new Discord.MessageEmbed()
+                        .setColor('#0099ff')
+                        .setTitle('Unknown GCode Commands')
+                        .setDescription(gcodeList)
+                        .attachFiles(__dirname+"/../execute.png")
+                        .setThumbnail(url="attachment://execute.png")
+                        .setTimestamp()
+                        .setFooter(user.tag, user.avatarURL());
+                    
+                        message.channel.send(exampleEmbed);
                     }
-                    const exampleEmbed = new Discord.MessageEmbed()
-                    .setColor('#0099ff')
-                    .setTitle('Unknown GCode Commands')
-                    .setDescription(gcodeList)
-                    .attachFiles(__dirname+"/../execute.png")
-                    .setThumbnail(url="attachment://execute.png")
-                    .setTimestamp()
-                    .setFooter(user.tag, user.avatarURL());
-                
-                    message.channel.send(exampleEmbed);
+                    if(invalidCommands.length!=0){
+                        var gcodeList = (invalidCommands.length)+" GCode Commands are invalid (with Reason):\n\n"
+                        for(var i = 0; i<=invalidCommands.length-1;i++){
+                            gcodeList=gcodeList.concat("`"+invalidCommands[i]+"` ")
+                        }
+                        const exampleEmbed = new Discord.MessageEmbed()
+                        .setColor('#0099ff')
+                        .setTitle('Invalid GCode Commands')
+                        .setDescription(gcodeList)
+                        .attachFiles(__dirname+"/../execute.png")
+                        .setThumbnail(url="attachment://execute.png")
+                        .setTimestamp()
+                        .setFooter(user.tag, user.avatarURL());
+                    
+                        message.channel.send(exampleEmbed);
+                    }
                 }else{
                     message.channel.send("<@"+user.id+"> all GCodes Commands executed successfully!")
                 }
@@ -71,9 +91,13 @@ function handler(message){
     if(messageJson.method=="notify_gcode_response"){
         if(messageJson.params[0].includes("Unknown command")){
             var command = messageJson.params[0].replace("// Unknown command:","").replace(/\"/g,"")
+            unknownCommands.push(command)
+            wsConnection.removeListener('message', handler)
+        }
+        if(messageJson.params[0].includes("Error")){
+            var command = messageJson.params[0].replace("!! Error on:","").replace(/\'/g,"")
             invalidCommands.push(command)
             wsConnection.removeListener('message', handler)
-            return;
         }
     }
     console.log(messageJson)
