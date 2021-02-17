@@ -63,7 +63,14 @@ async function handler(message){
             .post('https://imagebin.ca/upload.php', formData,{
                 headers: {
                   'Content-Type': 'multipart/form-data'
-                }
+                },
+                "t": "file",
+                "name": "mooncord",
+                "tags":"mooncord",
+                "description":"test",
+                "adult":"t",
+                "sfile":"Upload",
+                "url",""
             })
             .then(res => {
                 console.log(res)
