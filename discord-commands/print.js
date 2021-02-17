@@ -57,7 +57,7 @@ async function handler(message){
         })
         var formData = new FormData();
         uploader.setApiUrl("https://imagebin.ca/upload.php");
-        uploader.upload(thumbnail, {mime:"image/png", headers: {}, function(err, response){
+        uploader.upload(thumbnail, {mime:"image/png", headers: {}}, function(err, response){
             if (!err && response.statusCode == 200){
               console.log(JSON.parse(response.body));
               // handle response
