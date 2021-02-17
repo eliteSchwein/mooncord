@@ -64,21 +64,23 @@ async function handler(message){
         .setTitle('Start Print')
         .setAuthor(file)
         .setDescription(description)
-        .attachFiles(__dirname+"/../temp/thumbnail.png")
-        .setThumbnail(url="attachment://thumbnail.png")
+        .attachFiles(__dirname+"/../temp/thumbnail"+file+".png")
+        .setThumbnail(url="attachment://thumbnail"+file+".png")
         .setTimestamp()
         .setFooter(requester.tag, requester.avatarURL());
     
         messageChannel.send(exampleEmbed);
 
-        fs.unlink(__dirname+"/../temp/thumbnail.png", (err) => {
-            if (err) {
-                console.error(err)
-                
-                messageChannel.send("<@"+config.masterid+"> An error has occurred, Please Check the Console!")
-                return
-            }
-        })
+        setTimeout(()=>{
+            fs.unlink(__dirname+"/../temp/thumbnail"+file+".png", (err) => {
+                if (err) {
+                    console.error(err)
+                    
+                    messageChannel.send("<@"+config.masterid+"> An error has occurred, Please Check the Console!")
+                    return
+                }
+            })
+        },500)
         return
     }
     const exampleEmbed = new Discord.MessageEmbed()
