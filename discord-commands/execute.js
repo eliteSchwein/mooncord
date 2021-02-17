@@ -2,6 +2,7 @@ const config = require('../config.json');
 const admin = false
 const master = true
 const discordDatabase = require('../discorddatabase')
+const Discord = require('discord.js');
 var executeCommand = (function(command,channel,user,guild,discordClient,websocketConnection){
     var args = command.split(" ")
     if(args.length==1){
