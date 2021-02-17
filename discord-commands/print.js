@@ -57,7 +57,8 @@ async function handler(message){
             console.log(err)
         })
         var formData = new FormData();
-        formData.append('images[]',fs.createReadStream(__dirname+"/../temp/thumbnail.png"),"thumbnail_"+file+".png")
+        formData.append('images',fs.createReadStream(__dirname+"/../temp/thumbnail.png"),"thumbnail_"+file+".png")
+        formData.append('images',"")
         axios
             .post('https://api.imgchest.com/v1/post', formData,{
                 "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiZGVlYzMyNTI0YWUzYzNhNDY1MTdmNmI2YTFlNDc0ZjZjYzU2Y2YxOTNmNDEwZDhhYzg3NzU3YTk3MGFjNWY0ZGExNGQ4Y2EwOWY1ZGVjYWIiLCJpYXQiOiIxNjEzNTc5MDUxLjUyNTc0MiIsIm5iZiI6IjE2MTM1NzkwNTEuNTI1NzQ4IiwiZXhwIjoiMTY0NTExNTA1MS41MjI2NTYiLCJzdWIiOiIxMDk3Iiwic2NvcGVzIjpbXX0.Z5PiX3vN-35G2No12-52mWvQdL4rosSaEOhka9FgQPbPL0uBO3Q4T2Em1c29qCAlzrgExoy3J7NcyHlOVePwMgIqmUNBve_r1CbWExgs2JzucjwjXnRBjbfpILorN8-9DWtKTy4XkgtE6eL38b1WQbTVft2dMIzyWkR8UrKSS670E2knkTvQRjW8iQiGsoDzjYqiyZOhl4rcGEBVL03BCuKA_4SFXeMl8x47_47ey-aR-yOlGNZiVbr-P2wHLdKMtP9rebmvsIONWbHMEiNv4UZBC_8np6ub_kr7rBej8-dvhbXd2SZwdBio7wjAbbWjfGfun-ZYlNIAmiFXRl4HAYbbXc6Z6eWEMLTPzOGqjJi1Rh2RzI8w90vAJsHWRK9if39pKaKCck2njOhOO4KoH_9m27ePwV1rK9uqZP3sISwx5mPblS428L3nwGYEzEN6uaJ0-U7xf3jbFTppjtzVHPgPTlJPy2JRterW39IWmuFKqt2yHK_h3Sn3d66fEbldE59OePWcehFs3w_7ts-sYw6rMIhCGUP3k6UAvqo6F9_0LIBsrAU2L1n-ZoXDAQ2784V5P4wcgR9B4tl0j4008IrYOrUtctEwanXhrZqiUcFgp9ZfKDRvn1dfbj38kb5r6LJX2Z4q_CoRTN1KHPo0Orjcq4NSR2gvD4Ij3qzUAOw",
