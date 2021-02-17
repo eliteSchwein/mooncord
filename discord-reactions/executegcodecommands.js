@@ -44,7 +44,7 @@ var executeReaction = (function(message,user,guild,emote,discordClient,websocket
                             gcodeList=gcodeList.concat("`"+unknownCommands[i]+"` ")
                         }
                         const exampleEmbed = new Discord.MessageEmbed()
-                        .setColor('#0099ff')
+                        .setColor('#d60000')
                         .setTitle('Unknown GCode Commands')
                         .setDescription(gcodeList)
                         .attachFiles(__dirname+"/../execute.png")
@@ -60,7 +60,7 @@ var executeReaction = (function(message,user,guild,emote,discordClient,websocket
                             gcodeList=gcodeList.concat("`"+invalidCommands[i]+"` ")
                         }
                         const exampleEmbed = new Discord.MessageEmbed()
-                        .setColor('#0099ff')
+                        .setColor('#d60000')
                         .setTitle('Invalid GCode Commands')
                         .setDescription(gcodeList)
                         .attachFiles(__dirname+"/../execute.png")
