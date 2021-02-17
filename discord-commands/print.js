@@ -52,7 +52,12 @@ async function handler(message){
     if(typeof(messageJson.result.thumbnails)!="undefined"){
         thumbnail=messageJson.result.thumbnails[1].data
         fs.writeFile(__dirname+"/../temp/thumbnail.png",thumbnail,"base64",function(err){
-            console.log(err)
+            if(err){
+                console.log(err)
+                
+                messageChannel.send("<@"+config.masterid+"> An error has occurred, Please Check the Console!")
+                return;
+            }
         })
         const exampleEmbed = new Discord.MessageEmbed()
         .setColor('#0099ff')
