@@ -60,11 +60,7 @@ async function handler(message){
         formData.append('file',thumbnail,"thumbnail_"+file+".png");
         console.log(formData)
         axios
-            .post('https://imagebin.ca/upload.php', formData,{
-                headers: {
-                  'Content-Type': 'multipart/form-data'
-                }
-            })
+            .post('https://imagebin.ca/upload.php', formData)
             .then(res => {
                 console.log(res)
             })
