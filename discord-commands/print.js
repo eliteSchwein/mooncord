@@ -61,7 +61,9 @@ async function handler(message){
         console.log(formData)
         axios
             .post('https://imagebin.ca/upload.php', formData,{
-                headers: formData.getHeaders()
+                headers: {
+                  'Content-Type': 'multipart/form-data'
+                }
             })
             .then(res => {
                 console.log(res)
