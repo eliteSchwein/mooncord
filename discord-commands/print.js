@@ -59,7 +59,7 @@ async function handler(message){
         var formData = new FormData();
         formData.append('file',fs.createReadStream(__dirname+"/../temp/thumbnail.png"),"thumbnail_"+file+".png")
         axios
-            .post('https://api.put.re/upload', formData,{
+            .post('https://postimages.org/upload?', formData,{
                 headers: formData.getHeaders()
             })
             .then(res => {
