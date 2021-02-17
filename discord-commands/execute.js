@@ -15,7 +15,7 @@ var executeCommand = (function(command,channel,user,guild,discordClient,websocke
         return;
     }
     var gcodeList = ""
-    for(var i = 0; i<=gcodeCommands.length;i++){
+    for(var i = 0; i<=gcodeCommands.length-1;i++){
         gcodeList=gcodeList.concat("`"+gcodeCommands[i]+"` ")
     }
     const exampleEmbed = new Discord.MessageEmbed()
