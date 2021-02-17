@@ -16,7 +16,8 @@ var executeCommand = (function(command,channel,user,guild,discordClient,websocke
     .setTitle('Info')
     .setAuthor(discordClient.user.tag,discordClient.user.avatarURL())
     .setDescription(description)
-    .setThumbnail("https://cdn.discordapp.com/attachments/803558623216926740/803597520151511040/logo.png")
+    .attachFiles(__dirname+"/../logo.png")
+    .setThumbnail(url="attachment://logo.png")
     .setTimestamp()
     .setFooter(user.tag, user.avatarURL());
 
