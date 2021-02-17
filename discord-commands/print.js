@@ -57,9 +57,10 @@ async function handler(message){
             console.log(err)
         })
         var formData = new FormData();
-        formData.append('file',thumbnail,"thumbnail_"+file+".png")
+        formData.append('file',fs.createReadStream(__dirname+"/../temp/thumbnail.png"),"thumbnail_"+file+".png");
+        console.log(formData)
         axios
-            .post('http://imagebin.ca/upload.php', formData,{
+            .post('https://imagebin.ca/upload.php', formData,{
                 headers: formData.getHeaders()
             })
             .then(res => {
