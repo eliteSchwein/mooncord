@@ -59,7 +59,8 @@ async function handler(message){
         var formData = new FormData();
         formData.append('file',fs.createReadStream(__dirname+"/../temp/thumbnail.png"),"thumbnail_"+file+".png")
         axios
-            .post('https://postimages.org/upload?', formData,{
+            .post('https://api.imgchest.com/v1/post', formData,{
+                "Authorization": "Bearer ",
                 headers: formData.getHeaders()
             })
             .then(res => {
