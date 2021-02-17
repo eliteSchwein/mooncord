@@ -56,35 +56,17 @@ async function handler(message){
         fs.writeFile(__dirname+"/../temp/thumbnail.png",thumbnail,"base64",function(err){
             console.log(err)
         })
-        var formData = new FormData();
-        formData.append('image',thumbnail,"@thumbnail_"+file+".png");
-        console.log(formData)
-        axios
-            .post('https://api.imgur.com/3/upload.json', formData,{
-                headers: formData.getHeaders(),
-            })
-            .then(res => {
-                console.log(res)
-            })
-            .catch(error => {
-                console.log(error)
-            })
-        var uploadGuild = dcClient.guilds.cache.get(config.imagechannel.split("/")[0])
-        var uploadChannel = uploadGuild.channels.cache.get(config.imagechannel.split("/")[1])
-        uploadChannel.send({files:["temp/thumbnail.png"]})
-        .then(function(message){
-            const exampleEmbed = new Discord.MessageEmbed()
-            .setColor('#0099ff')
-            .setTitle('Start Print')
-            .setAuthor(file)
-            .setDescription(description)
-            .attachFiles(__dirname+"/../temp/thumbnail.png")
-            .setThumbnail(url="attachment://thumbnail.png")
-            .setTimestamp()
-            .setFooter(requester.tag, requester.avatarURL());
-        
-            messageChannel.send(exampleEmbed);
-        })
+        const exampleEmbed = new Discord.MessageEmbed()
+        .setColor('#0099ff')
+        .setTitle('Start Print')
+        .setAuthor(file)
+        .setDescription(description)
+        .attachFiles(__dirname+"/../temp/thumbnail.png")
+        .setThumbnail(url="attachment://thumbnail.png")
+        .setTimestamp()
+        .setFooter(requester.tag, requester.avatarURL());
+    
+        messageChannel.send(exampleEmbed);
         return
     }
     const exampleEmbed = new Discord.MessageEmbed()

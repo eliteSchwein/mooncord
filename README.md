@@ -50,7 +50,6 @@ Important Note, you need to configure both Moonraker URL's
 Important Note, you need to configure bottoken for the bot to work, and masterid to access all commands!
 
 * defaulttheme: global Theme for the Status Messages, your bot Admins can change the Theme per Discord Server (default: slate)
-* imagechannel: channel for Pictures to use in some Messages (should be hidden from the Users), setup: guildid/channelid [Tutorial](https://techswift.org/2020/04/22/how-to-find-your-user-id-on-discord) (works also on Channels and Guilds)
 
 Important Note, you need to configure imagechannel, otherwise the Bot might crash or not working properly
 

@@ -6,7 +6,6 @@
     "masterid":"",
     "prefix":"mc!",
     "defaulttheme":"slate",
-    "imagechannel":"guild/channel",
     "statusupdateinterval":10,
     "statusupdatepercent":true
 }
