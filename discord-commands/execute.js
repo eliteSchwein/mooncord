@@ -26,7 +26,7 @@ var executeCommand = (function(command,channel,user,guild,discordClient,websocke
     .attachFiles(__dirname+"/../execute.png")
     .setThumbnail(url="attachment://execute.png")
 	.setTimestamp()
-	.setFooter(requester.tag, requester.avatarURL());
+	.setFooter(user.tag, user.avatarURL());
 
     messageChannel.send(exampleEmbed);
     console.log(gcodeCommands)
