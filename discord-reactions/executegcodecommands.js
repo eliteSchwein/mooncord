@@ -25,6 +25,7 @@ var executeReaction = (function(message,user,guild,emote,discordClient,websocket
     if(emote.name=="✅"){
         message.channel.send("<@"+user.id+"> The GCodes will be send to Moonraker!")
         var gcodeCommands = []
+        console.log(message)
         gcodeCommands=message.description().replace(/(\`)/g,"").split(" ")
         console.log(gcodeCommands)
         //websocketConnection.send('{"jsonrpc": "2.0", "method": "printer.gcode.script", "params": {"script": "'+message.embeds[0].author.name+'"}, "id": '+id+'}')
