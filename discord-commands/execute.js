@@ -16,8 +16,7 @@ var executeCommand = (function(command,channel,user,guild,discordClient,websocke
     }
     var gcodeList = ""
     for(var gcodeCommand in gcodeCommands){
-        console.log(gcodeCommand)
-        gcodeList.concat("`"+gcodeCommand+"` ")
+        gcodeList=gcodeList.concat("`"+gcodeCommand+"` ")
     }
     const exampleEmbed = new Discord.MessageEmbed()
 	.setColor('#0099ff')
