@@ -78,7 +78,8 @@ async function handler(message){
             .setTitle('Start Print')
             .setAuthor(file)
             .setDescription(description)
-            .setThumbnail(message.attachments.array()[0].attachment)
+            .attachFiles(__dirname+"/../temp/thumbnail.png")
+            .setThumbnail(url="attachment://thumbnail.png")
             .setTimestamp()
             .setFooter(requester.tag, requester.avatarURL());
         
