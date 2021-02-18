@@ -1,5 +1,5 @@
 "use strict";
-const si = require('systeminformation');
+const systemInfo = require('systeminformation');
 const websocketevents = require('./websocketevents')
 const discordevents = require('./discord-events/index')
 const discordDataBase = require('./discorddatabase')
@@ -11,6 +11,9 @@ const discordClient = new Discord.Client();
 var websocketConnection = ""
 var reconnect = false
 
+
+var osInfo = await systemInfo.osInfo()
+
 console.log("\n"+
 "    __  __                    ____              _ \n"+
 "   |  \\/  | ___   ___  _ __  / ___|___  _ __ __| |\n"+
@@ -20,7 +23,9 @@ console.log("\n"+
 "                                                  \n"+
 "Version: "+pjson.version+"\n"+
 "Author: "+pjson.author+"\n"+
-"Homepage: "+pjson.homepage+"\n")
+"Homepage: "+pjson.homepage+"\n"+
+"OS: "+osInfo.platform+"\n"+
+"Arch:"+osInfo.arch)
 
 var websocketClient = new WebSocketClient();
 
