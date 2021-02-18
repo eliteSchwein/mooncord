@@ -88,6 +88,25 @@ async function retrieveKlipperVersion(inputtemplate){
     inputtemplate = inputtemplate.replace(new RegExp(klipperversiontag,'g'),variables.getKlipperVersion().substring(0,10))
     return inputtemplate
 }
+
+async function sendTemplate(inputtemplate,channel){
+    await (async () => {
+        const browser = await puppeteer.launch({args: [
+            '--window-size=1920,1080',
+          ],});
+        const page = await browser.newPage();
+        await page.setContent( inputtemplate, {waitUntil: 'networkidle0'} );
+        await page._client.send('Emulation.clearDeviceMetricsOverride');
+        var image = await page.screenshot({});
+        channel.send({
+            files:[{
+                attachment: image,
+                name: 'ready.png'
+            }]
+        })
+        await browser.close();
+      })();
+}
 module.exports = function(){}
 module.exports.retrieveOverlay = async function(inputtemplate,theme){
     return await retrieveOverlay(inputtemplate,theme)
@@ -112,4 +131,7 @@ module.exports.retrieveRestTime = async function (inputtemplate){
 }
 module.exports.retrieveKlipperVersion = async function (inputtemplate){
     return await retrieveKlipperVersion(inputtemplate)
+}
+module.exports.sendTemplate = async function (inputtemplate,channel){
+    return await sendTemplate(inputtemplate,channel)
 }

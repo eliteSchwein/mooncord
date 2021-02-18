@@ -49,23 +49,7 @@ function sendMessage(channel,theme){
         template = await fetcher.retrieveFile(template)
         template = await fetcher.retrieveTime(template)
         template = await fetcher.retrieveKlipperVersion(template)
-        await (async () => {
-            const browser = await puppeteer.launch({args: [
-                '--window-size=1920,1080',
-              ],});
-            const page = await browser.newPage();
-            await page.setContent( template, {waitUntil: 'networkidle0'} );
-            await page._client.send('Emulation.clearDeviceMetricsOverride');
-            var image = await page.screenshot({});
-            channel.send({
-                files:[{
-                    attachment: image,
-                    name: 'ready.png'
-                }]
-            })
-          
-            await browser.close();
-          })();
+        await fetcher.sendTemplate(template,channel)
     });
 }
 module.exports = getModule;
