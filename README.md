@@ -50,8 +50,9 @@ Important Note, you need to configure both Moonraker URL's
 Important Note, you need to configure bottoken for the bot to work, and masterid to access all commands!
 
 * defaulttheme: global Theme for the Status Messages, your bot Admins can change the Theme per Discord Server (default: slate)
+* chromiumpath: path to your chromium binary (only needed on arm based machines otherwise just set "")
 
-Important Note, you need to configure imagechannel, otherwise the Bot might crash or not working properly
+Important Note, you might need to configure chromium path
 
 * statusupdateinterval: Auto Status Update per Seconds or Percent (default: 10)
 * statusupdatepercent: Use Percent for Auto Status instead of Seconds (default: false)

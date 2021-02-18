@@ -6,6 +6,7 @@
     "masterid":"",
     "prefix":"mc!",
     "defaulttheme":"slate",
+    "chromiumpath":"/usr/lib/chromium-browser/chromium-browser",
     "statusupdateinterval":10,
     "statusupdatepercent":true
 }

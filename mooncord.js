@@ -23,54 +23,51 @@ systemInfo.osInfo().then(data => {
     "Author: "+pjson.author+"\n"+
     "Homepage: "+pjson.homepage+"\n"+
     "OS: "+data.platform+"\n"+
-    "Arch:"+data.arch)
-})
+    "Arch: "+data.arch)
+    var websocketClient = new WebSocketClient();
 
+    console.log("Connect Discord Bot...\n")
 
+    discordClient.login(config.bottoken)
 
-var websocketClient = new WebSocketClient();
+    discordClient.on('ready', () => {
+        console.log("Discordbot Connected\n");
+        console.log("Name: "+discordClient.user.tag)
+        console.log("Invite: https://discord.com/oauth2/authorize?client_id="+discordClient.user.id+"&scope=bot&permissions=336063568\n")
+        discordClient.user.setActivity("Starting...",{type: "COMPETING"})
 
+        console.log("Connect Websocket...\n")
 
-console.log("Connect Discord Bot...\n")
-
-discordClient.login(config.bottoken)
-
-discordClient.on('ready', () => {
-    console.log("Discordbot Connected\n");
-    console.log("Name: "+discordClient.user.tag)
-    console.log("Invite: https://discord.com/oauth2/authorize?client_id="+discordClient.user.id+"&scope=bot&permissions=336063568\n")
-    discordClient.user.setActivity("Starting...",{type: "COMPETING"})
-
-    console.log("Connect Websocket...\n")
-
-    websocketClient.on('connectFailed', function(error) {
-        console.log('Connect Error: ' + error.toString());
-        console.log('Reconnect in 5 sec');
-        setTimeout(function(){
-            websocketClient.connect(config.moonrakersocketurl);
-        },5000)
-    });
-
-    console.log("Enable Websocket Events...\n")
-    
-    websocketevents(websocketClient,discordClient)
-
-    websocketClient.on('connect', function(connection) {
-        console.log('WebSocket Client Connected\n');
-        if(!reconnect){
-            console.log("Enable Discord Events...\n")
-        
-            discordevents(discordClient,connection)
-        }
-        connection.on('close', function() {
-            console.log('WebSocket Connection Closed');
+        websocketClient.on('connectFailed', function(error) {
+            console.log('Connect Error: ' + error.toString());
             console.log('Reconnect in 5 sec');
-            reconnect=true
             setTimeout(function(){
                 websocketClient.connect(config.moonrakersocketurl);
             },5000)
         });
-    });
 
-    websocketClient.connect(config.moonrakersocketurl);
-});
+        console.log("Enable Websocket Events...\n")
+        
+        websocketevents(websocketClient,discordClient)
+
+        websocketClient.on('connect', function(connection) {
+            console.log('WebSocket Client Connected\n');
+            if(!reconnect){
+                console.log("Enable Discord Events...\n")
+            
+                discordevents(discordClient,connection)
+            }
+            connection.on('close', function() {
+                console.log('WebSocket Connection Closed');
+                console.log('Reconnect in 5 sec');
+                reconnect=true
+                setTimeout(function(){
+                    websocketClient.connect(config.moonrakersocketurl);
+                },5000)
+            });
+        });
+
+        websocketClient.connect(config.moonrakersocketurl);
+    });
+})
+

@@ -2,8 +2,11 @@ const imageToBase64 = require('image-to-base64');
 const config = require('../config.json');
 var variables = require("../websocketevents");
 const fs = require('fs');
-const puppeteer = require('puppeteer-core');
-const systemInfo = require('systeminformation');
+var puppeteer = require('puppeteer-core');
+
+if(config.chromiumpath==""){
+    puppeteer = require('puppeteer');
+}
 
 async function retrieveOverlay(inputtemplate,theme){
     try {
@@ -92,14 +95,9 @@ async function retrieveKlipperVersion(inputtemplate){
 }
 
 async function sendTemplate(inputtemplate,channel){
-    var osInfo = await systemInfo.osInfo()
-    var chromiumPath = __dirname+"/../temp/chromium"
-    if(osInfo.platform=="win32"){
-        chromiumPath=chromiumPath.concat(".exe")
-    }
     await (async () => {
         const browser = await puppeteer.launch({
-            executablePath: chromiumPath,
+            executablePath: config.chromiumpath,
             args: [
             '--window-size=1920,1080',
           ],});
