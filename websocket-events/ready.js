@@ -54,6 +54,7 @@ function sendMessage(channel,theme){
               ],});
             const page = await browser.newPage();
             await page.setContent( template, {waitUntil: 'networkidle0'} );
+            await page._client.send('Emulation.clearDeviceMetricsOverride');
             var image = await page.screenshot({});
             channel.send({
                 files:[{
