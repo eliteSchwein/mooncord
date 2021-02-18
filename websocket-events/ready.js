@@ -51,7 +51,7 @@ function sendMessage(channel,theme){
         (async () => {
             const browser = await puppeteer.launch();
             const page = await browser.newPage();
-            await page.setContent( yourHTMLCode );
+            await page.setContent( template );
             var image = await page.screenshot({});
             channel.send({
                 files:[{
