@@ -2,7 +2,7 @@ const imageToBase64 = require('image-to-base64');
 const config = require('../config.json');
 var variables = require("../websocketevents");
 const fs = require('fs');
-const puppeteer = require('puppeteer');
+const puppeteer = require('puppeteer-core');
 const systemInfo = require('systeminformation');
 
 async function retrieveOverlay(inputtemplate,theme){
