@@ -1,4 +1,3 @@
-const puppeteer = require('puppeteer');
 const discordDatabase = require('../discorddatabase')
 const fetcher = require('../utils/templateFetcher')
 const fs = require('fs');
