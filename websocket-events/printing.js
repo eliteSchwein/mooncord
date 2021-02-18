@@ -1,4 +1,3 @@
-const nodeHtmlToImage = require('node-html-to-image');
 const discordDatabase = require('../discorddatabase')
 const fetcher = require('../utils/templateFetcher')
 const fs = require('fs');
@@ -55,13 +54,23 @@ function sendMessage(channel,theme){
         template = await fetcher.retrieveRestTime(template)
         template = await fetcher.retrieveTime(template)
         template = await fetcher.retrieveKlipperVersion(template)
-        var image = await nodeHtmlToImage({html:template})
-        channel.send({
-            files:[{
-                attachment: image,
-                name: 'ready.png'
-            }]
-        })
+        await (async () => {
+            const browser = await puppeteer.launch({args: [
+                '--window-size=1920,1080',
+              ],});
+            const page = await browser.newPage();
+            await page.setContent( template, {waitUntil: 'networkidle0'} );
+            await page._client.send('Emulation.clearDeviceMetricsOverride');
+            var image = await page.screenshot({});
+            channel.send({
+                files:[{
+                    attachment: image,
+                    name: 'ready.png'
+                }]
+            })
+          
+            await browser.close();
+          })();
     });
 }
 module.exports = getModule;
