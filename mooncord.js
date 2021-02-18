@@ -11,9 +11,7 @@ const discordClient = new Discord.Client();
 var websocketConnection = ""
 var reconnect = false
 
-(async()=>{
-    var osInfo = await systemInfo.osInfo()
-    
+systemInfo.osInfo().then(data => {
     console.log("\n"+
     "    __  __                    ____              _ \n"+
     "   |  \\/  | ___   ___  _ __  / ___|___  _ __ __| |\n"+
@@ -24,9 +22,10 @@ var reconnect = false
     "Version: "+pjson.version+"\n"+
     "Author: "+pjson.author+"\n"+
     "Homepage: "+pjson.homepage+"\n"+
-    "OS: "+osInfo.platform+"\n"+
-    "Arch:"+osInfo.arch)
+    "OS: "+data.platform+"\n"+
+    "Arch:"+data.arch)
 })
+
 
 
 var websocketClient = new WebSocketClient();
