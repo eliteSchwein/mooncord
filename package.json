@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/eliteSchwein/mooncord#readme",
   "dependencies": {
+    "puppeteer": "^7.1.0",
     "axios": "^0.21.1",
     "discord.js": "^12.5.1",
     "express": "^4.17.1",

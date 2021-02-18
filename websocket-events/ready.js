@@ -1,4 +1,5 @@
 const nodeHtmlToImage = require('node-html-to-image');
+const puppeteer = require('puppeteer');
 const discordDatabase = require('../discorddatabase')
 const fetcher = require('../utils/templateFetcher')
 const fs = require('fs');
@@ -47,13 +48,20 @@ function sendMessage(channel,theme){
         template = await fetcher.retrieveWebcam(template)
         template = await fetcher.retrieveOverlay(template,theme)
         template = await fetcher.retrieveKlipperVersion(template)
-        var image = await nodeHtmlToImage({html:template})
-        channel.send({
-            files:[{
-                attachment: image,
-                name: 'ready.png'
-            }]
-        })
+        (async () => {
+            const browser = await puppeteer.launch();
+            const page = await browser.newPage();
+            await page.setContent( yourHTMLCode );
+            var image = await page.screenshot({});
+            channel.send({
+                files:[{
+                    attachment: image,
+                    name: 'ready.png'
+                }]
+            })
+          
+            await browser.close();
+          })();
     });
 }
 module.exports = getModule;
