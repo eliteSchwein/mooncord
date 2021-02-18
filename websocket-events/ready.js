@@ -1,4 +1,3 @@
-const nodeHtmlToImage = require('node-html-to-image');
 const puppeteer = require('puppeteer');
 const discordDatabase = require('../discorddatabase')
 const fetcher = require('../utils/templateFetcher')
@@ -65,14 +64,6 @@ function sendMessage(channel,theme){
           
             await browser.close();
           })();
-          
-        var image = await nodeHtmlToImage({html:template})
-        channel.send({
-            files:[{
-                attachment: image,
-                name: 'ready.png'
-            }]
-        })
     });
 }
 module.exports = getModule;
