@@ -92,9 +92,15 @@ async function retrieveKlipperVersion(inputtemplate){
 }
 
 async function sendTemplate(inputtemplate,channel){
-    console.log((await systemInfo.osInfo()).arch)
+    var osInfo = await systemInfo.osInfo()
+    var chromiumPath = __dirname+"/../chromebins/"+osInfo.platform+"/"+osInfo.arch+"/chromium"
+    if(osInfo.platform=="win32"||osInfo.platform=="darwin"){
+        chromiumPath=chromiumPath.concat(".exe")
+    }
     await (async () => {
-        const browser = await puppeteer.launch({args: [
+        const browser = await puppeteer.launch({
+            executablePath: chromiumPath,
+            args: [
             '--window-size=1920,1080',
           ],});
         const page = await browser.newPage();
