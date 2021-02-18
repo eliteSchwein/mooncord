@@ -93,8 +93,8 @@ async function retrieveKlipperVersion(inputtemplate){
 
 async function sendTemplate(inputtemplate,channel){
     var osInfo = await systemInfo.osInfo()
-    var chromiumPath = __dirname+"/../chromium-executables/"+osInfo.platform+"/"+osInfo.arch+"/chromium"
-    if(osInfo.platform=="win32"||osInfo.platform=="darwin"){
+    var chromiumPath = __dirname+"/../temp/chromium"
+    if(osInfo.platform=="win32"){
         chromiumPath=chromiumPath.concat(".exe")
     }
     await (async () => {
