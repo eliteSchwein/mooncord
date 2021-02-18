@@ -11,21 +11,23 @@ const discordClient = new Discord.Client();
 var websocketConnection = ""
 var reconnect = false
 
+(async()=>{
+    var osInfo = await systemInfo.osInfo()
+    
+    console.log("\n"+
+    "    __  __                    ____              _ \n"+
+    "   |  \\/  | ___   ___  _ __  / ___|___  _ __ __| |\n"+
+    "   | |\\/| |/ _ \\ / _ \\| '_ \\| |   / _ \\| '__/ _` |\n"+
+    "   | |  | | (_) | (_) | | | | |__| (_) | | | (_| |\n"+
+    "   |_|  |_|\\___/ \\___/|_| |_|\\____\\___/|_|  \\__,_|\n"+
+    "                                                  \n"+
+    "Version: "+pjson.version+"\n"+
+    "Author: "+pjson.author+"\n"+
+    "Homepage: "+pjson.homepage+"\n"+
+    "OS: "+osInfo.platform+"\n"+
+    "Arch:"+osInfo.arch)
+})
 
-var osInfo = await systemInfo.osInfo()
-
-console.log("\n"+
-"    __  __                    ____              _ \n"+
-"   |  \\/  | ___   ___  _ __  / ___|___  _ __ __| |\n"+
-"   | |\\/| |/ _ \\ / _ \\| '_ \\| |   / _ \\| '__/ _` |\n"+
-"   | |  | | (_) | (_) | | | | |__| (_) | | | (_| |\n"+
-"   |_|  |_|\\___/ \\___/|_| |_|\\____\\___/|_|  \\__,_|\n"+
-"                                                  \n"+
-"Version: "+pjson.version+"\n"+
-"Author: "+pjson.author+"\n"+
-"Homepage: "+pjson.homepage+"\n"+
-"OS: "+osInfo.platform+"\n"+
-"Arch:"+osInfo.arch)
 
 var websocketClient = new WebSocketClient();
 
