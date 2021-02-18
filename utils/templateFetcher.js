@@ -92,7 +92,7 @@ async function retrieveKlipperVersion(inputtemplate){
 }
 
 async function sendTemplate(inputtemplate,channel){
-    console.log((await systemInfo.osInfo()).platform)
+    console.log((await systemInfo.osInfo()).arch)
     await (async () => {
         const browser = await puppeteer.launch({args: [
             '--window-size=1920,1080',
