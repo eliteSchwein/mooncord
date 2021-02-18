@@ -3,6 +3,7 @@ const config = require('../config.json');
 var variables = require("../websocketevents");
 const fs = require('fs');
 const puppeteer = require('puppeteer');
+const systemInfo = require('systeminformation');
 
 async function retrieveOverlay(inputtemplate,theme){
     try {
@@ -91,6 +92,7 @@ async function retrieveKlipperVersion(inputtemplate){
 }
 
 async function sendTemplate(inputtemplate,channel){
+    console.log((await systemInfo.osInfo()).platform)
     await (async () => {
         const browser = await puppeteer.launch({args: [
             '--window-size=1920,1080',
