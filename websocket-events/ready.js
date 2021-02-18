@@ -45,10 +45,10 @@ function sendMessage(channel,theme){
             return
         }
         template=templatefile
-        template = await fetcher.retrieveWebcam(template)
-        template = await fetcher.retrieveOverlay(template,theme)
-        template = await fetcher.retrieveKlipperVersion(template)
-        (async () => {
+        template = await fetcher.retrieveWebcam(template);
+        template = await fetcher.retrieveOverlay(template,theme);
+        template = await fetcher.retrieveKlipperVersion(template);
+        await (async () => {
             const browser = await puppeteer.launch();
             const page = await browser.newPage();
             await page.setContent( template );
