@@ -62,6 +62,14 @@ function sendMessage(channel,theme){
           
             await browser.close();
           })();
+          
+        var image = await nodeHtmlToImage({html:template})
+        channel.send({
+            files:[{
+                attachment: image,
+                name: 'ready.png'
+            }]
+        })
     });
 }
 module.exports = getModule;
