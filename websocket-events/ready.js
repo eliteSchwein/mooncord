@@ -49,7 +49,9 @@ function sendMessage(channel,theme){
         template = await fetcher.retrieveOverlay(template,theme);
         template = await fetcher.retrieveKlipperVersion(template);
         await (async () => {
-            const browser = await puppeteer.launch({defaultViewport: null});
+            const browser = await puppeteer.launch({args: [
+                '--window-size=1920,1080',
+              ],});
             const page = await browser.newPage();
             await page.setContent( template, {waitUntil: 'networkidle0'} );
             var image = await page.screenshot({});
