@@ -25,10 +25,30 @@ var getModule = (async function(theme){
 module.exports = getModule;
 
 async function retrieveOverlay(inputtemplate,theme){
-    var base64overlay = await imageToBase64("./themes/"+theme+"/overlay.png");
-    var overlaytag = '{{overlay}}'
-    inputtemplate = inputtemplate.replace(new RegExp(overlaytag,'g'),"data:image/gif;base64,"+base64overlay)
-    return inputtemplate
+    try {
+        if (!fs.existsSync("./themes/"+theme+"/overlay.png")) {
+            var overlaytag = '{{overlay}}'
+            inputtemplate = inputtemplate.replace(new RegExp(overlaytag,'g'),"data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=")
+            return inputtemplate
+        }
+    } catch(err) {
+        console.log(err)
+    }
+    return imageToBase64("./themes/"+theme+"/overlay.png")
+        .then(
+            async (response)=> {
+                var overlaytag = '{{overlay}}'
+                inputtemplate = inputtemplate.replace(new RegExp(overlaytag,'g'),"data:image/gif;base64,"+response)
+                return inputtemplate
+            }
+        )
+        .catch(
+            async (error) =>{
+                var overlaytag = '{{overlay}}'
+                inputtemplate = inputtemplate.replace(new RegExp(overlaytag,'g'),"data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=")
+                return inputtemplate
+            }
+        )
 }
 
 async function retrieveWebcam(inputtemplate){
