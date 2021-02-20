@@ -26,18 +26,18 @@ function handler(messageReaction){
     const reactionModule = require("../discord-reactions/"+id)
     if(reactionModule.needMaster()){
         if(user.id!=config.masterid){
-            message.channel.send("<@"+user.id+"> You are not allowed to execute this Action! \n> "+config.prefix+command.split(" ")[0])
+            message.channel.send("<@"+user.id+"> You are not allowed to execute this Action! \n> "+message.embeds[0].title)
             return;
         }
     }
     if(reactionModule.needAdmin()){
         if(!isAdmin(user,guild)){
-            message.channel.send("<@"+user.id+"> You are not allowed to execute this Action! \n> "+config.prefix+command.split(" ")[0])
+            message.channel.send("<@"+user.id+"> You are not allowed to execute this Action! \n> "+message.embeds[0].title)
             return;
         }
     }
     if(!isAllowed(user,guild)){
-        message.channel.send("<@"+user.id+"> You are not allowed to execute this Action! \n> "+config.prefix+command.split(" ")[0])
+        message.channel.send("<@"+user.id+"> You are not allowed to execute this Action! \n> "+message.embeds[0].title)
         return;
     }
     reactionModule(message,user,guild,messageReaction.emoji,dcClient,wsConnection);
