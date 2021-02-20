@@ -15,7 +15,7 @@ var executeReaction = (function(message,user,guild,emote,discordClient,websocket
     dcMessage=message
     wsConnection=websocketConnection
     if(variables.getStatus()!="ready"){
-        channel.send("<@"+user.id+"> the Printer is not ready!")
+        message.channel.send("<@"+user.id+"> the Printer is not ready!")
         message.delete()
         return;
     }
