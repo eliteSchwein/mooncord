@@ -14,11 +14,6 @@ var executeReaction = (function(message,user,guild,emote,discordClient,websocket
     requester=user
     dcMessage=message
     wsConnection=websocketConnection
-    if(variables.getStatus()!="ready"){
-        message.channel.send("<@"+user.id+"> the Printer is not ready!")
-        message.delete()
-        return;
-    }
     if(emote.name=="❌"){
         message.channel.send("<@"+user.id+"> You cancel the GCode executions!")
         message.delete()
