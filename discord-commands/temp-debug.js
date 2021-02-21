@@ -4,6 +4,11 @@ const master = false
 const discordDatabase = require('../discorddatabase')
 var variables = require("../websocketevents")
 var executeCommand = (function(command,channel,user,guild,discordClient,websocketConnection){
+    var debug = "DEV COMMAND!\n"
+    var temps = variables.getTemps()
+    for(var temp in temps){
+        console.log(temp)
+    }
     channel.send(JSON.stringify(variables.getTemps()))
 })
 module.exports = executeCommand;
