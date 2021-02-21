@@ -4,19 +4,23 @@ const master = false
 const discordDatabase = require('../discorddatabase')
 var variables = require("../websocketevents")
 var executeCommand = (function(command,channel,user,guild,discordClient,websocketConnection){
-    var feedback = ""
+    var debug = ""
     var temps = variables.getTemps()
     for(var temp in temps){
         if(temp.includes("temperature_sensor")){
-            feedback=feedback.concat("**🌡"+temp.replace("temperature_sensor ","")+":**\n`"+temps[temp].temperatures[0]+"°C`\n\n")
+            debug=debug.concat("**🌡"+temp.replace("temperature_sensor ","")+":**\n`"+temps[temp].temperatures[temps[temp].temperatures.length-1]+"°C`\n\n")
         }else if(temp.includes("extruder")||temp.includes("heater_bed")){
-            feedback=feedback.concat("**♨"+temp+":**\n`Current:"+temps[temp].temperatures[0]+"°C` `Target:"+temps[temp].targets[0]+"°C` `Power:"+temps[temp].powers[0]+"%`\n\n")
+            debug=debug.concat("**♨"+temp+":**\n`Current:"+temps[temp].temperatures[temps[temp].temperatures.length-1]+"°C` `Target:"+temps[temp].targets[temps[temp].targets.length-1]+"°C` `Power:"+calculatePercent(temps[temp].powers[temps[temp].powers.length-1])+"%`\n\n")
         }else if(temp.includes("temperature_fan")){
-            feedback=feedback.concat("**❄"+temp+"**:\n`Current:"+temps[temp].temperatures[0]+"°C` `Target:"+temps[temp].targets[0]+"°C` `Speed:"+temps[temp].speeds[0]+"`\n\n")
+            debug=debug.concat("**❄"+temp+"**:\n`Current:"+temps[temp].temperatures[temps[temp].temperatures.length-1]+"°C` `Target:"+temps[temp].targets[temps[temp].targets.length-1]+"°C` `Speed:"+calculatePercent(temps[temp].speeds[temps[temp].speeds.length-1])+"`\n\n")
         }
     }
-    channel.send(feedback)
+    channel.send(debug)
 })
+function calculatePercent(input){
+    var percent = 100*input
+    return percent.toFixed(0)
+}
 module.exports = executeCommand;
 module.exports.needAdmin = function(){return admin}
 module.exports.needMaster = function(){return master}
