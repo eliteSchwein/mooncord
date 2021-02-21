@@ -26,7 +26,7 @@ systemInfo.osInfo().then(data => {
     "Arch: "+data.arch)
     var websocketClient = new WebSocketClient();
 
-    console.log("Connect Discord Bot...\n")
+    console.log("\nConnect Discord Bot...\n")
 
     discordClient.login(config.bottoken)
 
