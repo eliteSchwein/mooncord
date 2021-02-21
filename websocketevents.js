@@ -84,7 +84,6 @@ var getModule = (function(client,discordClient){
                 }
                 if(typeof(result)!="undefined"){
                     if(JSON.stringify(result).includes("temperature")){
-                        console.log("test")
                         temps=result
                     }
                     if(typeof(result.klippy_state)!="undefined"){
@@ -236,6 +235,7 @@ module.exports.updateStatus = function(status){
     this.status = status
 }
 module.exports.getTemps = function(){
+    console.log(temps)
     return temps
 }
 module.exports.getStatus = function(){
