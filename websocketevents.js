@@ -235,7 +235,6 @@ module.exports.updateStatus = function(status){
     this.status = status
 }
 module.exports.getTemps = function(){
-    console.log(temps)
     return temps
 }
 module.exports.getStatus = function(){

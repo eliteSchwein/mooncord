@@ -4,7 +4,7 @@ const master = false
 const discordDatabase = require('../discorddatabase')
 var variables = require("../websocketevents")
 var executeCommand = (function(command,channel,user,guild,discordClient,websocketConnection){
-    channel.send(variables.getTemps())
+    channel.send(JSON.stringify(variables.getTemps()))
 })
 module.exports = executeCommand;
 module.exports.needAdmin = function(){return admin}
