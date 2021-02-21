@@ -8,11 +8,11 @@ var executeCommand = (function(command,channel,user,guild,discordClient,websocke
     var temps = variables.getTemps()
     for(var temp in temps){
         if(temp.includes("temperature_sensor")){
-            debug.concat("🌡"+temp.replace("temperature_sensor ","")+"\n`"+temps[temp].temperatures[0]+"°C`\n")
+            debug=debug.concat("🌡"+temp.replace("temperature_sensor ","")+"\n`"+temps[temp].temperatures[0]+"°C`\n")
         }else if(temp.includes("extruder")||temp.includes("heater_bed")){
-            debug.concat("♨"+temp+"\n`"+temps[temp].temperatures[0]+"/"+temps[temp].targets[0]+"°C` `"+temps[temp].powers[0]+"%`\n")
+            debug=debug.concat("♨"+temp+"\n`"+temps[temp].temperatures[0]+"/"+temps[temp].targets[0]+"°C` `"+temps[temp].powers[0]+"%`\n")
         }else if(temp.includes("temperature_fan")){
-            debug.concat("❄"+temp+"\n`"+temps[temp].temperatures[0]+"/"+temps[temp].targets[0]+"°C` `"+temps[temp].speeds[0]+"`\n")
+            debug=debug.concat("❄"+temp+"\n`"+temps[temp].temperatures[0]+"/"+temps[temp].targets[0]+"°C` `"+temps[temp].speeds[0]+"`\n")
         }
     }
     console.log(temps)
