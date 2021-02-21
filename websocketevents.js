@@ -174,13 +174,15 @@ var getModule = (function(client,discordClient){
                             }
                             if(klipperstatus.print_stats.state=="complete"){
                                 status="done";
-                                triggerStatusUpdate(discordClient)
                                 if(status!=oldStatus){
-                                    setTimeout(function(){
-                                        status="ready";
-                                        oldStatus=status
-                                        triggerStatusUpdate(discordClient)
-                                    },1000)
+                                    triggerStatusUpdate(discordClient)
+                                    if(status!=oldStatus){
+                                        setTimeout(function(){
+                                            status="ready";
+                                            oldStatus=status
+                                            triggerStatusUpdate(discordClient)
+                                        },1000)
+                                    }
                                 }
                             }
                         }
