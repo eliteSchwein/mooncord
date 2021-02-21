@@ -83,7 +83,8 @@ var getModule = (function(client,discordClient){
                     }
                 }
                 if(typeof(result)!="undefined"){
-                    if(JSON.stringify(result).includes("temperature")&&JSON.stringify(result).includes("targets")){
+                    if(JSON.stringify(result).includes("temperature")){
+                        console.log("test")
                         temps=result
                     }
                     if(typeof(result.klippy_state)!="undefined"){
