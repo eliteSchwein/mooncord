@@ -196,7 +196,7 @@ var getModule = (function(client,discordClient){
         });
         setTimeout(function(){
             setInterval(function(){
-                connection.send('{"jsonrpc": "2.0", method: "server.temperature_store", "id": "id": '+id+'}')
+                connection.send('{"jsonrpc": "2.0", "method": "server.temperature_store", "id": "id": '+id+'}')
                 connection.send('{"jsonrpc": "2.0", "method": "printer.objects.query", "params": {"objects": {"webhooks": null, "virtual_sdcard": null, "print_stats": null}}, "id": '+id+'}')
             },1000)
             connection.send('{"jsonrpc": "2.0", "method": "printer.info", "id": '+id+'}')
