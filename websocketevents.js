@@ -13,6 +13,7 @@ var restprinttime = ''
 var printtime = 0
 var formatedprinttime = ''
 var oldpercent = 0
+var temps = {}
 var percentStartupTrigger = false
 
 var getModule = (function(client,discordClient){
@@ -25,6 +26,7 @@ var getModule = (function(client,discordClient){
             id = Math.floor(Math.random() * 10000) + 1
             if (message.type === 'utf8') {
                 var messageJson = JSON.parse(message.utf8Data)
+                console.log(messageJson)
                 var methode = messageJson.method
                 var result = messageJson.result
                 if(methode=="notify_klippy_disconnected"){
@@ -173,7 +175,8 @@ var getModule = (function(client,discordClient){
                                 }   
                             }
                             if(klipperstatus.print_stats.state=="complete"){
-                                if(status!="ready"){status="done";
+                                if(status!="ready"){
+                                    status="done";
                                     if(status!=oldStatus){
                                         triggerStatusUpdate(discordClient)
                                         if(status!=oldStatus){
@@ -193,6 +196,7 @@ var getModule = (function(client,discordClient){
         });
         setTimeout(function(){
             setInterval(function(){
+                connection.send('{"jsonrpc": "2.0", method: "server.temperature_store", "id": "id": '+id+'}')
                 connection.send('{"jsonrpc": "2.0", "method": "printer.objects.query", "params": {"objects": {"webhooks": null, "virtual_sdcard": null, "print_stats": null}}, "id": '+id+'}')
             },1000)
             connection.send('{"jsonrpc": "2.0", "method": "printer.info", "id": '+id+'}')
