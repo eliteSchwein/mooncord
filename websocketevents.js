@@ -26,7 +26,7 @@ var getModule = (function(client,discordClient){
             id = Math.floor(Math.random() * 10000) + 1
             if (message.type === 'utf8') {
                 var messageJson = JSON.parse(message.utf8Data)
-                console.log(messageJson)
+                //console.log(messageJson)
                 var methode = messageJson.method
                 var result = messageJson.result
                 if(methode=="notify_klippy_disconnected"){
@@ -83,6 +83,9 @@ var getModule = (function(client,discordClient){
                     }
                 }
                 if(typeof(result)!="undefined"){
+                    if(result.includes("temperature")&&result.includes("targets")){
+                        temps=result
+                    }
                     if(typeof(result.klippy_state)!="undefined"){
                         status=result.klippy_state
                         if(status!=oldStatus){
@@ -230,6 +233,9 @@ module.exports.triggerStatusUpdate = function(discordClient,channel,guild){
 
 module.exports.updateStatus = function(status){
     this.status = status
+}
+module.exports.getTemps = function(){
+    return temps
 }
 module.exports.getStatus = function(){
     return status
