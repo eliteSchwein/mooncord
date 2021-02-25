@@ -1,9 +1,8 @@
 const discordDatabase = require('../discorddatabase')
 const webcamUtil = require('../utils/webcamUtil')
 const Discord = require('discord.js');
-const fs = require('fs');
 
-var getModule = (async function(discordClient,channel,guild){
+var getModule = (async function(discordClient,channel,guild,user){
     var database = discordDatabase.getDatabase();
     discordClient.user.setActivity("GCODE File...",{type: "LISTENING"})
     
@@ -15,19 +14,19 @@ var getModule = (async function(discordClient,channel,guild){
                 var broadcastchannels = guilddatabase.statuschannels
                 for(var index in broadcastchannels){
                     var channel = guild.channels.cache.get(broadcastchannels[index]);
-                    sendMessage(channel)
+                    await sendMessage(channel,user)
                 }
             })
             .catch(console.error);
         }
     }else{
-        sendMessage(channel)
+        await sendMessage(channel,user)
     }
 })
 
-function sendMessage(channel){
+async function sendMessage(channel,user){
     var snapshot = await webcamUtil.retrieveWebcam()
-    const statusEmbed = new Discord.MessageEmbed()
+    var statusEmbed = new Discord.MessageEmbed()
     .setColor('#0099ff')
     .setTitle('Printer Ready')
     .setAuthor('')
@@ -35,6 +34,12 @@ function sendMessage(channel){
     .attachFiles(snapshot)
     .setImage(url="attachment://"+snapshot.name)
     .setTimestamp()
+
+    if(user==null){
+        statusEmbed.setFooter("Automatic")
+    }else{
+        statusEmbed.setFooter(user.tag)
+    }
 
     channel.send(statusEmbed);
 }

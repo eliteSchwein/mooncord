@@ -5,7 +5,7 @@ const discordDatabase = require('../discorddatabase')
 const websocketevents = require('../websocketevents')
 var executeCommand = (function(command,channel,user,guild,discordClient,websocketConnection){
     channel.startTyping();
-    websocketevents.triggerStatusUpdate(discordClient,channel,guild)
+    websocketevents.triggerStatusUpdate(discordClient,channel,guild,user)
     channel.stopTyping();
 })
 module.exports = executeCommand;
