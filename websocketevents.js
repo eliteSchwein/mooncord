@@ -211,10 +211,10 @@ var getModule = (function(client,discordClient){
 })
 module.exports = getModule;
 
-function triggerStatusUpdate(discordClient,channel,guild){
+function triggerStatusUpdate(discordClient,channel,guild,user){
     console.log("Printer Status: "+status)
     var event = require('./websocket-events/'+status);
-    event(discordClient,channel,guild)
+    event(discordClient,channel,guild,user)
 
 }
 
