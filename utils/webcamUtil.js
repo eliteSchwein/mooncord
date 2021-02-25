@@ -1,6 +1,7 @@
 const imageToBase64 = require('image-to-base64');
 const config = require('../config.json');
-const Discord = require('discord.js')
+const Discord = require('discord.js');
+const fs = require('fs').promises
 
 async function retrieveWebcam(){
     return imageToBase64(config.webcamsnapshoturl)
@@ -11,7 +12,7 @@ async function retrieveWebcam(){
         )
         .catch(
             async (error) =>{
-                return __dirname+"/../snapshot-error.png"
+                return new Discord.MessageAttachment(await fs.readFile(__dirname+"/../snapshot-error.png"),"snapshot-error.png")
             }
         )
 }
