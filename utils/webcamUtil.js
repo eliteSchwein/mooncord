@@ -1,25 +1,19 @@
 const imageToBase64 = require('image-to-base64');
 const config = require('../config.json');
-const Fs = require('fs')  
-const Path = require('path')  
-const Axios = require('axios')
+const Discord = require('discord.js')
 
 async function retrieveWebcam(){
-    const url = config.webcamsnapshoturl
-    const path = Path.resolve(__dirname, '../temp', 'snapshot.png')
-    const writer = Fs.createWriteStream(path)
-    return await Axios({
-        url,
-        method: 'GET',
-        responseType: 'stream'
-    }).then(async res =>{
-        await res.data.pipe(writer)
-        writer.on('finish',()=>{
-            return __dirname+"/../temp/snapshot.png"
-        })
-    }).catch(error => {
-        return __dirname+"/../snapshot-error.png"
-    })
+    return imageToBase64(config.webcamsnapshoturl)
+        .then(
+            async (response)=> {
+                return new Discord.MessageAttachment(response,"snapshot.png")
+            }
+        )
+        .catch(
+            async (error) =>{
+                return __dirname+"/../snapshot-error.png"
+            }
+        )
 }
 
 module.exports = function(){}
