@@ -13,7 +13,7 @@ async function retrieveWebcam(){
         method: 'GET',
         responseType: 'stream'
     }).then(res =>{
-        return res.data.pipe(writer).on('end',()=>{
+        return await res.data.pipe(writer).on('end',()=>{
             return __dirname+"/../temp/snapshot.png"
         })
     }).catch(error => {
