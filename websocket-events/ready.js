@@ -28,8 +28,9 @@ var getModule = (async function(discordClient,channel,guild,user){
 async function sendMessage(channel,user){
     var snapshot = await webcamUtil.retrieveWebcam()
     channel.send(snapshot).catch(error=>{
-        var errwriter = fs.createWriteStream(__dirname+"/../temp/error.log")
-        errwriter.write(error)
+        fs.appendFile(__dirname+"/../temp/error.log", error, function (err) {
+            if(err) throw err;
+        });   
     })
     //var statusEmbed = new Discord.MessageEmbed()
     //.setColor('#0099ff')
