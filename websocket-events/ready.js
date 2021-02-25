@@ -3,6 +3,7 @@ const fetcher = require('../utils/templateFetcher')
 const webcamUtil = require('../utils/webcamUtil')
 const Discord = require('discord.js');
 const fs = require('fs');
+const Path = require('path')  
 const config = require('../config.json');
 
 var template = '';
