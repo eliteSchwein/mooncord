@@ -9,7 +9,7 @@ var getModule = (async function(discordClient,channel,guild,user){
     if(typeof channel =="undefined"){
         for(var guildid in database){
             discordClient.guilds.fetch(guildid)
-            .then(function(guild){
+            .then(async function(guild){
                 var guilddatabase = database[guild.id]
                 var broadcastchannels = guilddatabase.statuschannels
                 for(var index in broadcastchannels){
