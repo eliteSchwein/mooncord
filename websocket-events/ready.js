@@ -27,21 +27,21 @@ var getModule = (async function(discordClient,channel,guild,user){
 async function sendMessage(channel,user){
     var snapshot = await webcamUtil.retrieveWebcam()
     channel.send(snapshot)
-    var statusEmbed = new Discord.MessageEmbed()
-    .setColor('#0099ff')
-    .setTitle('Printer Ready')
-    .setAuthor('')
-    .setDescription('')
-    .attachFiles(snapshot)
-    .setImage(url="attachment://"+snapshot.name)
-    .setTimestamp()
+    //var statusEmbed = new Discord.MessageEmbed()
+    //.setColor('#0099ff')
+    //.setTitle('Printer Ready')
+    //.setAuthor('')
+    //.setDescription('')
+    //.attachFiles(snapshot)
+    //.setImage(url="attachment://"+snapshot.name)
+    //.setTimestamp()
 
-    if(user==null){
-        statusEmbed.setFooter("Automatic")
-    }else{
-        statusEmbed.setFooter(user.tag)
-    }
+    //if(user==null){
+    //    statusEmbed.setFooter("Automatic")
+    //}else{
+    //    statusEmbed.setFooter(user.tag)
+    //}
 
-    channel.send(statusEmbed);
+    //channel.send(statusEmbed);
 }
 module.exports = getModule;
