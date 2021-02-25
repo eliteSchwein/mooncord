@@ -1,6 +1,7 @@
 const discordDatabase = require('../discorddatabase')
 const fetcher = require('../utils/templateFetcher')
 const webcamUtil = require('../utils/webcamUtil')
+const Discord = require('discord.js');
 const fs = require('fs');
 const config = require('../config.json');
 
