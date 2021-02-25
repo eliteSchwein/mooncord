@@ -227,8 +227,8 @@ function formatDateTime(msec) {
     return h+":"+m
 }
 
-module.exports.triggerStatusUpdate = function(discordClient,channel,guild){
-    triggerStatusUpdate(discordClient,channel,guild);
+module.exports.triggerStatusUpdate = function(discordClient,channel,guild,user){
+    triggerStatusUpdate(discordClient,channel,guild,user);
 }
 
 module.exports.updateStatus = function(status){
