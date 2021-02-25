@@ -8,18 +8,16 @@ async function retrieveWebcam(){
     const url = config.webcamsnapshoturl
     const path = Path.resolve(__dirname, '../temp', 'snapshot.png')
     const writer = Fs.createWriteStream(path)
-    const snapshotpath = ""
-    await Axios({
+    return await Axios({
         url,
         method: 'GET',
         responseType: 'stream'
     }).then(res =>{
         res.data.pipe(writer)
-        snapshotpath = __dirname+"/../temp/snapshot.png"
-    }).catch(error =>{
-        snapshotpath = __dirname+"/../snapshot-error.png"
+        return __dirname+"/../temp/snapshot.png"
+    }).catch(error => {
+        return __dirname+"/../snapshot-error.png"
     })
-    return snapshotpath
 }
 
 module.exports = function(){}
