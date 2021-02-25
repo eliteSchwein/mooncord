@@ -56,7 +56,7 @@ function sendMessage(channel,theme){
         .setAuthor('')
         .setDescription('')
         .attachFiles(await webcamUtil.retrieveWebcam())
-        .setImage(url="attachment://"+await webcamUtil.retrieveWebcam().name)
+        .setImage(url="attachment://"+await webcamUtil.retrieveWebcam().name())
         .setTimestamp()
     
         channel.send(exampleEmbed);
