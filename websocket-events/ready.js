@@ -1,6 +1,7 @@
 const discordDatabase = require('../discorddatabase')
 const webcamUtil = require('../utils/webcamUtil')
 const Discord = require('discord.js');
+const fs = require('fs')
 
 var getModule = (async function(discordClient,channel,guild,user){
     var database = discordDatabase.getDatabase();
@@ -27,7 +28,8 @@ var getModule = (async function(discordClient,channel,guild,user){
 async function sendMessage(channel,user){
     var snapshot = await webcamUtil.retrieveWebcam()
     channel.send(snapshot).catch(error=>{
-        console.log(error)
+        var errwriter = fs.createWriteStream(__dirname+"/../temp/error.log")
+        errwriter.write(error)
     })
     //var statusEmbed = new Discord.MessageEmbed()
     //.setColor('#0099ff')
