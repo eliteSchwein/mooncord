@@ -1,5 +1,6 @@
 const discordDatabase = require('../discorddatabase')
 const fetcher = require('../utils/templateFetcher')
+const webcamUtil = require('../utils/webcamUtil')
 const fs = require('fs');
 const config = require('../config.json');
 
@@ -47,6 +48,17 @@ function sendMessage(channel,theme){
         template = await fetcher.retrieveOverlay(template,theme);
         template = await fetcher.retrieveKlipperVersion(template);
         await fetcher.sendTemplate(template,channel)
+        const exampleEmbed = new Discord.MessageEmbed()
+        .setColor('#0099ff')
+        .setTitle('Printer Ready')
+        .setAuthor('')
+        .setDescription('')
+        .attachFiles(await webcamUtil.retrieveWebcam())
+        .setImage(url="attachment://"+Path.basename(await webcamUtil.retrieveWebcam()))
+        .setTimestamp()
+        .setFooter(requester.tag, requester.avatarURL());
+    
+        channel.send(exampleEmbed);
     });
 }
 module.exports = getModule;
