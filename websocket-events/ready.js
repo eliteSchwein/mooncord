@@ -1,12 +1,12 @@
 const discordDatabase = require('../discorddatabase')
 const webcamUtil = require('../utils/webcamUtil')
 const Discord = require('discord.js');
-const fs = require('fs')
+const variables = require('../websocketevents')
 
 var getModule = (async function(discordClient,channel,guild,user){
     var database = discordDatabase.getDatabase();
     discordClient.user.setActivity("GCODE File...",{type: "LISTENING"})
-    
+     
     if(typeof channel =="undefined"){
         for(var guildid in database){
             discordClient.guilds.fetch(guildid)
@@ -30,8 +30,7 @@ async function sendMessage(channel,user){
     var statusEmbed = new Discord.MessageEmbed()
     .setColor('#0099ff')
     .setTitle('Printer Ready')
-    .setAuthor('')
-    .setDescription('')
+    .addField('Klipper-Version',variables.getKlipperVersion(),true)
     .attachFiles(snapshot)
     .setImage(url="attachment://"+snapshot.name)
     .setTimestamp()
@@ -39,7 +38,7 @@ async function sendMessage(channel,user){
     if(user==null){
         statusEmbed.setFooter("Automatic")
     }else{
-        statusEmbed.setFooter(user.tag)
+        statusEmbed.setFooter(user.tag, user.avatarURL())
     }
 
     channel.send(statusEmbed);
