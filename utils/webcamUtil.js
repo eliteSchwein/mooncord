@@ -7,7 +7,8 @@ async function retrieveWebcam(){
     return imageToBase64(config.webcamsnapshoturl)
         .then(
             async (response)=> {
-                return new Discord.MessageAttachment(response,"snapshot.png")
+                var buffer = new Buffer.from(response,"base64")
+                return new Discord.MessageAttachment(buffer,"snapshot.png")
             }
         )
         .catch(
