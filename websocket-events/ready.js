@@ -1,12 +1,7 @@
 const discordDatabase = require('../discorddatabase')
-const fetcher = require('../utils/templateFetcher')
 const webcamUtil = require('../utils/webcamUtil')
 const Discord = require('discord.js');
 const fs = require('fs');
-const Path = require('path')  
-const config = require('../config.json');
-
-var template = '';
 
 var getModule = (async function(discordClient,channel,guild){
     var database = discordDatabase.getDatabase();
@@ -17,59 +12,30 @@ var getModule = (async function(discordClient,channel,guild){
             discordClient.guilds.fetch(guildid)
             .then(function(guild){
                 var guilddatabase = database[guild.id]
-                var theme = config.defaulttheme
-                if(guilddatabase.theme!="default"){
-                    theme=guilddatabase.theme
-                }
                 var broadcastchannels = guilddatabase.statuschannels
                 for(var index in broadcastchannels){
                     var channel = guild.channels.cache.get(broadcastchannels[index]);
-                    sendMessage(channel,theme)
+                    sendMessage(channel)
                 }
             })
             .catch(console.error);
         }
     }else{
-        var guilddatabase = database[guild.id]
-        var theme = config.defaulttheme
-        if(guilddatabase.theme!="default"){
-            theme=guilddatabase.theme
-        }
-        sendMessage(channel,theme)
+        sendMessage(channel)
     }
 })
 
-function sendMessage(channel,theme){
-    readTemplateFile('./themes/'+theme+'/templates/ready.html',async function (err,templatefile){
-        if(err){
-            channel.send("The File `templates/ready.html` \ncouldn't be found in the Theme:\n`"+theme+"`")
-            return
-        }
-        template=templatefile
-        template = await fetcher.retrieveWebcam(template);
-        template = await fetcher.retrieveOverlay(template,theme);
-        template = await fetcher.retrieveKlipperVersion(template);
-        var snapshot = await webcamUtil.retrieveWebcam()
-        console.log(snapshot.name)
-        await fetcher.sendTemplate(template,channel)
-        const exampleEmbed = new Discord.MessageEmbed()
-        .setColor('#0099ff')
-        .setTitle('Printer Ready')
-        .setAuthor('')
-        .setDescription('')
-        .attachFiles(await webcamUtil.retrieveWebcam())
-        .setImage(url="attachment://"+await webcamUtil.retrieveWebcam().name())
-        .setTimestamp()
-    
-        channel.send(exampleEmbed);
-    });
+function sendMessage(channel){
+    var snapshot = await webcamUtil.retrieveWebcam()
+    const statusEmbed = new Discord.MessageEmbed()
+    .setColor('#0099ff')
+    .setTitle('Printer Ready')
+    .setAuthor('')
+    .setDescription('')
+    .attachFiles(snapshot)
+    .setImage(url="attachment://"+snapshot.name)
+    .setTimestamp()
+
+    channel.send(statusEmbed);
 }
 module.exports = getModule;
-
-function readTemplateFile(path, callback) {
-    try {
-        fs.readFile(path, 'utf8', callback);
-    } catch (e) {
-        callback(e);
-    }
-}
