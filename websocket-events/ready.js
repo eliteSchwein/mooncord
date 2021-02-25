@@ -49,7 +49,8 @@ function sendMessage(channel,theme){
         template = await fetcher.retrieveWebcam(template);
         template = await fetcher.retrieveOverlay(template,theme);
         template = await fetcher.retrieveKlipperVersion(template);
-        console.log(await webcamUtil.retrieveWebcam().name)
+        var snapshot = await webcamUtil.retrieveWebcam()
+        console.log(snapshot.name)
         await fetcher.sendTemplate(template,channel)
         const exampleEmbed = new Discord.MessageEmbed()
         .setColor('#0099ff')
