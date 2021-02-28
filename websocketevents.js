@@ -27,7 +27,7 @@ var getModule = (function(client,discordClient){
             id = Math.floor(Math.random() * 10000) + 1
             if (message.type === 'utf8') {
                 var messageJson = JSON.parse(message.utf8Data)
-                //console.log(messageJson)
+                console.log(messageJson)
                 var methode = messageJson.method
                 var result = messageJson.result
                 if(typeof(messageJson.version_info)!="undefined"){
