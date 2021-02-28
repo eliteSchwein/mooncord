@@ -1,6 +1,4 @@
 const config = require('./config.json');
-const discordDataBase = require('./discorddatabase')
-const imageToBase64 = require('image-to-base64');
 
 var status = 'unknown'
 var oldStatus = 'unknown'
@@ -235,8 +233,8 @@ module.exports.triggerStatusUpdate = function(discordClient,channel,guild,user){
 }
 
 module.exports.updateStatus = function(newstatus){
-    this.status = newstatus
-    console.log(newstatus)
+    status = newstatus
+    console.log(status)
     return newstatus
 }
 module.exports.getTemps = function(){
