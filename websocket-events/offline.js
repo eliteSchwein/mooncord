@@ -25,12 +25,9 @@ var getModule = (async function(discordClient,channel,guild,user){
 })
 
 async function sendMessage(channel,user){
-    var snapshot = await webcamUtil.retrieveWebcam()
     var statusEmbed = new Discord.MessageEmbed()
     .setColor('#c90000')
-    .setTitle('Printer Disconnected!')
-    .attachFiles(snapshot)
-    .setImage(url="attachment://"+snapshot.name)
+    .setTitle('Connection Lost!')
     .setTimestamp()
 
     if(typeof(user)=="undefined"){
