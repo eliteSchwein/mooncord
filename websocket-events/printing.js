@@ -27,7 +27,7 @@ var getModule = (async function(discordClient,channel,guild,user){
 })
 
 async function sendMessage(channel,user){
-    if(variables.getPrintProgress().toFixed(3)==0.000){
+    if(variables.getPrintProgress().toFixed(2)==0.00){
         return;
     }
     var snapshot = await webcamUtil.retrieveWebcam()
