@@ -1,65 +1,50 @@
 const discordDatabase = require('../discorddatabase')
-const fetcher = require('../utils/templateFetcher')
-const fs = require('fs');
-const config = require('../config.json');
+const webcamUtil = require('../utils/webcamUtil')
+const thumbnailUtil = require('../utils/thumbnailUtil')
+const Discord = require('discord.js');
+const variables = require('../websocketevents')
 
-var template = '';
-
-var getModule = (async function(discordClient,channel,guild){
+var getModule = (async function(discordClient,channel,guild,user){
     var database = discordDatabase.getDatabase();
-    discordClient.user.setActivity("Stopping...",{type: "WATCHING"})
-    
+    discordClient.user.setActivity("stop Print",{type: "LISTENING"})
+     
     if(typeof channel =="undefined"){
         for(var guildid in database){
             discordClient.guilds.fetch(guildid)
-            .then(function(guild){
+            .then(async function(guild){
                 var guilddatabase = database[guild.id]
-                var theme = config.defaulttheme
-                if(guilddatabase.theme!="default"){
-                    theme=guilddatabase.theme
-                }
                 var broadcastchannels = guilddatabase.statuschannels
                 for(var index in broadcastchannels){
                     var channel = guild.channels.cache.get(broadcastchannels[index]);
-                    sendMessage(channel,theme)
+                    await sendMessage(channel,user)
                 }
             })
             .catch(console.error);
         }
     }else{
-        var guilddatabase = database[guild.id]
-        var theme = config.defaulttheme
-        if(guilddatabase.theme!="default"){
-            theme=guilddatabase.theme
-        }
-        sendMessage(channel,theme)
+        await sendMessage(channel,user)
     }
 })
 
-function sendMessage(channel,theme){
-    readTemplateFile('./themes/'+theme+'/templates/print_stop.html',async function (err,templatefile){
-        if(err){
-            channel.send("The File `templates/print_stop.html` \ncouldn't be found in the Theme:\n`"+theme+"`")
-            return
-        }
-        template=templatefile
-        template = await fetcher.retrieveWebcam(template)
-        template = await fetcher.retrieveThumbnail(template)
-        template = await fetcher.retrieveOverlay(template,theme)
-        template = await fetcher.retrieveProgress(template)
-        template = await fetcher.retrieveFile(template)
-        template = await fetcher.retrieveRestTime(template)
-        template = await fetcher.retrieveTime(template)
-        template = await fetcher.retrieveKlipperVersion(template)
-        await fetcher.sendTemplate(template,channel)
-    });
+async function sendMessage(channel,user){
+    var snapshot = await webcamUtil.retrieveWebcam()
+    var thumbnail = await thumbnailUtil.retrieveThumbnail()
+    var statusEmbed = new Discord.MessageEmbed()
+    .setColor('#c90000')
+    .setTitle('Print Stopped')
+    .setAuthor(variables.getPrintFile())
+    .addField('Progress',variables.getPrintProgress(),true)
+    .attachFiles([snapshot,thumbnail])
+    .setImage(url="attachment://"+snapshot.name)
+    .setThumbnail(url="attachment://"+thumbnail.name)
+    .setTimestamp()
+
+    if(user==null){
+        statusEmbed.setFooter("Automatic")
+    }else{
+        statusEmbed.setFooter(user.tag, user.avatarURL())
+    }
+
+    channel.send(statusEmbed);
 }
 module.exports = getModule;
-
-function readTemplateFile(path, callback) {
-    try {
-        fs.readFile(path, 'utf8', callback);
-    } catch (e) {
-        callback(e);
-    }
-}

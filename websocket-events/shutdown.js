@@ -1,59 +1,44 @@
 const discordDatabase = require('../discorddatabase')
-const fetcher = require('../utils/templateFetcher')
-const fs = require('fs');
-const config = require('../config.json');
+const webcamUtil = require('../utils/webcamUtil')
+const Discord = require('discord.js');
 
-var template = '';
-
-var getModule = (async function(discordClient,channel,guild){
+var getModule = (async function(discordClient,channel,guild,user){
     var database = discordDatabase.getDatabase();
-    discordClient.user.setActivity("Shutdown...",{type: "LISTENING"})
-    
+    discordClient.user.setActivity("Wait for Klipper",{type: "LISTENING"})
+     
     if(typeof channel =="undefined"){
         for(var guildid in database){
             discordClient.guilds.fetch(guildid)
-            .then(function(guild){
+            .then(async function(guild){
                 var guilddatabase = database[guild.id]
-                var theme = config.defaulttheme
-                if(guilddatabase.theme!="default"){
-                    theme=guilddatabase.theme
-                }
                 var broadcastchannels = guilddatabase.statuschannels
                 for(var index in broadcastchannels){
                     var channel = guild.channels.cache.get(broadcastchannels[index]);
-                    sendMessage(channel,theme)
+                    await sendMessage(channel,user)
                 }
             })
             .catch(console.error);
         }
     }else{
-        var guilddatabase = database[guild.id]
-        var theme = config.defaulttheme
-        if(guilddatabase.theme!="default"){
-            theme=guilddatabase.theme
-        }
-        sendMessage(channel,theme)
+        await sendMessage(channel,user)
     }
 })
 
 function sendMessage(channel,theme){
-    readTemplateFile('./themes/'+theme+'/templates/shutdown.html',async function (err,templatefile){
-        if(err){
-            channel.send("The File `templates/shutdown.html` \ncouldn't be found in the Theme:\n`"+theme+"`")
-            return
-        }
-        template=templatefile
-        template = await fetcher.retrieveWebcam(template)
-        template = await fetcher.retrieveOverlay(template,theme)
-        await fetcher.sendTemplate(template,channel)
-    });
+    var snapshot = await webcamUtil.retrieveWebcam()
+    var statusEmbed = new Discord.MessageEmbed()
+    .setColor('#c90000')
+    .setTitle('Shutdown')
+    .attachFiles(snapshot)
+    .setImage(url="attachment://"+snapshot.name)
+    .setTimestamp()
+
+    if(user==null){
+        statusEmbed.setFooter("Automatic")
+    }else{
+        statusEmbed.setFooter(user.tag, user.avatarURL())
+    }
+
+    channel.send(statusEmbed);
 }
 module.exports = getModule;
-
-function readTemplateFile(path, callback) {
-    try {
-        fs.readFile(path, 'utf8', callback);
-    } catch (e) {
-        callback(e);
-    }
-}
