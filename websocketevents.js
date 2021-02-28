@@ -85,6 +85,7 @@ var getModule = (function(client,discordClient){
                     if(JSON.stringify(result).includes("temperature")){
                         temps=result
                     }
+                    console.log(result)
                     if(typeof(result.version_info)!="undefined"){
                         printerversions=result.version_info
                     }
