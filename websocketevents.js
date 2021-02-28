@@ -1,5 +1,6 @@
 const config = require('./config.json');
 const discordDataBase = require('./discorddatabase')
+const imageToBase64 = require('image-to-base64');
 
 var status = 'unknown'
 var oldStatus = 'unknown'
@@ -233,9 +234,14 @@ module.exports.triggerStatusUpdate = function(discordClient,channel,guild,user){
     triggerStatusUpdate(discordClient,channel,guild,user);
 }
 
-module.exports.triggerDevStatusUpdate = function(discordClient,channel,guild,user,devstatus){
+module.exports.triggerDevStatusUpdate = async function(discordClient,channel,guild,user,devstatus){
     console.log("Dev Status: "+devstatus)
     var event = require('./websocket-events/'+devstatus);
+    thumbnails=await imageToBase64("../logo.png")
+    printtime="1h30min"
+    restprinttime="1h10min"
+    printprogress="55"
+    printfile="a_super_long_ultra_long_gcode_name.gcode"
     setTimeout(()=>{
         event(discordClient,channel,guild,user)
     },1000)

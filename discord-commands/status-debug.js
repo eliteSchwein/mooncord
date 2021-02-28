@@ -3,7 +3,7 @@ const admin = true
 const master = false
 const discordDatabase = require('../discorddatabase')
 const websocketevents = require('../websocketevents')
-var executeCommand = (function(command,channel,user,guild,discordClient,websocketConnection){
+var executeCommand = (async function(command,channel,user,guild,discordClient,websocketConnection){
     var args = command.split(" ")
     args.shift()
     if(args.length==0){
@@ -11,7 +11,7 @@ var executeCommand = (function(command,channel,user,guild,discordClient,websocke
         return;
     }
     channel.startTyping();
-    websocketevents.triggerDevStatusUpdate(discordClient,channel,guild,user,args[0])
+    await websocketevents.triggerDevStatusUpdate(discordClient,channel,guild,user,args[0])
     channel.stopTyping();
 })
 module.exports = executeCommand;
