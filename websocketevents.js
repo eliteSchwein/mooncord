@@ -26,11 +26,10 @@ var getModule = (function(client,discordClient){
             id = Math.floor(Math.random() * 10000) + 1
             if (message.type === 'utf8') {
                 var messageJson = JSON.parse(message.utf8Data)
-                console.log(messageJson)
                 var methode = messageJson.method
                 var result = messageJson.result
-                if(typeof(messageJson.version_info)!="undefined"){
-                    printerversions=messageJson.version_info
+                if(typeof(result.version_info)!="undefined"){
+                    printerversions=result.version_info
                 }
                 if(methode=="notify_klippy_disconnected"){
                     status="disconnected"
@@ -206,7 +205,7 @@ var getModule = (function(client,discordClient){
             connection.send('{"jsonrpc": "2.0", "method": "printer.info", "id": '+id+'}')
             connection.send('{"jsonrpc": "2.0", "method": "server.info", "id": '+id+'}')
             connection.send('{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "'+printfile+'"}, "id": '+id+'}')
-        },500)
+        },250)
     });
     
 })
