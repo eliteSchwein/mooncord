@@ -28,7 +28,7 @@ async function sendMessage(channel,theme){
     var snapshot = await webcamUtil.retrieveWebcam()
     var statusEmbed = new Discord.MessageEmbed()
     .setColor('#c90000')
-    .setTitle('Shutdown')
+    .setTitle('Klipper Shutdown')
     .attachFiles(snapshot)
     .setImage(url="attachment://"+snapshot.name)
     .setTimestamp()
