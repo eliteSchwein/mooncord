@@ -3,8 +3,7 @@ const discordDataBase = require('./discorddatabase')
 
 var status = 'unknown'
 var oldStatus = 'unknown'
-var klipperversion = ''
-var moonrakerversion = ''
+var printerversions = ''
 var printfile = ''
 var printstartbyte = 0
 var printendbyte = 0
@@ -31,20 +30,7 @@ var getModule = (function(client,discordClient){
                 var methode = messageJson.method
                 var result = messageJson.result
                 if(typeof(messageJson.version_info)!="undefined"){
-                    var moonraker = messageJson.version_info.moonraker
-                    var klipper = messageJson.version_info.klipper
-                    moonrakerversion=moonraker.version,
-                    klipperversion=klipper.version
-                    if(moonraker.version!=moonraker.remote_version){
-                        moonrakerversion=moonraker.version+"("+moonraker.remote_version+")"
-                    }else{
-                        moonrakerversion=moonraker.version
-                    }
-                    if(klipper.version!=klipperr.remote_version){
-                        klipperversion=klipper.version+"("+klipper.remote_version+")"
-                    }else{
-                        klipperversion=klipper.version
-                    }
+                    printerversions=messageJson.version_info
                 }
                 if(methode=="notify_klippy_disconnected"){
                     status="disconnected"
@@ -275,9 +261,6 @@ module.exports.getRestPrintTime = function(){
 module.exports.getPrintTime = function(){
     return formatedprinttime
 }
-module.exports.getKlipperVersion = function(){
-    return klipperversion
-}
-module.exports.getMoonrakerVersion = function(){
-    return moonrakerversion
+module.exports.getPrinterVersions = function(){
+    return printerversions
 }

@@ -28,11 +28,10 @@ var getModule = (async function(discordClient,channel,guild,user){
 
 async function sendMessage(channel,user){
     var snapshot = await webcamUtil.retrieveWebcam()
+    channel.send(variables.getPrinterVersions())
     var statusEmbed = new Discord.MessageEmbed()
     .setColor('#0099ff')
     .setTitle('Printer Ready')
-    .addField('Klipper-Version',variables.getKlipperVersion(),true)
-    .addField('Moonraker-Version',variables.getMoonrakerVersion(),true)
     .addField('Mooncord-Version',pjson.version,true)
     .attachFiles(snapshot)
     .setImage(url="attachment://"+snapshot.name)
