@@ -6,7 +6,7 @@ const variables = require('../websocketevents')
 
 var getModule = (async function(discordClient,channel,guild,user){
     var database = discordDatabase.getDatabase();
-    discordClient.user.setActivity("Take a Break",{type: "PLAYING"})
+    discordClient.user.setActivity("take a Break",{type: "PLAYING"})
      
     if(typeof channel =="undefined"){
         for(var guildid in database){

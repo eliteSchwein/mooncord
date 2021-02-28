@@ -4,7 +4,7 @@ const Discord = require('discord.js');
 
 var getModule = (async function(discordClient,channel,guild,user){
     var database = discordDatabase.getDatabase();
-    discordClient.user.setActivity("Wait for Klipper",{type: "LISTENING"})
+    discordClient.user.setActivity("wait for Klipper",{type: "LISTENING"})
      
     if(typeof channel =="undefined"){
         for(var guildid in database){
