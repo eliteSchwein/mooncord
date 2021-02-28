@@ -236,6 +236,8 @@ module.exports.triggerStatusUpdate = function(discordClient,channel,guild,user){
 
 module.exports.updateStatus = function(newstatus){
     this.status = newstatus
+    console.log(status)
+    return newstatus
 }
 module.exports.getTemps = function(){
     return temps
