@@ -34,6 +34,8 @@ async function sendMessage(channel,user){
     .setColor('#0099ff')
     .setTitle('Printer Ready')
     .addField('Mooncord-Version',pjson.version,true)
+    .addField('Moonraker-Version',versions.moonraker.version,true)
+    .addField('Klipper',versions.klipper.version,true)
     .attachFiles(snapshot)
     .setImage(url="attachment://"+snapshot.name)
     .setTimestamp()
