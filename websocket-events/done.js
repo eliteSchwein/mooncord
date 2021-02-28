@@ -29,6 +29,7 @@ var getModule = (async function(discordClient,channel,guild,user){
 async function sendMessage(channel,user){
     var snapshot = await webcamUtil.retrieveWebcam()
     var thumbnail = await thumbnailUtil.retrieveThumbnail()
+    console.log(variables.getPrintFile())
     var statusEmbed = new Discord.MessageEmbed()
     .setColor('#25db00')
     .setTitle('Print Done')
