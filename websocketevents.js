@@ -233,8 +233,8 @@ module.exports.triggerStatusUpdate = function(discordClient,channel,guild,user){
     triggerStatusUpdate(discordClient,channel,guild,user);
 }
 
-module.exports.updateStatus = function(status){
-    this.status = status
+module.exports.updateStatus = function(newstatus){
+    this.status = newstatus
 }
 module.exports.getTemps = function(){
     return temps
