@@ -34,15 +34,15 @@ async function sendMessage(channel,user){
     var moonrakerver=moonraker.version
     var klipperver=klipper.version
     if(moonrakerver!=moonraker.remote_version){
-        moonrakerver=moonrakerver.concat("**("+moonraker.remote_version+")**")
+        moonrakerver=moonrakerver.concat(" **("+moonraker.remote_version+")**")
     }
     if(klipperver!=klipper.remote_version){
-        klipperver=klipperver.concat("**("+klipper.remote_version+")**")
+        klipperver=klipperver.concat(" **("+klipper.remote_version+")**")
     }
     var statusEmbed = new Discord.MessageEmbed()
     .setColor('#0099ff')
     .setTitle('Printer Ready')
-    .addField('Mooncord Version','**'+pjson.version+'**',true)
+    .addField('Mooncord Version',pjson.version,true)
     .addField('Moonraker Version',moonrakerver,true)
     .addField('Klipper Version',klipperver,true)
     .attachFiles(snapshot)
