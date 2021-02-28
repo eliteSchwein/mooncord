@@ -28,9 +28,6 @@ var getModule = (function(client,discordClient){
                 var messageJson = JSON.parse(message.utf8Data)
                 var methode = messageJson.method
                 var result = messageJson.result
-                if(typeof(result.version_info)!="undefined"){
-                    printerversions=result.version_info
-                }
                 if(methode=="notify_klippy_disconnected"){
                     status="disconnected"
                     if(status!=oldStatus){
@@ -87,6 +84,9 @@ var getModule = (function(client,discordClient){
                 if(typeof(result)!="undefined"){
                     if(JSON.stringify(result).includes("temperature")){
                         temps=result
+                    }
+                    if(typeof(result.version_info)!="undefined"){
+                        printerversions=result.version_info
                     }
                     if(typeof(result.klippy_state)!="undefined"){
                         status=result.klippy_state
