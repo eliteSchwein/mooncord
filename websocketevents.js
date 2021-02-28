@@ -85,7 +85,6 @@ var getModule = (function(client,discordClient){
                     if(JSON.stringify(result).includes("temperature")){
                         temps=result
                     }
-                    console.log(result.version_info)
                     if(typeof(result.version_info)!="undefined"){
                         printerversions=result.version_info
                     }
@@ -262,5 +261,6 @@ module.exports.getPrintTime = function(){
     return formatedprinttime
 }
 module.exports.getPrinterVersions = function(){
+    console.log(printerversions)
     return printerversions
 }
