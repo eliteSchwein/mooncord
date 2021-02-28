@@ -40,7 +40,7 @@ async function sendMessage(channel,user){
     .setThumbnail(url="attachment://"+thumbnail.name)
     .setTimestamp()
 
-    if(user==null){
+    if(typeof(user)=="undefined"){
         statusEmbed.setFooter("Automatic")
     }else{
         statusEmbed.setFooter(user.tag, user.avatarURL())
