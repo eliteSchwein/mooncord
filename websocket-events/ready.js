@@ -29,7 +29,7 @@ var getModule = (async function(discordClient,channel,guild,user){
 async function sendMessage(channel,user){
     var snapshot = await webcamUtil.retrieveWebcam()
     var versions = variables.getPrinterVersions()
-    channel.send(versions.moonraker)
+    console.log(versions.moonraker)
     var statusEmbed = new Discord.MessageEmbed()
     .setColor('#0099ff')
     .setTitle('Printer Ready')
