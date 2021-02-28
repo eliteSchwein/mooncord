@@ -49,9 +49,6 @@ Important Note, you need to configure both Moonraker URL's
 
 Important Note, you need to configure bottoken for the bot to work, and masterid to access all commands!
 
-* defaulttheme: global Theme for the Status Messages, your bot Admins can change the Theme per Discord Server (default: slate)
-* chromiumpath: path to your chromium binary (only needed on arm based machines otherwise just set "")
-
 Important Note, you might need to configure chromium path
 
 * statusupdateinterval: Auto Status Update per Seconds or Percent (default: 10)
@@ -81,7 +78,6 @@ Start mooncord:
          * Channel Managment Commands
          * Print Pause/Resume/Stop
          * List Print Files
-         * Theme Command
       * Bot Admin can be given per User via &#60;prefix&#62;addadmin &#60;roleORusertag&#62;, you can revoke the Bot Admin per User via &#60;prefix&#62;removeadmin &#60;roleORusertag&#62;
   * Master:
       * Can access the following Commands: 
@@ -98,6 +94,7 @@ Start mooncord:
       * resume: resume a paused Print
       * listprints: list all GCode Files
       * status: shows the current Status of the Printer
+      * temp: show current temperatures
    * Basic Commands:
       * help: shows all commands
       * info: shows informations about the bot
@@ -111,7 +108,4 @@ Start mooncord:
    * Channel Managment:
       * addchannel: add the Channel as Broadcast Channel
       * removechannel: remove the Channel as Broadcast Channel
-   * Theme:
-      * settheme: set Theme for the Discord Server
-      * testtheme: test a Theme via the Build in Webserver (experimentell!)
    
