@@ -233,6 +233,14 @@ module.exports.triggerStatusUpdate = function(discordClient,channel,guild,user){
     triggerStatusUpdate(discordClient,channel,guild,user);
 }
 
+module.exports.triggerDevStatusUpdate = function(discordClient,channel,guild,user,devstatus){
+    console.log("Dev Status: "+devstatus)
+    var event = require('./websocket-events/'+devstatus);
+    setTimeout(()=>{
+        event(discordClient,channel,guild,user)
+    },1000)
+}
+
 module.exports.updateStatus = function(newstatus){
     this.status = newstatus
 }

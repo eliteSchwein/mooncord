@@ -10,11 +10,8 @@ var executeCommand = (function(command,channel,user,guild,discordClient,websocke
         channel.send("<@"+user.id+"> Missing Arguments! Usage:\n> "+config.prefix+command+" Status")
         return;
     }
-    var oldstatus=websocketevents.getStatus()
     channel.startTyping();
-    websocketevents.updateStatus(args[0])
-    websocketevents.triggerStatusUpdate(discordClient,channel,guild,user)
-    websocketevents.updateStatus(oldstatus)
+    websocketevents.triggerDevStatusUpdate(discordClient,channel,guild,user,args[0])
     channel.stopTyping();
 })
 module.exports = executeCommand;
