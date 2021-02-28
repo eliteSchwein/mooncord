@@ -261,6 +261,5 @@ module.exports.getPrintTime = function(){
     return formatedprinttime
 }
 module.exports.getPrinterVersions = function(){
-    console.log(printerversions)
     return printerversions
 }
