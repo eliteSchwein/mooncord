@@ -27,15 +27,18 @@ var getModule = (async function(discordClient,channel,guild,user){
 })
 
 async function sendMessage(channel,user){
+    if(variables.getPrintProgress().toFixed(3)==0.000){
+        return;
+    }
     var snapshot = await webcamUtil.retrieveWebcam()
     var thumbnail = await thumbnailUtil.retrieveThumbnail()
     var statusEmbed = new Discord.MessageEmbed()
     .setColor('#0099ff')
-    .setTitle('Print Progress')
+    .setTitle('Printing')
     .setAuthor(variables.getPrintFile())
     .addField('Print Time',variables.getPrintTime(),true)
     .addField('ETA Print Time',variables.getRestPrintTime(),true)
-    .addField('Progress',variables.getPrintProgress(),true)
+    .addField('Progress',variables.getPrintProgress().toFixed(0)+"%",true)
     .attachFiles([snapshot,thumbnail])
     .setImage(url="attachment://"+snapshot.name)
     .setThumbnail(url="attachment://"+thumbnail.name)

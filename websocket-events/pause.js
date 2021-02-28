@@ -35,7 +35,7 @@ async function sendMessage(channel,user){
     .setAuthor(variables.getPrintFile())
     .addField('Print Time',variables.getPrintTime(),true)
     .addField('ETA Print Time',variables.getRestPrintTime(),true)
-    .addField('Progress',variables.getPrintProgress(),true)
+    .addField('Progress',variables.getPrintProgress().toFixed(0)+"%",true)
     .attachFiles([snapshot,thumbnail])
     .setImage(url="attachment://"+snapshot.name)
     .setThumbnail(url="attachment://"+thumbnail.name)

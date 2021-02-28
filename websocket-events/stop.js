@@ -33,7 +33,7 @@ async function sendMessage(channel,user){
     .setColor('#c90000')
     .setTitle('Print Stopped')
     .setAuthor(variables.getPrintFile())
-    .addField('Progress',variables.getPrintProgress(),true)
+    .addField('Progress',variables.getPrintProgress().toFixed(0)+"%",true)
     .attachFiles([snapshot,thumbnail])
     .setImage(url="attachment://"+snapshot.name)
     .setThumbnail(url="attachment://"+thumbnail.name)
