@@ -4,6 +4,7 @@ const discordDataBase = require('./discorddatabase')
 var status = 'unknown'
 var oldStatus = 'unknown'
 var klipperversion = ''
+var moonrakerversion = ''
 var printfile = ''
 var printstartbyte = 0
 var printendbyte = 0
@@ -29,6 +30,22 @@ var getModule = (function(client,discordClient){
                 //console.log(messageJson)
                 var methode = messageJson.method
                 var result = messageJson.result
+                if(typeof(messageJson.version_info)!="undefined"){
+                    var moonraker = messageJson.version_info.moonraker
+                    var klipper = messageJson.version_info.klipper
+                    moonrakerversion=moonraker.version,
+                    klipperversion=klipper.version
+                    if(moonraker.version!=moonraker.remote_version){
+                        moonrakerversion=moonraker.version+"("+moonraker.remote_version+")"
+                    }else{
+                        moonrakerversion=moonraker.version
+                    }
+                    if(klipper.version!=klipperr.remote_version){
+                        klipperversion=klipper.version+"("+klipper.remote_version+")"
+                    }else{
+                        klipperversion=klipper.version
+                    }
+                }
                 if(methode=="notify_klippy_disconnected"){
                     status="disconnected"
                     if(status!=oldStatus){
@@ -92,9 +109,6 @@ var getModule = (function(client,discordClient){
                             oldStatus=status
                             triggerStatusUpdate(discordClient)
                         }
-                    }
-                    if(typeof(result.software_version)!="undefined"){
-                        klipperversion=result.software_version
                     }
                     if(typeof(result.thumbnails)!="undefined"){
                         printthumbnail=result.thumbnails[1].data
@@ -204,6 +218,7 @@ var getModule = (function(client,discordClient){
             },1000)
             connection.send('{"jsonrpc": "2.0", "method": "printer.info", "id": '+id+'}')
             connection.send('{"jsonrpc": "2.0", "method": "server.info", "id": '+id+'}')
+            connection.send('{"jsonrpc": "2.0", "method": "machine.update.status", "params":{"refresh": "false"}, "id": '+id+'}')
             connection.send('{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "'+printfile+'"}, "id": '+id+'}')
         },2000)
     });
@@ -260,4 +275,7 @@ module.exports.getPrintTime = function(){
 }
 module.exports.getKlipperVersion = function(){
     return klipperversion
+}
+module.exports.getMoonrakerVersion = function(){
+    return moonrakerversion
 }

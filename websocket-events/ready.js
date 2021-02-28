@@ -2,6 +2,7 @@ const discordDatabase = require('../discorddatabase')
 const webcamUtil = require('../utils/webcamUtil')
 const Discord = require('discord.js');
 const variables = require('../websocketevents')
+const pjson = require('../package.json');
 
 var getModule = (async function(discordClient,channel,guild,user){
     var database = discordDatabase.getDatabase();
@@ -31,6 +32,8 @@ async function sendMessage(channel,user){
     .setColor('#0099ff')
     .setTitle('Printer Ready')
     .addField('Klipper-Version',variables.getKlipperVersion(),true)
+    .addField('Moonraker-Version',variables.getMoonrakerVersion(),true)
+    .addField('Mooncord-Version',pjson.version,true)
     .attachFiles(snapshot)
     .setImage(url="attachment://"+snapshot.name)
     .setTimestamp()
