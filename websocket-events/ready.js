@@ -29,13 +29,22 @@ var getModule = (async function(discordClient,channel,guild,user){
 async function sendMessage(channel,user){
     var snapshot = await webcamUtil.retrieveWebcam()
     var versions = variables.getPrinterVersions()
-    console.log(versions.moonraker.version)
+    var moonraker=versions.moonraker
+    var klipper=versions.klipper
+    var moonrakerver=moonraker.version
+    var klipperver=klipper.version
+    if(moonrakerver!=moonraker.remote_version){
+        moonrakerver=moonrakerver.concat("**("+moonraker.remote_version+")**")
+    }
+    if(klipperver!=klipper.remote_version){
+        klipperver=klipperver.concat("**("+klipper.remote_version+")**")
+    }
     var statusEmbed = new Discord.MessageEmbed()
     .setColor('#0099ff')
     .setTitle('Printer Ready')
-    .addField('Mooncord-Version',pjson.version,true)
-    .addField('Moonraker-Version',versions.moonraker.version,true)
-    .addField('Klipper',versions.klipper.version,true)
+    .addField('Mooncord Version','**'+pjson.version+'**',true)
+    .addField('Moonraker Version',moonrakerver,true)
+    .addField('Klipper Version',klipperver,true)
     .attachFiles(snapshot)
     .setImage(url="attachment://"+snapshot.name)
     .setTimestamp()
