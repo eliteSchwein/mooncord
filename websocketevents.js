@@ -206,7 +206,7 @@ var getModule = (function(client,discordClient){
             connection.send('{"jsonrpc": "2.0", "method": "printer.info", "id": '+id+'}')
             connection.send('{"jsonrpc": "2.0", "method": "server.info", "id": '+id+'}')
             connection.send('{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "'+printfile+'"}, "id": '+id+'}')
-        },500)
+        },250)
     });
     
 })
