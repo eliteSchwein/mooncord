@@ -7,11 +7,13 @@ var event = ((connection,discordClient) => {
             var messageJson = JSON.parse(message.utf8Data)
             var methode = messageJson.method
             var result = messageJson.result
-            if(methode=="notify_klippy_ready"){
-                currentStatus="ready"
-                if(variables.getStatus()!=currentStatus){
-                    variables.setStatus(currentStatus)
-                    variables.triggerStatusUpdate(discordClient)
+            if(typeof(methode)!="undefined"){
+                if(methode=="notify_klippy_ready"){
+                    currentStatus="ready"
+                    if(variables.getStatus()!=currentStatus){
+                        variables.setStatus(currentStatus)
+                        variables.triggerStatusUpdate(discordClient)
+                    }
                 }
             }
         }
