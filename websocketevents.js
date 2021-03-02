@@ -212,7 +212,7 @@ module.exports = getModule;
 
 function triggerStatusUpdate(discordClient,channel,guild,user){
     console.log("Printer Status: "+status)
-    var event = require('./websocket-events/'+status);
+    var event = require('./status-messages/'+status);
     setTimeout(()=>{
         event(discordClient,channel,guild,user)
     },1000)
