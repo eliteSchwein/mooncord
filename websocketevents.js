@@ -4,7 +4,7 @@ const variables = require("./utils/variablesUtil")
 var getModule = (function(client,discordClient){
     client.on('connect', function(connection) {
         let id = Math.floor(Math.random() * 10000) + 1
-        connection.send('{"jsonrpc": "2.0", "method": "machine.update.status", "params":{"refresh": "true"}, "id": '+id+'}')
+        connection.send('{"jsonrpc": "2.0", "method": "machine.update.status", "params":{"refresh": "false"}, "id": '+id+'}')
         connection.send('{"jsonrpc": "2.0", "method": "printer.info", "id": '+id+'}')
         connection.send('{"jsonrpc": "2.0", "method": "server.info", "id": '+id+'}')
         connection.send('{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "'+variables.getCurrentFile()+'"}, "id": '+id+'}')
