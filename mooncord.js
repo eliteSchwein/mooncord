@@ -1,5 +1,6 @@
 "use strict";
 const systemInfo = require('systeminformation');
+const variables = require('./utils/variablesUtil')
 const websocketevents = require('./websocketevents')
 const discordevents = require('./discord-events/index')
 const discordDataBase = require('./discorddatabase')
@@ -41,7 +42,7 @@ systemInfo.osInfo().then(data => {
         websocketClient.on('connectFailed', function(error) {
             console.log('Connect Error: ' + error.toString());
             console.log('Reconnect in 5 sec');
-            websocketevents.updateStatus("offline")
+            variables.updateStatus("offline")
             setTimeout(function(){
                 websocketClient.connect(config.moonrakersocketurl);
             },5000)
@@ -61,8 +62,8 @@ systemInfo.osInfo().then(data => {
             connection.on('close', function() {
                 console.log('WebSocket Connection Closed');
                 console.log('Reconnect in 5 sec');
-                websocketevents.updateStatus("offline")
-                websocketevents.triggerStatusUpdate(discordClient)
+                variables.updateStatus("offline")
+                variables.triggerStatusUpdate(discordClient)
                 reconnect=true
                 setTimeout(function(){
                     websocketClient.connect(config.moonrakersocketurl);
