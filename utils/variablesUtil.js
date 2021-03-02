@@ -84,10 +84,10 @@ module.exports.getFormatedRemainingTime = function(){
 module.exports.getVersions = function(){
     return versions
 }
-module.exports.getPrintStartByte = function(){
+module.exports.getStartByte = function(){
     return gcodestartbyte
 }
-module.exports.getPrintEndByte = function(){
+module.exports.getEndByte = function(){
     return gcodeendbyte
 }
 module.exports.getPrintTime = function(){

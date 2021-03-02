@@ -16,15 +16,15 @@ var event = ((connection,discordClient) => {
                     var klipperstatus = result.status;
                     var currentProgress = 0
                     if(typeof(klipperstatus.virtual_sdcard)!="undefined"){
-                        if (klipperstatus.virtual_sdcard.file_position <= printstartbyte){
+                        if (klipperstatus.virtual_sdcard.file_position <= variables.getStartByte()){
                             currentProgress = 0
                             variables.setProgress(currentProgress)
-                        }else if (klipperstatus.virtual_sdcard.file_position >= printendbyte){
+                        }else if (klipperstatus.virtual_sdcard.file_position >= variables.getEndByte()){
                             currentProgress = 100
                             variables.setProgress(currentProgress)
                         }else{
-                            let currentPosition = klipperstatus.virtual_sdcard.file_position - printstartbyte;
-                            let maxPosition = printendbyte - printstartbyte;
+                            let currentPosition = klipperstatus.virtual_sdcard.file_position - variables.getStartByte();
+                            let maxPosition = variables.getEndByte() - variables.getStartByte();
                             if(currentPosition > 0 && maxPosition > 0){
                                 currentProgress = (1/maxPosition*currentPosition)*100
                             }else{
