@@ -2,11 +2,11 @@ const discordDatabase = require('../discorddatabase')
 const webcamUtil = require('../utils/webcamUtil')
 const thumbnailUtil = require('../utils/thumbnailUtil')
 const Discord = require('discord.js');
-const variables = require('../websocketevents')
+const variables = require('../utils/variablesUtil')
 
 var getModule = (async function(discordClient,channel,guild,user){
     var database = discordDatabase.getDatabase();
-    discordClient.user.setActivity("start: "+variables.getPrintFile(),{type: "LISTENING"})
+    discordClient.user.setActivity("start: "+variables.getCurrentFile(),{type: "LISTENING"})
      
     if(typeof channel =="undefined"){
         for(var guildid in database){
@@ -32,8 +32,8 @@ async function sendMessage(channel,user){
     var statusEmbed = new Discord.MessageEmbed()
     .setColor('#25db00')
     .setTitle('Print Started')
-    .setAuthor(variables.getPrintFile())
-    .addField('Print Time',variables.getPrintTime(),true)
+    .setAuthor(variables.getCurrentFile())
+    .addField('Print Time',variables.getFormatedPrintTime(),true)
     .attachFiles([snapshot,thumbnail])
     .setImage(url="attachment://"+snapshot.name)
     .setThumbnail(url="attachment://"+thumbnail.name)

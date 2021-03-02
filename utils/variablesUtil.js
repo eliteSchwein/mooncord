@@ -8,6 +8,24 @@ var printprogress = 0
 var remainingprinttime = 0
 var printtime = 0
 var temps = {}
+var updatetimer = 0
+
+function triggerStatusUpdate(discordClient,channel,guild,user){
+    console.log("Printer Status: "+status)
+    var event = require('../status-messages/'+status);
+    setTimeout(()=>{
+        event(discordClient,channel,guild,user)
+    },1000)
+
+}
+
+module.exports.triggerStatusUpdate = function(discordClient,channel,guild,user){
+    triggerStatusUpdate(discordClient,channel,guild,user);
+}
+
+module.exports.setUpdateTimer = function(newupdatetimer){
+    updatetimer=newupdatetimer
+}
 
 module.exports.setTemps = function(newtemps){
     temps=newtemps
@@ -36,6 +54,12 @@ module.exports.setProgress = function(progress){
 module.exports.setRemainingTime = function(remainingtime){
     remainingprinttime=remainingtime
 }
+module.exports.setPrintTime = function(newtime){
+    printtime=newtime
+}
+module.exports.getUpdateTimer = function(){
+    return updatetimer
+}
 module.exports.getTemps = function(){
     return temps
 }
@@ -48,7 +72,7 @@ module.exports.getThumbnail = function(){
 module.exports.getCurrentFile = function(){
     return gcodefile
 }
-module.exports.getPrintProgress = function(){
+module.exports.getProgress = function(){
     return printprogress
 }
 module.exports.getRemainingTime = function(){

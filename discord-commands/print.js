@@ -4,7 +4,7 @@ const master = true
 const discordDatabase = require('../discorddatabase')
 const Discord = require('discord.js');
 const fs = require("fs");
-var variables = require("../websocketevents")
+var variables = require("../utils/variablesUtil")
 var id = Math.floor(Math.random() * 10000) + 1
 var wsConnection
 var messageChannel

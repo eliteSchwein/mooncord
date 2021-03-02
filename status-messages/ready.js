@@ -1,7 +1,7 @@
 const discordDatabase = require('../discorddatabase')
 const webcamUtil = require('../utils/webcamUtil')
 const Discord = require('discord.js');
-const variables = require('../websocketevents')
+const variables = require('../utils/variablesUtil')
 const pjson = require('../package.json');
 
 var getModule = (async function(discordClient,channel,guild,user){
@@ -28,7 +28,7 @@ var getModule = (async function(discordClient,channel,guild,user){
 
 async function sendMessage(channel,user){
     var snapshot = await webcamUtil.retrieveWebcam()
-    var versions = variables.getPrinterVersions()
+    var versions = variables.getVersions()
     var moonraker=versions.moonraker
     var klipper=versions.klipper
     var moonrakerver=moonraker.version

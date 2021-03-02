@@ -2,11 +2,11 @@ const discordDatabase = require('../discorddatabase')
 const webcamUtil = require('../utils/webcamUtil')
 const thumbnailUtil = require('../utils/thumbnailUtil')
 const Discord = require('discord.js');
-const variables = require('../websocketevents')
+const variables = require('../utils/variablesUtil')
 
 var getModule = (async function(discordClient,channel,guild,user){
     var database = discordDatabase.getDatabase();
-    discordClient.user.setActivity("running Print: "+variables.getPrintProgress()+"%",{type: "WATCHING"})
+    discordClient.user.setActivity("running Print: "+variables.getProgress().toFixed(0)+"%",{type: "WATCHING"})
      
     if(typeof channel =="undefined"){
         for(var guildid in database){
@@ -27,7 +27,7 @@ var getModule = (async function(discordClient,channel,guild,user){
 })
 
 async function sendMessage(channel,user){
-    if(variables.getPrintProgress().toFixed(2)==0.00){
+    if(variables.getProgress().toFixed(2)==0.00){
         return;
     }
     var snapshot = await webcamUtil.retrieveWebcam()
@@ -35,10 +35,10 @@ async function sendMessage(channel,user){
     var statusEmbed = new Discord.MessageEmbed()
     .setColor('#0099ff')
     .setTitle('Printing')
-    .setAuthor(variables.getPrintFile())
-    .addField('Print Time',variables.getPrintTime(),true)
-    .addField('ETA Print Time',variables.getRestPrintTime(),true)
-    .addField('Progress',variables.getPrintProgress().toFixed(0)+"%",true)
+    .setAuthor(variables.getCurrentFile())
+    .addField('Print Time',variables.getFormatedPrintTime(),true)
+    .addField('ETA Print Time',variables.getFormatedRemainingTime,true)
+    .addField('Progress',variables.getProgress().toFixed(0)+"%",true)
     .attachFiles([snapshot,thumbnail])
     .setImage(url="attachment://"+snapshot.name)
     .setThumbnail(url="attachment://"+thumbnail.name)

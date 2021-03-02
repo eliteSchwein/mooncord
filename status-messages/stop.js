@@ -2,7 +2,7 @@ const discordDatabase = require('../discorddatabase')
 const webcamUtil = require('../utils/webcamUtil')
 const thumbnailUtil = require('../utils/thumbnailUtil')
 const Discord = require('discord.js');
-const variables = require('../websocketevents')
+const variables = require('../utils/variablesUtil')
 
 var getModule = (async function(discordClient,channel,guild,user){
     var database = discordDatabase.getDatabase();
@@ -32,8 +32,8 @@ async function sendMessage(channel,user){
     var statusEmbed = new Discord.MessageEmbed()
     .setColor('#c90000')
     .setTitle('Print Stopped')
-    .setAuthor(variables.getPrintFile())
-    .addField('Progress',variables.getPrintProgress().toFixed(0)+"%",true)
+    .setAuthor(variables.getCurrentFile())
+    .addField('Progress',variables.getProgress().toFixed(0)+"%",true)
     .attachFiles([snapshot,thumbnail])
     .setImage(url="attachment://"+snapshot.name)
     .setThumbnail(url="attachment://"+thumbnail.name)
