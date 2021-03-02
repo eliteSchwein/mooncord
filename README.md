@@ -1,5 +1,5 @@
 # mooncord
-a high customizable Moonraker Discord Bot
+a Moonraker Discord Bot
 
 ## Installation
 
