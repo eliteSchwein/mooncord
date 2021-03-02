@@ -3,13 +3,11 @@ const systemInfo = require('systeminformation');
 const variables = require('./utils/variablesUtil')
 const websocketevents = require('./websocketevents')
 const discordevents = require('./discord-events/index')
-const discordDataBase = require('./discorddatabase')
 const WebSocketClient = require('websocket').client;
 const pjson = require('./package.json');
 const config = require('./config.json');
 const Discord = require('discord.js');
 const discordClient = new Discord.Client();
-var websocketConnection = ""
 var reconnect = false
 
 systemInfo.osInfo().then(data => {
