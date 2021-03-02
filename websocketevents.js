@@ -1,3 +1,4 @@
+const fs = require('fs')
 const variables = require("./utils/variablesUtil")
 
 var getModule = (function(client,discordClient){
