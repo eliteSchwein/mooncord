@@ -17,7 +17,7 @@ var getModule = (function(client,discordClient){
                 connection.send('{"jsonrpc": "2.0", "method": "printer.objects.query", "params": {"objects": {"webhooks": null, "virtual_sdcard": null, "print_stats": null}}, "id": '+id+'}')
                 connection.send('{"jsonrpc": "2.0", "method": "machine.update.status", "params":{"refresh": "true"}, "id": '+id+'}')
             },1000)
-            connection.send('{"jsonrpc": "2.0", "method": "machine.update.status", "params":{"refresh": "false"}, "id": '+id+'}')
+            connection.send('{"jsonrpc": "2.0", "method": "machine.update.status", "params":{"refresh": "true"}, "id": '+id+'}')
             connection.send('{"jsonrpc": "2.0", "method": "printer.info", "id": '+id+'}')
             connection.send('{"jsonrpc": "2.0", "method": "server.info", "id": '+id+'}')
             connection.send('{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "'+variables.getCurrentFile()+'"}, "id": '+id+'}')

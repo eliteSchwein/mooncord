@@ -18,8 +18,8 @@ var event = ((connection,discordClient) => {
                         printfile=klipperstatus.print_stats.filename
                         variables.setCurrentFile(printfile)
                         var printduration = klipperstatus.print_stats.print_duration.toFixed(0)
-                        var remainingprinttime = printtime-printduration;
-                        restprinttime=formatDateTime(remainingprinttime*1000)
+                        var remainingprinttime = variables.getPrintTime()-printduration;
+                        variables.setRemainingTime(remainingprinttime)
                         if(klipperstatus.print_stats.state=="paused"){
                             currentStatus="pause";
                             if(variables.getStatus()!=currentStatus){
