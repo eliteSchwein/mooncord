@@ -10,7 +10,6 @@ async function retrieveWebcam(){
     })
     .then(
         async (response)=> {
-            console.log(response.status)
             const buffer = Buffer.from(response.data, 'base64');
             return new Discord.MessageAttachment(buffer,"snapshot.png")
         }
