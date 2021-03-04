@@ -14,7 +14,10 @@ var executeCommand = (async function(command,channel,user,guild,discordClient,we
     var cpufeedback = "**🧠 CPU:**\n"+
     "`"+cpu.physicalCores+" Cores | "+cpu.cores+" Threads`\n"+
     "`"+load.currentload.toFixed(2)+"% Usage`"
-    channel.send(cpufeedback)
+    var ramfeedback = "**📟 RAM:**\n"+
+    "`Total: "+(ram.total/(Math.pow(1024,3))).toFixed(2)+"GB `\n"+
+    "`Used: "+(ram.used/(Math.pow(1024,3))).toFixed(2)+"GB `\n"
+    channel.send(cpufeedback+"\n\n"+ramfeedback)
 })
 module.exports = executeCommand;
 module.exports.needAdmin = function(){return admin}
