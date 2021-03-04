@@ -1,6 +1,7 @@
 const imageToBase64 = require('image-to-base64');
 const config = require('../config.json');
 const Discord = require('discord.js');
+const axios = require('axios')
 const fs = require('fs').promises
 
 async function retrieveWebcam(){
