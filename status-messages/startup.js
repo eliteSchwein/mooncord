@@ -6,7 +6,7 @@ const pjson = require('../package.json');
 
 var getModule = (async function(discordClient,channel,guild,user){
     var database = discordDatabase.getDatabase();
-    discordClient.user.setActivity("Printer starting",{type: "WATCHING"})
+    discordClient.user.setActivity("Printer start",{type: "WATCHING"})
      
     if(typeof channel =="undefined"){
         for(var guildid in database){
