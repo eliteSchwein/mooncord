@@ -12,8 +12,8 @@ var executeCommand = (async function(command,channel,user,guild,discordClient,we
     const disks = await si.diskLayout()
     const partitions = await si.fsSize()
     var cpufeedback = "**🧠 CPU:**\n"+
-    "**"+cpu.physicalCores+" Cores | "+cpu.cores+" Threads**\n"+
-    "**"+load.currentload+"% Usage**"
+    "`"+cpu.physicalCores+" Cores | "+cpu.cores+" Threads`\n"+
+    "`"+load.currentload.toFixed(2)+"% Usage`"
     channel.send(cpufeedback)
 })
 module.exports = executeCommand;
