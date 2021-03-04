@@ -1,5 +1,6 @@
 const fs = require('fs')
 const variables = require("./utils/variablesUtil")
+const si = require('systeminformation');
 
 var getModule = (function(client,discordClient){
     client.on('connect', function(connection) {
@@ -16,6 +17,7 @@ var getModule = (function(client,discordClient){
                 connection.send('{"jsonrpc": "2.0", "method": "server.temperature_store", "id": '+id+'}')
                 connection.send('{"jsonrpc": "2.0", "method": "printer.objects.query", "params": {"objects": {"webhooks": null, "virtual_sdcard": null, "print_stats": null}}, "id": '+id+'}')
                 connection.send('{"jsonrpc": "2.0", "method": "machine.update.status", "params":{"refresh": "true"}, "id": '+id+'}')
+                await si.currentLoad()
             },1000)
             connection.send('{"jsonrpc": "2.0", "method": "machine.update.status", "params":{"refresh": "false"}, "id": '+id+'}')
             connection.send('{"jsonrpc": "2.0", "method": "printer.info", "id": '+id+'}')
