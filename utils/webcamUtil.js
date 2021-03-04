@@ -4,6 +4,17 @@ const Discord = require('discord.js');
 const fs = require('fs').promises
 
 async function retrieveWebcam(){
+    axios
+    .get(config.webcamsnapshotur, {
+        responseType: 'arraybuffer'
+    })
+    .then(response => {
+        console.log(response)
+        const buffer = Buffer.from(response.data, 'base64');
+    })
+    .catch(ex => {
+        console.error(ex);
+    });
     return imageToBase64(config.webcamsnapshoturl)
         .then(
             async (response)=> {
