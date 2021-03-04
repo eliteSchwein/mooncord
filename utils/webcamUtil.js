@@ -6,7 +6,7 @@ const fs = require('fs').promises
 
 async function retrieveWebcam(){
     axios
-    .get(config.webcamsnapshotur, {
+    .get(config.webcamsnapshoturl, {
         responseType: 'arraybuffer'
     })
     .then(response => {
