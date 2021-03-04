@@ -13,7 +13,7 @@ var executeCommand = (async function(command,channel,user,guild,discordClient,we
     const partitions = await si.fsSize()
     var cpufeedback = "**🧠 CPU:**\n"+
     "`Model: "+cpu.brand+" `\n"+
-    "`Manufacturer: "+cpu.vendor+" `\n"+
+    "`Manufacturer: "+cpu.manufacturer+" `\n"+
     "`"+cpu.physicalCores+" Cores | "+cpu.cores+" Threads`\n"+
     "`"+load.currentload.toFixed(2)+"% Usage`"
     var ramfeedback = "**📟 RAM:**\n"+
