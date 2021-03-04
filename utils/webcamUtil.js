@@ -16,7 +16,7 @@ async function retrieveWebcam(){
     )
     .catch(
         async (error) =>{
-            return new Discord.MessageAttachment(await fs.readFile(__dirname+"/../snapshot-error.png"),"snapshot-error.png")
+            return new Discord.MessageAttachment(await fs.readFile(__dirname+"/../images/snapshot-error.png"),"snapshot-error.png")
         }
     );
 }

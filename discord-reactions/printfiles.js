@@ -58,7 +58,7 @@ function sendPage(allFiles){
 	.setTitle('Print Files')
 	.setAuthor('Page '+(newpage+1)+'/'+maxpage)
 	.setDescription(entries)
-    .attachFiles(__dirname+"/../printlist.png")
+    .attachFiles(__dirname+"/../images/printlist.png")
     .setThumbnail(url="attachment://printlist.png")
 	.setTimestamp()
 	.setFooter(requester.tag, requester.avatarURL());
