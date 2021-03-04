@@ -33,7 +33,7 @@ systemInfo.osInfo().then(data => {
         console.log("Discordbot Connected\n");
         console.log("Name: "+discordClient.user.tag)
         console.log("Invite: https://discord.com/oauth2/authorize?client_id="+discordClient.user.id+"&scope=bot&permissions=336063568\n")
-        discordClient.user.setActivity("Starting...",{type: "COMPETING"})
+        discordClient.user.setActivity("Printer starting",{type: "WATCHING"})
 
         console.log("Connect Websocket...\n")
 
