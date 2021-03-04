@@ -32,10 +32,9 @@ var executeCommand = (async function(command,channel,user,guild,discordClient,we
             var usage = 0
             for(var partitionindex in partitions){
                 var partition = partitions[partitionindex]
-                if(disk.device=="mmcblk0"&&os.distro.includes("Raspbian")&&String(partition.fs).startsWith("/dev/root")){
-                    console.log(partition)
-
-                }
+                console.log(String(partition.fs).startsWith("/dev/root"))
+                console.log(os.distro.includes("Raspbian"))
+                console.log(disk.device=="mmcblk0")
                 if(String(partition.fs).startsWith(disk.device)||disk.device=="mmcblk0"&&os.distro.includes("Raspbian")&&String(partition.fs).startsWith("/dev/root")){
                     partitionslist=partitionslist.concat(partition.mount+" ")
                     usage=usage+partition.used
