@@ -1,33 +1,25 @@
-const imageToBase64 = require('image-to-base64');
 const config = require('../config.json');
 const Discord = require('discord.js');
 const axios = require('axios')
 const fs = require('fs').promises
 
 async function retrieveWebcam(){
-    axios
+    return axios
     .get(config.webcamsnapshoturl, {
         responseType: 'arraybuffer'
     })
-    .then(response => {
-        console.log(response.status)
-        const buffer = Buffer.from(response.data, 'base64');
-    })
-    .catch(ex => {
-        console.error(ex.response.status);
-    });
-    return imageToBase64(config.webcamsnapshoturl)
-        .then(
-            async (response)=> {
-                var buffer = new Buffer.from(response,"base64")
-                return new Discord.MessageAttachment(buffer,"snapshot.png")
-            }
-        )
-        .catch(
-            async (error) =>{
-                return new Discord.MessageAttachment(await fs.readFile(__dirname+"/../snapshot-error.png"),"snapshot-error.png")
-            }
-        )
+    .then(
+        async (response)=> {
+            console.log(response.status)
+            const buffer = Buffer.from(response.data, 'base64');
+            return new Discord.MessageAttachment(buffer,"snapshot.png")
+        }
+    )
+    .catch(
+        async (error) =>{
+            return new Discord.MessageAttachment(await fs.readFile(__dirname+"/../snapshot-error.png"),"snapshot-error.png")
+        }
+    );
 }
 
 module.exports = function(){}
