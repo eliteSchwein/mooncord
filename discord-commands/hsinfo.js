@@ -19,7 +19,7 @@ var executeCommand = (async function(command,channel,user,guild,discordClient,we
     "`Used: "+(ram.used/(Math.pow(1024,3))).toFixed(2)+"GB `\n"
     var disksfeedback = ""
     for(var disk in disks){
-        console.log(disk.device)
+        console.log(disk)
         disksfeedback=disksfeedback.concat("**💾 DISK **("+disk.device+")\n")
         disksfeedback=disksfeedback.concat("`Type: "+disk.type+"`\n")
         disksfeedback=disksfeedback.concat("`Modell: "+disk.name+"`\n")
