@@ -18,8 +18,6 @@ var executeCommand = (async function(command,channel,user,guild,discordClient,we
     "`Total: "+(ram.total/(Math.pow(1024,3))).toFixed(2)+"GB `\n"+
     "`Used: "+(ram.used/(Math.pow(1024,3))).toFixed(2)+"GB `\n"
     var disksfeedback = ""
-    
-    console.log(JSON.stringify(disks))
     for(var diskindex in disks){
         var disk = disks[diskindex]
         if(String(disk.device).includes("/dev/ram")){
@@ -29,21 +27,22 @@ var executeCommand = (async function(command,channel,user,guild,discordClient,we
             disksfeedback=disksfeedback.concat("`Type: "+disk.type+"`\n")
             disksfeedback=disksfeedback.concat("`Modell: "+disk.name+"`\n")
             disksfeedback=disksfeedback.concat("`Vendor: "+disk.vendor+"`\n")
-            disksfeedback=disksfeedback.concat("`Size: "+(disk.size/(Math.pow(1024,3)))+"`\n")
+            disksfeedback=disksfeedback.concat("`Size: "+(disk.size/(Math.pow(1024,3))).toFixed(2)+"GB`\n")
             var partitionslist = ""
             var usage = 0
             for(var partitionindex in partitions){
                 var partition = partitions[partitionindex]
+                console.log(partition)
                 if(String(partition.name).startsWith(disk.device)){
                     partitionslist=partitionslist.concat(partition.mount+" ")
                     usage=usage+partition.used
                 }
             }
-            disksfeedback=disksfeedback.concat("`Used: "+(usage/(Math.pow(1024,3)))+"`\n")
+            disksfeedback=disksfeedback.concat("`Used: "+(usage/(Math.pow(1024,3))).toFixed(2)+"GB`\n")
             disksfeedback=disksfeedback.concat("`Parititions: "+partitionslist+"`\n\n")
         }
     }
-    channel.send(cpufeedback+"\n\n"+ramfeedback+"\n\n"+disksfeedback)
+    channel.send(cpufeedback+"\n\n"+ramfeedback+"\n"+disksfeedback)
 })
 module.exports = executeCommand;
 module.exports.needAdmin = function(){return admin}
