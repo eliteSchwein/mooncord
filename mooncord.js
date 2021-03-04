@@ -22,6 +22,8 @@ systemInfo.osInfo().then(data => {
     "Author: "+pjson.author+"\n"+
     "Homepage: "+pjson.homepage+"\n"+
     "OS: "+data.platform+"\n"+
+    "Distro: "+data.distro+"\n"+
+    "Kernel: "+data.kernel+"\n"+
     "Arch: "+data.arch)
     var websocketClient = new WebSocketClient();
 
