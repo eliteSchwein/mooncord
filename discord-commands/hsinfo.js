@@ -12,6 +12,8 @@ var executeCommand = (async function(command,channel,user,guild,discordClient,we
     const disks = await si.diskLayout()
     const partitions = await si.fsSize()
     var cpufeedback = "**🧠 CPU:**\n"+
+    "`Model: "+cpu.brand+" `\n"+
+    "`Manufacturer: "+cpu.vendor+" `\n"+
     "`"+cpu.physicalCores+" Cores | "+cpu.cores+" Threads`\n"+
     "`"+load.currentload.toFixed(2)+"% Usage`"
     var ramfeedback = "**📟 RAM:**\n"+
@@ -19,9 +21,8 @@ var executeCommand = (async function(command,channel,user,guild,discordClient,we
     "`Used: "+(ram.used/(Math.pow(1024,3))).toFixed(2)+"GB `\n"
     var osfeedback = "**💻 OS:**\n"+
     "`Plattform: "+os.platform+" `\n"+
-    "`Release: "+os.release+" `\n"+
-    "`Build: "+os.codepage+" `\n"+
     "`Distro: "+os.distro+" `\n"+
+    "`Release: "+os.release+" `\n"+
     "`Kernel: "+os.kernel+" `\n"+
     "`Arch: "+os.arch+" `\n"
     var disksfeedback = ""
