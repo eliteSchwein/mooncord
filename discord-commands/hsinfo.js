@@ -27,7 +27,7 @@ var executeCommand = (async function(command,channel,user,guild,discordClient,we
         var partitionslist = ""
         var usage = 0
         for(var partition in partitions){
-            if(partition.name.startsWith(disk.device)){
+            if(String(partition.name).startsWith(disk.device)){
                 partitionslist=partitionslist.concat(partition.mount+" ")
                 usage=usage+partition.used
             }
