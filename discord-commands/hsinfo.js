@@ -33,7 +33,7 @@ var executeCommand = (async function(command,channel,user,guild,discordClient,we
             for(var partitionindex in partitions){
                 var partition = partitions[partitionindex]
                 console.log(partition)
-                if(String(partition.name).startsWith(disk.device)){
+                if(String(partition.fs).startsWith(disk.device)){
                     partitionslist=partitionslist.concat(partition.mount+" ")
                     usage=usage+partition.used
                 }
