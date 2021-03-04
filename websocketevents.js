@@ -2,8 +2,8 @@ const fs = require('fs')
 const variables = require("./utils/variablesUtil")
 const si = require('systeminformation');
 
-var getModule = (function(client,discordClient){
-    client.on('connect', function(connection) {
+var getModule = (async function(client,discordClient){
+    client.on('connect', async function(connection) {
         let id = Math.floor(Math.random() * 10000) + 1
         fs.readdir(__dirname+"/websocket-events", (err, files) => {
             files.forEach(file => {
@@ -12,8 +12,8 @@ var getModule = (function(client,discordClient){
                 event(connection,discordClient)
             });
         });
-        setTimeout(function(){
-            setInterval(function(){
+        setTimeout(async function(){
+            setInterval(async function(){
                 connection.send('{"jsonrpc": "2.0", "method": "server.temperature_store", "id": '+id+'}')
                 connection.send('{"jsonrpc": "2.0", "method": "printer.objects.query", "params": {"objects": {"webhooks": null, "virtual_sdcard": null, "print_stats": null}}, "id": '+id+'}')
                 connection.send('{"jsonrpc": "2.0", "method": "machine.update.status", "params":{"refresh": "true"}, "id": '+id+'}')
