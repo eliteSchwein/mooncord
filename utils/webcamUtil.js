@@ -14,7 +14,7 @@ async function retrieveWebcam(){
         const buffer = Buffer.from(response.data, 'base64');
     })
     .catch(ex => {
-        console.error(ex);
+        console.error(ex.response.status);
     });
     return imageToBase64(config.webcamsnapshoturl)
         .then(
