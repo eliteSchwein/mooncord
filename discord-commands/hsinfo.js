@@ -35,7 +35,7 @@ var executeCommand = (async function(command,channel,user,guild,discordClient,we
         disksfeedback=disksfeedback.concat("`Used: "+(usage/(Math.pow(1024,3)))+"`\n")
         disksfeedback=disksfeedback.concat("`Parititions: "+partitionslist+"`\n\n")
     }
-    console.log(cpufeedback+"\n\n"+ramfeedback+"\n\n"+disksfeedback)
+    console.log(disks+"\n"+partitions)
     channel.send(cpufeedback+"\n\n"+ramfeedback+"\n\n"+disksfeedback)
 })
 module.exports = executeCommand;
