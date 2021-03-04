@@ -10,7 +10,7 @@ async function retrieveWebcam(){
         responseType: 'arraybuffer'
     })
     .then(response => {
-        console.log(response)
+        console.log(response.status)
         const buffer = Buffer.from(response.data, 'base64');
     })
     .catch(ex => {
