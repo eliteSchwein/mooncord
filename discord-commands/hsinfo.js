@@ -17,6 +17,13 @@ var executeCommand = (async function(command,channel,user,guild,discordClient,we
     var ramfeedback = "**📟 RAM:**\n"+
     "`Total: "+(ram.total/(Math.pow(1024,3))).toFixed(2)+"GB `\n"+
     "`Used: "+(ram.used/(Math.pow(1024,3))).toFixed(2)+"GB `\n"
+    var osfeedback = "**💻 OS:**\n"+
+    "`Plattform: "+os.platform+" `\n"+
+    "`Release: "+os.release+" `\n"+
+    "`Build: "+os.codepage+" `\n"+
+    "`Distro: "+os.distro+" `\n"+
+    "`Kernel: "+os.kernel+" `\n"+
+    "`Arch: "+os.arch+" `\n"
     var disksfeedback = ""
     for(var diskindex in disks){
         var disk = disks[diskindex]
@@ -41,7 +48,7 @@ var executeCommand = (async function(command,channel,user,guild,discordClient,we
             disksfeedback=disksfeedback.concat("`Parititions: "+partitionslist+"`\n\n")
         }
     }
-    channel.send(cpufeedback+"\n\n"+ramfeedback+"\n"+disksfeedback)
+    channel.send(cpufeedback+"\n\n"+ramfeedback+"\n"+disksfeedback+osfeedback)
 })
 module.exports = executeCommand;
 module.exports.needAdmin = function(){return admin}
