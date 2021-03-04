@@ -29,6 +29,10 @@ function handler(message){
 }
 
 function sendPage(allFiles){
+    if(allFiles.result.length){
+        messageChannel.send("<@"+requester.id+"> There are currently no GCode aviable!")
+        return;
+    }
     var newpage = currentPage
     var maxpage = (allFiles.result.length/maxEntries).toFixed(0)
     if(pageUp){
