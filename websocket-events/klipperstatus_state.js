@@ -9,9 +9,6 @@ var event = ((connection,discordClient) => {
             var methode = messageJson.method
             var result = messageJson.result
             if(typeof(result)!="undefined"){
-                if(typeof(result.version_info)!="undefined"){
-                    variables.setVersions(result.version_info)
-                }
                 if(typeof(result.status)!="undefined"){
                     var klipperstatus = result.status;
                     if(typeof(klipperstatus.print_stats)!="undefined"){
