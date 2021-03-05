@@ -109,3 +109,7 @@ Start mooncord:
       * addchannel: add the Channel as Broadcast Channel
       * removechannel: remove the Channel as Broadcast Channel
    
+## Credit, sources and inspiration
+* [Kevin O'Connor](https://github.com/KevinOConnor) for the awesome 3D printer firmware [Klipper](https://github.com/KevinOConnor/klipper)
+* [Eric Callahan (arksine)](https://github.com/Arksine) for [Moonraker (Klipper API)](https://github.com/Arksine/moonraker). Without Moonraker, Mooncord would not be possible.
+* [Flaticon](https://www.flaticon.com): for parts of the Logo and most of the Icons
