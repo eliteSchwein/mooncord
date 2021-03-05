@@ -4,7 +4,7 @@ const Discord = require('discord.js');
 const config = require('../config.json');
 var notifyarray = []
 
-var event = ((connection,discordClient) => {
+var event = (async (connection,discordClient) => {
     connection.on('message', (message) => {
         let id = Math.floor(Math.random() * 10000) + 1;
         if (message.type === 'utf8') {
@@ -14,13 +14,13 @@ var event = ((connection,discordClient) => {
             if(typeof(result)!="undefined"){
                 if(typeof(result.version_info)!="undefined"){
                     variables.setVersions(result.version_info)
-                    for(var softwareindex in  result.version_info){
-                        var software = result.version_info[softwareindex]
-                        console.log(softwareindex)
+                    for(var software in  result.version_info){
+                        var softwareinfo = result.version_info[software]
+                        console.log(software)
                     }
                     
                     for(var guildid in database){
-                        discordClient.guilds.fetch(guildid)
+                        await discordClient.guilds.fetch(guildid)
                         .then(async function(guild){
                             var guilddatabase = database[guild.id]
                             var broadcastchannels = guilddatabase.statuschannels
