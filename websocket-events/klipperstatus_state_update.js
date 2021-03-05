@@ -2,7 +2,11 @@ const variables = require("../utils/variablesUtil")
 const database = require('../discorddatabase')
 const Discord = require('discord.js');
 const config = require('../config.json');
-var notifyarray = []
+var notifycheckarray = []
+var notifyembed = new Discord.MessageEmbed()
+.setColor('#fcf803')
+.setTitle('Systemupdates')
+.setTimestamp()
 
 var event = (async (connection,discordClient) => {
     connection.on('message', async (message) => {
@@ -14,10 +18,25 @@ var event = (async (connection,discordClient) => {
             if(typeof(result)!="undefined"){
                 if(typeof(result.version_info)!="undefined"){
                     variables.setVersions(result.version_info)
+                    var postUpdate = false
                     for(var software in  result.version_info){
                         var softwareinfo = result.version_info[software]
                         console.log(software)
                         console.log(softwareinfo)
+                        
+                        if(software=="system"&&!notifycheckarray.includes(software)){
+                            if(softwareinfo.package_count!=0){
+                                notifycheckarray.push(software)
+                                notifyembed.addField("System","Packages: "+softwareinfo.package_count,true)
+                                postUpdate=true
+                            }
+                        }else{
+                            if(softwareinfo.version!=softwareinfo.remote_version&&!notifycheckarray.includes(software)){
+                                notifycheckarray.push(software)
+                                notifyembed.addField(software,softwareinfo.version+" ▶️ "+softwareinfo.remote_version,true)
+                                postUpdate=true
+                            }
+                        }
                     }
                     
                     for(var guildid in database){
@@ -27,7 +46,7 @@ var event = (async (connection,discordClient) => {
                             var broadcastchannels = guilddatabase.statuschannels
                             for(var index in broadcastchannels){
                                 var channel = guild.channels.cache.get(broadcastchannels[index]);
-                                await sendMessage(channel,user)
+                                await sendMessage(channel)
                             }
                         })
                         .catch();
@@ -38,22 +57,7 @@ var event = (async (connection,discordClient) => {
     })
 })
 
-async function sendMessage(channel,user){
-    var snapshot = await webcamUtil.retrieveWebcam()
-    var thumbnail = await thumbnailUtil.retrieveThumbnail()
-    var statusEmbed = new Discord.MessageEmbed()
-    .setColor('#25db00')
-    .setTitle('Print Done')
-    .setAuthor(variables.getCurrentFile())
-    .addField('Print Time',variables.getFormatedPrintTime(),true)
-    .setTimestamp()
-
-    if(typeof(user)=="undefined"){
-        statusEmbed.setFooter("Automatic")
-    }else{
-        statusEmbed.setFooter(user.tag, user.avatarURL())
-    }
-
-    //channel.send(statusEmbed);
+async function sendMessage(channel){
+    channel.send(notifyembed);
 }
 module.exports = event;
