@@ -1,5 +1,5 @@
 const variables = require("../utils/variablesUtil")
-const database = require('../discorddatabase')
+const discordDatabase = require('../discorddatabase')
 const Discord = require('discord.js');
 const config = require('../config.json');
 var notifycheckarray = []
@@ -18,12 +18,10 @@ var event = (async (connection,discordClient) => {
             if(typeof(result)!="undefined"){
                 if(typeof(result.version_info)!="undefined"){
                     variables.setVersions(result.version_info)
+                    var database = discordDatabase.getDatabase();
                     var postUpdate = false
                     for(var software in  result.version_info){
                         var softwareinfo = result.version_info[software]
-                        console.log(software)
-                        console.log(softwareinfo)
-                        
                         if(software=="system"&&!notifycheckarray.includes(software)){
                             if(softwareinfo.package_count!=0){
                                 notifycheckarray.push(software)
@@ -38,18 +36,19 @@ var event = (async (connection,discordClient) => {
                             }
                         }
                     }
-                    
-                    for(var guildid in database){
-                        await discordClient.guilds.fetch(guildid)
-                        .then(async function(guild){
-                            var guilddatabase = database[guild.id]
-                            var broadcastchannels = guilddatabase.statuschannels
-                            for(var index in broadcastchannels){
-                                var channel = guild.channels.cache.get(broadcastchannels[index]);
-                                await sendMessage(channel)
-                            }
-                        })
-                        .catch();
+                    if(postUpdate){
+                        for(var guildid in database){
+                            await discordClient.guilds.fetch(guildid)
+                            .then(async function(guild){
+                                var guilddatabase = database[guild.id]
+                                var broadcastchannels = guilddatabase.statuschannels
+                                for(var index in broadcastchannels){
+                                    var channel = guild.channels.cache.get(broadcastchannels[index]);
+                                    await sendMessage(channel)
+                                }
+                            })
+                            .catch(console.error);
+                        }
                     }
                 }
             }
