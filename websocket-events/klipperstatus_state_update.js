@@ -5,7 +5,7 @@ const config = require('../config.json');
 var notifyarray = []
 
 var event = (async (connection,discordClient) => {
-    connection.on('message', (message) => {
+    connection.on('message', async (message) => {
         let id = Math.floor(Math.random() * 10000) + 1;
         if (message.type === 'utf8') {
             var messageJson = JSON.parse(message.utf8Data)
