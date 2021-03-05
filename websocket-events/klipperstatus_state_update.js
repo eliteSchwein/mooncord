@@ -17,6 +17,7 @@ var event = (async (connection,discordClient) => {
                     for(var software in  result.version_info){
                         var softwareinfo = result.version_info[software]
                         console.log(software)
+                        console.log(softwareinfo)
                     }
                     
                     for(var guildid in database){
@@ -29,7 +30,7 @@ var event = (async (connection,discordClient) => {
                                 await sendMessage(channel,user)
                             }
                         })
-                        .catch(console.error);
+                        .catch();
                     }
                 }
             }
