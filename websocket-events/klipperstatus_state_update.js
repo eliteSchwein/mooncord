@@ -1,5 +1,5 @@
 const variables = require("../utils/variablesUtil")
-const discordDatabase = require('../discorddatabase')
+const database = require('../discorddatabase')
 const Discord = require('discord.js');
 const config = require('../config.json');
 var notifyarray = []
