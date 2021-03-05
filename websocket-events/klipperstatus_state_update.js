@@ -6,6 +6,8 @@ var notifycheckarray = []
 var notifyembed = new Discord.MessageEmbed()
 .setColor('#fcf803')
 .setTitle('Systemupdates')
+.attachFiles(__dirname+"/../images/update.png")
+.setThumbnail(url="attachment://update.png")
 .setTimestamp()
 
 var event = (async (connection,discordClient) => {
