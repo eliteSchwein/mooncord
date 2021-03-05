@@ -29,7 +29,7 @@ var event = (async (connection,discordClient) => {
                                 notifycheckarray.push(software)
                                 notifyembed.addField("System","Packages: "+softwareinfo.package_count,true)
                                 postUpdate=true
-                            }else if(softwareinfo.package_count==0&&notifycheckarray.includes(software)){{
+                            }else if(softwareinfo.package_count==0&&notifycheckarray.includes(software)){
                                 for( var i = 0; i < notifycheckarray.length; i++){ 
                                     if ( notifycheckarray[i] == software) { 
                                         notifycheckarray.splice(i, 1); 
@@ -41,7 +41,7 @@ var event = (async (connection,discordClient) => {
                                 notifycheckarray.push(software)
                                 notifyembed.addField(software,softwareinfo.version+" ▶️ "+softwareinfo.remote_version,true)
                                 postUpdate=true
-                            }else if(softwareinfo.version==softwareinfo.remote_version&&notifycheckarray.includes(software)){{
+                            }else if(softwareinfo.version==softwareinfo.remote_version&&notifycheckarray.includes(software)){
                                 for( var i = 0; i < notifycheckarray.length; i++){ 
                                     if ( notifycheckarray[i] == software) { 
                                         notifycheckarray.splice(i, 1); 
