@@ -24,17 +24,29 @@ var event = (async (connection,discordClient) => {
                     var postUpdate = false
                     for(var software in  result.version_info){
                         var softwareinfo = result.version_info[software]
-                        if(software=="system"&&!notifycheckarray.includes(software)){
-                            if(softwareinfo.package_count!=0){
+                        if(software=="system"){
+                            if(softwareinfo.package_count!=0&&!notifycheckarray.includes(software)){
                                 notifycheckarray.push(software)
                                 notifyembed.addField("System","Packages: "+softwareinfo.package_count,true)
                                 postUpdate=true
+                            }else if(softwareinfo.package_count==0&&notifycheckarray.includes(software)){{
+                                for( var i = 0; i < notifycheckarray.length; i++){ 
+                                    if ( notifycheckarray[i] == software) { 
+                                        notifycheckarray.splice(i, 1); 
+                                    }
+                                }
                             }
                         }else{
                             if(softwareinfo.version!=softwareinfo.remote_version&&!notifycheckarray.includes(software)){
                                 notifycheckarray.push(software)
                                 notifyembed.addField(software,softwareinfo.version+" ▶️ "+softwareinfo.remote_version,true)
                                 postUpdate=true
+                            }else if(softwareinfo.version==softwareinfo.remote_version&&notifycheckarray.includes(software)){{
+                                for( var i = 0; i < notifycheckarray.length; i++){ 
+                                    if ( notifycheckarray[i] == software) { 
+                                        notifycheckarray.splice(i, 1); 
+                                    }
+                                }
                             }
                         }
                     }
