@@ -15,6 +15,10 @@ var event = ((connection,discordClient) => {
                 if(typeof(result.version_info)!="undefined"){
                     variables.setVersions(result.version_info)
                     console.log(result.version_info)
+                    for(var softwareindex in  result.version_info){
+                        var software = result.version_info[softwareindex]
+                        console.log(software)
+                    }
                     
                     for(var guildid in database){
                         discordClient.guilds.fetch(guildid)
