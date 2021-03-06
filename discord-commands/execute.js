@@ -22,7 +22,7 @@ var executeCommand = (function(command,channel,user,guild,discordClient,websocke
 	.setColor('#0099ff')
 	.setTitle('Execute GCode Commands')
 	.setDescription(gcodeList)
-    .attachFiles(__dirname+"/..images//execute.png")
+    .attachFiles(__dirname+"/../images/execute.png")
     .setThumbnail(url="attachment://execute.png")
 	.setTimestamp()
 	.setFooter(user.tag, user.avatarURL());
