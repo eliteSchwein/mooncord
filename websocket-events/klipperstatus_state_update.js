@@ -46,7 +46,7 @@ var event = (async (connection,discordClient) => {
                         }else{
                             if(softwareinfo.version!=softwareinfo.remote_version&&!notifycheckarray.includes(software)){
                                 notifycheckarray.push(software)
-                                notifyembed.addField(software,softwareinfo.version+" ▶️ "+softwareinfo.remote_version,true)
+                                notifyembed.addField(software,softwareinfo.version+" \n▶️ "+softwareinfo.remote_version,true)
                                 postUpdate=true
                             }else if(softwareinfo.version==softwareinfo.remote_version&&notifycheckarray.includes(software)){
                                 for( var i = 0; i < notifycheckarray.length; i++){ 
