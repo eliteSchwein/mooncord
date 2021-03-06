@@ -2,6 +2,12 @@ const variables = require("../utils/variablesUtil")
 const discordDatabase = require('../discorddatabase')
 const Discord = require('discord.js');
 const config = require('../config.json');
+var notifyembed = new Discord.MessageEmbed()
+.setColor('#fcf803')
+.setTitle('Systemupdates')
+.attachFiles(__dirname+"/../images/update.png")
+.setThumbnail(url="attachment://update.png")
+.setTimestamp()
 var notifycheckarray = []
 
 
@@ -17,7 +23,7 @@ var event = (async (connection,discordClient) => {
                     variables.setVersions(result.version_info)
                     var database = discordDatabase.getDatabase();
                     var postUpdate = false
-                    var notifyembed = new Discord.MessageEmbed()
+                    notifyembed = new Discord.MessageEmbed()
                     .setColor('#fcf803')
                     .setTitle('Systemupdates')
                     .attachFiles(__dirname+"/../images/update.png")
