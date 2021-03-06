@@ -41,7 +41,7 @@ var executeReaction = (function(message,user,guild,emote,discordClient,websocket
                         .setColor('#d60000')
                         .setTitle('Unknown GCode Commands')
                         .setDescription(gcodeList)
-                        .attachFiles(__dirname+"/../execute.png")
+                        .attachFiles(__dirname+"/../images/execute.png")
                         .setThumbnail(url="attachment://execute.png")
                         .setTimestamp()
                         .setFooter(user.tag, user.avatarURL());
@@ -57,7 +57,7 @@ var executeReaction = (function(message,user,guild,emote,discordClient,websocket
                         .setColor('#d60000')
                         .setTitle('Invalid GCode Commands')
                         .setDescription(gcodeList)
-                        .attachFiles(__dirname+"/../execute.png")
+                        .attachFiles(__dirname+"/../images/execute.png")
                         .setThumbnail(url="attachment://execute.png")
                         .setTimestamp()
                         .setFooter(user.tag, user.avatarURL());
