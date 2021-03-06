@@ -3,12 +3,7 @@ const discordDatabase = require('../discorddatabase')
 const Discord = require('discord.js');
 const config = require('../config.json');
 var notifycheckarray = []
-var notifyembed = new Discord.MessageEmbed()
-.setColor('#fcf803')
-.setTitle('Systemupdates')
-.attachFiles(__dirname+"/../images/update.png")
-.setThumbnail(url="attachment://update.png")
-.setTimestamp()
+
 
 var event = (async (connection,discordClient) => {
     connection.on('message', async (message) => {
@@ -22,6 +17,12 @@ var event = (async (connection,discordClient) => {
                     variables.setVersions(result.version_info)
                     var database = discordDatabase.getDatabase();
                     var postUpdate = false
+                    var notifyembed = new Discord.MessageEmbed()
+                    .setColor('#fcf803')
+                    .setTitle('Systemupdates')
+                    .attachFiles(__dirname+"/../images/update.png")
+                    .setThumbnail(url="attachment://update.png")
+                    .setTimestamp()
                     for(var software in  result.version_info){
                         var softwareinfo = result.version_info[software]
                         if(software=="system"){
