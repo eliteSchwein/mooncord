@@ -23,7 +23,7 @@ const executeCommand = function (command, channel, user, guild, discordClient, w
     .setTitle('Execute GCode Commands')
     .setDescription(gcodeList)
     .attachFiles(path.resolve(__dirname, '../images/execute.png'))
-    .setThumbnail(url = 'attachment://execute.png')
+    .setThumbnail('attachment://execute.png')
     .setTimestamp()
     .setFooter(user.tag, user.avatarURL())
 
