@@ -1,3 +1,5 @@
+[![Logo]()]()
+
 # mooncord
 a Moonraker Discord Bot
 
