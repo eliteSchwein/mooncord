@@ -39,7 +39,7 @@ For the older Pi's use:
 
 You need to configure the bot before you start it the first time!
 
-Explenation config.json
+Explanation config.json
 
 * moonrakersocketurl: The URL to your Moonraker Websocket URL (example: ws://127.0.0.1/websocket)
 * moonrakerurl: The URL to your Moonraker API Url (example: http://127.0.0.1)
