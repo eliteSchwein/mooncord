@@ -1,4 +1,4 @@
-[![Logo](https://github.com/eliteSchwein/mooncord/blob/main/images/logo.png)]()
+[![Logo](https://github.com/eliteSchwein/mooncord/blob/main/images/github-title.png)]()
 
 # mooncord
 a Moonraker Discord Bot
