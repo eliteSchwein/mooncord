@@ -2,6 +2,7 @@ const config = require('../config.json')
 const Discord = require('discord.js')
 const axios = require('axios')
 const fs = require('fs').promises
+const path = require('path')
 
 async function retrieveWebcam () {
   return axios
@@ -16,7 +17,9 @@ async function retrieveWebcam () {
     )
     .catch(
       async (error) => {
-        return new Discord.MessageAttachment(await fs.readFile(__dirname + '/../images/snapshot-error.png'), 'snapshot-error.png')
+        if (error) {
+          return new Discord.MessageAttachment(await fs.readFile(path.resolve(__dirname, '../images/snapshot-error.png')), 'snapshot-error.png')
+        }
       }
     )
 }
