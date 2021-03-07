@@ -1,11 +1,11 @@
 const config = require('../config.json')
 const admin = false
 const master = true
-const discordDatabase = require('../discorddatabase')
 const Discord = require('discord.js')
+const path = require('path')
 const executeCommand = function (command, channel, user, guild, discordClient, websocketConnection) {
   const args = command.split(' ')
-  if (args.length == 1) {
+  if (args.length === 1) {
     channel.send('<@' + user.id + '> Missing Arguments! Usage:\n> ' + config.prefix + command + ' Command1,Command2,...,Command20')
     return
   }
@@ -22,7 +22,7 @@ const executeCommand = function (command, channel, user, guild, discordClient, w
     .setColor('#0099ff')
     .setTitle('Execute GCode Commands')
     .setDescription(gcodeList)
-    .attachFiles(__dirname + '/../images/execute.png')
+    .attachFiles(path.resolve() + '/../images/execute.png')
     .setThumbnail(url = 'attachment://execute.png')
     .setTimestamp()
     .setFooter(user.tag, user.avatarURL())
