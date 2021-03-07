@@ -1,4 +1,4 @@
-[![Logo](https://github.com/eliteSchwein/mooncord/blob/main/images/github-title.png)]()
+(https://github.com/eliteSchwein/mooncord/blob/main/images/github-title.png)
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![Code Grade](https://www.code-inspector.com/project/19908/status/svg)](https://frontend.code-inspector.com/public/project/19908/mooncord/dashboard)
