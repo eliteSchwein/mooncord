@@ -1,68 +1,67 @@
-const variables = require("../utils/variablesUtil")
+const variables = require('../utils/variablesUtil')
 const discordDatabase = require('../discorddatabase')
-const Discord = require('discord.js');
-const config = require('../config.json');
-var notifyembed = new Discord.MessageEmbed()
-.setColor('#fcf803')
-.setTitle('Systemupdates')
-.attachFiles(__dirname+"/../images/update.png")
-.setThumbnail(url="attachment://update.png")
-.setTimestamp()
+const Discord = require('discord.js')
+const config = require('../config.json')
+let notifyembed = new Discord.MessageEmbed()
+  .setColor('#fcf803')
+  .setTitle('Systemupdates')
+  .attachFiles(__dirname + '/../images/update.png')
+  .setThumbnail(url = 'attachment://update.png')
+  .setTimestamp()
 
-
-var event = (async (connection,discordClient) => {
-    connection.on('message', async (message) => {
-        let id = Math.floor(Math.random() * 10000) + 1;
-        if (message.type === 'utf8') {
-            var messageJson = JSON.parse(message.utf8Data)
-            var methode = messageJson.method
-            var result = messageJson.result
-            if(typeof(result)!="undefined"){
-                if(typeof(result.version_info)!="undefined"){
-                    variables.setVersions(result.version_info)
-                    var database = discordDatabase.getDatabase();
-                    var postUpdate = false
-                    notifyembed = new Discord.MessageEmbed()
-                    .setColor('#fcf803')
-                    .setTitle('Systemupdates')
-                    .attachFiles(__dirname+"/../images/update.png")
-                    .setThumbnail(url="attachment://update.png")
-                    .setTimestamp()
-                    for(var software in  result.version_info){
-                        var softwareinfo = result.version_info[software]
-                        if(software=="system"){
-                            if(softwareinfo.package_count!=0){
-                                notifyembed.addField("System","Packages: "+softwareinfo.package_count,true)
-                                postUpdate=true
-                            }
-                        }else{
-                            if(softwareinfo.version!=softwareinfo.remote_version){
-                                notifyembed.addField(software,softwareinfo.version+" \n▶️ "+softwareinfo.remote_version,true)
-                                postUpdate=true
-                            }
-                        }
-                    }
-                    if(postUpdate){
-                        for(var guildid in database){
-                            await discordClient.guilds.fetch(guildid)
-                            .then(async function(guild){
-                                var guilddatabase = database[guild.id]
-                                var broadcastchannels = guilddatabase.statuschannels
-                                for(var index in broadcastchannels){
-                                    var channel = guild.channels.cache.get(broadcastchannels[index]);
-                                    await sendMessage(channel)
-                                }
-                            })
-                            .catch(console.error);
-                        }
-                    }
-                }
+const event = async (connection, discordClient) => {
+  connection.on('message', async (message) => {
+    const id = Math.floor(Math.random() * 10000) + 1
+    if (message.type === 'utf8') {
+      const messageJson = JSON.parse(message.utf8Data)
+      const methode = messageJson.method
+      const result = messageJson.result
+      if (typeof (result) !== 'undefined') {
+        if (typeof (result.version_info) !== 'undefined') {
+          variables.setVersions(result.version_info)
+          const database = discordDatabase.getDatabase()
+          let postUpdate = false
+          notifyembed = new Discord.MessageEmbed()
+            .setColor('#fcf803')
+            .setTitle('Systemupdates')
+            .attachFiles(__dirname + '/../images/update.png')
+            .setThumbnail(url = 'attachment://update.png')
+            .setTimestamp()
+          for (const software in result.version_info) {
+            const softwareinfo = result.version_info[software]
+            if (software == 'system') {
+              if (softwareinfo.package_count != 0) {
+                notifyembed.addField('System', 'Packages: ' + softwareinfo.package_count, true)
+                postUpdate = true
+              }
+            } else {
+              if (softwareinfo.version != softwareinfo.remote_version) {
+                notifyembed.addField(software, softwareinfo.version + ' \n▶️ ' + softwareinfo.remote_version, true)
+                postUpdate = true
+              }
             }
+          }
+          if (postUpdate) {
+            for (const guildid in database) {
+              await discordClient.guilds.fetch(guildid)
+                .then(async function (guild) {
+                  const guilddatabase = database[guild.id]
+                  const broadcastchannels = guilddatabase.statuschannels
+                  for (const index in broadcastchannels) {
+                    const channel = guild.channels.cache.get(broadcastchannels[index])
+                    await sendMessage(channel)
+                  }
+                })
+                .catch(console.error)
+            }
+          }
         }
-    })
-})
-
-async function sendMessage(channel){
-    channel.send(notifyembed);
+      }
+    }
+  })
 }
-module.exports = event;
+
+async function sendMessage (channel) {
+  channel.send(notifyembed)
+}
+module.exports = event

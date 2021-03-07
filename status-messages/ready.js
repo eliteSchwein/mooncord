@@ -1,60 +1,60 @@
 const discordDatabase = require('../discorddatabase')
 const webcamUtil = require('../utils/webcamUtil')
-const Discord = require('discord.js');
+const Discord = require('discord.js')
 const variables = require('../utils/variablesUtil')
-const pjson = require('../package.json');
+const pjson = require('../package.json')
 
-var getModule = (async function(discordClient,channel,guild,user){
-    var database = discordDatabase.getDatabase();
-    discordClient.user.setActivity("GCODE File...",{type: "LISTENING"})
-     
-    if(typeof channel =="undefined"){
-        for(var guildid in database){
-            discordClient.guilds.fetch(guildid)
-            .then(async function(guild){
-                var guilddatabase = database[guild.id]
-                var broadcastchannels = guilddatabase.statuschannels
-                for(var index in broadcastchannels){
-                    var channel = guild.channels.cache.get(broadcastchannels[index]);
-                    await sendMessage(channel,user)
-                }
-            })
-            .catch(console.error);
-        }
-    }else{
-        await sendMessage(channel,user)
-    }
-})
+const getModule = async function (discordClient, channel, guild, user) {
+  const database = discordDatabase.getDatabase()
+  discordClient.user.setActivity('GCODE File...', { type: 'LISTENING' })
 
-async function sendMessage(channel,user){
-    var snapshot = await webcamUtil.retrieveWebcam()
-    var versions = variables.getVersions()
-    var moonraker=versions.moonraker
-    var klipper=versions.klipper
-    var moonrakerver=moonraker.version
-    var klipperver=klipper.version
-    if(moonrakerver!=moonraker.remote_version){
-        moonrakerver=moonrakerver.concat(" **("+moonraker.remote_version+")**")
+  if (typeof channel === 'undefined') {
+    for (const guildid in database) {
+      discordClient.guilds.fetch(guildid)
+        .then(async function (guild) {
+          const guilddatabase = database[guild.id]
+          const broadcastchannels = guilddatabase.statuschannels
+          for (const index in broadcastchannels) {
+            const channel = guild.channels.cache.get(broadcastchannels[index])
+            await sendMessage(channel, user)
+          }
+        })
+        .catch(console.error)
     }
-    if(klipperver!=klipper.remote_version){
-        klipperver=klipperver.concat(" **("+klipper.remote_version+")**")
-    }
-    var statusEmbed = new Discord.MessageEmbed()
+  } else {
+    await sendMessage(channel, user)
+  }
+}
+
+async function sendMessage (channel, user) {
+  const snapshot = await webcamUtil.retrieveWebcam()
+  const versions = variables.getVersions()
+  const moonraker = versions.moonraker
+  const klipper = versions.klipper
+  let moonrakerver = moonraker.version
+  let klipperver = klipper.version
+  if (moonrakerver != moonraker.remote_version) {
+    moonrakerver = moonrakerver.concat(' **(' + moonraker.remote_version + ')**')
+  }
+  if (klipperver != klipper.remote_version) {
+    klipperver = klipperver.concat(' **(' + klipper.remote_version + ')**')
+  }
+  const statusEmbed = new Discord.MessageEmbed()
     .setColor('#0099ff')
     .setTitle('Printer Ready')
-    .addField('Mooncord Version',pjson.version,true)
-    .addField('Moonraker Version',moonrakerver,true)
-    .addField('Klipper Version',klipperver,true)
+    .addField('Mooncord Version', pjson.version, true)
+    .addField('Moonraker Version', moonrakerver, true)
+    .addField('Klipper Version', klipperver, true)
     .attachFiles(snapshot)
-    .setImage(url="attachment://"+snapshot.name)
+    .setImage(url = 'attachment://' + snapshot.name)
     .setTimestamp()
 
-    if(typeof(user)=="undefined"){
-        statusEmbed.setFooter("Automatic")
-    }else{
-        statusEmbed.setFooter(user.tag, user.avatarURL())
-    }
+  if (typeof (user) === 'undefined') {
+    statusEmbed.setFooter('Automatic')
+  } else {
+    statusEmbed.setFooter(user.tag, user.avatarURL())
+  }
 
-    channel.send(statusEmbed);
+  channel.send(statusEmbed)
 }
-module.exports = getModule;
+module.exports = getModule
