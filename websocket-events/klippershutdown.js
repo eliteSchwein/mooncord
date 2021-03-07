@@ -2,15 +2,13 @@ const variables = require('../utils/variablesUtil')
 
 const event = (connection, discordClient) => {
   connection.on('message', (message) => {
-    const id = Math.floor(Math.random() * 10000) + 1
     if (message.type === 'utf8') {
       const messageJson = JSON.parse(message.utf8Data)
       const methode = messageJson.method
-      const result = messageJson.result
       if (typeof (methode) !== 'undefined') {
-        if (methode == 'notify_klippy_shutdown') {
-          currentStatus = 'shutdown'
-          if (variables.getStatus() != currentStatus) {
+        if (methode === 'notify_klippy_shutdown') {
+          const currentStatus = 'shutdown'
+          if (variables.getStatus() !== currentStatus) {
             variables.setStatus(currentStatus)
             variables.triggerStatusUpdate(discordClient)
           }

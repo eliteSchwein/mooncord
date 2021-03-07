@@ -7,18 +7,17 @@ const event = (connection, discordClient) => {
     if (message.type === 'utf8') {
       const messageJson = JSON.parse(message.utf8Data)
       const methode = messageJson.method
-      const result = messageJson.result
       let timer
       if (typeof (methode) !== 'undefined') {
-        if (methode == 'notify_gcode_response') {
+        if (methode === 'notify_gcode_response') {
           const params = messageJson.params
           if (params[0].startsWith('File opened')) {
             const removeSize = params[0].substring(0, params[0].indexOf(' Size'))
             const removeFileTag = removeSize.substring(12)
-            printfile = removeFileTag
+            const printfile = removeFileTag
+            const currentStatus = 'start'
             connection.send('{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "' + printfile + '"}, "id": ' + id + '}')
-            currentStatus = 'start'
-            if (variables.getStatus() != currentStatus) {
+            if (variables.getStatus() !== currentStatus) {
               variables.setStatus(currentStatus)
               variables.triggerStatusUpdate(discordClient)
             }
@@ -30,9 +29,9 @@ const event = (connection, discordClient) => {
               variables.setUpdateTimer(timer)
             }
           }
-          if (params[0] == '// action:cancel') {
-            currentStatus = 'stop'
-            if (variables.getStatus() != currentStatus) {
+          if (params[0] === '// action:cancel') {
+            const currentStatus = 'stop'
+            if (variables.getStatus() !== currentStatus) {
               variables.setStatus(currentStatus)
               variables.triggerStatusUpdate(discordClient)
               clearInterval(variables.getUpdateTimer())
