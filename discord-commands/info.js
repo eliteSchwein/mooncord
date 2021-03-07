@@ -15,7 +15,7 @@ const executeCommand = function (command, channel, user, guild, discordClient, w
     .setAuthor(discordClient.user.tag, discordClient.user.avatarURL())
     .setDescription(description)
     .attachFiles(path.resolve(__dirname, '../images/logo.png'))
-    .setThumbnail(url = 'attachment://logo.png')
+    .setThumbnail('attachment://logo.png')
     .setTimestamp()
     .setFooter(user.tag, user.avatarURL())
 

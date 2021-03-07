@@ -6,14 +6,14 @@ const FormData = require('form-data')
 const fs = require('fs')
 const enableEvent = function (discordClient, websocketConnection) {
   discordClient.on('message', msg => {
-    if (msg.channel.type == 'dm') {
+    if (msg.channel.type === 'dm') {
       msg.author.send('DM is not Supportet!')
       return
     }
-    if (msg.channel.type != 'text') {
+    if (msg.channel.type !== 'text') {
       return
     }
-    if (msg.attachments.array().length == 0) {
+    if (msg.attachments.array().length === 0) {
       return
     }
     if (!msg.attachments.array()[0].name.endsWith('.gcode')) {
@@ -25,11 +25,11 @@ const enableEvent = function (discordClient, websocketConnection) {
     const database = discordDatabase.getGuildDatabase(msg.guild)
     const broadcastchannels = database.statuschannels
     for (const index in broadcastchannels) {
-      var channel = msg.guild.channels.cache.get(broadcastchannels[index])
-      if (channel == msg.channel.id) {
-        var gcodefile = msg.attachments.array()[0]
-        var formData = new FormData()
-        var tempFile = fs.createWriteStream('temp/' + gcodefile.name.replace(' ', '_'))
+      const channel = msg.guild.channels.cache.get(broadcastchannels[index])
+      if (channel === msg.channel.id) {
+        const gcodefile = msg.attachments.array()[0]
+        const formData = new FormData()
+        const tempFile = fs.createWriteStream('temp/' + gcodefile.name.replace(' ', '_'))
         tempFile.on('finish', () => {
           console.log('upload ' + gcodefile.name.replace(' ', '_'))
           formData.append('file', fs.createReadStream('temp/' + gcodefile.name.replace(' ', '_')), gcodefile.name)
@@ -44,23 +44,22 @@ const enableEvent = function (discordClient, websocketConnection) {
                 if (err) {
                   console.error(err)
                 }
-
-                // file removed
               })
             })
             .catch(error => {
-              channel.send('<@' + config.masterid + '> Please Check the Console!')
-              console.log('Upload Failed! Check your config!')
-              fs.unlink('temp/' + gcodefile.name.replace(' ', '_'), (err) => {
-                if (err) {
-                  console.error(err)
-                }
-
-                // file removed
-              })
+              if (error) {
+                console.log(error)
+                channel.send('<@' + config.masterid + '> Please Check the Console!')
+                console.log('Upload Failed! Check your config!')
+                fs.unlink('temp/' + gcodefile.name.replace(' ', '_'), (err) => {
+                  if (err) {
+                    console.error(err)
+                  }
+                })
+              }
             })
         })
-        const request = https.get(gcodefile.url, function (response) {
+        https.get(gcodefile.url, function (response) {
           response.pipe(tempFile)
         })
       }
@@ -71,7 +70,7 @@ const enableEvent = function (discordClient, websocketConnection) {
 function isAdmin (user, guild) {
   const database = discordDatabase.getGuildDatabase(guild)
   const member = guild.member(user)
-  if (user.id == config.masterid) {
+  if (user.id === config.masterid) {
     return true
   }
   if (database.adminusers.includes(user.id)) {

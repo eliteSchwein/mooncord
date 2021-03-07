@@ -12,19 +12,19 @@ function handler (messageReaction) {
     return
   }
   const message = messageReaction.message
-  if (message.author.id != dcClient.user.id) {
+  if (message.author.id !== dcClient.user.id) {
     return
   }
   const user = messageReaction.users.cache.array()[1]
   const guild = message.guild
-  if (message.embeds.length == 0) {
+  if (message.embeds.length === 0) {
     return
   }
   messageReaction.users.remove(user)
   const id = message.embeds[0].title.toLowerCase().replace(/\s/g, '')
   const reactionModule = require('../discord-reactions/' + id)
   if (reactionModule.needMaster()) {
-    if (user.id != config.masterid) {
+    if (user.id !== config.masterid) {
       message.channel.send('<@' + user.id + '> You are not allowed to execute this Action! \n> ' + message.embeds[0].title)
       return
     }
@@ -45,7 +45,7 @@ function handler (messageReaction) {
 function isAdmin (user, guild) {
   const database = discordDatabase.getGuildDatabase(guild)
   const member = guild.member(user)
-  if (user.id == config.masterid) {
+  if (user.id === config.masterid) {
     return true
   }
   if (database.adminusers.includes(user.id)) {
@@ -61,7 +61,7 @@ function isAdmin (user, guild) {
 function isAllowed (user, guild) {
   const database = discordDatabase.getGuildDatabase(guild)
   const member = guild.member(user)
-  if (database.accesseveryone == true) {
+  if (database.accesseveryone === true) {
     return true
   }
   if (isAdmin(user, guild)) {

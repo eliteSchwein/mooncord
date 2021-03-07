@@ -62,7 +62,7 @@ async function handler (message) {
       .setAuthor(file)
       .setDescription(description)
       .attachFiles(path.resolve(__dirname, '../temp/thumbnail' + file + '.png'))
-      .setThumbnail(url = 'attachment://thumbnail' + file + '.png')
+      .setThumbnail('attachment://thumbnail' + file + '.png')
       .setTimestamp()
       .setFooter(requester.tag, requester.avatarURL())
 
