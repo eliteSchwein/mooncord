@@ -24,13 +24,13 @@ const getModule = async function (discordClient, channel, guild, user) {
   }
 }
 
-async function sendMessage (channel, theme) {
+async function sendMessage (channel, user) {
   const snapshot = await webcamUtil.retrieveWebcam()
   const statusEmbed = new Discord.MessageEmbed()
     .setColor('#c90000')
     .setTitle('Klipper Shutdown')
     .attachFiles(snapshot)
-    .setImage(url = 'attachment://' + snapshot.name)
+    .setImage('attachment://' + snapshot.name)
     .setTimestamp()
 
   if (typeof (user) === 'undefined') {

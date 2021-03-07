@@ -33,10 +33,10 @@ async function sendMessage (channel, user) {
   const klipper = versions.klipper
   let moonrakerver = moonraker.version
   let klipperver = klipper.version
-  if (moonrakerver != moonraker.remote_version) {
+  if (moonrakerver !== moonraker.remote_version) {
     moonrakerver = moonrakerver.concat(' **(' + moonraker.remote_version + ')**')
   }
-  if (klipperver != klipper.remote_version) {
+  if (klipperver !== klipper.remote_version) {
     klipperver = klipperver.concat(' **(' + klipper.remote_version + ')**')
   }
   const statusEmbed = new Discord.MessageEmbed()
@@ -46,7 +46,7 @@ async function sendMessage (channel, user) {
     .addField('Moonraker Version', moonrakerver, true)
     .addField('Klipper Version', klipperver, true)
     .attachFiles(snapshot)
-    .setImage(url = 'attachment://' + snapshot.name)
+    .setImage('attachment://' + snapshot.name)
     .setTimestamp()
 
   if (typeof (user) === 'undefined') {

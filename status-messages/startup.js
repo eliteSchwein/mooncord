@@ -1,8 +1,5 @@
 const discordDatabase = require('../discorddatabase')
-const webcamUtil = require('../utils/webcamUtil')
 const Discord = require('discord.js')
-const variables = require('../utils/variablesUtil')
-const pjson = require('../package.json')
 
 const getModule = async function (discordClient, channel, guild, user) {
   const database = discordDatabase.getDatabase()

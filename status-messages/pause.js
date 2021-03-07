@@ -37,8 +37,8 @@ async function sendMessage (channel, user) {
     .addField('ETA Print Time', variables.getFormatedRemainingTime(), true)
     .addField('Progress', variables.getProgress().toFixed(0) + '%', true)
     .attachFiles([snapshot, thumbnail])
-    .setImage(url = 'attachment://' + snapshot.name)
-    .setThumbnail(url = 'attachment://' + thumbnail.name)
+    .setImage('attachment://' + snapshot.name)
+    .setThumbnail('attachment://' + thumbnail.name)
     .setTimestamp()
 
   if (typeof (user) === 'undefined') {

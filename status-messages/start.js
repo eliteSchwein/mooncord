@@ -35,8 +35,8 @@ async function sendMessage (channel, user) {
     .setAuthor(variables.getCurrentFile())
     .addField('Print Time', variables.getFormatedPrintTime(), true)
     .attachFiles([snapshot, thumbnail])
-    .setImage(url = 'attachment://' + snapshot.name)
-    .setThumbnail(url = 'attachment://' + thumbnail.name)
+    .setImage('attachment://' + snapshot.name)
+    .setThumbnail('attachment://' + thumbnail.name)
     .setTimestamp()
 
   if (typeof (user) === 'undefined') {

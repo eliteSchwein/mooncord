@@ -30,7 +30,7 @@ async function sendMessage (channel, user) {
     .setColor('#c90000')
     .setTitle('Printer Disconnected!')
     .attachFiles(snapshot)
-    .setImage(url = 'attachment://' + snapshot.name)
+    .setImage('attachment://' + snapshot.name)
     .setTimestamp()
 
   if (typeof (user) === 'undefined') {
