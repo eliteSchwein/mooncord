@@ -16,9 +16,11 @@ var getModule = (async function(client,discordClient){
             setInterval(async function(){
                 connection.send('{"jsonrpc": "2.0", "method": "server.temperature_store", "id": '+id+'}')
                 connection.send('{"jsonrpc": "2.0", "method": "printer.objects.query", "params": {"objects": {"webhooks": null, "virtual_sdcard": null, "print_stats": null}}, "id": '+id+'}')
-                connection.send('{"jsonrpc": "2.0", "method": "machine.update.status", "params":{"refresh": "true"}, "id": '+id+'}')
                 await si.currentLoad()
             },1000)
+            setInterval(async function(){
+                connection.send('{"jsonrpc": "2.0", "method": "machine.update.status", "params":{"refresh": "true"}, "id": '+id+'}')
+            },3600000)
             connection.send('{"jsonrpc": "2.0", "method": "machine.update.status", "params":{"refresh": "false"}, "id": '+id+'}')
             connection.send('{"jsonrpc": "2.0", "method": "printer.info", "id": '+id+'}')
             connection.send('{"jsonrpc": "2.0", "method": "server.info", "id": '+id+'}')

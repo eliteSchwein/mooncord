@@ -8,7 +8,6 @@ var notifyembed = new Discord.MessageEmbed()
 .attachFiles(__dirname+"/../images/update.png")
 .setThumbnail(url="attachment://update.png")
 .setTimestamp()
-var notifycheckarray = []
 
 
 var event = (async (connection,discordClient) => {
@@ -32,28 +31,14 @@ var event = (async (connection,discordClient) => {
                     for(var software in  result.version_info){
                         var softwareinfo = result.version_info[software]
                         if(software=="system"){
-                            if(softwareinfo.package_count!=0&&!notifycheckarray.includes(software)){
-                                notifycheckarray.push(software)
+                            if(softwareinfo.package_count!=0){
                                 notifyembed.addField("System","Packages: "+softwareinfo.package_count,true)
                                 postUpdate=true
-                            }else if(softwareinfo.package_count==0&&notifycheckarray.includes(software)){
-                                for( var i = 0; i < notifycheckarray.length; i++){ 
-                                    if ( notifycheckarray[i] == software) { 
-                                        notifycheckarray.splice(i, 1); 
-                                    }
-                                }
                             }
                         }else{
-                            if(softwareinfo.version!=softwareinfo.remote_version&&!notifycheckarray.includes(software)){
-                                notifycheckarray.push(software)
+                            if(softwareinfo.version!=softwareinfo.remote_version){
                                 notifyembed.addField(software,softwareinfo.version+" \n▶️ "+softwareinfo.remote_version,true)
                                 postUpdate=true
-                            }else if(softwareinfo.version==softwareinfo.remote_version&&notifycheckarray.includes(software)){
-                                for( var i = 0; i < notifycheckarray.length; i++){ 
-                                    if ( notifycheckarray[i] == software) { 
-                                        notifycheckarray.splice(i, 1); 
-                                    }
-                                }
                             }
                         }
                     }
