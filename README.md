@@ -1,6 +1,9 @@
 # mooncord
 a Moonraker Discord Bot
 
+[![Code Grade](https://www.code-inspector.com/project/19908/status/svg)](https://frontend.code-inspector.com/public/project/19908/mooncord/dashboard)
+[![Code Score](https://www.code-inspector.com/project/19908/score/svg)](https://frontend.code-inspector.com/public/project/19908/mooncord/dashboard)
+
 ## Installation
 
 Firstly make sure you've got a Bot Token, you get them here: [Tutorial](https://github.com/reactiflux/discord-irc/wiki/Creating-a-discord-bot-&-getting-a-token). 
