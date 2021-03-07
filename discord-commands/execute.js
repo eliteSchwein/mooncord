@@ -2,6 +2,7 @@ const config = require('../config.json')
 const admin = false
 const master = true
 const Discord = require('discord.js')
+const path = require('path')
 const executeCommand = function (command, channel, user, guild, discordClient, websocketConnection) {
   const args = command.split(' ')
   if (args.length === 1) {
@@ -21,7 +22,7 @@ const executeCommand = function (command, channel, user, guild, discordClient, w
     .setColor('#0099ff')
     .setTitle('Execute GCode Commands')
     .setDescription(gcodeList)
-    .attachFiles('../images/execute.png')
+    .attachFiles(path.resolve(__dirname,'/../images/execute.png'))
     .setThumbnail(url = 'attachment://execute.png')
     .setTimestamp()
     .setFooter(user.tag, user.avatarURL())
