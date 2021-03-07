@@ -1,11 +1,16 @@
 const fs = require('fs')
+const path = require('path')
 const variables = require('./utils/variablesUtil')
 const si = require('systeminformation')
 
 const getModule = async function (client, discordClient) {
   client.on('connect', async function (connection) {
     const id = Math.floor(Math.random() * 10000) + 1
-    fs.readdir(__dirname + '/websocket-events', (err, files) => {
+    fs.readdir(path.resolve(__dirname, 'websocket-events'), (err, files) => {
+      if (err) {
+        console.log(err)
+        return
+      }
       files.forEach(file => {
         delete require.cache[require.resolve('./websocket-events/' + file)]
         const event = require('./websocket-events/' + file)
