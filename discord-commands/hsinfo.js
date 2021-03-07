@@ -1,5 +1,3 @@
-const config = require('../config.json')
-const discordDatabase = require('../discorddatabase')
 const si = require('systeminformation')
 
 const admin = false
@@ -28,9 +26,7 @@ const executeCommand = async function (command, channel, user, guild, discordCli
   let disksfeedback = ''
   for (const diskindex in disks) {
     const disk = disks[diskindex]
-    if (String(disk.device).includes('/dev/ram')) {
-
-    } else {
+    if (!String(disk.device).includes('/dev/ram')) {
       disksfeedback = disksfeedback.concat('**💾 DISK **(' + disk.device + ')\n')
       disksfeedback = disksfeedback.concat('`Type: ' + disk.type + '`\n')
       disksfeedback = disksfeedback.concat('`Modell: ' + disk.name + '`\n')
@@ -40,7 +36,11 @@ const executeCommand = async function (command, channel, user, guild, discordCli
       let usage = 0
       for (const partitionindex in partitions) {
         const partition = partitions[partitionindex]
-        if (String(partition.fs).startsWith(disk.device) || String(disk.device) == '/dev/mmcblk0' && os.distro.includes('Raspbian') && String(partition.fs).startsWith('/dev/root')) {
+        if (String(partition.fs).startsWith(disk.device)) {
+          partitionslist = partitionslist.concat(partition.mount + ' ')
+          usage = usage + partition.used
+        }
+        if (String(disk.device) === '/dev/mmcblk0' && os.distro.includes('Raspbian') && String(partition.fs).startsWith('/dev/root')) {
           partitionslist = partitionslist.concat(partition.mount + ' ')
           usage = usage + partition.used
         }

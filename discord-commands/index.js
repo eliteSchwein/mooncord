@@ -1,4 +1,5 @@
 const fs = require('fs')
+const path = require('path')
 const config = require('../config.json')
 const discordDatabase = require('../discorddatabase')
 
@@ -8,7 +9,7 @@ const executeCommands = function (command, channel, user, guild, discordClient, 
     return
   }
   try {
-    if (!fs.existsSync(__dirname + '/' + command.toLowerCase().split(' ')[0] + '.js')) {
+    if (!fs.existsSync(path.resolve(__dirname, command.toLowerCase().split(' ')[0] + '.js'))) {
       channel.send('<@' + user.id + '> The following Command couldn´t be found! \n> ' + config.prefix + command.split(' ')[0] + '\n use ' + config.prefix + 'help')
       return
     }
@@ -18,7 +19,7 @@ const executeCommands = function (command, channel, user, guild, discordClient, 
   delete require.cache[require.resolve('./' + command.split(' ')[0])]
   const commandModule = require('./' + command.split(' ')[0])
   if (commandModule.needMaster()) {
-    if (user.id != config.masterid) {
+    if (user.id !== config.masterid) {
       channel.send('<@' + user.id + '> You are not allowed to execute the following Command! \n> ' + config.prefix + command.split(' ')[0])
       return
     }
@@ -40,7 +41,7 @@ module.exports = executeCommands
 function isAdmin (user, guild) {
   const database = discordDatabase.getGuildDatabase(guild)
   const member = guild.member(user)
-  if (user.id == config.masterid) {
+  if (user.id === config.masterid) {
     return true
   }
   if (database.adminusers.includes(user.id)) {
@@ -56,7 +57,7 @@ function isAdmin (user, guild) {
 function isAllowed (user, guild) {
   const database = discordDatabase.getGuildDatabase(guild)
   const member = guild.member(user)
-  if (database.accesseveryone == true) {
+  if (database.accesseveryone === true) {
     return true
   }
   if (isAdmin(user, guild)) {

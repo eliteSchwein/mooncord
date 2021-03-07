@@ -1,23 +1,21 @@
 const config = require('../config.json')
 const admin = true
 const master = false
-const discordDatabase = require('../discorddatabase')
 const Discord = require('discord.js')
 const fs = require('fs')
+const path = require('path')
 const id = Math.floor(Math.random() * 10000) + 1
 let wsConnection
 let messageChannel
 let requester
 let file
-let dcClient
 const executeCommand = async function (command, channel, user, guild, discordClient, websocketConnection) {
   requester = user
   messageChannel = channel
   wsConnection = websocketConnection
-  dcClient = discordClient
   const args = command.split(' ')
   args.shift()
-  if (args.length == 0) {
+  if (args.length === 0) {
     channel.send('<@' + user.id + '> Missing Arguments! Usage:\n> ' + config.prefix + command + ' PrintFile')
     return
   }
@@ -46,7 +44,7 @@ async function handler (message) {
   description = description.concat('Height: ' + messageJson.result.object_height + 'mm')
   if (typeof (messageJson.result.thumbnails) !== 'undefined') {
     thumbnail = messageJson.result.thumbnails[1].data
-    fs.writeFile(__dirname + '/../temp/thumbnail' + file + '.png', thumbnail, 'base64', function (err) {
+    fs.writeFile(path.resolve(__dirname + '../temp/thumbnail' + file + '.png'), thumbnail, 'base64', function (err) {
       if (err) {
         console.log(err)
 
@@ -58,7 +56,7 @@ async function handler (message) {
       .setTitle('File Informations')
       .setAuthor(file)
       .setDescription(description)
-      .attachFiles(__dirname + '/../temp/thumbnail' + file + '.png')
+      .attachFiles(path.resolve(__dirname + '../temp/thumbnail' + file + '.png'))
       .setThumbnail(url = 'attachment://thumbnail' + file + '.png')
       .setTimestamp()
       .setFooter(requester.tag, requester.avatarURL())
@@ -66,7 +64,7 @@ async function handler (message) {
     messageChannel.send(exampleEmbed)
 
     setTimeout(() => {
-      fs.unlink(__dirname + '/../temp/thumbnail' + file + '.png', (err) => {
+      fs.unlink(path.resolve(__dirname + '../temp/thumbnail' + file + '.png'), (err) => {
         if (err) {
           console.error(err)
 

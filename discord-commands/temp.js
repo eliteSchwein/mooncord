@@ -1,7 +1,5 @@
-const config = require('../config.json')
 const admin = false
 const master = false
-const discordDatabase = require('../discorddatabase')
 const variables = require('../utils/variablesUtil')
 const executeCommand = function (command, channel, user, guild, discordClient, websocketConnection) {
   let alltemps = ''

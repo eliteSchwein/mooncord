@@ -1,9 +1,7 @@
-const config = require('../config.json')
-const admin = false
+const admin = true
 const master = false
-const discordDatabase = require('../discorddatabase')
 const executeCommand = function (command, channel, user, guild, discordClient, websocketConnection) {
-  channel.send('You found the template Command Module GG')
+  channel.send('Working Soon!')
 }
 module.exports = executeCommand
 module.exports.needAdmin = function () { return admin }

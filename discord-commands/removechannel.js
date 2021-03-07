@@ -1,4 +1,3 @@
-const config = require('../config.json')
 const discordDatabase = require('../discorddatabase')
 const admin = false
 const master = true

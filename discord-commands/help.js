@@ -1,16 +1,19 @@
-const config = require('../config.json')
 const admin = false
 const master = false
-const discordDatabase = require('../discorddatabase')
 const Discord = require('discord.js')
 const fs = require('fs')
+const path = require('path')
 let commands = ''
 const executeCommand = function (command, channel, user, guild, discordClient, websocketConnection) {
   channel.startTyping()
   commands = ''
-  fs.readdir(__dirname + '/', (err, files) => {
+  fs.readdir(path.resolve(__dirname), (err, files) => {
     files.forEach(file => {
-      commands = commands.concat(' `' + file.replace('.js', '') + '`')
+      if (err) {
+        console.log(err)
+      } else {
+        commands = commands.concat(' `' + file.replace('.js', '') + '`')
+      }
     })
   })
   setTimeout(function () {

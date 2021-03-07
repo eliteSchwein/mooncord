@@ -1,10 +1,8 @@
-const config = require('../config.json')
 const admin = true
 const master = false
-const discordDatabase = require('../discorddatabase')
 const variables = require('../utils/variablesUtil')
 const executeCommand = function (command, channel, user, guild, discordClient, websocketConnection) {
-  if (variables.getStatus() != 'printing' && variables.getStatus() != 'pause') {
+  if (variables.getStatus() !== 'printing' && variables.getStatus() !== 'pause') {
     channel.send('<@' + user.id + '> the Printer isn`t currently Printing!')
     return
   }

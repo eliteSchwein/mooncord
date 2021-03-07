@@ -1,8 +1,7 @@
-const config = require('../config.json')
 const admin = true
 const master = false
-const discordDatabase = require('../discorddatabase')
 const Discord = require('discord.js')
+const path = require('path')
 const id = Math.floor(Math.random() * 10000) + 1
 let wsConnection
 let messageChannel
@@ -35,11 +34,11 @@ function sendPage (allFiles) {
   let newpage = currentPage
   const maxpage = (allFiles.result.length / maxEntries).toFixed(0)
   if (pageUp) {
-    if (currentPage != maxpage - 1) {
+    if (currentPage !== maxpage - 1) {
       newpage = currentPage + 1
     }
   } else {
-    if (currentPage != 0) {
+    if (currentPage !== 0) {
       newpage = currentPage - 1
     }
   }
@@ -54,7 +53,7 @@ function sendPage (allFiles) {
     .setTitle('Print Files')
     .setAuthor('Page ' + (newpage + 1) + '/' + maxpage)
     .setDescription(entries)
-    .attachFiles(__dirname + '/../images/printlist.png')
+    .attachFiles(path.resolve(__dirname, '../images/printlist.png'))
     .setThumbnail(url = 'attachment://printlist.png')
     .setTimestamp()
     .setFooter(requester.tag, requester.avatarURL())

@@ -1,9 +1,8 @@
-const config = require('../config.json')
 const pjson = require('../package.json')
 const admin = false
 const master = false
-const discordDatabase = require('../discorddatabase')
 const Discord = require('discord.js')
+const path = require('path')
 const executeCommand = function (command, channel, user, guild, discordClient, websocketConnection) {
   const description = '' +
     'Version: ' + pjson.version + '\n' +
@@ -15,7 +14,7 @@ const executeCommand = function (command, channel, user, guild, discordClient, w
     .setTitle('Informations')
     .setAuthor(discordClient.user.tag, discordClient.user.avatarURL())
     .setDescription(description)
-    .attachFiles(__dirname + '/../images/logo.png')
+    .attachFiles(path.resolve(__dirname, '../images/logo.png'))
     .setThumbnail(url = 'attachment://logo.png')
     .setTimestamp()
     .setFooter(user.tag, user.avatarURL())

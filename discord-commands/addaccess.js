@@ -6,7 +6,7 @@ const executeCommand = function (command, channel, user, guild, discordClient, w
   const database = discordDatabase.getGuildDatabase(guild)
   const args = command.split(' ')
   args.shift()
-  if (args.length == 0) {
+  if (args.length === 0) {
     channel.send('<@' + user.id + '> Missing Arguments! Usage:\n> ' + config.prefix + command + ' <RoleAsTag/UserAsTag>')
     return
   }
