@@ -55,6 +55,8 @@ systemInfo.osInfo().then(data => {
 
     console.log('Enable Websocket Events...\n')
 
+    websocketClient.setMaxListeners(20)
+
     websocketevents(websocketClient, discordClient)
 
     websocketClient.on('connect', (connection) => {
