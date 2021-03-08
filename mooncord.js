@@ -44,8 +44,6 @@ systemInfo.osInfo().then(data => {
 
     console.log('Connect Websocket...\n')
 
-    websocketClient.setMaxListeners(0)
-
     websocketClient.on('connectFailed', (error) => {
       console.log(`Connect Error: ${  error.toString()}`)
       console.log('Reconnect in 5 sec')
