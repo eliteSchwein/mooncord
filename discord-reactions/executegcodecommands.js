@@ -18,6 +18,7 @@ const executeReaction = function (message, user, guild, emote, discordClient, we
     invalidCommands = []
     unknownCommands = []
     gcodeCommands = message.embeds[0].description.split('`')
+    gcodeCommands.shift()
     let gcodeTimer = 0
     let gcodePosition = 0
     gcodeTimer = setInterval(() => {
