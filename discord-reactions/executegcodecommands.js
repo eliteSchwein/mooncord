@@ -2,7 +2,6 @@ const admin = false
 const master = true
 const Discord = require('discord.js')
 const path = require('path')
-const id = Math.floor(Math.random() * 10000) + 1
 let wsConnection
 let invalidCommands = []
 let unknownCommands = []
@@ -62,6 +61,7 @@ const executeReaction = function (message, user, guild, emote, discordClient, we
         clearInterval(gcodeTimer)
         return
       }
+      const id = Math.floor(Math.random() * 10000) + 1
       console.log('Execute Command [' + (gcodePosition + 1) + '] ' + gcodeCommands[gcodePosition])
       websocketConnection.send('{"jsonrpc": "2.0", "method": "printer.gcode.script", "params": {"script": "' + gcodeCommands[gcodePosition] + '"}, "id": ' + id + '}')
       websocketConnection.on('message', handler)
@@ -73,6 +73,7 @@ const executeReaction = function (message, user, guild, emote, discordClient, we
 
 function handler (message) {
   const messageJson = JSON.parse(message.utf8Data)
+  console.log(messageJson)
   if (messageJson.method === 'notify_gcode_response') {
     let command = ''
     if (messageJson.params[0].includes('Unknown command')) {
