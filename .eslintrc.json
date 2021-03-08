@@ -5,7 +5,8 @@
         "node": true
     },
     "extends": [
-        "standard"
+        "standard",
+        "galex"
     ],
     "parserOptions": {
         "ecmaVersion": 12
