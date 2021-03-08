@@ -13,5 +13,6 @@
     },
     "ignorePatterns": ["*.json","*.png","*.jpg","*.pdn","*.svg","LICENSE","README.md","PLACEHOLDER"],
     "rules": {
+        "inclusive-language/use-inclusive-words": "off"
     }
 }
