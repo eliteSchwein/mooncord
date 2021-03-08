@@ -87,8 +87,8 @@ function handler (message) {
       invalidCommands.push(command)
       wsConnection.removeListener('message', handler)
     }
+    wsConnection.removeListener('message', handler)
   }
-  wsConnection.removeListener('message', handler)
 }
 
 module.exports = executeReaction
