@@ -88,9 +88,7 @@ function handler (message) {
       wsConnection.removeListener('message', handler)
     }
   }
-  setTimeout(() => {
-    wsConnection.removeListener('message', handler)
-  }, 1000)
+  wsConnection.removeListener('message', handler)
 }
 
 module.exports = executeReaction
