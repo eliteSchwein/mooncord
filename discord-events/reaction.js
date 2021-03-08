@@ -1,5 +1,6 @@
 const config = require('../config.json')
 const discordDatabase = require('../discorddatabase')
+
 let wsConnection
 let dcClient
 const enableEvent = function (discordClient, websocketConnection) {
@@ -11,32 +12,28 @@ function handler (messageReaction) {
   if (messageReaction.me) {
     return
   }
-  const message = messageReaction.message
+  const {message} = messageReaction
   if (message.author.id !== dcClient.user.id) {
     return
   }
   const user = messageReaction.users.cache.array()[1]
-  const guild = message.guild
+  const {guild} = message
   if (message.embeds.length === 0) {
     return
   }
   messageReaction.users.remove(user)
   const id = message.embeds[0].title.toLowerCase().replace(/\s/g, '')
-  const reactionModule = require('../discord-reactions/' + id)
-  if (reactionModule.needMaster()) {
-    if (user.id !== config.masterid) {
-      message.channel.send('<@' + user.id + '> You are not allowed to execute this Action! \n> ' + message.embeds[0].title)
+  const reactionModule = require(`../discord-reactions/${  id}`)
+  if (reactionModule.needMaster() && user.id !== config.masterid) {
+      message.channel.send(`<@${  user.id  }> You are not allowed to execute this Action! \n> ${  message.embeds[0].title}`)
       return
     }
-  }
-  if (reactionModule.needAdmin()) {
-    if (!isAdmin(user, guild)) {
-      message.channel.send('<@' + user.id + '> You are not allowed to execute this Action! \n> ' + message.embeds[0].title)
+  if (reactionModule.needAdmin() && !isAdmin(user, guild)) {
+      message.channel.send(`<@${  user.id  }> You are not allowed to execute this Action! \n> ${  message.embeds[0].title}`)
       return
     }
-  }
   if (!isAllowed(user, guild)) {
-    message.channel.send('<@' + user.id + '> You are not allowed to execute this Action! \n> ' + message.embeds[0].title)
+    message.channel.send(`<@${  user.id  }> You are not allowed to execute this Action! \n> ${  message.embeds[0].title}`)
     return
   }
   reactionModule(message, user, guild, messageReaction.emoji, dcClient, wsConnection)

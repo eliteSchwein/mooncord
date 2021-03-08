@@ -1,17 +1,18 @@
-const discordDatabase = require('../discorddatabase')
-const webcamUtil = require('../utils/webcamUtil')
-const thumbnailUtil = require('../utils/thumbnailUtil')
 const Discord = require('discord.js')
+
+const discordDatabase = require('../discorddatabase')
+const thumbnailUtil = require('../utils/thumbnailUtil')
 const variables = require('../utils/variablesUtil')
+const webcamUtil = require('../utils/webcamUtil')
 
 const getModule = async function (discordClient, channel, guild, user) {
   const database = discordDatabase.getDatabase()
-  discordClient.user.setActivity('start: ' + variables.getCurrentFile(), { type: 'LISTENING' })
+  discordClient.user.setActivity(`start: ${  variables.getCurrentFile()}`, { type: 'LISTENING' })
 
   if (typeof channel === 'undefined') {
     for (const guildid in database) {
       discordClient.guilds.fetch(guildid)
-        .then(async function (guild) {
+        .then(async (guild) => {
           const guilddatabase = database[guild.id]
           const broadcastchannels = guilddatabase.statuschannels
           for (const index in broadcastchannels) {
@@ -35,8 +36,8 @@ async function sendMessage (channel, user) {
     .setAuthor(variables.getCurrentFile())
     .addField('Print Time', variables.getFormatedPrintTime(), true)
     .attachFiles([snapshot, thumbnail])
-    .setImage('attachment://' + snapshot.name)
-    .setThumbnail('attachment://' + thumbnail.name)
+    .setImage(`attachment://${  snapshot.name}`)
+    .setThumbnail(`attachment://${  thumbnail.name}`)
     .setTimestamp()
 
   if (typeof (user) === 'undefined') {

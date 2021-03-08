@@ -1,5 +1,6 @@
-const discordDatabase = require('../discorddatabase')
 const Discord = require('discord.js')
+
+const discordDatabase = require('../discorddatabase')
 
 const getModule = async function (discordClient, channel, guild, user) {
   const database = discordDatabase.getDatabase()
@@ -8,7 +9,7 @@ const getModule = async function (discordClient, channel, guild, user) {
   if (typeof channel === 'undefined') {
     for (const guildid in database) {
       discordClient.guilds.fetch(guildid)
-        .then(async function (guild) {
+        .then(async (guild) => {
           const guilddatabase = database[guild.id]
           const broadcastchannels = guilddatabase.statuschannels
           for (const index in broadcastchannels) {

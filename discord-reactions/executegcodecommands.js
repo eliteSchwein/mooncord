@@ -2,18 +2,19 @@ const admin = false
 const master = true
 const Discord = require('discord.js')
 const path = require('path')
+
 let wsConnection
 let invalidCommands = []
 let unknownCommands = []
 const executeReaction = function (message, user, guild, emote, discordClient, websocketConnection) {
   wsConnection = websocketConnection
   if (emote.name === '❌') {
-    message.channel.send('<@' + user.id + '> You cancel the GCode executions!')
+    message.channel.send(`<@${  user.id  }> You cancel the GCode executions!`)
     message.delete()
     return
   }
   if (emote.name === '✅') {
-    message.channel.send('<@' + user.id + '> The GCodes will be send to Moonraker!')
+    message.channel.send(`<@${  user.id  }> The GCodes will be send to Moonraker!`)
     let gcodeCommands = []
     invalidCommands = []
     unknownCommands = []
@@ -24,11 +25,11 @@ const executeReaction = function (message, user, guild, emote, discordClient, we
     websocketConnection.on('message', handler)
     gcodeTimer = setInterval(() => {
       if (gcodePosition === gcodeCommands.length) {
-        if (unknownCommands.length !== 0 || invalidCommands.length !== 0) {
-          if (unknownCommands.length !== 0) {
-            let gcodeList = (unknownCommands.length) + ' GCode Commands are unknown:\n\n'
+        if (unknownCommands.length > 0 || invalidCommands.length > 0) {
+          if (unknownCommands.length > 0) {
+            let gcodeList = `${unknownCommands.length  } GCode Commands are unknown:\n\n`
             for (let i = 0; i <= unknownCommands.length - 1; i++) {
-              gcodeList = gcodeList.concat('`' + unknownCommands[i] + '` ')
+              gcodeList = gcodeList.concat(`\`${  unknownCommands[i]  }\` `)
             }
             const exampleEmbed = new Discord.MessageEmbed()
               .setColor('#d60000')
@@ -41,10 +42,10 @@ const executeReaction = function (message, user, guild, emote, discordClient, we
 
             message.channel.send(exampleEmbed)
           }
-          if (invalidCommands.length !== 0) {
-            let gcodeList = (invalidCommands.length) + ' GCode Commands are invalid (with Reason):\n\n'
+          if (invalidCommands.length > 0) {
+            let gcodeList = `${invalidCommands.length  } GCode Commands are invalid (with Reason):\n\n`
             for (let i = 0; i <= invalidCommands.length - 1; i++) {
-              gcodeList = gcodeList.concat('`' + invalidCommands[i] + '` ')
+              gcodeList = gcodeList.concat(`\`${  invalidCommands[i]  }\` `)
             }
             const exampleEmbed = new Discord.MessageEmbed()
               .setColor('#d60000')
@@ -58,15 +59,15 @@ const executeReaction = function (message, user, guild, emote, discordClient, we
             message.channel.send(exampleEmbed)
           }
         } else {
-          message.channel.send('<@' + user.id + '> all GCodes Commands executed successfully!')
+          message.channel.send(`<@${  user.id  }> all GCodes Commands executed successfully!`)
         }
         wsConnection.removeListener('message', handler)
         clearInterval(gcodeTimer)
         return
       }
-      const id = Math.floor(Math.random() * 10000) + 1
-      console.log('Execute Command [' + (gcodePosition + 1) + '] ' + gcodeCommands[gcodePosition])
-      websocketConnection.send('{"jsonrpc": "2.0", "method": "printer.gcode.script", "params": {"script": "' + gcodeCommands[gcodePosition] + '"}, "id": ' + id + '}')
+      const id = Math.floor(Math.random() * 10_000) + 1
+      console.log(`Execute Command [${  gcodePosition + 1  }] ${  gcodeCommands[gcodePosition]}`)
+      websocketConnection.send(`{"jsonrpc": "2.0", "method": "printer.gcode.script", "params": {"script": "${  gcodeCommands[gcodePosition]  }"}, "id": ${  id  }}`)
       gcodePosition++
     }, 500)
     message.delete()
@@ -78,11 +79,11 @@ function handler (message) {
   if (messageJson.method === 'notify_gcode_response') {
     let command = ''
     if (messageJson.params[0].includes('Unknown command')) {
-      command = messageJson.params[0].replace('// Unknown command:', '').replace(/"/g, '')
+      command = messageJson.params[0].replace('// Unknown command:', '').replaceAll('"', '')
       unknownCommands.push(command)
     }
     if (messageJson.params[0].includes('Error')) {
-      command = messageJson.params[0].replace('!! Error on ', '').replace(/'/g, '')
+      command = messageJson.params[0].replace('!! Error on ', '').replaceAll('\'', '')
       invalidCommands.push(command)
     }
   }

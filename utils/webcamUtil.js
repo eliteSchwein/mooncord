@@ -1,6 +1,7 @@
 const config = require('../config.json')
-const Discord = require('discord.js')
+
 const axios = require('axios')
+const Discord = require('discord.js')
 const fs = require('fs').promises
 const path = require('path')
 

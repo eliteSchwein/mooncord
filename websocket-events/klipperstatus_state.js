@@ -1,13 +1,12 @@
-const variables = require('../utils/variablesUtil')
 const config = require('../config.json')
+const variables = require('../utils/variablesUtil')
 
 const event = (connection, discordClient) => {
   connection.on('message', (message) => {
     if (message.type === 'utf8') {
       const messageJson = JSON.parse(message.utf8Data)
-      const result = messageJson.result
-      if (typeof (result) !== 'undefined') {
-        if (typeof (result.status) !== 'undefined') {
+      const {result} = messageJson
+      if (typeof (result) !== 'undefined' && typeof (result.status) !== 'undefined') {
           const klipperstatus = result.status
           if (typeof (klipperstatus.print_stats) !== 'undefined') {
             const printfile = klipperstatus.print_stats.filename
@@ -23,15 +22,14 @@ const event = (connection, discordClient) => {
                 clearInterval(variables.getUpdateTimer())
               }
             }
-            if (klipperstatus.print_stats.state === 'printing') {
-              if (typeof (printfile) !== 'undefined' || printfile !== '') {
+            if (klipperstatus.print_stats.state === 'printing' && (typeof (printfile) !== 'undefined' || printfile !== '')) {
                 const currentStatus = 'printing'
                 if (variables.getStatus() !== currentStatus) {
                   variables.setStatus(currentStatus)
                   if (!config.statusupdatepercent) {
                     variables.triggerStatusUpdate(discordClient)
-                    setTimeout(function () {
-                      const timer = setInterval(function () {
+                    setTimeout(() => {
+                      const timer = setInterval(() => {
                         variables.triggerStatusUpdate(discordClient)
                       }, 1000 * config.statusupdateinterval)
                       variables.setUpdateTimer(timer)
@@ -41,24 +39,20 @@ const event = (connection, discordClient) => {
                   }
                 }
               }
-            }
-            if (klipperstatus.print_stats.state === 'complete') {
-              if (variables.getStatus() !== 'ready') {
+            if (klipperstatus.print_stats.state === 'complete' && variables.getStatus() !== 'ready') {
                 const currentStatus = 'done'
                 if (variables.getStatus() !== currentStatus) {
                   variables.setStatus(currentStatus)
                   variables.triggerStatusUpdate(discordClient)
                   clearInterval(variables.getUpdateTimer())
-                  setTimeout(function () {
+                  setTimeout(() => {
                     variables.setStatus('ready')
                     variables.triggerStatusUpdate(discordClient)
                   }, 1000)
                 }
               }
-            }
           }
         }
-      }
     }
   })
 }

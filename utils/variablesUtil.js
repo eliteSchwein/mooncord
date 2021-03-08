@@ -11,8 +11,8 @@ let temps = {}
 let updatetimer = 0
 
 function triggerStatusUpdate (discordClient, channel, guild, user) {
-  console.log('Printer Status: ' + status)
-  const event = require('../status-messages/' + status)
+  console.log(`Printer Status: ${  status}`)
+  const event = require(`../status-messages/${  status}`)
   setTimeout(() => {
     event(discordClient, channel, guild, user)
   }, 1000)
@@ -99,8 +99,8 @@ module.exports.getFormatedPrintTime = function () {
 function formatDateTime (msec) {
   const date = new Date(msec)
   let hours = date.getHours()
-  hours = hours - 1
-  const h = hours >= 10 ? hours : '0' + hours
-  const m = date.getMinutes() >= 10 ? date.getMinutes() : '0' + date.getMinutes()
-  return h + ':' + m
+  hours -= 1
+  const h = hours >= 10 ? hours : `0${  hours}`
+  const m = date.getMinutes() >= 10 ? date.getMinutes() : `0${  date.getMinutes()}`
+  return `${h  }:${  m}`
 }

@@ -1,17 +1,18 @@
-const discordDatabase = require('../discorddatabase')
-const webcamUtil = require('../utils/webcamUtil')
-const thumbnailUtil = require('../utils/thumbnailUtil')
 const Discord = require('discord.js')
+
+const discordDatabase = require('../discorddatabase')
+const thumbnailUtil = require('../utils/thumbnailUtil')
 const variables = require('../utils/variablesUtil')
+const webcamUtil = require('../utils/webcamUtil')
 
 const getModule = async function (discordClient, channel, guild, user) {
   const database = discordDatabase.getDatabase()
-  discordClient.user.setActivity('running Print: ' + variables.getProgress().toFixed(0) + '%', { type: 'WATCHING' })
+  discordClient.user.setActivity(`running Print: ${  variables.getProgress().toFixed(0)  }%`, { type: 'WATCHING' })
 
   if (typeof channel === 'undefined') {
     for (const guildid in database) {
       discordClient.guilds.fetch(guildid)
-        .then(async function (guild) {
+        .then(async (guild) => {
           const guilddatabase = database[guild.id]
           const broadcastchannels = guilddatabase.statuschannels
           for (const index in broadcastchannels) {
@@ -27,7 +28,7 @@ const getModule = async function (discordClient, channel, guild, user) {
 }
 
 async function sendMessage (channel, user) {
-  if (variables.getProgress().toFixed(2) === 0.00) {
+  if (variables.getProgress().toFixed(2) === 0) {
     return
   }
   const snapshot = await webcamUtil.retrieveWebcam()
@@ -38,10 +39,10 @@ async function sendMessage (channel, user) {
     .setAuthor(variables.getCurrentFile())
     .addField('Print Time', variables.getFormatedPrintTime(), true)
     .addField('ETA Print Time', variables.getFormatedRemainingTime, true)
-    .addField('Progress', variables.getProgress().toFixed(0) + '%', true)
+    .addField('Progress', `${variables.getProgress().toFixed(0)  }%`, true)
     .attachFiles([snapshot, thumbnail])
-    .setImage('attachment://' + snapshot.name)
-    .setThumbnail('attachment://' + thumbnail.name)
+    .setImage(`attachment://${  snapshot.name}`)
+    .setThumbnail(`attachment://${  thumbnail.name}`)
     .setTimestamp()
 
   if (typeof (user) === 'undefined') {

@@ -1,8 +1,9 @@
-const discordDatabase = require('../discorddatabase')
-const webcamUtil = require('../utils/webcamUtil')
 const Discord = require('discord.js')
-const variables = require('../utils/variablesUtil')
+
+const discordDatabase = require('../discorddatabase')
 const pjson = require('../package.json')
+const variables = require('../utils/variablesUtil')
+const webcamUtil = require('../utils/webcamUtil')
 
 const getModule = async function (discordClient, channel, guild, user) {
   const database = discordDatabase.getDatabase()
@@ -11,7 +12,7 @@ const getModule = async function (discordClient, channel, guild, user) {
   if (typeof channel === 'undefined') {
     for (const guildid in database) {
       discordClient.guilds.fetch(guildid)
-        .then(async function (guild) {
+        .then(async (guild) => {
           const guilddatabase = database[guild.id]
           const broadcastchannels = guilddatabase.statuschannels
           for (const index in broadcastchannels) {
@@ -29,15 +30,15 @@ const getModule = async function (discordClient, channel, guild, user) {
 async function sendMessage (channel, user) {
   const snapshot = await webcamUtil.retrieveWebcam()
   const versions = variables.getVersions()
-  const moonraker = versions.moonraker
-  const klipper = versions.klipper
+  const {moonraker} = versions
+  const {klipper} = versions
   let moonrakerver = moonraker.version
   let klipperver = klipper.version
   if (moonrakerver !== moonraker.remote_version) {
-    moonrakerver = moonrakerver.concat(' **(' + moonraker.remote_version + ')**')
+    moonrakerver = moonrakerver.concat(` **(${  moonraker.remote_version  })**`)
   }
   if (klipperver !== klipper.remote_version) {
-    klipperver = klipperver.concat(' **(' + klipper.remote_version + ')**')
+    klipperver = klipperver.concat(` **(${  klipper.remote_version  })**`)
   }
   const statusEmbed = new Discord.MessageEmbed()
     .setColor('#0099ff')
@@ -46,7 +47,7 @@ async function sendMessage (channel, user) {
     .addField('Moonraker Version', moonrakerver, true)
     .addField('Klipper Version', klipperver, true)
     .attachFiles(snapshot)
-    .setImage('attachment://' + snapshot.name)
+    .setImage(`attachment://${  snapshot.name}`)
     .setTimestamp()
 
   if (typeof (user) === 'undefined') {

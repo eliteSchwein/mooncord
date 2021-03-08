@@ -1,5 +1,6 @@
 const fs = require('fs')
 const path = require('path')
+
 const enableEvent = function (discordClient, websocketConnection) {
   discordClient.on('message', msg => {
     if (msg.channel.type === 'dm') {
@@ -16,10 +17,10 @@ const enableEvent = function (discordClient, websocketConnection) {
       return
     }
     const id = msg.embeds[0].title.toLowerCase().replace(/\s/g, '')
-    if (!fs.existsSync(path.resolve(__dirname, '../discord-commandreactions/' + id + '.js'))) {
+    if (!fs.existsSync(path.resolve(__dirname, `../discord-commandreactions/${  id  }.js`))) {
       return
     }
-    const emoteModule = require('../discord-commandreactions/' + id)
+    const emoteModule = require(`../discord-commandreactions/${  id}`)
     emoteModule(discordClient, websocketConnection, msg)
   })
 }

@@ -1,5 +1,6 @@
 const config = require('../config.json')
-const commandHandler = require('../discord-commands/index')
+const commandHandler = require('../discord-commands')
+
 const enableEvent = function (discordClient, websocketConnection) {
   discordClient.on('message', msg => {
     if (msg.channel.type === 'dm') {
@@ -10,7 +11,7 @@ const enableEvent = function (discordClient, websocketConnection) {
       return
     }
     if (msg.toString().startsWith(config.prefix)) {
-      commandHandler(msg.toString().substring(config.prefix.length), msg.channel, msg.author, msg.channel.guild, discordClient, websocketConnection)
+      commandHandler(msg.toString().slice(config.prefix.length), msg.channel, msg.author, msg.channel.guild, discordClient, websocketConnection)
     }
   })
 }

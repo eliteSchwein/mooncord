@@ -4,7 +4,7 @@ const event = (connection, discordClient) => {
   connection.on('message', (message) => {
     if (message.type === 'utf8') {
       const messageJson = JSON.parse(message.utf8Data)
-      const result = messageJson.result
+      const {result} = messageJson
       if (typeof (result) !== 'undefined') {
         if (typeof (result.thumbnails) !== 'undefined') {
           variables.setThumbnail(result.thumbnails[1].data)

@@ -4,7 +4,7 @@ const fs = require('fs')
 exports.getGuildDatabase = function (guild) {
   const database = require(databasepath)
   if (typeof database[guild.id] === 'undefined') {
-    console.log('No Database for ' + guild.name + ' found!\nGenerate base config!')
+    console.log(`No Database for ${  guild.name  } found!\nGenerate base config!`)
     database[guild.id] = {
       statuschannels: [],
       adminusers: [],
@@ -24,7 +24,7 @@ exports.updateDatabase = function (data, guild) {
   const database = require(databasepath)
   database[guild.id] = data
   fs.writeFile(databasepath, JSON.stringify(database), (err) => {
-    if (err) throw err
+    if (err) {throw err}
     console.log('The Database has been saved!')
   })
 }
