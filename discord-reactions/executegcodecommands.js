@@ -21,6 +21,7 @@ const executeReaction = function (message, user, guild, emote, discordClient, we
     gcodeCommands = gcodeCommands.filter(x => x.match(/[A-Za-z]/g));
     let gcodeTimer = 0
     let gcodePosition = 0
+    websocketConnection.on('message', handler)
     gcodeTimer = setInterval(() => {
       if (gcodePosition === gcodeCommands.length) {
         if (unknownCommands.length !== 0 || invalidCommands.length !== 0) {
@@ -59,13 +60,13 @@ const executeReaction = function (message, user, guild, emote, discordClient, we
         } else {
           message.channel.send('<@' + user.id + '> all GCodes Commands executed successfully!')
         }
+        wsConnection.removeListener('message', handler)
         clearInterval(gcodeTimer)
         return
       }
       const id = Math.floor(Math.random() * 10000) + 1
       console.log('Execute Command [' + (gcodePosition + 1) + '] ' + gcodeCommands[gcodePosition])
       websocketConnection.send('{"jsonrpc": "2.0", "method": "printer.gcode.script", "params": {"script": "' + gcodeCommands[gcodePosition] + '"}, "id": ' + id + '}')
-      websocketConnection.on('message', handler)
       gcodePosition++
     }, 500)
     message.delete()
@@ -80,14 +81,11 @@ function handler (message) {
     if (messageJson.params[0].includes('Unknown command')) {
       command = messageJson.params[0].replace('// Unknown command:', '').replace(/"/g, '')
       unknownCommands.push(command)
-      wsConnection.removeListener('message', handler)
     }
     if (messageJson.params[0].includes('Error')) {
       command = messageJson.params[0].replace('!! Error on ', '').replace(/'/g, '')
       invalidCommands.push(command)
-      wsConnection.removeListener('message', handler)
     }
-    wsConnection.removeListener('message', handler)
   }
 }
 
