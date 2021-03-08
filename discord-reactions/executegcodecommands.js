@@ -18,9 +18,7 @@ const executeReaction = function (message, user, guild, emote, discordClient, we
     invalidCommands = []
     unknownCommands = []
     gcodeCommands = message.embeds[0].description.split('`')
-    gcodeCommands.shift()
-    let results= gcodeCommands.filter(x => x.match(/[A-Za-z]/g));
-    console.log(results);
+    gcodeCommands = gcodeCommands.filter(x => x.match(/[A-Za-z]/g));
     let gcodeTimer = 0
     let gcodePosition = 0
     gcodeTimer = setInterval(() => {
