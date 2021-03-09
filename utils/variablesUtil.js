@@ -1,3 +1,7 @@
+const Discord = require('discord.js')
+
+const discordDatabase = require('../discorddatabase')
+
 let status = 'unknown'
 let versions = undefined
 let gcodefile = ''
@@ -20,6 +24,41 @@ function triggerStatusUpdate (discordClient, channel, guild, user) {
 
 module.exports.triggerStatusUpdate = function (discordClient, channel, guild, user) {
   triggerStatusUpdate(discordClient, channel, guild, user)
+}
+
+module.exports.getDefaultEmbed = function(user,status,color){
+  const embed = new Discord.MessageEmbed()
+  .setColor(color)
+  .setTitle(status)
+  .setTimestamp()
+
+  if (typeof (user) === 'undefined') {
+    embed.setFooter('Automatic')
+  } else {
+    embed.setFooter(user.tag, user.avatarURL())
+  }
+
+  return embed
+}
+
+module.exports.postStatus = function(discordClient, message, channel){
+  const database = discordDatabase.getDatabase()
+  if (typeof channel === 'undefined') {
+    for (const guildid in database) {
+      discordClient.guilds.fetch(guildid)
+        .then(async (guild) => {
+          const guilddatabase = database[guild.id]
+          const broadcastchannels = guilddatabase.statuschannels
+          for (const index in broadcastchannels) {
+            const channel = guild.channels.cache.get(broadcastchannels[index])
+            channel.send(message)
+          }
+        })
+        .catch(console.error)
+    }
+  } else {
+    channel.send(message)
+  }
 }
 
 module.exports.setUpdateTimer = function (newupdatetimer) {
