@@ -30,6 +30,7 @@ const event = async (message, connection, discordClient) => {
                   }
             } else {
               if (typeof(lastupdateCheck)==="undefined" || softwareinfo.version !== softwareinfo.remote_version && softwareinfo.remote_version !== lastupdateCheck[software].remote_version) {
+                    console.log(lastupdateCheck[software].remote_version)
                     notifyembed.addField(software, `${softwareinfo.version  } \n▶️ ${  softwareinfo.remote_version}`, true)
                     postUpdate = true
                   }
