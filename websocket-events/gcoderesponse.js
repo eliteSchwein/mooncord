@@ -1,5 +1,6 @@
 const config = require('../config.json')
 const variables = require('../utils/variablesUtil')
+const statusUtil = require('../utils/statusUtil')
 
 const event = (message, connection, discordClient) => {
     const id = Math.floor(Math.random() * 10_000) + 1
@@ -17,12 +18,12 @@ const event = (message, connection, discordClient) => {
             connection.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${  printfile  }"}, "id": ${  id  }}`)
             if (variables.getStatus() !== currentStatus) {
               variables.setStatus(currentStatus)
-              variables.triggerStatusUpdate(discordClient)
+              statusUtil.triggerStatusUpdate(discordClient)
             }
             variables.setStatus('printing')
             if (!config.statusupdatepercent) {
               timer = setInterval(() => {
-                variables.triggerStatusUpdate(discordClient)
+                statusUtil.triggerStatusUpdate(discordClient)
               }, 1000 * config.statusupdateinterval)
               variables.setUpdateTimer(timer)
             }
@@ -31,12 +32,12 @@ const event = (message, connection, discordClient) => {
             const currentStatus = 'stop'
             if (variables.getStatus() !== currentStatus) {
               variables.setStatus(currentStatus)
-              variables.triggerStatusUpdate(discordClient)
+              statusUtil.triggerStatusUpdate(discordClient)
               clearInterval(variables.getUpdateTimer())
             }
             setTimeout(() => {
               variables.setStatus('ready')
-              variables.triggerStatusUpdate(discordClient)
+              statusUtil.triggerStatusUpdate(discordClient)
             }, 2000)
           }
         }

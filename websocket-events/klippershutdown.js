@@ -1,4 +1,5 @@
 const variables = require('../utils/variablesUtil')
+const statusUtil = require('../utils/statusUtil')
 
 const event = (message, connection, discordClient) => {
     if (message.type === 'utf8') {
@@ -8,7 +9,7 @@ const event = (message, connection, discordClient) => {
           const currentStatus = 'shutdown'
           if (variables.getStatus() !== currentStatus) {
             variables.setStatus(currentStatus)
-            variables.triggerStatusUpdate(discordClient)
+            statusUtil.triggerStatusUpdate(discordClient)
           }
         }
     }

@@ -1,5 +1,6 @@
 const pjson = require('../package.json')
 const variables = require('../utils/variablesUtil')
+const statusUtil = require('../utils/statusUtil')
 const webcamUtil = require('../utils/webcamUtil')
 
 const getModule = async function (discordClient, channel, user) {
@@ -18,7 +19,7 @@ const getModule = async function (discordClient, channel, user) {
     klipperver = klipperver.concat(` **(${  klipper.remote_version  })**`)
   }
 
-  const statusEmbed = variables.getDefaultEmbed(user,'Printer Ready','#0099ff')
+  const statusEmbed = statusUtil.getDefaultEmbed(user,'Printer Ready','#0099ff')
   statusEmbed
     .addField('Mooncord Version', pjson.version, true)
     .addField('Moonraker Version', moonrakerver, true)
@@ -26,7 +27,7 @@ const getModule = async function (discordClient, channel, user) {
     .attachFiles(snapshot)
     .setImage(`attachment://${  snapshot.name}`)
 
-  variables.postStatus(discordClient,statusEmbed,channel)
+  statusUtil.postStatus(discordClient,statusEmbed,channel)
 }
 
 module.exports = getModule

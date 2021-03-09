@@ -1,5 +1,6 @@
 const config = require('../config.json')
 const variables = require('../utils/variablesUtil')
+const statusUtil = require('../utils/statusUtil')
 
 const event = (message, connection, discordClient) => {
     if (message.type === 'utf8') {
@@ -17,7 +18,7 @@ const event = (message, connection, discordClient) => {
               const currentStatus = 'pause'
               if (variables.getStatus() !== currentStatus) {
                 variables.setStatus(currentStatus)
-                variables.triggerStatusUpdate(discordClient)
+                statusUtil.triggerStatusUpdate(discordClient)
                 clearInterval(variables.getUpdateTimer())
               }
             }
@@ -26,15 +27,15 @@ const event = (message, connection, discordClient) => {
                 if (variables.getStatus() !== currentStatus) {
                   variables.setStatus(currentStatus)
                   if (!config.statusupdatepercent) {
-                    variables.triggerStatusUpdate(discordClient)
+                    statusUtil.triggerStatusUpdate(discordClient)
                     setTimeout(() => {
                       const timer = setInterval(() => {
-                        variables.triggerStatusUpdate(discordClient)
+                        statusUtil.triggerStatusUpdate(discordClient)
                       }, 1000 * config.statusupdateinterval)
                       variables.setUpdateTimer(timer)
                     }, 1000 * config.statusupdateinterval)
                   } else {
-                    variables.triggerStatusUpdate(discordClient)
+                    statusUtil.triggerStatusUpdate(discordClient)
                   }
                 }
               }
@@ -42,11 +43,11 @@ const event = (message, connection, discordClient) => {
                 const currentStatus = 'done'
                 if (variables.getStatus() !== currentStatus) {
                   variables.setStatus(currentStatus)
-                  variables.triggerStatusUpdate(discordClient)
+                  statusUtil.triggerStatusUpdate(discordClient)
                   clearInterval(variables.getUpdateTimer())
                   setTimeout(() => {
                     variables.setStatus('ready')
-                    variables.triggerStatusUpdate(discordClient)
+                    statusUtil.triggerStatusUpdate(discordClient)
                   }, 1000)
                 }
               }
