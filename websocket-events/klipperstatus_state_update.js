@@ -38,6 +38,7 @@ const event = async (message, connection, discordClient) => {
           }
           if (postUpdate) {
             lastupdateCheck = result.version_info
+            console.log("2 "+lastupdateCheck)
             for (const guildid in database) {
               await discordClient.guilds.fetch(guildid)
                 .then(async (guild) => {
