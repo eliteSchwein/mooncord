@@ -16,7 +16,7 @@ const getModule = async function (client, discordClient) {
         files.forEach(file => {
           delete require.cache[require.resolve(`./websocket-events/${  file}`)]
           const event = require(`./websocket-events/${  file}`)
-          event(message, discordClient)
+          event(message, connection, discordClient)
         })
       })
     })
