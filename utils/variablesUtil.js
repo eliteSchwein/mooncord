@@ -1,7 +1,3 @@
-const Discord = require('discord.js')
-
-const discordDatabase = require('../discorddatabase')
-
 let status = 'unknown'
 let versions = undefined
 let gcodefile = ''
