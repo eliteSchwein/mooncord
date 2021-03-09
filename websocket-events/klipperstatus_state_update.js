@@ -7,8 +7,7 @@ const variables = require('../utils/variablesUtil')
 let notifyembed
 let lastupdateCheck
 
-const event = async (connection, discordClient) => {
-  connection.on('message', async (message) => {
+const event = async (message, connection, discordClient) => {
     if (message.type === 'utf8') {
       const messageJson = JSON.parse(message.utf8Data)
       const {result} = messageJson
@@ -53,7 +52,6 @@ const event = async (connection, discordClient) => {
           }
         }
     }
-  })
 }
 
 async function sendMessage (channel) {
