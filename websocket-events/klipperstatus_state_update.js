@@ -22,15 +22,19 @@ const event = async (message, connection, discordClient) => {
           for (const software in result.version_info) {
             const softwareinfo = result.version_info[software]
             if (software === 'system') {
-              if (typeof(variables.getVersions()) === "undefined" || softwareinfo.package_count !== 0 && softwareinfo.package_count !== variables.getVersions()[software].package_count) {
+              if (softwareinfo.package_count !== 0) {
+                if(typeof(variables.getVersions()) === "undefined" || softwareinfo.package_count !== variables.getVersions()[software].package_count){
                     notifyembed.addField('System', `Packages: ${  softwareinfo.package_count}`, true)
                     postUpdate = true
                   }
+              }
             } else {
-              if (typeof(variables.getVersions()) === "undefined" || softwareinfo.version !== softwareinfo.remote_version && softwareinfo.remote_version !== variables.getVersions()[software].remote_version) {
-                    notifyembed.addField(software, `${softwareinfo.version  } \n▶️ ${  softwareinfo.remote_version}`, true)
-                    postUpdate = true
-                  }
+              if (softwareinfo.version !== softwareinfo.remote_version) {
+                if(typeof(variables.getVersions()) === "undefined" || softwareinfo.remote_version !== variables.getVersions()[software].remote_version){
+                  notifyembed.addField(software, `${softwareinfo.version  } \n🆕 ${  softwareinfo.remote_version}`, true)
+                  postUpdate = true
+                }
+              }
             }
           }
           if (postUpdate) {
