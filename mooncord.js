@@ -3,6 +3,7 @@ const systemInfo = require('systeminformation')
 
 const discordevents = require('./discord-events')
 const variables = require('./utils/variablesUtil')
+const statusUtil = require('./utils/statusUtil')
 const websocketevents = require('./websocketevents')
 
 const WebSocketClient = require('websocket').client
@@ -68,7 +69,7 @@ systemInfo.osInfo().then(data => {
         console.log('WebSocket Connection Closed')
         console.log('Reconnect in 5 sec')
         variables.setStatus('offline')
-        variables.triggerStatusUpdate(discordClient)
+        statusUtil.triggerStatusUpdate(discordClient)
         reconnect = true
         setTimeout(() => {
           websocketClient.connect(config.moonrakersocketurl)
