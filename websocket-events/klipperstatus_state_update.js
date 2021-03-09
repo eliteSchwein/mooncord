@@ -22,6 +22,7 @@ const event = async (message, connection, discordClient) => {
           for (const software in result.version_info) {
             const softwareinfo = result.version_info[software]
             if (software === 'system') {
+              console.log(variables.getVersions())
               if (typeof(variables.getVersions()) === "undefined" || softwareinfo.package_count !== 0 && softwareinfo.package_count !== variables.getVersions()[software].package_count) {
                     notifyembed.addField('System', `Packages: ${  softwareinfo.package_count}`, true)
                     postUpdate = true
