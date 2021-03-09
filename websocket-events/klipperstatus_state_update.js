@@ -12,6 +12,7 @@ const event = async (message, connection, discordClient) => {
       const {result} = messageJson
       if (typeof (result) !== 'undefined' && typeof (result.version_info) !== 'undefined') {
           const database = discordDatabase.getDatabase()
+          console.log(variables.getVersions())
           let postUpdate = false
           notifyembed = new Discord.MessageEmbed()
             .setColor('#fcf803')
@@ -19,7 +20,6 @@ const event = async (message, connection, discordClient) => {
             .attachFiles(path.resolve(__dirname, '../images/update.png'))
             .setThumbnail('attachment://update.png')
             .setTimestamp()
-            console.log(variables.getVersions())
           for (const software in result.version_info) {
             const softwareinfo = result.version_info[software]
             if (software === 'system') {
