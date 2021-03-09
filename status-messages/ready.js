@@ -7,7 +7,6 @@ const webcamUtil = require('../utils/webcamUtil')
 
 const getModule = async function (discordClient, channel, guild, user) {
   const database = discordDatabase.getDatabase()
-  console.log(discordClient)
   discordClient.user.setActivity('for GCODE File...', { type: 'LISTENING' })
 
   if (typeof channel === 'undefined') {
