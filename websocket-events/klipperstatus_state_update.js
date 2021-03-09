@@ -24,14 +24,18 @@ const event = async (message, connection, discordClient) => {
           for (const software in result.version_info) {
             const softwareinfo = result.version_info[software]
             if (software === 'system') {
-              if (softwareinfo.package_count !== 0 && softwareinfo.package_count !== lastupdateCheck[software].package_count) {
-                notifyembed.addField('System', `Packages: ${  softwareinfo.package_count}`, true)
-                postUpdate = true
+              if (softwareinfo.package_count !== 0) {
+                if(typeof(lastupdateCheck)!=="undefined" && softwareinfo.package_count !== lastupdateCheck[software].package_count){
+                  notifyembed.addField('System', `Packages: ${  softwareinfo.package_count}`, true)
+                  postUpdate = true
+                }
               }
             } else {
-              if (softwareinfo.version !== softwareinfo.remote_version && softwareinfo.remote_version !== lastupdateCheck[software].remote_version) {
-                notifyembed.addField(software, `${softwareinfo.version  } \n▶️ ${  softwareinfo.remote_version}`, true)
-                postUpdate = true
+              if (softwareinfo.version !== softwareinfo.remote_version) {
+                if(typeof(lastupdateCheck)!=="undefined" && softwareinfo.remote_version !== lastupdateCheck[software].remote_version){
+                  notifyembed.addField(software, `${softwareinfo.version  } \n▶️ ${  softwareinfo.remote_version}`, true)
+                  postUpdate = true
+                }
               }
             }
           }
