@@ -12,7 +12,6 @@ const event = async (message, connection, discordClient) => {
       const {result} = messageJson
       if (typeof (result) !== 'undefined' && typeof (result.version_info) !== 'undefined') {
           const database = discordDatabase.getDatabase()
-          console.log(variables.getVersions())
           let postUpdate = false
           notifyembed = new Discord.MessageEmbed()
             .setColor('#fcf803')
