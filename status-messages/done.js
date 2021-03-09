@@ -1,51 +1,20 @@
-const Discord = require('discord.js')
-
-const discordDatabase = require('../discorddatabase')
-const thumbnailUtil = require('../utils/thumbnailUtil')
 const variables = require('../utils/variablesUtil')
+const statusUtil = require('../utils/statusUtil')
 const webcamUtil = require('../utils/webcamUtil')
 
 const getModule = async function (discordClient, channel, guild, user) {
-  const database = discordDatabase.getDatabase()
   discordClient.user.setActivity('Finished Print', { type: 'WATCHING' })
 
-  if (typeof channel === 'undefined') {
-    for (const guildid in database) {
-      discordClient.guilds.fetch(guildid)
-        .then(async (guild) => {
-          const guilddatabase = database[guild.id]
-          const broadcastchannels = guilddatabase.statuschannels
-          for (const index in broadcastchannels) {
-            const channel = guild.channels.cache.get(broadcastchannels[index])
-            await sendMessage(channel, user)
-          }
-        })
-        .catch(console.error)
-    }
-  } else {
-    await sendMessage(channel, user)
-  }
-}
-
-async function sendMessage (channel, user) {
   const snapshot = await webcamUtil.retrieveWebcam()
-  const thumbnail = await thumbnailUtil.retrieveThumbnail()
-  const statusEmbed = new Discord.MessageEmbed()
-    .setColor('#25db00')
-    .setTitle('Print Done')
+
+  const statusEmbed = statusUtil.getDefaultEmbed(user,'Print Done','#25db00')
+  statusEmbed
     .setAuthor(variables.getCurrentFile())
     .addField('Print Time', variables.getFormatedPrintTime(), true)
     .attachFiles([snapshot, thumbnail])
     .setImage(`attachment://${  snapshot.name}`)
     .setThumbnail(`attachment://${  thumbnail.name}`)
-    .setTimestamp()
 
-  if (typeof (user) === 'undefined') {
-    statusEmbed.setFooter('Automatic')
-  } else {
-    statusEmbed.setFooter(user.tag, user.avatarURL())
-  }
-
-  channel.send(statusEmbed)
+  statusUtil.postStatus(discordClient,statusEmbed,channel)
 }
 module.exports = getModule
