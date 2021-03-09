@@ -43,7 +43,7 @@ module.exports.postStatus = function(discordClient, message, channel){
             channel.send(message)
           }
         })
-        .catch(console.error)
+        .catch((error)=>{console.log(error)})
     }
   } else {
     channel.send(message)

@@ -1,5 +1,5 @@
-const webcamUtil = require('../utils/webcamUtil')
 const statusUtil = require('../utils/statusUtil')
+const webcamUtil = require('../utils/webcamUtil')
 
 const getModule = async function (discordClient, channel, guild, user) {
   discordClient.user.setActivity('wait for Klipper', { type: 'LISTENING' })

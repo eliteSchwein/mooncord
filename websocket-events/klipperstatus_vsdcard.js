@@ -1,6 +1,6 @@
 const config = require('../config.json')
-const variables = require('../utils/variablesUtil')
 const statusUtil = require('../utils/statusUtil')
+const variables = require('../utils/variablesUtil')
 
 const event = (message, connection, discordClient) => {
     const id = Math.floor(Math.random() * 10_000) + 1

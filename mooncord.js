@@ -2,8 +2,8 @@
 const systemInfo = require('systeminformation')
 
 const discordevents = require('./discord-events')
-const variables = require('./utils/variablesUtil')
 const statusUtil = require('./utils/statusUtil')
+const variables = require('./utils/variablesUtil')
 const websocketevents = require('./websocketevents')
 
 const WebSocketClient = require('websocket').client

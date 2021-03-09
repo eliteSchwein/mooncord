@@ -1,5 +1,5 @@
 let status = 'unknown'
-let versions = undefined
+let versions
 let gcodefile = ''
 let gcodestartbyte = 0
 let gcodeendbyte = 0

@@ -1,5 +1,5 @@
-const variables = require('../utils/variablesUtil')
 const statusUtil = require('../utils/statusUtil')
+const variables = require('../utils/variablesUtil')
 const webcamUtil = require('../utils/webcamUtil')
 
 const getModule = async function (discordClient, channel, guild, user) {

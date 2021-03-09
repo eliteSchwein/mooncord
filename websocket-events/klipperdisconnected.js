@@ -1,5 +1,5 @@
-const variables = require('../utils/variablesUtil')
 const statusUtil = require('../utils/statusUtil')
+const variables = require('../utils/variablesUtil')
 
 const event = (message, connection, discordClient) => {
     if (message.type === 'utf8') {
