@@ -12,10 +12,10 @@ const getModule = async function (client, discordClient) {
         console.log(err)
         return
       }
-      files.forEach(file => {
-        delete require.cache[require.resolve(`./websocket-events/${  file}`)]
-        const event = require(`./websocket-events/${  file}`)
-        connection.on('message', (message) => {
+      connection.on('message', (message) => {
+        files.forEach(file => {
+          delete require.cache[require.resolve(`./websocket-events/${  file}`)]
+          const event = require(`./websocket-events/${  file}`)
           event(message, discordClient)
         })
       })
