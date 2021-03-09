@@ -5,14 +5,12 @@ const discordDatabase = require('../discorddatabase')
 const variables = require('../utils/variablesUtil')
 
 let notifyembed
-let lastupdateCheck
 
 const event = async (message, connection, discordClient) => {
     if (message.type === 'utf8') {
       const messageJson = JSON.parse(message.utf8Data)
       const {result} = messageJson
       if (typeof (result) !== 'undefined' && typeof (result.version_info) !== 'undefined') {
-          variables.setVersions(result.version_info)
           const database = discordDatabase.getDatabase()
           let postUpdate = false
           notifyembed = new Discord.MessageEmbed()
@@ -24,21 +22,19 @@ const event = async (message, connection, discordClient) => {
           for (const software in result.version_info) {
             const softwareinfo = result.version_info[software]
             if (software === 'system') {
-              if (typeof(lastupdateCheck)==="undefined" || softwareinfo.package_count !== 0 && softwareinfo.package_count !== lastupdateCheck[software].package_count) {
+              if (softwareinfo.package_count !== 0 && softwareinfo.package_count !== variables.getVersions()[software].package_count) {
                     notifyembed.addField('System', `Packages: ${  softwareinfo.package_count}`, true)
                     postUpdate = true
                   }
             } else {
-              if (typeof(lastupdateCheck)==="undefined" || softwareinfo.version !== softwareinfo.remote_version && softwareinfo.remote_version !== lastupdateCheck[software].remote_version) {
-                    console.log(lastupdateCheck)
+              if (softwareinfo.version !== softwareinfo.remote_version && softwareinfo.remote_version !== variables.getVersions()[software].remote_version) {
                     notifyembed.addField(software, `${softwareinfo.version  } \n▶️ ${  softwareinfo.remote_version}`, true)
                     postUpdate = true
                   }
             }
           }
           if (postUpdate) {
-            lastupdateCheck = result.version_info
-            console.log("2 "+lastupdateCheck)
+            variables.setVersions(result.version_info)
             for (const guildid in database) {
               await discordClient.guilds.fetch(guildid)
                 .then(async (guild) => {
