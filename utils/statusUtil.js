@@ -25,7 +25,7 @@ module.exports.getDefaultEmbed = function(user,status,color){
   if (typeof (user) === 'undefined') {
     embed.setFooter('Automatic')
   } else {
-    embed.setFooter(user.tag, user.avatarURL())
+    embed.setFooter(user.tag, user.avatarURL)
   }
 
   return embed
