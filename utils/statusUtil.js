@@ -1,11 +1,12 @@
 const Discord = require('discord.js')
 
 const discordDatabase = require('../discorddatabase')
+const status = require('../status-messages/index')
 const variables = require('../utils/variablesUtil')
 
 function triggerStatusUpdate (discordClient, channel, guild, user) {
   console.log(`Printer Status: ${  variables.getStatus()}`)
-  const event = require(`../status-messages/${  variables.getStatus()}`)
+  const event = status[variables.getStatus()]
   setTimeout(() => {
     event(discordClient, channel, guild, user)
   }, 1000)
