@@ -6,9 +6,9 @@ const variables = require('../utils/variablesUtil')
 
 function triggerStatusUpdate (discordClient, channel, guild, user) {
   console.log(`Printer Status: ${  variables.getStatus()}`)
-  const event = status[variables.getStatus()]
+  const status = status[variables.getStatus()]
   setTimeout(() => {
-    event(discordClient, channel, guild, user)
+    status(discordClient, channel, user)
   }, 1000)
 }
 
@@ -17,7 +17,6 @@ module.exports.triggerStatusUpdate = function (discordClient, channel, guild, us
 }
 
 module.exports.getDefaultEmbed = function(user,status,color){
-  console.log(user)
   const embed = new Discord.MessageEmbed()
   .setColor(color)
   .setTitle(status)
