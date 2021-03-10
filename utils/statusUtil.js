@@ -6,9 +6,9 @@ const variables = require('../utils/variablesUtil')
 
 function triggerStatusUpdate (discordClient, channel, guild, user) {
   console.log(`Printer Status: ${  variables.getStatus()}`)
-  const status = status[variables.getStatus()]
+  const statusEvent = status[variables.getStatus()]
   setTimeout(() => {
-    status(discordClient, channel, user)
+    statusEvent(discordClient, channel, user)
   }, 1000)
 }
 
