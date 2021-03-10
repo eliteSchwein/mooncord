@@ -28,7 +28,7 @@ function handler (message) {
 }
 
 function sendPage (allFiles) {
-  if (allFiles.result.length > 0) {
+  if (allFiles.result.length === 0) {
     messageChannel.send(`<@${  requester.id  }> There are currently no GCode aviable!`)
     return
   }
