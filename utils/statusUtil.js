@@ -1,7 +1,7 @@
 const Discord = require('discord.js')
 
 const discordDatabase = require('../discorddatabase')
-const status = require('../status-messages/index')
+const status = require('../status-messages')
 const variables = require('../utils/variablesUtil')
 
 function triggerStatusUpdate (discordClient, channel, guild, user) {
