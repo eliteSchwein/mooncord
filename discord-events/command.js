@@ -14,6 +14,9 @@ const enableEvent = function (discordClient, websocketConnection) {
     if (msg.channel.type !== 'text') {
       return
     }
+    if(!msg.toString().startsWith(config.prefix)){
+      return
+    }
     const command = msg.toString().slice(config.prefix.length)
     if(command.startsWith('index')){
       msg.channel.send(`<@${  msg.user.id  }> The following Command couldn´t be found! \n> ${  config.prefix  }${command.split(' ')[0]  }\n use ${  config.prefix  }help`)
