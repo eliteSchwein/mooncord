@@ -19,31 +19,31 @@ const enableEvent = function (discordClient, websocketConnection) {
     }
     const command = msg.toString().slice(config.prefix.length)
     if(command.startsWith('index')){
-      msg.channel.send(`<@${  msg.user.id  }> The following Command couldn´t be found! \n> ${  config.prefix  }${command.split(' ')[0]  }\n use ${  config.prefix  }help`)
+      msg.channel.send(`<@${  msg.author.id  }> The following Command couldn´t be found! \n> ${  config.prefix  }${command.split(' ')[0]  }\n use ${  config.prefix  }help`)
       return
     }
     try {
       if (!fs.existsSync(path.resolve(__dirname, `../discord-commands/${command.toLowerCase().split(' ')[0]  }.js`))) {
-        msg.channel.send(`<@${  msg.user.id  }> The following Command couldn´t be found! \n> ${  config.prefix  }${command.split(' ')[0]  }\n use ${  config.prefix  }help`)
+        msg.channel.send(`<@${  msg.author.id  }> The following Command couldn´t be found! \n> ${  config.prefix  }${command.split(' ')[0]  }\n use ${  config.prefix  }help`)
         return
       }
     } catch (error) {
       console.error(error)
     }
     const commandModule = commands[command.split(' ')[0]]
-    if (commandModule.needMaster() && msg.user.id !== config.masterid) {
-      msg.channel.send(`<@${  msg.user.id  }> You are not allowed to execute the following Command! \n> ${  config.prefix  }${command.split(' ')[0]}`)
+    if (commandModule.needMaster() && msg.author.id !== config.masterid) {
+      msg.channel.send(`<@${  msg.author.id  }> You are not allowed to execute the following Command! \n> ${  config.prefix  }${command.split(' ')[0]}`)
       return
     }
-    if (commandModule.needAdmin() && !isAdmin(msg.user, msg.guild)) {
-      msg.channel.send(`<@${  msg.user.id  }> You are not allowed to execute the following Command! \n> ${  config.prefix  }${command.split(' ')[0]}`)
+    if (commandModule.needAdmin() && !isAdmin(msg.author, msg.guild)) {
+      msg.channel.send(`<@${  msg.author.id  }> You are not allowed to execute the following Command! \n> ${  config.prefix  }${command.split(' ')[0]}`)
         return
       }
-    if (!isAllowed(msg.user, msg.guild)) {
-      msg.channel.send(`<@${  msg.user.id  }> You are not allowed to execute the following Command! \n> ${  config.prefix  }${command.split(' ')[0]}`)
+    if (!isAllowed(msg.author, msg.guild)) {
+      msg.channel.send(`<@${  msg.author.id  }> You are not allowed to execute the following Command! \n> ${  config.prefix  }${command.split(' ')[0]}`)
       return
     }
-    commandModule(command, msg.channel, msg.user, msg.guild, discordClient, websocketConnection)
+    commandModule(command, msg.channel, msg.author, msg.guild, discordClient, websocketConnection)
   })
 }
 module.exports = enableEvent
