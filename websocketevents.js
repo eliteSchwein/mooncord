@@ -16,9 +16,10 @@ const getModule = async function (client, discordClient) {
       }
       connection.on('message', (message) => {
         files.forEach(file => {
-          const event = events[file.replace('.js','')]
-          console.log(file+' '+event)
-          event(message, connection, discordClient)
+          if(file !== 'index.js'){
+            const event = events[file.replace('.js','')]
+            event(message, connection, discordClient)
+          }
         })
       })
     })
