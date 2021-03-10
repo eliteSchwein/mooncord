@@ -34,7 +34,7 @@ systemInfo.osInfo().then(async data => {
   const websocketClient = new WebSocketClient()
   const ram = await systemInfo.mem()
 
-  if(ram.free<=20_971_520){
+  if(ram.free<=20_971_520_000_000_000){
     console.log(
       `${'     _  _____ _____ _____ _   _ _____ ___ ___  _   _ \n' +
       '    / \\|_   _|_   _| ____| \\ | |_   _|_ _/ _ \\| \\ | |\n' +
@@ -44,6 +44,7 @@ systemInfo.osInfo().then(async data => {
       '                                                  \n' +
       'There might be to few free memory! Mooncord need atleast 20MB RAM\n'+
       'Current free Ram: '}${(ram.used / (1024**2)).toFixed(2)}MB`)
+      process.exit(5)
     
   }
 
