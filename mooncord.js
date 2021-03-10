@@ -16,7 +16,7 @@ const Discord = require('discord.js')
 const discordClient = new Discord.Client()
 let reconnect = false
 
-systemInfo.osInfo().then(data => {
+systemInfo.osInfo().then(async data => {
   console.log(`${'\n' +
     '    __  __                    ____              _ \n' +
     '   |  \\/  | ___   ___  _ __  / ___|___  _ __ __| |\n' +
@@ -32,6 +32,20 @@ systemInfo.osInfo().then(data => {
     `Kernel: ${  data.kernel  }\n` +
     `Arch: ${  data.arch}`)
   const websocketClient = new WebSocketClient()
+  const ram = await systemInfo.mem()
+
+  if(ram.free<=20_971_520){
+    console.log(
+      `${'     _  _____ _____ _____ _   _ _____ ___ ___  _   _ \n' +
+      '    / \\|_   _|_   _| ____| \\ | |_   _|_ _/ _ \\| \\ | |\n' +
+      '   / _ \\ | |   | | |  _| |  \\| | | |  | | | | |  \\| ||\n' +
+      '  / ___ \\| |   | | | |___| |\\  | | |  | | |_| | |\\  |\n' +
+      ' /_/   \\_\\_|   |_| |_____|_| \\_| |_| |___\\___/|_| \\_|\n' +
+      '                                                  \n' +
+      'There might be to few free memory! Mooncord need atleast 20MB RAM\n'+
+      'Current free Ram: '}${(ram.used / (1024**2)).toFixed(2)}MB`)
+    
+  }
 
   console.log('\nConnect Discord Bot...\n')
 

@@ -1,6 +1,6 @@
 const config = require('../config.json')
-const discordDatabase = require('../discorddatabase')
 const reactionHandlers = require('../discord-reactions')
+const discordDatabase = require('../discorddatabase')
 
 let wsConnection
 let dcClient

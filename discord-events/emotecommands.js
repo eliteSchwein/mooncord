@@ -1,5 +1,6 @@
 const fs = require('fs')
 const path = require('path')
+
 const commandReactHandlers = require('../discord-commandreactions')
 
 const enableEvent = function (discordClient, websocketConnection) {
