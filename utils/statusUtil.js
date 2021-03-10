@@ -26,7 +26,7 @@ module.exports.getDefaultEmbed = function(user,status,color){
   if (typeof (user) === 'undefined') {
     embed.setFooter('Automatic')
   } else {
-    embed.setFooter(user.username + '#' + user.discriminator, 'https://cdn.discordapp.com/avatars/' + user.id + '/' + user.avatar +'.webp?size=256')
+    embed.setFooter(user.tag, user.avatarURL())
   }
 
   return embed
