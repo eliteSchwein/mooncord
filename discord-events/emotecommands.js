@@ -1,5 +1,6 @@
 const fs = require('fs')
 const path = require('path')
+const commandReactHandlers = require('../discord-commandreactions')
 
 const enableEvent = function (discordClient, websocketConnection) {
   discordClient.on('message', msg => {
@@ -20,7 +21,7 @@ const enableEvent = function (discordClient, websocketConnection) {
     if (!fs.existsSync(path.resolve(__dirname, `../discord-commandreactions/${  id  }.js`))) {
       return
     }
-    const emoteModule = require(`../discord-commandreactions/${  id}`)
+    const emoteModule = commandReactHandlers[id]
     emoteModule(discordClient, websocketConnection, msg)
   })
 }

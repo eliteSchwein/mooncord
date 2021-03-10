@@ -1,5 +1,6 @@
 const config = require('../config.json')
 const discordDatabase = require('../discorddatabase')
+const reactionHandlers = require('../discord-reactions')
 
 let wsConnection
 let dcClient
@@ -23,7 +24,7 @@ function handler (messageReaction) {
   }
   messageReaction.users.remove(user)
   const id = message.embeds[0].title.toLowerCase().replace(/\s/g, '')
-  const reactionModule = require(`../discord-reactions/${  id}`)
+  const reactionModule = reactionHandlers[id]
   if (reactionModule.needMaster() && user.id !== config.masterid) {
       message.channel.send(`<@${  user.id  }> You are not allowed to execute this Action! \n> ${  message.embeds[0].title}`)
       return
