@@ -40,10 +40,7 @@ const enableEvent = function (discordClient, websocketConnection) {
       channel.send(`<@${  user.id  }> You are not allowed to execute the following Command! \n> ${  config.prefix  }${command.split(' ')[0]}`)
       return
     }
-    if (msg.toString().startsWith(config.prefix)) {
-      commandHandler(msg.toString().slice(config.prefix.length), msg.channel, msg.author, msg.channel.guild, discordClient, websocketConnection)
-    }
-    commandModule(command, channel, user, guild, discordClient, websocketConnection)
+    commandModule(command, msg.channel, msg.user, msg.guild, discordClient, websocketConnection)
   })
 }
 module.exports = enableEvent
