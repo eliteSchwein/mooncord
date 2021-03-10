@@ -3,6 +3,8 @@ const path = require('path')
 const si = require('systeminformation')
 
 const variables = require('./utils/variablesUtil')
+const events = require('./websocket-events')
+
 
 const getModule = async function (client, discordClient) {
   client.on('connect', async (connection) => {
@@ -14,8 +16,7 @@ const getModule = async function (client, discordClient) {
       }
       connection.on('message', (message) => {
         files.forEach(file => {
-          delete require.cache[require.resolve(`./websocket-events/${  file}`)]
-          const event = require(`./websocket-events/${  file}`)
+          const event = events[file]
           event(message, connection, discordClient)
         })
       })
