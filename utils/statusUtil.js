@@ -17,6 +17,7 @@ module.exports.triggerStatusUpdate = function (discordClient, channel, guild, us
 }
 
 module.exports.getDefaultEmbed = function(user,status,color){
+  console.log(user)
   const embed = new Discord.MessageEmbed()
   .setColor(color)
   .setTitle(status)
