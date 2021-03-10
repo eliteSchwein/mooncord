@@ -17,6 +17,7 @@ const getModule = async function (client, discordClient) {
       connection.on('message', (message) => {
         files.forEach(file => {
           const event = events[file]
+          console.log(event)
           event(message, connection, discordClient)
         })
       })
