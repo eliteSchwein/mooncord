@@ -2,8 +2,8 @@ const fs = require('fs')
 const path = require('path')
 
 const config = require('../config.json')
-const discordDatabase = require('../discorddatabase')
 const commands = require('../discord-commands')
+const discordDatabase = require('../discorddatabase')
 
 const enableEvent = function (discordClient, websocketConnection) {
   discordClient.on('message', msg => {
@@ -16,12 +16,12 @@ const enableEvent = function (discordClient, websocketConnection) {
     }
     const command = msg.toString().slice(config.prefix.length)
     if(command.startsWith('index')){
-      channel.send(`<@${  user.id  }> The following Command couldn´t be found! \n> ${  config.prefix  }${command.split(' ')[0]  }\n use ${  config.prefix  }help`)
+      msg.channel.send(`<@${  user.id  }> The following Command couldn´t be found! \n> ${  config.prefix  }${command.split(' ')[0]  }\n use ${  config.prefix  }help`)
       return
     }
     try {
       if (!fs.existsSync(path.resolve(__dirname, `../discord-commands/${command.toLowerCase().split(' ')[0]  }.js`))) {
-        channel.send(`<@${  user.id  }> The following Command couldn´t be found! \n> ${  config.prefix  }${command.split(' ')[0]  }\n use ${  config.prefix  }help`)
+        msg.channel.send(`<@${  user.id  }> The following Command couldn´t be found! \n> ${  config.prefix  }${command.split(' ')[0]  }\n use ${  config.prefix  }help`)
         return
       }
     } catch (error) {
@@ -29,15 +29,15 @@ const enableEvent = function (discordClient, websocketConnection) {
     }
     const commandModule = commands[command.split(' ')[0]]
     if (commandModule.needMaster() && user.id !== config.masterid) {
-      channel.send(`<@${  user.id  }> You are not allowed to execute the following Command! \n> ${  config.prefix  }${command.split(' ')[0]}`)
+      msg.channel.send(`<@${  user.id  }> You are not allowed to execute the following Command! \n> ${  config.prefix  }${command.split(' ')[0]}`)
       return
     }
     if (commandModule.needAdmin() && !isAdmin(user, guild)) {
-        channel.send(`<@${  user.id  }> You are not allowed to execute the following Command! \n> ${  config.prefix  }${command.split(' ')[0]}`)
+      msg.channel.send(`<@${  user.id  }> You are not allowed to execute the following Command! \n> ${  config.prefix  }${command.split(' ')[0]}`)
         return
       }
     if (!isAllowed(user, guild)) {
-      channel.send(`<@${  user.id  }> You are not allowed to execute the following Command! \n> ${  config.prefix  }${command.split(' ')[0]}`)
+      msg.channel.send(`<@${  user.id  }> You are not allowed to execute the following Command! \n> ${  config.prefix  }${command.split(' ')[0]}`)
       return
     }
     commandModule(command, msg.channel, msg.user, msg.guild, discordClient, websocketConnection)
