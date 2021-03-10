@@ -6,7 +6,6 @@ const variables = require('../utils/variablesUtil')
 
 function triggerStatusUpdate (discordClient, channel, guild, user) {
   console.log(`Printer Status: ${  variables.getStatus()}`)
-  console.log(user)
   const event = status[variables.getStatus()]
   setTimeout(() => {
     event(discordClient, channel, guild, user)
@@ -26,7 +25,7 @@ module.exports.getDefaultEmbed = function(user,status,color){
   if (typeof (user) === 'undefined') {
     embed.setFooter('Automatic')
   } else {
-    embed.setFooter(user.tag, user.avatarURL())
+    embed.setFooter(user.username + '#' + user.discriminator, 'https://cdn.discordapp.com/avatars/' + user.id + '/' + user.avatar +'.webp?size=256')
   }
 
   return embed
