@@ -13,6 +13,7 @@ const event = (message, connection, discordClient) => {
         }
         if (typeof (result.status) !== 'undefined') {
           const klipperstatus = result.status
+          console.log(klipperstatus)
           let currentProgress = 0
           if (typeof (klipperstatus.virtual_sdcard) !== 'undefined') {
             if (klipperstatus.virtual_sdcard.file_position <= variables.getStartByte()) {
