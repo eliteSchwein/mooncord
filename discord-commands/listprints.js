@@ -33,7 +33,7 @@ function sendPage (allFiles) {
     return
   }
   let newpage = currentPage
-  const maxpage = ((allFiles.result.length / maxEntries)+.3).toFixed(0)
+  const maxpage = Math.ceil(allFiles.result.length / maxEntries).toFixed(0)
   if (pageUp) {
     if (currentPage !== maxpage - 1) {
       newpage = currentPage + 1
