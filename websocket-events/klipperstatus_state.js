@@ -6,9 +6,9 @@ const event = (message, connection, discordClient) => {
     if (message.type === 'utf8') {
       const messageJson = JSON.parse(message.utf8Data)
       const {result} = messageJson
-      console.log(result.print_stats)
       if (typeof (result) !== 'undefined' && typeof (result.status) !== 'undefined') {
           const klipperstatus = result.status
+          console.log(result.print_stats)
           if (typeof (klipperstatus.print_stats) !== 'undefined') {
             const printfile = klipperstatus.print_stats.filename
             variables.setCurrentFile(printfile)
