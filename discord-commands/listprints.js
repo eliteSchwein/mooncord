@@ -23,7 +23,6 @@ const executeCommand = function (command, channel, user, guild, discordClient, w
 
 function handler (message) {
   const messageJson = JSON.parse(message.utf8Data)
-  console.log(messageJson)
   sendPage(messageJson)
   wsConnection.removeListener('message', handler)
 }
@@ -34,7 +33,7 @@ function sendPage (allFiles) {
     return
   }
   let newpage = currentPage
-  const maxpage = (allFiles.result.length / maxEntries).toFixed(0)
+  const maxpage = ((allFiles.result.length / maxEntries)+.3).toFixed(0)
   if (pageUp) {
     if (currentPage !== maxpage - 1) {
       newpage = currentPage + 1
