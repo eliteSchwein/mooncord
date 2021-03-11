@@ -8,7 +8,7 @@ const event = (message, connection, discordClient) => {
       const {result} = messageJson
       if (typeof (result) !== 'undefined' && typeof (result.status) !== 'undefined') {
           const klipperstatus = result.status
-          console.log(result.print_stats)
+          console.log(klipperstatus.print_stats)
           if (typeof (klipperstatus.print_stats) !== 'undefined') {
             const printfile = klipperstatus.print_stats.filename
             variables.setCurrentFile(printfile)
