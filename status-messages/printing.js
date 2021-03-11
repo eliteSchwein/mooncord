@@ -4,8 +4,6 @@ const variables = require('../utils/variablesUtil')
 const webcamUtil = require('../utils/webcamUtil')
 
 const getModule = async function (discordClient, channel, guild, user) {
-  discordClient.user.setActivity(`running Print: ${  variables.getProgress().toFixed(0)  }%`, { type: 'WATCHING' })
-
   const snapshot = await webcamUtil.retrieveWebcam()
   const thumbnail = await thumbnailUtil.retrieveThumbnail()
 
@@ -14,7 +12,7 @@ const getModule = async function (discordClient, channel, guild, user) {
   .setAuthor(variables.getCurrentFile())
   .addField('Print Time', variables.getFormatedPrintTime(), true)
   .addField('ETA Print Time', variables.getFormatedRemainingTime(), true)
-  .addField('Progress', `${variables.getProgress().toFixed(0)  }%`, true)
+  .addField('Progress', `${variables.getProgress()  }%`, true)
   .attachFiles([snapshot, thumbnail])
   .setImage(`attachment://${  snapshot.name}`)
   .setThumbnail(`attachment://${  thumbnail.name}`)
