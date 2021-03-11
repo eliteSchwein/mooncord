@@ -8,7 +8,6 @@ const event = (message, connection, discordClient) => {
       const {result} = messageJson
       if (typeof (result) !== 'undefined' && typeof (result.status) !== 'undefined') {
           const klipperstatus = result.status
-          console.log(klipperstatus.print_stats)
           if (typeof (klipperstatus.print_stats) !== 'undefined') {
             const printfile = klipperstatus.print_stats.filename
             variables.setCurrentFile(printfile)
@@ -25,6 +24,7 @@ const event = (message, connection, discordClient) => {
             }
             if (klipperstatus.print_stats.state === 'printing' && (typeof (printfile) !== 'undefined' || printfile !== '')) {
                 const currentStatus = 'printing'
+                console.log(klipperstatus.print_stats)
                 if (variables.getStatus() !== currentStatus) {
                   variables.setStatus(currentStatus)
                   if (!config.statusupdatepercent) {
