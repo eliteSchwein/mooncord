@@ -23,6 +23,7 @@ const executeCommand = function (command, channel, user, guild, discordClient, w
 
 function handler (message) {
   const messageJson = JSON.parse(message.utf8Data)
+  console.log(messageJson)
   sendPage(messageJson)
   wsConnection.removeListener('message', handler)
 }
