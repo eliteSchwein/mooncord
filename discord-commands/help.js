@@ -13,7 +13,7 @@ const executeCommand = function (command, channel, user, guild, discordClient, w
       if (err) {
         console.log(err)
       } else {
-        commands = commands.concat(` \`${  file.replace('.js', '')  }\``)
+        commands = commands.concat(` \`${file.replace('.js', '')}\``)
       }
     })
   })
@@ -22,7 +22,7 @@ const executeCommand = function (command, channel, user, guild, discordClient, w
       .setColor('#0099ff')
       .setTitle('Help')
       .setThumbnail(discordClient.user.avatarURL())
-      .setDescription(`Aviable Commands:\n${  commands}`)
+      .setDescription(`Aviable Commands:\n${commands}`)
       .setTimestamp()
       .setFooter(user.tag, user.avatarURL())
     channel.stopTyping()

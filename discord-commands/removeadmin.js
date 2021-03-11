@@ -8,17 +8,17 @@ const executeCommand = function (command, channel, user, guild, discordClient, w
   const args = command.split(' ')
   args.shift()
   if (args.length === 0) {
-    channel.send(`<@${  user.id  }> Missing Arguments! Usage:\n> ${  config.prefix  }${command  } <RoleAsTag/UserAsTag>`)
+    channel.send(`<@${user.id}> Missing Arguments! Usage:\n> ${config.prefix}${command} <RoleAsTag/UserAsTag>`)
     return
   }
   if (args[0].startsWith('<@&')) {
     const roleid = args[0].replace('<@&', '').replace('>', '')
     if (typeof guild.roles.cache.get(roleid) === 'undefined') {
-      channel.send(`<@${  user.id  }> Invalid Role!`)
+      channel.send(`<@${user.id}> Invalid Role!`)
       return
     }
     if (!database.adminroles.includes(roleid)) {
-      channel.send(`<@${  user.id  }> the Role ${  args[0]  } is not a Admin Role!`)
+      channel.send(`<@${user.id}> the Role ${args[0]} is not a Admin Role!`)
       return
     }
     const index = database.adminroles.indexOf(roleid)
@@ -26,18 +26,18 @@ const executeCommand = function (command, channel, user, guild, discordClient, w
       database.adminroles.splice(index, 1)
     }
     discordDatabase.updateDatabase(database, guild)
-    channel.send(`<@${  user.id  }> removed the Role ${  args[0]  } to the Admin Roles!`)
+    channel.send(`<@${user.id}> removed the Role ${args[0]} to the Admin Roles!`)
 
     return
   }
   if (args[0].startsWith('<@') || args[0].startsWith('<@!')) {
     const memberid = args[0].replace('<@!', '').replace('<@', '').replace('>', '')
     if (typeof guild.members.cache.get(memberid) === 'undefined') {
-      channel.send(`<@${  user.id  }> Invalid Member!`)
+      channel.send(`<@${user.id}> Invalid Member!`)
       return
     }
     if (!database.adminusers.includes(memberid)) {
-      channel.send(`<@${  user.id  }> the Member ${  args[0]  } is not a Admin!`)
+      channel.send(`<@${user.id}> the Member ${args[0]} is not a Admin!`)
       return
     }
     const index = database.adminusers.indexOf(memberid)
@@ -45,11 +45,11 @@ const executeCommand = function (command, channel, user, guild, discordClient, w
       database.adminusers.splice(index, 1)
     }
     discordDatabase.updateDatabase(database, guild)
-    channel.send(`<@${  user.id  }> the Member ${  args[0]  } is no longer a Admin!`)
+    channel.send(`<@${user.id}> the Member ${args[0]} is no longer a Admin!`)
 
     return
   }
-  channel.send(`<@${  user.id  }> Invalid Arguments! Usage:\n> ${  config.prefix  }${command  } <RoleAsTag/UserAsTag>`)
+  channel.send(`<@${user.id}> Invalid Arguments! Usage:\n> ${config.prefix}${command} <RoleAsTag/UserAsTag>`)
 }
 module.exports = executeCommand
 module.exports.needAdmin = function () { return admin }

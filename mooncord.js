@@ -24,17 +24,17 @@ systemInfo.osInfo().then(async data => {
     '   | |  | | (_) | (_) | | | | |__| (_) | | | (_| |\n' +
     '   |_|  |_|\\___/ \\___/|_| |_|\\____\\___/|_|  \\__,_|\n' +
     '                                                  \n' +
-    'Version: '}${  pjson.version  }\n` +
-    `Author: ${  pjson.author  }\n` +
-    `Homepage: ${  pjson.homepage  }\n` +
-    `OS: ${  data.platform  }\n` +
-    `Distro: ${  data.distro  }\n` +
-    `Kernel: ${  data.kernel  }\n` +
-    `Arch: ${  data.arch}`)
+    'Version: '}${pjson.version}\n` +
+    `Author: ${pjson.author}\n` +
+    `Homepage: ${pjson.homepage}\n` +
+    `OS: ${data.platform}\n` +
+    `Distro: ${data.distro}\n` +
+    `Kernel: ${data.kernel}\n` +
+    `Arch: ${data.arch}`)
   const websocketClient = new WebSocketClient()
   const ram = await systemInfo.mem()
 
-  if(ram.free<=20_971_520){
+  if (ram.free <= 20_971_520) {
     console.log(
       `${'     _  _____ _____ _____ _   _ _____ ___ ___  _   _ \n' +
       '    / \\|_   _|_   _| ____| \\ | |_   _|_ _/ _ \\| \\ | |\n' +
@@ -42,10 +42,9 @@ systemInfo.osInfo().then(async data => {
       '  / ___ \\| |   | | | |___| |\\  | | |  | | |_| | |\\  |\n' +
       ' /_/   \\_\\_|   |_| |_____|_| \\_| |_| |___\\___/|_| \\_|\n' +
       '                                                  \n' +
-      'There might be to few free memory! Mooncord need atleast 20MB RAM\n'+
-      'Current free Ram: '}${(ram.used / (1024**2)).toFixed(2)}MB`)
-      process.exit(5)
-    
+      'There might be to few free memory! Mooncord need atleast 20MB RAM\n' +
+      'Current free Ram: '}${(ram.used / (1024 ** 2)).toFixed(2)}MB`)
+    process.exit(5)
   }
 
   console.log('\nConnect Discord Bot...\n')
@@ -54,14 +53,14 @@ systemInfo.osInfo().then(async data => {
 
   discordClient.on('ready', () => {
     console.log('Discordbot Connected\n')
-    console.log(`Name: ${  discordClient.user.tag}`)
-    console.log(`Invite: https://discord.com/oauth2/authorize?client_id=${  discordClient.user.id  }&scope=bot&permissions=336063568\n`)
+    console.log(`Name: ${discordClient.user.tag}`)
+    console.log(`Invite: https://discord.com/oauth2/authorize?client_id=${discordClient.user.id}&scope=bot&permissions=336063568\n`)
     discordClient.user.setActivity('Printer start', { type: 'WATCHING' })
 
     console.log('Connect Websocket...\n')
 
     websocketClient.on('connectFailed', (error) => {
-      console.log(`Connect Error: ${  error.toString()}`)
+      console.log(`Connect Error: ${error.toString()}`)
       console.log('Reconnect in 5 sec')
       variables.setStatus('offline')
       setTimeout(() => {

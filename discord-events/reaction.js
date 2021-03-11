@@ -13,12 +13,12 @@ function handler (messageReaction) {
   if (messageReaction.me) {
     return
   }
-  const {message} = messageReaction
+  const { message } = messageReaction
   if (message.author.id !== dcClient.user.id) {
     return
   }
   const user = messageReaction.users.cache.array()[1]
-  const {guild} = message
+  const { guild } = message
   if (message.embeds.length === 0) {
     return
   }
@@ -26,15 +26,15 @@ function handler (messageReaction) {
   const id = message.embeds[0].title.toLowerCase().replace(/\s/g, '')
   const reactionModule = reactionHandlers[id]
   if (reactionModule.needMaster() && user.id !== config.masterid) {
-      message.channel.send(`<@${  user.id  }> You are not allowed to execute this Action! \n> ${  message.embeds[0].title}`)
-      return
-    }
+    message.channel.send(`<@${user.id}> You are not allowed to execute this Action! \n> ${message.embeds[0].title}`)
+    return
+  }
   if (reactionModule.needAdmin() && !isAdmin(user, guild)) {
-      message.channel.send(`<@${  user.id  }> You are not allowed to execute this Action! \n> ${  message.embeds[0].title}`)
-      return
-    }
+    message.channel.send(`<@${user.id}> You are not allowed to execute this Action! \n> ${message.embeds[0].title}`)
+    return
+  }
   if (!isAllowed(user, guild)) {
-    message.channel.send(`<@${  user.id  }> You are not allowed to execute this Action! \n> ${  message.embeds[0].title}`)
+    message.channel.send(`<@${user.id}> You are not allowed to execute this Action! \n> ${message.embeds[0].title}`)
     return
   }
   reactionModule(message, user, guild, messageReaction.emoji, dcClient, wsConnection)

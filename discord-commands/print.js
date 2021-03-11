@@ -18,13 +18,13 @@ const executeCommand = async function (command, channel, user, guild, discordCli
   messageChannel = channel
   wsConnection = websocketConnection
   if (variables.getStatus() !== 'ready') {
-    channel.send(`<@${  user.id  }> the Printer is not ready!`)
+    channel.send(`<@${user.id}> the Printer is not ready!`)
     return
   }
   const args = command.split(' ')
   args.shift()
   if (args.length === 0) {
-    channel.send(`<@${  user.id  }> Missing Arguments! Usage:\n> ${  config.prefix  }${command  } PrintFile`)
+    channel.send(`<@${user.id}> Missing Arguments! Usage:\n> ${config.prefix}${command} PrintFile`)
     return
   }
   let printfile = args[0]
@@ -32,7 +32,7 @@ const executeCommand = async function (command, channel, user, guild, discordCli
     printfile += '.gcode'
   }
   file = printfile
-  websocketConnection.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${  printfile  }"}, "id": ${  id  }}`)
+  websocketConnection.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${printfile}"}, "id": ${id}}`)
   websocketConnection.on('message', handler)
 }
 
@@ -40,23 +40,23 @@ async function handler (message) {
   const messageJson = JSON.parse(message.utf8Data)
   if (typeof (messageJson.error) !== 'undefined') {
     wsConnection.removeListener('message', handler)
-    messageChannel.send(`<@${  requester.id  }> The File ${  file  } couldn't be found!`)
+    messageChannel.send(`<@${requester.id}> The File ${file} couldn't be found!`)
     return
   }
   wsConnection.removeListener('message', handler)
   let thumbnail = ''
   let description = ''
-  description = description.concat(`Print Time: ${  formatDateTime(messageJson.result.estimated_time * 1000)  }\n`)
-  description = description.concat(`Slicer: ${  messageJson.result.slicer  }\n`)
-  description = description.concat(`Slicer Version: ${  messageJson.result.slicer_version  }\n`)
-  description = description.concat(`Height: ${  messageJson.result.object_height  }mm`)
+  description = description.concat(`Print Time: ${formatDateTime(messageJson.result.estimated_time * 1000)}\n`)
+  description = description.concat(`Slicer: ${messageJson.result.slicer}\n`)
+  description = description.concat(`Slicer Version: ${messageJson.result.slicer_version}\n`)
+  description = description.concat(`Height: ${messageJson.result.object_height}mm`)
   if (typeof (messageJson.result.thumbnails) !== 'undefined') {
     thumbnail = messageJson.result.thumbnails[1].data
-    fs.writeFile(path.resolve(__dirname, `../temp/thumbnail${  file  }.png`), thumbnail, 'base64', (err) => {
+    fs.writeFile(path.resolve(__dirname, `../temp/thumbnail${file}.png`), thumbnail, 'base64', (err) => {
       if (err) {
         console.log(err)
 
-        messageChannel.send(`<@${  config.masterid  }> An error has occurred, Please Check the Console!`)
+        messageChannel.send(`<@${config.masterid}> An error has occurred, Please Check the Console!`)
       }
     })
     const exampleEmbed = new Discord.MessageEmbed()
@@ -64,19 +64,19 @@ async function handler (message) {
       .setTitle('Start Print')
       .setAuthor(file)
       .setDescription(description)
-      .attachFiles(path.resolve(__dirname, `../temp/thumbnail${  file  }.png`))
-      .setThumbnail(`attachment://thumbnail${  file  }.png`)
+      .attachFiles(path.resolve(__dirname, `../temp/thumbnail${file}.png`))
+      .setThumbnail(`attachment://thumbnail${file}.png`)
       .setTimestamp()
       .setFooter(requester.tag, requester.avatarURL())
 
     messageChannel.send(exampleEmbed)
 
     setTimeout(() => {
-      fs.unlink(path.resolve(__dirname, `../temp/thumbnail${  file  }.png`), (err) => {
+      fs.unlink(path.resolve(__dirname, `../temp/thumbnail${file}.png`), (err) => {
         if (err) {
           console.error(err)
 
-          messageChannel.send(`<@${  config.masterid  }> An error has occurred, Please Check the Console!`)
+          messageChannel.send(`<@${config.masterid}> An error has occurred, Please Check the Console!`)
         }
       })
     }, 500)
@@ -98,9 +98,9 @@ function formatDateTime (msec) {
   const date = new Date(msec)
   let hours = date.getHours()
   hours -= 1
-  const h = hours >= 10 ? hours : `0${  hours}`
-  const m = date.getMinutes() >= 10 ? date.getMinutes() : `0${  date.getMinutes()}`
-  return `${h  }:${  m}`
+  const h = hours >= 10 ? hours : `0${hours}`
+  const m = date.getMinutes() >= 10 ? date.getMinutes() : `0${date.getMinutes()}`
+  return `${h}:${m}`
 }
 
 module.exports = executeCommand

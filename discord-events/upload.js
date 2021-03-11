@@ -31,18 +31,18 @@ const enableEvent = function (discordClient, websocketConnection) {
       if (channel === msg.channel.id) {
         const gcodefile = msg.attachments.array()[0]
         const formData = new FormData()
-        const tempFile = fs.createWriteStream(`temp/${  gcodefile.name.replace(' ', '_')}`)
+        const tempFile = fs.createWriteStream(`temp/${gcodefile.name.replace(' ', '_')}`)
         tempFile.on('finish', () => {
-          console.log(`upload ${  gcodefile.name.replace(' ', '_')}`)
-          formData.append('file', fs.createReadStream(`temp/${  gcodefile.name.replace(' ', '_')}`), gcodefile.name)
+          console.log(`upload ${gcodefile.name.replace(' ', '_')}`)
+          formData.append('file', fs.createReadStream(`temp/${gcodefile.name.replace(' ', '_')}`), gcodefile.name)
           axios
-            .post(`${config.moonrakerapiurl  }/server/files/upload`, formData, {
+            .post(`${config.moonrakerapiurl}/server/files/upload`, formData, {
               headers: formData.getHeaders()
             })
             .then(res => {
-              console.log(`uploaded ${  gcodefile.name.replace(' ', '_')}`)
+              console.log(`uploaded ${gcodefile.name.replace(' ', '_')}`)
               msg.react('✅')
-              fs.unlink(`temp/${  gcodefile.name.replace(' ', '_')}`, (err) => {
+              fs.unlink(`temp/${gcodefile.name.replace(' ', '_')}`, (err) => {
                 if (err) {
                   console.error(err)
                 }
@@ -51,9 +51,9 @@ const enableEvent = function (discordClient, websocketConnection) {
             .catch(error => {
               if (error) {
                 console.log(error)
-                channel.send(`<@${  config.masterid  }> Please Check the Console!`)
+                channel.send(`<@${config.masterid}> Please Check the Console!`)
                 console.log('Upload Failed! Check your config!')
-                fs.unlink(`temp/${  gcodefile.name.replace(' ', '_')}`, (err) => {
+                fs.unlink(`temp/${gcodefile.name.replace(' ', '_')}`, (err) => {
                   if (err) {
                     console.error(err)
                   }

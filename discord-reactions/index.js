@@ -1,5 +1,5 @@
 module.exports = {
-  executegcodecommands: require("./executegcodecommands"),
-  printfiles: require("./printfiles"),
-  startprint: require("./startprint"),
+  executegcodecommands: require('./executegcodecommands'),
+  printfiles: require('./printfiles'),
+  startprint: require('./startprint')
 }

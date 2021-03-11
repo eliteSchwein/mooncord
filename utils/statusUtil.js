@@ -5,7 +5,7 @@ const status = require('../status-messages')
 const variables = require('../utils/variablesUtil')
 
 function triggerStatusUpdate (discordClient, channel, guild, user) {
-  console.log(`Printer Status: ${  variables.getStatus()}`)
+  console.log(`Printer Status: ${variables.getStatus()}`)
   const statusEvent = status[variables.getStatus()]
   setTimeout(() => {
     statusEvent(discordClient, channel, user)
@@ -16,11 +16,11 @@ module.exports.triggerStatusUpdate = function (discordClient, channel, guild, us
   triggerStatusUpdate(discordClient, channel, guild, user)
 }
 
-module.exports.getDefaultEmbed = function(user,status,color){
+module.exports.getDefaultEmbed = function (user, status, color) {
   const embed = new Discord.MessageEmbed()
-  .setColor(color)
-  .setTitle(status)
-  .setTimestamp()
+    .setColor(color)
+    .setTitle(status)
+    .setTimestamp()
 
   if (typeof (user) === 'undefined') {
     embed.setFooter('Automatic')
@@ -31,7 +31,7 @@ module.exports.getDefaultEmbed = function(user,status,color){
   return embed
 }
 
-module.exports.postStatus = function(discordClient, message, channel){
+module.exports.postStatus = function (discordClient, message, channel) {
   const database = discordDatabase.getDatabase()
   if (typeof channel === 'undefined') {
     for (const guildid in database) {
@@ -44,7 +44,7 @@ module.exports.postStatus = function(discordClient, message, channel){
             channel.send(message)
           }
         })
-        .catch((error)=>{console.log(error)})
+        .catch((error) => { console.log(error) })
     }
   } else {
     channel.send(message)

@@ -24,7 +24,7 @@ const executeReaction = function (message, user, guild, emote, discordClient, we
   const pages = message.embeds[0].author.name
   const currentPageString = pages.replace('Page ', '').split('/')[0]
   currentPage = Number.parseInt(currentPageString) - 1
-  websocketConnection.send(`{"jsonrpc": "2.0", "method": "server.files.list", "params": {"root": "gcodes"}, "id": ${  id  }}`)
+  websocketConnection.send(`{"jsonrpc": "2.0", "method": "server.files.list", "params": {"root": "gcodes"}, "id": ${id}}`)
   websocketConnection.on('message', handler)
 }
 
@@ -49,13 +49,13 @@ function sendPage (allFiles) {
   let entries = '\n'
   for (let i = (newpage * maxEntries) + newpage; i <= maxEntries + (newpage * maxEntries) + newpage; i++) {
     if (i < allFiles.result.length) {
-      entries = entries.concat(`${allFiles.result[i].filename  }\n`)
+      entries = entries.concat(`${allFiles.result[i].filename}\n`)
     }
   }
   const exampleEmbed = new Discord.MessageEmbed()
     .setColor('#0099ff')
     .setTitle('Print Files')
-    .setAuthor(`Page ${  newpage + 1  }/${  maxpage}`)
+    .setAuthor(`Page ${newpage + 1}/${maxpage}`)
     .setDescription(entries)
     .attachFiles(path.resolve(__dirname, '../images/printlist.png'))
     .setThumbnail('attachment://printlist.png')

@@ -6,11 +6,11 @@ const getModule = async function (discordClient, channel, guild, user) {
 
   const snapshot = await webcamUtil.retrieveWebcam()
 
-  const statusEmbed = statusUtil.getDefaultEmbed(user,'Printer Disconnected!','#c90000')
+  const statusEmbed = statusUtil.getDefaultEmbed(user, 'Printer Disconnected!', '#c90000')
   statusEmbed
     .attachFiles(snapshot)
-    .setImage(`attachment://${  snapshot.name}`)
+    .setImage(`attachment://${snapshot.name}`)
 
-  statusUtil.postStatus(discordClient,statusEmbed,channel)
+  statusUtil.postStatus(discordClient, statusEmbed, channel)
 }
 module.exports = getModule

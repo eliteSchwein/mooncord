@@ -88,7 +88,7 @@ function formatDateTime (msec) {
   const date = new Date(msec)
   let hours = date.getHours()
   hours -= 1
-  const h = hours >= 10 ? hours : `0${  hours}`
-  const m = date.getMinutes() >= 10 ? date.getMinutes() : `0${  date.getMinutes()}`
-  return `${h  }:${  m}`
+  const h = hours >= 10 ? hours : `0${hours}`
+  const m = date.getMinutes() >= 10 ? date.getMinutes() : `0${date.getMinutes()}`
+  return `${h}:${m}`
 }

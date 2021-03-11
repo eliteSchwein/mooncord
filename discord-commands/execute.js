@@ -8,17 +8,17 @@ const path = require('path')
 const executeCommand = function (command, channel, user, guild, discordClient, websocketConnection) {
   const args = command.split(' ')
   if (args.length === 1) {
-    channel.send(`<@${  user.id  }> Missing Arguments! Usage:\n> ${  config.prefix  }${command  } Command1,Command2,...,Command20`)
+    channel.send(`<@${user.id}> Missing Arguments! Usage:\n> ${config.prefix}${command} Command1,Command2,...,Command20`)
     return
   }
-  const gcodeCommands = command.replace(`${args[0]  } `, '').split(',')
+  const gcodeCommands = command.replace(`${args[0]} `, '').split(',')
   if (gcodeCommands.length >= 20) {
-    channel.send(`<@${  user.id  }> Too many GCode Commands! The current Limit is 20`)
+    channel.send(`<@${user.id}> Too many GCode Commands! The current Limit is 20`)
     return
   }
   let gcodeList = ''
   for (let i = 0; i <= gcodeCommands.length - 1; i++) {
-    gcodeList = gcodeList.concat(`\`${  gcodeCommands[i]  }\` `)
+    gcodeList = gcodeList.concat(`\`${gcodeCommands[i]}\` `)
   }
   const exampleEmbed = new Discord.MessageEmbed()
     .setColor('#0099ff')

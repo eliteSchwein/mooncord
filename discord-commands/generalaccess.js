@@ -7,12 +7,12 @@ const executeCommand = function (command, channel, user, guild, discordClient, w
   if (database.accesseveryone) {
     database.accesseveryone = false
     discordDatabase.updateDatabase(database, guild)
-    channel.send(`<@${  user.id  }> You disabled the Access for everyone!`)
+    channel.send(`<@${user.id}> You disabled the Access for everyone!`)
     return
   }
   database.accesseveryone = true
   discordDatabase.updateDatabase(database, guild)
-  channel.send(`<@${  user.id  }> You enabled the Access for everyone!`)
+  channel.send(`<@${user.id}> You enabled the Access for everyone!`)
 }
 module.exports = executeCommand
 module.exports.needAdmin = function () { return admin }

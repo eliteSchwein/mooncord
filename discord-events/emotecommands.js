@@ -19,7 +19,7 @@ const enableEvent = function (discordClient, websocketConnection) {
       return
     }
     const id = msg.embeds[0].title.toLowerCase().replace(/\s/g, '')
-    if (!fs.existsSync(path.resolve(__dirname, `../discord-commandreactions/${  id  }.js`))) {
+    if (!fs.existsSync(path.resolve(__dirname, `../discord-commandreactions/${id}.js`))) {
       return
     }
     const emoteModule = commandReactHandlers[id]
