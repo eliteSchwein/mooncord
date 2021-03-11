@@ -13,7 +13,6 @@ const event = (message, connection, discordClient) => {
         }
         if (typeof (result.status) !== 'undefined') {
           const klipperstatus = result.status
-          console.log(klipperstatus)
           let currentProgress = 0
           if (typeof (klipperstatus.virtual_sdcard) !== 'undefined') {
             if (klipperstatus.virtual_sdcard.file_position <= variables.getStartByte()) {
@@ -32,6 +31,8 @@ const event = (message, connection, discordClient) => {
               }
               variables.setProgress(currentProgress)
             }
+            
+            console.log(currentProgress)
             if (variables.getStatus() === 'printing') {
               connection.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${  variables.getCurrentFile()  }"}, "id": ${  id  }}`)
               if (currentProgress.toFixed(0) !== 0 && currentProgress.toFixed(0) !== 100 && variables.getProgress() !== currentProgress.toFixed(0)) {
