@@ -14,7 +14,7 @@ const getModule = async function (discordClient, channel, guild, user) {
     .setAuthor(variables.getCurrentFile())
     .addField('Print Time', variables.getFormatedPrintTime(), true)
     .addField('ETA Print Time', variables.getFormatedRemainingTime(), true)
-    .addField('Progress', `${variables.getProgress().toFixed(0)}%`, true)
+    .addField('Progress', `${variables.getProgress()}%`, true)
     .attachFiles([snapshot, thumbnail])
     .setImage(`attachment://${snapshot.name}`)
     .setThumbnail(`attachment://${thumbnail.name}`)
