@@ -29,10 +29,7 @@ const event = (message, connection, discordClient) => {
               } else {
                 currentProgress = klipperstatus.virtual_sdcard.progress
               }
-              variables.setProgress(currentProgress)
             }
-            
-            console.log(currentProgress)
             if (variables.getStatus() === 'printing') {
               connection.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${  variables.getCurrentFile()  }"}, "id": ${  id  }}`)
               if (currentProgress.toFixed(0) !== 0 && currentProgress.toFixed(0) !== 100 && variables.getProgress() !== currentProgress.toFixed(0)) {
