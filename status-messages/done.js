@@ -1,11 +1,13 @@
 const statusUtil = require('../utils/statusUtil')
 const variables = require('../utils/variablesUtil')
+const thumbnailUtil = require('../utils/thumbnailUtil')
 const webcamUtil = require('../utils/webcamUtil')
 
 const getModule = async function (discordClient, channel, guild, user) {
   discordClient.user.setActivity('Finished Print', { type: 'WATCHING' })
 
   const snapshot = await webcamUtil.retrieveWebcam()
+  const thumbnail = await thumbnailUtil.retrieveThumbnail()
 
   const statusEmbed = statusUtil.getDefaultEmbed(user,'Print Done','#25db00')
   statusEmbed
