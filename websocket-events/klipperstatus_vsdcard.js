@@ -35,7 +35,7 @@ const event = (message, connection, discordClient) => {
               if (currentProgress.toFixed(0) !== 0 && currentProgress.toFixed(0) !== 100 && variables.getProgress() !== currentProgress.toFixed(0)) {
                   variables.setProgress(currentProgress.toFixed(0))
                   discordClient.user.setActivity(`Printing: ${  currentProgress.toFixed(0)  }%`, { type: 'WATCHING' })
-                  console.log(config.statusupdatepercent)
+                  console.log(config.statusupdatepercent && currentProgress.toFixed(2) !== 0 && currentProgress % config.statusupdateinterval === 0)
                   if (config.statusupdatepercent && currentProgress.toFixed(2) !== 0 && currentProgress % config.statusupdateinterval === 0) {
                       statusUtil.triggerStatusUpdate(discordClient)
                     }
