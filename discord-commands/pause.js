@@ -9,7 +9,7 @@ const executeCommand = function (command, channel, user, guild, discordClient, w
   }
   channel.send(`<@${user.id}> you pausing the Print!`)
   const id = Math.floor(Math.random() * 10_000) + 1
-  websocketConnection.send(`{"jsonrpc": "2.0", "method": "printer.print.pause", "id": ${id}}`)
+  websocketConnection.send(`{"jsonrpc": "2.0", "method": "printer.gcode.script", "params": {"script": "PAUSE"}, "id": ${id}}`)
 }
 module.exports = executeCommand
 module.exports.needAdmin = function () { return admin }
