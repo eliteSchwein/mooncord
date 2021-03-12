@@ -8,16 +8,19 @@ install_packages()
     echo "Update package data"
     sudo apt update
 
-    echo "Download Node 11"
-    wget https://nodejs.org/download/release/v11.15.0/node-v11.15.0-linux-armv6l.tar.gz
+    if ! command -v node -v
+    then
+        echo "Download Node 11"
+        wget https://nodejs.org/download/release/v11.15.0/node-v11.15.0-linux-armv6l.tar.gz
 
-    echo "Install Node 11.15.0"
-    tar -xvf node-v11.15.0-linux-armv6l.tar.gz >/dev/null 2>&1 
-    sudo cp -R node-v11.15.0-linux-armv6l/* /usr/local/ >/dev/null 2>&1 
+        echo "Install Node 11.15.0"
+        tar -xvf node-v11.15.0-linux-armv6l.tar.gz >/dev/null 2>&1 
+        sudo cp -R node-v11.15.0-linux-armv6l/* /usr/local/ >/dev/null 2>&1 
 
-    echo "Remove Node File and Folder"
-    rm -rf node-v11.15.0-linux-armv6l.tar.gz
-    rm -rf node-v11.15.0-linux-armv6l
+        echo "Remove Node File and Folder"
+        rm -rf node-v11.15.0-linux-armv6l.tar.gz
+        rm -rf node-v11.15.0-linux-armv6l
+    fi
 
     echo "Install Dependencies"
     npm i --only=prod
