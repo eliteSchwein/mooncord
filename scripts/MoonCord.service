@@ -5,7 +5,6 @@ StartLimitIntervalSec=0
 
 [Service]
 Type=simple
-Restart=always
 RestartSec=1
 User=MC_USER
 WorkingDirectory=MC_DIR
