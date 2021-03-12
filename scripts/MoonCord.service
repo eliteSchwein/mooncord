@@ -8,7 +8,7 @@ Type=simple
 RestartSec=1
 User=MC_USER
 WorkingDirectory=MC_DIR
-ExecStart=/usr/bin/xinit npm start
+ExecStart=/usr/bin/npm start
 
 [Install]
 WantedBy=multi-user.target
