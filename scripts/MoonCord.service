@@ -1,0 +1,15 @@
+[Unit]
+Description=MoonCord
+After=moonraker.service
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=MC_USER
+WorkingDirectory=MC_DIR
+ExecStart=/usr/bin/xinit npm start
+
+[Install]
+WantedBy=multi-user.target
