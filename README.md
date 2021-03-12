@@ -52,14 +52,14 @@ Important Note, you need to configure bottoken for the bot to work, and masterid
          * Help
          * Info
       * Access can be given to everyone via &#60;prefix&#62;generalaccess 
-      * or per User via &#60;prefix&#62;addaccess &#60;roleORusertag&#62;, you can revoke the Access per User via &#60;prefix&#62;removeaccess &#60;roleORusertag&#62;
+      * or per User via &#60;prefix&#62;addaccess &#60;user_or_roletag&#62;, you can revoke the Access per User via &#60;prefix&#62;removeaccess &#60;user_or_roletag&#62;
   * Admin:
       * Can access the following Commands: 
          * All Access Role Commands
          * Channel Managment Commands
          * Print Pause/Resume/Stop
          * List Print Files
-      * Bot Admin can be given per User via &#60;prefix&#62;addadmin &#60;roleORusertag&#62;, you can revoke the Bot Admin per User via &#60;prefix&#62;removeadmin &#60;roleORusertag&#62;
+      * Bot Admin can be given per User via &#60;prefix&#62;addadmin &#60;user_or_roletag&#62;, you can revoke the Bot Admin per User via &#60;prefix&#62;removeadmin &#60;user_or_roletag&#62;
   * Master:
       * Can access the following Commands: 
          * All Commands
