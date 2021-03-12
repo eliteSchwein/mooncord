@@ -11,28 +11,12 @@ Firstly make sure you've got a Bot Token, you get them here: [Tutorial](https://
 
     $ sudo apt install git
 
+#### Install Mooncord and its Dependencies
 
-For the ARM V7 Pi's (Pi3 and higher) install Node via:
-
-    $ curl -sL https://deb.nodesource.com/setup_12.x -o nodesource_setup.sh
-    $ sudo bash nodesource_setup.sh
-    $ sudo apt install nodejs
-    
-For the older Pi's use:
-
-    $ wget https://nodejs.org/download/release/v11.15.0/node-v11.15.0-linux-armv6l.tar.gz
-    $ tar -xvf node-v11.15.0-linux-armv6l.tar.gz
-    $ cd node-v11.15.0-linux-armv6l
-    $ sudo cp -R * /usr/local/
-
-#### Next, clone this repository:
-
+    $ cd ~/
     $ git clone https://github.com/eliteSchwein/mooncord.git
-
-#### Then install all node Modules:
-
-    $ cd mooncord
-    $ npm i
+    $ cd ~/MoonCord
+    $ bash scripts/install.sh
     
 ## Configuration
 
@@ -50,8 +34,6 @@ Important Note, you need to configure both Moonraker URL's
 * prefix: Enter your prefered Bot Prefix here (default: mc!)
 
 Important Note, you need to configure bottoken for the bot to work, and masterid to access all commands!
-
-Important Note, you might need to configure chromium path
 
 * statusupdateinterval: Auto Status Update per Seconds or Percent (default: 10)
 * statusupdatepercent: Use Percent for Auto Status instead of Seconds (default: false)
