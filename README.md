@@ -18,10 +18,6 @@ Firstly make sure you've got a Bot Token, you get them here: [Tutorial](https://
     $ cd ~/MoonCord
     $ bash scripts/install.sh
     
-#### Control MoonCord
-
-    $ sudo systemctl start/stop/restart/status MoonCord
-    
 ## Configuration
 
 You need to configure the bot before you start it the first time!
@@ -44,10 +40,7 @@ Important Note, you need to configure bottoken for the bot to work, and masterid
 
 ## Usage
 
-Start mooncord:
-
-    $ cd mooncord
-    $ npm start
+    $ sudo systemctl start/stop/restart/status MoonCord
 
 ## Permissions
 
