@@ -33,7 +33,7 @@ const event = (message, connection, discordClient) => {
           }
           if (variables.getStatus() === 'printing') {
             connection.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${variables.getCurrentFile()}"}, "id": ${id}}`)
-            if (currentProgress.toFixed(0) !== 0 && currentProgress.toFixed(0) !== 100 && variables.getProgress() !== currentProgress.toFixed(0)) {
+            if (!String(currentProgress).startsWith('0') && currentProgress.toFixed(0) !== 100 && variables.getProgress() !== currentProgress.toFixed(0)) {
               variables.setProgress(currentProgress.toFixed(0))
               discordClient.user.setActivity(`Printing: ${currentProgress.toFixed(0)}%`, { type: 'WATCHING' })
               if (!doublePostProtection && config.statusupdatepercent && !String(currentProgress).startsWith('0') && String(currentProgress % config.statusupdateinterval).startsWith('0')) {
