@@ -40,7 +40,7 @@ Important Note, you need to configure bottoken for the bot to work, and masterid
 
 ## Usage
 
-    $ sudo systemctl &#60;start/stop/restart/status&#62; MoonCord
+    $ sudo systemctl <start/stop/restart/status> MoonCord
 
 ## Permissions
 
