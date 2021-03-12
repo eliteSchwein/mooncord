@@ -1,7 +1,6 @@
 #!/bin/bash
 
 SCRIPTPATH="$( cd "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
-echo $SCRIPTPATH
 MCPATH="$( pwd -P )"
 
 install_packages()
@@ -37,7 +36,7 @@ install_systemd_service()
 
     SERVICE=$(sed "s/MC_USER/$USER/g" <<< $SERVICE)
     SERVICE=$(sed "s/MC_DIR/$MCPATH_ESC/g" <<< $SERVICE)
-    SERVICE=$(sed "s/MC_NPM/$MCNPM/g" <<< $SERVICE)
+    #SERVICE=$(sed "s/MC_NPM/$MCNPM/g" <<< $SERVICE)
 
     echo "$SERVICE" | sudo tee /etc/systemd/system/MoonCord.service > /dev/null
     sudo systemctl daemon-reload
