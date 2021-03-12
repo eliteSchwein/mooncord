@@ -40,7 +40,7 @@ Important Note, you need to configure bottoken for the bot to work, and masterid
 
 ## Usage
 
-    $ sudo systemctl start/stop/restart/status MoonCord
+    $ sudo systemctl &#60;start/stop/restart/status&#62; MoonCord
 
 ## Permissions
 
@@ -82,10 +82,10 @@ Important Note, you need to configure bottoken for the bot to work, and masterid
    * Permissions:
       _Note: The groups are explained above [URL](https://github.com/eliteSchwein/mooncord/blob/main/README.md#permissions)_
       * generalaccess: allow everyone to the Access Role
-      * addaccess &#60;userORroletag&#62;: add Access from a User or Role
-      * removeaccess &#60;userORroletag&#62;: remove Access from a User or Role
-      * addadmin &#60;userORroletag&#62;: add Admin from a User or Role
-      * removeadmin &#60;userORroletag&#62;: remove Admin from a User or Role
+      * addaccess &#60;user_or_roletag&#62;: add Access from a User or Role
+      * removeaccess &#60;user_or_roletag&#62;: remove Access from a User or Role
+      * addadmin &#60;user_or_roletag&#62;: add Admin from a User or Role
+      * removeadmin &#60;user_or_roletag&#62;: remove Admin from a User or Role
    * Channel Managment:
       * addchannel: add the Channel as Broadcast Channel
       * removechannel: remove the Channel as Broadcast Channel
