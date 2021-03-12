@@ -29,14 +29,15 @@ install_packages()
 install_systemd_service()
 {
     echo "Installing MoonCord unit file"
+    MCNPM="$( command -v npm -v )"
 
     SERVICE=$(<$SCRIPTPATH/MoonCord.service)
     MCPATH_ESC=$(sed "s/\//\\\\\//g" <<< $MCPATH)
-    MCNPM="$( command -v npm -v )"
+    MCNPM_ESC=$(sed "s/\//\\\\\//g" <<< $MCNPM)
 
     SERVICE=$(sed "s/MC_USER/$USER/g" <<< $SERVICE)
     SERVICE=$(sed "s/MC_DIR/$MCPATH_ESC/g" <<< $SERVICE)
-    #SERVICE=$(sed "s/MC_NPM/$MCNPM/g" <<< $SERVICE)
+    SERVICE=$(sed "s/MC_NPM/$MCNPM_ESC/g" <<< $SERVICE)
 
     echo "$SERVICE" | sudo tee /etc/systemd/system/MoonCord.service > /dev/null
     sudo systemctl daemon-reload
