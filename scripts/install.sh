@@ -20,7 +20,7 @@ install_packages()
     rm -rf node-v11.15.0-linux-armv6l
 
     echo "Install Dependencies"
-    npm i
+    npm i --only=prod
 }
 
 install_systemd_service()
