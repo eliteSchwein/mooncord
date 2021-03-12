@@ -2,7 +2,7 @@ const admin = false
 const master = true
 const variables = require('../utils/variablesUtil')
 
-const id = Math.floor(Math.random() * 10_000) + 1
+const id = Math.floor(Math.random() * 10000) + 1
 let wsConnection
 const executeReaction = function (message, user, guild, emote, discordClient, websocketConnection) {
   wsConnection = websocketConnection

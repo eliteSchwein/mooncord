@@ -8,7 +8,7 @@ const executeCommand = function (command, channel, user, guild, discordClient, w
     return
   }
   channel.send(`<@${user.id}> you canceled the Print!`)
-  const id = Math.floor(Math.random() * 10_000) + 1
+  const id = Math.floor(Math.random() * 10000) + 1
   websocketConnection.send(`{"jsonrpc": "2.0", "method": "printer.gcode.script", "params": {"script": "CANCEL_PRINT"}, "id": ${id}}`)
 }
 module.exports = executeCommand

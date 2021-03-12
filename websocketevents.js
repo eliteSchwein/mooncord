@@ -7,7 +7,7 @@ const events = require('./websocket-events')
 
 const getModule = async function (client, discordClient) {
   client.on('connect', async (connection) => {
-    const id = Math.floor(Math.random() * 10_000) + 1
+    const id = Math.floor(Math.random() * 10000) + 1
     fs.readdir(path.resolve(__dirname, 'websocket-events'), (err, files) => {
       if (err) {
         console.log(err)

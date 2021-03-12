@@ -3,7 +3,7 @@ const master = false
 const Discord = require('discord.js')
 const path = require('path')
 
-const id = Math.floor(Math.random() * 10_000) + 1
+const id = Math.floor(Math.random() * 10000) + 1
 let wsConnection
 let dcMessage
 let requester

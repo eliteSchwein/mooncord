@@ -6,7 +6,7 @@ const Discord = require('discord.js')
 const fs = require('fs')
 const path = require('path')
 
-const id = Math.floor(Math.random() * 10_000) + 1
+const id = Math.floor(Math.random() * 10000) + 1
 let wsConnection
 let messageChannel
 let requester

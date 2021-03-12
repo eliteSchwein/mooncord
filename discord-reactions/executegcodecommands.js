@@ -65,7 +65,7 @@ const executeReaction = function (message, user, guild, emote, discordClient, we
         clearInterval(gcodeTimer)
         return
       }
-      const id = Math.floor(Math.random() * 10_000) + 1
+      const id = Math.floor(Math.random() * 10000) + 1
       console.log(`Execute Command [${gcodePosition + 1}] ${gcodeCommands[gcodePosition]}`)
       websocketConnection.send(`{"jsonrpc": "2.0", "method": "printer.gcode.script", "params": {"script": "${gcodeCommands[gcodePosition]}"}, "id": ${id}}`)
       gcodePosition++
