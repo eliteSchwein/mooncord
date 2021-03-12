@@ -11,12 +11,16 @@ Firstly make sure you've got a Bot Token, you get them here: [Tutorial](https://
 
     $ sudo apt install git
 
-#### Install Mooncord and its Dependencies
+#### Install MoonCord and its Dependencies
 
     $ cd ~/
     $ git clone https://github.com/eliteSchwein/mooncord.git
     $ cd ~/MoonCord
     $ bash scripts/install.sh
+    
+#### Control MoonCord
+
+    $ sudo systemctl start/stop/restart/status MoonCord
     
 ## Configuration
 
