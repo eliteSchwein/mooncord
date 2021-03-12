@@ -13,7 +13,6 @@ const getModule = async function (discordClient, channel, guild, user) {
   statusEmbed
     .setAuthor(variables.getCurrentFile())
     .addField('Print Time', variables.getFormatedPrintTime(), true)
-    .addField('Progress', `${variables.getProgress().toFixed(0)}%`, true)
     .attachFiles([snapshot, thumbnail])
     .setImage(`attachment://${snapshot.name}`)
     .setThumbnail(`attachment://${thumbnail.name}`)
