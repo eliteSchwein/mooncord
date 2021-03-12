@@ -6,6 +6,7 @@ module.exports = {
   generalaccess: require('./generalaccess'),
   help: require('./help'),
   info: require('./info'),
+  hsinfo: require('./hsinfo'),
   listprints: require('./listprints'),
   pause: require('./pause'),
   print: require('./print'),

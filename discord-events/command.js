@@ -31,7 +31,6 @@ const enableEvent = function (discordClient, websocketConnection) {
       console.error(error)
     }
     const commandModule = commands[command.split(' ')[0]]
-    console.log(commandModule)
     if (commandModule.needMaster() && msg.author.id !== config.masterid) {
       msg.channel.send(`<@${msg.author.id}> You are not allowed to execute the following Command! \n> ${config.prefix}${command.split(' ')[0]}`)
       return
