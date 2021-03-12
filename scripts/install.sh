@@ -18,6 +18,9 @@ install_packages()
     echo "Remove Node File and Folder"
     rm -rf node-v11.15.0-linux-armv6l.tar.gz
     rm -rf node-v11.15.0-linux-armv6l
+
+    echo "Install Dependencies"
+    npm i
 }
 
 install_systemd_service()
