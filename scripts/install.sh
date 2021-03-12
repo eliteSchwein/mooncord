@@ -32,9 +32,11 @@ install_systemd_service()
 
     SERVICE=$(<$SCRIPTPATH/MoonCord.service)
     MCPATH_ESC=$(sed "s/\//\\\\\//g" <<< $MCPATH)
+    MCNPM="$( command -v npm -v )"
 
     SERVICE=$(sed "s/MC_USER/$USER/g" <<< $SERVICE)
     SERVICE=$(sed "s/MC_DIR/$MCPATH_ESC/g" <<< $SERVICE)
+    SERVICE=$(sed "s/MC_DIR/$MCNPM/g" <<< $SERVICE)
 
     echo "$SERVICE" | sudo tee /etc/systemd/system/MoonCord.service > /dev/null
     sudo systemctl daemon-reload
