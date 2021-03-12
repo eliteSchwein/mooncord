@@ -14,6 +14,10 @@ install_packages()
     echo "Install Node 11.15.0"
     tar -xvf node-v11.15.0-linux-armv6l.tar.gz
     sudo cp -R node-v11.15.0-linux-armv6l/* /usr/local/
+
+    echo "Remove Node File and Folder"
+    rm -rf node-v11.15.0-linux-armv6l.tar.gz
+    rm -rf node-v11.15.0-linux-armv6l
 }
 
 install_systemd_service()
