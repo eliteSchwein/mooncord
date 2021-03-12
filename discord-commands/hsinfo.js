@@ -53,6 +53,4 @@ const executeCommand = async function (command, channel, user, guild, discordCli
 }
 module.exports = executeCommand
 module.exports.needAdmin = function () { return admin }
-module.exports.needMaster = function () { 
-  console.log("test") 
-return master }
+module.exports.needMaster = function () { return master }
