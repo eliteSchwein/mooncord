@@ -8,7 +8,7 @@ install_packages()
     echo "Update package data"
     sudo apt update
 
-    if ! command -v node -v
+    if ! command -v node -v >/dev/null 2>&1
     then
         echo "Download Node 11"
         wget https://nodejs.org/download/release/v11.15.0/node-v11.15.0-linux-armv6l.tar.gz
