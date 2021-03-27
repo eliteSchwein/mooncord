@@ -8,6 +8,9 @@ install_packages()
     echo "Update package data"
     sudo apt update
 
+    echo "Install needed packages"
+    sudo apt-get install nano git
+
     if ! command -v node -v >/dev/null 2>&1
     then
         echo "Download Node 11"
@@ -49,6 +52,12 @@ modify_user()
     sudo usermod -a -G tty $USER
 }
 
+edit_config()
+{
+    echo "Edit Config"
+    nano ./config.json
+}
+
 start_MoonCord() {
 
     echo "Start MoonCord, please make sure you configured the Bot correctly!"
@@ -57,5 +66,6 @@ start_MoonCord() {
 
 install_packages
 modify_user
+edit_config
 install_systemd_service
 start_MoonCord
