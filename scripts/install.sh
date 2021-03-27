@@ -23,6 +23,8 @@ install_packages()
         echo "Remove Node File and Folder"
         rm -rf node-v11.15.0-linux-armv6l.tar.gz
         rm -rf node-v11.15.0-linux-armv6l
+        
+        edit_config
     fi
 
     echo "Install Dependencies"
@@ -66,6 +68,5 @@ start_MoonCord() {
 
 install_packages
 modify_user
-edit_config
 install_systemd_service
 start_MoonCord
