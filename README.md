@@ -6,6 +6,9 @@
 [![Issues](https://img.shields.io/github/issues/eliteschwein/mooncord)](https://github.com/eliteSchwein/mooncord/issues)  
 [![Downloads](https://img.shields.io/github/downloads/eliteschwein/mooncord/latest/total)]()  
 [![PR](https://img.shields.io/github/issues-pr/eliteschwein/mooncord)]()
+
+
+### Community Server
 [![Discord](https://img.shields.io/discord/626717239210672139)](https://discord.gg/auhjVJYqCf)
 
 ## Installation
