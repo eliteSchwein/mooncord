@@ -17,7 +17,7 @@ Firstly make sure you've got a Bot Token, you get them here: [Tutorial](https://
 
     $ cd ~/
     $ git clone https://github.com/eliteSchwein/mooncord.git
-    $ cd ~/MoonCord
+    $ cd ~/mooncord
     $ bash scripts/install.sh
     
 ## Configuration
