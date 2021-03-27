@@ -8,7 +8,7 @@
 [![PR](https://img.shields.io/github/issues-pr/eliteschwein/mooncord)]()
 
 
-### Community Server
+## Discord Community Server
 [![Discord](https://img.shields.io/discord/626717239210672139)](https://discord.gg/auhjVJYqCf)
 
 ## Installation
