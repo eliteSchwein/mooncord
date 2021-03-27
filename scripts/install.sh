@@ -9,7 +9,7 @@ install_packages()
     sudo apt update
 
     echo "Install needed packages"
-    sudo apt-get install nano git
+    sudo apt-get -y install nano git
 
     if ! command -v node -v >/dev/null 2>&1
     then
