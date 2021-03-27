@@ -1,4 +1,4 @@
-![Title](https://github.com/eliteSchwein/mooncord/blob/main/images/github-title.png)
+![Title](https://github.com/eliteSchwein/mooncord/blob/master/images/github-title.png)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 ![Version](https://img.shields.io/github/package-json/v/eliteschwein/mooncord)
