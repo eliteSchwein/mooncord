@@ -12,7 +12,6 @@ const getModule = async function (discordClient, channel, user) {
   const statusEmbed = statusUtil.getDefaultEmbed(user, 'Print stopped', '#c90000')
   statusEmbed
     .setAuthor(variables.getCurrentFile())
-    .addField('Progress', `${variables.getProgress()}%`, true)
     .attachFiles([snapshot, thumbnail])
     .setImage(`attachment://${snapshot.name}`)
     .setThumbnail(`attachment://${thumbnail.name}`)
