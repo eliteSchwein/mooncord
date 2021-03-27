@@ -1,6 +1,7 @@
 ![Title](https://github.com/eliteSchwein/mooncord/blob/main/images/github-title.png)
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![Version](https://img.shields.io/github/package-json/v/eliteschwein/mooncord)]()
 [![codebeat badge](https://codebeat.co/badges/3ce3343c-c66b-4c87-9a0b-2b86f7c1b462)](https://codebeat.co/projects/github-com-eliteschwein-mooncord-main)
 [![Issues](https://img.shields.io/github/issues/eliteschwein/mooncord)](https://github.com/eliteSchwein/mooncord/issues)  
 [![Downloads](https://img.shields.io/github/downloads/eliteschwein/mooncord/latest/total)]()  
