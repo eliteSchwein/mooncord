@@ -4,7 +4,7 @@ const discordDatabase = require('../discorddatabase')
 const status = require('../status-messages')
 const variables = require('../utils/variablesUtil')
 
-function triggerStatusUpdate (discordClient, channel, guild, user) {
+function triggerStatusUpdate (discordClient, channel, user) {
   console.log(`Printer Status: ${variables.getStatus()}`)
   const statusEvent = status[variables.getStatus()]
   setTimeout(() => {
@@ -12,8 +12,8 @@ function triggerStatusUpdate (discordClient, channel, guild, user) {
   }, 1000)
 }
 
-module.exports.triggerStatusUpdate = function (discordClient, channel, guild, user) {
-  triggerStatusUpdate(discordClient, channel, guild, user)
+module.exports.triggerStatusUpdate = function (discordClient, channel, user) {
+  triggerStatusUpdate(discordClient, channel, user)
 }
 
 module.exports.getDefaultEmbed = function (user, status, color) {

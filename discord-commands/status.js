@@ -4,7 +4,7 @@ const statusUtil = require('../utils/statusUtil')
 
 const executeCommand = function (command, channel, user, guild, discordClient, websocketConnection) {
   channel.startTyping()
-  statusUtil.triggerStatusUpdate(discordClient, channel, guild, user)
+  statusUtil.triggerStatusUpdate(discordClient, channel, user)
   channel.stopTyping()
 }
 module.exports = executeCommand

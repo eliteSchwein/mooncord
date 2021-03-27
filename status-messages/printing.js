@@ -3,7 +3,7 @@ const thumbnailUtil = require('../utils/thumbnailUtil')
 const variables = require('../utils/variablesUtil')
 const webcamUtil = require('../utils/webcamUtil')
 
-const getModule = async function (discordClient, channel, guild, user) {
+const getModule = async function (discordClient, channel, user) {
   const snapshot = await webcamUtil.retrieveWebcam()
   const thumbnail = await thumbnailUtil.retrieveThumbnail()
 

@@ -3,7 +3,7 @@ const thumbnailUtil = require('../utils/thumbnailUtil')
 const variables = require('../utils/variablesUtil')
 const webcamUtil = require('../utils/webcamUtil')
 
-const getModule = async function (discordClient, channel, guild, user) {
+const getModule = async function (discordClient, channel, user) {
   discordClient.user.setActivity('Finished Print', { type: 'WATCHING' })
 
   const snapshot = await webcamUtil.retrieveWebcam()
