@@ -60,15 +60,15 @@ setup(){
     CONFIG=$MCPATH/config.json
     if ! [[ -f "$CONFIG" ]]; then
         generate_config
-        
+        edit_config
     fi
 }
 
 generate_config()
 {
     echo "Generate Configs"
-    cp $SCRIPTPATH/config.json config.json
-    cp $SCRIPTPATH/discorddatabase.json discorddatabase.json
+    cp $SCRIPTPATH/config.json $MCPATH/config.json
+    cp $SCRIPTPATH/discorddatabase.json $MCPATH/discorddatabase.json
 }
 
 edit_config()
