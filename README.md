@@ -3,7 +3,7 @@
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![codebeat badge](https://codebeat.co/badges/3ce3343c-c66b-4c87-9a0b-2b86f7c1b462)](https://codebeat.co/projects/github-com-eliteschwein-mooncord-main)
 <br>
-[![Invite](https://github.com/eliteSchwein/mooncord/blob/main/images/github-demo-discord.png)](https://discord.gg/YQt8dPFHfZ)
+[![Invite](https://github.com/eliteSchwein/mooncord/blob/main/images/github-demo-discord.png)](https://discord.gg/auhjVJYqCf)
 
 ## Installation
 
