@@ -24,6 +24,8 @@ install_packages()
         rm -rf node-v11.15.0-linux-armv6l.tar.gz
         rm -rf node-v11.15.0-linux-armv6l
         
+        generate_config
+
         edit_config
     fi
 
@@ -54,6 +56,20 @@ modify_user()
     sudo usermod -a -G tty $USER
 }
 
+setup(){
+    CONFIG=$MCPATH/config.json
+    if[! -f "$CONFIG"]; then
+        echo "test"
+    fi
+}
+
+generate_config()
+{
+    echo "Generate Configs"
+    cp $SCRIPTPATH/config.json config.json
+    cp $SCRIPTPATH/discorddatabase.json discorddatabase.json
+}
+
 edit_config()
 {
     echo "Edit Config"
@@ -68,5 +84,6 @@ start_MoonCord() {
 
 install_packages
 modify_user
+setup
 install_systemd_service
 start_MoonCord
