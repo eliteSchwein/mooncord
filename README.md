@@ -1,6 +1,6 @@
 ![Title](https://github.com/eliteSchwein/mooncord/blob/main/images/github-title.png)
 
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![License: MIT](https://img.shields.io/github/license/eliteschwein/mooncord)](https://opensource.org/licenses/MIT)
 [![Version](https://img.shields.io/github/package-json/v/eliteschwein/mooncord)]()
 [![Tested](https://img.shields.io/badge/rpi%20tested-zero%20%26%204-brightgreen)]()
 [![Downloads](https://img.shields.io/github/downloads/eliteschwein/mooncord/latest/total)]()  
