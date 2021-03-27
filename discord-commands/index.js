@@ -10,12 +10,10 @@ module.exports = {
   listprints: require('./listprints'),
   pause: require('./pause'),
   print: require('./print'),
-  reboot: require('./reboot'),
   removeaccess: require('./removeaccess'),
   removeadmin: require('./removeadmin'),
   removechannel: require('./removechannel'),
   resume: require('./resume'),
-  shutdown: require('./shutdown'),
   status: require('./status'),
   stop: require('./stop'),
   temp: require('./temp')
