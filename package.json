@@ -4,8 +4,7 @@
   "description": "Moonraker Discord Bot based on Discord.js",
   "main": "index.js",
   "scripts": {
-    "start": "npm run-script install && npm run-script startmooncord",
-    "install": "npm i --only=prod",
+    "start": "npm i --only=prod && npm run-script startmooncord",
     "startmooncord": "node mooncord.js",
     "ramdebugstart": "node --trace_gc mooncord.js",
     "checkcodestyle": "npx eslint ./**",
