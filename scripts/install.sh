@@ -30,7 +30,7 @@ install_packages()
     fi
 
     echo "Install Dependencies"
-    npm i --only=prod
+    npm ci --only=prod
 }
 
 install_systemd_service()
