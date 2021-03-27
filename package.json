@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "npm run-script install && npm run-script startmooncord",
-    "install": "npm -i --only=prod",
+    "install": "npm i --only=prod",
     "startmooncord": "node mooncord.js",
     "ramdebugstart": "node --trace_gc mooncord.js",
     "checkcodestyle": "npx eslint ./**",
