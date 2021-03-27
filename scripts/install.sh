@@ -58,7 +58,7 @@ modify_user()
 
 setup(){
     CONFIG=$MCPATH/config.json
-    if[! -f "$CONFIG"]; then
+    if ! [[ -f "$CONFIG" ]]; then
         echo "test"
     fi
 }
