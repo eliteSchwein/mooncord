@@ -27,6 +27,18 @@ Firstly make sure you've got a Bot Token, you get them here: [Tutorial](https://
     $ git clone https://github.com/eliteSchwein/mooncord.git
     $ cd ~/mooncord
     $ bash scripts/install.sh
+    
+### Configure Moonraker Update manager
+
+put this into your moonraker.conf
+
+    `
+    [update_manager client MoonCord]
+    type: git_repo
+    path: /home/pi/mooncord
+    origin: https://github.com/eliteschwein/mooncord.git
+    install_script: scripts/install.sh
+    `
 
 ## Configuration
 
