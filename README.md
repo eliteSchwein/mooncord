@@ -35,6 +35,7 @@ put this into your moonraker.conf
     [update_manager client MoonCord]
     type: git_repo
     path: /home/pi/mooncord
+    primary_branch: main
     origin: https://github.com/eliteschwein/mooncord.git
     install_script: scripts/install.sh
 
