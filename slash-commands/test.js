@@ -3,7 +3,7 @@ const { SlashCommand } = require('slash-create');
 module.exports = class HelloCommand extends SlashCommand {
     constructor(creator) {
         super(creator, {
-            name: 'test',
+            name: 'test-1',
             description: 'Says hello to you.'
         });
         this.filePath = __filename;
