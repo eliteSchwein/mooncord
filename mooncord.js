@@ -115,6 +115,9 @@ systemInfo.osInfo().then(async data => {
                     const channel = guild.channels.cache.get(broadcastchannels[index])
                     channel.send(`<@${config.masterid}> Please reinvite this Bot! \nYou have to do that to enable the Slash Commands!\nURL:https://discord.com/oauth2/authorize?client_id=${discordClient.user.id}&scope=applications.commands%20bot&permissions=336063568\n`)
                   }
+                  setTimeout(() => {
+                    guild.leave()
+                  },1000 )
                 })
                 .catch((error) => { console.log(error) })
             }
