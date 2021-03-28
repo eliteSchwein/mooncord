@@ -25,6 +25,7 @@
     "axios": "^0.21.1",
     "discord.js": "^12.5.1",
     "form-data": "^3.0.0",
+    "slash-create": "^3.0.0",
     "systeminformation": "^4.33.5",
     "websocket": "^1.0.33"
   },
