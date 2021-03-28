@@ -67,7 +67,7 @@ systemInfo.osInfo().then(async data => {
   creator
     .withServer(
       new GatewayServer(
-        (handler) => client.ws.on('INTERACTION_CREATE', handler)
+        (handler) => discordClient.ws.on('INTERACTION_CREATE', handler)
       )
     );
 
