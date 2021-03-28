@@ -11,6 +11,7 @@ const WebSocketClient = require('websocket').client
 const pjson = require('./package.json')
 const config = require('./config.json')
 
+const { GatewayServer, SlashCreator } = require('slash-create');
 const Discord = require('discord.js')
 
 const discordClient = new Discord.Client()
@@ -48,6 +49,26 @@ systemInfo.osInfo().then(async data => {
   }
 
   console.log('\nConnect Discord Bot...\n')
+
+  const creator = new SlashCreator({
+    applicationID: bot.botapplicationid,
+    publicKey: config.botapplicationkey,
+    token: config.bottoken,
+  });
+
+  creator
+    // Registers all of your commands in the ./commands/ directory
+    .registerCommandsIn(path.join(__dirname, 'slash-commands'))
+    // This will sync commands to Discord, it must be called after commands are loaded.
+    // This also returns itself for more chaining capabilities.
+    .syncCommands();
+  
+  creator
+    .withServer(
+      new GatewayServer(
+        (handler) => client.ws.on('INTERACTION_CREATE', handler)
+      )
+    );
 
   discordClient.login(config.bottoken)
 
