@@ -16,7 +16,7 @@
 
 Firstly make sure you've got a Bot Application, you can make it here: [Tutorial](https://github.com/reactiflux/discord-irc/wiki/Creating-a-discord-bot-&-getting-a-token).
 
-You need then the Bot Token: [Tutorial](https://github.com/reactiflux/discord-irc/wiki/Creating-a-discord-bot-&-getting-a-token)
+You need then the Bot Token: [Tutorial](https://github.com/reactiflux/discord-irc/wiki/Creating-a-discord-bot-&-getting-a-token) <br>
 You also need Application ID and Public Key:
 [Picture](https://github.com/eliteSchwein/mooncord/blob/dev/images/example-application.png)
 
@@ -52,7 +52,9 @@ Explanation config.json
 
 Important Note, you need to configure both Moonraker URL's
 
-- bottoken: Enter your Bot Token here
+- bottoken: Enter your Bot Token here [Preparations](https://github.com/eliteSchwein/mooncord/tree/dev#preparations)
+- botapplicationkey: Enter your Application Public Key here [Preparations](https://github.com/eliteSchwein/mooncord/tree/dev#preparations)
+- botapplicationid: Enter your Application Public ID here [Preparations](https://github.com/eliteSchwein/mooncord/tree/dev#preparations)
 - masterid: Enter your Client ID here [Tutorial](https://techswift.org/2020/04/22/how-to-find-your-user-id-on-discord)
 - prefix: Enter your prefered Bot Prefix here (default: mc!)
 
