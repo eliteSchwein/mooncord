@@ -1,5 +1,6 @@
 'use strict'
 const systemInfo = require('systeminformation')
+const path = require('path');
 
 const discordevents = require('./discord-events')
 const statusUtil = require('./utils/statusUtil')
