@@ -58,10 +58,7 @@ systemInfo.osInfo().then(async data => {
   });
 
   creator
-    // Registers all of your commands in the ./commands/ directory
     .registerCommandsIn(path.join(__dirname, 'slash-commands'))
-    // This will sync commands to Discord, it must be called after commands are loaded.
-    // This also returns itself for more chaining capabilities.
     .syncCommands();
   
   creator
