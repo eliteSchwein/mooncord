@@ -33,7 +33,7 @@ You also need Application ID and Public Key:
     $ cd ~/mooncord
     $ bash scripts/install.sh
 
-### Configure Moonraker Update manager
+#### Configure Moonraker Update manager
 
 put this into your moonraker.conf
 
