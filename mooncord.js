@@ -51,7 +51,7 @@ systemInfo.osInfo().then(async data => {
   console.log('\nConnect Discord Bot...\n')
 
   const creator = new SlashCreator({
-    applicationID: bot.botapplicationid,
+    applicationID: config.botapplicationid,
     publicKey: config.botapplicationkey,
     token: config.bottoken,
   });
