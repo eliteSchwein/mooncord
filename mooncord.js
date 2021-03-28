@@ -73,7 +73,7 @@ systemInfo.osInfo().then(async data => {
   discordClient.on('ready', () => {
     console.log('Discordbot Connected\n')
     console.log(`Name: ${discordClient.user.tag}`)
-    console.log(`Invite: https://discord.com/oauth2/authorize?client_id=${discordClient.user.id}&scope=bot&permissions=336063568\n`)
+    console.log(`Invite: https://discord.com/oauth2/authorize?client_id=${discordClient.user.id}&scope=applications.commands%20bot&permissions=336063568\n`)
     discordClient.user.setActivity('Printer start', { type: 'WATCHING' })
 
     console.log('Connect Websocket...\n')
