@@ -20,6 +20,8 @@ You need then the Bot Token: [Tutorial](https://github.com/reactiflux/discord-ir
 You also need Application ID and Public Key:
 [Picture](https://github.com/eliteSchwein/mooncord/blob/dev/images/example-application.png)
 
+## Installation
+
 #### Install Git first
 
     $ sudo apt install git
