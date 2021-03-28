@@ -1,11 +1,13 @@
 'use strict'
 const systemInfo = require('systeminformation')
-const path = require('path');
+const path = require('path')
+const fs = require('fs')
 
 const discordevents = require('./discord-events')
 const statusUtil = require('./utils/statusUtil')
 const variables = require('./utils/variablesUtil')
 const websocketevents = require('./websocketevents')
+const discordDatabase = require('./discorddatabase')
 
 const WebSocketClient = require('websocket').client
 
@@ -16,6 +18,9 @@ const { GatewayServer, SlashCreator } = require('slash-create');
 const Discord = require('discord.js')
 
 const discordClient = new Discord.Client()
+
+const updatecheck = './temp/0.0.2check'
+
 let reconnect = false
 
 systemInfo.osInfo().then(async data => {
@@ -97,6 +102,30 @@ systemInfo.osInfo().then(async data => {
         console.log('Enable Discord Events...\n')
 
         discordevents(discordClient, connection)
+
+        try {
+          if (!fs.existsSync(updatecheck)) {
+            const database = discordDatabase.getDatabase()
+            for (const guildid in database) {
+              discordClient.guilds.fetch(guildid)
+                .then(async (guild) => {
+                  const guilddatabase = database[guild.id]
+                  const broadcastchannels = guilddatabase.statuschannels
+                  for (const index in broadcastchannels) {
+                    const channel = guild.channels.cache.get(broadcastchannels[index])
+                    channel.send(`<@${config.masterid}> Please reinvite this Bot! \nYou have to do that to enable the Slash Commands!\nURL:https://discord.com/oauth2/authorize?client_id=${discordClient.user.id}&scope=applications.commands%20bot&permissions=336063568\n`)
+                  }
+                })
+                .catch((error) => { console.log(error) })
+            }
+            fs.writeFile(updatecheck, 'Updated!', function (err) {
+              if (err) throw err;
+              console.log('Version Lock File generated!.');
+            });
+          }
+        } catch(err) {
+          console.error(err)
+        }
       }
       connection.on('close', () => {
         console.log('WebSocket Connection Closed')
