@@ -32,7 +32,7 @@ module.exports = class HelloCommand extends SlashCommand {
         if (ctx.options.length === 0) {
             return "Please fill in the Command correctly!"
         }
-        console.log(ctx.options[0])
+        console.log(ctx.options.component)
 
         return "Soon TM";
     }
