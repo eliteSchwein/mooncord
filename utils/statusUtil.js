@@ -9,6 +9,7 @@ function triggerStatusUpdate (discordClient, channel, user) {
   const statusEvent = status[variables.getStatus()]
   setTimeout(() => {
     const embed = statusEvent(discordClient, channel, user)
+    console.log(embed)
     postStatus(discordClient, embed, channel)
   }, 1000)
 }
