@@ -1,7 +1,8 @@
-const { SlashCommand, MessageOptions } = require('slash-create');
+const { SlashCommand } = require('slash-create');
 const Discord = require('discord.js')
 const pjson = require('../package.json')
 const path = require('path')
+const core = require('../mooncord')
 
 module.exports = class HelloCommand extends SlashCommand {
     constructor(creator) {
@@ -27,11 +28,17 @@ module.exports = class HelloCommand extends SlashCommand {
             .setTimestamp()
             .setFooter(`${ctx.user.username} # ${ctx.user.discriminator}`, user.avatarURL())
         
-        console.log(new MessageOptions())
         
-        let answer = new MessageOptions()
-        answer.embeds.push(infoEmbed)
+        const answer = async (interaction, content) => {
+            const { data, files } = await Discord.APIMessage.create(
+                core.getDiscordClient().channels.resolve(interaction.channelID),
+                content
+            )
+                .resolveData()
+                .resolveFiles()
+            return { ...data, files }
+        }
 
-        return answer;
+        return await answer(ctx, infoEmbed);
     }
 }

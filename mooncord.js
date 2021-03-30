@@ -145,3 +145,6 @@ systemInfo.osInfo().then(async data => {
     websocketClient.connect(config.moonrakersocketurl)
   })
 })
+module.exports.getDiscordClient = function () {
+  return discordClient
+}
