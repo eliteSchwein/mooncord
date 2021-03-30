@@ -39,8 +39,13 @@ module.exports = class HelloCommand extends SlashCommand {
             return `${channel} is not a Text Channel, ${ctx.user.username}!`
         }
 
-        if (channelresult) { return `${channel} is now a Broadcast Channel, ${ctx.user.username}!` }
-        if (!channelresult) { return `${channel} is not longer a Broadcast Channel, ${ctx.user.username}!` }
+        console.log(channelresult)
+
+        if (channelresult) {
+            return `${channel} is now a Broadcast Channel, ${ctx.user.username}!`
+        } else {
+            return `${channel} is not longer a Broadcast Channel, ${ctx.user.username}!`
+        }
     }
 }
 async function editChannel(channelid, guildid) {
@@ -51,7 +56,6 @@ async function editChannel(channelid, guildid) {
     if (channel.type !== 'text') {
         return undefined
     }
-    console.log(database.statuschannels.includes(channelid))
     if (database.statuschannels.includes(channelid)) {
         const index = database.statuschannels.indexOf(channelid)
         if (index > -1) {
