@@ -3,6 +3,7 @@ const Discord = require('discord.js')
 const pjson = require('../package.json')
 const path = require('path')
 const core = require('../mooncord')
+const fs = require('fs')
 
 module.exports = class HelloCommand extends SlashCommand {
     constructor(creator) {
@@ -27,11 +28,14 @@ module.exports = class HelloCommand extends SlashCommand {
                 .setTitle('Informations')
                 .setAuthor(core.getDiscordClient().user.tag, core.getDiscordClient().user.avatarURL())
                 .setDescription(description)
-                .attachFiles(logopath)
                 .setThumbnail('attachment://logo.png')
 
             ctx.send({
-                embeds: [infoEmbed.toJSON()]
+                embeds: [infoEmbed.toJSON()],
+                file: {
+                    name: 'logo.png',
+                    file: await fs.readFileSync(logopath)
+                }
             });
         }
         catch (err) {
