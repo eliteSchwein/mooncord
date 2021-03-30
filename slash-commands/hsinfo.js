@@ -9,7 +9,7 @@ module.exports = class HelloCommand extends SlashCommand {
             description: 'Get the current Hardware and Software Informations.',
             options: [{
                 choices: ['cpu', 'ram'],
-                type: CommandOptionType.STRING,
+                type: CommandOptionType.SUB_COMMAND,
                 name: 'component',
                 description: 'Select the component you want to know the information about.',
                 required: true
