@@ -23,7 +23,7 @@ module.exports = class HelloCommand extends SlashCommand {
             
             const logopath = path.resolve(__dirname, '../images/logo.png')
 
-            const logobuffer = await fs.readFileSync(logopath)
+            const logobuffer = fs.readFileSync(logopath)
 
             const infoEmbed = new Discord.MessageEmbed()
                 .setColor('#0099ff')
