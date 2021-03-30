@@ -19,7 +19,7 @@ module.exports = class HelloCommand extends SlashCommand {
     }
 
     async run(ctx) {
-        if (!permissionUtil.hasAdmin(ctx.user, ctx.guildID)) {
+        if (!await permissionUtil.hasAdmin(ctx.user, ctx.guildID)) {
             return `You dont have the Permissions, ${ctx.user.username}!`
         }
 
