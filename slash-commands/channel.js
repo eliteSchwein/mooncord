@@ -51,8 +51,9 @@ async function editChannel(channelid, guildid) {
     if (channel.type !== 'text') {
         return undefined
     }
+    console.log(database.statuschannels.includes(channelid))
     if (database.statuschannels.includes(channelid)) {
-        const index = database.statuschannels.indexOf(channel.id)
+        const index = database.statuschannels.indexOf(channelid)
         if (index > -1) {
             database.statuschannels.splice(index, 1)
         }
@@ -60,8 +61,8 @@ async function editChannel(channelid, guildid) {
         return false
     }
 
-    database.statuschannels.push(channel.id)
+    database.statuschannels.push(channelid)
     discordDatabase.updateDatabase(database, guild)
-    
+
     return true
 }
