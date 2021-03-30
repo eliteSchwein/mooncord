@@ -28,13 +28,9 @@ module.exports = class HelloCommand extends SlashCommand {
             .setThumbnail('attachment://logo.png')
             .setTimestamp()
             .setFooter(`${ctx.user.username} # ${ctx.user.discriminator}`, user.avatarURL())
-        
-        const answercontext = new Context().edit({
-            embeds: [infoEmbed]
-        })
-            
-        console.log(answercontext)
 
-        return "NONE";
+        return ctx.send({
+            embeds: [infoEmbed.toJSON()]
+        });
     }
 }
