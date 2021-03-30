@@ -6,8 +6,8 @@ const path = require('path')
 module.exports = class HelloCommand extends SlashCommand {
     constructor(creator) {
         super(creator, {
-            name: 'test-1',
-            description: 'Says hello to you.'
+            name: 'info',
+            description: 'Send a Description about me.'
         });
         this.filePath = __filename;
     }
