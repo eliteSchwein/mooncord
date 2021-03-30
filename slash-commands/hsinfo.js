@@ -32,16 +32,21 @@ module.exports = class HelloCommand extends SlashCommand {
             return "Please fill in the Command correctly!"
         }
         try {
-            console.log(ctx.options.component)
-
             const answer = await hsUtil.getInformation(ctx.options.component)
 
-            console.log(answer)
+            ctx.defer(false)
+
+            await ctx.send({
+                file: {
+                    name: answer[0][0],
+                    file: answer[0][1]
+                },
+                embeds: [answer[1].toJSON()]
+            });
         }
         catch (err) {
             console.log(err)
+            return "An Error occured!";
         }
-
-        return "Soon TM";
     }
 }
