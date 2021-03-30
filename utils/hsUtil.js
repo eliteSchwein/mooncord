@@ -6,7 +6,7 @@ const componentHandler = require('./hsComponents')
 module.exports.getInformation = async function (component) {
   const img = getImage(component)
   const componentData = componentHandler[component]
-  const fields = componentData.getFields()
+  const fields = await componentData.getFields()
   const embed = getDefaultEmbed(img[0], componentData.getTitle(), fields)
   return [img, embed]
 }

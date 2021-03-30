@@ -2,7 +2,7 @@ const si = require('systeminformation')
 
 module.exports = {}
 module.exports.getTitle = () => { return 'CPU' }
-module.exports.getFields = () => {
+module.exports.getFields = async () => {
     const cpu = await si.cpu()
     const load = await si.currentLoad()
     const cpuTemp = await si.cpuTemperature()
