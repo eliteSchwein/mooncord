@@ -39,7 +39,7 @@ module.exports = class HelloCommand extends SlashCommand {
                 content: 'test',
                 file: {
                     name: 'logo.png',
-                    file: fs.readFileSync(__dirname+ '../images/logo.png')
+                    file: fs.readFileSync(__dirname+ '/../images/logo.png')
                 },
                 embeds: [infoEmbed.toJSON()]
             });
