@@ -28,7 +28,7 @@ module.exports = class HelloCommand extends SlashCommand {
                 .setTitle('Informations')
                 .setAuthor(core.getDiscordClient().user.tag, core.getDiscordClient().user.avatarURL())
                 .setDescription(description)
-                .setThumbnail('attachment://logo.png')
+                .attachFiles(logopath)
 
             ctx.send({
                 embeds: [infoEmbed.toJSON()],
