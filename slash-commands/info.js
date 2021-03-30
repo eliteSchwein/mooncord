@@ -27,6 +27,8 @@ module.exports = class HelloCommand extends SlashCommand {
             .setTimestamp()
             .setFooter(`${ctx.user.username} # ${ctx.user.discriminator}`, user.avatarURL())
         
+        console.log(new MessageOptions())
+        
         let answer = new MessageOptions()
         answer.embeds.push(infoEmbed)
 
