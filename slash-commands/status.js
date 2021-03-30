@@ -27,7 +27,7 @@ module.exports = class HelloCommand extends SlashCommand {
                 let statusfile = statusfiles[statusfileindex]
                 files.push({
                     name: statusfile.name,
-                    file: statusfile.data
+                    file: statusfile.attachment
                 })
             }
 
