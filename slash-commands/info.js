@@ -36,6 +36,7 @@ module.exports = class HelloCommand extends SlashCommand {
                 .setThumbnail('attachment://logo.png')
 
             ctx.send({
+                content: 'test',
                 file: {
                     name: 'logo.png',
                     file: fs.readFileSync(logopath)
