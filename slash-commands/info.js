@@ -23,7 +23,7 @@ module.exports = class HelloCommand extends SlashCommand {
             
             const logopath = path.resolve(__dirname, '../images/logo.png')
 
-            const logobuffer = fs.readFileSync(logopath)
+            const logobuffer = await fs.readFileSync(logopath)
 
             console.log(logobuffer)
 
