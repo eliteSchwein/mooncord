@@ -23,17 +23,24 @@ module.exports = class HelloCommand extends SlashCommand {
         if (!permissionUtil.hasAdmin(ctx.user, ctx.guildID)) {
             return `You dont have the Permissions, ${ctx.user.username}!`
         }
+
+        let channel
         let channelresult
+
         if (typeof (ctx.options.channel) === 'undefined') {
             channelresult = editChannel(ctx.channelID, ctx.guildID)
+            channel = 'This'
         } else {
             channelresult = editChannel(ctx.options.channel, ctx.guildID)
+            const otherchannel = await core.getDiscordClient().channels.fetch(ctx.options.channel)
+            channel = otherchannel.name
         }
         if (typeof (channelresult) === 'undefined') {
-            return `This is not a Text Channel, ${ctx.user.username}!`
+            return `${channel} is not a Text Channel, ${ctx.user.username}!`
         }
-        if(channelresult) return `This is now a Broadcast Channel, ${ctx.user.username}!`
-        if(!channelresult) return `This is not longer a Broadcast Channel, ${ctx.user.username}!`
+
+        if(channelresult) return `${channel} is now a Broadcast Channel, ${ctx.user.username}!`
+        if(!channelresult) return `${channel} is not longer a Broadcast Channel, ${ctx.user.username}!`
     }
 }
 async function editChannel(channelid, guildid) {
@@ -52,7 +59,9 @@ async function editChannel(channelid, guildid) {
         discordDatabase.updateDatabase(database, guild)
         return false
     }
+
     database.statuschannels.push(channel.id)
     discordDatabase.updateDatabase(database, guild)
+    
     return true
 }
