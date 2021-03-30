@@ -25,6 +25,8 @@ module.exports = class HelloCommand extends SlashCommand {
 
             const logobuffer = fs.readFileSync(logopath)
 
+            console.log(logobuffer)
+
             const attachment = new Discord.MessageAttachment(logobuffer)
 
             const infoEmbed = new Discord.MessageEmbed()
