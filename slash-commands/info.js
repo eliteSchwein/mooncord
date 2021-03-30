@@ -16,7 +16,6 @@ module.exports = class HelloCommand extends SlashCommand {
 
     async run(ctx) {
         try {
-            console.log(ctx.user)
             const description = `Version: ${pjson.version}\n
                 Author: ${pjson.author}\n
                 Homepage: ${pjson.homepage}\n`
@@ -29,7 +28,7 @@ module.exports = class HelloCommand extends SlashCommand {
                 .attachFiles(path.resolve(__dirname, '../images/logo.png'))
                 .setThumbnail('attachment://logo.png')
                 .setTimestamp()
-                .setFooter(`${ctx.user.username} # ${ctx.user.discriminator}`, user.avatarURL())
+                .setFooter(`${ctx.user.username} # ${ctx.user.discriminator}`, ctx.user.avatarURL())
 
             ctx.send({
                 embeds: [infoEmbed.toJSON()]
