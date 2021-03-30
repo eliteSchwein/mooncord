@@ -2,7 +2,6 @@ const { SlashCommand } = require('slash-create');
 const Discord = require('discord.js')
 const pjson = require('../package.json')
 const path = require('path')
-const core = require('../mooncord')
 const fs = require('fs')
 
 module.exports = class HelloCommand extends SlashCommand {
@@ -27,7 +26,6 @@ module.exports = class HelloCommand extends SlashCommand {
             const infoEmbed = new Discord.MessageEmbed()
                 .setColor('#0099ff')
                 .setTitle('Informations')
-                .setAuthor(core.getDiscordClient().user.tag, core.getDiscordClient().user.avatarURL())
                 .setDescription(description)
                 .setThumbnail('https://raw.githubusercontent.com/eliteSchwein/mooncord/master/images/logo.png')
 
