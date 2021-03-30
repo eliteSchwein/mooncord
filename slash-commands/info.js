@@ -34,7 +34,7 @@ module.exports = class HelloCommand extends SlashCommand {
 
             ctx.send({
                 file: {
-                    name: 'test.png',
+                    name: 'logo.png',
                     file: logobuffer
                 },
                 embeds: [infoEmbed.toJSON()]
