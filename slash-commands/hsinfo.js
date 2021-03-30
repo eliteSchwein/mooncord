@@ -19,7 +19,7 @@ module.exports = class HelloCommand extends SlashCommand {
     }
 
     async run(ctx) {
-        if (ctx.options.length === 0) {
+        if (ctx.options === {}) {
             return "Please fill in the Command correctly!"
         }
         try {
