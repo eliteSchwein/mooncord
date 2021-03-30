@@ -39,8 +39,9 @@ module.exports = class HelloCommand extends SlashCommand {
                 content: 'test',
                 file: {
                     name: 'logo.png',
-                    file: fs.readFileSync(logopath)
-                }
+                    file: fs.readFileSync('../images/logo.png')
+                },
+                embeds: [infoEmbed.toJSON()]
             });
         }
         catch (err) {
