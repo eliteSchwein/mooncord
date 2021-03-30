@@ -1,4 +1,4 @@
-const { SlashCommand } = require('slash-create');
+const { SlashCommand, EditMessageOptions } = require('slash-create');
 const Discord = require('discord.js')
 const pjson = require('../package.json')
 const path = require('path')
@@ -28,17 +28,11 @@ module.exports = class HelloCommand extends SlashCommand {
             .setTimestamp()
             .setFooter(`${ctx.user.username} # ${ctx.user.discriminator}`, user.avatarURL())
         
-        
-        const answer = async (interaction, content) => {
-            const { data, files } = await Discord.APIMessage.create(
-                core.getDiscordClient().channels.resolve(interaction.channelID),
-                content
-            )
-                .resolveData()
-                .resolveFiles()
-            return { ...data, files }
-        }
+        const editMessage = new EditMessageOptions()
+            .embeds([infoEmbed])
+        const answer = await ctx.edit(editMessage)
+        console.log(answer)
 
-        return await answer(ctx, infoEmbed);
+        return "NONE";
     }
 }
