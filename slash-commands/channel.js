@@ -39,8 +39,8 @@ module.exports = class HelloCommand extends SlashCommand {
             return `${channel} is not a Text Channel, ${ctx.user.username}!`
         }
 
-        if(channelresult) return `${channel} is now a Broadcast Channel, ${ctx.user.username}!`
-        if(!channelresult) return `${channel} is not longer a Broadcast Channel, ${ctx.user.username}!`
+        if (channelresult) { return `${channel} is now a Broadcast Channel, ${ctx.user.username}!` }
+        if (!channelresult) { return `${channel} is not longer a Broadcast Channel, ${ctx.user.username}!` }
     }
 }
 async function editChannel(channelid, guildid) {
