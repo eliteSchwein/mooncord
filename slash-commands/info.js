@@ -21,7 +21,7 @@ module.exports = class HelloCommand extends SlashCommand {
                 Author: ${pjson.author}\n
                 Homepage: ${pjson.homepage}\n`
             
-            const logopath = await path.resolve(__dirname, '../images/logo.png')
+            const logopath = path.resolve(__dirname, '../images/logo.png')
 
             const infoEmbed = new Discord.MessageEmbed()
                 .setColor('#0099ff')
@@ -34,7 +34,7 @@ module.exports = class HelloCommand extends SlashCommand {
                 embeds: [infoEmbed.toJSON()],
                 file: {
                     name: 'logo.png',
-                    file: await fs.readFileSync(logopath)
+                    file: fs.readFileSync(logopath)
                 }
             });
         }
