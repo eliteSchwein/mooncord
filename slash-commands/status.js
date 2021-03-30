@@ -19,7 +19,13 @@ module.exports = class HelloCommand extends SlashCommand {
         try {
             const status = await statusUtil.getManualStatusEmbed(core.getDiscordClient(), ctx.user)
 
-            const files = status.files
+            const statusfiles = status.files
+
+            let files = []
+
+            for (let statusfile in statusfiles) {
+                console.log(statusfile)
+            }
 
             console.log(files)
             
