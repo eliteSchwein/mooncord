@@ -34,6 +34,7 @@ module.exports = class HelloCommand extends SlashCommand {
             ctx.defer(true)
 
             await ctx.send({
+                content: 'FUCKING WORK MAN',
                 file: {
                     name: 'logo.png',
                     file: logobuffer
