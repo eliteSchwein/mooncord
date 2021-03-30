@@ -6,7 +6,10 @@ module.exports = class HelloCommand extends SlashCommand {
         super(creator, {
             guildIDs: '626717239210672139',
             name: 'hsinfo',
-            description: 'Get the current Hardware and Software Informations.'
+            description: 'Get the current Hardware and Software Informations.',
+            choices: [{
+                name: 'cpu'
+            }]
         });
         this.filePath = __filename;
     }
@@ -25,7 +28,7 @@ module.exports = class HelloCommand extends SlashCommand {
             '`Model: '}${cpu.brand} \`\n` +
             `\`Manufacturer: ${cpu.manufacturer} \`\n` +
             `\`${cpu.physicalCores} Cores | ${cpu.cores} Threads\`\n` +
-            `\`${load.currentload.toFixed(2)}% Usage\``
+            `\`${load.currentLoad.toFixed(2)}% Usage\``
         const ramfeedback = `${'**📟 RAM:**\n' +
             '`Total: '}${(ram.total / (1024 ** 3)).toFixed(2)}GB \`\n` +
             `\`Used: ${(ram.used / (1024 ** 3)).toFixed(2)}GB \`\n`
