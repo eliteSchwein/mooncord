@@ -23,7 +23,7 @@ module.exports = class HelloCommand extends SlashCommand {
         if (!permissionUtil.hasAdmin(ctx.user, ctx.guildID)) {
             return `You dont have the Permissions, ${ctx.user.username}!`
         }
-        console.log(ctx.options)
+        console.log(ctx.options.length)
         if (ctx.options.length === 0) {
             const channelresult = editChannel(ctx.channelID, ctx.guildID)
             if (typeof (channelresult) === 'undefined') {
