@@ -13,7 +13,7 @@ const executeCommand = async function (command, channel, user, guild, discordCli
     '`Model: '}${cpu.brand} \`\n` +
     `\`Manufacturer: ${cpu.manufacturer} \`\n` +
     `\`${cpu.physicalCores} Cores | ${cpu.cores} Threads\`\n` +
-    `\`${load.currentload}% Usage\``
+    `\`${load.currentLoad.toFixed(2)}% Usage\``
   const ramfeedback = `${'**📟 RAM:**\n' +
     '`Total: '}${(ram.total / (1024 ** 3)).toFixed(2)}GB \`\n` +
     `\`Used: ${(ram.used / (1024 ** 3)).toFixed(2)}GB \`\n`
