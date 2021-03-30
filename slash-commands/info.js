@@ -7,6 +7,7 @@ const core = require('../mooncord')
 module.exports = class HelloCommand extends SlashCommand {
     constructor(creator) {
         super(creator, {
+            guildIDs: '626717239210672139',
             name: 'info',
             description: 'Send a Description about me.'
         });
@@ -21,12 +22,16 @@ module.exports = class HelloCommand extends SlashCommand {
         const infoEmbed = new Discord.MessageEmbed()
             .setColor('#0099ff')
             .setTitle('Informations')
+            .setAuthor(core.getDiscordClient().user.tag, core.getDiscordClient().user.avatarURL())
             .setDescription(description)
+            .attachFiles(path.resolve(__dirname, '../images/logo.png'))
+            .setThumbnail('attachment://logo.png')
             .setTimestamp()
             .setFooter(`${ctx.user.username} # ${ctx.user.discriminator}`, user.avatarURL())
         
         const answer = new Message
             .embeds([infoEmbed])
+            
         console.log(answer)
 
         return "NONE";
