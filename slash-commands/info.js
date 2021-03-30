@@ -1,4 +1,4 @@
-const { SlashCommand } = require('slash-create');
+const { SlashCommand, MessageOptions } = require('slash-create');
 const Discord = require('discord.js')
 const pjson = require('../package.json')
 const path = require('path')
@@ -26,7 +26,10 @@ module.exports = class HelloCommand extends SlashCommand {
             .setThumbnail('attachment://logo.png')
             .setTimestamp()
             .setFooter(`${ctx.user.username} # ${ctx.user.discriminator}`, user.avatarURL())
+        
+        let answer = new MessageOptions()
+        answer.embeds.push(infoEmbed)
 
-        return infoEmbed;
+        return answer;
     }
 }
