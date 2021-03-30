@@ -25,7 +25,7 @@ module.exports = class HelloCommand extends SlashCommand {
                 .setTitle('Informations')
                 .setAuthor(core.getDiscordClient().user.tag, core.getDiscordClient().user.avatarURL())
                 .setDescription(description)
-                .attachFiles(path.resolve(__dirname, '../images/logo.png'))
+                .attachFiles(await path.resolve(__dirname, '../images/logo.png'))
                 .setThumbnail('attachment://logo.png')
                 .setTimestamp()
                 .setFooter(`${ctx.user.username} # ${ctx.user.discriminator}`, ctx.user.avatarURL)
