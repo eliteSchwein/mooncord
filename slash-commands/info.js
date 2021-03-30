@@ -13,10 +13,9 @@ module.exports = class HelloCommand extends SlashCommand {
     }
 
     async run(ctx) {
-        const description = `${'' +
-            'Version: '}${pjson.version}\n` +
-            `Author: ${pjson.author}\n` +
-            `Homepage: ${pjson.homepage}\n`
+        const description = `Version: ${pjson.version}\n
+            Author: ${pjson.author}\n
+            Homepage: ${pjson.homepage}\n`
 
         const infoEmbed = new Discord.MessageEmbed()
             .setColor('#0099ff')
