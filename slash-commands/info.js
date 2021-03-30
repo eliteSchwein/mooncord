@@ -16,6 +16,7 @@ module.exports = class HelloCommand extends SlashCommand {
 
     async run(ctx) {
         try {
+            console.log(ctx.user)
             const description = `Version: ${pjson.version}\n
                 Author: ${pjson.author}\n
                 Homepage: ${pjson.homepage}\n`
