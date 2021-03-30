@@ -25,7 +25,10 @@ module.exports = class HelloCommand extends SlashCommand {
 
             for (let statusfileindex in statusfiles) {
                 let statusfile = statusfiles[statusfileindex]
-                console.log(statusfile)
+                files.push({
+                    name: statusfile.name,
+                    file: statusfile.data
+                })
             }
 
             console.log(files)
