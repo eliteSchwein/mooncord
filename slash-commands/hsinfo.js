@@ -34,6 +34,8 @@ module.exports = class HelloCommand extends SlashCommand {
         try {
             const answer = await hsUtil.getInformation(ctx.options.component)
 
+            console.log(answer)
+
             ctx.defer(false)
 
             await ctx.send({
@@ -45,7 +47,6 @@ module.exports = class HelloCommand extends SlashCommand {
             });
         }
         catch (err) {
-            console.log(err)
             return "An Error occured!";
         }
     }
