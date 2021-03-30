@@ -1,5 +1,5 @@
 const { SlashCommand, CommandOptionType } = require('slash-create');
-const si = require('systeminformation')
+const hsUtil = require('../utils/hsUtil')
 
 module.exports = class HelloCommand extends SlashCommand {
     constructor(creator) {
@@ -20,8 +20,7 @@ module.exports = class HelloCommand extends SlashCommand {
                 ],
                 type: CommandOptionType.STRING,
                 name: 'component',
-                description: 'test',
-                //description: 'Select the component you want to know the information about.',
+                description: 'Select the component you want to know the information about.',
                 required: true
             }]
         });
@@ -33,6 +32,10 @@ module.exports = class HelloCommand extends SlashCommand {
             return "Please fill in the Command correctly!"
         }
         console.log(ctx.options.component)
+
+        const answer = await hsUtil(String(ctx.options.component).toUpperCase())
+
+        console.log(answer)
 
         return "Soon TM";
     }
