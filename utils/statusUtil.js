@@ -27,10 +27,10 @@ module.exports.getDefaultEmbed = function (user, status, color) {
   const embed = new Discord.MessageEmbed()
     .setColor(color)
     .setTitle(status)
-    .setTimestamp()
 
   if (typeof (user) === 'undefined') {
     embed.setFooter('Automatic')
+    embed.setTimestamp()
   }
 
   return embed
