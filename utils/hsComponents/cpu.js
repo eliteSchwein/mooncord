@@ -14,7 +14,7 @@ module.exports.getFields = async () => {
         inline: true
     },{
         name: 'Manufacturer',
-        value: cpu.brand,
+        value: cpu.manufacturer,
         inline: true
     },{
         name: 'Usage',
