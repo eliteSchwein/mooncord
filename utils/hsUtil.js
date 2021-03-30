@@ -3,7 +3,7 @@ const Discord = require('discord.js')
 const path = require('path')
 const fs = require('fs')
 
-module.exports.default = async function (component) {
+module.exports.getInformation = async function (component) {
   if (component === 'cpu') return await this.getCPU()
 }
 
