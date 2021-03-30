@@ -61,6 +61,6 @@ module.exports = class HelloCommand extends SlashCommand {
             disksfeedback = disksfeedback.concat(`\`Parititions: ${partitionslist}\`\n\n`)
             }
         }
-        await ctx.send(`${cpufeedback}\n\n${ramfeedback}\n${disksfeedback}${osfeedback}`);
+        return `${cpufeedback}\n\n${ramfeedback}\n${disksfeedback}${osfeedback}`;
     }
 }
