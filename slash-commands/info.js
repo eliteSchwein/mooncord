@@ -23,6 +23,8 @@ module.exports = class HelloCommand extends SlashCommand {
             
             const logopath = path.resolve(__dirname, '../images/logo.png')
 
+            const attachment = new Discord.MessageAttachment(fs.readFileSync(logopath))
+
             console.log(fs.readFileSync(logopath))
 
             const infoEmbed = new Discord.MessageEmbed()
@@ -30,7 +32,7 @@ module.exports = class HelloCommand extends SlashCommand {
                 .setTitle('Informations')
                 .setAuthor(core.getDiscordClient().user.tag, core.getDiscordClient().user.avatarURL())
                 .setDescription(description)
-                .attachFiles(logopath)
+                .attachFiles(attachment)
                 .setThumbnail('attachment://logo.png')
 
             ctx.send({
