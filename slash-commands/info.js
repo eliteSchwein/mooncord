@@ -33,14 +33,14 @@ module.exports = class HelloCommand extends SlashCommand {
             
             ctx.defer(true)
 
-            await ctx.send({
+            return {
                 ephemeral: false,
                 file: {
                     name: 'logo.png',
                     file: logobuffer
                 },
                 embeds: [infoEmbed.toJSON()]
-            });
+            };
         }
         catch (err) {
             console.log(err)
