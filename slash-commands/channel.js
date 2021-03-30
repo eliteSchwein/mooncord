@@ -28,7 +28,7 @@ module.exports = class HelloCommand extends SlashCommand {
         let channelresult
 
         if (typeof (ctx.options.channel) === 'undefined') {
-            channelresult = editChannel(ctx.channelID, ctx.guildID)
+            channelresult = await editChannel(ctx.channelID, ctx.guildID)
             channel = 'This'
         } else {
             channelresult = await editChannel(ctx.options.channel, ctx.guildID)
