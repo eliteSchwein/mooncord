@@ -16,35 +16,29 @@ module.exports = class HelloCommand extends SlashCommand {
     }
 
     async run(ctx) {
-        try {
-            const description = `Version: ${pjson.version}\n
-                Author: ${pjson.author}\n
-                Homepage: ${pjson.homepage}\n`
-            
-            const logopath = path.resolve(__dirname, '../images/logo.png')
+        const description = `Version: ${pjson.version}\n
+            Author: ${pjson.author}\n
+            Homepage: ${pjson.homepage}\n`
+        
+        const logopath = path.resolve(__dirname, '../images/logo.png')
 
-            const logobuffer = fs.readFileSync(logopath)
+        const logobuffer = fs.readFileSync(logopath)
 
-            const infoEmbed = new Discord.MessageEmbed()
-                .setColor('#0099ff')
-                .setTitle('Informations')
-                .setAuthor(core.getDiscordClient().user.tag, core.getDiscordClient().user.avatarURL())
-                .setDescription(description)
-            
-            ctx.defer(false)
+        const infoEmbed = new Discord.MessageEmbed()
+            .setColor('#0099ff')
+            .setTitle('Informations')
+            .setAuthor(core.getDiscordClient().user.tag, core.getDiscordClient().user.avatarURL())
+            .setDescription(description)
+            .setThumbnail('attachment://logo.png')
+        
+        ctx.defer(false)
 
-            await ctx.send({
-                content: 'FUCKING WORK MAN',
-                file: {
-                    name: 'logo.png',
-                    file: logobuffer
-                },
-                embeds: [infoEmbed.toJSON()]
-            });
-        }
-        catch (err) {
-            console.log(err)
-            return "Error!"
-        }
+        await ctx.send({
+            file: {
+                name: 'logo.png',
+                file: logobuffer
+            },
+            embeds: [infoEmbed.toJSON()]
+        });
     }
 }
