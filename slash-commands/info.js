@@ -25,21 +25,14 @@ module.exports = class HelloCommand extends SlashCommand {
 
             const logobuffer = await fs.readFileSync(logopath)
 
-            console.log(logobuffer)
-
-            const attachment = new Discord.MessageAttachment(logobuffer)
-
             const infoEmbed = new Discord.MessageEmbed()
                 .setColor('#0099ff')
                 .setTitle('Informations')
                 .setAuthor(core.getDiscordClient().user.tag, core.getDiscordClient().user.avatarURL())
                 .setDescription(description)
-                .attachFiles(attachment)
                 .setThumbnail('attachment://logo.png')
 
             ctx.send({
-                content: 'test',
-                ephemeral: false,
                 file: {
                     name: 'test.png',
                     file: logobuffer
