@@ -30,11 +30,11 @@ module.exports = class HelloCommand extends SlashCommand {
                 .setTitle('Informations')
                 .setAuthor(core.getDiscordClient().user.tag, core.getDiscordClient().user.avatarURL())
                 .setDescription(description)
-                .setThumbnail('attachment://logo.png')
             
             ctx.defer(true)
 
             await ctx.send({
+                ephemeral: false,
                 file: {
                     name: 'logo.png',
                     file: logobuffer
