@@ -22,14 +22,16 @@ module.exports = class HelloCommand extends SlashCommand {
         const infoEmbed = new Discord.MessageEmbed()
             .setColor('#0099ff')
             .setTitle('Informations')
+            .setAuthor(core.getDiscordClient().user.tag, core.getDiscordClient().user.avatarURL())
             .setDescription(description)
             .attachFiles(path.resolve(__dirname, '../images/logo.png'))
             .setThumbnail('attachment://logo.png')
             .setTimestamp()
             .setFooter(`${ctx.user.username} # ${ctx.user.discriminator}`, user.avatarURL())
 
-        return ctx.send({
+        ctx.send({
             embeds: [infoEmbed.toJSON()]
         });
+        return ""
     }
 }
