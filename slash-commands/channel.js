@@ -31,15 +31,13 @@ module.exports = class HelloCommand extends SlashCommand {
             channelresult = editChannel(ctx.channelID, ctx.guildID)
             channel = 'This'
         } else {
-            channelresult = editChannel(ctx.options.channel, ctx.guildID)
+            channelresult = await editChannel(ctx.options.channel, ctx.guildID)
             const otherchannel = await core.getDiscordClient().channels.fetch(ctx.options.channel)
             channel = otherchannel.name
         }
         if (typeof (channelresult) === 'undefined') {
             return `${channel} is not a Text Channel, ${ctx.user.username}!`
         }
-
-        console.log(channelresult)
 
         if (channelresult) {
             return `${channel} is now a Broadcast Channel, ${ctx.user.username}!`
