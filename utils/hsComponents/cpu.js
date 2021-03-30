@@ -17,6 +17,10 @@ module.exports.getFields = async () => {
         value: cpu.brand,
         inline: true
     },{
+        name: 'Usage',
+        value: `${load.currentLoad.toFixed(2)}%`,
+        inline: true
+    },{
         name: 'Cores',
         value: `${cpu.physicalCores}`,
         inline: true
@@ -25,20 +29,16 @@ module.exports.getFields = async () => {
         value: ` ${cpu.cores}`,
         inline: true
     },{
+        name: 'Temp',
+        value: `${cpuTemp.main.toFixed(2)}°C`,
+        inline: true
+    },{
         name: 'Freq',
         value: `${cpuFreq.avg}GHz`,
         inline: true
     },{
         name: 'Max Freq',
         value: `${cpuFreq.max}GHz`,
-        inline: true
-    },{
-        name: 'Temp',
-        value: `${cpuTemp.main.toFixed(2)}°C`,
-        inline: true
-    },{
-        name: 'Usage',
-        value: `${load.currentLoad.toFixed(2)}%`,
         inline: true
     }]
     
