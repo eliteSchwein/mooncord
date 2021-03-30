@@ -31,7 +31,7 @@ module.exports = class HelloCommand extends SlashCommand {
                 .setAuthor(core.getDiscordClient().user.tag, core.getDiscordClient().user.avatarURL())
                 .setDescription(description)
             
-            ctx.defer(true)
+            ctx.defer(false)
 
             await ctx.send({
                 content: 'FUCKING WORK MAN',
