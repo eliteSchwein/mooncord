@@ -15,23 +15,28 @@ module.exports = class HelloCommand extends SlashCommand {
     }
 
     async run(ctx) {
-        const description = `Version: ${pjson.version}\n
-            Author: ${pjson.author}\n
-            Homepage: ${pjson.homepage}\n`
+        try {
+            const description = `Version: ${pjson.version}\n
+                Author: ${pjson.author}\n
+                Homepage: ${pjson.homepage}\n`
 
-        const infoEmbed = new Discord.MessageEmbed()
-            .setColor('#0099ff')
-            .setTitle('Informations')
-            .setAuthor(core.getDiscordClient().user.tag, core.getDiscordClient().user.avatarURL())
-            .setDescription(description)
-            .attachFiles(path.resolve(__dirname, '../images/logo.png'))
-            .setThumbnail('attachment://logo.png')
-            .setTimestamp()
-            .setFooter(`${ctx.user.username} # ${ctx.user.discriminator}`, user.avatarURL())
+            const infoEmbed = new Discord.MessageEmbed()
+                .setColor('#0099ff')
+                .setTitle('Informations')
+                .setAuthor(core.getDiscordClient().user.tag, core.getDiscordClient().user.avatarURL())
+                .setDescription(description)
+                .attachFiles(path.resolve(__dirname, '../images/logo.png'))
+                .setThumbnail('attachment://logo.png')
+                .setTimestamp()
+                .setFooter(`${ctx.user.username} # ${ctx.user.discriminator}`, user.avatarURL())
 
-        ctx.send({
-            embeds: [infoEmbed.toJSON()]
-        });
-        return ""
+            ctx.send({
+                embeds: [infoEmbed.toJSON()]
+            });
+        }
+        catch (err) {
+            console.log(err)
+            return "Error!"
+        }
     }
 }
