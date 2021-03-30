@@ -21,7 +21,7 @@ module.exports.choices = () => {
             value: 'disk'
         },
         {
-            name: 'Paritions',
+            name: 'Partitions',
             value: 'partitions'
         },
         {
