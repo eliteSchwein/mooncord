@@ -23,9 +23,9 @@ module.exports = class HelloCommand extends SlashCommand {
             
             const logopath = path.resolve(__dirname, '../images/logo.png')
 
-            const attachment = new Discord.MessageAttachment(fs.readFileSync(logopath))
+            const logobuffer = fs.readFileSync(logopath)
 
-            console.log(fs.readFileSync(logopath))
+            const attachment = new Discord.MessageAttachment(logobuffer)
 
             const infoEmbed = new Discord.MessageEmbed()
                 .setColor('#0099ff')
@@ -39,7 +39,7 @@ module.exports = class HelloCommand extends SlashCommand {
                 content: 'test',
                 file: {
                     name: 'logo.png',
-                    file: fs.readFileSync(__dirname+ '/../images/logo.png')
+                    file: logobuffer
                 },
                 embeds: [infoEmbed.toJSON()]
             });
