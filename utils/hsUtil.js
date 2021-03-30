@@ -1,24 +1,15 @@
-const si = require('systeminformation')
 const Discord = require('discord.js')
 const path = require('path')
 const fs = require('fs')
+const componentHandler = require('./hsComponents')
 
 module.exports.getInformation = async function (component) {
-  if (component === 'cpu') return await this.getCPU()
-}
-
-module.exports.getCPU = async function () {
-
-  const img = getImage('cpu')
-  const fields = [{
-    name: 'test',
-    value: 'test2',
-    inline: true
-  }]
-  const embed = getDefaultEmbed(img[0],'CPU',fields)
+  const img = getImage(component)
+  const componentData = componentHandler[component]
+  const fields = componentData.getFields()
+  const embed = getDefaultEmbed(img[0], componentData.getTitle(), fields)
   return [img, embed]
 }
-
 
 function getImage(component) {
         
