@@ -27,7 +27,7 @@ module.exports = class HelloCommand extends SlashCommand {
         if (typeof (ctx.options.channel) === 'undefined') {
             channelresult = editChannel(ctx.channelID, ctx.guildID)
         } else {
-            console.log(ctx.options.channel)
+            channelresult = editChannel(ctx.options.channel, ctx.guildID)
         }
         if (typeof (channelresult) === 'undefined') {
             return `This is not a Text Channel, ${ctx.user.username}!`
