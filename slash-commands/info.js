@@ -27,7 +27,6 @@ module.exports = class HelloCommand extends SlashCommand {
         const infoEmbed = new Discord.MessageEmbed()
             .setColor('#0099ff')
             .setTitle('Informations')
-            .setAuthor(core.getDiscordClient().user.tag, core.getDiscordClient().user.avatarURL())
             .setDescription(description)
             .setThumbnail('attachment://logo.png')
         
