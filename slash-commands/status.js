@@ -23,7 +23,8 @@ module.exports = class HelloCommand extends SlashCommand {
 
             let files = []
 
-            for (let statusfile in statusfiles) {
+            for (let statusfileindex in statusfiles) {
+                let statusfile = statusfiles[statusfileindex]
                 console.log(statusfile)
             }
 
