@@ -12,6 +12,8 @@
 
 [![Discord](https://img.shields.io/discord/626717239210672139)](https://discord.gg/auhjVJYqCf)
 
+# Use this Branch at you own Risk!
+
 ## Preparations
 
 Firstly make sure you've got a Bot Application, you can make it here: [Tutorial](https://github.com/reactiflux/discord-irc/wiki/Creating-a-discord-bot-&-getting-a-token).
@@ -31,6 +33,7 @@ You also need Application ID and Public Key:
     $ cd ~/
     $ git clone https://github.com/eliteSchwein/mooncord.git
     $ cd ~/mooncord
+    $ git checkout dev
     $ bash scripts/install.sh
 
 #### Configure Moonraker Update manager
@@ -40,6 +43,7 @@ put this into your moonraker.conf
     [update_manager client MoonCord]
     type: git_repo
     path: /home/pi/mooncord
+    primary_branch: dev
     origin: https://github.com/eliteschwein/mooncord.git
     install_script: scripts/install.sh
 
