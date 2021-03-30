@@ -4,18 +4,18 @@ const discordDatabase = require('../discorddatabase')
 const status = require('../status-messages')
 const variables = require('../utils/variablesUtil')
 
-function triggerStatusUpdate (discordClient, channel, user) {
+async function triggerStatusUpdate (discordClient, channel, user) {
   console.log(`Printer Status: ${variables.getStatus()}`)
   const statusEvent = status[variables.getStatus()]
   setTimeout(() => {
-    const embed = statusEvent(discordClient, channel, user)
+    const embed = await statusEvent(discordClient, channel, user)
     console.log(embed)
     postStatus(discordClient, embed, channel)
   }, 1000)
 }
 
-module.exports.triggerStatusUpdate = function (discordClient, channel, user) {
-  triggerStatusUpdate(discordClient, channel, user)
+module.exports.triggerStatusUpdate = async function (discordClient, channel, user) {
+  await triggerStatusUpdate(discordClient, channel, user)
 }
 
 module.exports.getManualStatusEmbed = function (discordClient) {
