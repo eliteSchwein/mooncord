@@ -29,7 +29,7 @@ module.exports = class HelloCommand extends SlashCommand {
 
         if (typeof (ctx.options.channel) === 'undefined') {
             channelresult = await editChannel(ctx.channelID, ctx.guildID)
-            channel = 'This'
+            channel = 'This Channel'
         } else {
             channelresult = await editChannel(ctx.options.channel, ctx.guildID)
             const otherchannel = await core.getDiscordClient().channels.fetch(ctx.options.channel)
