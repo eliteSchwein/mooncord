@@ -2,11 +2,13 @@ const { SlashCommand } = require('slash-create');
 const Discord = require('discord.js')
 const pjson = require('../package.json')
 const path = require('path')
+const core = require('../mooncord')
 const fs = require('fs')
 
 module.exports = class HelloCommand extends SlashCommand {
     constructor(creator) {
         super(creator, {
+            guildIDs: '626717239210672139',
             name: 'info',
             description: 'Send a Description about me.'
         });
@@ -26,8 +28,11 @@ module.exports = class HelloCommand extends SlashCommand {
             const infoEmbed = new Discord.MessageEmbed()
                 .setColor('#0099ff')
                 .setTitle('Informations')
+                .setAuthor(core.getDiscordClient().user.tag, core.getDiscordClient().user.avatarURL())
                 .setDescription(description)
-                .setThumbnail('https://raw.githubusercontent.com/eliteSchwein/mooncord/master/images/logo.png')
+                .setThumbnail('attachment://logo.png')
+            
+            ctx.defer(true)
 
             ctx.send({
                 file: {
