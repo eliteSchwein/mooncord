@@ -33,7 +33,7 @@ module.exports = class HelloCommand extends SlashCommand {
         }
         console.log(ctx.options.component)
 
-        const answer = await hsUtil(String(ctx.options.component).toUpperCase())
+        const answer = await hsUtil.getInformation(String(ctx.options.component).toUpperCase())
 
         console.log(answer)
 
