@@ -16,12 +16,18 @@ module.exports = class HelloCommand extends SlashCommand {
     }
 
     async run(ctx) {
-        const status = statusUtil.getManualStatusEmbed(core.getDiscordClient())
+        try {
+            const status = statusUtil.getManualStatusEmbed(core.getDiscordClient())
 
-        const files = status.files
+            const files = status.files
 
-        console.log(files)
-        
-        return "soon very soon?"
+            console.log(files)
+            
+            return "soon very soon?"
+        }
+        catch (err) {
+            console.log(err)
+            return "An Error occured!"
+        }
     }
 }
