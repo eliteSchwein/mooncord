@@ -33,7 +33,8 @@ function getDefaultEmbed(img,title,fields) {
     .setColor('#0099ff')
     .setTitle(title)
     .setThumbnail(`attachment://${img}`)
-  for (let field in fields) {
+  for (let fieldindex in fields) {
+    let field = fields[fieldindex]
     embed.addField(field.name, field.value, field.inline)
   }
   return embed
