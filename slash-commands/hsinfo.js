@@ -1,4 +1,4 @@
-const { SlashCommand } = require('slash-create');
+const { SlashCommand, CommandOptionType } = require('slash-create');
 const si = require('systeminformation')
 
 module.exports = class HelloCommand extends SlashCommand {
@@ -7,8 +7,12 @@ module.exports = class HelloCommand extends SlashCommand {
             guildIDs: '626717239210672139',
             name: 'hsinfo',
             description: 'Get the current Hardware and Software Informations.',
-            choices: [{
-                name: 'cpu'
+            options: [{
+                choices: ['cpu', 'ram'],
+                type: CommandOptionType.STRING,
+                name: 'component',
+                description: 'Select the component you want to know the information about.',
+                required: true
             }]
         });
         this.filePath = __filename;
