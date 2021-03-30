@@ -41,7 +41,7 @@ module.exports = class HelloCommand extends SlashCommand {
                 content: 'test',
                 ephemeral: false,
                 file: {
-                    name: 'logo.png',
+                    name: 'test.png',
                     file: logobuffer
                 },
                 embeds: [infoEmbed.toJSON()]
