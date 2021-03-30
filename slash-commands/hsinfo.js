@@ -34,7 +34,7 @@ module.exports = class HelloCommand extends SlashCommand {
         try {
             const answer = await hsUtil.getInformation(ctx.options.component)
 
-            ctx.defer(false)
+            //ctx.defer(false)
 
             await ctx.send({
                 file: {
