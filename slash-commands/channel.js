@@ -35,6 +35,9 @@ module.exports = class HelloCommand extends SlashCommand {
             const otherchannel = await core.getDiscordClient().channels.fetch(ctx.options.channel)
             channel = otherchannel.name
         }
+
+        console.log(channelresult)
+
         if (typeof (channelresult) === 'undefined') {
             return `${channel} is not a Text Channel, ${ctx.user.username}!`
         }
