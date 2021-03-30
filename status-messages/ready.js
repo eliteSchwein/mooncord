@@ -26,8 +26,8 @@ const getModule = async function (discordClient, channel, user) {
     .addField('Klipper Version', klipperver, true)
     .attachFiles(snapshot)
     .setImage(`attachment://${snapshot.name}`)
-
-  statusUtil.postStatus(discordClient, statusEmbed, channel)
+  
+  return statusEmbed
 }
 
 module.exports = getModule

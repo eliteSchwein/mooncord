@@ -5,6 +5,7 @@ const getModule = async function (discordClient, channel, user) {
 
   const statusEmbed = statusUtil.getDefaultEmbed(user, 'Connection Lost!', '#c90000')
 
-  statusUtil.postStatus(discordClient, statusEmbed, channel)
+  
+  return statusEmbed
 }
 module.exports = getModule

@@ -8,12 +8,19 @@ function triggerStatusUpdate (discordClient, channel, user) {
   console.log(`Printer Status: ${variables.getStatus()}`)
   const statusEvent = status[variables.getStatus()]
   setTimeout(() => {
-    statusEvent(discordClient, channel, user)
+    const embed = statusEvent(discordClient, channel, user)
+    postStatus(discordClient, embed, channel)
   }, 1000)
 }
 
 module.exports.triggerStatusUpdate = function (discordClient, channel, user) {
   triggerStatusUpdate(discordClient, channel, user)
+}
+
+module.exports.getManualStatusEmbed = function (discordClient) {
+    const statusEvent = status[variables.getStatus()]
+    const embed = statusEvent(discordClient, channel, user)
+    return embed
 }
 
 module.exports.getDefaultEmbed = function (user, status, color) {
@@ -31,7 +38,7 @@ module.exports.getDefaultEmbed = function (user, status, color) {
   return embed
 }
 
-module.exports.postStatus = function (discordClient, message, channel) {
+function postStatus(discordClient, message, channel) {
   const database = discordDatabase.getDatabase()
   if (typeof channel === 'undefined') {
     for (const guildid in database) {

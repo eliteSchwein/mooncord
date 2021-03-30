@@ -10,7 +10,8 @@ const getModule = async function (discordClient, channel, user) {
   statusEmbed
     .attachFiles(snapshot)
     .setImage(`attachment://${snapshot.name}`)
-
-  statusUtil.postStatus(discordClient, statusEmbed, channel)
+  
+  
+  return statusEmbed
 }
 module.exports = getModule
