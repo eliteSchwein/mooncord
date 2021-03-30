@@ -23,19 +23,22 @@ module.exports = class HelloCommand extends SlashCommand {
             
             const logopath = path.resolve(__dirname, '../images/logo.png')
 
+            console.log(logopath)
+
             const infoEmbed = new Discord.MessageEmbed()
                 .setColor('#0099ff')
                 .setTitle('Informations')
                 .setAuthor(core.getDiscordClient().user.tag, core.getDiscordClient().user.avatarURL())
                 .setDescription(description)
                 .attachFiles(logopath)
+                .setThumbnail('attachment://logo.png')
 
             ctx.send({
-                embeds: [infoEmbed.toJSON()],
                 file: {
                     name: 'logo.png',
                     file: fs.readFileSync(logopath)
-                }
+                },
+                embeds: [infoEmbed.toJSON()]
             });
         }
         catch (err) {
