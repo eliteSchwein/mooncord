@@ -21,7 +21,7 @@ module.exports = class HelloCommand extends SlashCommand {
 
             const files = status.files
 
-            console.log(files)
+            console.log(status)
             
             return "soon very soon?"
         }
