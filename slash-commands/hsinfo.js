@@ -19,9 +19,6 @@ module.exports = class HelloCommand extends SlashCommand {
     }
 
     async run(ctx) {
-        if (ctx.options === {}) {
-            return "Please fill in the Command correctly!"
-        }
         try {
             ctx.defer(false)
 
