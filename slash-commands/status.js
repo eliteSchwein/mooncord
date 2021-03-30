@@ -17,6 +17,9 @@ module.exports = class HelloCommand extends SlashCommand {
 
     async run(ctx) {
         try {
+            ctx.defer(false)
+
+
             const status = await statusUtil.getManualStatusEmbed(core.getDiscordClient(), ctx.user)
 
             const statusfiles = status.files
@@ -31,9 +34,10 @@ module.exports = class HelloCommand extends SlashCommand {
                 })
             }
 
-            console.log(files)
-            
-            return "soon very soon?"
+            await ctx.send({
+                file: files,
+                embeds: [status.toJSON()]
+            });
         }
         catch (err) {
             console.log(err)
