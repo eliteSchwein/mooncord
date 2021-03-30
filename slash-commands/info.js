@@ -8,7 +8,6 @@ const fs = require('fs')
 module.exports = class HelloCommand extends SlashCommand {
     constructor(creator) {
         super(creator, {
-            guildIDs: '626717239210672139',
             name: 'info',
             description: 'Send a Description about me.'
         });
@@ -30,7 +29,7 @@ module.exports = class HelloCommand extends SlashCommand {
                 .setTitle('Informations')
                 .setAuthor(core.getDiscordClient().user.tag, core.getDiscordClient().user.avatarURL())
                 .setDescription(description)
-                .setThumbnail('attachment://logo.png')
+                .setThumbnail('https://raw.githubusercontent.com/eliteSchwein/mooncord/master/images/logo.png')
 
             ctx.send({
                 file: {
