@@ -17,6 +17,10 @@ module.exports = class HelloCommand extends SlashCommand {
 
     async run(ctx) {
         const status = statusUtil.getManualStatusEmbed(core.getDiscordClient())
+
+        const files = status.files
+
+        console.log(files)
         
         return "soon very soon?"
     }
