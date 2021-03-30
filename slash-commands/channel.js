@@ -9,7 +9,7 @@ module.exports = class HelloCommand extends SlashCommand {
             description: 'Add or Remove broadcast channel.',
             options: [{
                 type: CommandOptionType.CHANNEL,
-                name: 'Channel',
+                name: 'channel',
                 description: 'Select a Channel to add/remove it as Broadcast channel.',
                 required: false
             }]
