@@ -8,7 +8,9 @@ module.exports.getFields = async () => {
     const fields = []
 
     for (const diskindex in disks) {
+        
         const disk = disks[diskindex]
+
         if (!String(disk.device).includes('/dev/ram')) {
             fields.push({
                 name: `Disk ${diskindex} Name`,

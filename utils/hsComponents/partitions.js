@@ -8,7 +8,8 @@ module.exports.getFields = async () => {
     const fields = []
 
     for (const partitionindex in partitions) {
-        const partition = disks[partitionindex]
+        
+        const partition = partitions[partitionindex]
 
         fields.push({
             name: `Partition ${partitionindex} Name`,
