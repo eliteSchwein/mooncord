@@ -28,7 +28,7 @@ module.exports = class HelloCommand extends SlashCommand {
                 .attachFiles(path.resolve(__dirname, '../images/logo.png'))
                 .setThumbnail('attachment://logo.png')
                 .setTimestamp()
-                .setFooter(`${ctx.user.username} # ${ctx.user.discriminator}`, ctx.user.avatarURL())
+                .setFooter(`${ctx.user.username} # ${ctx.user.discriminator}`, ctx.user.avatarURL)
 
             ctx.send({
                 embeds: [infoEmbed.toJSON()]
