@@ -4,8 +4,8 @@
 ![Version](https://img.shields.io/github/package-json/v/eliteschwein/mooncord)
 ![Tested](https://img.shields.io/badge/rpi%20tested-zero%20%26%204-brightgreen)
 <br>
-[![codebeat badge](https://codebeat.co/badges/3ce3343c-c66b-4c87-9a0b-2b86f7c1b462)](https://codebeat.co/projects/github-com-eliteschwein-mooncord-main)
-![PR](https://img.shields.io/github/issues-pr/eliteschwein/mooncord)
+[![codebeat badge](https://codebeat.co/badges/a9c514a4-8736-46e0-90c8-d097345589d1)](https://codebeat.co/projects/github-com-eliteschwein-mooncord-master)
+[![PR](https://img.shields.io/github/issues-pr/eliteschwein/mooncord)
 [![Issues](https://img.shields.io/github/issues/eliteschwein/mooncord)](https://github.com/eliteSchwein/mooncord/issues)
 
 ## Discord Community Server
