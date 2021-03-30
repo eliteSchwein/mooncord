@@ -29,8 +29,7 @@ module.exports = class HelloCommand extends SlashCommand {
     }
 
     async run(ctx) {
-
-        ctx.defer(false)
+        console.log(ctx)
 
         return "Soon TM";
     }
