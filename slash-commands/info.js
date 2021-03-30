@@ -1,4 +1,4 @@
-const { SlashCommand, Message } = require('slash-create');
+const { SlashCommand, Context} = require('slash-create');
 const Discord = require('discord.js')
 const pjson = require('../package.json')
 const path = require('path')
@@ -29,10 +29,11 @@ module.exports = class HelloCommand extends SlashCommand {
             .setTimestamp()
             .setFooter(`${ctx.user.username} # ${ctx.user.discriminator}`, user.avatarURL())
         
-        const answer = new Message
-            .embeds([infoEmbed])
+        const answercontext = new Context().edit({
+            embeds: [infoEmbed]
+        })
             
-        console.log(answer)
+        console.log(answercontext)
 
         return "NONE";
     }
