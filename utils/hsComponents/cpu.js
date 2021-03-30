@@ -18,13 +18,21 @@ module.exports.getFields = async () => {
         inline: true
     },{
         name: 'Cores',
-        value: `${cpu.physicalCores} SMT: ${cpu.cores}`,
+        value: `${cpu.physicalCores}`,
+        inline: true
+    },{
+        name: 'Threads',
+        value: ` ${cpu.cores}`,
         inline: true
     },{
         name: 'Freq',
-        value: `${cpuFreq.avg} Max: ${cpuFreq.max}GHz`,
+        value: `${cpuFreq.avg}GHz`,
         inline: true
-    },,{
+    },{
+        name: 'Max Freq',
+        value: `${cpuFreq.max}GHz`,
+        inline: true
+    },{
         name: 'Temp',
         value: `${cpuTemp.main.toFixed(2)}°C`,
         inline: true
