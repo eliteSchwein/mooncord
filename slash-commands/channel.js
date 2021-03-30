@@ -23,21 +23,17 @@ module.exports = class HelloCommand extends SlashCommand {
         if (!permissionUtil.hasAdmin(ctx.user, ctx.guildID)) {
             return `You dont have the Permissions, ${ctx.user.username}!`
         }
-        console.log(ctx.options === {})
-        if (ctx.options === {}) {
-            const channelresult = editChannel(ctx.channelID, ctx.guildID)
-            if (typeof (channelresult) === 'undefined') {
-                return `This is not a Text Channel, ${ctx.user.username}!`
-            }
-            if(channelresult) return `This is now a Broadcast Channel, ${ctx.user.username}!`
-            if(!channelresult) return `This is not longer a Broadcast Channel, ${ctx.user.username}!`
-        }
-        if (typeof (ctx.options.channel) !== 'undefined') {
-            console.log(ctx.options.channel)
-            return 'wip'
+        let channelresult
+        if (typeof (ctx.options.channel) === 'undefined') {
+            channelresult = editChannel(ctx.channelID, ctx.guildID)
         } else {
-            return `This is not a Valid Channel, ${ctx.user.username}!`
+            console.log(ctx.options.channel)
         }
+        if (typeof (channelresult) === 'undefined') {
+            return `This is not a Text Channel, ${ctx.user.username}!`
+        }
+        if(channelresult) return `This is now a Broadcast Channel, ${ctx.user.username}!`
+        if(!channelresult) return `This is not longer a Broadcast Channel, ${ctx.user.username}!`
     }
 }
 async function editChannel(channelid, guildid) {
