@@ -8,7 +8,7 @@ async function triggerStatusUpdate (discordClient, channel, user) {
   console.log(`Printer Status: ${variables.getStatus()}`)
   const statusEvent = status[variables.getStatus()]
   setTimeout(async () => {
-    const embed = await statusEvent(discordClient, channel, user)
+    const embed = await statusEvent(discordClient, user)
     postStatus(discordClient, embed, channel)
   }, 1000)
 }
@@ -17,9 +17,9 @@ module.exports.triggerStatusUpdate = async function (discordClient, channel, use
   await triggerStatusUpdate(discordClient, channel, user)
 }
 
-module.exports.getManualStatusEmbed = function (discordClient) {
+module.exports.getManualStatusEmbed = function (discordClient, user) {
     const statusEvent = status[variables.getStatus()]
-    const embed = statusEvent(discordClient, channel, user)
+    const embed = statusEvent(discordClient, user)
     return embed
 }
 
@@ -31,8 +31,6 @@ module.exports.getDefaultEmbed = function (user, status, color) {
 
   if (typeof (user) === 'undefined') {
     embed.setFooter('Automatic')
-  } else {
-    embed.setFooter(user.tag, user.avatarURL())
   }
 
   return embed

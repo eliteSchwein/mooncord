@@ -1,6 +1,6 @@
 const statusUtil = require('../utils/statusUtil')
 
-const getModule = async function (discordClient, channel, user) {
+const getModule = async function (discordClient, user) {
   discordClient.user.setActivity('Printer start', { type: 'WATCHING' })
 
   const statusEmbed = statusUtil.getDefaultEmbed(user, 'Printer starting', '#0099ff')
