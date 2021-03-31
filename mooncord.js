@@ -37,6 +37,8 @@ systemInfo.osInfo().then(async data => {
 
   discordClient.init()
 
+  console.log(discordClient.getClient())
+
   moonrakerClient.init()
 
 })
