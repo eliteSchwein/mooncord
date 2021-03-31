@@ -13,19 +13,15 @@ async function triggerStatusUpdate (channel, user) {
   }, 1000)
 }
 
-async function manualStatusEmbed(user) {
-  console.log(require('./index'))
-    const statusEvent = status[variables.getStatus()]
-    const embed = statusEvent(user)
-    return embed
-}
-
 module.exports.triggerStatusUpdate = async function (channel, user) {
   await triggerStatusUpdate(channel, user)
 }
 
 module.exports.getManualStatusEmbed = async function (user) {
-  return await manualStatusEmbed(user)
+  console.log(require('./index'))
+    const statusEvent = status[variables.getStatus()]
+    const embed = statusEvent(user)
+    return embed
 }
 
 module.exports.getDefaultEmbed = async function (user, status, color) {
