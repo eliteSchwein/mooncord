@@ -66,11 +66,10 @@ function handler (message) {
         let command = ''
         console.log(messageJson)
         if (messageJson.params[0].includes('Unknown command')) {
-            console.log(messageJson.params[0].replace('// Unknown command:', ''))
-            command = messageJson.params[0].replace('// Unknown command:', '').replaceAll('"', '')
+            command = messageJson.params[0].replace('// Unknown command:', '').replace(/"/g, '')
             commandFeedback = `Unknown Command: ${command}`
         } else if (messageJson.params[0].includes('Error')) {
-            command = messageJson.params[0].replace('!! Error on ', '').replaceAll('\'', '')
+            command = messageJson.params[0].replace('!! Error on ', '').replace(/\\/g, '')
             commandFeedback = `Syntax Error: ${command}`
         } else {
             commandFeedback = 'Command Executed!'
