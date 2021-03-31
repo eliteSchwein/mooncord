@@ -1,4 +1,4 @@
-const { variables } = require('../utils')
+const variables = require('../utils/variablesUtil')
 
 const event = (message) => {
   if (message.type === 'utf8') {

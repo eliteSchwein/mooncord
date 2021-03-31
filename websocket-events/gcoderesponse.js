@@ -1,6 +1,10 @@
 const config = require('../config.json')
-const { variables, status } = require('../utils')
-const { discordClient, moonrakerClient } = require('../clients')
+
+const variables = require('../utils/variablesUtil')
+const status = require('../utils/statusUtil')
+
+const discordClient = require('../clients/discordclient')
+const moonrakerClient = require('../clients/moonrakerclient')
 
 const event = (message) => {
   const id = Math.floor(Math.random() * 10000) + 1

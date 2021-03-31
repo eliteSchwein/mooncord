@@ -1,7 +1,10 @@
 const Discord = require('discord.js')
 const path = require('path')
-const { variables, database } = require('../utils')
-const { discordClient } = require('../clients')
+
+const variables = require('../utils/variablesUtil')
+const database = require('../utils/databaseUtil')
+
+const discordClient = require('../clients/discordclient')
 
 let notifyembed
 

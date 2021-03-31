@@ -1,6 +1,7 @@
 const config = require('../config.json')
 
-const { variables, status } = require('../utils')
+const variables = require('../utils/variablesUtil')
+const status = require('../utils/statusUtil')
 
 const event = (message) => {
   if (message.type === 'utf8') {
