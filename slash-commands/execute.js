@@ -65,10 +65,10 @@ function handler (message) {
         let command = ''
         if (messageJson.params[0].includes('Unknown command')) {
             command = messageJson.params[0].replace('// Unknown command:', '').replace(/"/g, '')
-            commandFeedback = `Unknown Command: \`${command}\``
+            commandFeedback = `Unknown GCode Command: \`${command}\``
         } else if (messageJson.params[0].includes('Error')) {
             command = messageJson.params[0].replace('!! Error on ', '').replace(/\\/g, '')
-            commandFeedback = `Syntax Error: \`${command}\``
+            commandFeedback = `Error: \`${command}\``
         } else {
             commandFeedback = 'Command Executed!'
         }
