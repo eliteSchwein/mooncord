@@ -19,3 +19,7 @@ module.exports.hasAdmin = async function (user, guildid) {
   }
   return false
 }
+
+module.exports.isMaster = function (user) {
+  return user.id === config.masterid
+}
