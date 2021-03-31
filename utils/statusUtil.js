@@ -36,6 +36,7 @@ module.exports.getDefaultEmbed = async function (user, status, color) {
 
   if (typeof (user) === 'undefined') {
     embed.setFooter('Automatic')
+    embed.setTimestamp()
   }
 
   return embed
