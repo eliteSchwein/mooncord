@@ -29,17 +29,17 @@ module.exports = class HelloCommand extends SlashCommand {
 
             ctx.defer(false)
 
-            //connection.on('message', handler)
-            //connection.send(`{"jsonrpc": "2.0", "method": "printer.gcode.script", "params": {"script": "${gcode}"}, "id": ${id}}`)
-            setTimeout(() => {
-                //if (typeof (commandFeedback) !== 'undefined') {
+            connection.on('message', handler)
+            connection.send(`{"jsonrpc": "2.0", "method": "printer.gcode.script", "params": {"script": "${gcode}"}, "id": ${id}}`)
+            setInterval(() => {
+                if (typeof (commandFeedback) !== 'undefined') {
+                    console.log(commandFeedback)
+                    connection.removeListener(handler)
                     ctx.send({
-                        content: 'test'
+                        content: commandFeedback
                     })
-                    //ctx.send(commandFeedback)
-                    //console.log(commandFeedback)
-                    //connection.removeListener(handler)
-                //}
+                    break
+                }
            }, 500)
         }
         catch (err) {
