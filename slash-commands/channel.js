@@ -1,7 +1,6 @@
 const { SlashCommand, CommandOptionType } = require('slash-create');
-const permissionUtil = require('../utils/permissionUtil')
+const { database, permission} = require('../utils')
 const { discordClient } = require('../clients')
-const discordDatabase = require('../discorddatabase')
 
 module.exports = class HelloCommand extends SlashCommand {
     constructor(creator) {
@@ -19,7 +18,7 @@ module.exports = class HelloCommand extends SlashCommand {
     }
 
     async run(ctx) {
-        if (!await permissionUtil.hasAdmin(ctx.user, ctx.guildID)) {
+        if (!await permission.hasAdmin(ctx.user, ctx.guildID)) {
             return `You dont have the Permissions, ${ctx.user.username}!`
         }
 
@@ -48,22 +47,22 @@ module.exports = class HelloCommand extends SlashCommand {
 async function editChannel(channelid, guildid) {
     const guild = await discordClient.getClient().guilds.fetch(guildid)
     const channel = await discordClient.getClient().channels.fetch(channelid)
-    const database = discordDatabase.getGuildDatabase(guild)
+    const guilddatabase = database.getGuildDatabase(guild)
 
     if (channel.type !== 'text') {
         return undefined
     }
-    if (database.statuschannels.includes(channelid)) {
-        const index = database.statuschannels.indexOf(channelid)
+    if (guilddatabase.statuschannels.includes(channelid)) {
+        const index = guilddatabase.statuschannels.indexOf(channelid)
         if (index > -1) {
-            database.statuschannels.splice(index, 1)
+            guilddatabase.statuschannels.splice(index, 1)
         }
-        discordDatabase.updateDatabase(database, guild)
+        database.updateDatabase(guilddatabase, guild)
         return false
     }
 
-    database.statuschannels.push(channelid)
-    discordDatabase.updateDatabase(database, guild)
+    guilddatabase.statuschannels.push(channelid)
+    database.updateDatabase(guilddatabase, guild)
 
     return true
 }
