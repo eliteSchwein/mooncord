@@ -31,14 +31,12 @@ module.exports = class HelloCommand extends SlashCommand {
 
             connection.on('message', handler)
             connection.send(`{"jsonrpc": "2.0", "method": "printer.gcode.script", "params": {"script": "${gcode}"}, "id": ${id}}`)
-            setTimeout(() => {
-               if (typeof (commandFeedback) !== 'undefined') {
-                    //ctx.send(commandFeedback)
-                    console.log(commandFeedback)
-                    connection.removeListener(handler)
-                    break
-                }
-           }, 500)
+            while (true) {
+                if(typeof (commandFeedback) !== 'undefined')
+                console.log(commandFeedback)
+                connection.removeListener(handler)
+                break
+            }
         }
         catch (err) {
             console.log(err)
