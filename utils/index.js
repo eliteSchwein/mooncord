@@ -4,5 +4,6 @@ module.exports = {
     status: require('./statusUtil'),
     thumbnail: require('./thumbnailUtil'),
     variables: require('./variablesUtil'),
-    webcam: require('./webcamUtil')
+    webcam: require('./webcamUtil'),
+    database: require('./databaseUtil')
 }

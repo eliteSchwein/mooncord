@@ -1,23 +1,45 @@
 const fs = require('fs')
 const path = require('path')
-const si = require('systeminformation')
+const WebSocketClient = require('websocket').client
 
-const variables = require('./utils/variablesUtil')
-const events = require('./websocket-events')
+const { variables } = require('../utils')
+const discordClient = require('./discordclient')
+const config = require('../config.json')
 
-const getModule = async function (client, discordClient) {
+const events = require('../websocket-events')
+
+const websocketClient = new WebSocketClient()
+
+let WSconnection
+
+const enableEvents = async function (client) {
+  console.log('Enable Websocket Events')
+
   client.on('connect', async (connection) => {
+    console.log('WebSocket Client Connected\n')
+
+    WSconnection = connection
+
     const id = Math.floor(Math.random() * 10000) + 1
     fs.readdir(path.resolve(__dirname, 'websocket-events'), (err, files) => {
       if (err) {
         console.log(err)
         return
       }
+      connection.on('close', () => {
+        console.log('WebSocket Connection Closed')
+        console.log('Reconnect in 5 sec')
+        variables.setStatus('offline')
+        statusUtil.triggerStatusUpdate(discordClient.getClient())
+        setTimeout(() => {
+          websocketClient.connect(config.moonrakersocketurl)
+        }, 5000)
+      })
       connection.on('message', (message) => {
         files.forEach(file => {
           if (file !== 'index.js') {
             const event = events[file.replace('.js', '')]
-            event(message, connection, discordClient)
+            event(message, connection, discordClient.getClient())
           }
         })
       })
@@ -36,4 +58,25 @@ const getModule = async function (client, discordClient) {
     }, 250)
   })
 }
-module.exports = getModule
+
+function connect() {
+  console.log('Connect to Moonraker')
+  
+  websocketClient.connect(config.moonrakersocketurl)
+
+  websocketClient.on('connectFailed', (error) => {
+    console.log(`Connect Error: ${error.toString()}`)
+    console.log('Reconnect in 5 sec')
+    variables.setStatus('offline')
+    setTimeout(() => {
+      websocketClient.connect(config.moonrakersocketurl)
+    }, 5000)
+  })
+}
+
+module.exports = {}
+module.exports.init = () => {
+  connect()
+  enableEvents()
+}
+module.exports.getConnection = () => { return WSconnection }
