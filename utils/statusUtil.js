@@ -36,7 +36,6 @@ module.exports.getDefaultEmbed = async function (user, status, color) {
 
   if (typeof (user) === 'undefined') {
     embed.setFooter('Automatic')
-    embed.setTimestamp()
   }
 
   return embed
@@ -49,7 +48,6 @@ function postStatus(message, channel) {
       discordClient.getClient().guilds.fetch(guildid)
         .then(async (guild) => {
           const guilddatabase = botdatabase.guilds[guild.id]
-          console.log(guilddatabase)
           for (const index in guilddatabase.broadcastchannels) {
             const channel = guild.channels.cache.get(guilddatabase.broadcastchannels[index])
             channel.send(message)
