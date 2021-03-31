@@ -2,9 +2,9 @@ const { status } = require('../utils')
 const { discordClient } = require('../clients')
 
 const getModule = async function (user) {
-  discordClient.user.setActivity('wait for Klipper', { type: 'LISTENING' })
+  discordClient.getClient().user.setActivity('wait for Klipper', { type: 'LISTENING' })
 
-  const statusEmbed = status.getDefaultEmbed(user, 'Klipper Shutdown', '#c90000')
+  const statusEmbed = await status.getDefaultEmbed(user, 'Klipper Shutdown', '#c90000')
     
   return statusEmbed
 }

@@ -17,13 +17,13 @@ module.exports.triggerStatusUpdate = async function (channel, user) {
   await triggerStatusUpdate(channel, user)
 }
 
-module.exports.getManualStatusEmbed = function (user) {
+module.exports.getManualStatusEmbed = async function (user) {
     const statusEvent = status[variables.getStatus()]
     const embed = statusEvent(user)
     return embed
 }
 
-module.exports.getDefaultEmbed = function (user, status, color) {
+module.exports.getDefaultEmbed = async function (user, status, color) {
   const snapshot = await webcam.retrieveWebcam()
   const embed = new Discord.MessageEmbed()
     .setColor(color)

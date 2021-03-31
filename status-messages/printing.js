@@ -3,7 +3,7 @@ const { status, thumbnail, variables } = require('../utils')
 const getModule = async function (user) {
   const thumbnailpic = await thumbnail.retrieveThumbnail()
 
-  const statusEmbed = status.getDefaultEmbed(user, 'Printing', '#0099ff')
+  const statusEmbed = await status.getDefaultEmbed(user, 'Printing', '#0099ff')
   statusEmbed
     .setAuthor(variables.getCurrentFile())
     .addField('Print Time', variables.getFormatedPrintTime(), true)

@@ -2,11 +2,11 @@ const { status, thumbnail, variables } = require('../utils')
 const { discordClient } = require('../clients')
 
 const getModule = async function (user) {
-  discordClient.user.setActivity('take a Break', { type: 'PLAYING' })
+  discordClient.getClient().user.setActivity('take a Break', { type: 'PLAYING' })
 
   const thumbnailpic = await thumbnail.retrieveThumbnail()
 
-  const statusEmbed = status.getDefaultEmbed(user, 'Print Paused', '#dbd400')
+  const statusEmbed = await status.getDefaultEmbed(user, 'Print Paused', '#dbd400')
   statusEmbed
     .setAuthor(variables.getCurrentFile())
     .addField('Print Time', variables.getFormatedPrintTime(), true)

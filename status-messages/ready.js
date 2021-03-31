@@ -3,7 +3,7 @@ const { status, variables } = require('../utils')
 const { discordClient } = require('../clients')
 
 const getModule = async function (user) {
-  discordClient.user.setActivity('for GCODE File...', { type: 'LISTENING' })
+  discordClient.getClient().user.setActivity('for GCODE File...', { type: 'LISTENING' })
 
   const versions = variables.getVersions()
   const { moonraker } = versions
@@ -17,7 +17,7 @@ const getModule = async function (user) {
     klipperver = klipperver.concat(` **(${klipper.remote_version})**`)
   }
 
-  const statusEmbed = status.getDefaultEmbed(user, 'Printer Ready', '#0099ff')
+  const statusEmbed = await status.getDefaultEmbed(user, 'Printer Ready', '#0099ff')
   statusEmbed
     .addField('Mooncord Version', pjson.version, true)
     .addField('Moonraker Version', moonrakerver, true)
