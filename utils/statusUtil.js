@@ -1,12 +1,13 @@
 const Discord = require('discord.js')
 
 const { database, variables, webcam } = require('./index')
+const test = require('./variablesUtil')
 const { discordClient } = require('../clients') 
 const status = require('../status-messages')
 
 async function triggerStatusUpdate (channel, user) {
-  console.log(`Printer Status: ${variables.getStatus()}`)
-  const statusEvent = status[variables.getStatus()]
+  console.log(`Printer Status: ${test.getStatus()}`)
+  const statusEvent = status[test.getStatus()]
   setTimeout(async () => {
     const embed = await statusEvent( user)
     postStatus(embed, channel)
