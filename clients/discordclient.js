@@ -1,5 +1,3 @@
-module.exports = {}
-
 const events = require('../discord-events')
 
 const Discord = require('discord.js')
