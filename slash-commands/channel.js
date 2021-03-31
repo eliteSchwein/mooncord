@@ -1,6 +1,7 @@
 const { SlashCommand, CommandOptionType } = require('slash-create');
-const { database, permission} = require('../utils')
-const { discordClient } = require('../clients')
+const database = require('../utils/databaseUtil')
+const permission = require('../utils/permissionUtil')
+const discordClient = require('../clients/discordclient')
 
 module.exports = class HelloCommand extends SlashCommand {
     constructor(creator) {

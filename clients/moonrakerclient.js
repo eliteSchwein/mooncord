@@ -2,7 +2,7 @@ const fs = require('fs')
 const path = require('path')
 const WebSocketClient = require('websocket').client
 
-const { variables } = require('../utils')
+const variables = require('../utils/variablesUtil')
 const discordClient = require('./discordclient')
 const config = require('../config.json')
 
