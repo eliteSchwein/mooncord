@@ -36,7 +36,7 @@ module.exports = class HelloCommand extends SlashCommand {
             const feedbackInterval = setInterval(() => {
                 if (typeof (commandFeedback) !== 'undefined') {
                     console.log(commandFeedback)
-                    //connection.removeListener(gcodeHandler)
+                    connection.removeListener(gcodeHandler)
                     ctx.send({
                         content: commandFeedback
                     })
@@ -53,18 +53,15 @@ module.exports = class HelloCommand extends SlashCommand {
 
 function handler (message) {
   const messageJson = JSON.parse(message.utf8Data)
-  if (messageJson.method === 'notify_gcode_response') {
-    let command = ''
-    if (messageJson.params[0].includes('Unknown command')) {
-        commandFeedback = 'Unknown Command'
-        return
+    if (messageJson.method === 'notify_gcode_response') {
+        let command = ''
+        if (messageJson.params[0].includes('Unknown command')) {
+            commandFeedback = 'Unknown Command'
+        }
+        if (messageJson.params[0].includes('Error')) {
+            command = messageJson.params[0].replace('!! Error on ', '').replaceAll('\'', '')
+            commandFeedback = `Syntax Error: ${command}`
+        }
+        commandFeedback = 'Command Executed!'
     }
-    if (messageJson.params[0].includes('Error')) {
-        command = messageJson.params[0].replace('!! Error on ', '').replaceAll('\'', '')
-        commandFeedback = `Syntax Error: ${command}`
-        return
-      }
-      commandFeedback = 'Command Executed!'
-      return
-  }
 }
