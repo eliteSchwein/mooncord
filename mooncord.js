@@ -5,12 +5,6 @@ const { discordClient, moonrakerClient } = require('./clients')
 
 const pjson = require('./package.json')
 
-
-
-  discordClient.init()
-
-  moonrakerClient.init()
-
 systemInfo.osInfo().then(async data => {
   console.log(`${'\n' +
     '    __  __                    ____              _ \n' +
@@ -41,4 +35,11 @@ systemInfo.osInfo().then(async data => {
     process.exit(5)
   }
 
+  discordClient.init()
+
+  moonrakerClient.init()
+
 })
+module.exports.getDiscordClient = function () {
+  return discordClient.getClient()
+}
