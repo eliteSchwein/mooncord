@@ -24,7 +24,7 @@ module.exports.getManualStatusEmbed = function (user) {
 }
 
 module.exports.getDefaultEmbed = function (user, status, color) {
-  const snapshot = await webcamUtil.retrieveWebcam()
+  const snapshot = await webcam.retrieveWebcam()
   const embed = new Discord.MessageEmbed()
     .setColor(color)
     .setTitle(status)
