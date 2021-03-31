@@ -1,14 +1,14 @@
 const Discord = require('discord.js')
 
-const { database, variables, webcam } = require('./index')
+const utils = require('./index')
 const { discordClient } = require('../clients') 
 const status = require('../status-messages')
 
 async function triggerStatusUpdate (channel, user) {
-  console.log(`Printer Status: ${variables.getStatus()}`)
-  const statusEvent = status[variables.getStatus()]
+  console.log(`Printer Status: ${utils.variables.getStatus()}`)
+  const statusEvent = status[utils.variables.getStatus()]
   setTimeout(async () => {
-    const embed = await statusEvent( user)
+    const embed = await statusEvent(user)
     postStatus(embed, channel)
   }, 1000)
 }
@@ -19,7 +19,7 @@ module.exports.triggerStatusUpdate = async function (channel, user) {
 
 module.exports.getManualStatusEmbed = async function (user) {
   console.log(database)
-    const statusEvent = status[variables.getStatus()]
+    const statusEvent = status[utils.variables.getStatus()]
     const embed = statusEvent(user)
     return embed
 }
@@ -41,7 +41,7 @@ module.exports.getDefaultEmbed = async function (user, status, color) {
 }
 
 function postStatus(message, channel) {
-  const guildsdatabase = database.getDatabase()
+  const guildsdatabase = utils.database.getDatabase()
   if (typeof channel === 'undefined') {
     for (const guildid in guildsdatabase) {
       discordClient.guilds.fetch(guildid)
