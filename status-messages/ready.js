@@ -2,8 +2,9 @@ const pjson = require('../package.json')
 const statusUtil = require('../utils/statusUtil')
 const variables = require('../utils/variablesUtil')
 const webcamUtil = require('../utils/webcamUtil')
+const { discordClient } = require('../clients')
 
-const getModule = async function (discordClient, user) {
+const getModule = async function (user) {
   discordClient.user.setActivity('for GCODE File...', { type: 'LISTENING' })
 
   const snapshot = await webcamUtil.retrieveWebcam()

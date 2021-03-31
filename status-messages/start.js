@@ -2,8 +2,9 @@ const statusUtil = require('../utils/statusUtil')
 const thumbnailUtil = require('../utils/thumbnailUtil')
 const variables = require('../utils/variablesUtil')
 const webcamUtil = require('../utils/webcamUtil')
+const { discordClient } = require('../clients')
 
-const getModule = async function (discordClient, user) {
+const getModule = async function (user) {
   discordClient.user.setActivity(`start: ${variables.getCurrentFile()}`, { type: 'LISTENING' })
 
   const snapshot = await webcamUtil.retrieveWebcam()
