@@ -18,7 +18,7 @@ module.exports.triggerStatusUpdate = async function (channel, user) {
 }
 
 module.exports.getManualStatusEmbed = async function (user) {
-  console.log(utils.variables)
+    console.log(utils)
     const statusEvent = status[utils.variables.getStatus()]
     const embed = statusEvent(user)
     return embed
