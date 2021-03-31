@@ -8,6 +8,8 @@ const database = require('../utils/databaseUtil')
 const discordClient = require('../clients/discordclient')
 
 const enableEvent = function () {
+
+  console.log(discordClient)
   discordClient.getClient().on('message', msg => {
     if (msg.channel.type === 'dm') {
       msg.author.send('DM is not Supportet!')
