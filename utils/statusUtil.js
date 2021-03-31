@@ -1,8 +1,10 @@
 const Discord = require('discord.js')
 
-const { database, variables, webcam } = require('./index')
-const test = require('./variablesUtil')
-const { discordClient } = require('../clients') 
+const database = require('./databaseUtil')
+const variables = require('./variablesUtil')
+const webcam = require('./webcamUtil')
+
+const discordClient = require('../clients/discordclient') 
 const status = require('../status-messages')
 
 async function triggerStatusUpdate (channel, user) {
@@ -19,7 +21,7 @@ module.exports.triggerStatusUpdate = async function (channel, user) {
 }
 
 module.exports.getManualStatusEmbed = async function (user) {
-    const statusEvent = status[test.getStatus()]
+    const statusEvent = status[variables.getStatus()]
     const embed = statusEvent(user)
     return embed
 }
