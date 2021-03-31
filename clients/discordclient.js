@@ -54,4 +54,4 @@ module.exports.init = function () {
   loginBot()
   enableEvents()
 }
-module.exports.getClient = () => { return discordClient }
+module.exports.getClient = function () { return discordClient }
