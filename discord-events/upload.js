@@ -5,11 +5,8 @@ const https = require('https')
 
 const config = require('../config.json')
 const database = require('../utils/databaseUtil')
-const discordClient = require('../clients/discordclient')
 
-const enableEvent = function () {
-
-  console.log(discordClient)
+const enableEvent = function (discordClient) {
   discordClient.getClient().on('message', msg => {
     if (msg.channel.type === 'dm') {
       msg.author.send('DM is not Supportet!')

@@ -1,8 +1,8 @@
-const events = require('../discord-events')
-
 const Discord = require('discord.js')
 const path = require('path')
 const { GatewayServer, SlashCreator } = require('slash-create')
+
+const uploadEvent = require('../discord-events/upload')
 
 const config = require('../config.json')
 
@@ -11,7 +11,7 @@ const discordClient = new Discord.Client()
 function enableEvents() {
   console.log('Enable Discord Events...\n')
 
-  events()
+  uploadEvent(discordClient)
 }
 
 function loginBot() {
