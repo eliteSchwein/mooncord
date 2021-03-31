@@ -25,6 +25,9 @@ module.exports = class HelloCommand extends SlashCommand {
             const gcode = ctx.options.gcode
             const id = Math.floor(Math.random() * 10000) + 1
             const connection = moonrakerClient.getConnection()
+
+            let timeout = 0
+
             commandFeedback = undefined
 
             ctx.defer(false)
@@ -41,6 +44,13 @@ module.exports = class HelloCommand extends SlashCommand {
                     })
                     clearInterval(feedbackInterval)
                 }
+                if (timeout === 4) {
+                    ctx.send({
+                        content: 'Command execution failed!'
+                    })
+                    clearInterval(feedbackInterval)
+                }
+                timeout++
            }, 500)
         }
         catch (err) {
