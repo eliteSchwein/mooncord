@@ -1,6 +1,6 @@
 const upload = require('./upload')
 
-const getModules = function (discordClient, websocketConnection) {
-  upload(discordClient, websocketConnection)
+const getModules = function () {
+  upload()
 }
 module.exports = getModules
