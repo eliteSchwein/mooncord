@@ -71,7 +71,7 @@ function handler (message) {
             command = messageJson.params[0].replace('!! Error on ', '').replaceAll('\'', '')
             commandFeedback = `Syntax Error: ${command}`
         } else {
-            commandFeedback = `Command ${command} Executed!`
+            commandFeedback = 'Command Executed!'
         }
     }
 }
