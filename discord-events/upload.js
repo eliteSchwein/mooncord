@@ -4,7 +4,7 @@ const fs = require('fs')
 const https = require('https')
 
 const config = require('../config.json')
-const { database } = require('../utils')
+const database = require('../utils/databaseUtil')
 const discordClient = require('../clients/discordclient')
 
 const enableEvent = function () {
