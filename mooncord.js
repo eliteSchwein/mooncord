@@ -40,6 +40,3 @@ systemInfo.osInfo().then(async data => {
   moonrakerClient.init()
 
 })
-module.exports.getDiscordClient = function () {
-  return discordClient.getClient()
-}

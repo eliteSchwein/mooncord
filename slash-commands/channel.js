@@ -1,6 +1,6 @@
 const { SlashCommand, CommandOptionType } = require('slash-create');
 const permissionUtil = require('../utils/permissionUtil')
-const core = require('../mooncord')
+const { discordClient } = require('../clients')
 const discordDatabase = require('../discorddatabase')
 
 module.exports = class HelloCommand extends SlashCommand {
@@ -46,8 +46,8 @@ module.exports = class HelloCommand extends SlashCommand {
     }
 }
 async function editChannel(channelid, guildid) {
-    const guild = await core.getDiscordClient().guilds.fetch(guildid)
-    const channel = await core.getDiscordClient().channels.fetch(channelid)
+    const guild = await discordClient.getClient().guilds.fetch(guildid)
+    const channel = await discordClient.getClient().channels.fetch(channelid)
     const database = discordDatabase.getGuildDatabase(guild)
 
     if (channel.type !== 'text') {

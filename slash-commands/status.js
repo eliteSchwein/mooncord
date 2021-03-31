@@ -1,5 +1,4 @@
 const { SlashCommand } = require('slash-create');
-const core = require('../mooncord')
 const statusUtil = require('../utils/statusUtil')
 
 module.exports = class HelloCommand extends SlashCommand {
@@ -15,7 +14,7 @@ module.exports = class HelloCommand extends SlashCommand {
         try {
             ctx.defer(false)
 
-            const status = await statusUtil.getManualStatusEmbed(core.getDiscordClient(), ctx.user)
+            const status = await statusUtil.getManualStatusEmbed(ctx.user)
 
             const statusfiles = status.files
 
