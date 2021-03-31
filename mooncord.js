@@ -34,10 +34,10 @@ systemInfo.osInfo().then(async data => {
       'Current free Ram: '}${(ram.used / (1024 ** 2)).toFixed(2)}MB`)
     process.exit(5)
   }
+  console.log(discordClient.getClient())
 
   discordClient.init()
 
-  console.log(discordClient.getClient())
 
   moonrakerClient.init()
 
