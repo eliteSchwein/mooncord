@@ -21,7 +21,7 @@ const enableEvents = async function () {
     WSconnection = connection
 
     const id = Math.floor(Math.random() * 10000) + 1
-    fs.readdir(path.resolve(__dirname, 'websocket-events'), (err, files) => {
+    fs.readdir(path.resolve(__dirname, '../websocket-events'), (err, files) => {
       if (err) {
         console.log(err)
         return
@@ -49,7 +49,6 @@ const enableEvents = async function () {
         connection.send(`{"jsonrpc": "2.0", "method": "machine.update.status", "params":{"refresh": "false"}, "id": ${id}}`)
         connection.send(`{"jsonrpc": "2.0", "method": "server.temperature_store", "id": ${id}}`)
         connection.send(`{"jsonrpc": "2.0", "method": "printer.objects.query", "params": {"objects": {"webhooks": null, "virtual_sdcard": null, "print_stats": null}}, "id": ${id}}`)
-        await si.currentLoad()
       }, 1000)
       connection.send(`{"jsonrpc": "2.0", "method": "machine.update.status", "params":{"refresh": "false"}, "id": ${id}}`)
       connection.send(`{"jsonrpc": "2.0", "method": "printer.info", "id": ${id}}`)

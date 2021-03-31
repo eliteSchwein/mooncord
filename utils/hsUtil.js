@@ -1,6 +1,8 @@
 const Discord = require('discord.js')
 const path = require('path')
 const fs = require('fs')
+const si = require('systeminformation')
+
 const componentHandler = require('./hsComponents')
 
 module.exports.getInformation = async function (component) {
@@ -9,6 +11,12 @@ module.exports.getInformation = async function (component) {
   const fields = await componentData.getFields()
   const embed = getDefaultEmbed(img[0], componentData.getTitle(), fields)
   return [img, embed]
+}
+
+module.exports.init = () => {
+  setInterval(() => {
+    await si.currentLoad()
+  }, 1000)
 }
 
 function getImage(component) {

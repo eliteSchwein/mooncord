@@ -4,6 +4,8 @@ const systemInfo = require('systeminformation')
 const discordClient = require('./clients/discordclient')
 const moonrakerClient = require('./clients/moonrakerclient')
 
+const hsUtil = require('./utils/hsUtil')
+
 const pjson = require('./package.json')
 
 systemInfo.osInfo().then(async data => {
@@ -39,6 +41,8 @@ systemInfo.osInfo().then(async data => {
   discordClient.init()
 
   moonrakerClient.init()
+
+  hsUtil.init()
 })
 module.exports.getDiscordClient = function () {
   return discordClient.getClient()
