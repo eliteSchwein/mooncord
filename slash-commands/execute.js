@@ -7,7 +7,6 @@ let commandFeedback
 module.exports = class HelloCommand extends SlashCommand {
     constructor(creator) {
         super(creator, {
-            guildIDs: '626717239210672139',
             name: 'execute',
             description: 'Execute a GCode Command',
             options: [{
