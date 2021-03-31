@@ -35,7 +35,7 @@ module.exports = class HelloCommand extends SlashCommand {
                if (typeof (commandFeedback) !== 'undefined') {
                     ctx.send(commandFeedback)
                     console.log(commandFeedback)
-                    connection.removeListener(handler)
+                    //connection.removeListener(handler)
                     break
                 }
            }, 500)
