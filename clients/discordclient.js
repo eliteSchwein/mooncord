@@ -49,9 +49,9 @@ function enableCommands() {
 }
 
 exports = {}
-exports.init = function () {
+module.exports.init = function () {
   enableCommands()
   loginBot()
   enableEvents()
 }
-exports.getClient = function () { return discordClient }
+module.exports.getClient = function () { return discordClient }
