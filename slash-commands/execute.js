@@ -38,7 +38,8 @@ module.exports = class HelloCommand extends SlashCommand {
                     connection.removeListener(handler)
                     break
                 }
-            },100)
+            }, 100)
+            return ''
         }
         catch (err) {
             console.log(err)
