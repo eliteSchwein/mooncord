@@ -3,10 +3,11 @@ const path = require('path')
 
 const config = require('../config.json')
 const commands = require('../discord-commands')
-const discordDatabase = require('../discorddatabase')
+const { database } = require('../utils')
+const { discordClient, moonrakerClient } = require('../clients')
 
-const enableEvent = function (discordClient, websocketConnection) {
-  discordClient.on('message', msg => {
+const enableEvent = function () {
+  discordClient.getClient().on('message', msg => {
     if (msg.channel.type === 'dm') {
       msg.author.send('DM is not Supportet!')
       return
@@ -43,41 +44,41 @@ const enableEvent = function (discordClient, websocketConnection) {
       msg.channel.send(`<@${msg.author.id}> You are not allowed to execute the following Command! \n> ${config.prefix}${command.split(' ')[0]}`)
       return
     }
-    commandModule(command, msg.channel, msg.author, msg.guild, discordClient, websocketConnection)
+    commandModule(command, msg.channel, msg.author, msg.guild, discordClient.getClient(), moonrakerClient.getConnection())
   })
 }
 module.exports = enableEvent
 
 function isAdmin (user, guild) {
-  const database = discordDatabase.getGuildDatabase(guild)
+  const guilddatabase = database.getGuildDatabase(guild)
   const member = guild.member(user)
   if (user.id === config.masterid) {
     return true
   }
-  if (database.adminusers.includes(user.id)) {
+  if (guilddatabase.adminusers.includes(user.id)) {
     return true
   }
   for (const memberole in member.roles.cache) {
-    if (database.adminroles.includes(memberole)) {
+    if (guilddatabase.adminroles.includes(memberole)) {
       return true
     }
   }
   return false
 }
 function isAllowed (user, guild) {
-  const database = discordDatabase.getGuildDatabase(guild)
+  const guilddatabase = database.getGuildDatabase(guild)
   const member = guild.member(user)
-  if (database.accesseveryone === true) {
+  if (guilddatabase.accesseveryone === true) {
     return true
   }
   if (isAdmin(user, guild)) {
     return true
   }
-  if (database.accessusers.includes(user.id)) {
+  if (guilddatabase.accessusers.includes(user.id)) {
     return true
   }
   for (const memberole in member.roles.cache) {
-    if (database.accessroles.includes(memberole)) {
+    if (guilddatabase.accessroles.includes(memberole)) {
       return true
     }
   }
