@@ -1,5 +1,8 @@
-const { status, thumbnail, variables } = require('../utils')
-const { discordClient } = require('../clients')
+const status = require('../utils/statusUtil')
+const thumbnail = require('../utils/thumbnailUtil')
+const variables = require('../utils/variablesUtil')
+
+const discordClient = require('../clients/discordclient') 
 
 const getModule = async function (user) {
   discordClient.getClient().user.setActivity('take a Break', { type: 'PLAYING' })

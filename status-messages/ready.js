@@ -1,6 +1,9 @@
 const pjson = require('../package.json')
-const { status, variables } = require('../utils')
-const { discordClient } = require('../clients')
+
+const status = require('../utils/statusUtil')
+const variables = require('../utils/variablesUtil')
+
+const discordClient = require('../clients/discordclient') 
 
 const getModule = async function (user) {
   discordClient.getClient().user.setActivity('for GCODE File...', { type: 'LISTENING' })

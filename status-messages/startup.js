@@ -1,5 +1,6 @@
-const { status } = require('../utils')
-const { discordClient } = require('../clients')
+const status = require('../utils/statusUtil')
+
+const discordClient = require('../clients/discordclient') 
 
 const getModule = async function (user) {
   discordClient.getClient().user.setActivity('Printer start', { type: 'WATCHING' })

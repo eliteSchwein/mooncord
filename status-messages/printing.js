@@ -1,4 +1,6 @@
-const { status, thumbnail, variables } = require('../utils')
+const status = require('../utils/statusUtil')
+const thumbnail = require('../utils/thumbnailUtil')
+const variables = require('../utils/variablesUtil')
 
 const getModule = async function (user) {
   const thumbnailpic = await thumbnail.retrieveThumbnail()
