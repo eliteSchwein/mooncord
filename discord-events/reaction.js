@@ -1,20 +1,16 @@
 const config = require('../config.json')
 const reactionHandlers = require('../discord-reactions')
-const discordDatabase = require('../discorddatabase')
-
-let wsConnection
-let dcClient
-const enableEvent = function (discordClient, websocketConnection) {
-  wsConnection = websocketConnection
-  dcClient = discordClient
-  discordClient.on('messageReactionAdd', handler)
+const { database } = require('../utils')
+const { discordClient, moonrakerClient } = require('../clients')
+const enableEvent = function() {
+  discordClient.getClient().on('messageReactionAdd', handler)
 }
 function handler (messageReaction) {
   if (messageReaction.me) {
     return
   }
   const { message } = messageReaction
-  if (message.author.id !== dcClient.user.id) {
+  if (message.author.id !== discordClient.getClient().user.id) {
     return
   }
   const user = messageReaction.users.cache.array()[1]
@@ -37,39 +33,38 @@ function handler (messageReaction) {
     message.channel.send(`<@${user.id}> You are not allowed to execute this Action! \n> ${message.embeds[0].title}`)
     return
   }
-  reactionModule(message, user, guild, messageReaction.emoji, dcClient, wsConnection)
+  reactionModule(message, user, guild, messageReaction.emoji, discordClient.getClient(), moonrakerClient.getConnection())
 }
-
 function isAdmin (user, guild) {
-  const database = discordDatabase.getGuildDatabase(guild)
+  const guilddatabase = database.getGuildDatabase(guild)
   const member = guild.member(user)
   if (user.id === config.masterid) {
     return true
   }
-  if (database.adminusers.includes(user.id)) {
+  if (guilddatabase.adminusers.includes(user.id)) {
     return true
   }
   for (const memberole in member.roles.cache) {
-    if (database.adminroles.includes(memberole)) {
+    if (guilddatabase.adminroles.includes(memberole)) {
       return true
     }
   }
   return false
 }
 function isAllowed (user, guild) {
-  const database = discordDatabase.getGuildDatabase(guild)
+  const guilddatabase = database.getGuildDatabase(guild)
   const member = guild.member(user)
-  if (database.accesseveryone === true) {
+  if (guilddatabase.accesseveryone === true) {
     return true
   }
   if (isAdmin(user, guild)) {
     return true
   }
-  if (database.accessusers.includes(user.id)) {
+  if (guilddatabase.accessusers.includes(user.id)) {
     return true
   }
   for (const memberole in member.roles.cache) {
-    if (database.accessroles.includes(memberole)) {
+    if (guilddatabase.accessroles.includes(memberole)) {
       return true
     }
   }
