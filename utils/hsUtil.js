@@ -13,8 +13,8 @@ module.exports.getInformation = async function (component) {
   return [img, embed]
 }
 
-module.exports.init = () => {
-  setInterval(() => {
+module.exports.init = async () => {
+  setInterval(async () => {
     await si.currentLoad()
   }, 1000)
 }
