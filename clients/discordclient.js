@@ -48,7 +48,7 @@ function enableCommands() {
     );
 }
 
-exports = {}
+module.exports = {}
 module.exports.init = function () {
   enableCommands()
   loginBot()
