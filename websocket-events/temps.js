@@ -1,6 +1,6 @@
-const variables = require('../utils/variablesUtil')
+const { variables } = require('../utils')
 
-const event = (message, connection, discordClient) => {
+const event = (message) => {
   if (message.type === 'utf8') {
     const messageJson = JSON.parse(message.utf8Data)
     const { result } = messageJson

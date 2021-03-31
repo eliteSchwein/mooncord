@@ -1,8 +1,9 @@
 const config = require('../config.json')
-const statusUtil = require('../utils/statusUtil')
-const variables = require('../utils/variablesUtil')
 
-const event = (message, connection, discordClient) => {
+const { variables, status } = require('../utils')
+const { discordClient, moonrakerClient } = require('../clients')
+
+const event = (message) => {
   const id = Math.floor(Math.random() * 10000) + 1
   if (message.type === 'utf8') {
     const messageJson = JSON.parse(message.utf8Data)
@@ -32,13 +33,13 @@ const event = (message, connection, discordClient) => {
             }
           }
           if (variables.getStatus() === 'printing') {
-            connection.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${variables.getCurrentFile()}"}, "id": ${id}}`)
+            moonrakerClient.getConnection().send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${variables.getCurrentFile()}"}, "id": ${id}}`)
             if (currentProgress.toFixed(0) != 0 && currentProgress.toFixed(0) != 100 && variables.getProgress() != currentProgress.toFixed(0)) {
               variables.setProgress(currentProgress.toFixed(0))
-              discordClient.user.setActivity(`Printing: ${currentProgress.toFixed(0)}%`, { type: 'WATCHING' })
+              discordClient.getClient().user.setActivity(`Printing: ${currentProgress.toFixed(0)}%`, { type: 'WATCHING' })
               if (!doublePostProtection && config.statusupdatepercent && currentProgress.toFixed(0) % config.statusupdateinterval === 0) {
                 doublePostProtection = true
-                statusUtil.triggerStatusUpdate(discordClient)
+                status.triggerStatusUpdate()
                 doublePostProtection = false
               }
             }

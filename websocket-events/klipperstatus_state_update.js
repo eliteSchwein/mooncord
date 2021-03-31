@@ -1,17 +1,16 @@
 const Discord = require('discord.js')
 const path = require('path')
-
-const discordDatabase = require('../discorddatabase')
-const variables = require('../utils/variablesUtil')
+const { variables, database } = require('../utils')
+const { discordClient } = require('../clients')
 
 let notifyembed
 
-const event = async (message, connection, discordClient) => {
+const event = async (message) => {
   if (message.type === 'utf8') {
     const messageJson = JSON.parse(message.utf8Data)
     const { result } = messageJson
     if (typeof (result) !== 'undefined' && typeof (result.version_info) !== 'undefined') {
-      const database = discordDatabase.getDatabase()
+      const guildsdatabase = database.getDatabase()
       let postUpdate = false
       notifyembed = new Discord.MessageEmbed()
         .setColor('#fcf803')
@@ -35,10 +34,10 @@ const event = async (message, connection, discordClient) => {
       }
       if (postUpdate) {
         variables.setVersions(result.version_info)
-        for (const guildid in database) {
-          await discordClient.guilds.fetch(guildid)
+        for (const guildid in guildsdatabase) {
+          await discordClient.getClient().guilds.fetch(guildid)
             .then(async (guild) => {
-              const guilddatabase = database[guild.id]
+              const guilddatabase = guildsdatabase[guild.id]
               const broadcastchannels = guilddatabase.statuschannels
               for (const index in broadcastchannels) {
                 const channel = guild.channels.cache.get(broadcastchannels[index])

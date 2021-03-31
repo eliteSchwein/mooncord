@@ -39,7 +39,7 @@ const enableEvents = async function (client) {
         files.forEach(file => {
           if (file !== 'index.js') {
             const event = events[file.replace('.js', '')]
-            event(message, connection, discordClient.getClient())
+            event(message)
           }
         })
       })
