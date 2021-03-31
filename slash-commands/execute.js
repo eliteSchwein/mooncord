@@ -57,11 +57,11 @@ function handler (message) {
         console.log(messageJson)
         if (messageJson.params[0].includes('Unknown command')) {
             commandFeedback = 'Unknown Command'
-        }
-        if (messageJson.params[0].includes('Error')) {
+        } else if (messageJson.params[0].includes('Error')) {
             command = messageJson.params[0].replace('!! Error on ', '').replaceAll('\'', '')
             commandFeedback = `Syntax Error: ${command}`
+        } else {
+            commandFeedback = 'Command Executed!'
         }
-        commandFeedback = 'Command Executed!'
     }
 }
