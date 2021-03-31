@@ -8,11 +8,11 @@ const config = require('../config.json')
 
 const events = require('../websocket-events')
 
-const websocketClient = new WebSocketClient()
+const client = new WebSocketClient()
 
 let WSconnection
 
-const enableEvents = async function (client) {
+const enableEvents = async function () {
   console.log('Enable Websocket Events')
 
   client.on('connect', async (connection) => {
@@ -32,7 +32,7 @@ const enableEvents = async function (client) {
         variables.setStatus('offline')
         statusUtil.triggerStatusUpdate(discordClient.getClient())
         setTimeout(() => {
-          websocketClient.connect(config.moonrakersocketurl)
+          client.connect(config.moonrakersocketurl)
         }, 5000)
       })
       connection.on('message', (message) => {
@@ -62,14 +62,14 @@ const enableEvents = async function (client) {
 function connect() {
   console.log('Connect to Moonraker')
   
-  websocketClient.connect(config.moonrakersocketurl)
+  client.connect(config.moonrakersocketurl)
 
-  websocketClient.on('connectFailed', (error) => {
+  client.on('connectFailed', (error) => {
     console.log(`Connect Error: ${error.toString()}`)
     console.log('Reconnect in 5 sec')
     variables.setStatus('offline')
     setTimeout(() => {
-      websocketClient.connect(config.moonrakersocketurl)
+      client.connect(config.moonrakersocketurl)
     }, 5000)
   })
 }
