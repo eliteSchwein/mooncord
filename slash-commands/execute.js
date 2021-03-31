@@ -38,7 +38,6 @@ module.exports = class HelloCommand extends SlashCommand {
                     ctx.send({
                         content: commandFeedback
                     })
-                    break
                 }
            }, 500)
         }
