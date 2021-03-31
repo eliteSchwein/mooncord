@@ -32,10 +32,11 @@ module.exports = class HelloCommand extends SlashCommand {
             connection.on('message', handler)
             connection.send(`{"jsonrpc": "2.0", "method": "printer.gcode.script", "params": {"script": "${gcode}"}, "id": ${id}}`)
             while (true) {
-                if(typeof (commandFeedback) !== 'undefined')
+                if (typeof (commandFeedback) !== 'undefined') {
                 console.log(commandFeedback)
                 connection.removeListener(handler)
                 break
+                }
             }
         }
         catch (err) {
@@ -45,7 +46,7 @@ module.exports = class HelloCommand extends SlashCommand {
     }
 }
 
-async function handler (message) {
+function handler (message) {
   const messageJson = JSON.parse(message.utf8Data)
   if (messageJson.method === 'notify_gcode_response') {
     let command = ''
