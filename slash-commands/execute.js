@@ -66,12 +66,12 @@ function handler (message) {
         let command = ''
         console.log(messageJson)
         if (messageJson.params[0].includes('Unknown command')) {
-            commandFeedback = 'Unknown Command'
+            commandFeedback = `Unknown Command: ${command}`
         } else if (messageJson.params[0].includes('Error')) {
             command = messageJson.params[0].replace('!! Error on ', '').replaceAll('\'', '')
             commandFeedback = `Syntax Error: ${command}`
         } else {
-            commandFeedback = 'Command Executed!'
+            commandFeedback = `Command ${command} Executed!`
         }
     }
 }
