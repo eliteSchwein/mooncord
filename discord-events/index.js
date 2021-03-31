@@ -1,5 +1,5 @@
 module.exports = {
   emoteevent: require('./emotecommands'),
-  reactionevent: require('./reactioncommands'),
+  reactionevent: require('./reaction'),
   uploadevent: require('./upload')
 }
