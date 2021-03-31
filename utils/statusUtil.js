@@ -48,7 +48,7 @@ function postStatus(message, channel) {
     for (const guildid in guildsdatabase) {
       discordClient.getClient().guilds.fetch(guildid)
         .then(async (guild) => {
-          const guilddatabase = guildsdatabase[guild.id]
+          const guilddatabase = guildsdatabase.guilds[guild.id]
           const broadcastchannels = guilddatabase.statuschannels
           for (const index in broadcastchannels) {
             const channel = guild.channels.cache.get(broadcastchannels[index])
