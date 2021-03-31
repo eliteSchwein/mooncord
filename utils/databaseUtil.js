@@ -1,4 +1,4 @@
-const databasepath = '../discorddatabase.json'
+const databasepath = '../database.json'
 const fs = require('fs')
 
 module.exports = {}
