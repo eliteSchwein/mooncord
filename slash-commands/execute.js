@@ -2,6 +2,8 @@ const { SlashCommand, CommandOptionType } = require('slash-create');
 
 const moonrakerClient = require('../clients/moonrakerclient')
 
+let commandFeedback
+
 module.exports = class HelloCommand extends SlashCommand {
     constructor(creator) {
         super(creator, {
@@ -23,9 +25,19 @@ module.exports = class HelloCommand extends SlashCommand {
             const gcode = ctx.options.gcode
             const id = Math.floor(Math.random() * 10000) + 1
             const connection = moonrakerClient.getConnection()
-            console.log(connection.on('message', handler))
+            commandFeedback = undefined
+
+            ctx.defer(false)
+
+            connection.on('message', handler)
             connection.send(`{"jsonrpc": "2.0", "method": "printer.gcode.script", "params": {"script": "${gcode}"}, "id": ${id}}`)
-            return 'wip'
+            setInterval(() => {
+                if (typeof (commandFeedback) !== 'undefined') {
+                    ctx.send(commandFeedback)
+                    connection.removeListener(handler)
+                    break
+                }
+            },100)
         }
         catch (err) {
             console.log(err)
@@ -39,12 +51,15 @@ async function handler (message) {
   if (messageJson.method === 'notify_gcode_response') {
     let command = ''
     if (messageJson.params[0].includes('Unknown command')) {
-      command = messageJson.params[0].replace('// Unknown command:', '').replaceAll('"', '')
-      return 'Unknown Command'
+        commandFeedback = 'Unknown Command'
+        return
     }
     if (messageJson.params[0].includes('Error')) {
-      command = messageJson.params[0].replace('!! Error on ', '').replaceAll('\'', '')
-      return `Syntax Error: ${command}`
-    }
+        command = messageJson.params[0].replace('!! Error on ', '').replaceAll('\'', '')
+        commandFeedback = `Syntax Error: ${command}`
+        return
+      }
+      commandFeedback = 'Command Executed!'
+      return
   }
 }
