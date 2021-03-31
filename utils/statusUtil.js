@@ -43,15 +43,14 @@ module.exports.getDefaultEmbed = async function (user, status, color) {
 }
 
 function postStatus(message, channel) {
-  const guildsdatabase = database.getDatabase()
+  const botdatabase = database.getDatabase()
   if (typeof channel === 'undefined') {
-    for (const guildid in guildsdatabase) {
+    for (const guildid in botdatabase.guilds) {
       discordClient.getClient().guilds.fetch(guildid)
         .then(async (guild) => {
-          const guilddatabase = guildsdatabase.guilds[guild.id]
-          const broadcastchannels = guilddatabase.statuschannels
-          for (const index in broadcastchannels) {
-            const channel = guild.channels.cache.get(broadcastchannels[index])
+          const guilddatabase = botdatabase.guilds[guild.id]
+          for (const index in guilddatabase.broadcastchannels) {
+            const channel = guild.channels.cache.get(guilddatabase.broadcastchannels[index])
             channel.send(message)
           }
         })
