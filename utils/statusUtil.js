@@ -46,7 +46,7 @@ function postStatus(message, channel) {
   const guildsdatabase = database.getDatabase()
   if (typeof channel === 'undefined') {
     for (const guildid in guildsdatabase) {
-      discordClient.guilds.fetch(guildid)
+      discordClient.getClient().guilds.fetch(guildid)
         .then(async (guild) => {
           const guilddatabase = guildsdatabase[guild.id]
           const broadcastchannels = guilddatabase.statuschannels
