@@ -11,9 +11,7 @@ const discordClient = new Discord.Client()
 function enableEvents() {
   console.log('Enable Discord Events...\n')
 
-  for (let event in events) {
-    event()
-  }
+  events()
 }
 
 function loginBot() {
