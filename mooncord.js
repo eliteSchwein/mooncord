@@ -1,7 +1,8 @@
 'use strict'
 const systemInfo = require('systeminformation')
 
-const { discordClient, moonrakerClient } = require('./clients')
+const discordClient = require('./clients/discordclient')
+const moonrakerClient = require('./clients/moonrakerclient')
 
 const pjson = require('./package.json')
 
@@ -34,13 +35,10 @@ systemInfo.osInfo().then(async data => {
       'Current free Ram: '}${(ram.used / (1024 ** 2)).toFixed(2)}MB`)
     process.exit(5)
   }
-  console.log(discordClient.getClient())
 
   discordClient.init()
 
-
   moonrakerClient.init()
-
 })
 module.exports.getDiscordClient = function () {
   return discordClient.getClient()
