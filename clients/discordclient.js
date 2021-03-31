@@ -1,4 +1,4 @@
-const discordevents = require('./discord-events')
+const discordevents = require('../discord-events')
 
 const Discord = require('discord.js')
 const path = require('path')
