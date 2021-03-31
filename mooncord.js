@@ -25,7 +25,7 @@ systemInfo.osInfo().then(async data => {
     `Arch: ${data.arch}`)
   const ram = await systemInfo.mem()
 
-  if (ram.free <= 20971520) {
+  if (ram.free <= 4194304) {
     console.log(
       `${'     _  _____ _____ _____ _   _ _____ ___ ___  _   _ \n' +
       '    / \\|_   _|_   _| ____| \\ | |_   _|_ _/ _ \\| \\ | |\n' +
@@ -33,7 +33,7 @@ systemInfo.osInfo().then(async data => {
       '  / ___ \\| |   | | | |___| |\\  | | |  | | |_| | |\\  |\n' +
       ' /_/   \\_\\_|   |_| |_____|_| \\_| |_| |___\\___/|_| \\_|\n' +
       '                                                  \n' +
-      'There might be to few free memory! Mooncord need atleast 20MB RAM\n' +
+      'There might be to few free memory! Mooncord need atleast 40MB RAM\n' +
       'Current free Ram: '}${(ram.used / (1024 ** 2)).toFixed(2)}MB`)
     process.exit(5)
   }
