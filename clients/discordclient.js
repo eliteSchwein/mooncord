@@ -48,10 +48,10 @@ function enableCommands() {
     );
 }
 
-module.exports = {}
-module.exports.init = function () {
+exports = {}
+exports.init = function () {
   enableCommands()
   loginBot()
   enableEvents()
 }
-module.exports.getClient = function () { return discordClient }
+exports.getClient = function () { return discordClient }
