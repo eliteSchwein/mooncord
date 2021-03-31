@@ -5,6 +5,12 @@ const { discordClient, moonrakerClient } = require('./clients')
 
 const pjson = require('./package.json')
 
+
+
+  discordClient.init()
+
+  moonrakerClient.init()
+
 systemInfo.osInfo().then(async data => {
   console.log(`${'\n' +
     '    __  __                    ____              _ \n' +
@@ -34,9 +40,5 @@ systemInfo.osInfo().then(async data => {
       'Current free Ram: '}${(ram.used / (1024 ** 2)).toFixed(2)}MB`)
     process.exit(5)
   }
-
-  discordClient.init()
-
-  moonrakerClient.init()
 
 })
