@@ -1,4 +1,4 @@
-const { SlashCommand } = require('slash-create');
+const { SlashCommand, CommandOptionType } = require('slash-create');
 
 const moonrakerClient = require('../clients/moonrakerclient')
 
