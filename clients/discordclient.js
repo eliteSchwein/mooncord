@@ -1,4 +1,4 @@
-const discordevents = require('../discord-events')
+const events = require('../discord-events')
 
 const Discord = require('discord.js')
 const path = require('path')
@@ -11,7 +11,9 @@ const discordClient = new Discord.Client()
 function enableEvents() {
   console.log('Enable Discord Events...\n')
 
-  //discordevents(discordClient, connection)
+  for (let event in events) {
+    event()
+  }
 }
 
 function loginBot() {
