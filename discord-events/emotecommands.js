@@ -2,8 +2,9 @@ const fs = require('fs')
 const path = require('path')
 
 const commandReactHandlers = require('../discord-commandreactions')
+const { discordClient, moonrakerClient } = require('../clients')
 
-const enableEvent = function (discordClient, websocketConnection) {
+const enableEvent = function () {
   discordClient.on('message', msg => {
     if (msg.channel.type === 'dm') {
       msg.author.send('DM is not Supportet!')
@@ -23,7 +24,7 @@ const enableEvent = function (discordClient, websocketConnection) {
       return
     }
     const emoteModule = commandReactHandlers[id]
-    emoteModule(discordClient, websocketConnection, msg)
+    emoteModule(discordClient, moonrakerClient.getConnection(), msg)
   })
 }
 module.exports = enableEvent
