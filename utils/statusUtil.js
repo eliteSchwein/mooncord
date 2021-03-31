@@ -44,6 +44,7 @@ module.exports.getDefaultEmbed = async function (user, status, color) {
 
 function postStatus(message, channel) {
   const botdatabase = database.getDatabase()
+  console.log(botdatabase)
   if (typeof channel === 'undefined') {
     for (const guildid in botdatabase.guilds) {
       discordClient.getClient().guilds.fetch(guildid)
