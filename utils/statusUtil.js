@@ -6,8 +6,8 @@ const { discordClient } = require('../clients')
 const status = require('../status-messages')
 
 async function triggerStatusUpdate (channel, user) {
-  console.log(`Printer Status: ${test.getStatus()}`)
-  const statusEvent = status[test.getStatus()]
+  console.log(`Printer Status: ${variables.getStatus()}`)
+  const statusEvent = status[variables.getStatus()]
   setTimeout(async () => {
     const embed = await statusEvent( user)
     postStatus(embed, channel)
@@ -19,7 +19,7 @@ module.exports.triggerStatusUpdate = async function (channel, user) {
 }
 
 module.exports.getManualStatusEmbed = async function (user) {
-    const statusEvent = status[variables.getStatus()]
+    const statusEvent = status[test.getStatus()]
     const embed = statusEvent(user)
     return embed
 }
