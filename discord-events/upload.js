@@ -4,10 +4,11 @@ const fs = require('fs')
 const https = require('https')
 
 const config = require('../config.json')
-const discordDatabase = require('../discorddatabase')
+const { database } = require('../utils')
+const { discordClient } = require('../clients')
 
-const enableEvent = function (discordClient, websocketConnection) {
-  discordClient.on('message', msg => {
+const enableEvent = function () {
+  discordClient.getClient().on('message', msg => {
     if (msg.channel.type === 'dm') {
       msg.author.send('DM is not Supportet!')
       return
@@ -24,8 +25,8 @@ const enableEvent = function (discordClient, websocketConnection) {
     if (!isAdmin(msg.author, msg.guild)) {
       return
     }
-    const database = discordDatabase.getGuildDatabase(msg.guild)
-    const broadcastchannels = database.statuschannels
+    const guilddatabase = database.getGuildDatabase(msg.guild)
+    const broadcastchannels = guilddatabase.statuschannels
     for (const index in broadcastchannels) {
       const channel = msg.guild.channels.cache.get(broadcastchannels[index])
       if (channel === msg.channel.id) {
@@ -70,16 +71,16 @@ const enableEvent = function (discordClient, websocketConnection) {
 }
 
 function isAdmin (user, guild) {
-  const database = discordDatabase.getGuildDatabase(guild)
+  const guilddatabase = database.getGuildDatabase(guild)
   const member = guild.member(user)
   if (user.id === config.masterid) {
     return true
   }
-  if (database.adminusers.includes(user.id)) {
+  if (guilddatabase.adminusers.includes(user.id)) {
     return true
   }
   for (const memberole in member.roles.cache) {
-    if (database.adminroles.includes(memberole)) {
+    if (guilddatabase.adminroles.includes(memberole)) {
       return true
     }
   }
