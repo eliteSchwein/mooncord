@@ -27,19 +27,18 @@ module.exports = class HelloCommand extends SlashCommand {
             const connection = moonrakerClient.getConnection()
             commandFeedback = undefined
 
-            //ctx.defer(false)
+            ctx.defer(false)
 
             connection.on('message', handler)
             connection.send(`{"jsonrpc": "2.0", "method": "printer.gcode.script", "params": {"script": "${gcode}"}, "id": ${id}}`)
-            ///setInterval(() => {
-           //     if (typeof (commandFeedback) !== 'undefined') {
-           //         //ctx.send(commandFeedback)
-           //         console.log(commandFeedback)
-           //         connection.removeListener(handler)
-           //         break
-           //     }
-           // }, 100)
-            return 'test'
+            setTimeout(() => {
+               if (typeof (commandFeedback) !== 'undefined') {
+                    //ctx.send(commandFeedback)
+                    console.log(commandFeedback)
+                    connection.removeListener(handler)
+                    break
+                }
+           }, 500)
         }
         catch (err) {
             console.log(err)
