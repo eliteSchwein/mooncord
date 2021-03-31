@@ -1,21 +1,16 @@
-const statusUtil = require('../utils/statusUtil')
-const thumbnailUtil = require('../utils/thumbnailUtil')
-const variables = require('../utils/variablesUtil')
-const webcamUtil = require('../utils/webcamUtil')
+const { status, thumbnail, variables } = require('../utils')
 const { discordClient } = require('../clients')
 
 const getModule = async function (user) {
   discordClient.user.setActivity('stop Print', { type: 'LISTENING' })
 
-  const snapshot = await webcamUtil.retrieveWebcam()
-  const thumbnail = await thumbnailUtil.retrieveThumbnail()
+  const thumbnailpic = await thumbnail.retrieveThumbnail()
 
-  const statusEmbed = statusUtil.getDefaultEmbed(user, 'Print stopped', '#c90000')
+  const statusEmbed = status.getDefaultEmbed(user, 'Print stopped', '#c90000')
   statusEmbed
     .setAuthor(variables.getCurrentFile())
-    .attachFiles([snapshot, thumbnail])
-    .setImage(`attachment://${snapshot.name}`)
-    .setThumbnail(`attachment://${thumbnail.name}`)
+    .attachFiles([thumbnailpic])
+    .setThumbnail(`attachment://${thumbnailpic.name}`)
   
   return statusEmbed
 }

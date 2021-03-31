@@ -1,13 +1,10 @@
 const pjson = require('../package.json')
-const statusUtil = require('../utils/statusUtil')
-const variables = require('../utils/variablesUtil')
-const webcamUtil = require('../utils/webcamUtil')
+const { status, variables } = require('../utils')
 const { discordClient } = require('../clients')
 
 const getModule = async function (user) {
   discordClient.user.setActivity('for GCODE File...', { type: 'LISTENING' })
 
-  const snapshot = await webcamUtil.retrieveWebcam()
   const versions = variables.getVersions()
   const { moonraker } = versions
   const { klipper } = versions
@@ -20,13 +17,11 @@ const getModule = async function (user) {
     klipperver = klipperver.concat(` **(${klipper.remote_version})**`)
   }
 
-  const statusEmbed = statusUtil.getDefaultEmbed(user, 'Printer Ready', '#0099ff')
+  const statusEmbed = status.getDefaultEmbed(user, 'Printer Ready', '#0099ff')
   statusEmbed
     .addField('Mooncord Version', pjson.version, true)
     .addField('Moonraker Version', moonrakerver, true)
     .addField('Klipper Version', klipperver, true)
-    .attachFiles(snapshot)
-    .setImage(`attachment://${snapshot.name}`)
   
   return statusEmbed
 }

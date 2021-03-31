@@ -1,21 +1,16 @@
-const statusUtil = require('../utils/statusUtil')
-const thumbnailUtil = require('../utils/thumbnailUtil')
-const variables = require('../utils/variablesUtil')
-const webcamUtil = require('../utils/webcamUtil')
+const { status, thumbnail, variables } = require('../utils')
 
 const getModule = async function (user) {
-  const snapshot = await webcamUtil.retrieveWebcam()
-  const thumbnail = await thumbnailUtil.retrieveThumbnail()
+  const thumbnailpic = await thumbnail.retrieveThumbnail()
 
-  const statusEmbed = statusUtil.getDefaultEmbed(user, 'Printing', '#0099ff')
+  const statusEmbed = status.getDefaultEmbed(user, 'Printing', '#0099ff')
   statusEmbed
     .setAuthor(variables.getCurrentFile())
     .addField('Print Time', variables.getFormatedPrintTime(), true)
     .addField('ETA Print Time', variables.getFormatedRemainingTime(), true)
     .addField('Progress', `${variables.getProgress()}%`, true)
-    .attachFiles([snapshot, thumbnail])
-    .setImage(`attachment://${snapshot.name}`)
-    .setThumbnail(`attachment://${thumbnail.name}`)
+    .attachFiles([thumbnailpic])
+    .setThumbnail(`attachment://${thumbnailpic.name}`)
   
   return statusEmbed
 }

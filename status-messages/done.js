@@ -1,22 +1,16 @@
-const statusUtil = require('../utils/statusUtil')
-const thumbnailUtil = require('../utils/thumbnailUtil')
-const variables = require('../utils/variablesUtil')
-const webcamUtil = require('../utils/webcamUtil')
+const { status, thumbnail, variables } = require('../utils')
 const { discordClient } = require('../clients')
 
 const getModule = async function (user) {
   discordClient.user.setActivity('Finished Print', { type: 'WATCHING' })
+  const thumbnailpic = await thumbnail.retrieveThumbnail()
 
-  const snapshot = await webcamUtil.retrieveWebcam()
-  const thumbnail = await thumbnailUtil.retrieveThumbnail()
-
-  const statusEmbed = statusUtil.getDefaultEmbed(user, 'Print Done', '#25db00')
+  const statusEmbed = status.getDefaultEmbed(user, 'Print Done', '#25db00')
   statusEmbed
     .setAuthor(variables.getCurrentFile())
     .addField('Print Time', variables.getFormatedPrintTime(), true)
-    .attachFiles([snapshot, thumbnail])
-    .setImage(`attachment://${snapshot.name}`)
-    .setThumbnail(`attachment://${thumbnail.name}`)
+    .attachFiles([thumbnailpic])
+    .setThumbnail(`attachment://${thumbnailpic.name}`)
   
   return statusEmbed
 }

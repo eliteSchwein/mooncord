@@ -1,32 +1,35 @@
 const Discord = require('discord.js')
 
-const discordDatabase = require('../discorddatabase')
+const { database, variables, webcam } = require('./index')
+const { discordClient } = require('../clients') 
 const status = require('../status-messages')
-const variables = require('../utils/variablesUtil')
 
-async function triggerStatusUpdate (discordClient, channel, user) {
+async function triggerStatusUpdate (channel, user) {
   console.log(`Printer Status: ${variables.getStatus()}`)
   const statusEvent = status[variables.getStatus()]
   setTimeout(async () => {
-    const embed = await statusEvent(discordClient, user)
-    postStatus(discordClient, embed, channel)
+    const embed = await statusEvent( user)
+    postStatus(embed, channel)
   }, 1000)
 }
 
-module.exports.triggerStatusUpdate = async function (discordClient, channel, user) {
-  await triggerStatusUpdate(discordClient, channel, user)
+module.exports.triggerStatusUpdate = async function (channel, user) {
+  await triggerStatusUpdate(channel, user)
 }
 
-module.exports.getManualStatusEmbed = function (discordClient, user) {
+module.exports.getManualStatusEmbed = function (user) {
     const statusEvent = status[variables.getStatus()]
-    const embed = statusEvent(discordClient, user)
+    const embed = statusEvent(user)
     return embed
 }
 
 module.exports.getDefaultEmbed = function (user, status, color) {
+  const snapshot = await webcamUtil.retrieveWebcam()
   const embed = new Discord.MessageEmbed()
     .setColor(color)
     .setTitle(status)
+    .attachFiles([snapshot])
+    .setImage(`attachment://${snapshot.name}`)
 
   if (typeof (user) === 'undefined') {
     embed.setFooter('Automatic')
@@ -36,13 +39,13 @@ module.exports.getDefaultEmbed = function (user, status, color) {
   return embed
 }
 
-function postStatus(discordClient, message, channel) {
-  const database = discordDatabase.getDatabase()
+function postStatus(message, channel) {
+  const guildsdatabase = database.getDatabase()
   if (typeof channel === 'undefined') {
-    for (const guildid in database) {
+    for (const guildid in guildsdatabase) {
       discordClient.guilds.fetch(guildid)
         .then(async (guild) => {
-          const guilddatabase = database[guild.id]
+          const guilddatabase = guildsdatabase[guild.id]
           const broadcastchannels = guilddatabase.statuschannels
           for (const index in broadcastchannels) {
             const channel = guild.channels.cache.get(broadcastchannels[index])
