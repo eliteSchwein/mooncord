@@ -65,6 +65,7 @@ function handler (message) {
     if (messageJson.method === 'notify_gcode_response') {
         let command = ''
         if (messageJson.params[0].includes('Unknown command')) {
+            command = messageJson.params[0].replace('// Unknown command:', '').replaceAll('"', '')
             commandFeedback = `Unknown Command: ${command}`
         } else if (messageJson.params[0].includes('Error')) {
             command = messageJson.params[0].replace('!! Error on ', '').replaceAll('\'', '')
