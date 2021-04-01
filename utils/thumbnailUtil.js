@@ -17,3 +17,10 @@ module.exports = function () {}
 module.exports.retrieveThumbnail = async function () {
   return await retrieveThumbnail()
 }
+module.exports.buildThumbnail = async function (base64) {
+  if (typeof (base64) === 'undefined' || base64 === '') {
+    return new Discord.MessageAttachment(await fs.readFile(path.resolve(__dirname, '../images/thumbnail_not_found.png')), 'thumbnail_not_found.png')
+  }
+  const buffer = Buffer.from(base64, 'base64')
+  return new Discord.MessageAttachment(buffer, 'thumbnail.png')
+}

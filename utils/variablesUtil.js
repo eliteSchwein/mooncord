@@ -83,6 +83,7 @@ module.exports.getPrintTime = function () {
 module.exports.getFormatedPrintTime = function () {
   return formatDateTime(printtime * 1000)
 }
+module.exports.formatTime = (time) => { return formatDateTime(time) }
 
 function formatDateTime (msec) {
   const date = new Date(msec)
