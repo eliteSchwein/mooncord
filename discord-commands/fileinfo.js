@@ -89,13 +89,16 @@ async function handler (message) {
         .concat(`Slicer: ${messageJson.result.slicer}\n`)
         .concat(`Slicer Version: ${messageJson.result.slicer_version}\n`)
         .concat(`Height: ${messageJson.result.object_height}mm`)
-    const parsedThumbnail = await thumbnail.buildThumbnail(messageJson.result.thumbnails[1].data)
     
     commandFeedback = new Discord.MessageEmbed()
-      .setColor('#0099ff')
-      .setTitle('File Informations')
-      .setAuthor(messageJson.filename)
-      .setDescription(description)
-      .attachFiles(parsedThumbnail)
-      .setThumbnail(parsedThumbnail.name)
+        .setColor('#0099ff')
+        .setTitle('File Informations')
+        .setAuthor(messageJson.filename)
+        .setDescription(description)
+    if (typeof (messageJson.result.thumbnails) !== 'undefined') {
+        const parsedThumbnail = await thumbnail.buildThumbnail(messageJson.result.thumbnails[1].data)
+        commandFeedback
+            .attachFiles(parsedThumbnail)
+            .setThumbnail(parsedThumbnail.name)
+    }
 }
