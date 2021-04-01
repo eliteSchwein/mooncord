@@ -57,7 +57,6 @@ module.exports = class HelloCommand extends SlashCommand {
                                 name: thumbnail.name,
                                 file: thumbnail.attachment
                             }
-                            console.log(files)
                         }
                         ctx.send({
                             file: files,
@@ -84,10 +83,8 @@ module.exports = class HelloCommand extends SlashCommand {
 
 async function handler (message) {
     const messageJson = JSON.parse(message.utf8Data)
-    console.log(messageJson)
     if (typeof (messageJson.error) !== 'undefined') {
         commandFeedback = `Not Found!`
-        console.log('ERROR STOP STOP')
         connection.removeListener('message', handler)
         return
     }
