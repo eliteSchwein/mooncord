@@ -4,9 +4,8 @@ const variables = require('../utils/variablesUtil')
 const status = require('../utils/statusUtil')
 
 const discordClient = require('../clients/discordclient')
-const moonrakerClient = require('../clients/moonrakerclient')
 
-const event = (message) => {
+const event = (message, connection) => {
   const id = Math.floor(Math.random() * 10000) + 1
   if (message.type === 'utf8') {
     const messageJson = JSON.parse(message.utf8Data)
@@ -36,7 +35,7 @@ const event = (message) => {
             }
           }
           if (variables.getStatus() === 'printing') {
-            moonrakerClient.getConnection().send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${variables.getCurrentFile()}"}, "id": ${id}}`)
+            connection.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${variables.getCurrentFile()}"}, "id": ${id}}`)
             if (currentProgress.toFixed(0) != 0 && currentProgress.toFixed(0) != 100 && variables.getProgress() != currentProgress.toFixed(0)) {
               variables.setProgress(currentProgress.toFixed(0))
               discordClient.getClient().user.setActivity(`Printing: ${currentProgress.toFixed(0)}%`, { type: 'WATCHING' })

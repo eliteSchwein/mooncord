@@ -4,10 +4,8 @@ const variables = require('../utils/variablesUtil')
 const status = require('../utils/statusUtil')
 
 const discordClient = require('../clients/discordclient')
-const moonrakerClient = require('../clients/moonrakerclient')
 
-const event = (message) => {
-  console.log(moonrakerClient)
+const event = (message, connection) => {
   const id = Math.floor(Math.random() * 10000) + 1
   if (message.type === 'utf8') {
     const messageJson = JSON.parse(message.utf8Data)
@@ -20,7 +18,7 @@ const event = (message) => {
         const removeFileTag = removeSize.slice(12)
         const printfile = removeFileTag
         const currentStatus = 'start'
-        moonrakerClient.getConnection().send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${printfile}"}, "id": ${id}}`)
+        connection.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${printfile}"}, "id": ${id}}`)
         if (variables.getStatus() !== currentStatus) {
           variables.setStatus(currentStatus)
           status.triggerStatusUpdate(discordClient.getClient())
