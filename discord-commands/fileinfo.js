@@ -87,11 +87,11 @@ module.exports = class HelloCommand extends SlashCommand {
 async function handler (message) {
     const messageJson = JSON.parse(message.utf8Data)
     console.log(messageJson)
+    if (typeof (messageJson.error) !== 'undefined') {
+        commandFeedback = `Not Found!`
+        return
+    }
     if (typeof (messageJson.result.filename) !== 'undefined') {
-        if (typeof (messageJson.error) !== 'undefined') {
-            commandFeedback = `Not Found!`
-            return
-        }
         let description = ''
             .concat(`Print Time: ${variables.formatTime(messageJson.result.estimated_time * 1000)}\n`)
             .concat(`Slicer: ${messageJson.result.slicer}\n`)
