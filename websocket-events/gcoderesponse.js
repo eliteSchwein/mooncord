@@ -21,12 +21,12 @@ const event = (message, connection) => {
         connection.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${printfile}"}, "id": ${id}}`)
         if (variables.getStatus() !== currentStatus) {
           variables.setStatus(currentStatus)
-          status.triggerStatusUpdate(discordClient.getClient())
+          status.triggerStatusUpdate()
         }
         variables.setStatus('printing')
         if (!config.statusupdatepercent) {
           timer = setInterval(() => {
-            status.triggerStatusUpdate(discordClient.getClient())
+            status.triggerStatusUpdate()
           }, 1000 * config.statusupdateinterval)
           variables.setUpdateTimer(timer)
         }
@@ -35,12 +35,12 @@ const event = (message, connection) => {
         const currentStatus = 'stop'
         if (variables.getStatus() !== currentStatus) {
           variables.setStatus(currentStatus)
-          status.triggerStatusUpdate(discordClient.getClient())
+          status.triggerStatusUpdate()
           clearInterval(variables.getUpdateTimer())
         }
         setTimeout(() => {
           variables.setStatus('ready')
-          status.triggerStatusUpdate(discordClient.getClient())
+          status.triggerStatusUpdate()
         }, 2000)
       }
     }

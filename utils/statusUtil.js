@@ -8,41 +8,15 @@ const webcam = require('./webcamUtil')
 const discordClient = require('../clients/discordclient') 
 const messageconfig = require('./statusconfig.json')
 
-async function triggerStatusUpdate (channel, user) {
+async function triggerStatusUpdate () {
   console.log(`Printer Status: ${variables.getStatus()}`)
   console.log(variables.dumpData())
   const statusConfig = messageconfig[variables.getStatus()]
   const parsedConfig = parseConfig(statusConfig)
   const embed = await generateEmbed(user, parsedConfig)
   setTimeout(async () => {
-    postStatus(embed, channel)
+    postStatus(embed)
   }, 1000)
-}
-
-module.exports.triggerStatusUpdate = async function (channel, user) {
-  await triggerStatusUpdate(channel, user)
-}
-
-module.exports.getManualStatusEmbed = async function (user) {
-  const statusConfig = messageconfig[variables.getStatus()]
-  const parsedConfig = parseConfig(statusConfig)
-  return await generateEmbed(user, parsedConfig)
-}
-
-module.exports.getDefaultEmbed = async function (user, status, color) {
-  const snapshot = await webcam.retrieveWebcam()
-  const embed = new Discord.MessageEmbed()
-    .setColor(color)
-    .setTitle(status)
-    .attachFiles([snapshot])
-    .setImage(`attachment://${snapshot.name}`)
-
-  if (typeof (user) === 'undefined') {
-    embed.setFooter('Automatic')
-    embed.setTimestamp()
-  }
-
-  return embed
 }
 
 function parseConfig(config) {
@@ -92,21 +66,27 @@ async function generateEmbed(user, config) {
   return embed
 }
 
-function postStatus(message, channel) {
+function postStatus(message) {
   const botdatabase = database.getDatabase()
-  if (typeof channel === 'undefined') {
-    for (const guildid in botdatabase.guilds) {
-      discordClient.getClient().guilds.fetch(guildid)
-        .then(async (guild) => {
-          const guilddatabase = botdatabase.guilds[guild.id]
-          for (const index in guilddatabase.broadcastchannels) {
-            const channel = guild.channels.cache.get(guilddatabase.broadcastchannels[index])
-            channel.send(message)
-          }
-        })
-        .catch((error) => { console.log(error) })
-    }
-  } else {
-    channel.send(message)
+  for (const guildid in botdatabase.guilds) {
+    discordClient.getClient().guilds.fetch(guildid)
+      .then(async (guild) => {
+        const guilddatabase = botdatabase.guilds[guild.id]
+        for (const index in guilddatabase.broadcastchannels) {
+          const channel = guild.channels.cache.get(guilddatabase.broadcastchannels[index])
+          channel.send(message)
+        }
+      })
+      .catch((error) => { console.log(error) })
   }
+}
+
+module.exports.triggerStatusUpdate = async function () {
+  await triggerStatusUpdate()
+}
+
+module.exports.getManualStatusEmbed = async function (user) {
+  const statusConfig = messageconfig[variables.getStatus()]
+  const parsedConfig = parseConfig(statusConfig)
+  return await generateEmbed(user, parsedConfig)
 }
