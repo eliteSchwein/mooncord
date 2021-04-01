@@ -109,5 +109,6 @@ async function handler (message) {
                 .attachFiles(parsedThumbnail)
                 .setThumbnail(`attachment://${parsedThumbnail.name}`)
         }
+        return
     }
 }
