@@ -37,8 +37,10 @@ const event = (message, connection) => {
           if (variables.getStatus() === 'printing') {
             connection.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${variables.getCurrentFile()}"}, "id": ${id}}`)
             if (currentProgress.toFixed(0) != 0 && currentProgress.toFixed(0) != 100 && variables.getProgress() != currentProgress.toFixed(0)) {
+              if (currentProgress.toFixed(0) !== variables.getProgress()) {
+                discordClient.getClient().user.setActivity(`Printing: ${currentProgress.toFixed(0)}%`, { type: 'WATCHING' })
+              }
               variables.setProgress(currentProgress.toFixed(0))
-              discordClient.getClient().user.setActivity(`Printing: ${currentProgress.toFixed(0)}%`, { type: 'WATCHING' })
               if (!doublePostProtection && config.statusupdatepercent && currentProgress.toFixed(0) % config.statusupdateinterval === 0) {
                 doublePostProtection = true
                 status.triggerStatusUpdate()
