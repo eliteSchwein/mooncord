@@ -6,9 +6,8 @@ const discordClient = require('../clients/discordclient')
 module.exports = class HelloCommand extends SlashCommand {
     constructor(creator) {
         super(creator, {
-            guildIDs: '626717239210672139',
             name: 'admin',
-            description: 'Says hello to you.',
+            description: 'Manage Admin Role or User.',
             options: [{
                 type: CommandOptionType.SUB_COMMAND,
                 name: 'role',
