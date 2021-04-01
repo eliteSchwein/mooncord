@@ -16,11 +16,26 @@ const enableEvents = async function () {
   console.log('Enable Websocket Events')
 
   client.on('connect', async (connection) => {
+    const id = Math.floor(Math.random() * 10000) + 1
     console.log('WebSocket Client Connected\n')
 
     WSconnection = connection
 
-    const id = Math.floor(Math.random() * 10000) + 1
+    console.log('Sent initial Moonraker commands')
+
+    connection.send(`{"jsonrpc": "2.0", "method": "machine.update.status", "params":{"refresh": "false"}, "id": ${id}}`)
+    connection.send(`{"jsonrpc": "2.0", "method": "printer.info", "id": ${id}}`)
+    connection.send(`{"jsonrpc": "2.0", "method": "server.info", "id": ${id}}`)
+    connection.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${variables.getCurrentFile()}"}, "id": ${id}}`)
+
+    console.log('Initial Automatic Moonraker commands')
+    
+    setInterval(async () => {
+      connection.send(`{"jsonrpc": "2.0", "method": "machine.update.status", "params":{"refresh": "false"}, "id": ${id}}`)
+      connection.send(`{"jsonrpc": "2.0", "method": "server.temperature_store", "id": ${id}}`)
+      connection.send(`{"jsonrpc": "2.0", "method": "printer.objects.query", "params": {"objects": {"webhooks": null, "virtual_sdcard": null, "print_stats": null}}, "id": ${id}}`)
+    }, 1000)
+
     fs.readdir(path.resolve(__dirname, '../websocket-events'), (err, files) => {
       if (err) {
         console.log(err)
@@ -39,22 +54,11 @@ const enableEvents = async function () {
         files.forEach(file => {
           if (file !== 'index.js') {
             const event = events[file.replace('.js', '')]
-            event(message, connection)
+            setTimeout(event(message, connection), 1000)
           }
         })
       })
     })
-    setTimeout(async () => {
-      setInterval(async () => {
-        connection.send(`{"jsonrpc": "2.0", "method": "machine.update.status", "params":{"refresh": "false"}, "id": ${id}}`)
-        connection.send(`{"jsonrpc": "2.0", "method": "server.temperature_store", "id": ${id}}`)
-        connection.send(`{"jsonrpc": "2.0", "method": "printer.objects.query", "params": {"objects": {"webhooks": null, "virtual_sdcard": null, "print_stats": null}}, "id": ${id}}`)
-      }, 1000)
-      connection.send(`{"jsonrpc": "2.0", "method": "machine.update.status", "params":{"refresh": "false"}, "id": ${id}}`)
-      connection.send(`{"jsonrpc": "2.0", "method": "printer.info", "id": ${id}}`)
-      connection.send(`{"jsonrpc": "2.0", "method": "server.info", "id": ${id}}`)
-      connection.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${variables.getCurrentFile()}"}, "id": ${id}}`)
-    }, 250)
   })
 }
 
