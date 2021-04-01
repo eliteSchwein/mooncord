@@ -44,7 +44,7 @@ module.exports = class HelloCommand extends SlashCommand {
 
             connection.on('message', fileHandler)
             connection.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${gcodefile}"}, "id": ${id}}`)
-            const feedbackInterval = setInterval(async () => {
+            const feedbackInterval = setInterval(() => {
                 if (typeof (commandFeedback) !== 'undefined') {
                     connection.removeListener('message', fileHandler)
                     if (commandFeedback === 'Not Found!') {
@@ -61,7 +61,7 @@ module.exports = class HelloCommand extends SlashCommand {
                             }
                             console.log(files)
                         }
-                        await ctx.send({
+                        ctx.send({
                             file: files,
                             embeds: [commandFeedback.toJSON()]
                         });
