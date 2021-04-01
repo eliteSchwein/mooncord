@@ -79,6 +79,12 @@ async function generateEmbed(user, config) {
       .setThumbnail(`attachment://${thumbnailpic.name}`)
   }
 
+  if (typeof (config.fields) !== 'undefined') {
+    for (let index in config.fields) {
+      embed.addField(config.fields[index].name, config.fields[index].value, true)
+    }
+  }
+
   if (typeof (user) === 'undefined') {
     embed.setFooter('Automatic')
     embed.setTimestamp()

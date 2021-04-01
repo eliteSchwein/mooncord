@@ -69,7 +69,7 @@
         },
         "fields": [
             {
-                "title": "Print Time",
+                "name": "Print Time",
                 "value": "${formatedPrintTime}"
             }
         ]
@@ -101,15 +101,15 @@
         },
         "fields": [
             {
-                "title": "Print Time",
+                "name": "Print Time",
                 "value": "${formatedPrintTime}"
             },
             {
-                "title": "ETA Print Time",
+                "name": "ETA Print Time",
                 "value": "${formatedETAPrintTime}"
             },
             {
-                "title": "Progress",
+                "name": "Progress",
                 "value": "${printProgress}%"
             }
         ]
@@ -121,15 +121,15 @@
         "thumbnail": true,
         "fields": [
             {
-                "title": "Print Time",
+                "name": "Print Time",
                 "value": "${formatedPrintTime}"
             },
             {
-                "title": "ETA Print Time",
+                "name": "ETA Print Time",
                 "value": "${formatedETAPrintTime}"
             },
             {
-                "title": "Progress",
+                "name": "Progress",
                 "value": "${printProgress}%"
             }
         ]
