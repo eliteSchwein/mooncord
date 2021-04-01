@@ -34,7 +34,7 @@ module.exports = class HelloCommand extends SlashCommand {
 
     async run(ctx) {
         try {
-            if (!permission.isMaster(user)) {
+            if (!permission.isMaster(ctx.user)) {
                 return `You dont have the Permissions, ${ctx.user.username}!`
             }
 
