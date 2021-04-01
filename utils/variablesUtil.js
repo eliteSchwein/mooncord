@@ -26,7 +26,7 @@ module.exports.dumbData = function () {
     "temps": temps,
     "updatetimer": updatetimer
   }
-  console.log(dump)
+  return dump
 }
 
 module.exports.setTemps = function (newtemps) {

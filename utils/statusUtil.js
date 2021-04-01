@@ -10,7 +10,7 @@ const messageconfig = require('./statusconfig.json')
 
 async function triggerStatusUpdate (channel, user) {
   console.log(`Printer Status: ${variables.getStatus()}`)
-  variables.dumbData()
+  console.log(variables.dumbData())
   const statusConfig = messageconfig[variables.getStatus()]
   const parsedConfig = parseConfig(statusConfig)
   const embed = await generateEmbed(user, parsedConfig)
