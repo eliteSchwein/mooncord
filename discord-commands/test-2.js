@@ -4,8 +4,8 @@ module.exports = class HelloCommand extends SlashCommand {
     constructor(creator) {
         super(creator, {
             guildIDs: '626717239210672139',
-            name: 'test-2',
-            description: 'Says hello to you.',
+            name: 'admin',
+            description: 'Add or Remove a Admin User or Role.',
             options: [{
                 type: CommandOptionType.STRING,
                 name: 'test1',
