@@ -13,11 +13,13 @@ module.exports = class HelloCommand extends SlashCommand {
                 options: [{
                     type: CommandOptionType.ROLE,
                     name: 'role',
-                    description: 'Shows Informations about a Print File.'
+                    description: 'Shows Informations about a Print File.',
+                    required: true
                 },{
                     type: CommandOptionType.USER,
                     name: 'user',
-                    description: 'Shows Informations about a Print File.'
+                    description: 'Shows Informations about a Print File.',
+                    required: true
                 }]
             }]
         });
