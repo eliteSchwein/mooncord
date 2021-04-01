@@ -1,5 +1,6 @@
 const databasepath = '../database.json'
 const fs = require('fs')
+const path = require('path')
 
 module.exports = {}
 
@@ -22,7 +23,7 @@ module.exports.getDatabase = function () {
 module.exports.updateDatabase = function (data, guild) {
   const database = require(databasepath)
   database.guilds[guild.id] = data
-  fs.writeFile(databasepath, JSON.stringify(database), (err) => {
+  fs.writeFile(path.resolve(__dirname, databasepath), JSON.stringify(database), (err) => {
     if (err) { throw err }
     console.log('The Database has been saved!')
   })
