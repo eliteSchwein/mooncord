@@ -89,6 +89,7 @@ async function handler (message) {
     console.log(messageJson)
     if (typeof (messageJson.error) !== 'undefined') {
         commandFeedback = `Not Found!`
+        console.log('ERROR STOP STOP')
         return
     }
     if (typeof (messageJson.result.filename) !== 'undefined') {
