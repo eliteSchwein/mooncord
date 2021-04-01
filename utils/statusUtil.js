@@ -48,7 +48,7 @@ module.exports.getDefaultEmbed = async function (user, status, color) {
 }
 
 function parseConfig(config) {
-  let parsedConfig = config
+  let parsedConfig = JSON.stringify(config)
     .replace(/(\${currentFile})/g, variables.getCurrentFile())
     .replace(/(\${formatedPrintTime})/g, variables.getFormatedPrintTime())
     .replace(/(\${formatedETAPrintTime})/g, variables.getFormatedRemainingTime())
@@ -58,7 +58,7 @@ function parseConfig(config) {
     console.log(variables.getVersions())
   }
 
-  return parsedConfig
+  return JSON.parse(parsedConfig)
 }
 
 async function generateEmbed(user, config) {
