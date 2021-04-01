@@ -43,6 +43,7 @@ const event = async (message) => {
               const guilddatabase = botdatabase.guilds[guild.id]
               for (const index in guilddatabase.broadcastchannels) {
                 const channel = guild.channels.cache.get(guilddatabase.broadcastchannels[index])
+                console.log(channel)
                 await sendMessage(channel)
               }
             })
