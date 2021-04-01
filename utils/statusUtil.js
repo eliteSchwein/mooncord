@@ -13,7 +13,7 @@ async function triggerStatusUpdate () {
   const statusConfig = messageconfig[variables.getStatus()]
   setTimeout(async () => {
     const parsedConfig = parseConfig(statusConfig)
-    const embed = await generateEmbed(user, parsedConfig)
+    const embed = await generateEmbed(parsedConfig)
     postStatus(embed)
   }, 1000)
 }
@@ -32,7 +32,7 @@ function parseConfig(config) {
   return JSON.parse(parsedConfig)
 }
 
-async function generateEmbed(user, config) {
+async function generateEmbed(config, user) {
   const snapshot = await webcam.retrieveWebcam()
   const embed = new Discord.MessageEmbed()
     .setColor(config.color)
@@ -87,5 +87,5 @@ module.exports.triggerStatusUpdate = async function () {
 module.exports.getManualStatusEmbed = async function (user) {
   const statusConfig = messageconfig[variables.getStatus()]
   const parsedConfig = parseConfig(statusConfig)
-  return await generateEmbed(user, parsedConfig)
+  return await generateEmbed(parsedConfig, user)
 }
