@@ -81,6 +81,7 @@ function postStatus(message) {
       .then(async (guild) => {
         const guilddatabase = botdatabase.guilds[guild.id]
         for (const index in guilddatabase.broadcastchannels) {
+          console.log(guilddatabase.broadcastchannels[index])
           const channel = guild.channels.cache.get(guilddatabase.broadcastchannels[index])
           channel.send(message)
         }
