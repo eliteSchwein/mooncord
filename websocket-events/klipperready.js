@@ -9,6 +9,7 @@ const event = (message) => {
       const currentStatus = 'ready'
       if (variables.getStatus() !== currentStatus) {
         variables.setStatus(currentStatus)
+        console.log('is this trigger?')
         status.triggerStatusUpdate()
       }
     }
