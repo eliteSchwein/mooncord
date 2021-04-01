@@ -6,10 +6,13 @@ const webcam = require('./webcamUtil')
 
 const discordClient = require('../clients/discordclient') 
 const status = require('../status-messages')
+const messageconfig = require('./statusconfig.json')
 
 async function triggerStatusUpdate (channel, user) {
   console.log(`Printer Status: ${variables.getStatus()}`)
   const statusEvent = status[variables.getStatus()]
+  const statusconfig = messageconfig[variables.getStatus()]
+  console.log(statusconfig)
   setTimeout(async () => {
     const embed = await statusEvent( user)
     postStatus(embed, channel)

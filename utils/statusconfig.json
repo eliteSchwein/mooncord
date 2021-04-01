@@ -1,0 +1,137 @@
+{
+    "disconnect":{
+        "title": "Printer Disconnected!",
+        "color": "#c90000",
+        "activity": {
+            "type": "LISTENING",
+            "text": "wait for Klipper"
+        }
+    },
+    "error":{
+        "title": "A Error occured!",
+        "color": "#c90000",
+        "activity": {
+            "type": "LISTENING",
+            "text": "wait for User"
+        }
+    },
+    "offline":{
+        "title": "Connection Lost!",
+        "color": "#c90000",
+        "activity": {
+            "type": "LISTENING",
+            "text": "wait for Moonraker"
+        }
+    },
+    "shutdown":{
+        "title": "Klipper Shutdown",
+        "color": "#c90000",
+        "activity": {
+            "type": "LISTENING",
+            "text": "wait for Klipper"
+        }
+    },
+    "stop":{
+        "title": "Print stopped",
+        "color": "#c90000",
+        "author": "${currentFile}",
+        "thumbnail": true,
+        "activity": {
+            "type": "LISTENING",
+            "text": "Print stop"
+        }
+    },
+    "ready":{
+        "title": "Printer Ready",
+        "color": "#0099ff",
+        "activity": {
+            "type": "LISTENING",
+            "text": "for GCODE File..."
+        },
+        "versions": true
+    },
+    "startup":{
+        "title": "Printer starting",
+        "color": "#0099ff",
+        "activity": {
+            "type": "WATCHING",
+            "text": "Printer start"
+        }
+    },
+    "start":{
+        "title": "Print started",
+        "color": "#25db00",
+        "author": "${currentFile}",
+        "thumbnail": true,
+        "activity": {
+            "type": "LISTENING",
+            "text": "start ${currentFile}"
+        },
+        "fields": [
+            {
+                "title": "Print Time",
+                "value": "${formatedPrintTime}"
+            }
+        ]
+    },
+    "done":{
+        "title": "Print Done",
+        "color": "#25db00",
+        "author": "${currentFile}",
+        "thumbnail": true,
+        "activity": {
+            "type": "WATCHING",
+            "text": "Finished Print"
+        },
+        "fields": [
+            {
+                "title": "Print Time",
+                "value": "${formatedPrintTime}"
+            }
+        ]
+    },
+    "pause":{
+        "title": "Print Paused",
+        "color": "#dbd400",
+        "author": "${currentFile}",
+        "thumbnail": true,
+        "activity": {
+            "type": "PLAYING",
+            "text": "take a Break"
+        },
+        "fields": [
+            {
+                "title": "Print Time",
+                "value": "${formatedPrintTime}"
+            },
+            {
+                "title": "ETA Print Time",
+                "value": "${formatedETAPrintTime}"
+            },
+            {
+                "title": "Progress",
+                "value": "${printProgress}%"
+            }
+        ]
+    },
+    "printing":{
+        "title": "Printing",
+        "color": "#0099ff",
+        "author": "${currentFile}",
+        "thumbnail": true,
+        "fields": [
+            {
+                "title": "Print Time",
+                "value": "${formatedPrintTime}"
+            },
+            {
+                "title": "ETA Print Time",
+                "value": "${formatedETAPrintTime}"
+            },
+            {
+                "title": "Progress",
+                "value": "${printProgress}%"
+            }
+        ]
+    }
+}
