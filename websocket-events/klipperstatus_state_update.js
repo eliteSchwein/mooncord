@@ -40,7 +40,7 @@ const event = async (message) => {
         for (const guildid in botdatabase.guilds) {
           await discordClient.getClient().guilds.fetch(guildid)
             .then(async (guild) => {
-              const guilddatabase = guildsdatabase[guild.id]
+              const guilddatabase = database.getGuildDatabase(guildid)
               for (const index in guilddatabase.broadcastchannels) {
                 const channel = guild.channels.cache.get(guilddatabase.broadcastchannels[index])
                 await sendMessage(channel)
