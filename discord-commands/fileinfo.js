@@ -52,11 +52,15 @@ module.exports = class HelloCommand extends SlashCommand {
                             content: 'File not Found!'
                         })
                     } else {
-                        await ctx.send({
-                            file: {
+                        let files = {}
+                        if (typeof (commandFeedback.files) !== 'undefined') {
+                            files = {
                                 name: commandFeedback.files[0].name,
                                 file: commandFeedback.files[0].attachment
-                            },
+                            }
+                        }
+                        await ctx.send({
+                            file: files,
                             embeds: [commandFeedback.toJSON()]
                         });
                     }
