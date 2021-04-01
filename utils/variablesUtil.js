@@ -14,6 +14,21 @@ module.exports.setUpdateTimer = function (newupdatetimer) {
   updatetimer = newupdatetimer
 }
 
+module.exports.dumbData = function () {
+  const dump = {
+    "status": status,
+    "versions": versions,
+    "gcodefile": gcodefile,
+    "gcodestartbyte": gcodestartbyte,
+    "gcodeendbyte": gcodeendbyte,
+    "printprogress": printprogress,
+    "printtime": printtime,
+    "temps": temps,
+    "updatetimer": updatetimer
+  }
+  console.log(dump)
+}
+
 module.exports.setTemps = function (newtemps) {
   temps = newtemps
 }
