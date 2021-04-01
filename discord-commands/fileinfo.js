@@ -87,25 +87,27 @@ module.exports = class HelloCommand extends SlashCommand {
 async function handler (message) {
     const messageJson = JSON.parse(message.utf8Data)
     console.log(messageJson)
-    if (typeof (messageJson.error) !== 'undefined') {
-        commandFeedback = `Not Found!`
-        return
-    }
-    let description = ''
-        .concat(`Print Time: ${variables.formatTime(messageJson.result.estimated_time * 1000)}\n`)
-        .concat(`Slicer: ${messageJson.result.slicer}\n`)
-        .concat(`Slicer Version: ${messageJson.result.slicer_version}\n`)
-        .concat(`Height: ${messageJson.result.object_height}mm`)
-    
-    commandFeedback = new Discord.MessageEmbed()
-        .setColor('#0099ff')
-        .setTitle('File Informations')
-        .setAuthor(messageJson.filename)
-        .setDescription(description)
-    if (typeof (messageJson.result.thumbnails) !== 'undefined') {
-        const parsedThumbnail = await thumbnail.buildThumbnail(messageJson.result.thumbnails[1].data)
-        commandFeedback
-            .attachFiles(parsedThumbnail)
-            .setThumbnail(`attachment://${parsedThumbnail.name}`)
+    if (typeof (messageJson.result.filename) !== 'undefined') {
+        if (typeof (messageJson.error) !== 'undefined') {
+            commandFeedback = `Not Found!`
+            return
+        }
+        let description = ''
+            .concat(`Print Time: ${variables.formatTime(messageJson.result.estimated_time * 1000)}\n`)
+            .concat(`Slicer: ${messageJson.result.slicer}\n`)
+            .concat(`Slicer Version: ${messageJson.result.slicer_version}\n`)
+            .concat(`Height: ${messageJson.result.object_height}mm`)
+        
+        commandFeedback = new Discord.MessageEmbed()
+            .setColor('#0099ff')
+            .setTitle('File Informations')
+            .setAuthor(messageJson.result.filename)
+            .setDescription(description)
+        if (typeof (messageJson.result.thumbnails) !== 'undefined') {
+            const parsedThumbnail = await thumbnail.buildThumbnail(messageJson.result.thumbnails[1].data)
+            commandFeedback
+                .attachFiles(parsedThumbnail)
+                .setThumbnail(`attachment://${parsedThumbnail.name}`)
+        }
     }
 }
