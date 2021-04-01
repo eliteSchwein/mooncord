@@ -82,6 +82,7 @@ async function editAdmin(isRole, adminid, guildid) {
     if (isRole) {
         adminarray = 'adminroles'
     }
+
     if (guilddatabase[adminarray].includes(adminid)) {
         const index = guilddatabase[adminarray].indexOf(adminid)
         if (index > -1) {
@@ -92,6 +93,7 @@ async function editAdmin(isRole, adminid, guildid) {
     }
 
     guilddatabase[adminarray].push(adminid)
+    console.log(guilddatabase)
     database.updateDatabase(guilddatabase, guild)
 
     return true
