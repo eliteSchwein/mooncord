@@ -14,13 +14,11 @@ module.exports = class HelloCommand extends SlashCommand {
                 options: [{
                     type: CommandOptionType.STRING,
                     name: 'test1',
-                    description: 'Shows Informations about a Print File.',
-                    required: true
+                    description: 'Shows Informations about a Print File.'
                 },{
                     type: CommandOptionType.STRING,
                     name: 'test2',
-                    description: 'Shows Informations about a Print File.',
-                    required: true
+                    description: 'Shows Informations about a Print File.'
                 }]
             }]
         });
