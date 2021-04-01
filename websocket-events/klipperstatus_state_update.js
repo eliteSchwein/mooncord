@@ -13,7 +13,7 @@ const event = async (message) => {
     const messageJson = JSON.parse(message.utf8Data)
     const { result } = messageJson
     if (typeof (result) !== 'undefined' && typeof (result.version_info) !== 'undefined') {
-      const guildsdatabase = database.getDatabase()
+      const botdatabase = database.getDatabase()
       let postUpdate = false
       notifyembed = new Discord.MessageEmbed()
         .setColor('#fcf803')
@@ -37,13 +37,12 @@ const event = async (message) => {
       }
       if (postUpdate) {
         variables.setVersions(result.version_info)
-        for (const guildid in guildsdatabase) {
+        for (const guildid in botdatabase.guilds) {
           await discordClient.getClient().guilds.fetch(guildid)
             .then(async (guild) => {
               const guilddatabase = guildsdatabase[guild.id]
-              const broadcastchannels = guilddatabase.statuschannels
-              for (const index in broadcastchannels) {
-                const channel = guild.channels.cache.get(broadcastchannels[index])
+              for (const index in guilddatabase.broadcastchannels) {
+                const channel = guild.channels.cache.get(guilddatabase.broadcastchannels[index])
                 await sendMessage(channel)
               }
             })
