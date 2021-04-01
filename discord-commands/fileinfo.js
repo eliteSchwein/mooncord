@@ -106,6 +106,6 @@ async function handler (message) {
         const parsedThumbnail = await thumbnail.buildThumbnail(messageJson.result.thumbnails[1].data)
         commandFeedback
             .attachFiles(parsedThumbnail)
-            .setThumbnail(parsedThumbnail.name)
+            .setThumbnail(`attachment://${parsedThumbnail.name}`)
     }
 }
