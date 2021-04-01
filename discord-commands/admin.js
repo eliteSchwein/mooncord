@@ -55,8 +55,8 @@ module.exports = class HelloCommand extends SlashCommand {
 
             let answermention = `<@${adminid}>`
 
-            if (!isRole) {
-                answermention = answermention.replace(/<@/g,'<')
+            if (isRole) {
+                answermention = answermention.replace(/<@/g,'<@&')
             }
 
             if (result) {
