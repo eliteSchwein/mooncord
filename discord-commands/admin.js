@@ -53,7 +53,7 @@ module.exports = class HelloCommand extends SlashCommand {
                 adminid = ctx.options.user.user
             }
 
-            const result = editAdmin(isRole, adminid, ctx.guildID)
+            const result = await editAdmin(isRole, adminid, ctx.guildID)
 
             let answermention = `<@${adminid}>`
 
@@ -93,7 +93,6 @@ async function editAdmin(isRole, adminid, guildid) {
     }
 
     guilddatabase[adminarray].push(adminid)
-    console.log(guilddatabase)
     database.updateDatabase(guilddatabase, guild)
 
     return true

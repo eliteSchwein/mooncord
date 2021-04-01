@@ -22,7 +22,6 @@ module.exports.getDatabase = function () {
 module.exports.updateDatabase = function (data, guild) {
   const database = require(databasepath)
   database.guilds[guild.id] = data
-  console.log(database)
   fs.writeFile(databasepath, JSON.stringify(database), (err) => {
     if (err) { throw err }
     console.log('The Database has been saved!')
