@@ -24,10 +24,6 @@ function parseConfig(config) {
     .replace(/(\${formatedPrintTime})/g, variables.getFormatedPrintTime())
     .replace(/(\${formatedETAPrintTime})/g, variables.getFormatedRemainingTime())
     .replace(/(\${printProgress})/g, variables.getProgress())
-  
-  if (config.versions) {
-    console.log(variables.getVersions())
-  }
 
   return JSON.parse(parsedConfig)
 }
@@ -54,6 +50,12 @@ async function generateEmbed(config, user) {
   if (typeof (config.fields) !== 'undefined') {
     for (let index in config.fields) {
       embed.addField(config.fields[index].name, config.fields[index].value, true)
+    }
+  }
+  if (config.versions) {
+    const currentVersions = variables.getVersions()
+    for (let versionpart in currentVersions) {
+      console.log(versionpart)
     }
   }
 
