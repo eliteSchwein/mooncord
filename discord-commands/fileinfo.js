@@ -43,7 +43,7 @@ module.exports = class HelloCommand extends SlashCommand {
             const fileHandler = handler
 
             connection.on('message', fileHandler)
-            connection.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${printfile}"}, "id": ${id}}`)
+            connection.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${gcodefile}"}, "id": ${id}}`)
             const feedbackInterval = setInterval(async () => {
                 if (typeof (commandFeedback) !== 'undefined') {
                     connection.removeListener('message', fileHandler)
