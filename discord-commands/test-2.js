@@ -7,7 +7,7 @@ module.exports = class HelloCommand extends SlashCommand {
             name: 'test-2',
             description: 'Says hello to you.',
             options: [{
-                type: CommandOptionType.SUB_COMMAND_GROUP,
+                type: CommandOptionType.SUB_COMMAND,
                 name: 'test1',
                 description: 'Shows Informations about a Print File.',
                 required: true,
