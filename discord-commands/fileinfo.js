@@ -7,7 +7,7 @@ const thumbnail = require('../utils/thumbnailUtil')
 const variables = require('../utils/variablesUtil')
 
 let commandFeedback
-const connection = moonrakerClient.getConnection()
+let connection
 
 module.exports = class HelloCommand extends SlashCommand {
     constructor(creator) {
@@ -33,6 +33,7 @@ module.exports = class HelloCommand extends SlashCommand {
             }
 
             const id = Math.floor(Math.random() * 10000) + 1
+            connection = moonrakerClient.getConnection()
 
             let timeout = 0
 
