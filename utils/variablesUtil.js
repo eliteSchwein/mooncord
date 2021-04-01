@@ -14,7 +14,7 @@ module.exports.setUpdateTimer = function (newupdatetimer) {
   updatetimer = newupdatetimer
 }
 
-module.exports.dumbData = function () {
+module.exports.dumpData = function () {
   const dump = {
     "status": status,
     "versions": versions,
