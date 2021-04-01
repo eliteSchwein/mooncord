@@ -7,6 +7,7 @@ const discordClient = require('../clients/discordclient')
 const moonrakerClient = require('../clients/moonrakerclient')
 
 const event = (message) => {
+  console.log(moonrakerClient.getConnection())
   const id = Math.floor(Math.random() * 10000) + 1
   if (message.type === 'utf8') {
     const messageJson = JSON.parse(message.utf8Data)
