@@ -1,4 +1,4 @@
-const { SlashCommand } = require('slash-create');
+const { SlashCommand, CommandOptionType } = require('slash-create');
 
 module.exports = class HelloCommand extends SlashCommand {
     constructor(creator) {
@@ -11,7 +11,7 @@ module.exports = class HelloCommand extends SlashCommand {
     }
 
     async run(ctx) {
-        console.log(ctx)
+        console.log(ctx.options)
         return `Hello, ${ctx.user.username}!`;
     }
 }
