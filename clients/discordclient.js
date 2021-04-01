@@ -37,7 +37,7 @@ function enableCommands() {
   });
 
   creator
-    .registerCommandsIn(path.join(__dirname, '../slash-commands'))
+    .registerCommandsIn(path.join(__dirname, '../discord-commands'))
     .syncCommands();
   
   creator
