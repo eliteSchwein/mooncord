@@ -15,11 +15,10 @@ async function triggerStatusUpdate () {
     const parsedConfig = parseConfig(statusConfig)
     const embed = await generateEmbed(parsedConfig)
 
-    console.log(parseConfig)
-    if (typeof (parseConfig.activity) !== 'undefined') {
+    if (typeof (parsedConfig.activity) !== 'undefined') {
       discordClient.getClient().user.setActivity(
-        parseConfig.activity.text,
-        { type: parseConfig.activity.type }
+        parsedConfig.activity.text,
+        { type: parsedConfig.activity.type }
       )
     }
 
