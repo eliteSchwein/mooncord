@@ -2,6 +2,7 @@ const Discord = require('discord.js')
 
 const database = require('./databaseUtil')
 const variables = require('./variablesUtil')
+const thumbnail = require('./thumbnailUtil')
 const webcam = require('./webcamUtil')
 
 const discordClient = require('../clients/discordclient') 
@@ -24,9 +25,10 @@ module.exports.triggerStatusUpdate = async function (channel, user) {
 }
 
 module.exports.getManualStatusEmbed = async function (user) {
-    const statusEvent = status[variables.getStatus()]
-    const embed = statusEvent(user)
-    return embed
+  const statusConfig = messageconfig[variables.getStatus()]
+  const parsedConfig = parseConfig(statusConfig)
+  const embed = generateEmbed(user, parsedConfig)
+  return embed
 }
 
 module.exports.getDefaultEmbed = async function (user, status, color) {
@@ -43,6 +45,45 @@ module.exports.getDefaultEmbed = async function (user, status, color) {
   }
 
   return embed
+}
+
+function parseConfig(config) {
+  let parsedConfig = config
+    .replace(/(\${currentFile})/g, variables.getCurrentFile())
+    .replace(/(\${formatedPrintTime})/g, variables.getFormatedPrintTime())
+    .replace(/(\${formatedETAPrintTime})/g, variables.getFormatedRemainingTime())
+    .replace(/(\${printProgress})/g, variables.getProgress())
+  
+  if (config.versions) {
+    console.log(variables.getVersions())
+  }
+
+  return parsedConfig
+}
+
+async function generateEmbed(user, config) {
+  const snapshot = await webcam.retrieveWebcam()
+  const embed = new Discord.MessageEmbed()
+    .setColor(config.color)
+    .setTitle(config.title)
+    .attachFiles([snapshot])
+    .setImage(`attachment://${snapshot.name}`)
+  
+  if (typeof (config.author) !== 'undefined') {
+    embed.setAuthor(config.author)
+  }
+  
+  if (config.thumbnail) {
+    const thumbnailpic = await thumbnail.retrieveThumbnail()
+    embed
+      .attachFiles([thumbnailpic])
+      .setThumbnail(`attachment://${thumbnailpic.name}`)
+  }
+
+  if (typeof (user) === 'undefined') {
+    embed.setFooter('Automatic')
+    embed.setTimestamp()
+  }
 }
 
 function postStatus(message, channel) {
