@@ -1,5 +1,5 @@
 {
-    "disconnect":{
+    "disconnected":{
         "title": "Printer Disconnected!",
         "color": "#c90000",
         "activity": {
