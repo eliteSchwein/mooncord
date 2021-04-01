@@ -7,6 +7,7 @@ const thumbnail = require('../utils/thumbnailUtil')
 const variables = require('../utils/variablesUtil')
 
 let commandFeedback
+const connection = moonrakerClient.getConnection()
 
 module.exports = class HelloCommand extends SlashCommand {
     constructor(creator) {
@@ -32,7 +33,6 @@ module.exports = class HelloCommand extends SlashCommand {
             }
 
             const id = Math.floor(Math.random() * 10000) + 1
-            const connection = moonrakerClient.getConnection()
 
             let timeout = 0
 
@@ -40,13 +40,10 @@ module.exports = class HelloCommand extends SlashCommand {
 
             ctx.defer(false)
 
-            const fileHandler = handler
-
-            connection.on('message', fileHandler)
+            connection.on('message', handler)
             connection.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${gcodefile}"}, "id": ${id}}`)
             const feedbackInterval = setInterval(() => {
                 if (typeof (commandFeedback) !== 'undefined') {
-                    connection.removeListener('message', fileHandler)
                     if (commandFeedback === 'Not Found!') {
                         ctx.send({
                             content: 'File not Found!'
@@ -90,6 +87,7 @@ async function handler (message) {
     if (typeof (messageJson.error) !== 'undefined') {
         commandFeedback = `Not Found!`
         console.log('ERROR STOP STOP')
+        connection.removeListener('message', handler)
         return
     }
     if (typeof (messageJson.result.filename) !== 'undefined') {
@@ -110,6 +108,7 @@ async function handler (message) {
                 .attachFiles(parsedThumbnail)
                 .setThumbnail(`attachment://${parsedThumbnail.name}`)
         }
+        connection.removeListener('message', handler)
         return
     }
 }
