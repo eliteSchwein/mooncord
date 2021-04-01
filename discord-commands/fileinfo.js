@@ -54,7 +54,7 @@ module.exports = class HelloCommand extends SlashCommand {
                     } else {
                         let files = {}
                         if (typeof (commandFeedback.files) !== 'undefined') {
-                            console.log(commandFeedback.files[0].name)
+                            console.log(commandFeedback.files[0])
                             files = {
                                 name: commandFeedback.files[0].name,
                                 file: commandFeedback.files[0].attachment
