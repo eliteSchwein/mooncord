@@ -27,8 +27,7 @@ module.exports.triggerStatusUpdate = async function (channel, user) {
 module.exports.getManualStatusEmbed = async function (user) {
   const statusConfig = messageconfig[variables.getStatus()]
   const parsedConfig = parseConfig(statusConfig)
-  const embed = generateEmbed(user, parsedConfig)
-  return embed
+  return await generateEmbed(user, parsedConfig)
 }
 
 module.exports.getDefaultEmbed = async function (user, status, color) {
@@ -84,6 +83,8 @@ async function generateEmbed(user, config) {
     embed.setFooter('Automatic')
     embed.setTimestamp()
   }
+  
+  return embed
 }
 
 function postStatus(message, channel) {
