@@ -76,7 +76,6 @@ async function generateEmbed(config, user) {
 
 function postStatus(message) {
   const botdatabase = database.getDatabase()
-    console.log(botdatabase.guilds)
   for (const guildid in botdatabase.guilds) {
     discordClient.getClient().guilds.fetch(guildid)
       .then(async (guild) => {
