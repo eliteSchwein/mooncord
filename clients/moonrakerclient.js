@@ -30,10 +30,12 @@ const enableEvents = async function () {
 
     console.log('Initial Automatic Moonraker commands')
     
-    setInterval(async () => {
-      connection.send(`{"jsonrpc": "2.0", "method": "machine.update.status", "params":{"refresh": "false"}, "id": ${id}}`)
-      connection.send(`{"jsonrpc": "2.0", "method": "server.temperature_store", "id": ${id}}`)
-      connection.send(`{"jsonrpc": "2.0", "method": "printer.objects.query", "params": {"objects": {"webhooks": null, "virtual_sdcard": null, "print_stats": null}}, "id": ${id}}`)
+    setTimeout(() => {
+      setInterval(() => {
+        connection.send(`{"jsonrpc": "2.0", "method": "machine.update.status", "params":{"refresh": "false"}, "id": ${id}}`)
+        connection.send(`{"jsonrpc": "2.0", "method": "server.temperature_store", "id": ${id}}`)
+        connection.send(`{"jsonrpc": "2.0", "method": "printer.objects.query", "params": {"objects": {"webhooks": null, "virtual_sdcard": null, "print_stats": null}}, "id": ${id}}`)
+      }, 250)
     }, 250)
 
     fs.readdir(path.resolve(__dirname, '../websocket-events'), (err, files) => {
