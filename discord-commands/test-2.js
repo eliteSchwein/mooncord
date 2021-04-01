@@ -5,17 +5,23 @@ module.exports = class HelloCommand extends SlashCommand {
         super(creator, {
             guildIDs: '626717239210672139',
             name: 'admin',
-            description: 'Add or Remove a Admin User or Role.',
+            description: 'Says hello to you.',
             options: [{
-                type: CommandOptionType.STRING,
+                type: CommandOptionType.SUB_COMMAND_GROUP,
                 name: 'test1',
                 description: 'Shows Informations about a Print File.',
-                required: true
-            },{
-                type: CommandOptionType.STRING,
-                name: 'test2',
-                description: 'Shows Informations about a Print File.',
-                required: true
+                required: true,
+                options: [{
+                    type: CommandOptionType.STRING,
+                    name: 'test1',
+                    description: 'Shows Informations about a Print File.',
+                    required: true
+                },{
+                    type: CommandOptionType.STRING,
+                    name: 'test2',
+                    description: 'Shows Informations about a Print File.',
+                    required: true
+                }]
             }]
         });
         this.filePath = __filename;

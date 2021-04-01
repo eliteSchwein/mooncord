@@ -4,7 +4,7 @@ module.exports = class HelloCommand extends SlashCommand {
     constructor(creator) {
         super(creator, {
             guildIDs: '626717239210672139',
-            name: 'test-2',
+            name: 'admin',
             description: 'Says hello to you.',
             options: [{
                 type: CommandOptionType.SUB_COMMAND_GROUP,
