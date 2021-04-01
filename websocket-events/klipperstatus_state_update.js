@@ -2,9 +2,7 @@ const Discord = require('discord.js')
 const path = require('path')
 
 const variables = require('../utils/variablesUtil')
-const database = require('../utils/databaseUtil')
-
-const discordClient = require('../clients/discordclient')
+const status = require('../utils/statusUtil')
 
 let notifyembed
 
@@ -13,7 +11,6 @@ const event = async (message) => {
     const messageJson = JSON.parse(message.utf8Data)
     const { result } = messageJson
     if (typeof (result) !== 'undefined' && typeof (result.version_info) !== 'undefined') {
-      const botdatabase = database.getDatabase()
       let postUpdate = false
       notifyembed = new Discord.MessageEmbed()
         .setColor('#fcf803')
@@ -37,24 +34,9 @@ const event = async (message) => {
       }
       if (postUpdate) {
         variables.setVersions(result.version_info)
-        for (const guildid in botdatabase.guilds) {
-          await discordClient.getClient().guilds.fetch(guildid)
-            .then(async (guild) => {
-              const guilddatabase = botdatabase.guilds[guild.id]
-              for (const index in guilddatabase.broadcastchannels) {
-                const channel = guild.channels.cache.get(guilddatabase.broadcastchannels[index])
-                console.log(channel)
-                await sendMessage(channel)
-              }
-            })
-            .catch(console.error)
-        }
+        status.postBroadcastMessage(notifyembed)
       }
     }
   }
-}
-
-async function sendMessage (channel) {
-  channel.send(notifyembed)
 }
 module.exports = event

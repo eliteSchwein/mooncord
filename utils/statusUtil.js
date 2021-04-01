@@ -98,3 +98,5 @@ module.exports.getManualStatusEmbed = async function (user) {
   const parsedConfig = parseConfig(statusConfig)
   return await generateEmbed(parsedConfig, user)
 }
+
+module.exports.postBroadcastMessage = (message) => { return postStatus(message) }
