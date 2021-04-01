@@ -54,8 +54,14 @@ async function generateEmbed(config, user) {
   }
   if (config.versions) {
     const currentVersions = variables.getVersions()
-    for (let versionpart in currentVersions) {
-      console.log(versionpart)
+    for (let component in currentVersions) {
+      if (component !== 'system') {
+        let version = component.version
+        if (version !== component.remote_version) {
+          version = version.concat(` **(${version.remote_version})**`)
+        }
+        embed.addField(component, version, true)
+      }
     }
   }
 
