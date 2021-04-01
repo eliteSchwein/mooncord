@@ -27,8 +27,6 @@ const enableEvents = async function () {
     connection.send(`{"jsonrpc": "2.0", "method": "printer.info", "id": ${id}}`)
     connection.send(`{"jsonrpc": "2.0", "method": "server.info", "id": ${id}}`)
     connection.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${variables.getCurrentFile()}"}, "id": ${id}}`)
-    connection.send(`{"jsonrpc": "2.0", "method": "server.temperature_store", "id": ${id}}`)
-    connection.send(`{"jsonrpc": "2.0", "method": "printer.objects.query", "params": {"objects": {"webhooks": null, "virtual_sdcard": null, "print_stats": null}}, "id": ${id}}`)
 
     console.log('Initial Automatic Moonraker commands')
     
