@@ -16,24 +16,24 @@ let connected = false
 let WSconnection
 
 const enableEvents = async function () {
-  console.log('Enable Websocket Events')
+  console.log('> Enable Moonraker Events')
 
   client.on('connect', async (connection) => {
     const id = Math.floor(Math.random() * 10000) + 1
-    console.log('WebSocket Client Connected\n')
+    console.log('> Moonraker Client Connected\n')
 
     connected = true
 
     WSconnection = connection
 
-    console.log('Sent initial Moonraker commands')
+    console.log('> Sent initial Moonraker commands')
 
     connection.send(`{"jsonrpc": "2.0", "method": "machine.update.status", "params":{"refresh": "false"}, "id": ${id}}`)
     connection.send(`{"jsonrpc": "2.0", "method": "printer.info", "id": ${id}}`)
     connection.send(`{"jsonrpc": "2.0", "method": "server.info", "id": ${id}}`)
     connection.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${variables.getCurrentFile()}"}, "id": ${id}}`)
 
-    console.log('Initial Automatic Moonraker commands')
+    console.log('> Initial Automatic Moonraker commands')
     
     setTimeout(() => {
       setInterval(() => {
@@ -49,8 +49,8 @@ const enableEvents = async function () {
         return
       }
       connection.on('close', () => {
-        console.log('WebSocket Connection Closed')
-        console.log('Reconnect in 5 sec')
+        console.log('> WebSocket Connection Closed')
+        console.log('> Reconnect in 5 sec')
         connected = false
         variables.setStatus('offline')
         statusUtil.triggerStatusUpdate(discordClient.getClient())
@@ -76,9 +76,9 @@ function connect() {
   client.connect(config.moonrakersocketurl)
 
   client.on('connectFailed', (error) => {
-    console.log(`>Connect Error: ${error.toString()}`)
+    console.log(`> Connect Error: ${error.toString()}`)
     variables.setStatus('offline')
-    console.log('Please check your Config!')
+    console.log('> Please check your Config!')
     connected = false
     setTimeout(() => {
       process.exit(5)
