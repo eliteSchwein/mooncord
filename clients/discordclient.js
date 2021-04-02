@@ -12,21 +12,21 @@ const discordClient = new Discord.Client()
 let connected = false
 
 function enableEvents() {
-  console.log('Enable Discord Events...\n')
+  console.log('\nEnable Discord Events...')
 
   uploadEvent(discordClient)
 }
 
 function loginBot() {
-  console.log('Connect Discord Bot...\n')
+  console.log('\nConnect Discord Bot...')
 
   discordClient.login(config.bottoken)
 
   discordClient.on('ready', () => {
     connected = true
-    console.log('Discordbot Connected\n')
-    console.log(`Name: ${discordClient.user.tag}`)
-    console.log(`Invite: https://discord.com/oauth2/authorize?client_id=${discordClient.user.id}&scope=applications.commands%20bot&permissions=336063568\n`)
+    console.log(`\nDiscordbot Connected
+    Name: ${discordClient.user.tag}
+    Invite: https://discord.com/oauth2/authorize?client_id=${discordClient.user.id}&scope=applications.commands%20bot&permissions=336063568`)
     discordClient.user.setActivity('Printer start', { type: 'WATCHING' })
   })
 }
@@ -67,5 +67,5 @@ module.exports.init = async function () {
   console.log('\n-----------------------------------')
   
 }
-module.exports.isConnected = function() { return connected}
+module.exports.isConnected = function() { return connected }
 module.exports.getClient = function () { return discordClient }
