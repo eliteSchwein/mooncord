@@ -12,19 +12,19 @@ const discordClient = new Discord.Client()
 let connected = false
 
 function enableEvents() {
-  console.log('> Enable Discord Events...')
+  console.log('  Enable Discord Events...')
 
   uploadEvent(discordClient)
 }
 
 function loginBot() {
-  console.log('> Connect Discord Bot...')
+  console.log('  Connect Discord Bot...')
 
   discordClient.login(config.bottoken)
 
   discordClient.on('ready', () => {
     connected = true
-    console.log(`> Discordbot Connected
+    console.log(`  Discordbot Connected
     Name: ${discordClient.user.tag}
     Invite: https://discord.com/oauth2/authorize?client_id=${discordClient.user.id}&scope=applications.commands%20bot&permissions=336063568`)
     discordClient.user.setActivity('Printer start', { type: 'WATCHING' })
@@ -32,7 +32,7 @@ function loginBot() {
 }
 
 function enableCommands() {
-  console.log('> Sync Slash Commands')
+  console.log('  Sync Slash Commands')
 
   const creator = new SlashCreator({
     applicationID: config.botapplicationid,
