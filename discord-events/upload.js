@@ -28,9 +28,9 @@ const enableEvent = function (discordClient) {
     }
     const guilddatabase = database.getGuildDatabase(msg.guild)
     for (const index in guilddatabase.broadcastchannels) {
-      console.log(index)
       const channel = msg.guild.channels.cache.get(guilddatabase.broadcastchannels[index])
       if (channel === msg.channel.id) {
+      console.log("channel valid")
         const gcodefile = msg.attachments.array()[0]
         const formData = new FormData()
         const tempFile = fs.createWriteStream(`temp/${gcodefile.name.replace(' ', '_')}`)
