@@ -13,9 +13,9 @@ systemInfo.osInfo().then(async data => {
   console.log(`\n
     __  __                    ${consoleColor.set('fg_dark_cyan','____              _')}
   |  \\/  | ___   ___  _ __  ${consoleColor.set('fg_dark_cyan','/ ___|___  _ __ __| |')}
-  | |\\/| |/ _ \\ / _ \\| '_ \\${consoleColor.set('fg_dark_cyan','| |   / _ \\| \'__/ _\` |')}
+  | |\\/| |/ _ \\ / _ \\| '_ \\ ${consoleColor.set('fg_dark_cyan','| |   / _ \\| \'__/ _\` |')}
   | |  | | (_) | (_) | | | |${consoleColor.set('fg_dark_cyan','| |__| (_) | | | (_| |')}
-  |_|  |_|\\___/ \\___/|_| |_| ${consoleColor.set('fg_dark_cyan','\\____\\___/|_|  \\__,_|')}
+  |_|  |_|\\___/ \\___/|_| |_|${consoleColor.set('fg_dark_cyan','\\____\\___/|_|  \\__,_|')}
                                                     
   Version: ${pjson.version}
   Author: ${pjson.author}
