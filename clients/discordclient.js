@@ -13,27 +13,27 @@ const discordClient = new Discord.Client()
 let connected = false
 
 function enableEvents() {
-  console.log('  Enable Discord Events...')
+  console.log(consoleColor.set('fg_cyan', '  Enable Discord Events'))
 
   uploadEvent(discordClient)
 }
 
 function loginBot() {
-  console.log('  Connect Discord Bot...')
+  console.log(consoleColor.set('fg_cyan', '  Connect Discord Bot'))
 
   discordClient.login(config.bottoken)
 
   discordClient.on('ready', () => {
     connected = true
-    console.log(`  Discordbot Connected
-    Name: ${discordClient.user.tag}
-    Invite: https://discord.com/oauth2/authorize?client_id=${discordClient.user.id}&scope=applications.commands%20bot&permissions=336063568`)
+    console.log(`  ${consoleColor.set('fg_green', 'Discordbot Connected')}
+    ${consoleColor.set('fg_dark_green', 'Name:')} ${consoleColor.set('fg_green', discordClient.user.tag)}
+    ${consoleColor.set('fg_dark_green', 'Invite:')} ${consoleColor.set('fg_green', `https://discord.com/oauth2/authorize?client_id=${discordClient.user.id}&scope=applications.commands%20bot&permissions=336063568`)}`)
     discordClient.user.setActivity('Printer start', { type: 'WATCHING' })
   })
 }
 
 function enableCommands() {
-  console.log('  Sync Slash Commands')
+  console.log(consoleColor.set('fg_cyan', '  Sync Slash Commands'))
 
   const creator = new SlashCreator({
     applicationID: config.botapplicationid,
@@ -56,17 +56,17 @@ function enableCommands() {
 module.exports = {}
 module.exports.init = async () => {
   console.log(`\n${consoleColor.set('fg_gray','-----------------------------------')}
- ${consoleColor.set('fg_dark_cyan',`
- ___  _                   _
+ ${consoleColor.set('fg_dark_cyan', `
+  ___  _                   _
  |   \\(_)___ __ ___ _ _ __| |
  | |) | (_-</ _/ _ \\ '_/ _\` |
  |___/|_/__/\\__\\___/_| \\__,_|`)}
                              `)
-  enableCommands()
   loginBot()
-  enableEvents()
   await waitUntil(() => connected === true)
-  console.log('-----------------------------------')
+  enableCommands()
+  enableEvents()
+  console.log(consoleColor.set('fg_gray', '-----------------------------------'))
   
 }
 module.exports.isConnected = function() { return connected }
