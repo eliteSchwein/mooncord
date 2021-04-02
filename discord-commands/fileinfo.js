@@ -1,5 +1,6 @@
 const { SlashCommand, CommandOptionType } = require('slash-create');
 const Discord = require('discord.js')
+const consoleColor = require("node-console-colors")
 
 const moonrakerClient = require('../clients/moonrakerclient')
 
@@ -74,7 +75,7 @@ module.exports = class HelloCommand extends SlashCommand {
            }, 500)
         }
         catch (err) {
-            console.log(err)
+            console.log(consoleColor.set('fg_red', err))
             return 'An Error occured!'
         }
     }

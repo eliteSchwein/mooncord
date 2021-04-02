@@ -1,4 +1,5 @@
-const { SlashCommand, CommandOptionType } = require('slash-create');
+const { SlashCommand, CommandOptionType } = require('slash-create')
+const consoleColor = require("node-console-colors")
 const hsUtil = require('../utils/hsUtil')
 const components = require('../utils/hsComponents')
 
@@ -33,7 +34,7 @@ module.exports = class HelloCommand extends SlashCommand {
             });
         }
         catch (err) {
-            console.log(err)
+            console.log(consoleColor.set('fg_red', err))
             return 'An Error occured!';
         }
     }

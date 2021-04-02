@@ -1,6 +1,6 @@
 'use strict'
 const systemInfo = require('systeminformation')
-const consoleColor = require("node-console-colors");
+const colors = require('colors')
 
 const discordClient = require('./clients/discordclient')
 const moonrakerClient = require('./clients/moonrakerclient')
@@ -9,21 +9,31 @@ const hsUtil = require('./utils/hsUtil')
 
 const pjson = require('./package.json')
 
+colors.setTheme({
+  database: 'grey',
+  statustitle: 'cyan',
+  success: 'grey',
+  successname: 'green',
+  startupinfo: 'grey',
+  printstatus: 'cyan',
+  error: 'red'
+});
+
 systemInfo.osInfo().then(async data => {
   console.log(`\n
-   __  __                     ${consoleColor.set('fg_dark_cyan','____              _')}
-  |  \\/  | ___   ___  _ __   ${consoleColor.set('fg_dark_cyan','/ ___|___  _ __ __| |')}
-  | |\\/| |/ _ \\ / _ \\| '_ \\ ${consoleColor.set('fg_dark_cyan','| |   / _ \\| \'__/ _\` |')}
-  | |  | | (_) | (_) | | | |${consoleColor.set('fg_dark_cyan','| |__| (_) | | | (_| |')}
-  |_|  |_|\\___/ \\___/|_| |_| ${consoleColor.set('fg_dark_cyan','\\____\\___/|_|  \\__,_|')}
+   __  __                     ${'____              _'.statustitle}
+  |  \\/  | ___   ___  _ __   ${'/ ___|___  _ __ __| |'.statustitle}
+  | |\\/| |/ _ \\ / _ \\| '_ \\ ${'| |   / _ \\| \'__/ _\` |'.statustitle}
+  | |  | | (_) | (_) | | | |${'| |__| (_) | | | (_| |'.statustitle}
+  |_|  |_|\\___/ \\___/|_| |_| ${'\\____\\___/|_|  \\__,_|'.statustitle}
                                                     
-  Version: ${consoleColor.set('fg_dark_cyan', pjson.version)}
-  Author: ${consoleColor.set('fg_dark_cyan', pjson.author)}
-  Homepage: ${consoleColor.set('fg_dark_cyan', pjson.homepage)}
-  OS: ${consoleColor.set('fg_dark_cyan', data.platform)}
-  Distro: ${consoleColor.set('fg_dark_cyan', data.distro)}
-  Kernel: ${consoleColor.set('fg_dark_cyan', data.kernel)}
-  Arch: ${consoleColor.set('fg_dark_cyan', data.arch)}`)
+  Version: ${(pjson.version).statustitle}
+  Author: ${(pjson.author).statustitle}
+  Homepage: ${(pjson.homepage).statustitle}
+  OS: ${(data.platform).statustitle}
+  Distro: ${(data.distro).statustitle}
+  Kernel: ${( data.kernel).statustitle}
+  Arch: ${(data.arch).statustitle}`)
   const ram = await systemInfo.mem()
 
   if (ram.free <= 4194304) {
