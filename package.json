@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/eliteSchwein/mooncord#readme",
   "dependencies": {
+    "async-wait-until": "^2.0.5",
     "axios": "^0.21.1",
     "discord.js": "^12.5.1",
     "form-data": "^3.0.1",
