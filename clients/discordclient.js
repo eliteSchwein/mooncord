@@ -1,7 +1,6 @@
 const Discord = require('discord.js')
 const path = require('path')
 const { GatewayServer, SlashCreator } = require('slash-create')
-const { waitUntil } = require('async-wait-until')
 
 const uploadEvent = require('../discord-events/upload')
 
@@ -63,7 +62,6 @@ module.exports.init = function () {
   enableCommands()
   loginBot()
   enableEvents()
-  await waitUntil(() => { connected == true })
   console.log('\n-----------------------------------')
   
 }
