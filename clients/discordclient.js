@@ -2,6 +2,7 @@ const Discord = require('discord.js')
 const path = require('path')
 const { GatewayServer, SlashCreator } = require('slash-create')
 const { waitUntil } = require('async-wait-until')
+const consoleColor = require("node-console-colors");
 
 const uploadEvent = require('../discord-events/upload')
 
@@ -54,11 +55,12 @@ function enableCommands() {
 
 module.exports = {}
 module.exports.init = async () => {
-  console.log(`\n-----------------------------------
-  ___  _                   _ 
+  console.log(`\n${consoleColor.set('fg_gray','-----------------------------------')}
+ ${consoleColor.set('fg_dark_cyan',`
+ ___  _                   _
  |   \\(_)___ __ ___ _ _ __| |
  | |) | (_-</ _/ _ \\ '_/ _\` |
- |___/|_/__/\\__\\___/_| \\__,_|
+ |___/|_/__/\\__\\___/_| \\__,_|`)}
                              `)
   enableCommands()
   loginBot()
