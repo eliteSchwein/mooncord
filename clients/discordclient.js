@@ -63,7 +63,13 @@ module.exports.init = function () {
   enableCommands()
   loginBot()
   enableEvents()
-  const status = waitUntil(() => connected === true)
+  waitUntil(() => connected === true)
+    .then(() => {
+    console.log('Connected')
+    })
+    .catch((err) => {
+    console.log('Connection Failed!')
+  })
   console.log(status)
   console.log('\n-----------------------------------')
   
