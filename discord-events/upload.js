@@ -43,7 +43,7 @@ const enableEvent = function (discordClient) {
         }
         uploadList.push(uploadData)
         if (uploadWaitTimer === 0) {
-          uploadWaitTimer = 2
+          uploadWaitTimer = 5
           const timer = setInterval(async () => {
             if (uploadWaitTimer === 0) {
               upload()
@@ -53,7 +53,7 @@ const enableEvent = function (discordClient) {
             }
           }, 1000)
         }
-        uploadWaitTimer = 2
+        uploadWaitTimer = 5
       }
     }
   })
@@ -62,17 +62,13 @@ module.exports = enableEvent
 
 function upload() {
   if (uploadList.length === 0) {
-    console.log('DONE')
     return
   }
   if (uploadWaitTimer !== 0) {
-    console.log('Time active '+uploadWaitTimer)
     return
   }
-    console.log('Upload')
   uploadFile(uploadList[0].gcodefile, uploadList[0].message)
   uploadList.splice(0, 1)
-    console.log(uploadList)
 }
 
 function uploadFile(file, message) {
@@ -81,7 +77,6 @@ function uploadFile(file, message) {
   tempFile.on('finish', () => {
     console.log(logSymbols.info, `upload ${file.name.replace(' ', '_')}`.upload)
     formData.append('file', fs.createReadStream(`temp/${file.name.replace(' ', '_')}`), file.name)
-    console.log(`${config.moonrakerurl}/server/files/upload`)
     axios
       .post(`${config.moonrakerurl}/server/files/upload`, formData, {
         headers: formData.getHeaders()
