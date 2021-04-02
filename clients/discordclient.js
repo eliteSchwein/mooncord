@@ -1,12 +1,15 @@
 const Discord = require('discord.js')
 const path = require('path')
 const { GatewayServer, SlashCreator } = require('slash-create')
+const { waitUntil } = require('async-wait-until')
 
 const uploadEvent = require('../discord-events/upload')
 
 const config = require('../config.json')
 
 const discordClient = new Discord.Client()
+
+let connected = false
 
 function enableEvents() {
   console.log('Enable Discord Events...\n')
@@ -15,11 +18,12 @@ function enableEvents() {
 }
 
 function loginBot() {
-  console.log('\nConnect Discord Bot...\n')
+  console.log('Connect Discord Bot...\n')
 
   discordClient.login(config.bottoken)
 
   discordClient.on('ready', () => {
+    connected = true
     console.log('Discordbot Connected\n')
     console.log(`Name: ${discordClient.user.tag}`)
     console.log(`Invite: https://discord.com/oauth2/authorize?client_id=${discordClient.user.id}&scope=applications.commands%20bot&permissions=336063568\n`)
@@ -51,7 +55,7 @@ function enableCommands() {
 module.exports = {}
 module.exports.init = function () {
   console.log(`\n-----------------------------------
-    ___  _                   _ 
+  ___  _                   _ 
  |   \\(_)___ __ ___ _ _ __| |
  | |) | (_-</ _/ _ \\ '_/ _\` |
  |___/|_/__/\\__\\___/_| \\__,_|
@@ -59,6 +63,9 @@ module.exports.init = function () {
   enableCommands()
   loginBot()
   enableEvents()
-  console.log('-----------------------------------')
+  await waitUntil(() => { connected == true })
+  console.log('\n-----------------------------------')
+  
 }
+module.exports.isConnected = function() { return connected}
 module.exports.getClient = function () { return discordClient }
