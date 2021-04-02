@@ -6,6 +6,7 @@ const logSymbols = require('log-symbols');
 
 const config = require('../config.json')
 const database = require('../utils/databaseUtil')
+const permission = require('../utils/permissionUtil')
 
 const enableEvent = function (discordClient) {
   discordClient.on('message', msg => {
@@ -16,14 +17,13 @@ const enableEvent = function (discordClient) {
     if (msg.channel.type !== 'text') {
       return
     }
-    console.log(msg.attachments)
     if (msg.attachments.array().length === 0) {
       return
     }
     if (!msg.attachments.array()[0].name.endsWith('.gcode')) {
       return
     }
-    if (!isAdmin(msg.author, msg.guild)) {
+    if (!permission.hasAdmin(user, msg.guild.id)) {
       return
     }
     const guilddatabase = database.getGuildDatabase(msg.guild)
@@ -69,22 +69,5 @@ const enableEvent = function (discordClient) {
       }
     }
   })
-}
-
-function isAdmin (user, guild) {
-  const guilddatabase = database.getGuildDatabase(guild)
-  const member = guild.member(user)
-  if (user.id === config.masterid) {
-    return true
-  }
-  if (guilddatabase.adminusers.includes(user.id)) {
-    return true
-  }
-  for (const memberole in member.roles.cache) {
-    if (guilddatabase.adminroles.includes(memberole)) {
-      return true
-    }
-  }
-  return false
 }
 module.exports = enableEvent
