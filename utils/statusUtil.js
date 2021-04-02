@@ -9,7 +9,7 @@ const discordClient = require('../clients/discordclient')
 const messageconfig = require('./statusconfig.json')
 
 async function triggerStatusUpdate () {
-  console.log(`Printer Status: ${variables.getStatus()}`)
+  console.log(`Printer Status: ${variables.getStatus()}`.printstatus)
   const statusConfig = messageconfig[variables.getStatus()]
   setTimeout(async () => {
     const parsedConfig = parseConfig(statusConfig)
@@ -93,7 +93,7 @@ function postStatus(message) {
           channel.send(message)
         }
       })
-      .catch((error) => { console.log(error) })
+      .catch((err) => { console.log((err).error) })
   }
 }
 

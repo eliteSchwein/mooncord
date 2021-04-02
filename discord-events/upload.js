@@ -33,29 +33,29 @@ const enableEvent = function (discordClient) {
         const formData = new FormData()
         const tempFile = fs.createWriteStream(`temp/${gcodefile.name.replace(' ', '_')}`)
         tempFile.on('finish', () => {
-          console.log(`upload ${gcodefile.name.replace(' ', '_')}`)
+          console.log(`upload ${gcodefile.name.replace(' ', '_')}`.upload)
           formData.append('file', fs.createReadStream(`temp/${gcodefile.name.replace(' ', '_')}`), gcodefile.name)
           axios
             .post(`${config.moonrakerapiurl}/server/files/upload`, formData, {
               headers: formData.getHeaders()
             })
             .then(res => {
-              console.log(`uploaded ${gcodefile.name.replace(' ', '_')}`)
+              console.log(`uploaded ${gcodefile.name.replace(' ', '_')}`.uploadsuccess)
               msg.react('✅')
               fs.unlink(`temp/${gcodefile.name.replace(' ', '_')}`, (err) => {
                 if (err) {
-                  console.error(err)
+                  console.log((err).error)
                 }
               })
             })
             .catch(error => {
               if (error) {
-                console.log(error)
+                console.log((err).error)
                 channel.send(`<@${config.masterid}> Please Check the Console!`)
-                console.log('Upload Failed! Check your config!')
+                console.log('Upload Failed! Check your config!'.error)
                 fs.unlink(`temp/${gcodefile.name.replace(' ', '_')}`, (err) => {
                   if (err) {
-                    console.error(err)
+                    console.log((err).error)
                   }
                 })
               }

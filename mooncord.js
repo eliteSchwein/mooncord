@@ -11,13 +11,14 @@ const pjson = require('./package.json')
 
 colors.setTheme({
   database: 'grey',
+  upload: 'grey',
+  uploadsuccess: 'green',
   statustitle: 'cyan',
   statusmessage: 'brightCyan',
   successvalue: 'green',
   successname: 'brightGreen',
   success: 'brightGreen',
-  startupinfo: 'grey',
-  printstatus: 'cyan',
+  printstatus: 'white',
   error: 'brightRed'
 });
 
