@@ -54,11 +54,11 @@ const enableEvent = function (discordClient) {
                 console.log((err).error)
                 channel.send(`<@${config.masterid}> Please Check the Console!`)
                 console.log(logSymbols.error, 'Upload Failed! Check your config!'.error)
-                fs.unlink(`temp/${gcodefile.name.replace(' ', '_')}`, (err2) => {
-                  if (err2) {
-                    console.log((err2).error)
-                  }
-                })
+                //fs.unlink(`temp/${gcodefile.name.replace(' ', '_')}`, (err2) => {
+               //   if (err2) {
+               //     console.log((err2).error)
+                //  }
+                //})
               }
             })
         })
