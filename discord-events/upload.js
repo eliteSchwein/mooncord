@@ -61,13 +61,17 @@ module.exports = enableEvent
 
 function upload() {
   if (uploadList.length === 0) {
+    console.log('DONE')
     return
   }
   if (uploadWaitTimer !== 0) {
+    console.log('Time active')
     return
   }
+    console.log('Upload')
   uploadFile(uploadList[0].gcodefile, uploadList[0].message)
   uploadList = uploadList.splice(0, 1)
+    console.log(uploadList)
 }
 
 function uploadFile(file, message) {
