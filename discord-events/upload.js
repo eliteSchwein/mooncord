@@ -23,6 +23,7 @@ const enableEvent = function (discordClient) {
     if (!msg.attachments.array()[0].name.endsWith('.gcode')) {
       return
     }
+    console.log(permission.hasAdmin(msg.author, msg.guild.id))
     if (!permission.hasAdmin(msg.author, msg.guild.id)) {
       return
     }
