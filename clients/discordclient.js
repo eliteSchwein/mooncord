@@ -25,8 +25,8 @@ function loginBot() {
   discordClient.on('ready', () => {
     connected = true
     console.log(`\nDiscordbot Connected
-    \u02EBName: ${discordClient.user.tag}
-    \u02EAInvite: https://discord.com/oauth2/authorize?client_id=${discordClient.user.id}&scope=applications.commands%20bot&permissions=336063568`)
+    Name: ${discordClient.user.tag}
+    Invite: https://discord.com/oauth2/authorize?client_id=${discordClient.user.id}&scope=applications.commands%20bot&permissions=336063568`)
     discordClient.user.setActivity('Printer start', { type: 'WATCHING' })
   })
 }
