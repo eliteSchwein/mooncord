@@ -40,7 +40,7 @@ systemInfo.osInfo().then(async data => {
 
   await discordClient.init()
 
-  setTimeout(moonrakerClient.init, 500)
+  await moonrakerClient.init()
   
   await hsUtil.init()
 })

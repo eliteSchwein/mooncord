@@ -1,6 +1,7 @@
 const fs = require('fs')
 const path = require('path')
 const WebSocketClient = require('websocket').client
+const { waitUntil } = require('async-wait-until')
 
 const variables = require('../utils/variablesUtil')
 const discordClient = require('./discordclient')
@@ -10,6 +11,8 @@ const events = require('../websocket-events')
 
 const client = new WebSocketClient()
 
+let connected = false
+
 let WSconnection
 
 const enableEvents = async function () {
@@ -18,6 +21,8 @@ const enableEvents = async function () {
   client.on('connect', async (connection) => {
     const id = Math.floor(Math.random() * 10000) + 1
     console.log('WebSocket Client Connected\n')
+
+    connected = true
 
     WSconnection = connection
 
@@ -46,6 +51,7 @@ const enableEvents = async function () {
       connection.on('close', () => {
         console.log('WebSocket Connection Closed')
         console.log('Reconnect in 5 sec')
+        connected = false
         variables.setStatus('offline')
         statusUtil.triggerStatusUpdate(discordClient.getClient())
         setTimeout(() => {
@@ -65,23 +71,32 @@ const enableEvents = async function () {
 }
 
 function connect() {
-  console.log('Connect to Moonraker')
+  console.log('> Connect to Moonraker')
   
   client.connect(config.moonrakersocketurl)
 
   client.on('connectFailed', (error) => {
-    console.log(`Connect Error: ${error.toString()}`)
-    console.log('Reconnect in 5 sec')
+    console.log(`>Connect Error: ${error.toString()}`)
     variables.setStatus('offline')
+    console.log('Please check your Config!')
+    connected = false
     setTimeout(() => {
-      client.connect(config.moonrakersocketurl)
-    }, 5000)
+      process.exit(5)
+    }, 2000)
   })
 }
 
 module.exports = {}
-module.exports.init = () => {
+module.exports.init = async () => {
+  console.log(`\n-----------------------------------
+   __  __                        _           
+ |  \\/  |___  ___ _ _  _ _ __ _| |_____ _ _ 
+ | |\\/| / _ \\/ _ \\ ' \\| '_/ _\` | / / -_) '_|
+ |_|  |_\\___/\\___/_||_|_| \\__,_|_\\_\\___|_|  
+                                            `)
   connect()
   enableEvents()
+  await waitUntil(() => connected === true)
+  console.log('-----------------------------------')
 }
 module.exports.getConnection = () => { return WSconnection }
