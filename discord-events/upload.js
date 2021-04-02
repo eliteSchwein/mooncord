@@ -24,7 +24,6 @@ const enableEvent = function (discordClient) {
       return
     }
     if (!await permission.hasAdmin(msg.author, msg.guild.id)) {
-      console.log('not admin')
       return
     }
     const guilddatabase = database.getGuildDatabase(msg.guild)
