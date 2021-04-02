@@ -14,7 +14,7 @@ let connected = false
 function enableEvents() {
   console.log('  Enable Discord Events'.statusmessage)
 
-  uploadEvent(discordClient)
+  uploadEvent(discordClient, config)
 }
 
 function loginBot() {
