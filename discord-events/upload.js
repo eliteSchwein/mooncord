@@ -45,8 +45,6 @@ const enableEvent = function (discordClient) {
         if (uploadWaitTimer === 0) {
           uploadWaitTimer = 2
           const timer = setInterval(async () => {
-            console.log(uploadWaitTimer)
-            console.log(uploadList)
             if (uploadWaitTimer === 0) {
               upload()
               clearInterval(timer)
@@ -70,6 +68,7 @@ async function upload() {
   }
   await uploadFile(uploadList[0].gcodefile, uploadList[0].message)
   uploadList = uploadList.splice(0, 1)
+  console.log('retrigger '+uploadList)
   upload()
 }
 
