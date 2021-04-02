@@ -38,7 +38,7 @@ systemInfo.osInfo().then(async data => {
     process.exit(5)
   }
 
-  discordClient.init()
+  await discordClient.init()
 
   setTimeout(moonrakerClient.init, 500)
   

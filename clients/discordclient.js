@@ -53,7 +53,7 @@ function enableCommands() {
 }
 
 module.exports = {}
-module.exports.init = function () {
+module.exports.init = async function () {
   console.log(`\n-----------------------------------
   ___  _                   _ 
  |   \\(_)___ __ ___ _ _ __| |
@@ -63,13 +63,7 @@ module.exports.init = function () {
   enableCommands()
   loginBot()
   enableEvents()
-  waitUntil(() => connected === true)
-    .then(() => {
-    console.log('Connected')
-    })
-    .catch((err) => {
-    console.log('Connection Failed!')
-  })
+  await waitUntil(() => connected === true)
   console.log('\n-----------------------------------')
   
 }
