@@ -11,7 +11,13 @@ module.exports = class HelloCommand extends SlashCommand {
     }
 
     async run(ctx) {
-        console.log(ctx.options)
-        return `Hello, ${ctx.user.username}!`;
+        try {
+            console.log(ctx.options)
+            return `Hello, ${ctx.user.username}!`;
+        }
+        catch (err) {
+            console.log((err).error)
+            return "An Error occured!"
+        }
     }
 }
