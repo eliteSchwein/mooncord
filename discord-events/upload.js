@@ -36,6 +36,7 @@ const enableEvent = function (discordClient) {
         tempFile.on('finish', () => {
           console.log(logSymbols.info, `upload ${gcodefile.name.replace(' ', '_')}`.upload)
           formData.append('file', fs.createReadStream(`temp/${gcodefile.name.replace(' ', '_')}`), gcodefile.name)
+          console.log(`${config.moonrakerapiurl}/server/files/upload`)
           axios
             .post(`${config.moonrakerapiurl}/server/files/upload`, formData, {
               headers: formData.getHeaders()
