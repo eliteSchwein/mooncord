@@ -28,8 +28,7 @@ const enableEvent = function (discordClient) {
     }
     const guilddatabase = database.getGuildDatabase(msg.guild)
     for (const index in guilddatabase.broadcastchannels) {
-      const channel = msg.guild.channels.cache.get(guilddatabase.broadcastchannels[index])
-      console.log(channel,' ',msg.channel.id)
+      const channel = guilddatabase.broadcastchannels[index]
       if (channel === msg.channel.id) {
         const gcodefile = msg.attachments.array()[0]
         const formData = new FormData()
