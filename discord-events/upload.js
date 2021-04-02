@@ -28,7 +28,6 @@ const enableEvent = function (discordClient) {
       return
     }
     const guilddatabase = database.getGuildDatabase(msg.guild)
-    console.log(config)
     for (const index in guilddatabase.broadcastchannels) {
       const channel = msg.guild.channels.cache.get(guilddatabase.broadcastchannels[index])
       if (channel.id === msg.channel.id) {
@@ -38,9 +37,8 @@ const enableEvent = function (discordClient) {
         tempFile.on('finish', () => {
           console.log(logSymbols.info, `upload ${gcodefile.name.replace(' ', '_')}`.upload)
           formData.append('file', fs.createReadStream(`temp/${gcodefile.name.replace(' ', '_')}`), gcodefile.name)
-          console.log(`${config.moonrakerapiurl}/server/files/upload`)
           axios
-            .post(`${config.moonrakerapiurl}/server/files/upload`, formData, {
+            .post(`${config.moonrakerurl}/server/files/upload`, formData, {
               headers: formData.getHeaders()
             })
             .then(res => {
