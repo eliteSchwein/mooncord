@@ -91,13 +91,13 @@ module.exports = {}
 module.exports.init = async () => {
   console.log(`\n
   ${consoleColor.set('fg_dark_cyan',
-  `__  __                        _           
+  ` __  __                        _           
   |  \\/  |___  ___ _ _  _ _ __ _| |_____ _ _ 
   | |\\/| / _ \\/ _ \\ ' \\| '_/ _\` | / / -_) '_|
   |_|  |_\\___/\\___/_||_|_| \\__,_|_\\_\\___|_|`)}
                               `)
   connect()
-  await waitUntil(() => connected === true)
   enableEvents()
+  await waitUntil(() => connected === true)
 }
 module.exports.getConnection = () => { return WSconnection }
