@@ -28,7 +28,7 @@ function loginBot() {
 }
 
 function enableCommands() {
-  console.log('Sync Slash Commands')
+  console.log('\nSync Slash Commands')
 
   const creator = new SlashCreator({
     applicationID: config.botapplicationid,
@@ -50,8 +50,15 @@ function enableCommands() {
 
 module.exports = {}
 module.exports.init = function () {
+  console.log(`\n-----------------------------------
+    ___  _                   _ 
+ |   \\(_)___ __ ___ _ _ __| |
+ | |) | (_-</ _/ _ \\ '_/ _\` |
+ |___/|_/__/\\__\\___/_| \\__,_|
+                             `)
   enableCommands()
   loginBot()
   enableEvents()
+  console.log('-----------------------------------')
 }
 module.exports.getClient = function () { return discordClient }
