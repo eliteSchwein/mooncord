@@ -2,10 +2,10 @@
 const systemInfo = require('systeminformation')
 const colors = require('colors')
 
-const discordClient = require('./clients/discordclient')
-const moonrakerClient = require('./clients/moonrakerclient')
+//const discordClient = require('./clients/discordclient')
+//const moonrakerClient = require('./clients/moonrakerclient')
 
-const hsUtil = require('./utils/hsUtil')
+//const hsUtil = require('./utils/hsUtil')
 
 const pjson = require('./package.json')
 
@@ -50,12 +50,9 @@ systemInfo.osInfo().then(async data => {
     process.exit(5)
   }
 
-  await discordClient.init()
+  //await discordClient.init()
 
-  await moonrakerClient.init()
+  //await moonrakerClient.init()
   
-  await hsUtil.init()
+  //await hsUtil.init()
 })
-module.exports.getDiscordClient = function () {
-  return discordClient.getClient()
-}
