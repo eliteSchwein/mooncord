@@ -56,12 +56,12 @@ function enableCommands() {
 module.exports = {}
 module.exports.init = async () => {
   console.log(`\n
- ${consoleColor.set('fg_dark_cyan',
- ` ___  _                   _
- |   \\(_)___ __ ___ _ _ __| |
- | |) | (_-</ _/ _ \\ '_/ _\` |
- |___/|_/__/\\__\\___/_| \\__,_|`)}
-                             `)
+  ${consoleColor.set('fg_dark_cyan',
+  ` ___  _                   _
+  |   \\(_)___ __ ___ _ _ __| |
+  | |) | (_-</ _/ _ \\ '_/ _\` |
+  |___/|_/__/\\__\\___/_| \\__,_|`)}
+                              `)
   loginBot()
   await waitUntil(() => connected === true)
   enableCommands()
