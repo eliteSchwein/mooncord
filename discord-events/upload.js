@@ -16,6 +16,7 @@ const enableEvent = function (discordClient) {
     if (msg.channel.type !== 'text') {
       return
     }
+    console.log(msg)
     if (msg.attachments.array().length === 0) {
       return
     }
