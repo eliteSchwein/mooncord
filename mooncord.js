@@ -26,7 +26,7 @@ systemInfo.osInfo().then(async data => {
   Arch: ${consoleColor.set('fg_dark_cyan', data.arch)}`)
   const ram = await systemInfo.mem()
 
-  if (ram.free <= 419430400000000) {
+  if (ram.free <= 4194304) {
     console.log(
       `${consoleColor.set('fg_red', '' +
       '     _  _____ _____ _____ _   _ _____ ___ ___  _   _ \n' +
