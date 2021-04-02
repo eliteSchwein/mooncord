@@ -71,7 +71,7 @@ function upload() {
   }
     console.log('Upload')
   uploadFile(uploadList[0].gcodefile, uploadList[0].message)
-  uploadList = uploadList.splice(0, 1)
+  uploadList.splice(0, 1)
     console.log(uploadList)
 }
 
