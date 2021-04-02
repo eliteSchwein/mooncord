@@ -7,7 +7,7 @@ const logSymbols = require('log-symbols');
 const database = require('../utils/databaseUtil')
 const permission = require('../utils/permissionUtil')
 
-const enableEvent = function (discordClient, config) {
+const enableEvent = function (discordClient) {
   discordClient.on('message', async (msg) => {
     if (msg.channel.type === 'dm') {
       msg.author.send('DM is not Supportet!')
@@ -25,6 +25,8 @@ const enableEvent = function (discordClient, config) {
     if (!await permission.hasAdmin(msg.author, msg.guild.id)) {
       return
     }
+
+    const config = require('../config.json')
     const guilddatabase = database.getGuildDatabase(msg.guild)
     for (const index in guilddatabase.broadcastchannels) {
       const channel = msg.guild.channels.cache.get(guilddatabase.broadcastchannels[index])
