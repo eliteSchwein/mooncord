@@ -10,20 +10,20 @@ const hsUtil = require('./utils/hsUtil')
 const pjson = require('./package.json')
 
 systemInfo.osInfo().then(async data => {
-  console.log(`\n +
-     __  __                    ${consoleColor.set('fg_dark_cyan','____              _')}
-    |  \\/  | ___   ___  _ __  ${consoleColor.set('fg_dark_cyan','/ ___|___  _ __ __| |')}
-    | |\\/| |/ _ \\ / _ \\| '_ \\ ${consoleColor.set('fg_dark_cyan','| |   / _ \\| \'__/ _\` |')}
-    | |  | | (_) | (_) | | |${consoleColor.set('fg_dark_cyan',' | ||__| (_) | | | (_| |')}
-    |_|  |_|\\___/ \\___/|_| |_|${consoleColor.set('fg_dark_cyan','\\____\\___/|_|  \\__,_|')}
-                                                      
-    Version: ${pjson.version}
-    Author: ${pjson.author}
-    Homepage: ${pjson.homepage}
-    OS: ${data.platform}
-    Distro: ${data.distro}
-    Kernel: ${data.kernel}
-    Arch: ${data.arch}`)
+  console.log(`\n
+    __  __                    ${consoleColor.set('fg_dark_cyan','____              _')}
+  |  \\/  | ___   ___  _ __  ${consoleColor.set('fg_dark_cyan','/ ___|___  _ __ __| |')}
+  | |\\/| |/ _ \\ / _ \\| '_ \\ ${consoleColor.set('fg_dark_cyan','| |   / _ \\| \'__/ _\` |')}
+  | |  | | (_) | (_) | | | | ${consoleColor.set('fg_dark_cyan','| |__| (_) | | | (_| |')}
+  |_|  |_|\\___/ \\___/|_| |_|${consoleColor.set('fg_dark_cyan','\\____\\___/|_|  \\__,_|')}
+                                                    
+  Version: ${pjson.version}
+  Author: ${pjson.author}
+  Homepage: ${pjson.homepage}
+  OS: ${data.platform}
+  Distro: ${data.distro}
+  Kernel: ${data.kernel}
+  Arch: ${data.arch}`)
   const ram = await systemInfo.mem()
 
   if (ram.free <= 4194304) {
