@@ -50,18 +50,21 @@ module.exports = class HelloCommand extends SlashCommand {
                             content: 'File not Found!'
                         })
                     } else {
-                        let files = {}
                         if (commandFeedback.files.length !== 0) {
                             const thumbnail = commandFeedback.files[0]
-                            files = {
+                            const files = {
                                 name: thumbnail.name,
                                 file: thumbnail.attachment
                             }
+                            ctx.send({
+                                file: files,
+                                embeds: [commandFeedback.toJSON()]
+                            });
+                        } else {
+                            ctx.send({
+                                embeds: [commandFeedback.toJSON()]
+                            });
                         }
-                        ctx.send({
-                            file: files,
-                            embeds: [commandFeedback.toJSON()]
-                        });
                     }
                     clearInterval(feedbackInterval)
                 }
