@@ -49,8 +49,8 @@ const enableEvent = function (discordClient) {
                 }
               })
             })
-            .catch(error => {
-              if (error) {
+            .catch(err => {
+              if (err) {
                 console.log((err).error)
                 channel.send(`<@${config.masterid}> Please Check the Console!`)
                 console.log(logSymbols.error, 'Upload Failed! Check your config!'.error)
