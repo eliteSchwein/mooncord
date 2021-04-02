@@ -45,6 +45,7 @@ const enableEvent = function (discordClient) {
         uploadWaitTimer = 5
         if (uploadWaitTimer === 0) {
           const timer = setInterval(async () => {
+            console.log(uploadList)
             if (uploadWaitTimer === 0) {
               upload()
               clearInterval(timer)
