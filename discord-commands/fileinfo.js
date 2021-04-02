@@ -12,6 +12,7 @@ let connection
 module.exports = class HelloCommand extends SlashCommand {
     constructor(creator) {
         super(creator, {
+            guildIDs: '626717239210672139',
             name: 'fileinfo',
             description: 'Execute a GCode Command',
             options: [{
@@ -50,7 +51,7 @@ module.exports = class HelloCommand extends SlashCommand {
                         })
                     } else {
                         let files = {}
-                        if (typeof (commandFeedback.files) !== 'undefined') {
+                        if (commandFeedback.files.length !== 0) {
                             const thumbnail = commandFeedback.files[0]
                             files = {
                                 name: thumbnail.name,
