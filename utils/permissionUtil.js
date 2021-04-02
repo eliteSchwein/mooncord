@@ -6,7 +6,8 @@ module.exports.hasAdmin = async function (user, guildid) {
   if (user.id === config.masterid) {
     return true
   }
-  const guild = await discordClient.getClient().getDiscordClient().guilds.fetch(guildid)
+  console.log(discordClient)
+  const guild = await discordClient.getClient().guilds.fetch(guildid)
   const guilddatabase = database.getGuildDatabase(guild)
   if (guilddatabase.adminusers.includes(user.id)) {
     return true
