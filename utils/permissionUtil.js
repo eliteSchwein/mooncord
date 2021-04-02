@@ -1,12 +1,14 @@
 const config = require('../config.json')
 const database = require('./databaseUtil')
-const discordClient = require('../clients/discordclient')
+let discordClient = require('../clients/discordclient')
 
-module.exports.hasAdmin = async function (user, guildid) {
+module.exports.hasAdmin = async function (user, guildid, altdiscordClient) {
   if (user.id === config.masterid) {
     return true
   }
-  console.log(discordClient)
+  if (typeof (altdiscordClient) !== 'undefined') {
+    discordClient = altdiscordClient
+  }
   const guild = await discordClient.getClient().guilds.fetch(guildid)
   const guilddatabase = database.getGuildDatabase(guild)
   if (guilddatabase.adminusers.includes(user.id)) {
