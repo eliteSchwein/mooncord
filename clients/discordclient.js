@@ -55,7 +55,7 @@ function enableCommands() {
 
 module.exports = {}
 module.exports.init = async () => {
-  console.log(`\n${consoleColor.set('fg_gray','-----------------------------------')}
+  console.log(`\n
  ${consoleColor.set('fg_dark_cyan',
  ` ___  _                   _
  |   \\(_)___ __ ___ _ _ __| |
@@ -66,7 +66,6 @@ module.exports.init = async () => {
   await waitUntil(() => connected === true)
   enableCommands()
   enableEvents()
-  console.log(consoleColor.set('fg_gray', '-----------------------------------'))
   
 }
 module.exports.isConnected = function() { return connected }
