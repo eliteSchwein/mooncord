@@ -17,25 +17,26 @@ systemInfo.osInfo().then(async data => {
   | |  | | (_) | (_) | | | |${consoleColor.set('fg_dark_cyan','| |__| (_) | | | (_| |')}
   |_|  |_|\\___/ \\___/|_| |_| ${consoleColor.set('fg_dark_cyan','\\____\\___/|_|  \\__,_|')}
                                                     
-  Version: ${pjson.version}
-  Author: ${pjson.author}
-  Homepage: ${pjson.homepage}
-  OS: ${data.platform}
-  Distro: ${data.distro}
-  Kernel: ${data.kernel}
-  Arch: ${data.arch}`)
+  Version: ${consoleColor.set('fg_dark_cyan', pjson.version)}
+  Author: ${consoleColor.set('fg_dark_cyan', pjson.author)}
+  Homepage: ${consoleColor.set('fg_dark_cyan', pjson.homepage)}
+  OS: ${consoleColor.set('fg_dark_cyan', data.platform)}
+  Distro: ${consoleColor.set('fg_dark_cyan', data.distro)}
+  Kernel: ${consoleColor.set('fg_dark_cyan', data.kernel)}
+  Arch: ${consoleColor.set('fg_dark_cyan', data.arch)}`)
   const ram = await systemInfo.mem()
 
-  if (ram.free <= 4194304) {
+  if (ram.free <= 419430400000000) {
     console.log(
-      `${'     _  _____ _____ _____ _   _ _____ ___ ___  _   _ \n' +
+      `${consoleColor.set('fg_red', '' +
+      '  _  _____ _____ _____ _   _ _____ ___ ___  _   _ \n' +
       '    / \\|_   _|_   _| ____| \\ | |_   _|_ _/ _ \\| \\ | |\n' +
       '   / _ \\ | |   | | |  _| |  \\| | | |  | | | | |  \\| |\n' +
       '  / ___ \\| |   | | | |___| |\\  | | |  | | |_| | |\\  |\n' +
       ' /_/   \\_\\_|   |_| |_____|_| \\_| |_| |___\\___/|_| \\_|\n' +
       '                                                  \n' +
       'There might be to few free memory! Mooncord need atleast 40MB RAM\n' +
-      'Current free Ram: '}${(ram.used / (1024 ** 2)).toFixed(2)}MB`)
+      'Current free Ram: ')}${(ram.used / (1024 ** 2)).toFixed(2)}MB`)
     process.exit(5)
   }
 
