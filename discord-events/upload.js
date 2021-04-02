@@ -43,7 +43,7 @@ const enableEvent = function (discordClient) {
         }
         uploadList.push(uploadData)
         if (uploadWaitTimer === 0) {
-          uploadWaitTimer = 5
+          uploadWaitTimer = 2
           const timer = setInterval(async () => {
             if (uploadWaitTimer === 0) {
               upload()
@@ -52,7 +52,7 @@ const enableEvent = function (discordClient) {
             uploadWaitTimer --
           }, 1000)
         }
-        uploadWaitTimer = 5
+        uploadWaitTimer = 2
       }
     }
   })
@@ -74,10 +74,11 @@ async function upload() {
 async function uploadFile(file, message) {
   const formData = new FormData()
   const tempFile = fs.createWriteStream(`temp/${file.name.replace(' ', '_')}`)
-  const done = false
+  let done = false
   tempFile.on('finish', () => {
     console.log(logSymbols.info, `upload ${file.name.replace(' ', '_')}`.upload)
     formData.append('file', fs.createReadStream(`temp/${file.name.replace(' ', '_')}`), file.name)
+    console.log(`${config.moonrakerurl}/server/files/upload`)
     axios
       .post(`${config.moonrakerurl}/server/files/upload`, formData, {
         headers: formData.getHeaders()
