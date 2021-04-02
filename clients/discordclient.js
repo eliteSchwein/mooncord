@@ -70,7 +70,6 @@ module.exports.init = function () {
     .catch((err) => {
     console.log('Connection Failed!')
   })
-  console.log(status)
   console.log('\n-----------------------------------')
   
 }
