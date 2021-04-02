@@ -23,8 +23,8 @@ const enableEvent = function (discordClient) {
     if (!msg.attachments.array()[0].name.endsWith('.gcode')) {
       return
     }
-    console.log(await permission.hasAdmin(msg.author, msg.guild.id))
     if (!await permission.hasAdmin(msg.author, msg.guild.id)) {
+      console.log('not admin')
       return
     }
     const guilddatabase = database.getGuildDatabase(msg.guild)
