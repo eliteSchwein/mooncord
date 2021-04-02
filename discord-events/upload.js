@@ -28,8 +28,8 @@ const enableEvent = function (discordClient) {
     }
     const guilddatabase = database.getGuildDatabase(msg.guild)
     for (const index in guilddatabase.broadcastchannels) {
-      const channel = guilddatabase.broadcastchannels[index]
-      if (channel === msg.channel.id) {
+      const channel = msg.guild.channels.cache.get(guilddatabase.broadcastchannels[index])
+      if (channel.id === msg.channel.id) {
         const gcodefile = msg.attachments.array()[0]
         const formData = new FormData()
         const tempFile = fs.createWriteStream(`temp/${gcodefile.name.replace(' ', '_')}`)
@@ -54,9 +54,9 @@ const enableEvent = function (discordClient) {
                 console.log((err).error)
                 channel.send(`<@${config.masterid}> Please Check the Console!`)
                 console.log(logSymbols.error, 'Upload Failed! Check your config!'.error)
-                fs.unlink(`temp/${gcodefile.name.replace(' ', '_')}`, (err) => {
-                  if (err) {
-                    console.log((err).error)
+                fs.unlink(`temp/${gcodefile.name.replace(' ', '_')}`, (err2) => {
+                  if (err2) {
+                    console.log((err2).error)
                   }
                 })
               }
