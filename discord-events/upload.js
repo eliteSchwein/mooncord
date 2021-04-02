@@ -42,10 +42,9 @@ const enableEvent = function (discordClient) {
           'message': msg
         }
         uploadList.push(uploadData)
-        uploadWaitTimer = 5
         if (uploadWaitTimer === 0) {
+          uploadWaitTimer = 5
           const timer = setInterval(async () => {
-            console.log(uploadList)
             if (uploadWaitTimer === 0) {
               upload()
               clearInterval(timer)
@@ -53,6 +52,7 @@ const enableEvent = function (discordClient) {
             uploadWaitTimer --
           }, 1000)
         }
+        uploadWaitTimer = 5
       }
     }
   })
