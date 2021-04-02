@@ -2,7 +2,6 @@ const Discord = require('discord.js')
 const path = require('path')
 const { GatewayServer, SlashCreator } = require('slash-create')
 const { waitUntil } = require('async-wait-until')
-const consoleColor = require("node-console-colors");
 
 const uploadEvent = require('../discord-events/upload')
 
@@ -13,27 +12,27 @@ const discordClient = new Discord.Client()
 let connected = false
 
 function enableEvents() {
-  console.log(consoleColor.set('fg_cyan', '  Enable Discord Events'))
+  console.log('  Enable Discord Events'.statustitle)
 
   uploadEvent(discordClient)
 }
 
 function loginBot() {
-  console.log(consoleColor.set('fg_cyan', '  Connect Discord Bot'))
+  console.log('  Connect Discord Bot'.statustitle)
 
   discordClient.login(config.bottoken)
 
   discordClient.on('ready', () => {
     connected = true
-    console.log(`  ${consoleColor.set('fg_green', 'Discordbot Connected')}
-    ${consoleColor.set('fg_dark_green', 'Name:')} ${consoleColor.set('fg_green', discordClient.user.tag)}
-    ${consoleColor.set('fg_dark_green', 'Invite:')} ${consoleColor.set('fg_green', `https://discord.com/oauth2/authorize?client_id=${discordClient.user.id}&scope=applications.commands%20bot&permissions=336063568`)}`)
+    console.log(`  ${'Discordbot Connected'.success}
+    ${'Name:'.successname} ${(discordClient.user.tag).successvalue}
+    ${'Invite:'.successname} ${`https://discord.com/oauth2/authorize?client_id=${discordClient.user.id}&scope=applications.commands%20bot&permissions=336063568`.successvalue}`)
     discordClient.user.setActivity('Printer start', { type: 'WATCHING' })
   })
 }
 
 function enableCommands() {
-  console.log(consoleColor.set('fg_cyan', '  Sync Slash Commands'))
+  console.log('  Sync Slash Commands'.statustitle)
 
   const creator = new SlashCreator({
     applicationID: config.botapplicationid,
@@ -56,11 +55,11 @@ function enableCommands() {
 module.exports = {}
 module.exports.init = async () => {
   console.log(`\n
-  ${consoleColor.set('fg_dark_cyan',
+  ${
   ` ___  _                   _
   |   \\(_)___ __ ___ _ _ __| |
   | |) | (_-</ _/ _ \\ '_/ _\` |
-  |___/|_/__/\\__\\___/_| \\__,_|`)}
+  |___/|_/__/\\__\\___/_| \\__,_|`.statustitle}
                               `)
   loginBot()
   await waitUntil(() => connected === true)

@@ -34,7 +34,7 @@ module.exports = class HelloCommand extends SlashCommand {
             });
         }
         catch (err) {
-            console.log(err)
+            console.log((err).error)
             return "An Error occured!"
         }
     }

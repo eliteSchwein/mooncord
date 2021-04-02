@@ -2,7 +2,6 @@ const fs = require('fs')
 const path = require('path')
 const WebSocketClient = require('websocket').client
 const { waitUntil } = require('async-wait-until')
-const consoleColor = require("node-console-colors");
 
 const variables = require('../utils/variablesUtil')
 const discordClient = require('./discordclient')
@@ -17,24 +16,24 @@ let connected = false
 let WSconnection
 
 const enableEvents = async function () {
-  console.log(consoleColor.set('fg_cyan', '  Enable Moonraker Events'))
+  console.log('  Enable Moonraker Events'.statustitle)
 
   client.on('connect', async (connection) => {
     const id = Math.floor(Math.random() * 10000) + 1
-    console.log(consoleColor.set('fg_green', '  Moonraker Client Connected'))
+    console.log('  Moonraker Client Connected'.success)
 
     connected = true
 
     WSconnection = connection
 
-    console.log(consoleColor.set('fg_cyan', '  Sent initial Moonraker commands'))
+    console.log('  Sent initial Moonraker commands'.statustitle)
 
     connection.send(`{"jsonrpc": "2.0", "method": "machine.update.status", "params":{"refresh": "false"}, "id": ${id}}`)
     connection.send(`{"jsonrpc": "2.0", "method": "printer.info", "id": ${id}}`)
     connection.send(`{"jsonrpc": "2.0", "method": "server.info", "id": ${id}}`)
     connection.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${variables.getCurrentFile()}"}, "id": ${id}}`)
 
-    console.log(consoleColor.set('fg_cyan', '  Initial Automatic Moonraker commands'))
+    console.log('  Initial Automatic Moonraker commands'.statustitle)
     
     setTimeout(() => {
       setInterval(() => {
@@ -50,8 +49,8 @@ const enableEvents = async function () {
         return
       }
       connection.on('close', () => {
-        console.log(consoleColor.set('fg_red', '  WebSocket Connection Closed'))
-        console.log(consoleColor.set('fg_dark_red', '  Reconnect in 5 sec'))
+        console.log('  WebSocket Connection Closed'.error)
+        console.log('  Reconnect in 5 sec'.error)
         connected = false
         variables.setStatus('offline')
         statusUtil.triggerStatusUpdate(discordClient.getClient())
@@ -72,14 +71,14 @@ const enableEvents = async function () {
 }
 
 function connect() {
-  console.log(consoleColor.set('fg_cyan', '  Connect to Moonraker'))
+  console.log('  Connect to Moonraker'.statustitle)
   
   client.connect(config.moonrakersocketurl)
 
   client.on('connectFailed', (error) => {
-    console.log(consoleColor.set('fg_red', `  Connect Error: ${error.toString()}`))
+    console.log(`  Connect Error: ${error.toString()}`.error)
     variables.setStatus('offline')
-    console.log(consoleColor.set('fg_red', '  Please check your Config!'))
+    console.log('  Please check your Config!'.error)
     connected = false
     setTimeout(() => {
       process.exit(5)
@@ -90,11 +89,11 @@ function connect() {
 module.exports = {}
 module.exports.init = async () => {
   console.log(`\n
-  ${consoleColor.set('fg_dark_cyan',
+  ${
   ` __  __                        _           
   |  \\/  |___  ___ _ _  _ _ __ _| |_____ _ _ 
   | |\\/| / _ \\/ _ \\ ' \\| '_/ _\` | / / -_) '_|
-  |_|  |_\\___/\\___/_||_|_| \\__,_|_\\_\\___|_|`)}
+  |_|  |_\\___/\\___/_||_|_| \\__,_|_\\_\\___|_|`.statustitle}
                               `)
   connect()
   enableEvents()

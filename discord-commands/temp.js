@@ -27,7 +27,7 @@ module.exports = class HelloCommand extends SlashCommand {
             return alltemps
         }
         catch (err) {
-            console.log(err)
+            console.log((err).error)
             return "An Error occured!"
         }
     }

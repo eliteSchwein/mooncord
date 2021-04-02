@@ -2,7 +2,6 @@ const { SlashCommand, CommandOptionType } = require('slash-create')
 const database = require('../utils/databaseUtil')
 const permission = require('../utils/permissionUtil')
 const discordClient = require('../clients/discordclient')
-const colors = require('colors')
 
 module.exports = class HelloCommand extends SlashCommand {
     constructor(creator) {
@@ -68,7 +67,7 @@ module.exports = class HelloCommand extends SlashCommand {
             }
         }
         catch (err) {
-            console.log(colors.red(err))
+            console.log((err).error)
             return "An Error occured!";
         }
     }

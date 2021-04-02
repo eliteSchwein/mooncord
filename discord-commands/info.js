@@ -1,7 +1,5 @@
 const { SlashCommand } = require('slash-create');
 const Discord = require('discord.js')
-const consoleColor = require("node-console-colors")
-const color = require('colors')
 const pjson = require('../package.json')
 const path = require('path')
 const fs = require('fs')
@@ -42,7 +40,7 @@ module.exports = class HelloCommand extends SlashCommand {
             });
         }
         catch (err) {
-            console.log(consoleColor.set('fg_red', err))
+            console.log((err).error)
             return "An Error occured!";
         }
     }
