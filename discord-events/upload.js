@@ -9,6 +9,8 @@ const config = require('../config.json')
 const database = require('../utils/databaseUtil')
 const permission = require('../utils/permissionUtil')
 
+const moonrakerurl = config.moonrakerurl
+
 const enableEvent = function (discordClient) {
   discordClient.on('message', async (msg) => {
     if (msg.channel.type === 'dm') {
@@ -38,7 +40,7 @@ const enableEvent = function (discordClient) {
           console.log(logSymbols.info, `upload ${gcodefile.name.replace(' ', '_')}`.upload)
           formData.append('file', fs.createReadStream(`temp/${gcodefile.name.replace(' ', '_')}`), gcodefile.name)
           axios
-            .post(`${config.moonrakerurl}/server/files/upload`, formData, {
+            .post(`${moonrakerurl}/server/files/upload`, formData, {
               headers: formData.getHeaders()
             })
             .then(res => {
