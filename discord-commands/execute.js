@@ -1,5 +1,6 @@
 const { SlashCommand, CommandOptionType } = require('slash-create')
 
+const permission = require('../utils/permissionUtil')
 const moonrakerClient = require('../clients/moonrakerclient')
 
 let commandFeedback
@@ -21,6 +22,10 @@ module.exports = class HelloCommand extends SlashCommand {
 
     async run(ctx) {
         try {
+            if (!await permission.hasAdmin(ctx.user, ctx.guildID)) {
+                return `You dont have the Permissions, ${ctx.user.username}!`
+            }
+            
             const gcode = ctx.options.gcode
             const id = Math.floor(Math.random() * 10000) + 1
             const connection = moonrakerClient.getConnection()

@@ -9,7 +9,7 @@ const database = require('../utils/databaseUtil')
 const permission = require('../utils/permissionUtil')
 
 const enableEvent = function (discordClient) {
-  discordClient.on('message', msg => {
+  discordClient.on('message', async (msg) => {
     if (msg.channel.type === 'dm') {
       msg.author.send('DM is not Supportet!')
       return
