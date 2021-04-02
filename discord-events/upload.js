@@ -4,6 +4,8 @@ const fs = require('fs')
 const https = require('https')
 const logSymbols = require('log-symbols');
 
+const config = require('../config.json')
+
 const database = require('../utils/databaseUtil')
 const permission = require('../utils/permissionUtil')
 
@@ -25,9 +27,8 @@ const enableEvent = function (discordClient) {
     if (!await permission.hasAdmin(msg.author, msg.guild.id)) {
       return
     }
-
-    const config = require('../config.json')
     const guilddatabase = database.getGuildDatabase(msg.guild)
+    console.log(config)
     for (const index in guilddatabase.broadcastchannels) {
       const channel = msg.guild.channels.cache.get(guilddatabase.broadcastchannels[index])
       if (channel.id === msg.channel.id) {
