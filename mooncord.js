@@ -12,12 +12,13 @@ const pjson = require('./package.json')
 colors.setTheme({
   database: 'grey',
   statustitle: 'cyan',
-  successvalue: 'grey',
-  successname: 'green',
-  success: 'green',
+  statusmessage: 'brightCyan',
+  successvalue: 'green',
+  successname: 'brightGreen',
+  success: 'brightGreen',
   startupinfo: 'grey',
   printstatus: 'cyan',
-  error: 'red'
+  error: 'brightRed'
 });
 
 systemInfo.osInfo().then(async data => {

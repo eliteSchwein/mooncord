@@ -12,13 +12,13 @@ const discordClient = new Discord.Client()
 let connected = false
 
 function enableEvents() {
-  console.log('  Enable Discord Events'.statustitle)
+  console.log('  Enable Discord Events'.statusmessage)
 
   uploadEvent(discordClient)
 }
 
 function loginBot() {
-  console.log('  Connect Discord Bot'.statustitle)
+  console.log('  Connect Discord Bot'.statusmessage)
 
   discordClient.login(config.bottoken)
 
@@ -32,7 +32,7 @@ function loginBot() {
 }
 
 function enableCommands() {
-  console.log('  Sync Slash Commands'.statustitle)
+  console.log('  Sync Slash Commands'.statusmessage)
 
   const creator = new SlashCreator({
     applicationID: config.botapplicationid,

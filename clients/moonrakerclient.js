@@ -16,7 +16,7 @@ let connected = false
 let WSconnection
 
 const enableEvents = async function () {
-  console.log('  Enable Moonraker Events'.statustitle)
+  console.log('  Enable Moonraker Events'.statusmessage)
 
   client.on('connect', async (connection) => {
     const id = Math.floor(Math.random() * 10000) + 1
@@ -26,14 +26,14 @@ const enableEvents = async function () {
 
     WSconnection = connection
 
-    console.log('  Sent initial Moonraker commands'.statustitle)
+    console.log('  Sent initial Moonraker commands'.statusmessage)
 
     connection.send(`{"jsonrpc": "2.0", "method": "machine.update.status", "params":{"refresh": "false"}, "id": ${id}}`)
     connection.send(`{"jsonrpc": "2.0", "method": "printer.info", "id": ${id}}`)
     connection.send(`{"jsonrpc": "2.0", "method": "server.info", "id": ${id}}`)
     connection.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${variables.getCurrentFile()}"}, "id": ${id}}`)
 
-    console.log('  Initial Automatic Moonraker commands'.statustitle)
+    console.log('  Initial Automatic Moonraker commands'.statusmessage)
     
     setTimeout(() => {
       setInterval(() => {
@@ -71,7 +71,7 @@ const enableEvents = async function () {
 }
 
 function connect() {
-  console.log('  Connect to Moonraker'.statustitle)
+  console.log('  Connect to Moonraker'.statusmessage)
   
   client.connect(config.moonrakersocketurl)
 
