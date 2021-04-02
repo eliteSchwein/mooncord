@@ -20,7 +20,7 @@ const enableEvents = async function () {
 
   client.on('connect', async (connection) => {
     const id = Math.floor(Math.random() * 10000) + 1
-    console.log('  Moonraker Client Connected\n')
+    console.log('  Moonraker Client Connected')
 
     connected = true
 
