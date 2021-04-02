@@ -17,7 +17,7 @@ let connected = false
 let WSconnection
 
 const enableEvents = async function () {
-  console.log('  Enable Moonraker Events')
+  console.log(consoleColor.set('fg_cyan', '  Enable Moonraker Events'))
 
   client.on('connect', async (connection) => {
     const id = Math.floor(Math.random() * 10000) + 1
