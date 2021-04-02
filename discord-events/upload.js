@@ -59,23 +59,20 @@ const enableEvent = function (discordClient) {
 }
 module.exports = enableEvent
 
-async function upload() {
+function upload() {
   if (uploadList.length === 0) {
     return
   }
   if (uploadWaitTimer !== 0) {
     return
   }
-  await uploadFile(uploadList[0].gcodefile, uploadList[0].message)
+  uploadFile(uploadList[0].gcodefile, uploadList[0].message)
   uploadList = uploadList.splice(0, 1)
-  console.log('retrigger '+uploadList)
-  upload()
 }
 
-async function uploadFile(file, message) {
+function uploadFile(file, message) {
   const formData = new FormData()
   const tempFile = fs.createWriteStream(`temp/${file.name.replace(' ', '_')}`)
-  let done = false
   tempFile.on('finish', () => {
     console.log(logSymbols.info, `upload ${file.name.replace(' ', '_')}`.upload)
     formData.append('file', fs.createReadStream(`temp/${file.name.replace(' ', '_')}`), file.name)
@@ -92,7 +89,7 @@ async function uploadFile(file, message) {
             console.log((err).error)
           }
         })
-        done = true
+        upload()
       })
       .catch(err => {
         if (err) {
@@ -104,12 +101,11 @@ async function uploadFile(file, message) {
               console.log((err2).error)
             }
           })
-          done = true
+          upload()
         }
       })
   })
   https.get(file.url, (response) => {
     response.pipe(tempFile)
   })
-  await waitUntil(() => done === true)
 }
