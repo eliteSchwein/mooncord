@@ -2,6 +2,7 @@ const axios = require('axios')
 const FormData = require('form-data')
 const fs = require('fs')
 const https = require('https')
+const logSymbols = require('log-symbols');
 
 const config = require('../config.json')
 const database = require('../utils/databaseUtil')
@@ -33,14 +34,14 @@ const enableEvent = function (discordClient) {
         const formData = new FormData()
         const tempFile = fs.createWriteStream(`temp/${gcodefile.name.replace(' ', '_')}`)
         tempFile.on('finish', () => {
-          console.log(`upload ${gcodefile.name.replace(' ', '_')}`.upload)
+          console.log(logSymbols.info, `upload ${gcodefile.name.replace(' ', '_')}`.upload)
           formData.append('file', fs.createReadStream(`temp/${gcodefile.name.replace(' ', '_')}`), gcodefile.name)
           axios
             .post(`${config.moonrakerapiurl}/server/files/upload`, formData, {
               headers: formData.getHeaders()
             })
             .then(res => {
-              console.log(`uploaded ${gcodefile.name.replace(' ', '_')}`.uploadsuccess)
+              console.log(logSymbols.success, `uploaded ${gcodefile.name.replace(' ', '_')}`.uploadsuccess)
               msg.react('✅')
               fs.unlink(`temp/${gcodefile.name.replace(' ', '_')}`, (err) => {
                 if (err) {
@@ -52,7 +53,7 @@ const enableEvent = function (discordClient) {
               if (error) {
                 console.log((err).error)
                 channel.send(`<@${config.masterid}> Please Check the Console!`)
-                console.log('Upload Failed! Check your config!'.error)
+                console.log(logSymbols.error, 'Upload Failed! Check your config!'.error)
                 fs.unlink(`temp/${gcodefile.name.replace(' ', '_')}`, (err) => {
                   if (err) {
                     console.log((err).error)

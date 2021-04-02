@@ -1,4 +1,5 @@
 const Discord = require('discord.js')
+const logSymbols = require('log-symbols');
 
 const database = require('./databaseUtil')
 const variables = require('./variablesUtil')
@@ -9,7 +10,7 @@ const discordClient = require('../clients/discordclient')
 const messageconfig = require('./statusconfig.json')
 
 async function triggerStatusUpdate () {
-  console.log(`Printer Status: ${variables.getStatus()}`.printstatus)
+  console.log(logSymbols.info, `Printer Status: ${variables.getStatus()}`.printstatus)
   const statusConfig = messageconfig[variables.getStatus()]
   setTimeout(async () => {
     const parsedConfig = parseConfig(statusConfig)
