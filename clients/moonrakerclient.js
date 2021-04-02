@@ -90,7 +90,7 @@ function connect() {
 module.exports = {}
 module.exports.init = async () => {
   console.log(`\n
-  ${consoleColor.set('fg_dark_yellow',
+  ${consoleColor.set('fg_dark_cyan',
   `__  __                        _           
   |  \\/  |___  ___ _ _  _ _ __ _| |_____ _ _ 
   | |\\/| / _ \\/ _ \\ ' \\| '_/ _\` | / / -_) '_|
