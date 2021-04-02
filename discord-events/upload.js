@@ -48,8 +48,9 @@ const enableEvent = function (discordClient) {
             if (uploadWaitTimer === 0) {
               upload()
               clearInterval(timer)
+            } else {
+              uploadWaitTimer --
             }
-            uploadWaitTimer --
           }, 1000)
         }
         uploadWaitTimer = 2
@@ -65,7 +66,7 @@ function upload() {
     return
   }
   if (uploadWaitTimer !== 0) {
-    console.log('Time active')
+    console.log('Time active '+uploadWaitTimer)
     return
   }
     console.log('Upload')
