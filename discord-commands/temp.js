@@ -93,16 +93,16 @@ function handler (message) {
                 const targetTemp = temps[temp].targets[temps[temp].targets.length - 1]
                 const power = calculatePercent(temps[temp].powers[temps[temp].powers.length - 1])
 
-                commandFeedback.addField(`♨${temp.replace('heater_generic ', '')}`, `Current:\`${currentTemp}°C\`
-                Target:\`${targetTemp}°C\`
-                Power:\`${power}%\``, true)
+                commandFeedback.addField(`♨${temp.replace('heater_generic ', '')}`, `Current: \`${currentTemp}°C\`
+                 Target:\`${targetTemp}°C\`
+                 Power:\`${power}%\``, true)
             } else if (temp.includes('temperature_fan')) {
                 const targetTemp = temps[temp].targets[temps[temp].targets.length - 1]
                 const power = calculatePercent(temps[temp].powers[temps[temp].powers.length - 1])
 
-                commandFeedback.addField(`❄${temp}`, `Current:\`${currentTemp}°C\`
-                Target:\`${targetTemp}°C\`
-                Power:\`${power}%\``, true)
+                commandFeedback.addField(`❄${temp}`, `Current: \`${currentTemp}°C\`
+                 Target:\`${targetTemp}°C\`
+                 Power:\`${power}%\``, true)
             }
         }
         connection.removeListener('message', handler)
