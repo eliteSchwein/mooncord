@@ -34,21 +34,9 @@ module.exports = class HelloCommand extends SlashCommand {
             const feedbackInterval = setInterval(() => {
                 if (typeof (commandFeedback) !== 'undefined') {
                     {
-                        if (commandFeedback.files.length !== 0) {
-                            const thumbnail = commandFeedback.files[0]
-                            const files = {
-                                name: thumbnail.name,
-                                file: thumbnail.attachment
-                            }
-                            ctx.send({
-                                file: files,
-                                embeds: [commandFeedback.toJSON()]
-                            });
-                        } else {
-                            ctx.send({
-                                embeds: [commandFeedback.toJSON()]
-                            });
-                        }
+                        ctx.send({
+                            content: commandFeedback
+                        });
                     }
                     clearInterval(feedbackInterval)
                 }
@@ -56,26 +44,15 @@ module.exports = class HelloCommand extends SlashCommand {
                     ctx.send({
                         content: 'Command execution failed!'
                     })
+                    connection.removeListener('message', handler)
                     clearInterval(feedbackInterval)
                 }
                 timeout++
            }, 500)
-            let alltemps = ''
-            const temps = variables.getTemps()
-            for (const temp in temps) {
-                if (temp.includes('temperature_sensor')) {
-                    alltemps = alltemps.concat(`**🌡${temp.replace('temperature_sensor ', '')}:**\n\`${temps[temp].temperatures[temps[temp].temperatures.length - 1]}°C\`\n\n`)
-                } else if (temp.includes('extruder') || temp.includes('heater_bed') || temp.includes('heater_generic')) {
-                    alltemps = alltemps.concat(`**♨${temp.replace('heater_generic ', '')}:**\n\`Current:${temps[temp].temperatures[temps[temp].temperatures.length - 1]}°C\` \`Target:${temps[temp].targets[temps[temp].targets.length - 1]}°C\` \`Power:${calculatePercent(temps[temp].powers[temps[temp].powers.length - 1])}%\`\n\n`)
-                } else if (temp.includes('temperature_fan')) {
-                    alltemps = alltemps.concat(`**❄${temp}**:\n\`Current:${temps[temp].temperatures[temps[temp].temperatures.length - 1]}°C\` \`Target:${temps[temp].targets[temps[temp].targets.length - 1]}°C\` \`Speed:${calculatePercent(temps[temp].speeds[temps[temp].speeds.length - 1])}\`\n\n`)
-                }
-            }
-            console.log(temps)
-            return alltemps
         }
         catch (err) {
             console.log((err).error)
+            connection.removeListener('message', handler)
             return "An Error occured!"
         }
     }
@@ -84,6 +61,18 @@ module.exports = class HelloCommand extends SlashCommand {
 async function handler (message) {
     const messageJson = JSON.parse(message.utf8Data)
     if (JSON.stringify(messageJson).includes('temperature')) {
-        console.log(messageJson)
+        const temps = messageJson.result
+        let alltemps = ''
+        for (const temp in temps) {
+            if (temp.includes('temperature_sensor')) {
+                alltemps = alltemps.concat(`**🌡${temp.replace('temperature_sensor ', '')}:**\n\`${temps[temp].temperatures[temps[temp].temperatures.length - 1]}°C\`\n\n`)
+            } else if (temp.includes('extruder') || temp.includes('heater_bed') || temp.includes('heater_generic')) {
+                alltemps = alltemps.concat(`**♨${temp.replace('heater_generic ', '')}:**\n\`Current:${temps[temp].temperatures[temps[temp].temperatures.length - 1]}°C\` \`Target:${temps[temp].targets[temps[temp].targets.length - 1]}°C\` \`Power:${calculatePercent(temps[temp].powers[temps[temp].powers.length - 1])}%\`\n\n`)
+            } else if (temp.includes('temperature_fan')) {
+                alltemps = alltemps.concat(`**❄${temp}**:\n\`Current:${temps[temp].temperatures[temps[temp].temperatures.length - 1]}°C\` \`Target:${temps[temp].targets[temps[temp].targets.length - 1]}°C\` \`Speed:${calculatePercent(temps[temp].speeds[temps[temp].speeds.length - 1])}\`\n\n`)
+            }
+        }
+        commandFeedback = alltemps
+        connection.removeListener('message', handler)
     }
 }
