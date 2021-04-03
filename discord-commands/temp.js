@@ -34,8 +34,14 @@ module.exports = class HelloCommand extends SlashCommand {
             const feedbackInterval = setInterval(() => {
                 if (typeof (commandFeedback) !== 'undefined') {
                     {
+                        const thumbnail = commandFeedback.files[0]
+                        const files = {
+                            name: thumbnail.name,
+                            file: thumbnail.attachment
+                        }
                         ctx.send({
-                            content: commandFeedback
+                            file: files,
+                            embeds: [commandFeedback.toJSON()]
                         });
                     }
                     clearInterval(feedbackInterval)
