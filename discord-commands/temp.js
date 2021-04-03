@@ -83,5 +83,7 @@ module.exports = class HelloCommand extends SlashCommand {
 
 async function handler (message) {
     const messageJson = JSON.parse(message.utf8Data)
-    console.log(messageJson)
+    if (JSON.stringify(messageJson).includes('temperature')) {
+        console.log(messageJson)
+    }
 }
