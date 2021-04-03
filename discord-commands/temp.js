@@ -1,5 +1,7 @@
 const { SlashCommand } = require('slash-create')
 const Discord = require('discord.js')
+const path = require('path')
+const fs = require('fs')
 
 const moonrakerClient = require('../clients/moonrakerclient')
 
