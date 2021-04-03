@@ -1,5 +1,10 @@
-const { SlashCommand } = require('slash-create');
+const { SlashCommand } = require('slash-create')
+
 const variables = require('../utils/variablesUtil')
+const moonrakerClient = require('../clients/moonrakerclient')
+
+let commandFeedback
+let connection
 
 module.exports = class HelloCommand extends SlashCommand {
     constructor(creator) {
@@ -13,6 +18,48 @@ module.exports = class HelloCommand extends SlashCommand {
 
     async run(ctx) {
         try {
+            
+            connection = moonrakerClient.getConnection()
+            const id = Math.floor(Math.random() * 10000) + 1
+
+            let timeout = 0
+
+            commandFeedback = undefined
+
+            ctx.defer(false)
+
+            connection.on('message', handler)
+            connection.send(`{"jsonrpc": "2.0", "method": "server.temperature_store", "id": ${id}}`)
+
+            const feedbackInterval = setInterval(() => {
+                if (typeof (commandFeedback) !== 'undefined') {
+                    {
+                        if (commandFeedback.files.length !== 0) {
+                            const thumbnail = commandFeedback.files[0]
+                            const files = {
+                                name: thumbnail.name,
+                                file: thumbnail.attachment
+                            }
+                            ctx.send({
+                                file: files,
+                                embeds: [commandFeedback.toJSON()]
+                            });
+                        } else {
+                            ctx.send({
+                                embeds: [commandFeedback.toJSON()]
+                            });
+                        }
+                    }
+                    clearInterval(feedbackInterval)
+                }
+                if (timeout === 4) {
+                    ctx.send({
+                        content: 'Command execution failed!'
+                    })
+                    clearInterval(feedbackInterval)
+                }
+                timeout++
+           }, 500)
             let alltemps = ''
             const temps = variables.getTemps()
             for (const temp in temps) {
@@ -32,4 +79,9 @@ module.exports = class HelloCommand extends SlashCommand {
             return "An Error occured!"
         }
     }
+}
+
+async function handler (message) {
+    const messageJson = JSON.parse(message.utf8Data)
+    console.log(messageJson)
 }

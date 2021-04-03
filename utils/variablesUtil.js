@@ -7,15 +7,10 @@ let gcodethumbnail = ''
 let printprogress = 0
 let remainingprinttime = 0
 let printtime = 0
-let temps = {}
 let updatetimer = 0
 
 module.exports.setUpdateTimer = function (newupdatetimer) {
   updatetimer = newupdatetimer
-}
-
-module.exports.setTemps = function (newtemps) {
-  temps = newtemps
 }
 module.exports.setStatus = function (newstatus) {
   status = newstatus
@@ -46,9 +41,6 @@ module.exports.setPrintTime = function (newtime) {
 }
 module.exports.getUpdateTimer = function () {
   return updatetimer
-}
-module.exports.getTemps = function () {
-  return temps
 }
 module.exports.getStatus = function () {
   return status
