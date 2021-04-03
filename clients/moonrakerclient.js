@@ -59,7 +59,6 @@ const enableEvents = async function () {
         }, 5000)
       })
       connection.on('message', (message) => {
-        console.log(message)
         files.forEach(file => {
           if (file !== 'index.js') {
             const event = events[file.replace('.js', '')]
