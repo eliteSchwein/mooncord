@@ -9,10 +9,9 @@ const config = require('../config.json')
 const database = require('../utils/databaseUtil')
 const permission = require('../utils/permissionUtil')
 
-const { waitUntil } = require('async-wait-until')
-
 let uploadList = []
 let uploadWaitTimer = 0
+let uploadInProgress = false
 
 const enableEvent = function (discordClient) {
   discordClient.on('message', async (msg) => {
@@ -67,6 +66,9 @@ function upload() {
   if (uploadWaitTimer !== 0) {
     return
   }
+  if (uploadInProgress) {
+    return
+  }
   uploadFile(uploadList[0].gcodefile, uploadList[0].message)
   uploadList.splice(0, 1)
 }
@@ -74,6 +76,7 @@ function upload() {
 function uploadFile(file, message) {
   const formData = new FormData()
   const tempFile = fs.createWriteStream(`temp/${file.name.replace(' ', '_')}`)
+  uploadInProgress = true
   tempFile.on('finish', () => {
     console.log(logSymbols.info, `upload ${file.name.replace(' ', '_')}`.upload)
     formData.append('file', fs.createReadStream(`temp/${file.name.replace(' ', '_')}`), file.name)
@@ -89,7 +92,8 @@ function uploadFile(file, message) {
             console.log((err).error)
           }
         })
-        upload()
+        uploadInProgress = false
+        setTimeout(upload, 250)
       })
       .catch(err => {
         if (err) {
@@ -101,7 +105,8 @@ function uploadFile(file, message) {
               console.log((err2).error)
             }
           })
-          upload()
+          uploadInProgress = false
+        setTimeout(upload, 250)
         }
       })
   })
