@@ -86,16 +86,20 @@ function handler (message) {
         for (const temp in temps) {
 
             const currentTemp = temps[temp].temperatures[temps[temp].temperatures.length - 1]
-            const targetTemp = temps[temp].targets[temps[temp].targets.length - 1]
-            const power = calculatePercent(temps[temp].powers[temps[temp].powers.length - 1])
 
             if (temp.includes('temperature_sensor')) {
                 commandFeedback.addField(`🌡${temp.replace('temperature_sensor ', '')}`,`${currentTemp}°C`)
             } else if (temp.includes('extruder') || temp.includes('heater_bed') || temp.includes('heater_generic')) {
+                const targetTemp = temps[temp].targets[temps[temp].targets.length - 1]
+                const power = calculatePercent(temps[temp].powers[temps[temp].powers.length - 1])
+
                 commandFeedback.addField(`♨${temp.replace('heater_generic ', '')}`, `Current:${currentTemp}°C
                 Target:${targetTemp}°C
                 Power:${power}%`)
             } else if (temp.includes('temperature_fan')) {
+                const targetTemp = temps[temp].targets[temps[temp].targets.length - 1]
+                const power = calculatePercent(temps[temp].powers[temps[temp].powers.length - 1])
+                
                 commandFeedback.addField(`❄${temp}`, `Current:${currentTemp}°C
                 Target:${targetTemp}°C
                 Power:${power}%`)
