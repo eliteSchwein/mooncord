@@ -24,6 +24,7 @@ module.exports = class HelloCommand extends SlashCommand {
                     alltemps = alltemps.concat(`**❄${temp}**:\n\`Current:${temps[temp].temperatures[temps[temp].temperatures.length - 1]}°C\` \`Target:${temps[temp].targets[temps[temp].targets.length - 1]}°C\` \`Speed:${calculatePercent(temps[temp].speeds[temps[temp].speeds.length - 1])}\`\n\n`)
                 }
             }
+            console.log(alltemps)
             return alltemps
         }
         catch (err) {
