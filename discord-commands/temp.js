@@ -58,7 +58,7 @@ module.exports = class HelloCommand extends SlashCommand {
     }
 }
 
-async function handler (message) {
+function handler (message) {
     const messageJson = JSON.parse(message.utf8Data)
     if (JSON.stringify(messageJson).includes('temperature')) {
         const temps = messageJson.result
@@ -75,4 +75,9 @@ async function handler (message) {
         commandFeedback = alltemps
         connection.removeListener('message', handler)
     }
+}
+
+function calculatePercent (input) {
+  const percent = 100 * input
+  return percent.toFixed(0)
 }
