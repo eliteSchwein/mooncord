@@ -53,12 +53,14 @@ module.exports = class HelloCommand extends SlashCommand {
                         content: 'Command execution failed!'
                     })
                     clearInterval(feedbackInterval)
+                    connection.removeListener('message', gcodeHandler)
                 }
                 timeout++
            }, 500)
         }
         catch (err) {
             console.log((err).error)
+            connection.removeListener('message', handler)
             return 'An Error occured!'
         }
     }
