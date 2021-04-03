@@ -1,6 +1,6 @@
 const { SlashCommand } = require('slash-create')
+const Discord = require('discord.js')
 
-const variables = require('../utils/variablesUtil')
 const moonrakerClient = require('../clients/moonrakerclient')
 
 let commandFeedback
@@ -62,17 +62,37 @@ function handler (message) {
     const messageJson = JSON.parse(message.utf8Data)
     if (JSON.stringify(messageJson).includes('temperature')) {
         const temps = messageJson.result
-        let alltemps = ''
+
+        const iconpath = path.resolve(__dirname, '../images/thermometer.png')
+
+        const iconbuffer = fs.readFileSync(iconpath)
+
+        const iconattachment = new Discord.MessageAttachment(iconbuffer, 'thermometer.png')
+
+        commandFeedback = new Discord.MessageEmbed()
+            .setColor('#0099ff')
+            .setTitle('Temperatures')
+            .setThumbnail('attachment://thermometer.png')
+            .attachFiles(iconattachment)
+        
         for (const temp in temps) {
+
+            const currentTemp = temps[temp].temperatures[temps[temp].temperatures.length - 1]
+            const targetTemp = temps[temp].targets[temps[temp].targets.length - 1]
+            const power = calculatePercent(temps[temp].powers[temps[temp].powers.length - 1])
+
             if (temp.includes('temperature_sensor')) {
-                alltemps = alltemps.concat(`**🌡${temp.replace('temperature_sensor ', '')}:**\n\`${temps[temp].temperatures[temps[temp].temperatures.length - 1]}°C\`\n\n`)
+                commandFeedback.addField(`🌡${temp.replace('temperature_sensor ', '')}`,`${currentTemp}°C`)
             } else if (temp.includes('extruder') || temp.includes('heater_bed') || temp.includes('heater_generic')) {
-                alltemps = alltemps.concat(`**♨${temp.replace('heater_generic ', '')}:**\n\`Current:${temps[temp].temperatures[temps[temp].temperatures.length - 1]}°C\` \`Target:${temps[temp].targets[temps[temp].targets.length - 1]}°C\` \`Power:${calculatePercent(temps[temp].powers[temps[temp].powers.length - 1])}%\`\n\n`)
+                commandFeedback.addField(`♨${temp.replace('heater_generic ', '')}`, `Current:${currentTemp}°C
+                Target:${targetTemp}°C
+                Power:${power}%`)
             } else if (temp.includes('temperature_fan')) {
-                alltemps = alltemps.concat(`**❄${temp}**:\n\`Current:${temps[temp].temperatures[temps[temp].temperatures.length - 1]}°C\` \`Target:${temps[temp].targets[temps[temp].targets.length - 1]}°C\` \`Speed:${calculatePercent(temps[temp].speeds[temps[temp].speeds.length - 1])}\`\n\n`)
+                commandFeedback.addField(`❄${temp}`, `Current:${currentTemp}°C
+                Target:${targetTemp}°C
+                Power:${power}%`)
             }
         }
-        commandFeedback = alltemps
         connection.removeListener('message', handler)
     }
 }
