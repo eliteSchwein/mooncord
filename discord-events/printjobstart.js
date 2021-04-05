@@ -10,7 +10,6 @@ const enableEvent = function (discordClient) {
         }
         const title = msg.embeds[0].title
         console.log(title)
-        emoteModule(discordClient, moonrakerClient.getConnection(), msg)
     })
 }
 module.exports = enableEvent
