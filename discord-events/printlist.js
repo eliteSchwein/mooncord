@@ -66,7 +66,7 @@ async function executeMessage(message, user) {
             }
             clearInterval(feedbackInterval)
         }
-        if (timeout === 4) {
+        if (timeout === 10) {
             await message.reactions.removeAll()
             await message.suppressEmbeds(true)
             await message.edit('Command execution failed!')

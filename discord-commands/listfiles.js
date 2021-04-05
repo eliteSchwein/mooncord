@@ -57,7 +57,7 @@ module.exports = class HelloCommand extends SlashCommand {
                     }
                     clearInterval(feedbackInterval)
                 }
-                if (timeout === 4) {
+                if (timeout === 10) {
                     ctx.send({
                         content: 'Command execution failed!'
                     })
