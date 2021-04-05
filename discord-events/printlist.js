@@ -6,6 +6,8 @@ let connection
 let pageUp
 let page
 
+let requester
+
 let timeout = 0
 
 const enableEvent = function (discordClient) {
@@ -47,6 +49,7 @@ async function executeMessage(message, user) {
     const id = Math.floor(Math.random() * 10000) + 1
 
     commandFeedback = undefined
+    requester = user
     await message.edit(chatUtil.getWaitEmbed(user, 'printlist.png'))
 
     connection.on('message', handler)
@@ -81,7 +84,13 @@ async function handler (message) {
         connection.removeListener('message', handler)
         return
     }
-    commandFeedback = await chatUtil.generatePageEmbed(pageUp, page, messageJson.result, 'Print Files', 'printlist.png')
+    commandFeedback = await chatUtil.generatePageEmbed(
+        pageUp,
+        page,
+        messageJson.result,
+        'Print Files',
+        'printlist.png',
+        requester)
     connection.removeListener('message', handler)
     return
 }
