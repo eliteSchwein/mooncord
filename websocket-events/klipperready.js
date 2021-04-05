@@ -12,6 +12,7 @@ const event = (message) => {
       if (variables.getStatus() !== currentStatus) {
         variables.setStatus(currentStatus)
         status.triggerStatusUpdate(discordClient)
+        console.log(discordClient)
       }
     }
   }
