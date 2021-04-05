@@ -13,6 +13,8 @@ async function triggerStatusUpdate (altdiscordClient) {
   console.log(logSymbols.info, `Printer Status: ${variables.getStatus()}`.printstatus)
   const statusConfig = messageconfig[variables.getStatus()]
   
+  console.log(discordClient)
+
   let client
   if (typeof (altdiscordClient) !== 'undefined') {
     client = altdiscordClient
