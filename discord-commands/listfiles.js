@@ -50,14 +50,14 @@ module.exports = class HelloCommand extends SlashCommand {
                             name: thumbnail.name,
                             file: thumbnail.attachment
                         }
-                        const commandmessage = await ctx.send({
+                        ctx.send({
                             file: files,
                             embeds: [commandFeedback.toJSON()]
                         });
-                        const channel = await discordClient.getClient().channels.fetch(ctx.channelID)
-                        const message = await channel.messages.fetch(commandmessage.id)
-                        message.react('◀️')
-                        message.react('▶️')
+                        //const channel = await discordClient.getClient().channels.fetch(ctx.channelID)
+                        //const message = await channel.messages.fetch(commandmessage.id)
+                        //message.react('◀️')
+                        //message.react('▶️')
                     }
                     clearInterval(feedbackInterval)
                 }
