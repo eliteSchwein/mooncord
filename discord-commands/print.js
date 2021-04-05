@@ -1,6 +1,8 @@
 const { SlashCommand, CommandOptionType } = require('slash-create');
 
 const permission = require('../utils/permissionUtil')
+const variables = require('../utils/variablesUtil')
+const moonrakerClient = require('../clients/moonrakerclient')
 
 module.exports = class HelloCommand extends SlashCommand {
     constructor(creator) {
@@ -37,8 +39,38 @@ module.exports = class HelloCommand extends SlashCommand {
 
     async run(ctx) {
         try {
+            if (!await permission.hasAdmin(ctx.user, ctx.guildID)) {
+                return `You dont have the Permissions, ${ctx.user.username}!`
+            }
+            const subcommand = ctx.subcommands[0]
+            const id = Math.floor(Math.random() * 10000) + 1
+            if (subcommand === 'resume') {
+                if (variables.getStatus() !== 'pause') {
+                    return `${ctx.user.username} the Printer isn\`t currently Pausing!`
+                }
+                moonrakerClient.getConnection().send(`{"jsonrpc": "2.0", "method": "printer.print.resume", "id": ${id}}`)
+                return `${ctx.user.username} you resumed the Print!`
+            }
+            if (subcommand === 'cancel') {
+                if (variables.getStatus() !== 'printing' && variables.getStatus() !== 'pause') {
+                    return `${ctx.user.username} the Printer doesn\`t have a Print Job!`
+                }
+                moonrakerClient.getConnection().send(`{"jsonrpc": "2.0", "method": "printer.gcode.script", "params": {"script": "CANCEL_PRINT"}, "id": ${id}}`)
+                return `${ctx.user.username} you canceled the Print!`
+            }
+            if (subcommand === 'pause') {
+                if (variables.getStatus() !== 'printing') {
+                    return `${ctx.user.username} the Printer isn\`t currently Printing!`
+                }
+                moonrakerClient.getConnection().send(`{"jsonrpc": "2.0", "method": "printer.gcode.script", "params": {"script": "PAUSE"}, "id": ${id}}`)
+                return `${ctx.user.username} you paused the Print!`
+            }
+            if (subcommand === 'start') {
+                const file = ctx.options[subcommand].file
+                return file
+            }
             console.log(ctx)
-            return `Hello, ${ctx.user.username}!`;
+            return "An Error occured!"
         }
         catch (err) {
             console.log((err).error)
