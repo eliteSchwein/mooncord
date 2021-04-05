@@ -26,26 +26,26 @@ const enableEvent = function (discordClient) {
             return
         }
         messageReaction.remove()
-
-        const id = Math.floor(Math.random() * 10000) + 1
         page = chatUtil.retrieveCurrentPage(message.embeds[0])
         connection = moonrakerClient.getConnection()
 
         if (messageReaction.emoji.name === '◀️') {
             pageUp = false
-            await executeMessage(message)
+            await executeMessage(message, user)
             return
         }
         
         if (messageReaction.emoji.name === '▶️') {
             pageUp = true
-            await executeMessage(message)
+            await executeMessage(message, user)
             return
         }
     })
 }
 
-async function executeMessage(message) {
+async function executeMessage(message, user) {
+    const id = Math.floor(Math.random() * 10000) + 1
+
     commandFeedback = undefined
     await message.edit(chatUtil.getWaitEmbed(user))
 
