@@ -9,8 +9,6 @@ let remainingprinttime = 0
 let printtime = 0
 let updatetimer = 0
 
-const discordClient = require('../clients/discordclient')
-
 module.exports.setUpdateTimer = function (newupdatetimer) {
   updatetimer = newupdatetimer
 }

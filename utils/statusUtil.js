@@ -9,7 +9,8 @@ const webcam = require('./webcamUtil')
 const discordClient = require('../clients/discordclient') 
 const messageconfig = require('./statusconfig.json')
 
-async function triggerStatusUpdate (altdiscordClient) {
+async function triggerStatusUpdate(altdiscordClient) {
+  console.log(discordClient)
   console.log(logSymbols.info, `Printer Status: ${variables.getStatus()}`.printstatus)
   const statusConfig = messageconfig[variables.getStatus()]
 
