@@ -18,7 +18,7 @@ module.exports.retrieveCurrentPage = function (embed) {
   const currentPageString = pages.replace('Page ', '').split('/')[0]
   return Number.parseInt(currentPageString) - 1
 }
-module.exports.generatePageEmbed = function (pageUp, currentPage, data, title, icon, user) {
+module.exports.generatePageEmbed = async function (pageUp, currentPage, data, title, icon, user) {
   let newpage = currentPage
   const maxpage = Math.ceil(data.length / maxEntries).toFixed(0)
   if (pageUp) {
@@ -41,7 +41,7 @@ module.exports.generatePageEmbed = function (pageUp, currentPage, data, title, i
     .setTitle(title)
     .setAuthor(`Page ${newpage + 1}/${maxpage}`)
     .setDescription(entries)
-    .attachFiles(path.resolve(__dirname, `../images/${icon}`))
+    .attachFiles(await path.resolve(__dirname, `../images/${icon}`))
     .setThumbnail(`attachment://${icon}`)
   
   if (typeof (user) !== 'undefined') {
