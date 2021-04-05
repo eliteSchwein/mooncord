@@ -3,6 +3,8 @@ const path = require('path')
 const fs = require('fs')
 const si = require('systeminformation')
 
+const discordClient = require('../clients/discordclient')
+
 const componentHandler = require('./hsComponents')
 
 module.exports.getInformation = async function (component) {
@@ -14,6 +16,7 @@ module.exports.getInformation = async function (component) {
 }
 
 module.exports.init = async () => {
+  console.log(discordClient)
   setInterval(async () => {
     await si.currentLoad()
   }, 1000)

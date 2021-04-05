@@ -11,8 +11,6 @@ const events = require('../websocket-events')
 
 const client = new WebSocketClient()
 
-const discordClient = require('./discordclient')
-
 let connected = false
 
 let WSconnection
@@ -72,7 +70,6 @@ const enableEvents = async function () {
 }
 
 function connect() {
-  console.log(discordClient)
   console.log('  Connect to Moonraker'.statusmessage)
   
   client.connect(config.moonrakersocketurl)
