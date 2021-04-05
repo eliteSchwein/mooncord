@@ -36,12 +36,17 @@ module.exports.generatePageEmbed = async function (pageUp, currentPage, data, ti
       entries = entries.concat(`${data[i].filename}\n`)
     }
   }
+
+  const imgPath = path.resolve(__dirname, `../images/${icon}`)
+  const imgBuffer = fs.readFileSync(imgPath)
+  const thumbnail = new Discord.MessageAttachment(imgBuffer, icon)
+
   const pageEmbed = new Discord.MessageEmbed()
     .setColor('#0099ff')
     .setTitle(title)
     .setAuthor(`Page ${newpage + 1}/${maxpage}`)
     .setDescription(entries)
-    .attachFiles(await path.resolve(__dirname, `../images/${icon}`))
+    .attachFiles(thumbnail)
     .setThumbnail(`attachment://${icon}`)
   
   if (typeof (user) !== 'undefined') {
