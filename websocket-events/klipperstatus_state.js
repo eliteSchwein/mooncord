@@ -3,6 +3,8 @@ const config = require('../config.json')
 const variables = require('../utils/variablesUtil')
 const status = require('../utils/statusUtil')
 
+const discordClient = require('../clients/discordclient')
+
 const event = (message) => {
   if (message.type === 'utf8') {
     const messageJson = JSON.parse(message.utf8Data)
@@ -19,7 +21,7 @@ const event = (message) => {
           const currentStatus = 'pause'
           if (variables.getStatus() !== currentStatus) {
             variables.setStatus(currentStatus)
-            status.triggerStatusUpdate()
+            status.triggerStatusUpdate(discordClient)
             clearInterval(variables.getUpdateTimer())
           }
         }
@@ -28,15 +30,15 @@ const event = (message) => {
           if (variables.getStatus() !== currentStatus) {
             variables.setStatus(currentStatus)
             if (!config.statusupdatepercent) {
-              status.triggerStatusUpdate()
+              status.triggerStatusUpdate(discordClient)
               setTimeout(() => {
                 const timer = setInterval(() => {
-                  status.triggerStatusUpdate()
+                  status.triggerStatusUpdate(discordClient)
                 }, 1000 * config.statusupdateinterval)
                 variables.setUpdateTimer(timer)
               }, 1000 * config.statusupdateinterval)
             } else {
-              status.triggerStatusUpdate()
+              status.triggerStatusUpdate(discordClient)
             }
           }
         }
@@ -44,11 +46,11 @@ const event = (message) => {
           const currentStatus = 'done'
           if (variables.getStatus() !== currentStatus) {
             variables.setStatus(currentStatus)
-            status.triggerStatusUpdate()
+            status.triggerStatusUpdate(discordClient)
             clearInterval(variables.getUpdateTimer())
             setTimeout(() => {
               variables.setStatus('ready')
-              status.triggerStatusUpdate()
+              status.triggerStatusUpdate(discordClient)
             }, 1000)
           }
         }

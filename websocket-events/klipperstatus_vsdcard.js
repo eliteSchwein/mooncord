@@ -43,7 +43,7 @@ const event = (message, connection) => {
               variables.setProgress(currentProgress.toFixed(0))
               if (!doublePostProtection && config.statusupdatepercent && currentProgress.toFixed(0) % config.statusupdateinterval === 0) {
                 doublePostProtection = true
-                status.triggerStatusUpdate()
+                status.triggerStatusUpdate(discordClient)
                 doublePostProtection = false
               }
             }

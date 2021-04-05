@@ -1,6 +1,8 @@
 const variables = require('../utils/variablesUtil')
 const status = require('../utils/statusUtil')
 
+const discordClient = require('../clients/discordclient')
+
 const event = (message) => {
   if (message.type === 'utf8') {
     const messageJson = JSON.parse(message.utf8Data)
@@ -9,7 +11,7 @@ const event = (message) => {
       const currentStatus = 'ready'
       if (variables.getStatus() !== currentStatus) {
         variables.setStatus(currentStatus)
-        status.triggerStatusUpdate()
+        status.triggerStatusUpdate(discordClient)
       }
     }
   }
