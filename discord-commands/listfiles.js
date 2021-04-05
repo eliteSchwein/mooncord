@@ -64,6 +64,7 @@ module.exports = class HelloCommand extends SlashCommand {
                     ctx.send({
                         content: 'Command execution failed!'
                     })
+                    connection.removeListener('message', handler)
                     clearInterval(feedbackInterval)
                 }
                 timeout++
@@ -71,6 +72,7 @@ module.exports = class HelloCommand extends SlashCommand {
         }
         catch (err) {
             console.log((err).error)
+            connection.removeListener('message', handler)
             return "An Error occured!"
         }
     }
