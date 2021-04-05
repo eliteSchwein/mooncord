@@ -11,6 +11,5 @@ const enableEvent = function (discordClient) {
         const title = msg.embeds[0].title
         console.log(title)
     })
-    discordClient.on('debug', debug => { console.log(debug)})
 }
 module.exports = enableEvent
