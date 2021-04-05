@@ -104,7 +104,8 @@ module.exports = class HelloCommand extends SlashCommand {
                                 });
                                 const channel = await discordClient.getClient().channels.fetch(ctx.channelID)
                                 const message = await channel.messages.fetch(commandmessage.id)
-                                console.log(message)
+                                message.react('✅')
+                                message.react('❌')
                             } else {
                                 ctx.send({
                                     embeds: [commandFeedback.toJSON()]
