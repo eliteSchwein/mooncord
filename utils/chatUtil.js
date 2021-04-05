@@ -18,7 +18,7 @@ module.exports.retrieveCurrentPage = function (embed) {
   const currentPageString = pages.replace('Page ', '').split('/')[0]
   return Number.parseInt(currentPageString) - 1
 }
-module.exports.generatePageEmbed = function (pageUp, currentPage, data, title, icon) {
+module.exports.generatePageEmbed = function (pageUp, currentPage, data, title, icon, user) {
   let newpage = currentPage
   const maxpage = Math.ceil(data.length / maxEntries).toFixed(0)
   if (pageUp) {
@@ -43,8 +43,12 @@ module.exports.generatePageEmbed = function (pageUp, currentPage, data, title, i
     .setDescription(entries)
     .attachFiles(path.resolve(__dirname, `../images/${icon}`))
     .setThumbnail(`attachment://${icon}.png`)
-    .setTimestamp()
-    .setFooter(requester.tag, requester.avatarURL())
+  
+  if (typeof (user) !== 'undefined') {
+    pageEmbed
+      .setTimestamp()
+      .setFooter(user.tag, user.avatarURL())
+  }
   
   return pageEmbed
 }
