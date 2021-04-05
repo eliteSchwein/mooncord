@@ -97,10 +97,10 @@ module.exports = class HelloCommand extends SlashCommand {
                                     name: thumbnail.name,
                                     file: thumbnail.attachment
                                 }
-                                console.log(await ctx.send({
+                                console.log((await ctx.send({
                                     file: files,
                                     embeds: [commandFeedback.toJSON()]
-                                }));
+                                })));
                             } else {
                                 ctx.send({
                                     embeds: [commandFeedback.toJSON()]
