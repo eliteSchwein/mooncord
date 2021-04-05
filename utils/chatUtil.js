@@ -5,19 +5,17 @@ const fs = require('fs')
 const maxEntries = 5
 
 module.exports = {}
-module.exports.getWaitEmbed = function (user, icon) {
-
-  const imgPath = path.resolve(__dirname, `../images/${icon}`)
-  const imgBuffer = fs.readFileSync(imgPath)
-  const thumbnail = new Discord.MessageAttachment(imgBuffer, icon)
+module.exports.getWaitEmbed = function (user) {
 
   const waitEmbed = new Discord.MessageEmbed()
     .setColor('#c90000')
     .setDescription('🕐 Please Wait!')
-    .attachFiles(thumbnail)
-    .setThumbnail(`attachment://${icon}`)
-    .setTimestamp()
-    .setFooter(user.tag, user.avatarURL())
+  
+  if (typeof (user) !== 'undefined') {
+    waitEmbed
+      .setTimestamp()
+      .setFooter(user.tag, user.avatarURL())
+  }
   
   return waitEmbed
 }
