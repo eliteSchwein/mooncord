@@ -101,7 +101,7 @@ module.exports = class HelloCommand extends SlashCommand {
                                     file: files,
                                     embeds: [commandFeedback.toJSON()]
                                 });
-                                console.log(message)
+                                console.log(message.id)
                             } else {
                                 ctx.send({
                                     embeds: [commandFeedback.toJSON()]
