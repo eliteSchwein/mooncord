@@ -41,7 +41,6 @@ module.exports = class HelloCommand extends SlashCommand {
                             content: 'There are currently no Files!'
                         })
                     } else {
-                        console.log(commandFeedback)
                         const thumbnail = commandFeedback.files[0]
                         const files = {
                             name: thumbnail.name,
