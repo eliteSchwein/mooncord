@@ -47,7 +47,7 @@ async function executeMessage(message, user) {
     const id = Math.floor(Math.random() * 10000) + 1
 
     commandFeedback = undefined
-    await message.edit(chatUtil.getWaitEmbed(user))
+    await message.edit(chatUtil.getWaitEmbed(user, 'printlist.png'))
 
     connection.on('message', handler)
     connection.send(`{"jsonrpc": "2.0", "method": "server.files.list", "params": {"root": "gcodes"}, "id": ${id}}`)
