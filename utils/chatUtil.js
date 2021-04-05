@@ -44,8 +44,7 @@ module.exports.retrieveCurrentPage = function (embed) {
 }
 module.exports.generatePageEmbed = async function (pageUp, currentPage, data, title, icon, user) {
   let newpage = currentPage
-  console.log(`${data.length} / ${maxEntries} ${Math.ceil(data.length / maxEntries).toFixed(0)}  ${(data.length / maxEntries).toFixed(0)}`)
-  const maxpage = Math.ceil(data.length / maxEntries).toFixed(0)
+  const maxpage =((data.length / maxEntries) - 0.1).toFixed(0)
   if (pageUp) {
     if (currentPage !== maxpage - 1) {
       newpage = currentPage + 1
