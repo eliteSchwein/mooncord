@@ -97,7 +97,7 @@ module.exports = class HelloCommand extends SlashCommand {
                                     name: thumbnail.name,
                                     file: thumbnail.attachment
                                 }
-                                console.log(ctx.send({
+                                console.log(await ctx.send({
                                     file: files,
                                     embeds: [commandFeedback.toJSON()]
                                 }));
