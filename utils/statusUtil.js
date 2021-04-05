@@ -9,21 +9,29 @@ const webcam = require('./webcamUtil')
 const discordClient = require('../clients/discordclient') 
 const messageconfig = require('./statusconfig.json')
 
-async function triggerStatusUpdate () {
+async function triggerStatusUpdate (altdiscordClient) {
   console.log(logSymbols.info, `Printer Status: ${variables.getStatus()}`.printstatus)
   const statusConfig = messageconfig[variables.getStatus()]
+  
+  let client
+  if (typeof (altdiscordClient) !== 'undefined') {
+    client = altdiscordClient
+  } else {
+    client = discordClient.getClient()
+  }
+
   setTimeout(async () => {
     const parsedConfig = parseConfig(statusConfig)
     const embed = await generateEmbed(parsedConfig)
 
     if (typeof (parsedConfig.activity) !== 'undefined') {
-      discordClient.getClient().user.setActivity(
+      client.user.setActivity(
         parsedConfig.activity.text,
         { type: parsedConfig.activity.type }
       )
     }
 
-    postStatus(embed)
+    postStatus(embed, client)
   }, 1000)
 }
 
@@ -83,14 +91,14 @@ async function generateEmbed(config, user) {
   return embed
 }
 
-function postStatus(message) {
+function postStatus(message, client) {
   const botdatabase = database.getDatabase()
   for (const guildid in botdatabase.guilds) {
-    discordClient.getClient().guilds.fetch(guildid)
+    client.guilds.fetch(guildid)
       .then(async (guild) => {
         const guilddatabase = botdatabase.guilds[guild.id]
         for (const index in guilddatabase.broadcastchannels) {
-          const channel = await discordClient.getClient().channels.fetch(guilddatabase.broadcastchannels[index])
+          const channel = await client.channels.fetch(guilddatabase.broadcastchannels[index])
           channel.send(message)
         }
       })
@@ -98,8 +106,8 @@ function postStatus(message) {
   }
 }
 
-module.exports.triggerStatusUpdate = async function () {
-  await triggerStatusUpdate()
+module.exports.triggerStatusUpdate = async function (altdiscordClient) {
+  await triggerStatusUpdate(altdiscordClient)
 }
 
 module.exports.getManualStatusEmbed = async function (user) {
