@@ -23,11 +23,10 @@ const enableEvent = function (discordClient) {
         if (title !== 'Print Files') {
             return
         }
-        messageReaction.users.remove(user)
+        await messageReaction.users.remove(user)
         if (!await permission.hasAdmin(user, message.guild.id, discordClient)) {
             return
         }
-        messageReaction.remove()
         page = chatUtil.retrieveCurrentPage(message.embeds[0])
         connection = moonrakerClient.getConnection()
 

@@ -15,11 +15,10 @@ const enableEvent = function (discordClient) {
         if (title !== 'Start Print Job?') {
             return
         }
-        messageReaction.users.remove(user)
+        await messageReaction.users.remove(user)
         if (!await permission.hasAdmin(user, message.guild.id, discordClient)) {
             return
         }
-        messageReaction.remove()
         if (messageReaction.emoji.name === '❌') {
             await message.reactions.removeAll()
             await message.suppressEmbeds(true)
