@@ -22,6 +22,7 @@ const enableEvent = function (discordClient) {
         messageReaction.remove()
         if (messageReaction.emoji.name === '❌') {
             await message.reactions.removeAll()
+            await message.suppressEmbeds(true)
             await message.edit(`Print Job request aborted, ${user.username}!`)
             return
         }
@@ -30,6 +31,7 @@ const enableEvent = function (discordClient) {
             const gcodefile = message.embeds[0].author.anme
             const id = Math.floor(Math.random() * 10000) + 1
             await message.reactions.removeAll()
+            await message.suppressEmbeds(true)
             await message.edit(`Print Job request executed, ${user.username}!`)
             moonrakerClient.getConnection().send(`{"jsonrpc": "2.0", "method": "printer.print.start", "params": {"filename": "${gcodefile}"}, "id": ${id}}`)
         }
