@@ -3,7 +3,7 @@ const path = require('path')
 const { GatewayServer, SlashCreator } = require('slash-create')
 const { waitUntil } = require('async-wait-until')
 
-const events = require('../discord-events')
+//const events = require('../discord-events')
 
 const config = require('../config.json')
 
@@ -14,7 +14,7 @@ let connected = false
 function enableEvents() {
   console.log('  Enable Discord Events'.statusmessage)
 
-  events(discordClient)
+  //events(discordClient)
 }
 
 function loginBot() {
