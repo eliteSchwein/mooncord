@@ -5,6 +5,19 @@ const fs = require('fs')
 const maxEntries = 5
 
 module.exports = {}
+module.exports.getWaitEmbed = function (user) {
+  const waitEmbed = new Discord.MessageEmbed()
+    .setColor('#c90000')
+    .setDescription('🕐 Please Wait!')
+  
+  if (typeof (user) !== 'undefined') {
+    waitEmbed
+      .setTimestamp()
+      .setFooter(user.tag, user.avatarURL())
+  }
+  
+  return waitEmbed
+}
 module.exports.hasMessageEmbed = function (message) {
   if (message.channel.type !== 'text') {
     return false

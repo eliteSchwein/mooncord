@@ -1,10 +1,7 @@
-const { SlashCommand, CommandOptionType } = require('slash-create');
-const Discord = require('discord.js')
+const { SlashCommand } = require('slash-create');
 
-const thumbnail = require('../utils/thumbnailUtil')
 const chatUtil = require('../utils/chatUtil')
 const permission = require('../utils/permissionUtil')
-const variables = require('../utils/variablesUtil')
 const moonrakerClient = require('../clients/moonrakerclient')
 const discordClient = require('../clients/discordclient')
 
