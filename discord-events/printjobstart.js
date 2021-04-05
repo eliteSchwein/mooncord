@@ -2,7 +2,7 @@ const chatUtil = require('../utils/chatUtil')
 
 const enableEvent = function (discordClient) {
     discordClient.on('messageReactionAdd', (msgreaction, user) => {
-        if (!chatUtil.hasMessageEmbed(msgreaction.Message)) {
+        if (!chatUtil.hasMessageEmbed(msgreaction.message)) {
             return
         }
         if (user.id === discordClient.user.id) {
