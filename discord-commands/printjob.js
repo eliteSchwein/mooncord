@@ -5,6 +5,7 @@ const thumbnail = require('../utils/thumbnailUtil')
 const permission = require('../utils/permissionUtil')
 const variables = require('../utils/variablesUtil')
 const moonrakerClient = require('../clients/moonrakerclient')
+const discordClient = require('../clients/discordclient')
 
 let commandFeedback
 let connection
@@ -97,11 +98,13 @@ module.exports = class HelloCommand extends SlashCommand {
                                     name: thumbnail.name,
                                     file: thumbnail.attachment
                                 }
-                                const message = await ctx.send({
+                                const commandmessage = await ctx.send({
                                     file: files,
                                     embeds: [commandFeedback.toJSON()]
                                 });
-                                console.log(message.id)
+                                const channel = await discordClient.getClient().channels.fetch(ctx.channelID)
+                                const message = await channel.messages.fetch(commandmessage.id)
+                                console.log(message)
                             } else {
                                 ctx.send({
                                     embeds: [commandFeedback.toJSON()]
