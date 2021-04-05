@@ -15,7 +15,7 @@ let connected = false
 
 let WSconnection
 
-const enableEvents = async function () {
+const enableEvents = async function (discordClient) {
   console.log('  Enable Moonraker Events'.statusmessage)
 
   client.on('connect', async (connection) => {
@@ -52,7 +52,7 @@ const enableEvents = async function () {
         console.log('  Reconnect in 5 sec'.error)
         connected = false
         variables.setStatus('offline')
-        status.triggerStatusUpdate()
+        status.triggerStatusUpdate(discordClient)
         setTimeout(() => {
           client.connect(config.moonrakersocketurl)
         }, 5000)
@@ -61,7 +61,7 @@ const enableEvents = async function () {
         files.forEach(file => {
           if (file !== 'index.js') {
             const event = events[file.replace('.js', '')]
-            event(message, connection)
+            event(message, connection, discordClient)
           }
         })
       })
@@ -86,7 +86,7 @@ function connect() {
 }
 
 module.exports = {}
-module.exports.init = async () => {
+module.exports.init = async (discordClient) => {
   console.log(`\n
   ${
   ` __  __                        _           
@@ -95,7 +95,7 @@ module.exports.init = async () => {
   |_|  |_\\___/\\___/_||_|_| \\__,_|_\\_\\___|_|`.statustitle}
                               `)
   connect()
-  enableEvents()
+  enableEvents(discordClient)
   await waitUntil(() => connected === true)
 }
 module.exports.getConnection = () => { return WSconnection }
