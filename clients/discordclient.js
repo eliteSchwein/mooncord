@@ -3,7 +3,7 @@ const path = require('path')
 const { GatewayServer, SlashCreator } = require('slash-create')
 const { waitUntil } = require('async-wait-until')
 
-const uploadEvent = require('../discord-events/upload')
+const events = require('../discord-events')
 
 const config = require('../config.json')
 
@@ -14,7 +14,7 @@ let connected = false
 function enableEvents() {
   console.log('  Enable Discord Events'.statusmessage)
 
-  uploadEvent(discordClient)
+  events(discordClient)
 }
 
 function loginBot() {
@@ -69,3 +69,12 @@ module.exports.init = async () => {
 }
 module.exports.isConnected = function() { return connected }
 module.exports.getClient = function () { return discordClient }
+module.exports.hasMessageEmbed = function (message) {
+  if (message.channel.type !== 'text') {
+    return false
+  }
+  if (message.embeds.length === 0) {
+    return false
+  }
+  return true
+}
