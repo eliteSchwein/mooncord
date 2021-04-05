@@ -16,7 +16,7 @@ const enableEvent = function (discordClient) {
             return
         }
         messageReaction.users.remove(user)
-        if (!await permission.hasAdmin(user, message.guild.id)) {
+        if (!await permission.hasAdmin(user, message.guild.id, discordClient)) {
             return
         }
         messageReaction.remove()
