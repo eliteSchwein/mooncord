@@ -84,7 +84,7 @@ module.exports = class HelloCommand extends SlashCommand {
                 commandFeedback = undefined
                 ctx.defer(false)
 
-                const feedbackInterval = setInterval(() => {
+                const feedbackInterval = setInterval(async () => {
                     if (typeof (commandFeedback) !== 'undefined') {
                         if (commandFeedback === 'Not Found!') {
                             ctx.send({
