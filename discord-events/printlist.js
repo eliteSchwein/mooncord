@@ -8,7 +8,7 @@ let page
 
 let requester
 
-let timeout = 0
+let commandFeedback
 
 const enableEvent = function (discordClient) {
     discordClient.on('messageReactionAdd', async (messageReaction, user) => {
@@ -60,14 +60,6 @@ async function executeMessage(message, user) {
             await message.edit(commandFeedback)
             clearInterval(feedbackInterval)
         }
-        if (timeout === 10) {
-            await message.reactions.removeAll()
-            await message.suppressEmbeds(true)
-            await message.edit('There are currently no Files!')
-            connection.removeListener('message', handler)
-            clearInterval(feedbackInterval)
-        }
-        timeout++
     }, 500)
 }
 
