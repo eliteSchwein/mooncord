@@ -63,8 +63,8 @@ module.exports.init = async () => {
                               `)
   loginBot()
   await waitUntil(() => connected === true)
-  //enableCommands()
-  //enableEvents()
+  enableCommands()
+  enableEvents()
   
 }
 module.exports.isConnected = function() { return connected }

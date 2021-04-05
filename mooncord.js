@@ -55,7 +55,7 @@ systemInfo.osInfo().then(async data => {
 
   await discordClient.init()
 
-  await moonrakerClient.init()
+  await moonrakerClient.init(discordClient.getClient())
   
   await hsUtil.init()
 })
