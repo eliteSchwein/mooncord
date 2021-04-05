@@ -5,7 +5,7 @@ const fs = require('fs')
 const maxEntries = 5
 
 module.exports = {}
-module.exports.getWaitEmbed = function (user) {
+module.exports.getWaitEmbed = function (user, icon) {
 
   const waitEmbed = new Discord.MessageEmbed()
     .setColor('#c90000')
@@ -15,6 +15,15 @@ module.exports.getWaitEmbed = function (user) {
     waitEmbed
       .setTimestamp()
       .setFooter(user.tag, user.avatarURL())
+  }
+
+  if (typeof (icon) !== 'undefined') {
+    const imgPath = path.resolve(__dirname, `../images/${icon}`)
+    const imgBuffer = fs.readFileSync(imgPath)
+    const thumbnail = new Discord.MessageAttachment(imgBuffer, icon)
+    waitEmbed
+      .setAuthor('Related', `attachment://${icon}`)
+      .attachFiles(thumbnail)
   }
   
   return waitEmbed

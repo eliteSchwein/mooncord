@@ -49,6 +49,7 @@ async function executeMessage(message, user) {
 
     commandFeedback = undefined
     requester = user
+    
     await message.edit(chatUtil.getWaitEmbed(user, 'printlist.png'))
 
     connection.on('message', handler)
