@@ -13,7 +13,6 @@ module.exports.setUpdateTimer = function (newupdatetimer) {
   updatetimer = newupdatetimer
 }
 module.exports.setStatus = function (newstatus) {
-  console.log(discordClient)
   status = newstatus
 }
 module.exports.setVersions = function (newversions) {
