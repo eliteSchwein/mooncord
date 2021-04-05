@@ -5,7 +5,6 @@ const { waitUntil } = require('async-wait-until')
 
 const variables = require('../utils/variablesUtil')
 const status = require('../utils/statusUtil')
-const discordClient = require('./discordclient')
 const config = require('../config.json')
 
 const events = require('../websocket-events')
@@ -53,7 +52,7 @@ const enableEvents = async function () {
         console.log('  Reconnect in 5 sec'.error)
         connected = false
         variables.setStatus('offline')
-        status.triggerStatusUpdate(discordClient.getClient())
+        status.triggerStatusUpdate()
         setTimeout(() => {
           client.connect(config.moonrakersocketurl)
         }, 5000)
