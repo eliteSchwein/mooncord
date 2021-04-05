@@ -65,7 +65,7 @@ module.exports = class HelloCommand extends SlashCommand {
                     return `${ctx.user.username} there isn\`t currently any active Print Job!`
                 }
                 connection.send(`{"jsonrpc": "2.0", "method": "printer.gcode.script", "params": {"script": "CANCEL_PRINT"}, "id": ${id}}`)
-                return `${ctx.user.username} you canceled the Print Job!`
+                return `${ctx.user.username} you aborted the Print Job!`
             }
             if (subcommand === 'pause') {
                 if (variables.getStatus() === 'pause') {
