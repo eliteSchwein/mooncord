@@ -73,7 +73,7 @@ async function executeMessage(message, user) {
 
 async function handler (message) {
     const messageJson = JSON.parse(message.utf8Data)
-    if (messageJson.includes(/(filename|modified)/g)) {
+    if (JSON.stringify(messageJson).includes(/(filename|modified)/g)) {
         commandFeedback = await chatUtil.generatePageEmbed(
             pageUp,
             page,
