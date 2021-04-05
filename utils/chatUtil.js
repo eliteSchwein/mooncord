@@ -42,7 +42,7 @@ module.exports.generatePageEmbed = function (pageUp, currentPage, data, title, i
     .setAuthor(`Page ${newpage + 1}/${maxpage}`)
     .setDescription(entries)
     .attachFiles(path.resolve(__dirname, `../images/${icon}`))
-    .setThumbnail(`attachment://${icon}.png`)
+    .setThumbnail(`attachment://${icon}`)
   
   if (typeof (user) !== 'undefined') {
     pageEmbed
