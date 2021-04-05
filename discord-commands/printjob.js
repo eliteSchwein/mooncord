@@ -1,4 +1,5 @@
 const { SlashCommand, CommandOptionType } = require('slash-create');
+const Discord = require('discord.js')
 
 const permission = require('../utils/permissionUtil')
 const variables = require('../utils/variablesUtil')
