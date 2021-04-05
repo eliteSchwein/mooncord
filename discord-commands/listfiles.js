@@ -85,7 +85,7 @@ async function handler (message) {
         connection.removeListener('message', handler)
         return
     }
-    commandFeedback = chatUtil.generatePageEmbed(true, -1, messageJson.result, 'Print Files', 'printlist.png')
+    commandFeedback = await chatUtil.generatePageEmbed(true, -1, messageJson.result, 'Print Files', 'printlist.png')
     connection.removeListener('message', handler)
     return
 }
