@@ -36,30 +36,24 @@ module.exports = class HelloCommand extends SlashCommand {
 
             const feedbackInterval = setInterval(async () => {
                 if (typeof (commandFeedback) !== 'undefined') {
-                    if (commandFeedback === 'Not Found!') {
-                        ctx.send({
-                            content: 'There are currently no Files!'
-                        })
-                    } else {
-                        const thumbnail = commandFeedback.files[0]
-                        const files = {
-                            name: thumbnail.name,
-                            file: thumbnail.attachment
-                        }
-                        const commandmessage = await ctx.send({
-                            file: files,
-                            embeds: [commandFeedback.toJSON()]
-                        });
-                        const channel = await discordClient.getClient().channels.fetch(ctx.channelID)
-                        const message = await channel.messages.fetch(commandmessage.id)
-                        message.react('◀️')
-                        message.react('▶️')
+                    const thumbnail = commandFeedback.files[0]
+                    const files = {
+                        name: thumbnail.name,
+                        file: thumbnail.attachment
                     }
+                    const commandmessage = await ctx.send({
+                        file: files,
+                        embeds: [commandFeedback.toJSON()]
+                    });
+                    const channel = await discordClient.getClient().channels.fetch(ctx.channelID)
+                    const message = await channel.messages.fetch(commandmessage.id)
+                    message.react('◀️')
+                    message.react('▶️')
                     clearInterval(feedbackInterval)
                 }
                 if (timeout === 10) {
                     ctx.send({
-                        content: 'Command execution failed!'
+                        content: 'There are currently no Files!'
                     })
                     connection.removeListener('message', handler)
                     clearInterval(feedbackInterval)
@@ -77,12 +71,13 @@ module.exports = class HelloCommand extends SlashCommand {
 
 async function handler (message) {
     const messageJson = JSON.parse(message.utf8Data)
-    if (messageJson.result.length === 0) {
-        commandFeedback = `Not Found!`
+    if (messageJson.includes(/(filename|modified)/g)) {
+        commandFeedback = await chatUtil.generatePageEmbed(
+            true,
+            -1,
+            messageJson.result,
+            'Print Files',
+            'printlist.png')
         connection.removeListener('message', handler)
-        return
     }
-    commandFeedback = await chatUtil.generatePageEmbed(true, -1, messageJson.result, 'Print Files', 'printlist.png')
-    connection.removeListener('message', handler)
-    return
 }

@@ -57,19 +57,13 @@ async function executeMessage(message, user) {
 
     const feedbackInterval = setInterval(async () => {
         if (typeof (commandFeedback) !== 'undefined') {
-            if (commandFeedback === 'Not Found!') {
-                await message.reactions.removeAll()
-                await message.suppressEmbeds(true)
-                await message.edit('There are currently no Files!')
-            } else {
-                await message.edit(commandFeedback)
-            }
+            await message.edit(commandFeedback)
             clearInterval(feedbackInterval)
         }
         if (timeout === 10) {
             await message.reactions.removeAll()
             await message.suppressEmbeds(true)
-            await message.edit('Command execution failed!')
+            await message.edit('There are currently no Files!')
             connection.removeListener('message', handler)
             clearInterval(feedbackInterval)
         }
@@ -79,19 +73,15 @@ async function executeMessage(message, user) {
 
 async function handler (message) {
     const messageJson = JSON.parse(message.utf8Data)
-    if (messageJson.result.length === 0) {
-        commandFeedback = `Not Found!`
+    if (messageJson.includes(/(filename|modified)/g)) {
+        commandFeedback = await chatUtil.generatePageEmbed(
+            pageUp,
+            page,
+            messageJson.result,
+            'Print Files',
+            'printlist.png',
+            requester)
         connection.removeListener('message', handler)
-        return
     }
-    commandFeedback = await chatUtil.generatePageEmbed(
-        pageUp,
-        page,
-        messageJson.result,
-        'Print Files',
-        'printlist.png',
-        requester)
-    connection.removeListener('message', handler)
-    return
 }
 module.exports = enableEvent
