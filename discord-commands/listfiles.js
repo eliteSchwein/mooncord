@@ -2,6 +2,7 @@ const { SlashCommand, CommandOptionType } = require('slash-create');
 const Discord = require('discord.js')
 
 const thumbnail = require('../utils/thumbnailUtil')
+const chatUtil = require('../utils/chatUtil')
 const permission = require('../utils/permissionUtil')
 const variables = require('../utils/variablesUtil')
 const moonrakerClient = require('../clients/moonrakerclient')
@@ -43,25 +44,19 @@ module.exports = class HelloCommand extends SlashCommand {
                             content: 'There are currently no Files!'
                         })
                     } else {
-                        if (commandFeedback.files.length !== 0) {
-                            const thumbnail = commandFeedback.files[0]
-                            const files = {
-                                name: thumbnail.name,
-                                file: thumbnail.attachment
-                            }
-                            const commandmessage = await ctx.send({
-                                file: files,
-                                embeds: [commandFeedback.toJSON()]
-                            });
-                            const channel = await discordClient.getClient().channels.fetch(ctx.channelID)
-                            const message = await channel.messages.fetch(commandmessage.id)
-                            message.react('◀️')
-                            message.react('▶️')
-                        } else {
-                            ctx.send({
-                                embeds: [commandFeedback.toJSON()]
-                            });
+                        const thumbnail = commandFeedback.files[0]
+                        const files = {
+                            name: thumbnail.name,
+                            file: thumbnail.attachment
                         }
+                        const commandmessage = await ctx.send({
+                            file: files,
+                            embeds: [commandFeedback.toJSON()]
+                        });
+                        const channel = await discordClient.getClient().channels.fetch(ctx.channelID)
+                        const message = await channel.messages.fetch(commandmessage.id)
+                        message.react('◀️')
+                        message.react('▶️')
                     }
                     clearInterval(feedbackInterval)
                 }
@@ -83,31 +78,12 @@ module.exports = class HelloCommand extends SlashCommand {
 
 async function handler (message) {
     const messageJson = JSON.parse(message.utf8Data)
-    console.log(message)
-    if (typeof (messageJson.error) !== 'undefined') {
+    if (messageJson.result.length === 0) {
         commandFeedback = `Not Found!`
         connection.removeListener('message', handler)
         return
     }
-    if (typeof (messageJson.result.filename) !== 'undefined') {
-        let description = ''
-            .concat(`Print Time: ${variables.formatTime(messageJson.result.estimated_time * 1000)}\n`)
-            .concat(`Slicer: ${messageJson.result.slicer}\n`)
-            .concat(`Slicer Version: ${messageJson.result.slicer_version}\n`)
-            .concat(`Height: ${messageJson.result.object_height}mm`)
-        
-        commandFeedback = new Discord.MessageEmbed()
-            .setColor('#0099ff')
-            .setTitle('Start Print Job?')
-            .setAuthor(messageJson.result.filename)
-            .setDescription(description)
-        if (typeof (messageJson.result.thumbnails) !== 'undefined') {
-            const parsedThumbnail = await thumbnail.buildThumbnail(messageJson.result.thumbnails[1].data)
-            commandFeedback
-                .attachFiles(parsedThumbnail)
-                .setThumbnail(`attachment://${parsedThumbnail.name}`)
-        }
-        connection.removeListener('message', handler)
-        return
-    }
+    commandFeedback = chatUtil.generatePageEmbed(true, -1, messageJson.result, 'Print Files', 'printlist.png')
+    connection.removeListener('message', handler)
+    return
 }
