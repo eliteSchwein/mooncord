@@ -91,7 +91,14 @@ async function generateEmbed(config, user) {
   return embed
 }
 
-function postStatus(message, client, altdatabase) {
+function postStatus(message, altdiscordClient, altdatabase) {
+
+  let client
+  if (typeof (altdiscordClient) !== 'undefined') {
+    client = altdiscordClient
+  } else {
+    client = discordClient.getClient()
+  }
 
   let botdatabase
   
