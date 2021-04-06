@@ -4,6 +4,7 @@ const WebSocketClient = require('websocket').client
 const { waitUntil } = require('async-wait-until')
 
 const variables = require('../utils/variablesUtil')
+const database = require('../utils/databaseUtil')
 const status = require('../utils/statusUtil')
 const config = require('../config.json')
 
@@ -61,7 +62,7 @@ const enableEvents = async function (discordClient) {
         files.forEach(file => {
           if (file !== 'index.js') {
             const event = events[file.replace('.js', '')]
-            event(message, connection, discordClient)
+            event(message, connection, discordClient, database.getDatabase())
           }
         })
       })

@@ -91,8 +91,15 @@ async function generateEmbed(config, user) {
   return embed
 }
 
-function postStatus(message, client) {
-  const botdatabase = database.getDatabase()
+function postStatus(message, client, altdatabase) {
+
+  let botdatabase
+  
+  if (typeof (altdatabase) !== undefined) {
+    botdatabase = database.getDatabase()
+  } else {
+    botdatabase = altdatabase
+  }
   for (const guildid in botdatabase.guilds) {
     client.guilds.fetch(guildid)
       .then(async (guild) => {

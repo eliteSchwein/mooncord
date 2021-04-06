@@ -6,7 +6,7 @@ const status = require('../utils/statusUtil')
 
 let notifyembed
 
-const event = async (message) => {
+const event = async (message, connection, discordClient, database) => {
   if (message.type === 'utf8') {
     const messageJson = JSON.parse(message.utf8Data)
     const { result } = messageJson
@@ -34,7 +34,7 @@ const event = async (message) => {
       }
       if (postUpdate) {
         variables.setVersions(result.version_info)
-        status.postBroadcastMessage(notifyembed)
+        status.postBroadcastMessage(notifyembed, database)
       }
     }
   }
