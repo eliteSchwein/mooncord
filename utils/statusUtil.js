@@ -123,4 +123,4 @@ module.exports.getManualStatusEmbed = async function (user) {
   return await generateEmbed(parsedConfig, user)
 }
 
-module.exports.postBroadcastMessage = (message) => { return postStatus(message) }
+module.exports.postBroadcastMessage = (message, altdatabase) => { return postStatus(message, altdatabase) }
