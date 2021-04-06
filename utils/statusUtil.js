@@ -130,4 +130,4 @@ module.exports.getManualStatusEmbed = async function (user) {
   return await generateEmbed(parsedConfig, user)
 }
 
-module.exports.postBroadcastMessage = (message, altdatabase) => { return postStatus(message, altdatabase) }
+module.exports.postBroadcastMessage = (message, altdiscordClient, altdatabase) => { return postStatus(message, altdiscordClient, altdatabase) }

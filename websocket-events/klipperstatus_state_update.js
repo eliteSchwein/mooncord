@@ -34,7 +34,7 @@ const event = async (message, connection, discordClient, database) => {
       }
       if (postUpdate) {
         variables.setVersions(result.version_info)
-        status.postBroadcastMessage(notifyembed, database)
+        status.postBroadcastMessage(notifyembed, discordClient, database)
       }
     }
   }
