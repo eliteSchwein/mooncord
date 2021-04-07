@@ -8,10 +8,7 @@ module.exports = {}
 function updateNotifyData(data) {
   const database = require(databasepath)
   database.notify = data
-  fs.writeFile(path.resolve(__dirname, databasepath), JSON.stringify(database), (err) => {
-    if (err) { throw err }
-    console.log(logSymbols.info, 'The Database has been saved!'.database)
-  })
+  saveDatabase(database)
 }
 
 function getNotifyData() {
@@ -21,6 +18,12 @@ function getNotifyData() {
     return []
   }
   return database.notify
+}
+function saveDatabase(databasedata) {
+  fs.writeFile(path.resolve(__dirname, databasepath), JSON.stringify(databasedata), (err) => {
+    if (err) { throw err }
+    console.log(logSymbols.info, 'The Database has been saved!'.database)
+  })
 }
 module.exports.updateNotify = function (user) {
   const notifylist = getNotifyData()
@@ -58,8 +61,5 @@ module.exports.getDatabase = function () {
 module.exports.updateDatabase = function (data, guild) {
   const database = require(databasepath)
   database.guilds[guild.id] = data
-  fs.writeFile(path.resolve(__dirname, databasepath), JSON.stringify(database), (err) => {
-    if (err) { throw err }
-    console.log(logSymbols.info, 'The Database has been saved!'.database)
-  })
+  saveDatabase(database)
 }
