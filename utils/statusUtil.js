@@ -9,16 +9,25 @@ const webcam = require('./webcamUtil')
 const discordClient = require('../clients/discordclient') 
 const messageconfig = require('./statusconfig.json')
 
+function getDatabase(altdatabase){
+  if(typeof(altdatabase) !== 'undefined'){
+    return altdatabase
+  }
+  return database.getDatabase()
+}
+
+function getDiscordClient(altdiscordClient){
+  if (typeof (altdiscordClient) !== 'undefined') {
+    return altdiscordClient
+  }
+  return discordClient.getClient()
+}
+
 async function triggerStatusUpdate(altdiscordClient) {
   console.log(logSymbols.info, `Printer Status: ${variables.getStatus()}`.printstatus)
   const statusConfig = messageconfig[variables.getStatus()]
 
-  let client
-  if (typeof (altdiscordClient) !== 'undefined') {
-    client = altdiscordClient
-  } else {
-    client = discordClient.getClient()
-  }
+  const client = getDiscordClient(altdiscordClient)
 
   setTimeout(async () => {
     const parsedConfig = parseConfig(statusConfig)
@@ -93,20 +102,10 @@ async function generateEmbed(config, user) {
 
 function postStatus(message, altdiscordClient, altdatabase) {
 
-  let client
-  if (typeof (altdiscordClient) !== 'undefined') {
-    client = altdiscordClient
-  } else {
-    client = discordClient.getClient()
-  }
+  const client = getDiscordClient(altdiscordClient)
 
-  let botdatabase
+  const botdatabase = getDatabase(altdatabase)
   
-  if (typeof (altdatabase) !== undefined) {
-    botdatabase = database.getDatabase()
-  } else {
-    botdatabase = altdatabase
-  }
   for (const guildid in botdatabase.guilds) {
     client.guilds.fetch(guildid)
       .then(async (guild) => {
