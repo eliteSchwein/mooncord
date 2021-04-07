@@ -6,7 +6,7 @@ module.exports = class HelloCommand extends SlashCommand {
         super(creator, {
             guildIDs: '626717239210672139',
             name: 'notifyme',
-            description: 'Should i DM you with the current Print Job Status?'
+            description: 'Should i DM you with the current print status?'
         });
         this.filePath = __filename;
     }
@@ -15,9 +15,9 @@ module.exports = class HelloCommand extends SlashCommand {
         try {
             const notifyStatus = database.updateNotify(ctx.user)
             if (notifyStatus) {
-                return `I will notify the Print Job Status via DM, ${ctx.user.username}!`;
+                return `I will notify you of the print status via DM, ${ctx.user.username}!`;
             }
-            return `I will not longer notify the Print Job Status via DM, ${ctx.user.username}!`;
+            return `I will no longer notify you of the print status via DM, ${ctx.user.username}!`;
         }
         catch (err) {
             console.log((err).error)
