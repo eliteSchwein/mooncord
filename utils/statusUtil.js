@@ -105,6 +105,13 @@ function postStatus(message, altdiscordClient, altdatabase) {
   const client = getDiscordClient(altdiscordClient)
 
   const botdatabase = getDatabase(altdatabase)
+
+  const notifylist = botdatabase.getNotifyList()
+
+  for (const clientid in notifylist) {
+    const user = client.users.get(clientid)
+    user.send(message)
+  }
   
   for (const guildid in botdatabase.guilds) {
     client.guilds.fetch(guildid)
