@@ -112,7 +112,8 @@ async function postStatus(message, altdiscordClient, altdatabase) {
     const clientid = notifylist[notifyindex]
     const user = await client.users.fetch(clientid)
     user.send(message)
-      .catch( err => {})
+      .then(() => {})
+      .catch((err) => { console.log((err).error) })
   }
   
   for (const guildid in botdatabase.guilds) {
