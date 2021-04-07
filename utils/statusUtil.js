@@ -108,8 +108,8 @@ async function postStatus(message, altdiscordClient, altdatabase) {
 
   const notifylist = botdatabase.notify
 
-  for (const clientid in notifylist) {
-    console.log(clientid)
+  for (const notifyindex in notifylist) {
+    const clientid = notifylist[notifyindex]
     const user = await client.users.fetch(clientid)
     user.send(message)
   }
