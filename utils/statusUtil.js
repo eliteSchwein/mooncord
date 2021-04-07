@@ -100,7 +100,7 @@ async function generateEmbed(config, user) {
   return embed
 }
 
-async function postStatus(message, altdiscordClient, altdatabase) {
+function postStatus(message, altdiscordClient, altdatabase) {
 
   const client = getDiscordClient(altdiscordClient)
 
@@ -110,8 +110,11 @@ async function postStatus(message, altdiscordClient, altdatabase) {
 
   for (const notifyindex in notifylist) {
     const clientid = notifylist[notifyindex]
-    const user = await client.users.fetch(clientid)
-    user.send(message)
+    client.users.fetch(clientid)
+      .then((user) => {
+        user.send(message)
+      })
+      .catch((err) => { console.log((err).error) })
   }
   
   for (const guildid in botdatabase.guilds) {
