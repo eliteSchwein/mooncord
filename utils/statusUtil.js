@@ -106,7 +106,7 @@ function postStatus(message, altdiscordClient, altdatabase) {
 
   const botdatabase = getDatabase(altdatabase)
 
-  const notifylist = botdatabase.getNotifyList()
+  const notifylist = botdatabase.notify
 
   for (const clientid in notifylist) {
     const user = client.users.get(clientid)
