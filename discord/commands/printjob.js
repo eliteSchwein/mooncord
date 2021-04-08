@@ -76,7 +76,7 @@ module.exports = class HelloCommand extends SlashCommand {
             
             if (subcommand === 'start') {
                 ctx.defer(false)
-                startPrintJob(ctx, (response) => {
+                startPrintJob(ctx, async (response) => {
                     console.log(response)
                     const commandmessage = await ctx.send(response)
 
