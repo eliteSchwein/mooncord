@@ -42,6 +42,7 @@ put this into your moonraker.conf
     path: /home/pi/mooncord
     origin: https://github.com/eliteschwein/mooncord.git
     install_script: scripts/install.sh
+    enable_node_updates: True
 
 ## Configuration
 
