@@ -9,8 +9,16 @@ module.exports.getInformation = async function (component) {
   const img = getImage(component)
   const componentData = componentHandler[component]
   const fields = await componentData.getFields()
-  console.log(fields.length)
-  const embed = getDefaultEmbed(img[0], componentData.getTitle(), fields)
+  const embed = getDefaultEmbed(img[0], componentData.getTitle())
+  if (fields.length !== 0) {
+    for (let fieldindex in fields) {
+      let field = fields[fieldindex]
+      embed.addField(field.name, field.value, field.inline)
+    }
+  } else {
+    embed.setColor('#c90000')
+    embed.setDescription(`There are currently no ${componentData.getTitle()} data available`)
+  }
   return [img, embed]
 }
 
@@ -28,14 +36,10 @@ function getImage(component) {
   return [`${component}.png`, imgBuffer]
 }
 
-function getDefaultEmbed(img,title,fields) {
+function getDefaultEmbed(img,title) {
   const embed = new Discord.MessageEmbed()
     .setColor('#0099ff')
     .setTitle(title)
     .setThumbnail(`attachment://${img}`)
-  for (let fieldindex in fields) {
-    let field = fields[fieldindex]
-    embed.addField(field.name, field.value, field.inline)
-  }
   return embed
 }
