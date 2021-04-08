@@ -9,7 +9,7 @@ const event = (message, connection, discordClient) => {
     const { params } = messageJson
     if (typeof (methode) === 'undefined') { return }
     if (!Object.keys(states).includes(methode)) { return }
-    console.log(typeof (states[methode].preventStatus))
+    console.log(states[methode])
     if (typeof (states[methode].preventStatus) !== 'undefined') {
       console.log((states[methode].preventStatus.some(invalidState => variables.getStatus() === invalidState)))
       if (states[methode].preventStatus.some(invalidState => variables.getStatus() === invalidState)) { return }
