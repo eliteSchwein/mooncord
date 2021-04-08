@@ -7,15 +7,10 @@ let gcodethumbnail = ''
 let printprogress = 0
 let remainingprinttime = 0
 let printtime = 0
-let temps = {}
 let updatetimer = 0
 
 module.exports.setUpdateTimer = function (newupdatetimer) {
   updatetimer = newupdatetimer
-}
-
-module.exports.setTemps = function (newtemps) {
-  temps = newtemps
 }
 module.exports.setStatus = function (newstatus) {
   status = newstatus
@@ -47,9 +42,6 @@ module.exports.setPrintTime = function (newtime) {
 module.exports.getUpdateTimer = function () {
   return updatetimer
 }
-module.exports.getTemps = function () {
-  return temps
-}
 module.exports.getStatus = function () {
   return status
 }
@@ -66,7 +58,7 @@ module.exports.getRemainingTime = function () {
   return remainingprinttime
 }
 module.exports.getFormatedRemainingTime = function () {
-  return formatDateTime(remainingprinttime * 1000)
+  return formatTime(remainingprinttime)
 }
 module.exports.getVersions = function () {
   return versions
@@ -81,14 +73,14 @@ module.exports.getPrintTime = function () {
   return printtime
 }
 module.exports.getFormatedPrintTime = function () {
-  return formatDateTime(printtime * 1000)
+  return formatTime(printtime)
 }
+module.exports.formatTime = (time) => { return formatTime(time / 1000) }
 
-function formatDateTime (msec) {
-  const date = new Date(msec)
-  let hours = date.getHours()
-  hours -= 1
-  const h = hours >= 10 ? hours : `0${hours}`
-  const m = date.getMinutes() >= 10 ? date.getMinutes() : `0${date.getMinutes()}`
-  return `${h}:${m}`
+function formatTime (seconds) {
+  let h = Math.floor(seconds / 3600);
+  seconds %= 3600;
+  let m = ("0" + Math.floor(seconds / 60)).slice(-2);
+  let s = ("0" + (seconds % 60).toFixed(0)).slice(-2);
+  return `${h}:${m}:${s}`
 }

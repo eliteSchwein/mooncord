@@ -1,6 +1,7 @@
 const config = require('../config.json')
-const statusUtil = require('../utils/statusUtil')
+
 const variables = require('../utils/variablesUtil')
+const status = require('../utils/statusUtil')
 
 const event = (message, connection, discordClient) => {
   const id = Math.floor(Math.random() * 10000) + 1
@@ -18,27 +19,15 @@ const event = (message, connection, discordClient) => {
         connection.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${printfile}"}, "id": ${id}}`)
         if (variables.getStatus() !== currentStatus) {
           variables.setStatus(currentStatus)
-          statusUtil.triggerStatusUpdate(discordClient)
+          status.triggerStatusUpdate(discordClient)
         }
         variables.setStatus('printing')
         if (!config.statusupdatepercent) {
           timer = setInterval(() => {
-            statusUtil.triggerStatusUpdate(discordClient)
+            status.triggerStatusUpdate(discordClient)
           }, 1000 * config.statusupdateinterval)
           variables.setUpdateTimer(timer)
         }
-      }
-      if (params[0] === '// action:cancel') {
-        const currentStatus = 'stop'
-        if (variables.getStatus() !== currentStatus) {
-          variables.setStatus(currentStatus)
-          statusUtil.triggerStatusUpdate(discordClient)
-          clearInterval(variables.getUpdateTimer())
-        }
-        setTimeout(() => {
-          variables.setStatus('ready')
-          statusUtil.triggerStatusUpdate(discordClient)
-        }, 2000)
       }
     }
   }

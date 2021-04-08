@@ -1,11 +1,10 @@
 {
   "name": "mooncord",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Moonraker Discord Bot based on Discord.js",
   "main": "index.js",
   "scripts": {
-    "start": "npm ci --only=prod && npm run-script startmooncord",
-    "startmooncord": "node mooncord.js",
+    "start": "node mooncord.js",
     "ramdebugstart": "node --trace_gc mooncord.js",
     "checkcodestyle": "npx eslint ./**",
     "autofixcodestyle": "npx eslint ./** --fix"
@@ -22,15 +21,19 @@
   },
   "homepage": "https://github.com/eliteSchwein/mooncord#readme",
   "dependencies": {
+    "async-wait-until": "^2.0.5",
     "axios": "^0.21.1",
-    "discord.js": "^12.5.1",
-    "form-data": "^3.0.0",
-    "systeminformation": "^4.33.5",
+    "colors": "^1.4.0",
+    "discord.js": "^12.5.3",
+    "form-data": "^3.0.1",
+    "log-symbols": "^4.1.0",
+    "slash-create": "^3.0.1",
+    "systeminformation": "^5.6.9",
     "websocket": "^1.0.33"
   },
   "devDependencies": {
-    "eslint": "^7.21.0",
-    "eslint-config-galex": "^2.11.5",
+    "eslint": "^7.23.0",
+    "eslint-config-galex": "^2.13.5",
     "eslint-config-standard": "^16.0.2",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-node": "^11.1.0",

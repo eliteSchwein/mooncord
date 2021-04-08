@@ -12,9 +12,15 @@
 
 [![Discord](https://img.shields.io/discord/626717239210672139)](https://discord.gg/auhjVJYqCf)
 
-## Installation
+## Preparations
 
-Firstly make sure you've got a Bot Token, you get them here: [Tutorial](https://github.com/reactiflux/discord-irc/wiki/Creating-a-discord-bot-&-getting-a-token).
+Firstly make sure you've got a Bot Application, you can make it here: [Tutorial](https://github.com/reactiflux/discord-irc/wiki/Creating-a-discord-bot-&-getting-a-token).
+
+You need then the Bot Token: [Tutorial](https://github.com/reactiflux/discord-irc/wiki/Creating-a-discord-bot-&-getting-a-token) <br>
+You also need Application ID and Public Key:
+[Picture](https://github.com/eliteSchwein/mooncord/blob/dev/images/example-application.png)
+
+## Installation
 
 #### Install Git first
 
@@ -26,8 +32,8 @@ Firstly make sure you've got a Bot Token, you get them here: [Tutorial](https://
     $ git clone https://github.com/eliteSchwein/mooncord.git
     $ cd ~/mooncord
     $ bash scripts/install.sh
-    
-### Configure Moonraker Update manager
+
+#### Configure Moonraker Update manager
 
 put this into your moonraker.conf
 
@@ -48,9 +54,10 @@ Explanation config.json
 
 Important Note, you need to configure both Moonraker URL's
 
-- bottoken: Enter your Bot Token here
+- bottoken: Enter your Bot Token here [Preparations](https://github.com/eliteSchwein/mooncord/tree/dev#preparations)
+- botapplicationkey: Enter your Application Public Key here [Preparations](https://github.com/eliteSchwein/mooncord/tree/dev#preparations)
+- botapplicationid: Enter your Application Public ID here [Preparations](https://github.com/eliteSchwein/mooncord/tree/dev#preparations)
 - masterid: Enter your Client ID here [Tutorial](https://techswift.org/2020/04/22/how-to-find-your-user-id-on-discord)
-- prefix: Enter your prefered Bot Prefix here (default: mc!)
 
 Important Note, you need to configure bottoken for the bot to work, and masterid to access all commands!
 
@@ -65,20 +72,12 @@ Important Note, you need to configure bottoken for the bot to work, and masterid
 
 Roles:
 
-- Access:
-  - Can access the following Commands:
-    - Status
-    - Help
-    - Info
-  - Access can be given to everyone via &#60;prefix&#62;generalaccess
-  - or per User via &#60;prefix&#62;addaccess &#60;user_or_roletag&#62;, you can revoke the Access per User via &#60;prefix&#62;removeaccess &#60;user_or_roletag&#62;
 - Admin:
   - Can access the following Commands:
     - All Access Role Commands
     - Channel Managment Commands
     - Print Pause/Resume/Stop
     - List Print Files
-  - Bot Admin can be given per User via &#60;prefix&#62;addadmin &#60;user_or_roletag&#62;, you can revoke the Bot Admin per User via &#60;prefix&#62;removeadmin &#60;user_or_roletag&#62;
 - Master:
   - Can access the following Commands:
     - All Commands
@@ -87,30 +86,28 @@ Roles:
 ## Commands
 
 - Printing:
-  - print &#60;filename&#62;: start a Print with Thumbnail Preview
+  - printjob start &#60;filename&#62;: start a Print Job with Thumbnail Preview
+  - printjob cancel: stop the Print Job
+  - printjob pause: pause the Print Job
+  - printjob resume: resume the Print Job
   - fileinfo &#60;filename&#62;: shows Informations about a Print File with Thumbnail Preview
-  - pause: pause a Print
-  - stop: stop a Print
-  - resume: resume a paused Print
-  - listprints: list all GCode Files
+  - listfiles: list all GCode Files
   - status: shows the current Status of the Printer
   - temp: show current temperatures
+  - execute &#60;gcode&#62;: execute a Gcode Command
 - Basic Commands:
-  - help: shows all commands
   - info: shows informations about the bot
+  - notify: enable Status Updates via DM
+  - hsinfo &#60;component&#62;: shows some Information about the Hardware and Software
 - Permissions:
-  _Note: The groups are explained above [URL](https://github.com/eliteSchwein/mooncord/blob/main/README.md#permissions)_
-  - generalaccess: allow everyone to the Access Role
-  - addaccess &#60;user_or_roletag&#62;: add Access from a User or Role
-  - removeaccess &#60;user_or_roletag&#62;: remove Access from a User or Role
-  - addadmin &#60;user_or_roletag&#62;: add Admin from a User or Role
-  - removeadmin &#60;user_or_roletag&#62;: remove Admin from a User or Role
+  _Note: The groups are explained above [URL](https://github.com/eliteSchwein/mooncord/blob/master/README.md#permissions)_
+  - admin &#60;user_or_role&#62;: add or remove Admin from a User or Role
 - Channel Managment:
-  - addchannel: add the Channel as Broadcast Channel
-  - removechannel: remove the Channel as Broadcast Channel
+  - editchannel: add or remove a Channel as Broadcast Channel
 
 ## Credit, sources and inspiration
 
 - [Kevin O'Connor](https://github.com/KevinOConnor) for the awesome 3D printer firmware [Klipper](https://github.com/KevinOConnor/klipper)
 - [Eric Callahan (arksine)](https://github.com/Arksine) for [Moonraker (Klipper API)](https://github.com/Arksine/moonraker). Without Moonraker, Mooncord would not be possible.
 - [Flaticon](https://www.flaticon.com): for parts of the Logo and most of the Icons
+- [Snazzah](https://github.com/Snazzah/slash-create): for the Slash Command library

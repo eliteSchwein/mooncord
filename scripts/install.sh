@@ -68,7 +68,7 @@ generate_config()
 {
     echo "Generate Configs"
     cp $SCRIPTPATH/config.json $MCPATH/config.json
-    cp $SCRIPTPATH/discorddatabase.json $MCPATH/discorddatabase.json
+    cp $SCRIPTPATH/database.json $MCPATH/database.json
 }
 
 edit_config()

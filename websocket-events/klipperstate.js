@@ -1,5 +1,5 @@
-const statusUtil = require('../utils/statusUtil')
 const variables = require('../utils/variablesUtil')
+const status = require('../utils/statusUtil')
 
 const event = (message, connection, discordClient) => {
   if (message.type === 'utf8') {
@@ -9,7 +9,7 @@ const event = (message, connection, discordClient) => {
       const currentStatus = result.klippy_state
       if (variables.getStatus() !== currentStatus) {
         variables.setStatus(currentStatus)
-        statusUtil.triggerStatusUpdate(discordClient)
+        status.triggerStatusUpdate(discordClient)
       }
     }
   }
