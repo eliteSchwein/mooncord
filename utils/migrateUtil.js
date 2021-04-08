@@ -40,7 +40,7 @@ async function migrateDatabase() {
         
         saveData(stringNewDatabase, '../database.json')
 
-        await fs.unlink(firstDatabasePath)
+        await fs.unlinkSync(firstDatabasePath)
     } catch(err) {
         console.error((err).err)
     }
