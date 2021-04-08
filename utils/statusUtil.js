@@ -132,7 +132,7 @@ function notifyStatus(message, altdiscordClient, altdatabase) {
       .then(async (user) => {
         console.log(await user.send(message))
       })
-      .catch((err) => { console.log((err).error) })
+      .catch((err) => { console.log('(err)'.error) })
   }
 }
 
