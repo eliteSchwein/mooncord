@@ -18,7 +18,7 @@ const enableEvent = function (discordClient) {
         if (message.channel.type === 'text') {
             await messageReaction.users.remove(user)
         }
-        if (!await permission.hasAdmin(user, message.guild.id, discordClient)) {
+        if (!await permission.hasAdmin(user, message.guild, discordClient)) {
             return
         }
         if (messageReaction.emoji.name === '❌') {
@@ -33,7 +33,7 @@ const enableEvent = function (discordClient) {
         if (messageReaction.emoji.name === '✅') {
             const gcodefile = message.embeds[0].author.name
             const id = Math.floor(Math.random() * 10000) + 1
-            
+
             if (message.channel.type === 'text') {
                 await message.reactions.removeAll()
             }
