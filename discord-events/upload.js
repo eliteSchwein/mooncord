@@ -15,7 +15,7 @@ let uploadInProgress = false
 
 const enableEvent = function (discordClient) {
   discordClient.on('message', async (msg) => {
-    if (msg.channel.type !== 'text' || msg.channel.type !== 'dm') {
+    if (msg.channel.type !== 'text' && msg.channel.type !== 'dm') {
       return
     }
     if (msg.attachments.array().length === 0) {
