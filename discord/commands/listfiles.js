@@ -74,7 +74,7 @@ module.exports = class HelloCommand extends SlashCommand {
     }
 }
 
-function handler (message) {
+async function handler (message) {
     const messageJson = JSON.parse(message.utf8Data)
     if (JSON.stringify(messageJson).match(/(modified)/g)) {
         connection.removeListener('message', handler)
