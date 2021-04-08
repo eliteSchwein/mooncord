@@ -29,13 +29,13 @@ async function migrateDatabase() {
             "guilds": firstDatabase
         }
 
-        console.log(newDatabase)
-
         let stringNewDatabase = JSON.stringify(newDatabase)
             .replace(/("accessrole":\[\],)/g,'')
             .replace(/("accessusers":\[\],)/g,'')
             .replace(/("accesseveryone":)/g,'')
             .replace(/("statuschannels":)/g, 'broadcastchannels')
+        
+        console.log(stringNewDatabase)
         
         if(stringNewDatabase.includes('true')){ stringNewDatabase = stringNewDatabase.replace(/(true)/g,'') }
         if(stringNewDatabase.includes('false')){ stringNewDatabase = stringNewDatabase.replace(/(false)/g,'') }
