@@ -26,17 +26,17 @@ const enableEvents = async function (discordClient) {
     connected = true
 
     WSconnection = connection
-
-    console.log('  Sent initial Moonraker commands'.statusmessage)
-
-    connection.send(`{"jsonrpc": "2.0", "method": "machine.update.status", "params":{"refresh": "false"}, "id": ${id}}`)
-    connection.send(`{"jsonrpc": "2.0", "method": "printer.info", "id": ${id}}`)
-    connection.send(`{"jsonrpc": "2.0", "method": "server.info", "id": ${id}}`)
-    connection.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${variables.getCurrentFile()}"}, "id": ${id}}`)
-
-    console.log('  Initial Automatic Moonraker commands'.statusmessage)
     
     setTimeout(() => {
+      console.log('  Sent initial Moonraker commands'.statusmessage)
+
+      connection.send(`{"jsonrpc": "2.0", "method": "machine.update.status", "params":{"refresh": "false"}, "id": ${id}}`)
+      connection.send(`{"jsonrpc": "2.0", "method": "printer.info", "id": ${id}}`)
+      connection.send(`{"jsonrpc": "2.0", "method": "server.info", "id": ${id}}`)
+      connection.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${variables.getCurrentFile()}"}, "id": ${id}}`)
+
+      console.log('  Initial Automatic Moonraker commands'.statusmessage)
+
       setInterval(() => {
         connection.send(`{"jsonrpc": "2.0", "method": "machine.update.status", "params":{"refresh": "false"}, "id": ${id}}`)
         connection.send(`{"jsonrpc": "2.0", "method": "printer.objects.query", "params": {"objects": {"webhooks": null, "virtual_sdcard": null, "print_stats": null}}, "id": ${id}}`)
