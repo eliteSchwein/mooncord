@@ -108,11 +108,9 @@ async function postStart(message, commandContext) {
 
 function startPrintJob(commandContext) {
     const id = Math.floor(Math.random() * 10000) + 1
-    const gcodefile = commandContext.options[subcommand].file
+    const gcodefile = commandContext.options.start.file
     connection.on('message', handler)
     connection.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${gcodefile}"}, "id": ${id}}`)
-    console.log("commandFeedback")
-    //commandFeedback = undefined
 
     const feedbackHandler = setInterval(() => {
         if (timeout === 4) {
