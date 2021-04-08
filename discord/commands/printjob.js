@@ -97,7 +97,6 @@ async function addEmotes(commandContext, commandMessage) {
 }
 
 async function postStart(message, commandContext) {
-    console.log(message)
     const commandmessage = await commandContext.send(message)
 
     if (typeof (message.embeds) === 'undefined') { return }
@@ -105,7 +104,7 @@ async function postStart(message, commandContext) {
     addEmotes(commandContext, commandmessage)
 }
 
-function startPrintJob(commandContext, callback) {
+function startPrintJob(commandContext) {
     const id = Math.floor(Math.random() * 10000) + 1
     const gcodefile = commandContext.options[subcommand].file
     connection.on('message', handler)
