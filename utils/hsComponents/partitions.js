@@ -1,5 +1,23 @@
 const si = require('systeminformation')
 
+const template = {
+    "Partition ${partitionindex} Name": {
+        "value":  "${partition.fs}"
+    },
+    "Partition ${partitionindex} Type": {
+        "value":  "${partition.type}"
+    },
+    "Partition ${partitionindex} Mount": {
+        "value":  "${partition.mount}"
+    },
+    "Partition ${partitionindex} Size": {
+        "value":  "${partition.size}"
+    },
+    "Partition ${partitionindex} Used": {
+        "value":  "${partition.used}"
+    },
+}
+
 module.exports = {}
 module.exports.getTitle = () => { return 'Disks' }
 module.exports.getFields = async () => {
@@ -11,31 +29,21 @@ module.exports.getFields = async () => {
         
         const partition = partitions[partitionindex]
 
-        fields.push({
-            name: `Partition ${partitionindex} Name`,
-            value: `${partition.fs}`,
-            inline: true
-        })
-        fields.push({
-            name: `Partition ${partitionindex} Type`,
-            value: `${partition.type}`,
-            inline: true
-        })
-        fields.push({
-            name: `Partition ${partitionindex} Mount`,
-            value: `${partition.mount}`,
-            inline: true
-        })
-        fields.push({
-            name: `Partition ${partitionindex} Size`,
-            value: `${(partition.size / (1024 ** 3)).toFixed(2)}GB`,
-            inline: true
-        })
-        fields.push({
-            name: `Partition ${partitionindex} Used`,
-            value: `${(partition.used / (1024 ** 3)).toFixed(2)}GB`,
-            inline: true
-        })
+        const translatedTemplate = JSON.stringify(template)
+            .replace(/(${partitionindex})/g, partitionindex)
+            .replace(/(${partition.fs})/g, partition.fs)
+            .replace(/(${partition.type})/g, partition.type)
+            .replace(/(${partition.mount})/g, partition.mount)
+            .replace(/(${partition.size})/g, `${(partition.size / (1024 ** 3)).toFixed(2)}GB`)
+            .replace(/(${partition.used})/g, `${(partition.used / (1024 ** 3)).toFixed(2)}GB`)
+        
+        for (const index in JSON.parse(translatedTemplate)) {
+            fields.push({
+                name: index,
+                value: translatedTemplate[index].value,
+                inline: true
+            })
+        }
     }
     return fields
 }
