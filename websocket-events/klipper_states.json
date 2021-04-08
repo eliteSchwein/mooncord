@@ -1,0 +1,11 @@
+{
+    "notify_klippy_disconnected": {
+        "status": "disconnected"
+    },
+    "notify_klippy_ready": {
+        "status": "ready"
+    },
+    "notify_klippy_shutdown": {
+        "status": "shutdown"
+    }
+}

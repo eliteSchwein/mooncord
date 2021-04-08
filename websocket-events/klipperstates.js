@@ -1,17 +1,15 @@
 const variables = require('../utils/variablesUtil')
 const status = require('../utils/statusUtil')
+const states = require('./klipper_states.json')
 
 const event = (message, connection, discordClient) => {
   if (message.type === 'utf8') {
     const messageJson = JSON.parse(message.utf8Data)
     const methode = messageJson.method
-    if (typeof (methode) !== 'undefined' && methode === 'notify_klippy_shutdown') {
-      const currentStatus = 'shutdown'
-      if (variables.getStatus() !== currentStatus) {
-        variables.setStatus(currentStatus)
-        status.triggerStatusUpdate(discordClient)
-      }
-    }
+    if (typeof (methode) === 'undefined') { return }
+    if (!Object.keys(states).includes(methode)) { return }
+    variables.setStatus(states[methode].status)
+    status.triggerStatusUpdate(discordClient)
   }
 }
 module.exports = event
