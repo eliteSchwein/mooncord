@@ -77,12 +77,12 @@ module.exports = class HelloCommand extends SlashCommand {
 async function handler (message) {
     const messageJson = JSON.parse(message.utf8Data)
     if (JSON.stringify(messageJson).match(/(modified)/g)) {
+        connection.removeListener('message', handler)
         commandFeedback = await chatUtil.generatePageEmbed(
             true,
             -1,
             messageJson.result,
             'Print Files',
             'printlist.png')
-        connection.removeListener('message', handler)
     }
 }

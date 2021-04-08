@@ -70,6 +70,7 @@ async function handler (message, channel) {
     const messageJson = JSON.parse(message.utf8Data)
     if (JSON.stringify(messageJson).match(/(modified)/g)) {
         console.log(messageJson.result)
+        connection.removeListener('message', handler)
         commandFeedback[channel.id] = await chatUtil.generatePageEmbed(
             pageUp,
             page,
@@ -77,7 +78,6 @@ async function handler (message, channel) {
             'Print Files',
             'printlist.png',
             requester[channel.id])
-        connection.removeListener('message', handler)
     }
 }
 module.exports = enableEvent
