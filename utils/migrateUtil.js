@@ -16,7 +16,9 @@ function migrateConfig() {
         config.botapplicationkey = ""
         config.botapplicationid = ""
         saveData(config, '../config.json')
-        process.exit(5)
+        setTimeout(() => {
+            process.exit(5)
+        },1000)
     }
 }
 async function migrateDatabase() {
@@ -27,6 +29,7 @@ async function migrateDatabase() {
         }
         const firstDatabase = require('../discorddatabase.json')
 
+        console.log(firstDatabase)
         const newDatabase = {
             "version": "0.0.2",
             "guilds": firstDatabase
