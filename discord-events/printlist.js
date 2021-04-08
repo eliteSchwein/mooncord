@@ -47,7 +47,7 @@ const enableEvent = function (discordClient) {
 async function executeMessage(message, user) {
     const id = Math.floor(Math.random() * 10000) + 1
 
-    commandFeedback = undefined
+    commandFeedback[message.channel.id] = undefined
     requester = user
     
     await message.edit(chatUtil.getWaitEmbed(user, 'printlist.png'))
@@ -56,8 +56,8 @@ async function executeMessage(message, user) {
     connection.send(`{"jsonrpc": "2.0", "method": "server.files.list", "params": {"root": "gcodes"}, "id": ${id}}`)
 
     const feedbackInterval = setInterval(async () => {
-        if (typeof (commandFeedback) !== 'undefined') {
-            await message.edit(commandFeedback)
+        if (typeof (commandFeedback[message.channel.id]) !== 'undefined') {
+            await message.edit(commandFeedback[message.channel.id])
             clearInterval(feedbackInterval)
         }
     }, 500)
@@ -66,7 +66,7 @@ async function executeMessage(message, user) {
 async function handler (message) {
     const messageJson = JSON.parse(message.utf8Data)
     if (JSON.stringify(messageJson).match(/(filename|modified)/g)) {
-        commandFeedback = await chatUtil.generatePageEmbed(
+        commandFeedback[message.channel.id] = await chatUtil.generatePageEmbed(
             pageUp,
             page,
             messageJson.result,
