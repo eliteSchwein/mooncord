@@ -9,7 +9,7 @@ const event = (message, connection, discordClient) => {
     const { params } = messageJson
     if (typeof (methode) === 'undefined') { return }
     if (!Object.keys(states).includes(methode)) { return }
-    console.log(methode)
+    
     if (typeof (states[methode].preventStatus) !== 'undefined') {
       console.log((states[methode].preventStatus.some(invalidState => variables.getStatus() === invalidState)))
       if (states[methode].preventStatus.some(invalidState => variables.getStatus() === invalidState)) { return }
@@ -22,7 +22,7 @@ const event = (message, connection, discordClient) => {
       if (!states[methode].requiredParams.some(param => JSON.stringify(params).includes(param))) { return }
     }
     if (variables.getStatus() === states[methode].status) { return }
-    console.log('update')
+
     variables.setStatus(states[methode].status)
     status.triggerStatusUpdate(discordClient)
   }
