@@ -3,6 +3,8 @@ const config = require('../config.json')
 const variables = require('../utils/variablesUtil')
 const status = require('../utils/statusUtil')
 
+let lastProgress = 0
+
 const event = (message, connection, discordClient) => {
   const id = Math.floor(Math.random() * 10000) + 1
   if (message.type === 'utf8') {
@@ -26,8 +28,11 @@ const event = (message, connection, discordClient) => {
       discordClient.user.setActivity(`Printing: ${currentProgress.toFixed(0)}%`, { type: 'WATCHING' })
       variables.setProgress(currentProgress.toFixed(0))
 
+      if (currentProgress.toFixed(0) === lastProgress) { return }
+
       if (config.statusupdatepercent &&
         currentProgress.toFixed(0) % config.statusupdateinterval === 0) {
+        lastProgress = currentProgress.toFixed(0)
         status.triggerStatusUpdate(discordClient)
       }
     }
