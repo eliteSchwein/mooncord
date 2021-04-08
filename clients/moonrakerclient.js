@@ -43,28 +43,25 @@ const enableEvents = async function (discordClient) {
       }, 250)
     }, 250)
 
-    fs.readdir(path.resolve(__dirname, '../websocket-events'), (err, files) => {
-      if (err) {
-        console.log(err)
-        return
+    connection.on('close', () => {
+      console.log('  WebSocket Connection Closed'.error)
+      console.log('  Reconnect in 5 sec'.error)
+      connected = false
+      variables.setStatus('offline')
+      status.triggerStatusUpdate(discordClient)
+      setTimeout(() => {
+        client.connect(config.moonrakersocketurl)
+      }, 5000)
+    })
+    connection.on('message', (message) => {
+      for (const event in events) {
+        console.log(event)
       }
-      connection.on('close', () => {
-        console.log('  WebSocket Connection Closed'.error)
-        console.log('  Reconnect in 5 sec'.error)
-        connected = false
-        variables.setStatus('offline')
-        status.triggerStatusUpdate(discordClient)
-        setTimeout(() => {
-          client.connect(config.moonrakersocketurl)
-        }, 5000)
-      })
-      connection.on('message', (message) => {
-        files.forEach(file => {
-          if (file !== 'index.js') {
-            const event = events[file.replace('.js', '')]
-            event(message, connection, discordClient, database.getDatabase())
-          }
-        })
+      files.forEach(file => {
+        if (file !== 'index.js') {
+          const event = events[file.replace('.js', '')]
+          event(message, connection, discordClient, database.getDatabase())
+        }
       })
     })
   })
