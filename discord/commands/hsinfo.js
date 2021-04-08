@@ -5,7 +5,6 @@ const components = require('../../utils/hsComponents')
 module.exports = class HelloCommand extends SlashCommand {
     constructor(creator) {
         super(creator, {
-            guildIDs: '626717239210672139',
             name: 'hsinfo',
             description: 'Get the current Hardware and Software Informations.',
             options: [{
