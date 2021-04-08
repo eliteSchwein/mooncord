@@ -76,14 +76,8 @@ module.exports = class HelloCommand extends SlashCommand {
             
             if (subcommand === 'start') {
                 ctx.defer(false)
-                startPrintJob(ctx, async (response) => {
-                    console.log(response)
-                    const commandmessage = await ctx.send(response)
 
-                    if (typeof (response.embeds) === 'undefined') { return }
-
-                    addEmotes(ctx, commandmessage)
-                })
+                startPrintJob(ctx)
             }
         }
         catch (err) {
@@ -102,6 +96,14 @@ async function addEmotes(commandContext, commandMessage) {
     message.react('❌')
 }
 
+async function postStart(message, commandContext) {
+    const commandmessage = await commandContext.send(message)
+
+    if (typeof (message.embeds) === 'undefined') { return }
+
+    addEmotes(commandContext, commandmessage)
+}
+
 function startPrintJob(commandContext, callback) {
     const id = Math.floor(Math.random() * 10000) + 1
     const gcodefile = commandContext.options[subcommand].file
@@ -114,9 +116,10 @@ function startPrintJob(commandContext, callback) {
         if (timeout === 4) {
             commandFeedback = undefined
             clearInterval(feedbackHandler)
-            callback ({
+            postStart({
                 content: 'Command execution failed!'
-            })
+            }, commandContext)
+            return
         }
 
         timeout++
@@ -126,15 +129,17 @@ function startPrintJob(commandContext, callback) {
         if (commandFeedback === 'Not Found!') {
             commandFeedback = undefined
             clearInterval(feedbackHandler)
-            callback({
+            postStart({
                 content: 'File not Found!'
-            })
+            }, commandContext)
+            return
         }
         if (commandFeedback.files.length === 0) {
             clearInterval(feedbackHandler)
-            callback({
+            postStart({
                 embeds: [commandFeedback.toJSON()]
-            })
+            }, commandContext)
+            return
         }
         const thumbnail = commandFeedback.files[0]
         const files = {
@@ -143,10 +148,11 @@ function startPrintJob(commandContext, callback) {
         }
         commandFeedback = undefined
         clearInterval(feedbackHandler)
-        callback({
+        postStart({
             file: files,
             embeds: [commandFeedback.toJSON()]
-        })
+        }, commandContext)
+        return
     }, 500)
 }
 
