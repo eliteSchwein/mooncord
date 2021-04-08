@@ -45,6 +45,7 @@ function getDifference(software, softwareinfo) {
 
 function postUpdate(updateData, discordClient, database) {
   if (Object.keys(updateData).length === 0) { return }
+  console.log(updateData)
   console.log(logSymbols.info, `There are some Updates!`.printstatus)
   const notifyembed = new Discord.MessageEmbed()
     .setColor('#fcf803')
