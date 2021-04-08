@@ -6,7 +6,7 @@ let connection
 let pageUp
 let page
 
-let requester
+let requester = {}
 
 let commandFeedback = {}
 
@@ -48,13 +48,14 @@ const enableEvent = function (discordClient) {
 
 async function executeMessage(message, user) {
     const id = Math.floor(Math.random() * 10000) + 1
+    const channel = message.channel
 
     commandFeedback[message.channel.id] = undefined
-    requester = user
+    requester[channel.id] = user
     
     await message.edit(chatUtil.getWaitEmbed(user, 'printlist.png'))
 
-    connection.on('message', handler)
+    connection.on('message', (message) => handler(message, channel))
     connection.send(`{"jsonrpc": "2.0", "method": "server.files.list", "params": {"root": "gcodes"}, "id": ${id}}`)
 
     const feedbackInterval = setInterval(async () => {
@@ -65,17 +66,16 @@ async function executeMessage(message, user) {
     }, 500)
 }
 
-async function handler (message) {
+async function handler (message, channel) {
     const messageJson = JSON.parse(message.utf8Data)
-    console.log(message)
     if (JSON.stringify(messageJson).match(/(filename|modified)/g)) {
-        commandFeedback[message.channel.id] = await chatUtil.generatePageEmbed(
+        commandFeedback[channel.id] = await chatUtil.generatePageEmbed(
             pageUp,
             page,
             messageJson.result,
             'Print Files',
             'printlist.png',
-            requester)
+            requester[channel.id])
         connection.removeListener('message', handler)
     }
 }
