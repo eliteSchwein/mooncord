@@ -1,9 +1,9 @@
 const { SlashCommand } = require('slash-create');
 
-const chatUtil = require('../utils/chatUtil')
-const permission = require('../utils/permissionUtil')
-const moonrakerClient = require('../clients/moonrakerclient')
-const discordClient = require('../clients/discordclient')
+const chatUtil = require('../../utils/chatUtil')
+const permission = require('../../utils/permissionUtil')
+const moonrakerClient = require('../../clients/moonrakerclient')
+const discordClient = require('../../clients/discordclient')
 
 let commandFeedback
 let connection

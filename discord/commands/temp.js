@@ -3,7 +3,7 @@ const Discord = require('discord.js')
 const path = require('path')
 const fs = require('fs')
 
-const moonrakerClient = require('../clients/moonrakerclient')
+const moonrakerClient = require('../../clients/moonrakerclient')
 
 let commandFeedback
 let connection

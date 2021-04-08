@@ -1,5 +1,5 @@
 const { SlashCommand } = require('slash-create');
-const database = require('../utils/databaseUtil')
+const database = require('../../utils/databaseUtil')
 
 module.exports = class HelloCommand extends SlashCommand {
     constructor(creator) {

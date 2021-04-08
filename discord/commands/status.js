@@ -1,5 +1,5 @@
 const { SlashCommand } = require('slash-create');
-const statusUtil = require('../utils/statusUtil')
+const statusUtil = require('../../utils/statusUtil')
 
 module.exports = class HelloCommand extends SlashCommand {
     constructor(creator) {

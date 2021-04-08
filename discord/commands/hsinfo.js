@@ -1,6 +1,6 @@
 const { SlashCommand, CommandOptionType } = require('slash-create')
-const hsUtil = require('../utils/hsUtil')
-const components = require('../utils/hsComponents')
+const hsUtil = require('../../utils/hsUtil')
+const components = require('../../utils/hsComponents')
 
 module.exports = class HelloCommand extends SlashCommand {
     constructor(creator) {

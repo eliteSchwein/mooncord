@@ -1,7 +1,7 @@
 const { SlashCommand, CommandOptionType } = require('slash-create')
 
-const permission = require('../utils/permissionUtil')
-const moonrakerClient = require('../clients/moonrakerclient')
+const permission = require('../../utils/permissionUtil')
+const moonrakerClient = require('../../clients/moonrakerclient')
 
 let commandFeedback
 

@@ -1,6 +1,6 @@
-const chatUtil = require('../utils/chatUtil')
-const permission = require('../utils/permissionUtil')
-const moonrakerClient = require('../clients/moonrakerclient')
+const chatUtil = require('../../utils/chatUtil')
+const permission = require('../../utils/permissionUtil')
+const moonrakerClient = require('../../clients/moonrakerclient')
 
 const enableEvent = function (discordClient) {
     discordClient.on('messageReactionAdd', async (messageReaction, user) => {

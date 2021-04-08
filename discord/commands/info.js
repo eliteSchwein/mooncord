@@ -1,6 +1,6 @@
 const { SlashCommand } = require('slash-create');
 const Discord = require('discord.js')
-const pjson = require('../package.json')
+const pjson = require('../../package.json')
 const path = require('path')
 const fs = require('fs')
 

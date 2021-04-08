@@ -3,8 +3,8 @@ const Discord = require('discord.js')
 
 const moonrakerClient = require('../clients/moonrakerclient')
 
-const thumbnail = require('../utils/thumbnailUtil')
-const variables = require('../utils/variablesUtil')
+const thumbnail = require('../../utils/thumbnailUtil')
+const variables = require('../../utils/variablesUtil')
 
 let commandFeedback
 let connection

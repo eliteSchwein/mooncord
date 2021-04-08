@@ -1,11 +1,13 @@
 const { SlashCommand, CommandOptionType } = require('slash-create');
 const Discord = require('discord.js')
 
-const thumbnail = require('../utils/thumbnailUtil')
-const permission = require('../utils/permissionUtil')
-const variables = require('../utils/variablesUtil')
-const moonrakerClient = require('../clients/moonrakerclient')
-const discordClient = require('../clients/discordclient')
+const thumbnail = require('../../utils/thumbnailUtil')
+const permission = require('../../utils/permissionUtil')
+const variables = require('../../utils/variablesUtil')
+const moonrakerClient = require('../../clients/moonrakerclient')
+const discordClient = require('../../clients/discordclient')
+
+const metadata = require('../commands-metadata/printjob.json')
 
 let commandFeedback
 let connection
@@ -50,36 +52,28 @@ module.exports = class HelloCommand extends SlashCommand {
                 return `You dont have the Permissions, ${ctx.user.username}!`
             }
             const subcommand = ctx.subcommands[0]
+            const currentStatus = variables.getStatus()
+            const id = Math.floor(Math.random() * 10000) + 1
+
             connection = moonrakerClient.getConnection()
 
             if (typeof (commandFeedback) !== 'undefined') {
                 return `This Command is not ready, ${ctx.user.username}!`
             }
+
+            if (Object.keys(metadata).includes(subcommand)) {
+                const subcommandmeta = metadata[subcommand]
+                if (subcommand === currentStatus) {
+                    return subcommandmeta.statusSame.replace(/(\${user})/g, ctx.user.username)
+                }
+
+                if (!subcommandmeta.requiredStatus.includes(currentStatus)) {
+                    return subcommandmeta.statusNotValid.replace(/(\${user})/g, ctx.user.username)
+                }
+                connection.send(`{"jsonrpc": "2.0", "method": "printer.gcode.script", "params": {"script": "${subcommandmeta.macro}"}, "id": ${id}}`)
+                return subcommandmeta.statusValid.replace(/(\${user})/g, ctx.user.username)
+            }
             
-            if (subcommand === 'resume') {
-                if (variables.getStatus() !== 'pause') {
-                    return `${ctx.user.username} the Print Job isn\`t currently Pausing!`
-                }
-                connection.send(`{"jsonrpc": "2.0", "method": "printer.print.resume", "id": ${id}}`)
-                return `${ctx.user.username} you resumed the Print Job!`
-            }
-            if (subcommand === 'cancel') {
-                if (variables.getStatus() !== 'printing' && variables.getStatus() !== 'pause') {
-                    return `${ctx.user.username} there isn\`t currently any active Print Job!`
-                }
-                connection.send(`{"jsonrpc": "2.0", "method": "printer.gcode.script", "params": {"script": "CANCEL_PRINT"}, "id": ${id}}`)
-                return `${ctx.user.username} you aborted the Print Job!`
-            }
-            if (subcommand === 'pause') {
-                if (variables.getStatus() === 'pause') {
-                    return `${ctx.user.username} the current Print Job is already Paused!`
-                }
-                if (variables.getStatus() !== 'printing') {
-                    return `${ctx.user.username} there isn\`t currently any active Print Job!`
-                }
-                connection.send(`{"jsonrpc": "2.0", "method": "printer.gcode.script", "params": {"script": "PAUSE"}, "id": ${id}}`)
-                return `${ctx.user.username} you paused the Print Job!`
-            }
             if (subcommand === 'start') {
                 ctx.defer(false)
 

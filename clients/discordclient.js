@@ -3,7 +3,7 @@ const path = require('path')
 const { GatewayServer, SlashCreator } = require('slash-create')
 const { waitUntil } = require('async-wait-until')
 
-const events = require('../discord-events')
+const events = require('../discord/events')
 
 const config = require('../config.json')
 
@@ -41,7 +41,7 @@ function enableCommands() {
   });
 
   creator
-    .registerCommandsIn(path.join(__dirname, '../discord-commands'))
+    .registerCommandsIn(path.join(__dirname, '../discord/commands'))
     .syncCommands();
   
   creator

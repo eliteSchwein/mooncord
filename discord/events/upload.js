@@ -6,8 +6,8 @@ const logSymbols = require('log-symbols');
 
 const config = require('../config.json')
 
-const database = require('../utils/databaseUtil')
-const permission = require('../utils/permissionUtil')
+const database = require('../../utils/databaseUtil')
+const permission = require('../../utils/permissionUtil')
 
 let uploadList = []
 let uploadWaitTimer = 0
