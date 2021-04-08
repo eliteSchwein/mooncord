@@ -77,6 +77,9 @@ module.exports = class HelloCommand extends SlashCommand {
                 return `${ctx.user.username} you paused the Print Job!`
             }
             if (subcommand === 'start') {
+                if (typeof (commandFeedback) !== 'undefined') {
+                    return `This Command is not ready, ${ctx.user.username}!`
+                }
                 const gcodefile = ctx.options[subcommand].file
                 connection.on('message', handler)
                 connection.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${gcodefile}"}, "id": ${id}}`)
@@ -90,6 +93,7 @@ module.exports = class HelloCommand extends SlashCommand {
                             ctx.send({
                                 content: 'File not Found!'
                             })
+                            commandFeedback = undefined
                         } else {
                             if (commandFeedback.files.length !== 0) {
                                 const thumbnail = commandFeedback.files[0]
@@ -110,6 +114,7 @@ module.exports = class HelloCommand extends SlashCommand {
                                     embeds: [commandFeedback.toJSON()]
                                 });
                             }
+                            commandFeedback = undefined
                         }
                         clearInterval(feedbackInterval)
                     }
@@ -117,6 +122,7 @@ module.exports = class HelloCommand extends SlashCommand {
                         ctx.send({
                             content: 'Command execution failed!'
                         })
+                        commandFeedback = undefined
                         clearInterval(feedbackInterval)
                     }
                     timeout++
@@ -125,6 +131,8 @@ module.exports = class HelloCommand extends SlashCommand {
         }
         catch (err) {
             console.log((err).error)
+            connection.removeListener('message', handler)
+            commandFeedback = undefined
             return "An Error occured!"
         }
     }

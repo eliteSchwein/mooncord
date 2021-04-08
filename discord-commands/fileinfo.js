@@ -27,6 +27,9 @@ module.exports = class HelloCommand extends SlashCommand {
 
     async run(ctx) {
         try {
+            if (typeof (commandFeedback) !== 'undefined') {
+                return `This Command is not ready, ${ctx.user.username}!`
+            }
             let gcodefile = ctx.options.file
             if (!gcodefile.endsWith('.gcode')) {
                 gcodefile += '.gcode'
@@ -46,6 +49,7 @@ module.exports = class HelloCommand extends SlashCommand {
             const feedbackInterval = setInterval(() => {
                 if (typeof (commandFeedback) !== 'undefined') {
                     if (commandFeedback === 'Not Found!') {
+                        commandFeedback = undefined
                         ctx.send({
                             content: 'File not Found!'
                         })
@@ -65,6 +69,7 @@ module.exports = class HelloCommand extends SlashCommand {
                                 embeds: [commandFeedback.toJSON()]
                             });
                         }
+                        commandFeedback = undefined
                     }
                     clearInterval(feedbackInterval)
                 }
@@ -72,6 +77,7 @@ module.exports = class HelloCommand extends SlashCommand {
                     ctx.send({
                         content: 'Command execution failed!'
                     })
+                    commandFeedback = undefined
                     clearInterval(feedbackInterval)
                     connection.removeListener('message', handler)
                 }
@@ -80,6 +86,7 @@ module.exports = class HelloCommand extends SlashCommand {
         }
         catch (err) {
             console.log((err).error)
+            commandFeedback = undefined
             connection.removeListener('message', handler)
             return 'An Error occured!'
         }

@@ -21,6 +21,9 @@ module.exports = class HelloCommand extends SlashCommand {
 
     async run(ctx) {
         try {
+            if (typeof (commandFeedback) !== 'undefined') {
+                return `This Command is not ready, ${ctx.user.username}!`
+            }
             if (!await permission.hasAdmin(ctx.user, ctx.guildID)) {
                 return `You dont have the Permissions, ${ctx.user.username}!`
             }
@@ -44,6 +47,7 @@ module.exports = class HelloCommand extends SlashCommand {
                         file: files,
                         embeds: [commandFeedback.toJSON()]
                     });
+                    commandFeedback = undefined
                     const channel = await discordClient.getClient().channels.fetch(ctx.channelID)
                     const message = await channel.messages.fetch(commandmessage.id)
                     message.react('◀️')
@@ -54,6 +58,7 @@ module.exports = class HelloCommand extends SlashCommand {
                     ctx.send({
                         content: 'There are currently no Files!'
                     })
+                    commandFeedback = undefined
                     connection.removeListener('message', handler)
                     clearInterval(feedbackInterval)
                 }
@@ -63,6 +68,7 @@ module.exports = class HelloCommand extends SlashCommand {
         catch (err) {
             console.log((err).error)
             connection.removeListener('message', handler)
+            commandFeedback = undefined
             return "An Error occured!"
         }
     }

@@ -25,6 +25,9 @@ module.exports = class HelloCommand extends SlashCommand {
             if (!await permission.hasAdmin(ctx.user, ctx.guildID)) {
                 return `You dont have the Permissions, ${ctx.user.username}!`
             }
+            if (typeof (commandFeedback) !== 'undefined') {
+                return `This Command is not ready, ${ctx.user.username}!`
+            }
             
             const gcode = ctx.options.gcode
             const id = Math.floor(Math.random() * 10000) + 1
@@ -46,9 +49,11 @@ module.exports = class HelloCommand extends SlashCommand {
                     ctx.send({
                         content: commandFeedback
                     })
+                    commandFeedback = undefined
                     clearInterval(feedbackInterval)
                 }
                 if (timeout === 4) {
+                    commandFeedback = undefined
                     ctx.send({
                         content: 'Command execution failed!'
                     })
@@ -61,7 +66,8 @@ module.exports = class HelloCommand extends SlashCommand {
         catch (err) {
             console.log((err).error)
             connection.removeListener('message', handler)
-            return 'An Error occured!'
+            commandFeedback = undefined
+            return "An Error occured!"
         }
     }
 }
