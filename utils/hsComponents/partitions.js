@@ -29,7 +29,9 @@ module.exports.getFields = async () => {
         
         const partition = partitions[partitionindex]
 
-        const translatedTemplate = JSON.stringify(template)
+        const stringTemplate = JSON.stringify(template)
+
+        const translatedTemplate = stringTemplate
             .replace(/(${partitionindex})/g, partitionindex)
             .replace(/(${partition.fs})/g, partition.fs)
             .replace(/(${partition.type})/g, partition.type)
