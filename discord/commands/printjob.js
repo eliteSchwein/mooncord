@@ -146,6 +146,10 @@ function startPrintJob(commandContext) {
             name: thumbnail.name,
             file: thumbnail.attachment
         }
+        console.log({
+            file: files,
+            embeds: [commandFeedback.toJSON()]
+        })
         clearInterval(feedbackHandler)
         postStart({
             file: files,
