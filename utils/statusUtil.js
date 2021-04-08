@@ -130,7 +130,7 @@ function notifyStatus(message, altdiscordClient, altdatabase) {
     const clientid = notifylist[notifyindex]
     client.users.fetch(clientid)
       .then((user) => {
-        user.send(message)
+        console.log(user.send(message))
       })
       .catch((err) => { console.log((err).error) })
   }
