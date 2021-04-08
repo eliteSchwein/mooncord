@@ -13,7 +13,7 @@ const event = async (message, connection, discordClient, database) => {
       const diffVersions = {}
       for (const software in result.version_info) {
         const softwareinfo = result.version_info[software]
-        diffVersions[software] = getDifference(softwareinfo)
+        diffVersions[software] = getDifference(software, softwareinfo)
       }
       postUpdate(diffVersions, discordClient, database)
       variables.setVersions(result.version_info)
