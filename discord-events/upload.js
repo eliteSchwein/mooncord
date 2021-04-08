@@ -15,11 +15,7 @@ let uploadInProgress = false
 
 const enableEvent = function (discordClient) {
   discordClient.on('message', async (msg) => {
-    if (msg.channel.type === 'dm') {
-      msg.author.send('DM is not Supportet!')
-      return
-    }
-    if (msg.channel.type !== 'text') {
+    if (msg.channel.type !== 'text' || msg.channel.type !== 'dm') {
       return
     }
     if (msg.attachments.array().length === 0) {
@@ -31,35 +27,41 @@ const enableEvent = function (discordClient) {
     if (!await permission.hasAdmin(msg.author, msg.guild.id, discordClient)) {
       return
     }
+    if (msg.channel.type === 'dm') {
+      upload(msg)
+      return
+    }
     const guilddatabase = database.getGuildDatabase(msg.guild)
     for (const index in guilddatabase.broadcastchannels) {
       const channel = msg.guild.channels.cache.get(guilddatabase.broadcastchannels[index])
       if (channel.id === msg.channel.id) {
-        const gcodefile = msg.attachments.array()[0]
-        const uploadData = {
-          'gcodefile': gcodefile,
-          'message': msg
-        }
-        uploadList.push(uploadData)
-        if (uploadWaitTimer === 0) {
-          uploadWaitTimer = 5
-          const timer = setInterval(async () => {
-            if (uploadWaitTimer === 0) {
-              upload()
-              clearInterval(timer)
-            } else {
-              uploadWaitTimer --
-            }
-          }, 1000)
-        }
-        uploadWaitTimer = 5
+        upload(msg)
       }
     }
   })
 }
 module.exports = enableEvent
 
-function upload() {
+function upload(message) {
+  const uploadData = {
+    'message': message
+  }
+  uploadList.push(uploadData)
+  if (uploadWaitTimer === 0) {
+    uploadWaitTimer = 5
+    const timer = setInterval(async () => {
+      if (uploadWaitTimer === 0) {
+        uploadNext()
+        clearInterval(timer)
+      } else {
+        uploadWaitTimer --
+      }
+    }, 1000)
+  }
+  uploadWaitTimer = 5
+}
+
+function uploadNext() {
   if (uploadList.length === 0) {
     return
   }
@@ -69,11 +71,12 @@ function upload() {
   if (uploadInProgress) {
     return
   }
-  uploadFile(uploadList[0].gcodefile, uploadList[0].message)
+  uploadFile(uploadList[0].message)
   uploadList.splice(0, 1)
 }
 
-function uploadFile(file, message) {
+function uploadFile(message) {
+  const file = message.attachments.array()[0]
   const formData = new FormData()
   const tempFile = fs.createWriteStream(`temp/${file.name.replace(' ', '_')}`)
   uploadInProgress = true
@@ -93,7 +96,7 @@ function uploadFile(file, message) {
           }
         })
         uploadInProgress = false
-        setTimeout(upload, 250)
+        setTimeout(uploadNext, 250)
       })
       .catch(err => {
         if (err) {
@@ -106,7 +109,7 @@ function uploadFile(file, message) {
             }
           })
           uploadInProgress = false
-        setTimeout(upload, 250)
+        setTimeout(uploadNext, 250)
         }
       })
   })
