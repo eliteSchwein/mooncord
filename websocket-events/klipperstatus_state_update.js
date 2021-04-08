@@ -15,7 +15,6 @@ const event = async (message, connection, discordClient, database) => {
         const softwareinfo = result.version_info[software]
         if (software === 'system') {
           if (softwareinfo.package_count !== 0 && (typeof (variables.getVersions()) === 'undefined' || softwareinfo.package_count !== variables.getVersions()[software].package_count)) {
-            notifyembed.addField('System', `Packages: ${softwareinfo.package_count}`, true)
             diffVersions.system = softwareinfo.package_count
           }
         } else {
