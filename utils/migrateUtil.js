@@ -5,9 +5,9 @@ const logSymbols = require('log-symbols');
 module.exports = {}
 module.exports.init = async () => {
     await migrateDatabase()
-    migrateConfig()
+    await migrateConfig()
 }
-function migrateConfig() {
+async function migrateConfig() {
     const config = require('../config.json')
     if (typeof (config.prefix) !== 'undefined') {
         console.log(logSymbols.info, `Migrate 0.0.1 Config to 0.0.2 Config`.database)
