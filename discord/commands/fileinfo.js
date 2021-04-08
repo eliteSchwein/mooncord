@@ -1,7 +1,7 @@
 const { SlashCommand, CommandOptionType } = require('slash-create');
 const Discord = require('discord.js')
 
-const moonrakerClient = require('../clients/moonrakerclient')
+const moonrakerClient = require('../../clients/moonrakerclient')
 
 const thumbnail = require('../../utils/thumbnailUtil')
 const variables = require('../../utils/variablesUtil')

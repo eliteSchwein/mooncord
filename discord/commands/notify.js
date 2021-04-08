@@ -4,7 +4,6 @@ const database = require('../../utils/databaseUtil')
 module.exports = class HelloCommand extends SlashCommand {
     constructor(creator) {
         super(creator, {
-            guildIDs: '626717239210672139',
             name: 'notifyme',
             description: 'Should i DM you with the current print status?'
         });

@@ -1,8 +1,9 @@
 const { SlashCommand } = require('slash-create');
 const Discord = require('discord.js')
-const pjson = require('../../package.json')
 const path = require('path')
 const fs = require('fs')
+
+const pjson = require('../../package.json')
 
 module.exports = class HelloCommand extends SlashCommand {
     constructor(creator) {
@@ -19,7 +20,7 @@ module.exports = class HelloCommand extends SlashCommand {
             Author: ${pjson.author}\n
             Homepage: ${pjson.homepage}\n`
         
-            const logopath = path.resolve(__dirname, '../images/logo.png')
+            const logopath = path.resolve(__dirname, '../../images/logo.png')
 
             const logobuffer = fs.readFileSync(logopath)
 
