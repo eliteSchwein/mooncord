@@ -9,6 +9,7 @@ module.exports.getInformation = async function (component) {
   const img = getImage(component)
   const componentData = componentHandler[component]
   const fields = await componentData.getFields()
+  console.log(fields.length)
   const embed = getDefaultEmbed(img[0], componentData.getTitle(), fields)
   return [img, embed]
 }
