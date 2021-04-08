@@ -107,13 +107,12 @@ async function postStart(message, commandContext) {
 }
 
 function startPrintJob(commandContext) {
-    console.log('okijasd')
     const id = Math.floor(Math.random() * 10000) + 1
     const gcodefile = commandContext.options[subcommand].file
     connection.on('message', handler)
     connection.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${gcodefile}"}, "id": ${id}}`)
 
-    commandFeedback = undefined
+    //commandFeedback = undefined
 
     const feedbackHandler = setInterval(() => {
         if (timeout === 4) {
