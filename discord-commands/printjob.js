@@ -50,8 +50,12 @@ module.exports = class HelloCommand extends SlashCommand {
                 return `You dont have the Permissions, ${ctx.user.username}!`
             }
             const subcommand = ctx.subcommands[0]
-            const id = Math.floor(Math.random() * 10000) + 1
             connection = moonrakerClient.getConnection()
+
+            if (typeof (commandFeedback) !== 'undefined') {
+                return `This Command is not ready, ${ctx.user.username}!`
+            }
+            
             if (subcommand === 'resume') {
                 if (variables.getStatus() !== 'pause') {
                     return `${ctx.user.username} the Print Job isn\`t currently Pausing!`
@@ -77,56 +81,14 @@ module.exports = class HelloCommand extends SlashCommand {
                 return `${ctx.user.username} you paused the Print Job!`
             }
             if (subcommand === 'start') {
-                if (typeof (commandFeedback) !== 'undefined') {
-                    return `This Command is not ready, ${ctx.user.username}!`
-                }
-                const gcodefile = ctx.options[subcommand].file
-                connection.on('message', handler)
-                connection.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${gcodefile}"}, "id": ${id}}`)
-
-                commandFeedback = undefined
                 ctx.defer(false)
 
-                const feedbackInterval = setInterval(async () => {
-                    if (typeof (commandFeedback) !== 'undefined') {
-                        if (commandFeedback === 'Not Found!') {
-                            ctx.send({
-                                content: 'File not Found!'
-                            })
-                            commandFeedback = undefined
-                        } else {
-                            if (commandFeedback.files.length !== 0) {
-                                const thumbnail = commandFeedback.files[0]
-                                const files = {
-                                    name: thumbnail.name,
-                                    file: thumbnail.attachment
-                                }
-                                const commandmessage = await ctx.send({
-                                    file: files,
-                                    embeds: [commandFeedback.toJSON()]
-                                });
-                                const channel = await discordClient.getClient().channels.fetch(ctx.channelID)
-                                const message = await channel.messages.fetch(commandmessage.id)
-                                message.react('✅')
-                                message.react('❌')
-                            } else {
-                                ctx.send({
-                                    embeds: [commandFeedback.toJSON()]
-                                });
-                            }
-                            commandFeedback = undefined
-                        }
-                        clearInterval(feedbackInterval)
-                    }
-                    if (timeout === 4) {
-                        ctx.send({
-                            content: 'Command execution failed!'
-                        })
-                        commandFeedback = undefined
-                        clearInterval(feedbackInterval)
-                    }
-                    timeout++
-                }, 500)
+                const response = await startPrintJob(ctx)
+                const commandmessage = await ctx.send(response)
+
+                if (typeof (response.embeds) === 'undefined') { return }
+
+                addEmotes(ctx, commandmessage)
             }
         }
         catch (err) {
@@ -136,6 +98,66 @@ module.exports = class HelloCommand extends SlashCommand {
             return "An Error occured!"
         }
     }
+}
+
+async function addEmotes(commandContext, commandMessage) {
+    const channel = await discordClient.getClient().channels.fetch(commandContext.channelID)
+    const message = await channel.messages.fetch(commandMessage.id)
+    message.react('✅')
+    message.react('❌')
+}
+
+async function startPrintJob(commandContext) {
+    const id = Math.floor(Math.random() * 10000) + 1
+    const gcodefile = commandContext.options[subcommand].file
+    connection.on('message', handler)
+    connection.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${gcodefile}"}, "id": ${id}}`)
+
+    commandFeedback = undefined
+
+    const feedbackHandler = setInterval(async () => {
+        if (timeout === 4) {
+            commandFeedback = undefined
+            clearInterval(feedbackHandler)
+            callback ({
+                content: 'Command execution failed!'
+            })
+            return
+        }
+
+        timeout++
+
+        if (typeof (commandFeedback) === 'undefined') { return }
+
+        if (commandFeedback === 'Not Found!') {
+            commandFeedback = undefined
+            clearInterval(feedbackHandler)
+            callback({
+                content: 'File not Found!'
+            })
+            return
+        }
+        if (commandFeedback.files.length === 0) {
+            clearInterval(feedbackHandler)
+            callback({
+                embeds: [commandFeedback.toJSON()]
+            })
+            return
+        }
+        const thumbnail = commandFeedback.files[0]
+        const files = {
+            name: thumbnail.name,
+            file: thumbnail.attachment
+        }
+        commandFeedback = undefined
+        clearInterval(feedbackHandler)
+        callback({
+            file: files,
+            embeds: [commandFeedback.toJSON()]
+        })
+        return
+    }, 500)
+    return feedbackHandler
 }
 
 async function handler (message) {
