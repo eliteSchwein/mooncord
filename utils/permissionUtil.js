@@ -6,6 +6,9 @@ module.exports.hasAdmin = async function (user, guildid, altdiscordClient) {
   if (user.id === config.masterid) {
     return true
   }
+  if (typeof (guildid) === 'undefined') {
+    return  false
+  }
   let client
   if (typeof (altdiscordClient) !== 'undefined') {
     client = altdiscordClient

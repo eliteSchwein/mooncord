@@ -24,19 +24,14 @@ const enableEvent = function (discordClient) {
     if (!msg.attachments.array()[0].name.endsWith('.gcode')) {
       return
     }
-    if (msg.channel.type === 'dm') {
-      if(!permission.isMaster(msg.author)) { return }
-      upload(msg)
-    } else {
-      if (!await permission.hasAdmin(msg.author, msg.guild.id, discordClient)) {
-        return
-      }
-      const guilddatabase = database.getGuildDatabase(msg.guild)
-      for (const index in guilddatabase.broadcastchannels) {
-        const channel = msg.guild.channels.cache.get(guilddatabase.broadcastchannels[index])
-        if (channel.id === msg.channel.id) {
-          upload(msg)
-        }
+    if (!await permission.hasAdmin(msg.author, msg.guild.id, discordClient)) {
+      return
+    }
+    const guilddatabase = database.getGuildDatabase(msg.guild)
+    for (const index in guilddatabase.broadcastchannels) {
+      const channel = msg.guild.channels.cache.get(guilddatabase.broadcastchannels[index])
+      if (channel.id === msg.channel.id) {
+        upload(msg)
       }
     }
   })

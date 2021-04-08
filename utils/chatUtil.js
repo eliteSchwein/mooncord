@@ -29,7 +29,7 @@ module.exports.getWaitEmbed = function (user, icon) {
   return waitEmbed
 }
 module.exports.hasMessageEmbed = function (message) {
-  if (message.channel.type !== 'text') {
+  if (message.channel.type !== 'text' && message.channel.type !== 'dm') {
     return false
   }
   if (message.embeds.length === 0) {
