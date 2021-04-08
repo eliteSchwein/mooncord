@@ -8,7 +8,7 @@ const event = (message, connection, discordClient) => {
     if (typeof (result) !== 'undefined' && typeof (result.klippy_state) !== 'undefined') {
       const currentStatus = result.klippy_state
       if (variables.getStatus() !== currentStatus) {
-        //variables.setStatus(currentStatus)
+        variables.setStatus(currentStatus)
         status.triggerStatusUpdate(discordClient)
       }
     }
