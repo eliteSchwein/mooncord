@@ -29,15 +29,15 @@ async function migrateDatabase() {
             }
 
             let stringNewDatabase = JSON.stringify(newDatabase)
-                .replace(/("accessrole":\[\],)/g,'')
-                .replace(/("accessusers":\[\],)/g,'')
-                .replace(/("accesseveryone":)/g,'')
                 .replace(/(statuschannels)/g, 'broadcastchannels')
             
-            if (stringNewDatabase.includes('true')) { stringNewDatabase = stringNewDatabase.replace(/(true)/g, '') }
-            if (stringNewDatabase.includes('false')) { stringNewDatabase = stringNewDatabase.replace(/(false)/g, '') }
+            newDatabase = JSON.parse(stringNewDatabase)
 
-            console.log(stringNewDatabase)
+            for (const guildid in newDatabase.guilds) {
+                newDatabase.guilds[guildid].accessrole = undefined
+                newDatabase.guilds[guildid].accessusers = undefined
+                newDatabase.guilds[guildid].accesseveryone = undefined
+            }
             
             saveData(JSON.parse(stringNewDatabase), '../database.json')
 
