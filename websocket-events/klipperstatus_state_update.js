@@ -32,7 +32,7 @@ const event = async (message, connection, discordClient, database) => {
   }
 }
 function postUpdate(updateData, discordClient, database) {
-  if (updateData === {}) { return }
+  if (updateData.length === 0) { return }
   console.log(logSymbols.info, `There are some Updates!`.printstatus)
   const notifyembed = new Discord.MessageEmbed()
     .setColor('#fcf803')
@@ -40,12 +40,13 @@ function postUpdate(updateData, discordClient, database) {
     .attachFiles(path.resolve(__dirname, '../images/update.png'))
     .setThumbnail('attachment://update.png')
     .setTimestamp()
-  console.log(updateData)
+  console.log(updateData.system)
   if (typeof (updateData.system) !== 'undefined') {
     notifyembed.addField('System', `Packages: ${updateData.system}`, true)
     updateData.system = undefined
   }
   for (const software in updateData) {
+    console.log(updateData[software])
     notifyembed.addField(software, `${updateData[software].current} \n🆕 ${updateData[software].remote}`, true)
   }
   status.postBroadcastMessage(notifyembed, discordClient, database)
