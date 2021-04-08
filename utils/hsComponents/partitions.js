@@ -32,12 +32,12 @@ module.exports.getFields = async () => {
         const stringTemplate = JSON.stringify(template)
 
         const translatedTemplate = stringTemplate
-            .replace(/(${partitionindex})/g, partitionindex)
-            .replace(/(${partition.fs})/g, partition.fs)
-            .replace(/(${partition.type})/g, partition.type)
-            .replace(/(${partition.mount})/g, partition.mount)
-            .replace(/(${partition.size})/g, `${(partition.size / (1024 ** 3)).toFixed(2)}GB`)
-            .replace(/(${partition.used})/g, `${(partition.used / (1024 ** 3)).toFixed(2)}GB`)
+            .replace(/(\${partitionindex})/g, partitionindex)
+            .replace(/(\${partition.fs})/g, partition.fs)
+            .replace(/(\${partition.type})/g, partition.type)
+            .replace(/(\${partition.mount})/g, partition.mount)
+            .replace(/(\${partition.size})/g, `${(partition.size / (1024 ** 3)).toFixed(2)}GB`)
+            .replace(/(\${partition.used})/g, `${(partition.used / (1024 ** 3)).toFixed(2)}GB`)
         
         for (const index in JSON.parse(translatedTemplate)) {
             console.log(index)
