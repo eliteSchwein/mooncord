@@ -15,10 +15,8 @@ function migrateConfig() {
         config.prefix = undefined
         config.botapplicationkey = ""
         config.botapplicationid = ""
-        saveData(config, '../config.json')
-        setTimeout(() => {
-            process.exit(5)
-        },1000)
+        await saveData(config, '../config.json')
+        process.exit(5)
     }
 }
 async function migrateDatabase() {
@@ -28,12 +26,12 @@ async function migrateDatabase() {
             console.log(logSymbols.info, `Migrate 0.0.1 Database to 0.0.2 Database`.database)
         }
         const firstDatabase = require('../discorddatabase.json')
-
-        console.log(firstDatabase)
         const newDatabase = {
             "version": "0.0.2",
             "guilds": firstDatabase
         }
+
+        console.log(newDatabase)
 
         let stringNewDatabase = JSON.stringify(newDatabase)
             .replace(/("accessrole":\[\],)/g,'')
@@ -44,7 +42,7 @@ async function migrateDatabase() {
         if(stringNewDatabase.includes('true')){ stringNewDatabase = stringNewDatabase.replace(/(true)/g,'') }
         if(stringNewDatabase.includes('false')){ stringNewDatabase = stringNewDatabase.replace(/(false)/g,'') }
         
-        saveData(JSON.parse(stringNewDatabase), '../database.json')
+        await saveData(JSON.parse(stringNewDatabase), '../database.json')
 
         await fs.unlink(firstDatabasePath)
     } catch(err) {
@@ -52,9 +50,7 @@ async function migrateDatabase() {
     }
 }
 
-function saveData(datadata, datapath) {
-  fs.writeFile(path.resolve(__dirname, datapath), JSON.stringify(datadata), (err) => {
-    if (err) { throw err }
+async function saveData(datadata, datapath) {
+    await fs.writeFile(path.resolve(__dirname, datapath), JSON.stringify(datadata))
     console.log(logSymbols.info, 'The Data has been migrated!'.database)
-  })
 }
