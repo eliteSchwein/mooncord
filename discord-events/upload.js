@@ -43,10 +43,7 @@ const enableEvent = function (discordClient) {
 module.exports = enableEvent
 
 function upload(message) {
-  const uploadData = {
-    'message': message
-  }
-  uploadList.push(uploadData)
+  uploadList.push(message)
   if (uploadWaitTimer === 0) {
     uploadWaitTimer = 5
     const timer = setInterval(async () => {
@@ -71,7 +68,7 @@ function uploadNext() {
   if (uploadInProgress) {
     return
   }
-  uploadFile(uploadList[0].message)
+  uploadFile(uploadList[0])
   uploadList.splice(0, 1)
 }
 
