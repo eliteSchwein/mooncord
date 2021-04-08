@@ -23,8 +23,8 @@ const event = (message, connection, discordClient) => {
     }
     if (variables.getStatus() === states[methode].status) { return }
 
-    variables.setStatus(states[methode].status)
-    status.triggerStatusUpdate(discordClient)
+    //variables.setStatus(states[methode].status)
+    //status.triggerStatusUpdate(discordClient)
   }
 }
 
