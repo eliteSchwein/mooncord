@@ -13,26 +13,36 @@ const event = async (message, connection, discordClient, database) => {
       const diffVersions = {}
       for (const software in result.version_info) {
         const softwareinfo = result.version_info[software]
-        if (software === 'system') {
-          if (softwareinfo.package_count !== 0 && (typeof (variables.getVersions()) === 'undefined' || softwareinfo.package_count !== variables.getVersions()[software].package_count)) {
-            diffVersions.system = {
-              'packages': softwareinfo.package_count
-            }
-          }
-        } else {
-          if (softwareinfo.version !== softwareinfo.remote_version && (typeof (variables.getVersions()) === 'undefined' || softwareinfo.remote_version !== variables.getVersions()[software].remote_version)) {
-            diffVersions[software] = {
-              'current': softwareinfo.version,
-              'remote': softwareinfo.remote_version
-            }
-          }
-        }
+        diffVersions[software] = getDifference(softwareinfo)
       }
       postUpdate(diffVersions, discordClient, database)
       variables.setVersions(result.version_info)
     }
   }
 }
+
+function getDifference(software, softwareinfo) {
+  if (software === 'system') {
+    if (softwareinfo.package_count !== 0 &&
+      (typeof (variables.getVersions()) === 'undefined' ||
+        softwareinfo.package_count !== variables.getVersions()[software].package_count)) {
+      return {
+        'packages': softwareinfo.package_count
+      }
+    }
+  } else {
+    if (softwareinfo.version !== softwareinfo.remote_version &&
+      (typeof (variables.getVersions()) === 'undefined' ||
+        softwareinfo.remote_version !== variables.getVersions()[software].remote_version)) {
+      return {
+        'current': softwareinfo.version,
+        'remote': softwareinfo.remote_version
+      }
+    }
+  }
+  return undefined
+}
+
 function postUpdate(updateData, discordClient, database) {
   if (Object.keys(updateData).length === 0) { return }
   console.log(logSymbols.info, `There are some Updates!`.printstatus)
