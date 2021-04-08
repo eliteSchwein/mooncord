@@ -146,4 +146,7 @@ module.exports.getManualStatusEmbed = async function (user) {
   return await generateEmbed(parsedConfig, user)
 }
 
-module.exports.postBroadcastMessage = (message, altdiscordClient, altdatabase) => { return postStatus(message, altdiscordClient, altdatabase) }
+module.exports.postBroadcastMessage = (message, altdiscordClient, altdatabase) => {
+  postStatus(message, altdiscordClient, altdatabase)
+  notifyStatus(message, altdiscordClient, altdatabase)
+}
