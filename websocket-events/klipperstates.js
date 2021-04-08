@@ -10,7 +10,7 @@ const event = (message, connection, discordClient) => {
     if (typeof (methode) === 'undefined') { return }
     if (!Object.keys(states).includes(methode)) { return }
     if (typeof (states[methode].timedStatus) !== 'undefined') {
-      changeStatusLater(states[methode].timedStatus)
+      changeStatusLater(states[methode].timedStatus, discordClient)
     }
     if (typeof (states[methode].requiredParams) !== 'undefined') {
       if (typeof (params) === 'undefined') { return }
@@ -22,7 +22,7 @@ const event = (message, connection, discordClient) => {
   }
 }
 
-function changeStatusLater(state) {
+function changeStatusLater(state, discordClient) {
   setTimeout(() => {
     variables.setStatus(state)
     status.triggerStatusUpdate(discordClient)
