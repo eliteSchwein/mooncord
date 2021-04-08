@@ -13,7 +13,10 @@ const event = async (message, connection, discordClient, database) => {
       const diffVersions = {}
       for (const software in result.version_info) {
         const softwareinfo = result.version_info[software]
-        diffVersions[software] = getDifference(software, softwareinfo)
+        const difference = getDifference(software, softwareinfo)
+        if (typeof (difference) !== 'undefined') {
+          diffVersions[software] = difference
+        }
       }
       postUpdate(diffVersions, discordClient, database)
       variables.setVersions(result.version_info)
@@ -52,7 +55,6 @@ function getDifference(software, softwareinfo) {
 
 function postUpdate(updateData, discordClient, database) {
   if (Object.keys(updateData).length === 0) { return }
-  console.log(updateData)
   console.log(logSymbols.info, `There are some Updates!`.printstatus)
   const notifyembed = new Discord.MessageEmbed()
     .setColor('#fcf803')
