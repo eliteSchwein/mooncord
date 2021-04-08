@@ -4,7 +4,7 @@ const fs = require('fs')
 const https = require('https')
 const logSymbols = require('log-symbols');
 
-const config = require('../config.json')
+const config = require('../../config.json')
 
 const database = require('../../utils/databaseUtil')
 const permission = require('../../utils/permissionUtil')
