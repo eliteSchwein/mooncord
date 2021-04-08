@@ -35,6 +35,10 @@ module.exports = class HelloCommand extends SlashCommand {
 
     async run(ctx) {
         try {
+            if (typeof (ctx.guildID) === 'undefined') {
+                return `This Command is only aviable on a Guild, ${ctx.user.username}!`
+            }
+            
             if (!permission.isMaster(ctx.user)) {
                 return `You dont have the Permissions, ${ctx.user.username}!`
             }
