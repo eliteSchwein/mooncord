@@ -23,7 +23,9 @@ const enableEvent = function (discordClient) {
         if (title !== 'Print Files') {
             return
         }
-        await messageReaction.users.remove(user)
+        if (message.channel.type === 'text') {
+            await messageReaction.users.remove(user)
+        }
         if (!await permission.hasAdmin(user, message.guild.id, discordClient)) {
             return
         }

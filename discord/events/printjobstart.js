@@ -15,12 +15,16 @@ const enableEvent = function (discordClient) {
         if (title !== 'Start Print Job?') {
             return
         }
-        await messageReaction.users.remove(user)
+        if (message.channel.type === 'text') {
+            await messageReaction.users.remove(user)
+        }
         if (!await permission.hasAdmin(user, message.guild.id, discordClient)) {
             return
         }
         if (messageReaction.emoji.name === '❌') {
-            await message.reactions.removeAll()
+            if (message.channel.type === 'text') {
+                await message.reactions.removeAll()
+            }
             await message.edit(`Print Job request aborted, ${user.username}!`)
             await message.suppressEmbeds(true)
             return
@@ -29,8 +33,10 @@ const enableEvent = function (discordClient) {
         if (messageReaction.emoji.name === '✅') {
             const gcodefile = message.embeds[0].author.name
             const id = Math.floor(Math.random() * 10000) + 1
-
-            await message.reactions.removeAll()
+            
+            if (message.channel.type === 'text') {
+                await message.reactions.removeAll()
+            }
             await message.edit(`Print Job request executed, ${user.username}!`)
             await message.suppressEmbeds(true)
 
