@@ -5,9 +5,9 @@ const logSymbols = require('log-symbols');
 module.exports = {}
 module.exports.init = async () => {
     await migrateDatabase()
-    await migrateConfig()
+    migrateConfig()
 }
-async function migrateConfig() {
+function migrateConfig() {
     const config = require('../config.json')
     if (typeof (config.prefix) !== 'undefined') {
         console.log(logSymbols.info, `Migrate 0.0.1 Config to 0.0.2 Config`.database)
@@ -15,8 +15,8 @@ async function migrateConfig() {
         config.prefix = undefined
         config.botapplicationkey = ""
         config.botapplicationid = ""
-        await saveData(config, '../config.json')
-        process.exit(5)
+        saveData(config, '../config.json')
+        setTimeout(process.exit(5),500)
     }
 }
 async function migrateDatabase() {
@@ -42,7 +42,7 @@ async function migrateDatabase() {
         if(stringNewDatabase.includes('true')){ stringNewDatabase = stringNewDatabase.replace(/(true)/g,'') }
         if(stringNewDatabase.includes('false')){ stringNewDatabase = stringNewDatabase.replace(/(false)/g,'') }
         
-        await saveData(JSON.parse(stringNewDatabase), '../database.json')
+        saveData(JSON.parse(stringNewDatabase), '../database.json')
 
         await fs.unlink(firstDatabasePath)
     } catch(err) {
@@ -50,8 +50,8 @@ async function migrateDatabase() {
     }
 }
 
-async function saveData(datadata, datapath) {
-  await fs.writeFile(path.resolve(__dirname, datapath), JSON.stringify(datadata), (err) => {
+function saveData(datadata, datapath) {
+  fs.writeFile(path.resolve(__dirname, datapath), JSON.stringify(datadata), (err) => {
     if (err) { throw err }
     console.log(logSymbols.info, 'The Data has been migrated!'.database)
   })
