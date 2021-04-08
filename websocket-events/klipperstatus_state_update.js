@@ -40,13 +40,13 @@ function postUpdate(updateData, discordClient, database) {
     .attachFiles(path.resolve(__dirname, '../images/update.png'))
     .setThumbnail('attachment://update.png')
     .setTimestamp()
+  console.log(updateData)
   if (typeof (updateData.system) !== 'undefined') {
     notifyembed.addField('System', `Packages: ${updateData.system}`, true)
     updateData.system = undefined
   }
-  //notifyembed.addField(software, `${softwareinfo.version} \n🆕 ${softwareinfo.remote_version}`, true)
-  for (const index in updateData) {
-    console.log(index)
+  for (const software in updateData) {
+    notifyembed.addField(software, `${updateData[software].current} \n🆕 ${updateData[software].remote}`, true)
   }
   status.postBroadcastMessage(notifyembed, discordClient, database)
   
