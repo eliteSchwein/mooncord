@@ -39,7 +39,7 @@ async function migrateDatabase() {
                 newDatabase.guilds[guildid].accesseveryone = undefined
             }
             
-            saveData(JSON.parse(stringNewDatabase), '../database.json')
+            saveData(newDatabase, '../database.json')
 
             await fs.unlinkSync(firstDatabasePath)
         }
