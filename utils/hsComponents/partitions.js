@@ -42,10 +42,9 @@ module.exports.getFields = async () => {
         const translatedJSONTemplate = JSON.parse(translatedTemplate)
         
         for (const index in translatedJSONTemplate) {
-            console.log(translatedTemplate[index])
             fields.push({
                 name: index,
-                value: translatedTemplate[index].value,
+                value: translatedJSONTemplate[index].value,
                 inline: true
             })
         }
