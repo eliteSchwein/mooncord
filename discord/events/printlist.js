@@ -26,7 +26,7 @@ const enableEvent = function (discordClient) {
         if (message.channel.type === 'text') {
             await messageReaction.users.remove(user)
         }
-        if (!await permission.hasAdmin(user, message.guild.id, discordClient)) {
+        if (!await permission.hasAdmin(user, message.guild, discordClient)) {
             return
         }
         page = chatUtil.retrieveCurrentPage(message.embeds[0])
