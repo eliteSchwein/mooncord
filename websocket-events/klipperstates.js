@@ -16,7 +16,7 @@ const event = (message, connection, discordClient) => {
     if (typeof (states[methode].timedStatus) !== 'undefined') {
       changeStatusLater(states[methode].timedStatus, discordClient)
     }
-    console.log(typeof (states[methode].requiredParams))
+    console.log(!states[methode].requiredParams.some(param => JSON.stringify(params).includes(param)))
     if (typeof (states[methode].requiredParams) !== 'undefined') {
       if (typeof (params) === 'undefined') { return }
       if (!states[methode].requiredParams.some(param => JSON.stringify(params).includes(param))) { return }
