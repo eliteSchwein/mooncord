@@ -32,6 +32,7 @@ const event = async (message, connection, discordClient, database) => {
   }
 }
 function postUpdate(updateData, discordClient, database) {
+  console.log(updateData.length)
   if (updateData.length === 0) { return }
   console.log(logSymbols.info, `There are some Updates!`.printstatus)
   const notifyembed = new Discord.MessageEmbed()
