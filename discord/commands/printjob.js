@@ -97,6 +97,7 @@ async function addEmotes(commandContext, commandMessage) {
 }
 
 async function postStart(message, commandContext) {
+    console.log(message)
     const commandmessage = await commandContext.send(message)
 
     if (typeof (message.embeds) === 'undefined') { return }
