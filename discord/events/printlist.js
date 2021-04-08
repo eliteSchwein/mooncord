@@ -67,6 +67,7 @@ async function executeMessage(message, user) {
 
 async function handler (message) {
     const messageJson = JSON.parse(message.utf8Data)
+    console.log(message.channel.id)
     if (JSON.stringify(messageJson).match(/(filename|modified)/g)) {
         commandFeedback[message.channel.id] = await chatUtil.generatePageEmbed(
             pageUp,
