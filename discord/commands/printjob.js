@@ -107,6 +107,7 @@ async function postStart(message, commandContext) {
 }
 
 function startPrintJob(commandContext) {
+    console.log('okijasd')
     const id = Math.floor(Math.random() * 10000) + 1
     const gcodefile = commandContext.options[subcommand].file
     connection.on('message', handler)
@@ -115,7 +116,6 @@ function startPrintJob(commandContext) {
     commandFeedback = undefined
 
     const feedbackHandler = setInterval(() => {
-        console.log(commandContext)
         if (timeout === 4) {
             clearInterval(feedbackHandler)
             postStart({
