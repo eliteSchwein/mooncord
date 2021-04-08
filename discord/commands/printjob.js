@@ -111,7 +111,7 @@ function startPrintJob(commandContext) {
     const gcodefile = commandContext.options[subcommand].file
     connection.on('message', handler)
     connection.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${gcodefile}"}, "id": ${id}}`)
-    console.log(commandFeedback)
+    console.log("commandFeedback")
     //commandFeedback = undefined
 
     const feedbackHandler = setInterval(() => {
