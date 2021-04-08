@@ -18,10 +18,8 @@ module.exports.hasAdmin = async function (user, guildid, altdiscordClient) {
     return true
   }
   const member = await guild.members.fetch(user.id)
-  for (const memberole in member.roles.cache) {
-    if (guilddatabase.adminroles.includes(memberole)) {
-      return true
-    }
+  if (guilddatabase.adminroles.some(role => member.roles.cache.has(role))) {
+    return true
   }
   return false
 }
