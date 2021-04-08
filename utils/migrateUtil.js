@@ -32,13 +32,14 @@ async function migrateDatabase() {
             "guilds": firstDatabase
         }
 
-        const stringNewDatabase = JSON.stringify(newDatabase)
+        let stringNewDatabase = JSON.stringify(newDatabase)
             .replace(/("accessrole":\[\],)/g,'')
             .replace(/("accessusers":\[\],)/g,'')
             .replace(/("accesseveryone":)/g,'')
-            .replace(/(true)/g,'')
-            .replace(/(false)/g,'')
             .replace(/("statuschannels":)/g, 'broadcastchannels')
+        
+        if(stringNewDatabase.includes('true')){ stringNewDatabase = stringNewDatabase.replace(/(true)/g,'') }
+        if(stringNewDatabase.includes('false')){ stringNewDatabase = stringNewDatabase.replace(/(false)/g,'') }
         
         saveData(JSON.parse(stringNewDatabase), '../database.json')
 
