@@ -3,7 +3,8 @@
         "status": "disconnected"
     },
     "notify_klippy_ready": {
-        "status": "ready"
+        "status": "ready",
+        "preventStatus": ["printing"]
     },
     "notify_klippy_shutdown": {
         "status": "shutdown"

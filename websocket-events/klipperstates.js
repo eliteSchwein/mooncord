@@ -9,6 +9,9 @@ const event = (message, connection, discordClient) => {
     const { params } = messageJson
     if (typeof (methode) === 'undefined') { return }
     if (!Object.keys(states).includes(methode)) { return }
+    if (typeof (states[methode].preventStatus) !== 'undefined') {
+      if (states[methode].preventStatus.some(invalidState => variables.getStatus() === invalidState)) { return }
+    }
     if (typeof (states[methode].timedStatus) !== 'undefined') {
       changeStatusLater(states[methode].timedStatus, discordClient)
     }
