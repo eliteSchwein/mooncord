@@ -26,12 +26,12 @@ async function migrateDatabase() {
             console.log(logSymbols.info, `Migrate 0.0.1 Database to 0.0.2 Database`.database)
         }
         const firstDatabase = require('../discorddatabase.json')
+
+        console.log(firstDatabase)
         const newDatabase = {
             "version": "0.0.2",
             "guilds": firstDatabase
         }
-
-        console.log(newDatabase)
 
         let stringNewDatabase = JSON.stringify(newDatabase)
             .replace(/("accessrole":\[\],)/g,'')
@@ -51,6 +51,8 @@ async function migrateDatabase() {
 }
 
 async function saveData(datadata, datapath) {
-    await fs.writeFile(path.resolve(__dirname, datapath), JSON.stringify(datadata))
+  await fs.writeFile(path.resolve(__dirname, datapath), JSON.stringify(datadata), (err) => {
+    if (err) { throw err }
     console.log(logSymbols.info, 'The Data has been migrated!'.database)
+  })
 }
