@@ -8,7 +8,7 @@ let page
 
 let requester
 
-let commandFeedback
+let commandFeedback = {}
 
 const enableEvent = function (discordClient) {
     discordClient.on('messageReactionAdd', async (messageReaction, user) => {
