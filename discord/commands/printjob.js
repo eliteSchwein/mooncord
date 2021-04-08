@@ -148,6 +148,10 @@ function startPrintJob(commandContext) {
         }
         commandFeedback = undefined
         clearInterval(feedbackHandler)
+        console.log({
+            file: files,
+            embeds: [commandFeedback.toJSON()]
+        })
         postStart({
             file: files,
             embeds: [commandFeedback.toJSON()]
