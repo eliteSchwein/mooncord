@@ -1,6 +1,7 @@
 const Discord = require('discord.js')
 
 const thumbnail = require('./thumbnailUtil')
+const variables = require('./variablesUtil')
 
 module.exports = {}
 module.exports.printFileHandler = async (message, title, color) => { return printFileHandler (message, title, color)}
