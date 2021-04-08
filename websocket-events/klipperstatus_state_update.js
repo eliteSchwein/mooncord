@@ -15,7 +15,9 @@ const event = async (message, connection, discordClient, database) => {
         const softwareinfo = result.version_info[software]
         if (software === 'system') {
           if (softwareinfo.package_count !== 0 && (typeof (variables.getVersions()) === 'undefined' || softwareinfo.package_count !== variables.getVersions()[software].package_count)) {
-            diffVersions.system = softwareinfo.package_count
+            diffVersions.system = {
+              'packages': softwareinfo.package_count
+            }
           }
         } else {
           if (softwareinfo.version !== softwareinfo.remote_version && (typeof (variables.getVersions()) === 'undefined' || softwareinfo.remote_version !== variables.getVersions()[software].remote_version)) {
@@ -41,16 +43,13 @@ function postUpdate(updateData, discordClient, database) {
     .attachFiles(path.resolve(__dirname, '../images/update.png'))
     .setThumbnail('attachment://update.png')
     .setTimestamp()
-  console.log(updateData.system)
-  if (typeof (updateData.system) !== 'undefined') {
-    notifyembed.addField('System', `Packages: ${updateData.system}`, true)
-    updateData.system = undefined
-  }
   for (const software in updateData) {
-    console.log(software)
-    notifyembed.addField(software, `${updateData[software].current} \n🆕 ${updateData[software].remote}`, true)
+    if (software === 'system') {
+      notifyembed.addField('System', `Packages: ${updateData[software].packages}`, true)
+    } else {
+      notifyembed.addField(software, `${updateData[software].current} \n🆕 ${updateData[software].remote}`, true)
+    }
   }
   status.postBroadcastMessage(notifyembed, discordClient, database)
-  
 }
 module.exports = event
