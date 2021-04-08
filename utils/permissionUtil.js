@@ -3,6 +3,7 @@ const database = require('./databaseUtil')
 const discordClient = require('../clients/discordclient')
 
 module.exports.hasAdmin = async function (user, guildid, altdiscordClient) {
+  console.log(typeof(guildid))
   if (user.id === config.masterid) {
     return true
   }
