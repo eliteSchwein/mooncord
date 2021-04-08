@@ -29,13 +29,13 @@ const enableEvent = function (discordClient) {
     }
     if (msg.channel.type === 'dm') {
       upload(msg)
-      return
-    }
-    const guilddatabase = database.getGuildDatabase(msg.guild)
-    for (const index in guilddatabase.broadcastchannels) {
-      const channel = msg.guild.channels.cache.get(guilddatabase.broadcastchannels[index])
-      if (channel.id === msg.channel.id) {
-        upload(msg)
+    } else {
+      const guilddatabase = database.getGuildDatabase(msg.guild)
+      for (const index in guilddatabase.broadcastchannels) {
+        const channel = msg.guild.channels.cache.get(guilddatabase.broadcastchannels[index])
+        if (channel.id === msg.channel.id) {
+          upload(msg)
+        }
       }
     }
   })
