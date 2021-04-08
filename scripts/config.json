@@ -6,7 +6,6 @@
     "botapplicationkey":"",
     "botapplicationid":"",
     "masterid":"",
-    "prefix":"mc!",
     "statusupdateinterval":10,
     "statusupdatepercent":true
 }

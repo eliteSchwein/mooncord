@@ -6,6 +6,7 @@ const discordClient = require('./clients/discordclient')
 const moonrakerClient = require('./clients/moonrakerclient')
 
 const hsUtil = require('./utils/hsUtil')
+const migrateUtil = require('./utils/migrateUtil')
 
 const pjson = require('./package.json')
 
@@ -52,6 +53,8 @@ systemInfo.osInfo().then(async data => {
       'Current free Ram: '.error}${(ram.used / (1024 ** 2)).toFixed(2)}MB`)
     process.exit(5)
   }
+
+  await migrateUtil.init()
 
   await discordClient.init()
 
