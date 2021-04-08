@@ -39,7 +39,7 @@ module.exports.getFields = async () => {
             .replace(/(\${disk.type})/g, disk.type)
             .replace(/(\${disk.name})/g, disk.name)
             .replace(/(\${disk.vendor})/g, disk.vendor)
-            .replace(/(\${disk.size})/g, `${(partition.size / (1024 ** 3)).toFixed(2)}GB`)
+            .replace(/(\${disk.size})/g, `${(disk.size / (1024 ** 3)).toFixed(2)}GB`)
         
         const translatedJSONTemplate = JSON.parse(translatedTemplate)
         
