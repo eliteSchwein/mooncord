@@ -1,5 +1,6 @@
 const Discord = require('discord.js')
 const path = require('path')
+const logSymbols = require('log-symbols');
 
 const variables = require('../utils/variablesUtil')
 const status = require('../utils/statusUtil')
@@ -18,6 +19,7 @@ const event = async (message, connection, discordClient, database) => {
         .attachFiles(path.resolve(__dirname, '../images/update.png'))
         .setThumbnail('attachment://update.png')
         .setTimestamp()
+      console.log(logSymbols.info, `There are some Updates!`.printstatus)
       for (const software in result.version_info) {
         const softwareinfo = result.version_info[software]
         if (software === 'system') {
