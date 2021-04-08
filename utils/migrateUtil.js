@@ -35,10 +35,10 @@ async function migrateDatabase() {
             .replace(/("accesseveryone":)/g,'')
             .replace(/("statuschannels":)/g, 'broadcastchannels')
         
+        if (stringNewDatabase.includes('true')) { stringNewDatabase = stringNewDatabase.replace(/(true)/g, '') }
+        if (stringNewDatabase.includes('false')) { stringNewDatabase = stringNewDatabase.replace(/(false)/g, '') }
+
         console.log(stringNewDatabase)
-        
-        if(stringNewDatabase.includes('true')){ stringNewDatabase = stringNewDatabase.replace(/(true)/g,'') }
-        if(stringNewDatabase.includes('false')){ stringNewDatabase = stringNewDatabase.replace(/(false)/g,'') }
         
         saveData(JSON.parse(stringNewDatabase), '../database.json')
 
