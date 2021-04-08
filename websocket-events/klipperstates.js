@@ -22,6 +22,7 @@ const event = (message, connection, discordClient) => {
       if (!states[methode].requiredParams.some(param => JSON.stringify(params).includes(param))) { return }
     }
     if (variables.getStatus() === states[methode].status) { return }
+    console.log('update')
     variables.setStatus(states[methode].status)
     status.triggerStatusUpdate(discordClient)
   }
