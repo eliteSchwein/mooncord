@@ -98,12 +98,12 @@ async function addEmotes(commandContext, commandMessage) {
 
 async function postStart(message, commandContext) {
     const commandmessage = await commandContext.send(message)
+    
+    commandFeedback = undefined
 
     if (typeof (message.embeds) === 'undefined') { return }
 
     addEmotes(commandContext, commandmessage)
-    
-    commandFeedback = undefined
 }
 
 function startPrintJob(commandContext) {
