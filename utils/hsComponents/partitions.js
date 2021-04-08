@@ -40,6 +40,8 @@ module.exports.getFields = async () => {
             .replace(/(\${partition.used})/g, `${(partition.used / (1024 ** 3)).toFixed(2)}GB`)
         
         const translatedJSONTemplate = JSON.parse(translatedTemplate)
+
+        console.log(translatedJSONTemplate)
         
         for (const index in translatedJSONTemplate) {
             console.log(index)
