@@ -37,6 +37,8 @@ module.exports.getFields = async () => {
             .replace(/(${partition.size})/g, `${(partition.size / (1024 ** 3)).toFixed(2)}GB`)
             .replace(/(${partition.used})/g, `${(partition.used / (1024 ** 3)).toFixed(2)}GB`)
         
+        console.log(translatedTemplate)
+        
         for (const index in JSON.parse(translatedTemplate)) {
             fields.push({
                 name: index,
