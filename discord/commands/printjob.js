@@ -1,7 +1,6 @@
 const { SlashCommand, CommandOptionType } = require('slash-create');
-const Discord = require('discord.js')
 
-const thumbnail = require('../../utils/thumbnailUtil')
+const handlers = require('../../utils/handlerUtil')
 const permission = require('../../utils/permissionUtil')
 const variables = require('../../utils/variablesUtil')
 const moonrakerClient = require('../../clients/moonrakerclient')
@@ -154,31 +153,7 @@ function startPrintJob(commandContext) {
 }
 
 async function handler (message) {
-    const messageJson = JSON.parse(message.utf8Data)
-    if (typeof (messageJson.error) !== 'undefined') {
-        commandFeedback = `Not Found!`
-        connection.removeListener('message', handler)
-        return
-    }
-    if (typeof (messageJson.result.filename) !== 'undefined') {
-        let description = ''
-            .concat(`Print Time: ${variables.formatTime(messageJson.result.estimated_time * 1000)}\n`)
-            .concat(`Slicer: ${messageJson.result.slicer}\n`)
-            .concat(`Slicer Version: ${messageJson.result.slicer_version}\n`)
-            .concat(`Height: ${messageJson.result.object_height}mm`)
-        
-        commandFeedback = new Discord.MessageEmbed()
-            .setColor('#0099ff')
-            .setTitle('Start Print Job?')
-            .setAuthor(messageJson.result.filename)
-            .setDescription(description)
-        if (typeof (messageJson.result.thumbnails) !== 'undefined') {
-            const parsedThumbnail = await thumbnail.buildThumbnail(messageJson.result.thumbnails[1].data)
-            commandFeedback
-                .attachFiles(parsedThumbnail)
-                .setThumbnail(`attachment://${parsedThumbnail.name}`)
-        }
-        connection.removeListener('message', handler)
-        return
-    }
+    commandFeedback = await handlers.printFileHandler(message, 'Start Print Job?', '#0099ff')
+    connection.removeListener('message', handler)
+    return
 }
