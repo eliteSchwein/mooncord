@@ -11,12 +11,10 @@ function migrateConfig() {
     const config = require('../config.json')
     if (typeof (config.prefix) !== 'undefined') {
         console.log(logSymbols.info, `Migrate 0.0.1 Config to 0.0.2 Config`.database)
-        console.log(logSymbols.warning, `Please Read the Update Notes, you need to reconfigure the Bot!`.database)
         config.prefix = undefined
         config.botapplicationkey = ""
         config.botapplicationid = ""
         saveData(config, '../config.json')
-        setTimeout(process.exit(5),500)
     }
 }
 async function migrateDatabase() {
@@ -53,6 +51,10 @@ async function migrateDatabase() {
 function saveData(datadata, datapath) {
   fs.writeFile(path.resolve(__dirname, datapath), JSON.stringify(datadata), (err) => {
     if (err) { throw err }
-    console.log(logSymbols.info, 'The Data has been migrated!'.database)
+      console.log(logSymbols.info, 'The Data has been migrated!'.database)
+      if (datapath === '../config.json') {
+          console.log(logSymbols.warning, `Please Read the Update Notes, you need to reconfigure the Bot!`.database)
+          process.exit(5)
+      }
   })
 }
