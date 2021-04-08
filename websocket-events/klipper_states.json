@@ -7,5 +7,10 @@
     },
     "notify_klippy_shutdown": {
         "status": "shutdown"
+    },
+    "notify_gcode_response": {
+        "status": "stop",
+        "timedStatus": "ready",
+        "requiredParams": ["// action:cancel"]
     }
 }

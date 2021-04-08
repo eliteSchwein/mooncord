@@ -29,18 +29,6 @@ const event = (message, connection, discordClient) => {
           variables.setUpdateTimer(timer)
         }
       }
-      if (params[0] === '// action:cancel') {
-        const currentStatus = 'stop'
-        if (variables.getStatus() !== currentStatus) {
-          variables.setStatus(currentStatus)
-          status.triggerStatusUpdate(discordClient)
-          clearInterval(variables.getUpdateTimer())
-        }
-        setTimeout(() => {
-          variables.setStatus('ready')
-          status.triggerStatusUpdate(discordClient)
-        }, 2000)
-      }
     }
   }
 }
