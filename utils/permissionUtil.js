@@ -15,11 +15,9 @@ module.exports.hasAdmin = async function (user, guildid, altdiscordClient) {
   } else {
     client = discordClient.getClient()
   }
-  let guild
+  let guild = guildid
   if (typeof (guildid) === 'string') {
     guild = await client.guilds.fetch(guildid)
-  } else {
-    guild = guildid
   }
   const guilddatabase = database.getGuildDatabase(guild)
   if (guilddatabase.adminusers.includes(user.id)) {
