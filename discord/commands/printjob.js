@@ -64,14 +64,14 @@ module.exports = class HelloCommand extends SlashCommand {
             if (Object.keys(metadata).includes(subcommand)) {
                 const subcommandmeta = metadata[subcommand]
                 if (subcommand === currentStatus) {
-                    return subcommandmeta.statusSame.replace(/(\${user})/g, ctx.user.username)
+                    return subcommandmeta.statusSame.replace(/(\${username})/g, ctx.user.username)
                 }
 
                 if (!subcommandmeta.requiredStatus.includes(currentStatus)) {
-                    return subcommandmeta.statusNotValid.replace(/(\${user})/g, ctx.user.username)
+                    return subcommandmeta.statusNotValid.replace(/(\${username})/g, ctx.user.username)
                 }
                 connection.send(`{"jsonrpc": "2.0", "method": "printer.gcode.script", "params": {"script": "${subcommandmeta.macro}"}, "id": ${id}}`)
-                return subcommandmeta.statusValid.replace(/(\${user})/g, ctx.user.username)
+                return subcommandmeta.statusValid.replace(/(\${username})/g, ctx.user.username)
             }
             
             if (subcommand === 'start') {
