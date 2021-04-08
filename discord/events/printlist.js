@@ -66,7 +66,7 @@ async function executeMessage(message, user) {
     }, 500)
 }
 
-async function handler (message, channel) {
+function handler (message, channel) {
     const messageJson = JSON.parse(message.utf8Data)
     if (JSON.stringify(messageJson).match(/(modified)/g)) {
         console.log(messageJson.result)
