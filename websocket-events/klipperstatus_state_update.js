@@ -26,6 +26,9 @@ function getDifference(software, softwareinfo) {
     if (softwareinfo.package_count !== 0 &&
       (typeof (variables.getVersions()) === 'undefined' ||
         softwareinfo.package_count !== variables.getVersions()[software].package_count)) {
+          console.log({
+        'packages': softwareinfo.package_count
+      })
       return {
         'packages': softwareinfo.package_count
       }
@@ -34,6 +37,10 @@ function getDifference(software, softwareinfo) {
     if (softwareinfo.version !== softwareinfo.remote_version &&
       (typeof (variables.getVersions()) === 'undefined' ||
         softwareinfo.remote_version !== variables.getVersions()[software].remote_version)) {
+          console.log({
+        'current': softwareinfo.version,
+        'remote': softwareinfo.remote_version
+      })
       return {
         'current': softwareinfo.version,
         'remote': softwareinfo.remote_version
