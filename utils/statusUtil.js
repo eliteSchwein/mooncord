@@ -39,8 +39,8 @@ async function triggerStatusUpdate(altdiscordClient) {
         { type: parsedConfig.activity.type }
       )
     }
-
     postStatus(embed, client)
+    notifyStatus(embed, client)
   }, 1000)
 }
 
@@ -105,17 +105,6 @@ function postStatus(message, altdiscordClient, altdatabase) {
   const client = getDiscordClient(altdiscordClient)
 
   const botdatabase = getDatabase(altdatabase)
-
-  const notifylist = botdatabase.notify
-
-  for (const notifyindex in notifylist) {
-    const clientid = notifylist[notifyindex]
-    client.users.fetch(clientid)
-      .then((user) => {
-        user.send(message)
-      })
-      .catch((err) => { console.log((err).error) })
-  }
   
   for (const guildid in botdatabase.guilds) {
     client.guilds.fetch(guildid)
@@ -125,6 +114,23 @@ function postStatus(message, altdiscordClient, altdatabase) {
           const channel = await client.channels.fetch(guilddatabase.broadcastchannels[index])
           channel.send(message)
         }
+      })
+      .catch((err) => { console.log((err).error) })
+  }
+}
+
+function notifyStatus(message, altdiscordClient, altdatabase) {
+  const client = getDiscordClient(altdiscordClient)
+
+  const botdatabase = getDatabase(altdatabase)
+
+  const notifylist = botdatabase.notify
+
+  for (const notifyindex in notifylist) {
+    const clientid = notifylist[notifyindex]
+    client.users.fetch(clientid)
+      .then((user) => {
+        user.send(message)
       })
       .catch((err) => { console.log((err).error) })
   }
