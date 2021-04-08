@@ -102,7 +102,7 @@ async function addEmotes(commandContext, commandMessage) {
     message.react('❌')
 }
 
-async function startPrintJob(commandContext) {
+function startPrintJob(commandContext, callback) {
     const id = Math.floor(Math.random() * 10000) + 1
     const gcodefile = commandContext.options[subcommand].file
     connection.on('message', handler)
@@ -110,7 +110,7 @@ async function startPrintJob(commandContext) {
 
     commandFeedback = undefined
 
-    const feedbackHandler = setInterval(async () => {
+    const feedbackHandler = setInterval(() => {
         if (timeout === 4) {
             commandFeedback = undefined
             clearInterval(feedbackHandler)
@@ -152,7 +152,6 @@ async function startPrintJob(commandContext) {
         })
         return
     }, 500)
-    return feedbackHandler
 }
 
 async function handler (message) {
