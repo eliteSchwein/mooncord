@@ -20,28 +20,27 @@ function migrateConfig() {
 async function migrateDatabase() {
     const firstDatabasePath = path.resolve(__dirname, '../discorddatabase.json')
     try {
-        console.log(fs.existsSync(firstDatabasePath))
         if (fs.existsSync(firstDatabasePath)) {
             console.log(logSymbols.info, `Migrate 0.0.1 Database to 0.0.2 Database`.database)
-        }
-        const firstDatabase = require('../discorddatabase.json')
-        let newDatabase = {
-            "version": "0.0.2",
-            "guilds": firstDatabase
-        }
+            const firstDatabase = require('../discorddatabase.json')
+            let newDatabase = {
+                "version": "0.0.2",
+                "guilds": firstDatabase
+            }
 
-        let stringNewDatabase = JSON.stringify(newDatabase)
-            .replace(/("accessrole":\[\],)/g,'')
-            .replace(/("accessusers":\[\],)/g,'')
-            .replace(/("accesseveryone":)/g,'')
-            .replace(/(statuschannels)/g, 'broadcastchannels')
-        
-        if (stringNewDatabase.includes('true')) { stringNewDatabase = stringNewDatabase.replace(/(true)/g, '') }
-        if (stringNewDatabase.includes('false')) { stringNewDatabase = stringNewDatabase.replace(/(false)/g, '') }
-        
-        saveData(stringNewDatabase, '../database.json')
+            let stringNewDatabase = JSON.stringify(newDatabase)
+                .replace(/("accessrole":\[\],)/g,'')
+                .replace(/("accessusers":\[\],)/g,'')
+                .replace(/("accesseveryone":)/g,'')
+                .replace(/(statuschannels)/g, 'broadcastchannels')
+            
+            if (stringNewDatabase.includes('true')) { stringNewDatabase = stringNewDatabase.replace(/(true)/g, '') }
+            if (stringNewDatabase.includes('false')) { stringNewDatabase = stringNewDatabase.replace(/(false)/g, '') }
+            
+            saveData(stringNewDatabase, '../database.json')
 
-        await fs.unlinkSync(firstDatabasePath)
+            await fs.unlinkSync(firstDatabasePath)
+        }
     } catch(err) {
         console.error((err).err)
     }
