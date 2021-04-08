@@ -1,9 +1,7 @@
 module.exports = {
   gcodemetadata: require('./gcodemetadata'),
   gcoderesponse: require('./gcoderesponse'),
-  klipperdisconnected: require('./klipperdisconnected'),
-  klipperready: require('./klipperready'),
-  klippershutdown: require('./klippershutdown'),
+  klipperstates: require('./klipperstates'),
   klipperstate: require('./klipperstate'),
   klipperstatus_state_update: require('./klipperstatus_state_update'),
   klipperstatus_state: require('./klipperstatus_state'),
