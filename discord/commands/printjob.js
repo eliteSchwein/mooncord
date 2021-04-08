@@ -146,10 +146,7 @@ function startPrintJob(commandContext) {
             name: thumbnail.name,
             file: thumbnail.attachment
         }
-        console.log({
-            file: files,
-            embeds: [commandFeedback.toJSON()]
-        })
+        console.log('fick bot')
         clearInterval(feedbackHandler)
         postStart({
             file: files,
