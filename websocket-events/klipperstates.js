@@ -13,25 +13,27 @@ const event = (message, connection, discordClient) => {
     if (typeof (states[methode].preventStatus) !== 'undefined') {
       if (states[methode].preventStatus.some(invalidState => variables.getStatus() === invalidState)) { return }
     }
-    if (typeof (states[methode].timedStatus) !== 'undefined') {
-      changeStatusLater(states[methode].timedStatus, discordClient)
-    }
-    console.log(states[methode].requiredParams.some(param => params.includes(param)))
+    
     if (typeof (states[methode].requiredParams) !== 'undefined') {
       if (typeof (params) === 'undefined') { return }
       if (!states[methode].requiredParams.some(param => params.includes(param))) { return }
     }
+
     if (variables.getStatus() === states[methode].status) { return }
 
-    //variables.setStatus(states[methode].status)
-    //status.triggerStatusUpdate(discordClient)
+    if (typeof (states[methode].timedStatus) !== 'undefined') {
+      changeStatusLater(states[methode].timedStatus, discordClient)
+    }
+
+    variables.setStatus(states[methode].status)
+    status.triggerStatusUpdate(discordClient)
   }
 }
 
 function changeStatusLater(state, discordClient) {
   setTimeout(() => {
-    //variables.setStatus(state)
-    //status.triggerStatusUpdate(discordClient)
+    variables.setStatus(state)
+    status.triggerStatusUpdate(discordClient)
   }, 2000)
 }
 module.exports = event
