@@ -76,7 +76,7 @@ module.exports = class HelloCommand extends SlashCommand {
             
             if (subcommand === 'start') {
                 ctx.defer(false)
-                
+
                 const response = startPrintJob(ctx)
                 const commandmessage = await ctx.send(response)
 
@@ -116,7 +116,6 @@ function startPrintJob(commandContext, callback) {
             callback ({
                 content: 'Command execution failed!'
             })
-            return
         }
 
         timeout++
@@ -129,14 +128,12 @@ function startPrintJob(commandContext, callback) {
             callback({
                 content: 'File not Found!'
             })
-            return
         }
         if (commandFeedback.files.length === 0) {
             clearInterval(feedbackHandler)
             callback({
                 embeds: [commandFeedback.toJSON()]
             })
-            return
         }
         const thumbnail = commandFeedback.files[0]
         const files = {
@@ -149,7 +146,6 @@ function startPrintJob(commandContext, callback) {
             file: files,
             embeds: [commandFeedback.toJSON()]
         })
-        return
     }, 500)
 }
 
