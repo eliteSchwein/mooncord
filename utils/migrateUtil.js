@@ -19,6 +19,7 @@ function migrateConfig() {
 }
 async function migrateDatabase() {
     const firstDatabasePath = path.resolve(__dirname, '../discorddatabase.json')
+    console.log(firstDatabasePath)
     try {
         if (fs.existsSync(firstDatabasePath)) {
             console.log(logSymbols.info, `Migrate 0.0.1 Database to 0.0.2 Database`.database)
