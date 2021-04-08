@@ -55,14 +55,8 @@ const enableEvents = async function (discordClient) {
     })
     connection.on('message', (message) => {
       for (const event in events) {
-        console.log(event)
-      }
-      files.forEach(file => {
-        if (file !== 'index.js') {
-          const event = events[file.replace('.js', '')]
           event(message, connection, discordClient, database.getDatabase())
-        }
-      })
+      }
     })
   })
 }
