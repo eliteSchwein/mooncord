@@ -46,7 +46,7 @@ function postUpdate(updateData, discordClient, database) {
     updateData.system = undefined
   }
   for (const software in updateData) {
-    console.log(updateData[software])
+    console.log(software)
     notifyembed.addField(software, `${updateData[software].current} \n🆕 ${updateData[software].remote}`, true)
   }
   status.postBroadcastMessage(notifyembed, discordClient, database)
