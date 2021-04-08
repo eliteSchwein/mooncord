@@ -38,7 +38,7 @@ async function migrateDatabase() {
         if (stringNewDatabase.includes('true')) { stringNewDatabase = stringNewDatabase.replace(/(true)/g, '') }
         if (stringNewDatabase.includes('false')) { stringNewDatabase = stringNewDatabase.replace(/(false)/g, '') }
 
-        console.log(stringNewDatabase)
+        console.log(JSON.parse(stringNewDatabase))
         
         saveData(JSON.parse(stringNewDatabase), '../database.json')
 
