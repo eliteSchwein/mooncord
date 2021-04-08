@@ -115,6 +115,7 @@ function startPrintJob(commandContext) {
     commandFeedback = undefined
 
     const feedbackHandler = setInterval(() => {
+        console.log(commandContext)
         if (timeout === 4) {
             clearInterval(feedbackHandler)
             postStart({
@@ -146,7 +147,6 @@ function startPrintJob(commandContext) {
             name: thumbnail.name,
             file: thumbnail.attachment
         }
-        console.log('fick bot')
         clearInterval(feedbackHandler)
         postStart({
             file: files,
