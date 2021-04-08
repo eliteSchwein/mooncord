@@ -24,7 +24,7 @@ async function migrateDatabase() {
             console.log(logSymbols.info, `Migrate 0.0.1 Database to 0.0.2 Database`.database)
         }
         const firstDatabase = require('../discorddatabase.json')
-        const newDatabase = {
+        let newDatabase = {
             "version": "0.0.2",
             "guilds": firstDatabase
         }
@@ -38,7 +38,9 @@ async function migrateDatabase() {
         if (stringNewDatabase.includes('true')) { stringNewDatabase = stringNewDatabase.replace(/(true)/g, '') }
         if (stringNewDatabase.includes('false')) { stringNewDatabase = stringNewDatabase.replace(/(false)/g, '') }
 
-        console.log(JSON.parse(stringNewDatabase))
+        newDatabase = JSON.parse(stringNewDatabase)
+
+        console.log(newDatabase)
         
         saveData(JSON.parse(stringNewDatabase), '../database.json')
 
