@@ -102,6 +102,8 @@ async function postStart(message, commandContext) {
     if (typeof (message.embeds) === 'undefined') { return }
 
     addEmotes(commandContext, commandmessage)
+    
+    commandFeedback = undefined
 }
 
 function startPrintJob(commandContext) {
@@ -114,7 +116,6 @@ function startPrintJob(commandContext) {
 
     const feedbackHandler = setInterval(() => {
         if (timeout === 4) {
-            commandFeedback = undefined
             clearInterval(feedbackHandler)
             postStart({
                 content: 'Command execution failed!'
@@ -127,7 +128,6 @@ function startPrintJob(commandContext) {
         if (typeof (commandFeedback) === 'undefined') { return }
 
         if (commandFeedback === 'Not Found!') {
-            commandFeedback = undefined
             clearInterval(feedbackHandler)
             postStart({
                 content: 'File not Found!'
@@ -146,12 +146,7 @@ function startPrintJob(commandContext) {
             name: thumbnail.name,
             file: thumbnail.attachment
         }
-        commandFeedback = undefined
         clearInterval(feedbackHandler)
-        console.log({
-            file: files,
-            embeds: [commandFeedback.toJSON()]
-        })
         postStart({
             file: files,
             embeds: [commandFeedback.toJSON()]
