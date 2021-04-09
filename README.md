@@ -94,7 +94,7 @@ Roles:
   - fileinfo &#60;filename&#62;: shows Informations about a Print File with Thumbnail Preview
   - listfiles: list all GCode Files
   - status: shows the current Status of the Printer
-  - temp: show current temperatures
+  - temp: shows current temperatures
   - execute &#60;gcode&#62;: execute a Gcode Command
 - Basic Commands:
   - info: shows informations about the bot
@@ -110,5 +110,5 @@ Roles:
 
 - [Kevin O'Connor](https://github.com/KevinOConnor) for the awesome 3D printer firmware [Klipper](https://github.com/KevinOConnor/klipper)
 - [Eric Callahan (arksine)](https://github.com/Arksine) for [Moonraker (Klipper API)](https://github.com/Arksine/moonraker). Without Moonraker, Mooncord would not be possible.
-- [Flaticon](https://www.flaticon.com): for parts of the Logo and most of the Icons
-- [Snazzah](https://github.com/Snazzah/slash-create): for the Slash Command library
+- [Flaticon](https://www.flaticon.com) for parts of the Logo and most of the Icons
+- [Snazzah](https://github.com/Snazzah/slash-create) for the Slash Command library
