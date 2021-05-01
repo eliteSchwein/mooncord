@@ -69,7 +69,7 @@ Important Note, you need to configure bottoken for the bot to work, and masterid
 
 you will see the Invite Link on Startup in the Log, to retrieve the look use
 
-$ sudo systemctl status MoonCord
+    $ sudo systemctl status MoonCord
 
 alternative you can use this URL:
 
