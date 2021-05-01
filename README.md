@@ -65,6 +65,18 @@ Important Note, you need to configure bottoken for the bot to work, and masterid
 - statusupdateinterval: Auto Status Update per Seconds or Percent (default: 10)
 - statusupdatepercent: Use Percent for Auto Status instead of Seconds (default: false)
 
+## Invite
+
+you will see the Invite Link on Startup in the Log, to retrieve the look use
+
+$ sudo systemctl status MoonCord
+
+alternative you can use this URL:
+
+https://discord.com/oauth2/authorize?client_id=CLIENT_ID&permissions=3422944320&scope=bot%20applications.commands
+
+Please replace CLIENT_ID with the Bot ID
+
 ## Usage
 
     $ sudo systemctl <start/stop/restart/status> MoonCord
