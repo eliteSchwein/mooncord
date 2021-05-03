@@ -26,7 +26,7 @@
     "colors": "^1.4.0",
     "discord.js": "^12.5.3",
     "form-data": "^4.0.0",
-    "log-symbols": "^4.1.0",
+    "log-symbols": "^5.0.0",
     "slash-create": "^3.1.0",
     "systeminformation": "^5.6.12",
     "websocket": "^1.0.34"
