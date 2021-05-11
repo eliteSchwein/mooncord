@@ -28,7 +28,7 @@
     "form-data": "^4.0.0",
     "log-symbols": "^4.1.0",
     "slash-create": "^3.1.0",
-    "systeminformation": "^5.6.12",
+    "systeminformation": "^5.6.20",
     "websocket": "^1.0.34"
   },
   "devDependencies": {
