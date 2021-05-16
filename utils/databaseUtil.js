@@ -46,12 +46,12 @@ module.exports.getGuildDatabase = function (guild) {
   const database = require(databasepath)
   if (typeof database.guilds[guild.id] === 'undefined') {
     console.log(logSymbols.info, `No Database for ${guild.name} found!\nGenerate base config!`.database)
-    database.guilds[guild.id] = {
+    var databaseentry = {
       broadcastchannels: [],
       adminusers: [],
       adminroles: []
     }
-    this.updateDatabase(database.guild[guild.id], guild)
+    return databaseentry
   }
   return database.guilds[guild.id]
 }
