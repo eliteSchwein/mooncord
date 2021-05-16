@@ -62,7 +62,7 @@ module.exports.init = async () => {
   |___/|_/__/\\__\\___/_| \\__,_|`.statustitle}
                               `)
   loginBot()
-  await waitUntil(() => connected === true)
+  await waitUntil(() => connected === true, { timeout: Number.POSITIVE_INFINITY })
   enableCommands()
   enableEvents()
   
