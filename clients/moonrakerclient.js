@@ -88,6 +88,6 @@ module.exports.init = async (discordClient) => {
                               `)
   connect()
   enableEvents(discordClient)
-  await waitUntil(() => connected === true)
+  await waitUntil(() => connected === true, { timeout: Number.POSITIVE_INFINITY })
 }
 module.exports.getConnection = () => { return WSconnection }
