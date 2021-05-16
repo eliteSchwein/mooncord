@@ -85,7 +85,7 @@
         },
         "fields": [
             {
-                "title": "Print Time",
+                "name": "Print Time",
                 "value": "${formatedPrintTime}"
             }
         ]
