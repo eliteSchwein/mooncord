@@ -28,12 +28,12 @@
     "form-data": "^4.0.0",
     "log-symbols": "^4.1.0",
     "slash-create": "^3.1.0",
-    "systeminformation": "^5.6.21",
+    "systeminformation": "^5.6.22",
     "websocket": "^1.0.34"
   },
   "devDependencies": {
     "eslint": "^7.26.0",
-    "eslint-config-galex": "^2.15.5",
+    "eslint-config-galex": "^2.15.10",
     "eslint-config-standard": "^16.0.2",
     "eslint-plugin-import": "^2.23.2",
     "eslint-plugin-node": "^11.1.0",
