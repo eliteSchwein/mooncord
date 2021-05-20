@@ -118,6 +118,8 @@ function postStatus(message, altdiscordClient, altdatabase) {
           const lastMessage = await channel.messages.fetch(lastMessageID)
           
           let updateMessage = false
+
+          console.log(message)
           if (lastMessage.author.id === client.user.id &&
             lastMessage.embeds.length > 0 &&
             message.embeds[0].title !== "Systemupdates") {
