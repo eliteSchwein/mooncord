@@ -3,7 +3,9 @@ const fs = require('fs')
 const logSymbols = require('log-symbols')
 const path = require('path')
 
-const ramDatabase = {}
+const ramDatabase = {
+  "cooldown": 0
+}
 
 module.exports = {}
 
