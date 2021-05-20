@@ -115,9 +115,14 @@ function postStatus(message, altdiscordClient, altdatabase) {
           const channel = await client.channels.fetch(guilddatabase.broadcastchannels[index])
           const lastMessageID = channel.lastMessageID
           const lastMessage = await channel.messages.fetch(lastMessageID)
-          console.log(lastMessage)
+          if (lastMessage.author.id === client.id &&
+            lastMessage.embeds.length > 0) {
+              const embed = lastMessage.embeds[0]
+              if (JSON.stringify(messageconfig).includes(embed.title)) {
+                console.log("true")
+              }
+          }
           const response = await channel.send(message)
-          console.log(response.id)
         }
       })
       .catch((error) => { console.log((error).error) })
