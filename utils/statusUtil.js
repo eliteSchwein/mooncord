@@ -122,8 +122,6 @@ function postStatus(message, altdiscordClient, altdatabase) {
             lastMessage.embeds.length > 0 &&
             message.embeds[0].title !== "Systemupdates") {
             const embed = lastMessage.embeds[0]
-            console.log(JSON.stringify(messagemetadata).includes(embed.title))
-            console.log(embed.title)
               if (JSON.stringify(messagemetadata).includes(embed.title)) {
                 updateMessage = true
               }
