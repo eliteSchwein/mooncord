@@ -64,7 +64,8 @@ async function migrateDatabase() {
 
             await fs.unlinkSync(firstDatabasePath)
         }
-    } catch(error) {
+    } catch (error) {
+        console.log("error on database")
         console.error((error).err)
     }
 }
