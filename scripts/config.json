@@ -1,7 +1,6 @@
 {
     "moonrakersocketurl": "ws://127.0.0.1/websocket",
     "moonrakerurl": "http://127.0.0.1",
-    "webcamsnapshoturl":"http://127.0.0.1/webcam/?action=snapshot",
     "bottoken":"",
     "botapplicationkey":"",
     "botapplicationid":"",

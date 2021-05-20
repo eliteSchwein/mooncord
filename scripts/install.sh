@@ -69,6 +69,7 @@ generate_config()
     echo "Generate Configs"
     cp $SCRIPTPATH/config.json $MCPATH/config.json
     cp $SCRIPTPATH/statusconfig.json $MCPATH/statusconfig.json
+    cp $SCRIPTPATH/webcamconfig.json $MCPATH/webcamconfig.json
     cp $SCRIPTPATH/database.json $MCPATH/database.json
 }
 
@@ -77,6 +78,7 @@ edit_config()
     echo "Edit Config"
     nano ./config.json
     nano ./statusconfig.json
+    nano ./webcamconfig.json
 }
 
 start_MoonCord() {

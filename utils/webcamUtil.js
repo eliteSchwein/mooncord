@@ -3,11 +3,11 @@ const Discord = require('discord.js')
 const fs = require('fs').promises
 const path = require('path')
 
-const config = require('../config.json')
+const config = require('../webcamconfig.json')
 
 function retrieveWebcam () {
   return axios
-    .get(config.webcamsnapshoturl, {
+    .get(config.url, {
       responseType: 'arraybuffer',
       timeout: 100
     })

@@ -38,8 +38,16 @@ function migrateConfigToMultiV1() {
                 "min_interval": 15
             }
             saveData(statusconfig, '../statusconfig.json')
+            const webcamconfig = {
+                "url": config.webcamsnapshoturl,
+                "rotation": "0",
+                "vertical_mirror": false,
+                "horizontal_mirror": false
+            }
+            saveData(webcamconfig, '../webcamconfig.json')
             config.statusupdateinterval = undefined
             config.statusupdatepercent = undefined
+            config.webcamsnapshoturl = undefined
             database.version = '0.0.3'
         }
     }
