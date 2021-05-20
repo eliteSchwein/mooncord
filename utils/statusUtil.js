@@ -8,18 +8,11 @@ const thumbnail = require('./thumbnailUtil')
 const variables = require('./variablesUtil')
 const webcam = require('./webcamUtil')
 
-function getDatabase(altdatabase){
+function getCurrentDatabase(altdatabase){
   if(typeof(altdatabase) !== 'undefined'){
     return altdatabase
   }
-  return database.getDatabase()
-}
-
-function getRamDatabase(altramdatabase){
-  if(typeof(altramdatabase) != 'undefined') {
-    return altramdatabase
-  }
-  return database.getRamDatabase()
+  return database
 }
 
 function getDiscordClient(altdiscordClient){
@@ -106,13 +99,13 @@ async function generateEmbed(config, user) {
   return embed
 }
 
-function postStatus(message, altdiscordClient, altdatabase, altramdatabase) {
+function postStatus(message, altdiscordClient, altdatabase) {
 
   const client = getDiscordClient(altdiscordClient)
 
-  const botdatabase = getDatabase(altdatabase)
-
-  const ramdatabase = getRamDatabase(altramdatabase)
+  const maindatabase = getCurrentDatabase(altdatabase)
+  const botdatabase = maindatabase.getDatabase()
+  const ramdatabase = maindatabase.getRamDatabase()
   
   for (const guildid in botdatabase.guilds) {
     client.guilds.fetch(guildid)
@@ -128,12 +121,12 @@ function postStatus(message, altdiscordClient, altdatabase, altramdatabase) {
   }
 }
 
-function notifyStatus(message, altdiscordClient, altdatabase, altramdatabase) {
+function notifyStatus(message, altdiscordClient, altdatabase) {
   const client = getDiscordClient(altdiscordClient)
 
-  const botdatabase = getDatabase(altdatabase)
-
-  const ramdatabase = getRamDatabase(altramdatabase)
+  const maindatabase = getCurrentDatabase(altdatabase)
+  const botdatabase = maindatabase.getDatabase()
+  const ramdatabase = maindatabase.getRamDatabase()
 
   const notifylist = botdatabase.notify
 

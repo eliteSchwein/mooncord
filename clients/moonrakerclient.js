@@ -54,7 +54,7 @@ const enableEvents = function (discordClient) {
     })
     connection.on('message', (message) => {
       for (const event in events) {
-        events[event](message, connection, discordClient, database.getDatabase())
+        events[event](message, connection, discordClient, database)
       }
     })
   })
