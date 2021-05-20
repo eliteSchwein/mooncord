@@ -2,19 +2,37 @@ const fs = require('fs')
 const logSymbols = require('log-symbols');
 const path = require('path')
 
+const config = require('../config.json')
+
 module.exports = {}
 module.exports.init = async () => {
     await migrateDatabase()
     migrateConfig()
+    migrateConfigToMultiV1()
 }
 function migrateConfig() {
-    const config = require('../config.json')
     if (typeof (config.prefix) !== 'undefined') {
         console.log(logSymbols.info, `Migrate 0.0.1 Config to 0.0.2 Config`.database)
         config.prefix = undefined
         config.botapplicationkey = ""
         config.botapplicationid = ""
         saveData(config, '../config.json')
+    }
+}
+function migrateConfigToMultiV1() {
+    const database = require('../database.json')
+    if (typeof (database.version) !== 'undefined') {
+        if (database.version === '0.0.2') {
+            console.log(logSymbols.info, `Migrate 0.0.2 Config to 0.0.3 Multi Config`.database)
+            const statusconfig = {}
+            statusconfig[min_interval] = 15
+            statusconfig[update_interval] = config.statusupdateinterval
+            statusconfig[use_percent] = config.statusupdatepercent
+            saveData(statusconfig, '../statusconfig.json')
+            config.statusupdateinterval = undefined
+            config.statusupdatepercent = undefined
+            database.version = '0.0.3'
+        }
     }
 }
 async function migrateDatabase() {
