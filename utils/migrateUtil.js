@@ -4,9 +4,13 @@ const path = require('path')
 
 const config = require('../config.json')
 
-await migrateDatabase()
-migrateConfig()
-migrateConfigToMultiV1()
+execute()
+
+async function execute() {
+    await migrateDatabase()
+    migrateConfig()
+    migrateConfigToMultiV1()
+}
 
 function migrateConfig() {
     if (typeof (config.prefix) !== 'undefined') {
