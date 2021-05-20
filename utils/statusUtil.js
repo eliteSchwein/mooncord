@@ -2,8 +2,9 @@ const Discord = require('discord.js')
 const logSymbols = require('log-symbols');
 
 const discordClient = require('../clients/discordclient') 
+const config = require('../statusconfig.json')
 const database = require('./databaseUtil')
-const messageconfig = require('./statusconfig.json')
+const messagemetadata = require('./statusmetadata.json')
 const thumbnail = require('./thumbnailUtil')
 const variables = require('./variablesUtil')
 const webcam = require('./webcamUtil')
@@ -24,7 +25,7 @@ function getDiscordClient(altdiscordClient){
 
 function triggerStatusUpdate(altdiscordClient) {
   console.log(logSymbols.info, `Printer Status: ${variables.getStatus()}`.printstatus)
-  const statusConfig = messageconfig[variables.getStatus()]
+  const statusConfig = messagemetadata[variables.getStatus()]
 
   const client = getDiscordClient(altdiscordClient)
 
@@ -119,7 +120,7 @@ function postStatus(message, altdiscordClient, altdatabase) {
           if (lastMessage.author.id === client.user.id &&
             lastMessage.embeds.length > 0) {
               const embed = lastMessage.embeds[0]
-              if (JSON.stringify(messageconfig).includes(embed.title)) {
+              if (JSON.stringify(messagemetadata).includes(embed.title)) {
                 updateMessage = true
               }
           }
@@ -139,7 +140,6 @@ function notifyStatus(message, altdiscordClient, altdatabase) {
 
   const maindatabase = getCurrentDatabase(altdatabase)
   const botdatabase = maindatabase.getDatabase()
-  const ramdatabase = maindatabase.getRamDatabase()
 
   const notifylist = botdatabase.notify
 
@@ -147,9 +147,6 @@ function notifyStatus(message, altdiscordClient, altdatabase) {
     const clientid = notifylist[notifyindex]
     client.users.fetch(clientid)
       .then(async (user) => {
-        const lastMessageID = user.lastMessageID
-        console.log(user)
-        const lastMessage = await user.dmchannel.messages.fetch(lastMessageID)
         user.send(message).catch('console.error')
       })
       .catch((error) => { console.log((error).error) })
@@ -161,7 +158,7 @@ module.exports.triggerStatusUpdate = async function (altdiscordClient) {
 }
 
 module.exports.getManualStatusEmbed = async function (user) {
-  const statusConfig = messageconfig[variables.getStatus()]
+  const statusConfig = messagemetadata[variables.getStatus()]
   const parsedConfig = parseConfig(statusConfig)
   return await generateEmbed(parsedConfig, user)
 }

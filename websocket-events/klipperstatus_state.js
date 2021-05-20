@@ -1,4 +1,4 @@
-const config = require('../config.json')
+const config = require('../statusconfig.json')
 const status = require('../utils/statusUtil')
 const variables = require('../utils/variablesUtil')
 
@@ -26,14 +26,14 @@ const event = (message, connection, discordClient) => {
           const currentStatus = 'printing'
           if (variables.getStatus() !== currentStatus) {
             variables.setStatus(currentStatus)
-            if (!config.statusupdatepercent) {
+            if (!config.use_percent) {
               status.triggerStatusUpdate(discordClient)
               setTimeout(() => {
                 const timer = setInterval(() => {
                   status.triggerStatusUpdate(discordClient)
-                }, 1000 * config.statusupdateinterval)
+                }, 1000 * config.update_interval)
                 variables.setUpdateTimer(timer)
-              }, 1000 * config.statusupdateinterval)
+              }, 1000 * config.update_interval)
             } else {
               status.triggerStatusUpdate(discordClient)
             }
