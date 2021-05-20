@@ -6,7 +6,7 @@ module.exports.init = () => {
     setInterval(() => {
         const ramDatabase = database.getRamDatabase()
         const currentTime = ramDatabase.cooldown
-        database.updateDatabase("cooldown", currentTime-1)
+        database.updateRamDatabase("cooldown", currentTime-1)
     }, 1000)
   }
 }
