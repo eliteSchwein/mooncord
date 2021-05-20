@@ -40,7 +40,7 @@ function migrateConfigToMultiV1() {
             saveData(statusconfig, '../statusconfig.json')
             const webcamconfig = {
                 "url": config.webcamsnapshoturl,
-                "rotation": "0",
+                "rotation": 0,
                 "vertical_mirror": false,
                 "horizontal_mirror": false
             }
