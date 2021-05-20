@@ -13,7 +13,7 @@ function updateNotifyData(data) {
   saveDatabase(database)
 }
 
-function getRamDatabase() { return ramDatabase }
+function getRamDatabase(key) { return ramDatabase[key] }
 
 function updateRamDatabase(key, value) {
   ramDatabase[key] = value
