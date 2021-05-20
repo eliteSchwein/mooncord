@@ -6,7 +6,6 @@ const discordClient = require('./clients/discordclient')
 const moonrakerClient = require('./clients/moonrakerclient')
 const pjson = require('./package.json')
 const hsUtil = require('./utils/hsUtil')
-const migrateUtil = require('./utils/migrateUtil')
 
 colors.setTheme({
   database: 'grey',
@@ -52,8 +51,6 @@ systemInfo.osInfo()
       'Current free Ram: '.error}`}${(ram.used / (1024 ** 2)).toFixed(2)}MB`)
     process.exit(5)
   }
-
-  await migrateUtil.init()
 
   await discordClient.init()
 

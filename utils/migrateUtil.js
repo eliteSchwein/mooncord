@@ -4,12 +4,10 @@ const path = require('path')
 
 const config = require('../config.json')
 
-module.exports = {}
-module.exports.init = async () => {
-    await migrateDatabase()
-    migrateConfig()
-    migrateConfigToMultiV1()
-}
+await migrateDatabase()
+migrateConfig()
+migrateConfigToMultiV1()
+
 function migrateConfig() {
     if (typeof (config.prefix) !== 'undefined') {
         console.log(logSymbols.info, `Migrate 0.0.1 Config to 0.0.2 Config`.database)
