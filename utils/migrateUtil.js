@@ -26,10 +26,11 @@ function migrateConfigToMultiV1() {
     if (typeof (database.version) !== 'undefined') {
         if (database.version === '0.0.2') {
             console.log(logSymbols.info, `Migrate 0.0.2 Config to 0.0.3 Multi Config`.database)
-            const statusconfig = {}
-            statusconfig[min_interval] = 15
-            statusconfig[update_interval] = config.statusupdateinterval
-            statusconfig[use_percent] = config.statusupdatepercent
+            const statusconfig = {
+                "update_interval": config.statusupdateinterval,
+                "use_percent": config.statusupdatepercent,
+                "min_interval": 15
+            }
             saveData(statusconfig, '../statusconfig.json')
             config.statusupdateinterval = undefined
             config.statusupdatepercent = undefined
