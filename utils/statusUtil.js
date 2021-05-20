@@ -148,8 +148,8 @@ function notifyStatus(message, altdiscordClient, altdatabase) {
     client.users.fetch(clientid)
       .then(async (user) => {
         const lastMessageID = user.lastMessageID
+        console.log(user)
         const lastMessage = await user.dmchannel.messages.fetch(lastMessageID)
-        console.log(lastMessage)
         user.send(message).catch('console.error')
       })
       .catch((error) => { console.log((error).error) })
