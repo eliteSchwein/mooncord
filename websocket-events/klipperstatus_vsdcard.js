@@ -31,7 +31,8 @@ const event = (message, connection, discordClient) => {
       if (currentProgress.toFixed(0) === lastProgress) { return }
 
       if (config.statusupdatepercent &&
-        currentProgress.toFixed(0) % config.statusupdateinterval === 0) {
+        currentProgress.toFixed(0) % config.statusupdateinterval === 0 &&
+        currentProgress.toFixed(0) != 0) {
         lastProgress = currentProgress.toFixed(0)
         status.triggerStatusUpdate(discordClient)
       }
