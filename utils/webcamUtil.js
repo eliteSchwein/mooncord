@@ -19,6 +19,7 @@ function retrieveWebcam () {
         image.quality(100)
         image.rotate(config.rotation)
         image.mirror(config.horizontal_mirror, config.vertical_mirror)
+        console.log(image.bitmap.data)
         return new Discord.MessageAttachment(image.bitmap.data, 'snapshot.png')
       }
     )
