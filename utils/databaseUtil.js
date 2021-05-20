@@ -3,12 +3,20 @@ const fs = require('fs')
 const logSymbols = require('log-symbols')
 const path = require('path')
 
+const ramDatabase = {}
+
 module.exports = {}
 
 function updateNotifyData(data) {
   const database = require(databasepath)
   database.notify = data
   saveDatabase(database)
+}
+
+function getRamDatabase() { return ramDatabase }
+
+function updateRamDatabase(key, value) {
+  ramDatabase[key] = value
 }
 
 function getNotifyData() {
@@ -62,3 +70,5 @@ module.exports.updateDatabase = function (data, guild) {
   database.guilds[guild.id] = data
   saveDatabase(database)
 }
+module.exports.getRamDatabase = () => { return getRamDatabase() }
+module.exports.updateRamDatabase = (key, value) => { updateRamDatabase(key, value) }
