@@ -19,6 +19,7 @@ function retrieveWebcam () {
         image.rotate(config.rotation)
         image.mirror(config.horizontal_mirror, config.vertical_mirror)
         buffer = await image.getBase64Async()
+        console.log(buffer)
         return new Discord.MessageAttachment(buffer, 'snapshot.png')
       }
     )
