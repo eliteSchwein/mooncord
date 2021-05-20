@@ -113,7 +113,8 @@ function postStatus(message, altdiscordClient, altdatabase) {
         const guilddatabase = botdatabase.guilds[guild.id]
         for (const index in guilddatabase.broadcastchannels) {
           const channel = await client.channels.fetch(guilddatabase.broadcastchannels[index])
-          const lastMessage = channel.lastMessage
+          const lastMessageID = channel.lastMessageID
+          const lastMessage = await channel.messages.fetch(lastMessageID)
           console.log(lastMessage)
           const response = await channel.send(message)
           console.log(response.id)
