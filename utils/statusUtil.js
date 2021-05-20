@@ -119,10 +119,9 @@ function postStatus(message, altdiscordClient, altdatabase) {
           
           let updateMessage = false
 
-          console.log(message)
           if (lastMessage.author.id === client.user.id &&
             lastMessage.embeds.length > 0 &&
-            message.embeds[0].title !== "Systemupdates") {
+            message.title !== "Systemupdates") {
             const embed = lastMessage.embeds[0]
               if (JSON.stringify(messagemetadata).includes(embed.title)) {
                 updateMessage = true
@@ -131,7 +130,8 @@ function postStatus(message, altdiscordClient, altdatabase) {
           if(updateMessage) {
             lastMessage.edit(message)
           } else {
-            if (config.use_percent && message.embeds[0].title === messagemetadata.printing.title) {
+            if (config.use_percent &&
+              message.title === messagemetadata.printing.title) {
               if (ramdatabase.cooldown === 0) {
                 channel.send(message)
                 maindatabase.updateRamDatabase("cooldown", config.min_interval)
