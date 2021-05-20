@@ -19,7 +19,8 @@ function retrieveWebcam () {
         image.quality(100)
         image.rotate(config.rotation)
         image.mirror(config.horizontal_mirror, config.vertical_mirror)
-        await image.write(path.resolve(__dirname, '../temp/snapshot.png'))
+        const editbuffer = await image.getBufferAsync(jimp.MIME_PNG)
+        console.log(editbuffer)
         return new Discord.MessageAttachment(path.resolve(__dirname, '../temp/snapshot.png'), 'snapshot.png')
       }
     )
