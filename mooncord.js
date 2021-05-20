@@ -1,14 +1,12 @@
 'use strict'
-const systemInfo = require('systeminformation')
 const colors = require('colors')
+const systemInfo = require('systeminformation')
 
 const discordClient = require('./clients/discordclient')
 const moonrakerClient = require('./clients/moonrakerclient')
-
+const pjson = require('./package.json')
 const hsUtil = require('./utils/hsUtil')
 const migrateUtil = require('./utils/migrateUtil')
-
-const pjson = require('./package.json')
 
 colors.setTheme({
   database: 'grey',
@@ -23,7 +21,8 @@ colors.setTheme({
   error: 'brightRed'
 });
 
-systemInfo.osInfo().then(async data => {
+systemInfo.osInfo()
+  .then(async data => {
   console.log(`\n
    __  __                     ${'____              _'.statustitle}
   |  \\/  | ___   ___  _ __   ${'/ ___|___  _ __ __| |'.statustitle}
@@ -40,17 +39,17 @@ systemInfo.osInfo().then(async data => {
   Arch: ${(data.arch).statustitle}`)
   const ram = await systemInfo.mem()
 
-  if (ram.free <= 4194304) {
+  if (ram.free <= parseInt('4_194_304')) {
     console.log(
       `${
-      '     _  _____ _____ _____ _   _ _____ ___ ___  _   _ \n' +
+      `${'     _  _____ _____ _____ _   _ _____ ___ ___  _   _ \n' +
       '    / \\|_   _|_   _| ____| \\ | |_   _|_ _/ _ \\| \\ | |\n' +
       '   / _ \\ | |   | | |  _| |  \\| | | |  | | | | |  \\| |\n' +
       '  / ___ \\| |   | | | |___| |\\  | | |  | | |_| | |\\  |\n' +
       ' /_/   \\_\\_|   |_| |_____|_| \\_| |_| |___\\___/|_| \\_|\n' +
       '                                                  \n' +
-      'There might be to few free memory! Mooncord need atleast 40MB RAM\n' +
-      'Current free Ram: '.error}${(ram.used / (1024 ** 2)).toFixed(2)}MB`)
+      'There might be to few free memory! Mooncord need atleast 40MB RAM\n'}${ 
+      'Current free Ram: '.error}`}${(ram.used / (1024 ** 2)).toFixed(2)}MB`)
     process.exit(5)
   }
 
@@ -61,4 +60,8 @@ systemInfo.osInfo().then(async data => {
   await moonrakerClient.init(discordClient.getClient())
   
   await hsUtil.init()
+})
+  .catch(error => {
+    console.log("Mooncord couldnt start".error)
+    console.log((error).error)
 })

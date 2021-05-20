@@ -1,7 +1,7 @@
-const { SlashCommand } = require('slash-create');
 const Discord = require('discord.js')
-const path = require('path')
 const fs = require('fs')
+const path = require('path')
+const { SlashCommand } = require('slash-create');
 
 const pjson = require('../../package.json')
 
@@ -40,8 +40,8 @@ module.exports = class HelloCommand extends SlashCommand {
                 embeds: [infoEmbed.toJSON()]
             });
         }
-        catch (err) {
-            console.log((err).error)
+        catch (error) {
+            console.log((error).error)
             return "An Error occured!";
         }
     }

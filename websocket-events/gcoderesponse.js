@@ -1,10 +1,9 @@
 const config = require('../config.json')
-
-const variables = require('../utils/variablesUtil')
 const status = require('../utils/statusUtil')
+const variables = require('../utils/variablesUtil')
 
 const event = (message, connection, discordClient) => {
-  const id = Math.floor(Math.random() * 10000) + 1
+  const id = Math.floor(Math.random() * parseInt('10_000')) + 1
   if (message.type === 'utf8') {
     const messageJson = JSON.parse(message.utf8Data)
     const methode = messageJson.method

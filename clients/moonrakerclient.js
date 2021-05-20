@@ -3,11 +3,10 @@ const path = require('path')
 const WebSocketClient = require('websocket').client
 const { waitUntil } = require('async-wait-until')
 
-const variables = require('../utils/variablesUtil')
+const config = require('../config.json')
 const database = require('../utils/databaseUtil')
 const status = require('../utils/statusUtil')
-const config = require('../config.json')
-
+const variables = require('../utils/variablesUtil')
 const events = require('../websocket-events')
 
 const client = new WebSocketClient()
@@ -16,11 +15,11 @@ let connected = false
 
 let WSconnection
 
-const enableEvents = async function (discordClient) {
+const enableEvents = function (discordClient) {
   console.log('  Enable Moonraker Events'.statusmessage)
 
-  client.on('connect', async (connection) => {
-    const id = Math.floor(Math.random() * 10000) + 1
+  client.on('connect', (connection) => {
+    const id = Math.floor(Math.random() * parseInt('10_000')) + 1
     console.log('  Moonraker Client Connected'.success)
 
     connected = true

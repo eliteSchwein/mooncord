@@ -5,7 +5,7 @@ module.exports.getTitle = () => { return 'RAM' }
 module.exports.getFields = async () => {
     const ram = await si.mem()
     
-    const fields = [{
+    return [{
         name: 'Total',
         value:`${(ram.total / (1024 ** 3)).toFixed(2)}GB`,
         inline: true
@@ -22,6 +22,4 @@ module.exports.getFields = async () => {
         value:`${(ram.swapused / (1024 ** 3)).toFixed(2)}GB`,
         inline: true
     }]
-    
-    return fields
 }

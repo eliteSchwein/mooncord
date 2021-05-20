@@ -1,11 +1,11 @@
 const Discord = require('discord.js')
-const path = require('path')
 const logSymbols = require('log-symbols');
+const path = require('path')
 
-const variables = require('../utils/variablesUtil')
 const status = require('../utils/statusUtil')
+const variables = require('../utils/variablesUtil')
 
-const event = async (message, connection, discordClient, database) => {
+const event = (message, connection, discordClient, database) => {
   if (message.type === 'utf8') {
     const messageJson = JSON.parse(message.utf8Data)
     const { result } = messageJson
@@ -43,7 +43,6 @@ function getDifference(software, softwareinfo) {
       }
     }
   }
-  return undefined
 }
 
 function postUpdate(updateData, discordClient, database) {

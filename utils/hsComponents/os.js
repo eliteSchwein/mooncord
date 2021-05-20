@@ -1,11 +1,11 @@
 const si = require('systeminformation')
 
 module.exports = {}
-module.exports.getTitle = () => { return 'RAM' }
+module.exports.getTitle = () => { return 'OS' }
 module.exports.getFields = async () => {
   const os = await si.osInfo()
     
-    const fields = [{
+    return [{
         name: 'Plattform',
         value:`${os.platform}`,
         inline: true
@@ -34,6 +34,4 @@ module.exports.getFields = async () => {
         value:`${os.hostname}`,
         inline: true
     }]
-    
-    return fields
 }

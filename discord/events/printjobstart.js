@@ -1,6 +1,6 @@
+const moonrakerClient = require('../../clients/moonrakerclient')
 const chatUtil = require('../../utils/chatUtil')
 const permission = require('../../utils/permissionUtil')
-const moonrakerClient = require('../../clients/moonrakerclient')
 
 const enableEvent = function (discordClient) {
     discordClient.on('messageReactionAdd', async (messageReaction, user) => {
@@ -11,7 +11,7 @@ const enableEvent = function (discordClient) {
         if (user.id === discordClient.user.id) {
             return
         }
-        const title = message.embeds[0].title
+        const {title} = message.embeds[0]
         if (title !== 'Start Print Job?') {
             return
         }
@@ -32,7 +32,7 @@ const enableEvent = function (discordClient) {
         
         if (messageReaction.emoji.name === '✅') {
             const gcodefile = message.embeds[0].author.name
-            const id = Math.floor(Math.random() * 10000) + 1
+            const id = Math.floor(Math.random() * parseInt('10_000')) + 1
 
             if (message.channel.type === 'text') {
                 await message.reactions.removeAll()

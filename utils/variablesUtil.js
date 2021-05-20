@@ -78,9 +78,9 @@ module.exports.getFormatedPrintTime = function () {
 module.exports.formatTime = (time) => { return formatTime(time / 1000) }
 
 function formatTime (seconds) {
-  let h = Math.floor(seconds / 3600);
+  const h = Math.floor(seconds / 3600);
   seconds %= 3600;
-  let m = ("0" + Math.floor(seconds / 60)).slice(-2);
-  let s = ("0" + (seconds % 60).toFixed(0)).slice(-2);
-  return `${h}:${m}:${s}`
+  const m = (`0${  Math.floor(seconds / 60)}`).slice(-2);
+  const s = (`0${  (seconds % 60).toFixed(0)}`).slice(-2);
+  return String(`${h}:${m}:${s}`).replace('-1', '00')
 }

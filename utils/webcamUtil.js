@@ -1,17 +1,18 @@
-const config = require('../config.json')
-
 const axios = require('axios')
 const Discord = require('discord.js')
 const fs = require('fs').promises
 const path = require('path')
 
-async function retrieveWebcam () {
+const config = require('../config.json')
+
+function retrieveWebcam () {
   return axios
     .get(config.webcamsnapshoturl, {
-      responseType: 'arraybuffer'
+      responseType: 'arraybuffer',
+      timeout: 100
     })
     .then(
-      async (response) => {
+      (response) => {
         const buffer = Buffer.from(response.data, 'base64')
         return new Discord.MessageAttachment(buffer, 'snapshot.png')
       }
@@ -25,7 +26,6 @@ async function retrieveWebcam () {
     )
 }
 
-module.exports = function () {}
-module.exports.retrieveWebcam = async function () {
-  return await retrieveWebcam()
+module.exports.retrieveWebcam = function () {
+  return retrieveWebcam()
 }

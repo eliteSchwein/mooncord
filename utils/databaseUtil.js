@@ -1,7 +1,7 @@
 const databasepath = '../database.json'
 const fs = require('fs')
+const logSymbols = require('log-symbols')
 const path = require('path')
-const logSymbols = require('log-symbols');
 
 module.exports = {}
 
@@ -46,12 +46,11 @@ module.exports.getGuildDatabase = function (guild) {
   const database = require(databasepath)
   if (typeof database.guilds[guild.id] === 'undefined') {
     console.log(logSymbols.info, `No Database for ${guild.name} found!\nGenerate base config!`.database)
-    var databaseentry = {
+    return {
       broadcastchannels: [],
       adminusers: [],
       adminroles: []
     }
-    return databaseentry
   }
   return database.guilds[guild.id]
 }

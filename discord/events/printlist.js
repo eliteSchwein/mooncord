@@ -1,14 +1,16 @@
+const moonrakerClient = require('../../clients/moonrakerclient')
 const chatUtil = require('../../utils/chatUtil')
 const permission = require('../../utils/permissionUtil')
-const moonrakerClient = require('../../clients/moonrakerclient')
 
 let connection
 let pageUp
 let page
 
-let requester = {}
+const requester = {}
 
 let commandFeedback = {}
+
+let timeout = 0
 
 const enableEvent = function (discordClient) {
     discordClient.on('messageReactionAdd', async (messageReaction, user) => {
@@ -19,7 +21,7 @@ const enableEvent = function (discordClient) {
         if (user.id === discordClient.user.id) {
             return
         }
-        const title = message.embeds[0].title
+        const {title} = message.embeds[0]
         if (title !== 'Print Files') {
             return
         }
@@ -41,14 +43,13 @@ const enableEvent = function (discordClient) {
         if (messageReaction.emoji.name === '▶️') {
             pageUp = true
             await executeMessage(message, user)
-            return
         }
     })
 }
 
 async function executeMessage(message, user) {
-    const id = Math.floor(Math.random() * 10000) + 1
-    const channel = message.channel
+    const id = Math.floor(Math.random() * parseInt('10_000')) + 1
+    const {channel} = message
 
     commandFeedback[message.channel.id] = undefined
     requester[channel.id] = user
@@ -63,6 +64,15 @@ async function executeMessage(message, user) {
             await message.edit(commandFeedback[message.channel.id])
             clearInterval(feedbackInterval)
         }
+        if (timeout === 10) {
+            await message.edit({
+                content: 'There are currently no Files!'
+            })
+            commandFeedback = undefined
+            connection.removeListener('message', handler)
+            clearInterval(feedbackInterval)
+        }
+        timeout++
     }, 500)
 }
 

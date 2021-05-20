@@ -1,13 +1,12 @@
 const Discord = require('discord.js')
 const logSymbols = require('log-symbols');
 
-const database = require('./databaseUtil')
-const variables = require('./variablesUtil')
-const thumbnail = require('./thumbnailUtil')
-const webcam = require('./webcamUtil')
-
 const discordClient = require('../clients/discordclient') 
+const database = require('./databaseUtil')
 const messageconfig = require('./statusconfig.json')
+const thumbnail = require('./thumbnailUtil')
+const variables = require('./variablesUtil')
+const webcam = require('./webcamUtil')
 
 function getDatabase(altdatabase){
   if(typeof(altdatabase) !== 'undefined'){
@@ -23,7 +22,7 @@ function getDiscordClient(altdiscordClient){
   return discordClient.getClient()
 }
 
-async function triggerStatusUpdate(altdiscordClient) {
+function triggerStatusUpdate(altdiscordClient) {
   console.log(logSymbols.info, `Printer Status: ${variables.getStatus()}`.printstatus)
   const statusConfig = messageconfig[variables.getStatus()]
 
@@ -45,7 +44,7 @@ async function triggerStatusUpdate(altdiscordClient) {
 }
 
 function parseConfig(config) {
-  let parsedConfig = JSON.stringify(config)
+  const parsedConfig = JSON.stringify(config)
     .replace(/(\${currentFile})/g, variables.getCurrentFile())
     .replace(/(\${formatedPrintTime})/g, variables.getFormatedPrintTime())
     .replace(/(\${formatedETAPrintTime})/g, variables.getFormatedRemainingTime())
@@ -74,16 +73,16 @@ async function generateEmbed(config, user) {
   }
 
   if (typeof (config.fields) !== 'undefined') {
-    for (let index in config.fields) {
+    for (const index in config.fields) {
       embed.addField(config.fields[index].name, config.fields[index].value, true)
     }
   }
   if (config.versions) {
     const currentVersions = variables.getVersions()
-    for (let component in currentVersions) {
+    for (const component in currentVersions) {
       if (component !== 'system') {
-        let componentdata = currentVersions[component]
-        let version = componentdata.version
+        const componentdata = currentVersions[component]
+        let {version} = componentdata
         if (version !== componentdata.remote_version) {
           version = version.concat(` **(${componentdata.remote_version})**`)
         }
@@ -115,7 +114,7 @@ function postStatus(message, altdiscordClient, altdatabase) {
           channel.send(message)
         }
       })
-      .catch((err) => { console.log((err).error) })
+      .catch((error) => { console.log((error).error) })
   }
 }
 
@@ -129,10 +128,10 @@ function notifyStatus(message, altdiscordClient, altdatabase) {
   for (const notifyindex in notifylist) {
     const clientid = notifylist[notifyindex]
     client.users.fetch(clientid)
-      .then(async (user) => {
+      .then((user) => {
         user.send(message).catch('console.error')
       })
-      .catch((err) => { console.log((err).error) })
+      .catch((error) => { console.log((error).error) })
   }
 }
 

@@ -1,7 +1,8 @@
 const { SlashCommand, CommandOptionType } = require('slash-create')
+
+const discordClient = require('../../clients/discordclient')
 const database = require('../../utils/databaseUtil')
 const permission = require('../../utils/permissionUtil')
-const discordClient = require('../../clients/discordclient')
 
 module.exports = class HelloCommand extends SlashCommand {
     constructor(creator) {
@@ -66,12 +67,12 @@ module.exports = class HelloCommand extends SlashCommand {
 
             if (result) {
                 return `${answermention} is now a Admin, ${ctx.user.username}!`
-            } else {
+            } 
                 return `${answermention} is not longer a Admin, ${ctx.user.username}!`
-            }
+            
         }
-        catch (err) {
-            console.log((err).error)
+        catch (error) {
+            console.log((error).error)
             return "An Error occured!";
         }
     }

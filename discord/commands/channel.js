@@ -1,7 +1,8 @@
 const { SlashCommand, CommandOptionType } = require('slash-create');
+
+const discordClient = require('../../clients/discordclient')
 const database = require('../../utils/databaseUtil')
 const permission = require('../../utils/permissionUtil')
-const discordClient = require('../../clients/discordclient')
 
 module.exports = class HelloCommand extends SlashCommand {
     constructor(creator) {
@@ -45,12 +46,12 @@ module.exports = class HelloCommand extends SlashCommand {
 
             if (channelresult) {
                 return `${channel} is now a Broadcast Channel, ${ctx.user.username}!`
-            } else {
+            } 
                 return `${channel} is not longer a Broadcast Channel, ${ctx.user.username}!`
-            }
+            
         }
-        catch (err) {
-            console.log((err).error)
+        catch (error) {
+            console.log((error).error)
             return "An Error occured!";
         }
     }
@@ -61,7 +62,7 @@ async function editChannel(channelid, guildid) {
     const guilddatabase = database.getGuildDatabase(guild)
 
     if (channel.type !== 'text') {
-        return undefined
+        return
     }
     if (guilddatabase.broadcastchannels.includes(channelid)) {
         const index = guilddatabase.broadcastchannels.indexOf(channelid)

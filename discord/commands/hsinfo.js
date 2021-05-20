@@ -1,6 +1,7 @@
 const { SlashCommand, CommandOptionType } = require('slash-create')
-const hsUtil = require('../../utils/hsUtil')
+
 const components = require('../../utils/hsComponents')
+const hsUtil = require('../../utils/hsUtil')
 
 module.exports = class HelloCommand extends SlashCommand {
     constructor(creator) {
@@ -32,8 +33,8 @@ module.exports = class HelloCommand extends SlashCommand {
                 embeds: [answer[1].toJSON()]
             });
         }
-        catch (err) {
-            console.log((err).error)
+        catch (error) {
+            console.log((error).error)
             return 'An Error occured!';
         }
     }

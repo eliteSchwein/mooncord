@@ -1,7 +1,6 @@
 const { SlashCommand, CommandOptionType } = require('slash-create');
 
 const moonrakerClient = require('../../clients/moonrakerclient')
-
 const handlers = require('../../utils/handlerUtil')
 
 let commandFeedback
@@ -22,7 +21,7 @@ module.exports = class HelloCommand extends SlashCommand {
         this.filePath = __filename;
     }
 
-    async run(ctx) {
+    run(ctx) {
         try {
             if (typeof (commandFeedback) !== 'undefined') {
                 return `This Command is not ready, ${ctx.user.username}!`
@@ -32,7 +31,7 @@ module.exports = class HelloCommand extends SlashCommand {
                 gcodefile += '.gcode'
             }
 
-            const id = Math.floor(Math.random() * 10000) + 1
+            const id = Math.floor(Math.random() * parseInt('10_000')) + 1
             connection = moonrakerClient.getConnection()
 
             let timeout = 0
@@ -51,7 +50,7 @@ module.exports = class HelloCommand extends SlashCommand {
                             content: 'File not Found!'
                         })
                     } else {
-                        if (commandFeedback.files.length !== 0) {
+                        if (commandFeedback.files.length > 0) {
                             const thumbnail = commandFeedback.files[0]
                             const files = {
                                 name: thumbnail.name,
@@ -81,8 +80,8 @@ module.exports = class HelloCommand extends SlashCommand {
                 timeout++
            }, 500)
         }
-        catch (err) {
-            console.log((err).error)
+        catch (error) {
+            console.log((error).error)
             commandFeedback = undefined
             connection.removeListener('message', handler)
             return 'An Error occured!'
@@ -93,5 +92,4 @@ module.exports = class HelloCommand extends SlashCommand {
 async function handler (message) {
     commandFeedback = await handlers.printFileHandler(message, 'File Informations', '#0099ff')
     connection.removeListener('message', handler)
-    return
 }

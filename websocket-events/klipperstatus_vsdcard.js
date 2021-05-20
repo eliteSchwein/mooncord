@@ -1,12 +1,11 @@
 const config = require('../config.json')
-
-const variables = require('../utils/variablesUtil')
 const status = require('../utils/statusUtil')
+const variables = require('../utils/variablesUtil')
 
 let lastProgress = 0
 
 const event = (message, connection, discordClient) => {
-  const id = Math.floor(Math.random() * 10000) + 1
+  const id = Math.floor(Math.random() * parseInt('10_000')) + 1
   if (message.type === 'utf8') {
     const messageJson = JSON.parse(message.utf8Data)
     const { result } = messageJson
@@ -31,7 +30,8 @@ const event = (message, connection, discordClient) => {
       if (currentProgress.toFixed(0) === lastProgress) { return }
 
       if (config.statusupdatepercent &&
-        currentProgress.toFixed(0) % config.statusupdateinterval === 0) {
+        currentProgress.toFixed(0) % config.statusupdateinterval === 0 &&
+        currentProgress.toFixed(0) !== 0) {
         lastProgress = currentProgress.toFixed(0)
         status.triggerStatusUpdate(discordClient)
       }
