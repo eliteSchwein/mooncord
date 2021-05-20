@@ -16,7 +16,7 @@ function retrieveWebcam () {
       async (response) => {
         const buffer = Buffer.from(response.data, 'base64')
         const image = await jimp.read(buffer)
-        image.quality(100)
+        image.quality(config.quality)
         image.rotate(config.rotation)
         image.mirror(config.horizontal_mirror, config.vertical_mirror)
         const editbuffer = await image.getBufferAsync(jimp.MIME_PNG)

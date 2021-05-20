@@ -40,11 +40,12 @@ function migrateConfigToMultiV1() {
             saveData(statusconfig, '../statusconfig.json')
             const webcamconfig = {
                 "url": config.webcamsnapshoturl,
+                "quality": 80,
                 "rotation": 0,
                 "vertical_mirror": false,
                 "horizontal_mirror": false
             }
-            //saveData(webcamconfig, '../webcamconfig.json')
+            saveData(webcamconfig, '../webcamconfig.json')
             config.statusupdateinterval = undefined
             config.statusupdatepercent = undefined
             config.webcamsnapshoturl = undefined
