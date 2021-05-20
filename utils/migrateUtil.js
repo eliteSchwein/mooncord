@@ -14,7 +14,7 @@ async function execute() {
 
 function migrateConfig() {
     if (typeof (config.prefix) !== 'undefined') {
-        console.log(logSymbols.info, `Migrate 0.0.1 Config to 0.0.2 Config`.database)
+        console.log(logSymbols.info, 'Migrate 0.0.1 Config to 0.0.2 Config'.database)
         config.prefix = undefined
         config.botapplicationkey = ""
         config.botapplicationid = ""
@@ -25,7 +25,7 @@ function migrateConfigToMultiV1() {
     const database = require('../database.json')
     if (typeof (database.version) !== 'undefined') {
         if (database.version === '0.0.2') {
-            console.log(logSymbols.info, `Migrate 0.0.2 Config to 0.0.3 Multi Config`.database)
+            console.log(logSymbols.info, 'Migrate 0.0.2 Config to 0.0.3 Multi Config'.database)
             const statusconfig = {
                 "update_interval": config.statusupdateinterval,
                 "use_percent": config.statusupdatepercent,
@@ -42,7 +42,7 @@ async function migrateDatabase() {
     const firstDatabasePath = path.resolve(__dirname, '../discorddatabase.json')
     try {
         if (fs.existsSync(firstDatabasePath)) {
-            console.log(logSymbols.info, `Migrate 0.0.1 Database to 0.0.2 Database`.database)
+            console.log(logSymbols.info, 'Migrate 0.0.1 Database to 0.0.2 Database'.database)
             const firstDatabase = require('../discorddatabase.json')
             let newDatabase = {
                 "version": "0.0.2",
@@ -65,7 +65,6 @@ async function migrateDatabase() {
             await fs.unlinkSync(firstDatabasePath)
         }
     } catch (error) {
-        console.log("error on database")
         console.error((error).err)
     }
 }
