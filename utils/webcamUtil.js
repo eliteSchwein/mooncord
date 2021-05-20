@@ -2,6 +2,7 @@ const axios = require('axios')
 const Discord = require('discord.js')
 const fs = require('fs').promises
 const path = require('path')
+const jimp = require('jimp')
 
 const config = require('../webcamconfig.json')
 
@@ -12,8 +13,12 @@ function retrieveWebcam () {
       timeout: 100
     })
     .then(
-      (response) => {
-        const buffer = Buffer.from(response.data, 'base64')
+      async (response) => {
+        let buffer = Buffer.from(response.data, 'base64')
+        const image = await jimp.read(buffer)
+        image.rotate(config.rotation)
+        image.mirror(config.horizontal_mirror, config.vertical_mirror)
+        buffer = await image.getBase64Async()
         return new Discord.MessageAttachment(buffer, 'snapshot.png')
       }
     )

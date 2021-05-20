@@ -27,6 +27,7 @@
     "colors": "^1.4.0",
     "discord.js": "^12.5.3",
     "form-data": "^4.0.0",
+    "jimp": "^0.16.1",
     "log-symbols": "^4.1.0",
     "slash-create": "^3.1.0",
     "systeminformation": "^5.6.22",
