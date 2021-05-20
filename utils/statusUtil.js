@@ -115,7 +115,7 @@ function postStatus(message, altdiscordClient, altdatabase) {
           const channel = await client.channels.fetch(guilddatabase.broadcastchannels[index])
           const lastMessageID = channel.lastMessageID
           const lastMessage = await channel.messages.fetch(lastMessageID)
-          console.log(lastMessage.author.id + " " + client.getClient().id)
+          console.log(lastMessage.author.id + " " + client.getClient())
           console.log(lastMessage.embeds)
           if (lastMessage.author.id === client.getClient().id &&
             lastMessage.embeds.length > 0) {
