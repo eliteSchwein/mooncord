@@ -1,4 +1,5 @@
 const { SlashCommand } = require('slash-create');
+
 const statusUtil = require('../../utils/statusUtil')
 
 module.exports = class HelloCommand extends SlashCommand {
@@ -18,10 +19,10 @@ module.exports = class HelloCommand extends SlashCommand {
 
             const statusfiles = status.files
 
-            let files = []
+            const files = []
 
-            for (let statusfileindex in statusfiles) {
-                let statusfile = statusfiles[statusfileindex]
+            for (const statusfileindex in statusfiles) {
+                const statusfile = statusfiles[statusfileindex]
                 files.push({
                     name: statusfile.name,
                     file: statusfile.attachment
@@ -33,8 +34,8 @@ module.exports = class HelloCommand extends SlashCommand {
                 embeds: [status.toJSON()]
             });
         }
-        catch (err) {
-            console.log((err).error)
+        catch (error) {
+            console.log((error).error)
             return "An Error occured!"
         }
     }

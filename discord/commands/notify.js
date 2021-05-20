@@ -1,4 +1,5 @@
 const { SlashCommand } = require('slash-create');
+
 const database = require('../../utils/databaseUtil')
 
 module.exports = class HelloCommand extends SlashCommand {
@@ -10,7 +11,7 @@ module.exports = class HelloCommand extends SlashCommand {
         this.filePath = __filename;
     }
 
-    async run(ctx) {
+    run(ctx) {
         try {
             const notifyStatus = database.updateNotify(ctx.user)
             if (notifyStatus) {
@@ -18,8 +19,8 @@ module.exports = class HelloCommand extends SlashCommand {
             }
             return `I will no longer notify you of the print status via DM, ${ctx.user.username}!`;
         }
-        catch (err) {
-            console.log((err).error)
+        catch (error) {
+            console.log((error).error)
             return "An Error occured!"
         }
     }

@@ -1,6 +1,6 @@
-const path = require('path')
 const fs = require('fs')
 const logSymbols = require('log-symbols');
+const path = require('path')
 
 module.exports = {}
 module.exports.init = async () => {
@@ -28,7 +28,7 @@ async function migrateDatabase() {
                 "guilds": firstDatabase
             }
 
-            let stringNewDatabase = JSON.stringify(newDatabase)
+            const stringNewDatabase = JSON.stringify(newDatabase)
                 .replace(/(statuschannels)/g, 'broadcastchannels')
             
             newDatabase = JSON.parse(stringNewDatabase)
@@ -43,8 +43,8 @@ async function migrateDatabase() {
 
             await fs.unlinkSync(firstDatabasePath)
         }
-    } catch(err) {
-        console.error((err).err)
+    } catch(error) {
+        console.error((error).err)
     }
 }
 

@@ -1,9 +1,10 @@
 const { SlashCommand, CommandOptionType } = require('slash-create')
 
-const permission = require('../../utils/permissionUtil')
 const moonrakerClient = require('../../clients/moonrakerclient')
+const permission = require('../../utils/permissionUtil')
 
 let commandFeedback
+let connection
 
 module.exports = class HelloCommand extends SlashCommand {
     constructor(creator) {
@@ -29,9 +30,9 @@ module.exports = class HelloCommand extends SlashCommand {
                 return `This Command is not ready, ${ctx.user.username}!`
             }
             
-            const gcode = ctx.options.gcode
-            const id = Math.floor(Math.random() * 10000) + 1
-            const connection = moonrakerClient.getConnection()
+            const {gcode} = ctx.options
+            const id = Math.floor(Math.random() * 10_000) + 1
+            connection = moonrakerClient.getConnection()
 
             let timeout = 0
 
@@ -63,8 +64,8 @@ module.exports = class HelloCommand extends SlashCommand {
                 timeout++
            }, 500)
         }
-        catch (err) {
-            console.log((err).error)
+        catch (error) {
+            console.log((error).error)
             connection.removeListener('message', handler)
             commandFeedback = undefined
             return "An Error occured!"

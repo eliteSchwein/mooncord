@@ -5,11 +5,10 @@ const https = require('https')
 const logSymbols = require('log-symbols');
 
 const config = require('../../config.json')
-
 const database = require('../../utils/databaseUtil')
 const permission = require('../../utils/permissionUtil')
 
-let uploadList = []
+const uploadList = []
 let uploadWaitTimer = 0
 let uploadInProgress = false
 
@@ -42,7 +41,7 @@ function upload(message) {
   uploadList.push(message)
   if (uploadWaitTimer === 0) {
     uploadWaitTimer = 5
-    const timer = setInterval(async () => {
+    const timer = setInterval(() => {
       if (uploadWaitTimer === 0) {
         uploadNext()
         clearInterval(timer)
@@ -91,9 +90,9 @@ function uploadFile(message) {
         uploadInProgress = false
         setTimeout(uploadNext, 250)
       })
-      .catch(err => {
-        if (err) {
-          console.log((err).error)
+      .catch(error => {
+        if (error) {
+          console.log((error).error)
           message.channel.send(`<@${config.masterid}> Please Check the Console!`)
           console.log(logSymbols.error, 'Upload Failed! Check your config!'.error)
           fs.unlink(`temp/${file.name.replace(' ', '_')}`, (err2) => {

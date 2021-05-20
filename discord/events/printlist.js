@@ -1,12 +1,12 @@
+const moonrakerClient = require('../../clients/moonrakerclient')
 const chatUtil = require('../../utils/chatUtil')
 const permission = require('../../utils/permissionUtil')
-const moonrakerClient = require('../../clients/moonrakerclient')
 
 let connection
 let pageUp
 let page
 
-let requester = {}
+const requester = {}
 
 let commandFeedback = {}
 
@@ -21,7 +21,7 @@ const enableEvent = function (discordClient) {
         if (user.id === discordClient.user.id) {
             return
         }
-        const title = message.embeds[0].title
+        const {title} = message.embeds[0]
         if (title !== 'Print Files') {
             return
         }
@@ -43,14 +43,13 @@ const enableEvent = function (discordClient) {
         if (messageReaction.emoji.name === '▶️') {
             pageUp = true
             await executeMessage(message, user)
-            return
         }
     })
 }
 
 async function executeMessage(message, user) {
-    const id = Math.floor(Math.random() * 10000) + 1
-    const channel = message.channel
+    const id = Math.floor(Math.random() * 10_000) + 1
+    const {channel} = message
 
     commandFeedback[message.channel.id] = undefined
     requester[channel.id] = user

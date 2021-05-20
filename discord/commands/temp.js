@@ -1,7 +1,7 @@
-const { SlashCommand } = require('slash-create')
 const Discord = require('discord.js')
-const path = require('path')
 const fs = require('fs')
+const path = require('path')
+const { SlashCommand } = require('slash-create')
 
 const moonrakerClient = require('../../clients/moonrakerclient')
 
@@ -17,11 +17,11 @@ module.exports = class HelloCommand extends SlashCommand {
         this.filePath = __filename;
     }
 
-    async run(ctx) {
+    run(ctx) {
         try {
             
             connection = moonrakerClient.getConnection()
-            const id = Math.floor(Math.random() * 10000) + 1
+            const id = Math.floor(Math.random() * 10_000) + 1
 
             let timeout = 0
 
@@ -57,8 +57,8 @@ module.exports = class HelloCommand extends SlashCommand {
                 timeout++
            }, 500)
         }
-        catch (err) {
-            console.log((err).error)
+        catch (error) {
+            console.log((error).error)
             connection.removeListener('message', handler)
             return "An Error occured!"
         }

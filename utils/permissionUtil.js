@@ -1,6 +1,6 @@
+const discordClient = require('../clients/discordclient')
 const config = require('../config.json')
 const database = require('./databaseUtil')
-const discordClient = require('../clients/discordclient')
 
 module.exports.hasAdmin = async function (user, guildid, altdiscordClient) {
   if (user.id === config.masterid) {

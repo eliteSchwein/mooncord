@@ -1,11 +1,11 @@
 const Discord = require('discord.js')
-const path = require('path')
 const fs = require('fs')
+const path = require('path')
 
 const maxEntries = 5
 
 module.exports = {}
-module.exports.getWaitEmbed = function (user, icon) {
+module.exports.getWaitEmbed = (user, icon) => {
 
   const waitEmbed = new Discord.MessageEmbed()
     .setColor('#c90000')
@@ -28,7 +28,7 @@ module.exports.getWaitEmbed = function (user, icon) {
   
   return waitEmbed
 }
-module.exports.hasMessageEmbed = function (message) {
+module.exports.hasMessageEmbed = (message) => {
   if (message.channel.type !== 'text' && message.channel.type !== 'dm') {
     return false
   }
@@ -37,12 +37,12 @@ module.exports.hasMessageEmbed = function (message) {
   }
   return true
 }
-module.exports.retrieveCurrentPage = function (embed) {
+module.exports.retrieveCurrentPage = (embed) => {
   const pages = embed.author.name
   const currentPageString = pages.replace('Page ', '').split('/')[0]
   return Number.parseInt(currentPageString) - 1
 }
-module.exports.generatePageEmbed = async function (pageUp, currentPage, data, title, icon, user) {
+module.exports.generatePageEmbed = (pageUp, currentPage, data, title, icon, user) => {
   let newpage = currentPage
   const maxpage =((data.length / maxEntries) - 0.1).toFixed(0)
   if (pageUp) {

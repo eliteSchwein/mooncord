@@ -1,5 +1,5 @@
-const variables = require('../utils/variablesUtil')
 const status = require('../utils/statusUtil')
+const variables = require('../utils/variablesUtil')
 const states = require('./klipper_states.json')
 
 const event = (message, connection, discordClient) => {
@@ -10,9 +10,7 @@ const event = (message, connection, discordClient) => {
     if (typeof (methode) === 'undefined') { return }
     if (!Object.keys(states).includes(methode)) { return }
 
-    if (typeof (states[methode].preventStatus) !== 'undefined') {
-      if (states[methode].preventStatus.some(invalidState => variables.getStatus() === invalidState)) { return }
-    }
+    if (typeof (states[methode].preventStatus) !== 'undefined' && states[methode].preventStatus.some(invalidState => variables.getStatus() === invalidState)) { return }
     
     if (typeof (states[methode].requiredParams) !== 'undefined') {
       if (typeof (params) === 'undefined') { return }

@@ -8,7 +8,7 @@ module.exports.getFields = async () => {
     const cpuTemp = await si.cpuTemperature()
     const cpuFreq = await si.cpuCurrentSpeed()
     
-    const fields = [{
+    return [{
         name: 'Model',
         value: cpu.brand,
         inline: true
@@ -41,6 +41,4 @@ module.exports.getFields = async () => {
         value: `${cpuFreq.max}GHz`,
         inline: true
     }]
-    
-    return fields
 }

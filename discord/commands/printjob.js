@@ -1,11 +1,10 @@
 const { SlashCommand, CommandOptionType } = require('slash-create');
 
+const discordClient = require('../../clients/discordclient')
+const moonrakerClient = require('../../clients/moonrakerclient')
 const handlers = require('../../utils/handlerUtil')
 const permission = require('../../utils/permissionUtil')
 const variables = require('../../utils/variablesUtil')
-const moonrakerClient = require('../../clients/moonrakerclient')
-const discordClient = require('../../clients/discordclient')
-
 const metadata = require('../commands-metadata/printjob.json')
 
 let commandFeedback
@@ -52,7 +51,7 @@ module.exports = class HelloCommand extends SlashCommand {
             }
             const subcommand = ctx.subcommands[0]
             const currentStatus = variables.getStatus()
-            const id = Math.floor(Math.random() * 10000) + 1
+            const id = Math.floor(Math.random() * 10_000) + 1
 
             connection = moonrakerClient.getConnection()
 
@@ -79,8 +78,8 @@ module.exports = class HelloCommand extends SlashCommand {
                 startPrintJob(ctx)
             }
         }
-        catch (err) {
-            console.log((err).error)
+        catch (error) {
+            console.log((error).error)
             connection.removeListener('message', handler)
             commandFeedback = undefined
             return "An Error occured!"
@@ -106,7 +105,7 @@ async function postStart(message, commandContext) {
 }
 
 function startPrintJob(commandContext) {
-    const id = Math.floor(Math.random() * 10000) + 1
+    const id = Math.floor(Math.random() * 10_000) + 1
     const gcodefile = commandContext.options.start.file
     connection.on('message', handler)
     connection.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${gcodefile}"}, "id": ${id}}`)
@@ -148,12 +147,10 @@ function startPrintJob(commandContext) {
             file: files,
             embeds: [commandFeedback.toJSON()]
         }, commandContext)
-        return
     }, 500)
 }
 
 async function handler (message) {
     commandFeedback = await handlers.printFileHandler(message, 'Start Print Job?', '#0099ff')
     connection.removeListener('message', handler)
-    return
 }

@@ -1,9 +1,9 @@
-const { SlashCommand } = require('slash-create');
+const { SlashCommand } = require('slash-create')
 
+const discordClient = require('../../clients/discordclient')
+const moonrakerClient = require('../../clients/moonrakerclient')
 const chatUtil = require('../../utils/chatUtil')
 const permission = require('../../utils/permissionUtil')
-const moonrakerClient = require('../../clients/moonrakerclient')
-const discordClient = require('../../clients/discordclient')
 
 let commandFeedback
 let connection
@@ -27,7 +27,7 @@ module.exports = class HelloCommand extends SlashCommand {
             if (!await permission.hasAdmin(ctx.user, ctx.guildID)) {
                 return `You dont have the Permissions, ${ctx.user.username}!`
             }
-            const id = Math.floor(Math.random() * 10000) + 1
+            const id = Math.floor(Math.random() * 10_000) + 1
             connection = moonrakerClient.getConnection()
 
             connection.on('message', handler)
@@ -65,8 +65,8 @@ module.exports = class HelloCommand extends SlashCommand {
                 timeout++
             }, 500)
         }
-        catch (err) {
-            console.log((err).error)
+        catch (error) {
+            console.log((error).error)
             connection.removeListener('message', handler)
             commandFeedback = undefined
             return "An Error occured!"
@@ -76,7 +76,7 @@ module.exports = class HelloCommand extends SlashCommand {
 
 async function handler (message) {
     const messageJson = JSON.parse(message.utf8Data)
-    if (JSON.stringify(messageJson).match(/(modified)/g)) {
+    if(JSON.stringify(messageJson).match(/(modified)/g)) {
         connection.removeListener('message', handler)
         commandFeedback = await chatUtil.generatePageEmbed(
             true,

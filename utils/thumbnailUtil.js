@@ -13,7 +13,6 @@ async function retrieveThumbnail () {
   return new Discord.MessageAttachment(buffer, 'thumbnail.png')
 }
 
-module.exports = function () {}
 module.exports.retrieveThumbnail = async function () {
   return await retrieveThumbnail()
 }

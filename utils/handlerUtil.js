@@ -4,7 +4,9 @@ const thumbnail = require('./thumbnailUtil')
 const variables = require('./variablesUtil')
 
 module.exports = {}
-module.exports.printFileHandler = async (message, title, color) => { return printFileHandler (message, title, color)}
+module.exports.printFileHandler = async (message, title, color) => {
+    return await printFileHandler(message, title, color)
+}
 async function printFileHandler (message, title, color) {
   const messageJson = JSON.parse(message.utf8Data)
   let commandFeedback
@@ -13,7 +15,7 @@ async function printFileHandler (message, title, color) {
       return commandFeedback
   }
   if (typeof (messageJson.result.filename) !== 'undefined') {
-      let description = ''
+      const description = ''
           .concat(`Print Time: ${variables.formatTime(messageJson.result.estimated_time * 1000)}\n`)
           .concat(`Slicer: ${messageJson.result.slicer}\n`)
           .concat(`Slicer Version: ${messageJson.result.slicer_version}\n`)
