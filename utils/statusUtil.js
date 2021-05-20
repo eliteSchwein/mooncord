@@ -112,7 +112,7 @@ function postStatus(message, altdiscordClient, altdatabase, altramdatabase) {
 
   const botdatabase = getDatabase(altdatabase)
 
-  const ramdatabase = getRamDatabase(ramdatabase)
+  const ramdatabase = getRamDatabase(altramdatabase)
   
   for (const guildid in botdatabase.guilds) {
     client.guilds.fetch(guildid)
@@ -128,10 +128,12 @@ function postStatus(message, altdiscordClient, altdatabase, altramdatabase) {
   }
 }
 
-function notifyStatus(message, altdiscordClient, altdatabase) {
+function notifyStatus(message, altdiscordClient, altdatabase, altramdatabase) {
   const client = getDiscordClient(altdiscordClient)
 
   const botdatabase = getDatabase(altdatabase)
+
+  const ramdatabase = getRamDatabase(altramdatabase)
 
   const notifylist = botdatabase.notify
 
@@ -155,7 +157,7 @@ module.exports.getManualStatusEmbed = async function (user) {
   return await generateEmbed(parsedConfig, user)
 }
 
-module.exports.postBroadcastMessage = (message, altdiscordClient, altdatabase) => {
-  postStatus(message, altdiscordClient, altdatabase)
-  notifyStatus(message, altdiscordClient, altdatabase)
+module.exports.postBroadcastMessage = (message, altdiscordClient, altdatabase, altramdatabase) => {
+  postStatus(message, altdiscordClient, altdatabase, altramdatabase)
+  notifyStatus(message, altdiscordClient, altdatabase, altramdatabase)
 }
