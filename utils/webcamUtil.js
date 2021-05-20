@@ -9,6 +9,8 @@ async function retrieveWebcam () {
   return axios
     .get(config.webcamsnapshoturl, {
       responseType: 'arraybuffer'
+    }, {
+      setTimeout: 100
     })
     .then(
       async (response) => {
