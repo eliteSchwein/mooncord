@@ -156,7 +156,15 @@ function notifyStatus(message, altdiscordClient, altdatabase) {
     const clientid = notifylist[notifyindex]
     client.users.fetch(clientid)
       .then(async (user) => {
-        user.send(message).catch('console.error')
+        if (config.use_percent) {
+          if (ramdatabase.cooldown === 0) {
+            user.send(message).catch('console.error')
+            maindatabase.updateRamDatabase("cooldown", config.min_interval)
+          }
+        } else {
+          user.send(message).catch('console.error')
+          channel.send(message)
+        }
       })
       .catch((error) => { console.log((error).error) })
   }
