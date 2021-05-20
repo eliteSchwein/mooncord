@@ -7,14 +7,6 @@ const config = require('../config.json')
 
 colors.setTheme({
   database: 'grey',
-  upload: 'grey',
-  uploadsuccess: 'green',
-  statustitle: 'cyan',
-  statusmessage: 'brightCyan',
-  successvalue: 'green',
-  successname: 'brightGreen',
-  success: 'brightGreen',
-  printstatus: 'white',
   error: 'brightRed'
 });
 
@@ -79,7 +71,7 @@ async function migrateDatabase() {
             await fs.unlinkSync(firstDatabasePath)
         }
     } catch (error) {
-        console.error((error).err)
+        console.error((error).error)
     }
 }
 
