@@ -18,8 +18,8 @@ function retrieveWebcam () {
         const image = await jimp.read(buffer)
         image.rotate(config.rotation)
         image.mirror(config.horizontal_mirror, config.vertical_mirror)
-        buffer = await image.getBase64Async()
-        console.log(buffer)
+        console.log(image.getBase64)
+        buffer = await image.getBase64
         return new Discord.MessageAttachment(buffer, 'snapshot.png')
       }
     )
