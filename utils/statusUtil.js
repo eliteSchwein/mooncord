@@ -159,7 +159,7 @@ function notifyStatus(message, altdiscordClient, altdatabase) {
     const clientid = notifylist[notifyindex]
     client.users.fetch(clientid)
       .then(async (user) => {
-        console.log( messagemetadata.printing.title)
+        console.log(message.title)
         if (config.use_percent &&
               message.title === messagemetadata.printing.title) {
           if (ramdatabase.cooldown === 0) {
