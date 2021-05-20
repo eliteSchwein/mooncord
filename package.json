@@ -1,6 +1,6 @@
 {
   "name": "mooncord",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Moonraker Discord Bot based on Discord.js",
   "main": "index.js",
   "scripts": {
