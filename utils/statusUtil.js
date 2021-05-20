@@ -114,9 +114,7 @@ function postStatus(message, altdiscordClient, altdatabase) {
           const channel = await client.channels.fetch(guilddatabase.broadcastchannels[index])
           const lastMessageID = channel.lastMessageID
           const lastMessage = await channel.messages.fetch(lastMessageID)
-
-          console.log(lastMessage.author.id === client.user.id)
-          console.log(lastMessage.embeds.length > 0)
+          
           let updateMessage = false
           if (lastMessage.author.id === client.user.id &&
             lastMessage.embeds.length > 0) {
@@ -126,9 +124,9 @@ function postStatus(message, altdiscordClient, altdatabase) {
               }
           }
           if(updateMessage) {
-            channel.send(message)
-          } else {
             lastMessage.edit(message)
+          } else {
+            channel.send(message)
           }
         }
       })
