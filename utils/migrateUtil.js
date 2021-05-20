@@ -67,12 +67,19 @@ async function migrateDatabase() {
 }
 
 function saveData(datadata, datapath) {
-  fs.writeFile(path.resolve(__dirname, datapath), JSON.stringify(datadata), (err) => {
+    if (!fs.existsSync(path.resolve(__dirname, datapath))) {
+        const newFileStream = fs.createWriteStream(path.resolve(__dirname, datapath))
+        newFileStream.once('open', () => {
+            newFileStream.write('{}')
+            newFileStream.end()
+        })
+    }
+    fs.writeFile(path.resolve(__dirname, datapath), JSON.stringify(datadata), (err) => {
     if (err) { throw err }
-      console.log(logSymbols.info, 'The Data has been migrated!'.database)
-      if (datapath === '../config.json') {
-          console.log(logSymbols.warning, `Please Read the Update Notes, you need to reconfigure the Bot!`.database)
-          process.exit(5)
-      }
-  })
+        console.log(logSymbols.info, 'The Data has been migrated!'.database)
+        if (datapath === '../config.json') {
+            console.log(logSymbols.warning, `Please Read the Update Notes, you need to reconfigure the Bot!`.database)
+            process.exit(5)
+        }
+    })
 }
