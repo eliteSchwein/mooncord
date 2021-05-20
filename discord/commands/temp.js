@@ -21,7 +21,7 @@ module.exports = class HelloCommand extends SlashCommand {
         try {
             
             connection = moonrakerClient.getConnection()
-            const id = Math.floor(Math.random() * 10_000) + 1
+            const id = Math.floor(Math.random() * parseInt('10_000')) + 1
 
             let timeout = 0
 

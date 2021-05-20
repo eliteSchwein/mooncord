@@ -51,7 +51,7 @@ module.exports = class HelloCommand extends SlashCommand {
             }
             const subcommand = ctx.subcommands[0]
             const currentStatus = variables.getStatus()
-            const id = Math.floor(Math.random() * 10_000) + 1
+            const id = Math.floor(Math.random() * parseInt('10_000')) + 1
 
             connection = moonrakerClient.getConnection()
 
@@ -105,7 +105,7 @@ async function postStart(message, commandContext) {
 }
 
 function startPrintJob(commandContext) {
-    const id = Math.floor(Math.random() * 10_000) + 1
+    const id = Math.floor(Math.random() * parseInt('10_000')) + 1
     const gcodefile = commandContext.options.start.file
     connection.on('message', handler)
     connection.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${gcodefile}"}, "id": ${id}}`)

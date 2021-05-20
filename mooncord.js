@@ -39,7 +39,7 @@ systemInfo.osInfo()
   Arch: ${(data.arch).statustitle}`)
   const ram = await systemInfo.mem()
 
-  if (ram.free <= 4_194_304) {
+  if (ram.free <= parseInt('4_194_304')) {
     console.log(
       `${
       `${'     _  _____ _____ _____ _   _ _____ ___ ___  _   _ \n' +

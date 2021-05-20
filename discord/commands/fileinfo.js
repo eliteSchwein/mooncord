@@ -31,7 +31,7 @@ module.exports = class HelloCommand extends SlashCommand {
                 gcodefile += '.gcode'
             }
 
-            const id = Math.floor(Math.random() * 10_000) + 1
+            const id = Math.floor(Math.random() * parseInt('10_000')) + 1
             connection = moonrakerClient.getConnection()
 
             let timeout = 0

@@ -19,7 +19,7 @@ const enableEvents = function (discordClient) {
   console.log('  Enable Moonraker Events'.statusmessage)
 
   client.on('connect', (connection) => {
-    const id = Math.floor(Math.random() * 10_000) + 1
+    const id = Math.floor(Math.random() * parseInt('10_000')) + 1
     console.log('  Moonraker Client Connected'.success)
 
     connected = true

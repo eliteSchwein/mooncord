@@ -48,7 +48,7 @@ const enableEvent = function (discordClient) {
 }
 
 async function executeMessage(message, user) {
-    const id = Math.floor(Math.random() * 10_000) + 1
+    const id = Math.floor(Math.random() * parseInt('10_000')) + 1
     const {channel} = message
 
     commandFeedback[message.channel.id] = undefined

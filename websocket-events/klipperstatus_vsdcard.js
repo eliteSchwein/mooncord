@@ -5,7 +5,7 @@ const variables = require('../utils/variablesUtil')
 let lastProgress = 0
 
 const event = (message, connection, discordClient) => {
-  const id = Math.floor(Math.random() * 10_000) + 1
+  const id = Math.floor(Math.random() * parseInt('10_000')) + 1
   if (message.type === 'utf8') {
     const messageJson = JSON.parse(message.utf8Data)
     const { result } = messageJson

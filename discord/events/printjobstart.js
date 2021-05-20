@@ -32,7 +32,7 @@ const enableEvent = function (discordClient) {
         
         if (messageReaction.emoji.name === '✅') {
             const gcodefile = message.embeds[0].author.name
-            const id = Math.floor(Math.random() * 10_000) + 1
+            const id = Math.floor(Math.random() * parseInt('10_000')) + 1
 
             if (message.channel.type === 'text') {
                 await message.reactions.removeAll()

@@ -27,7 +27,7 @@ module.exports = class HelloCommand extends SlashCommand {
             if (!await permission.hasAdmin(ctx.user, ctx.guildID)) {
                 return `You dont have the Permissions, ${ctx.user.username}!`
             }
-            const id = Math.floor(Math.random() * 10_000) + 1
+            const id = Math.floor(Math.random() * parseInt('10_000')) + 1
             connection = moonrakerClient.getConnection()
 
             connection.on('message', handler)
