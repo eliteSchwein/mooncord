@@ -82,5 +82,5 @@ function formatTime (seconds) {
   seconds %= 3600;
   let m = ("0" + Math.floor(seconds / 60)).slice(-2);
   let s = ("0" + (seconds % 60).toFixed(0)).slice(-2);
-  return `${h}:${m}:${s}`
+  return str(`${h}:${m}:${s}`).replace('-1', '00')
 }
