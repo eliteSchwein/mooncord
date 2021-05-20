@@ -15,6 +15,13 @@ function getDatabase(altdatabase){
   return database.getDatabase()
 }
 
+function getRamDatabase(altramdatabase){
+  if(typeof(altramdatabase) != 'undefined') {
+    return altramdatabase
+  }
+  return database.getRamDatabase()
+}
+
 function getDiscordClient(altdiscordClient){
   if (typeof (altdiscordClient) !== 'undefined') {
     return altdiscordClient
@@ -99,11 +106,13 @@ async function generateEmbed(config, user) {
   return embed
 }
 
-function postStatus(message, altdiscordClient, altdatabase) {
+function postStatus(message, altdiscordClient, altdatabase, altramdatabase) {
 
   const client = getDiscordClient(altdiscordClient)
 
   const botdatabase = getDatabase(altdatabase)
+
+  const ramdatabase = getRamDatabase(ramdatabase)
   
   for (const guildid in botdatabase.guilds) {
     client.guilds.fetch(guildid)
@@ -111,7 +120,8 @@ function postStatus(message, altdiscordClient, altdatabase) {
         const guilddatabase = botdatabase.guilds[guild.id]
         for (const index in guilddatabase.broadcastchannels) {
           const channel = await client.channels.fetch(guilddatabase.broadcastchannels[index])
-          channel.send(message)
+          const response = await channel.send(message)
+          console.log(response.id)
         }
       })
       .catch((error) => { console.log((error).error) })
