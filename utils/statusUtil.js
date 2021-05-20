@@ -120,7 +120,9 @@ function postStatus(message, altdiscordClient, altdatabase) {
           let updateMessage = false
           if (lastMessage.author.id === client.user.id &&
             lastMessage.embeds.length > 0) {
-              const embed = lastMessage.embeds[0]
+            const embed = lastMessage.embeds[0]
+            console.log(JSON.stringify(messagemetadata).includes(embed.title))
+            console.log(embed.title)
               if (JSON.stringify(messagemetadata).includes(embed.title)) {
                 updateMessage = true
               }
