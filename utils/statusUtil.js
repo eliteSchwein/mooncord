@@ -106,6 +106,7 @@ function postStatus(message, altdiscordClient, altdatabase) {
 
   const maindatabase = getCurrentDatabase(altdatabase)
   const botdatabase = maindatabase.getDatabase()
+  const ramdatabase = maindatabase.getRamDatabase()
   
   for (const guildid in botdatabase.guilds) {
     client.guilds.fetch(guildid)
@@ -127,7 +128,14 @@ function postStatus(message, altdiscordClient, altdatabase) {
           if(updateMessage) {
             lastMessage.edit(message)
           } else {
-            channel.send(message)
+            if (config.use_percent) {
+              if (ramdatabase.cooldown === 0) {
+                channel.send(message)
+                maindatabase.updateRamDatabase("cooldown", config.min_interval)
+              }
+            } else {
+              channel.send(message)
+            }
           }
         }
       })
@@ -140,6 +148,7 @@ function notifyStatus(message, altdiscordClient, altdatabase) {
 
   const maindatabase = getCurrentDatabase(altdatabase)
   const botdatabase = maindatabase.getDatabase()
+  const ramdatabase = maindatabase.getRamDatabase()
 
   const notifylist = botdatabase.notify
 

@@ -6,6 +6,7 @@ const discordClient = require('./clients/discordclient')
 const moonrakerClient = require('./clients/moonrakerclient')
 const pjson = require('./package.json')
 const hsUtil = require('./utils/hsUtil')
+const miscUtil = require('./utils/miscUtil')
 
 colors.setTheme({
   database: 'grey',
@@ -56,7 +57,9 @@ systemInfo.osInfo()
 
   await moonrakerClient.init(discordClient.getClient())
   
-  await hsUtil.init()
+    await hsUtil.init()
+    
+    miscUtil.init()
 })
   .catch(error => {
     console.log("Mooncord couldnt start".error)
