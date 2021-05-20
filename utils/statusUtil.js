@@ -105,7 +105,6 @@ function postStatus(message, altdiscordClient, altdatabase) {
 
   const maindatabase = getCurrentDatabase(altdatabase)
   const botdatabase = maindatabase.getDatabase()
-  const ramdatabase = maindatabase.getRamDatabase()
   
   for (const guildid in botdatabase.guilds) {
     client.guilds.fetch(guildid)
@@ -115,15 +114,20 @@ function postStatus(message, altdiscordClient, altdatabase) {
           const channel = await client.channels.fetch(guilddatabase.broadcastchannels[index])
           const lastMessageID = channel.lastMessageID
           const lastMessage = await channel.messages.fetch(lastMessageID)
+
+          let updateMessage = false
           if (lastMessage.author.id === client.user.id &&
             lastMessage.embeds.length > 0) {
               const embed = lastMessage.embeds[0]
-              console.log(embed)
               if (JSON.stringify(messageconfig).includes(embed.title)) {
-                console.log("true")
+                updateMessage = true
               }
           }
-          const response = await channel.send(message)
+          if(updateMessage) {
+            channel.send(message)
+          } else {
+            lastMessage.edit(message)
+          }
         }
       })
       .catch((error) => { console.log((error).error) })
