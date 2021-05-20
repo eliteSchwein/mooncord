@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/eliteSchwein/mooncord#readme",
   "dependencies": {
-    "async-wait-until": "^2.0.5",
+    "async-wait-until": "^2.0.7",
     "axios": "^0.21.1",
     "colors": "^1.4.0",
     "discord.js": "^12.5.3",
@@ -33,7 +33,7 @@
   },
   "devDependencies": {
     "eslint": "^7.26.0",
-    "eslint-config-galex": "^2.15.10",
+    "eslint-config-galex": "^2.16.1",
     "eslint-config-standard": "^16.0.2",
     "eslint-plugin-import": "^2.23.2",
     "eslint-plugin-node": "^11.1.0",
