@@ -114,31 +114,15 @@ function postStatus(message, altdiscordClient, altdatabase) {
         const guilddatabase = botdatabase.guilds[guild.id]
         for (const index in guilddatabase.broadcastchannels) {
           const channel = await client.channels.fetch(guilddatabase.broadcastchannels[index])
-          const lastMessageID = channel.lastMessageID
-          const lastMessage = await channel.messages.fetch(lastMessageID)
           
-          let updateMessage = false
-
-          if (lastMessage.author.id === client.user.id &&
-            lastMessage.embeds.length > 0 &&
-            message.title !== "Systemupdates") {
-            const embed = lastMessage.embeds[0]
-              if (JSON.stringify(messagemetadata).includes(embed.title)) {
-                updateMessage = true
-              }
-          }
-          if(updateMessage) {
-            lastMessage.edit(message)
-          } else {
-            if (config.use_percent &&
-              message.title === messagemetadata.printing.title) {
-              if (ramdatabase.cooldown === 0) {
-                channel.send(message)
-                maindatabase.updateRamDatabase("cooldown", config.min_interval)
-              }
-            } else {
+          if (config.use_percent &&
+            message.title === messagemetadata.printing.title) {
+            if (ramdatabase.cooldown === 0) {
               channel.send(message)
+              maindatabase.updateRamDatabase("cooldown", config.min_interval)
             }
+          } else {
+            channel.send(message)
           }
         }
       })
