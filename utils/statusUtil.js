@@ -115,6 +115,7 @@ function postStatus(message, altdiscordClient, altdatabase) {
           const lastMessageID = channel.lastMessageID
           const lastMessage = await channel.messages.fetch(lastMessageID)
 
+          console.log(lastMessage.author)
           let updateMessage = false
           if (lastMessage.author.id === client.user.id &&
             lastMessage.embeds.length > 0) {
