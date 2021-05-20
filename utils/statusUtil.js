@@ -118,6 +118,7 @@ function postStatus(message, altdiscordClient, altdatabase) {
           if (lastMessage.author.id === client.id &&
             lastMessage.embeds.length > 0) {
               const embed = lastMessage.embeds[0]
+              console.log(embed)
               if (JSON.stringify(messageconfig).includes(embed.title)) {
                 console.log("true")
               }
