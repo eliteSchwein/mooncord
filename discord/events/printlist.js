@@ -10,6 +10,8 @@ let requester = {}
 
 let commandFeedback = {}
 
+let timeout = 0
+
 const enableEvent = function (discordClient) {
     discordClient.on('messageReactionAdd', async (messageReaction, user) => {
         const { message } = messageReaction
@@ -63,6 +65,15 @@ async function executeMessage(message, user) {
             await message.edit(commandFeedback[message.channel.id])
             clearInterval(feedbackInterval)
         }
+        if (timeout === 10) {
+            await message.edit({
+                content: 'There are currently no Files!'
+            })
+            commandFeedback = undefined
+            connection.removeListener('message', handler)
+            clearInterval(feedbackInterval)
+        }
+        timeout++
     }, 500)
 }
 
