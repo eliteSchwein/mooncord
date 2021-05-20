@@ -114,7 +114,6 @@ function postStatus(message, altdiscordClient, altdatabase) {
         const guilddatabase = botdatabase.guilds[guild.id]
         for (const index in guilddatabase.broadcastchannels) {
           const channel = await client.channels.fetch(guilddatabase.broadcastchannels[index])
-          
           if (config.use_percent &&
             message.title === messagemetadata.printing.title) {
             if (ramdatabase.cooldown === 0) {
