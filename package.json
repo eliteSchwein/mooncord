@@ -32,7 +32,7 @@
     "websocket": "^1.0.34"
   },
   "devDependencies": {
-    "eslint": "^7.26.0",
+    "eslint": "^7.27.0",
     "eslint-config-galex": "^2.16.1",
     "eslint-config-standard": "^16.0.2",
     "eslint-plugin-import": "^2.23.2",
