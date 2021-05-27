@@ -1,5 +1,6 @@
 module.exports = {
   gcodemetadata: require('./gcodemetadata'),
+  gcodecommands: require('./gcodecommands'),
   gcoderesponse: require('./gcoderesponse'),
   klipperstate: require('./klipperstate'),
   klipperstates: require('./klipperstates'),
