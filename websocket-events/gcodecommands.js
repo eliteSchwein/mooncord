@@ -10,6 +10,7 @@ const event = (message, connection, discordClient, database) => {
   const id = Math.floor(Math.random() * parseInt('10_000')) + 1
   if (message.type === 'utf8') {
     const messageJson = JSON.parse(message.utf8Data)
+    console.log(messageJson)
     const methode = messageJson.method
     if (typeof (methode) !== 'undefined' && methode === 'notify_gcode_response') {
       const { params } = messageJson
