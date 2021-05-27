@@ -4,6 +4,7 @@ const variables = require('../utils/variablesUtil')
 const event = (message, connection, discordClient) => {
   if (message.type === 'utf8') {
     const messageJson = JSON.parse(message.utf8Data)
+    console.log(messageJson)
     const { result } = messageJson
     if (typeof (result) !== 'undefined' && typeof (result.klippy_state) !== 'undefined') {
       const currentStatus = result.klippy_state
