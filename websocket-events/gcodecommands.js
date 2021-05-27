@@ -1,3 +1,5 @@
+const Discord = require('discord.js')
+
 const config = require('../statusconfig.json')
 const status = require('../utils/statusUtil')
 const variables = require('../utils/variablesUtil')
