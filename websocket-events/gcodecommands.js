@@ -13,6 +13,7 @@ const event = (message, connection, discordClient, database) => {
     const methode = messageJson.method
     if (typeof (methode) !== 'undefined' && methode === 'notify_gcode_response') {
       const { params } = messageJson
+      console.log(params)
       if(params[0].startsWith("mooncord.broadcast")) {
         const message = params[0].replace("mooncord.broadcast ", "")
         const broadcastembed = new Discord.MessageEmbed()
