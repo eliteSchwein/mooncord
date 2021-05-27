@@ -1,5 +1,5 @@
 const Discord = require('discord.js')
-const logSymbols = require('log-symbols');
+const logSymbols = require('log-symbols')
 const path = require('path')
 
 const status = require('../utils/statusUtil')
