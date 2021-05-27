@@ -9,7 +9,9 @@ const event = (message, connection, discordClient) => {
     const methode = messageJson.method
     if (typeof (methode) !== 'undefined' && methode === 'notify_gcode_response') {
       const { params } = messageJson
-      console.log(messageJson)
+      if(params[0].startsWith("mooncord.broadcast")) {
+        console.log(params[0].replace("mooncord.broadcast ", ""))
+      }
     }
   }
 }
