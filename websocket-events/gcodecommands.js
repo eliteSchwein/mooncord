@@ -16,10 +16,10 @@ const event = (message, connection, discordClient, database) => {
       if(params[0].startsWith("mooncord.broadcast")) {
         const message = params[0].replace("mooncord.broadcast ", "")
         const broadcastembed = new Discord.MessageEmbed()
-          .setColor('#fcf803')
+          .setColor('#03f4fc')
           .setTitle('Message')
-          .attachFiles(path.resolve(__dirname, '../images/update.png'))
-          .setThumbnail('attachment://update.png')
+          .attachFiles(path.resolve(__dirname, '../images/notification.png'))
+          .setThumbnail('attachment://notification.png')
           .setTimestamp()
           .setDescription(message)
         status.postBroadcastMessage(broadcastembed, discordClient, database)
