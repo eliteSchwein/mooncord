@@ -1,6 +1,7 @@
 const { waitUntil } = require('async-wait-until')
 const Discord = require('discord.js')
 const path = require('path')
+const variables = require('../utils/variablesUtil')
 const { GatewayServer, SlashCreator } = require('slash-create')
 
 const config = require('../config.json')
@@ -24,9 +25,10 @@ function loginBot() {
 
   discordClient.on('ready', () => {
     connected = true
+    variables.setInviteUrl(`https://discord.com/oauth2/authorize?client_id=${discordClient.user.id}&permissions=3422944320&scope=bot%20applications.commands`)
     console.log(`  ${'Discordbot Connected'.success}
     ${'Name:'.successname} ${(discordClient.user.tag).successvalue}
-    ${'Invite:'.successname} ${`https://discord.com/oauth2/authorize?client_id=${discordClient.user.id}&permissions=3422944320&scope=bot%20applications.commands`.successvalue}`)
+    ${'Invite:'.successname} ${variables.getInviteUrl()}`.successvalue)
     discordClient.user.setActivity('Printer start', { type: 'WATCHING' })
   })
 }

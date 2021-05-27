@@ -8,7 +8,11 @@ let printprogress = 0
 let remainingprinttime = 0
 let printtime = 0
 let updatetimer = 0
+let inviteurl = ''
 
+module.exports.setInviteUrl = function (url) {
+  inviteurl = url
+}
 module.exports.setUpdateTimer = function (newupdatetimer) {
   updatetimer = newupdatetimer
 }
@@ -38,6 +42,9 @@ module.exports.setRemainingTime = function (remainingtime) {
 }
 module.exports.setPrintTime = function (newtime) {
   printtime = newtime
+}
+module.exports.getInviteUrl = function() {
+  return inviteurl
 }
 module.exports.getUpdateTimer = function () {
   return updatetimer
