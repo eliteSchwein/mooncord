@@ -26,8 +26,7 @@ const event = (message, connection, discordClient, database) => {
       }
       if(params[0].startsWith("mooncord.invite")) {
         const id = Math.floor(Math.random() * parseInt('10_000')) + 1
-        connection.send(`{"jsonrpc": "2.0", "method": "notify_gcode_response, "params": {"mooncord.response \"${variables.getInviteUrl()}\""}, "id": ${id}}`)
-        console.log("sent invite!")
+        connection.send(`{"jsonrpc": "2.0", "method": "printer.gcode.script", "params": {"script": "RESPOND PREFIX=mooncord.response MSG=\"${variables.getInviteUrl()}\""}, "id": ${id}}`)
       }
     }
   }
