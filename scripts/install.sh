@@ -70,7 +70,7 @@ locate_config()
         locate_config
         fi
 
-        MCCONFIGPATH = $filepath
+        MCCONFIGPATH=$filepath
         echo "$MCCONFIGPATH"
         echo "your config path is now $filepath"
 
