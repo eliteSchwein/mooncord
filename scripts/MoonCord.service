@@ -8,7 +8,7 @@ Type=simple
 RestartSec=1
 User=MC_USER
 WorkingDirectory=MC_DIR
-ExecStart=MC_NPM start
+ExecStart=MC_NPM run start MC_CONFIG_PATH
 
 [Install]
 WantedBy=multi-user.target
