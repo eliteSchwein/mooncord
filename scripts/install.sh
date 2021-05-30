@@ -2,6 +2,7 @@
 
 SCRIPTPATH="$( cd "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 MCPATH="$( pwd -P )"
+MCCONFIGPATH=""
 
 install_packages()
 {
@@ -57,28 +58,22 @@ modify_user()
 }
 
 setup(){
-    CONFIG=$MCPATH/config.json
-    if ! [[ -f "$CONFIG" ]]; then
-        generate_config
-        edit_config
-    fi
+    generate_config
 }
 
 generate_config()
 {
-    echo "Generate Configs"
-    cp $SCRIPTPATH/config.json $MCPATH/config.json
-    cp $SCRIPTPATH/statusconfig.json $MCPATH/statusconfig.json
-    cp $SCRIPTPATH/webcamconfig.json $MCPATH/webcamconfig.json
-    cp $SCRIPTPATH/database.json $MCPATH/database.json
-}
+    echo -n "Where do you want your Configs?"
+    read filepath
 
-edit_config()
-{
-    echo "Edit Config"
-    nano ./config.json
-    nano ./statusconfig.json
-    nano ./webcamconfig.json
+        $MCCONFIGPATH = $filepath
+        echo "your config path is now $filepath"
+        
+    echo "Generate Configs"
+    cp $SCRIPTPATH/config.json $MCCONFIGPATH/config.json
+    cp $SCRIPTPATH/statusconfig.json $MCCONFIGPATH/statusconfig.json
+    cp $SCRIPTPATH/webcamconfig.json $MCCONFIGPATH/webcamconfig.json
+    cp $SCRIPTPATH/database.json $MCCONFIGPATH/database.json
 }
 
 start_MoonCord() {
