@@ -68,6 +68,7 @@ generate_config()
         echo "Please insert a correct path"
         sleep 1
         generate_config
+        break
         fi
 
         $MCCONFIGPATH = $filepath
