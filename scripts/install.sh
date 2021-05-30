@@ -78,10 +78,10 @@ locate_config()
 
 generate_config()
 {
-    cp $SCRIPTPATH/config.json $MCCONFIGPATH/config.json
-    cp $SCRIPTPATH/statusconfig.json $MCCONFIGPATH/statusconfig.json
-    cp $SCRIPTPATH/webcamconfig.json $MCCONFIGPATH/webcamconfig.json
-    cp $SCRIPTPATH/database.json $MCCONFIGPATH/database.json
+    cp $SCRIPTPATH/mooncord.json $MCCONFIGPATH/mooncord.json
+    cp $SCRIPTPATH/mooncord-status.json $MCCONFIGPATH/mooncord-status.json
+    cp $SCRIPTPATH/mooncord-webcam.json $MCCONFIGPATH/mooncord-webcam.json
+    cp $SCRIPTPATH/database.json $MCPATH/database.json
 }
 
 start_MoonCord() {
