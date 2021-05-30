@@ -65,7 +65,7 @@ function saveData(datadata, datapath) {
             newFileStream.end()
         })
     }
-    fs.writeFile(path.resolve(__dirname, datapath), JSON.stringify(datadata), (err) => {
+    fs.writeFile(path.resolve(__dirname, datapath), JSON.stringify(datadata, null, 4), (err) => {
     if (err) { throw err }
         console.log(logSymbols.info, `The Data for ${datapath} has been migrated!`.database)
         if (datapath === '../config.json') {
