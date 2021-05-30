@@ -63,12 +63,17 @@ setup(){
 
 generate_config()
 {
-    echo -n "Where do you want your Configs?"
+    echo -n "Where do you want your Configs? "
     read filepath
 
+        if [ ! -d $filepath ]; then
+        echo "Please insert a correct path"
+        sleep 1
+        fi
+        
         $MCCONFIGPATH = $filepath
         echo "your config path is now $filepath"
-        
+
     echo "Generate Configs"
     cp $SCRIPTPATH/config.json $MCCONFIGPATH/config.json
     cp $SCRIPTPATH/statusconfig.json $MCCONFIGPATH/statusconfig.json
