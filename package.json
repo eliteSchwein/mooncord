@@ -4,7 +4,7 @@
   "description": "Moonraker Discord Bot based on Discord.js",
   "main": "index.js",
   "scripts": {
-    "start": "npm run-script migrate && node mooncord.js /",
+    "start": "npm run-script migrate && node mooncord.js ./",
     "migrate": "node ./utils/migrateUtil.js",
     "ramdebugstart": "node --trace_gc mooncord.js",
     "checkcodestyle": "npx eslint ./**",

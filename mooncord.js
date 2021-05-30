@@ -34,7 +34,7 @@ systemInfo.osInfo()
   |_|  |_|\\___/ \\___/|_| |_| ${'\\____\\___/|_|  \\__,_|'.statustitle}
                                                     
   Version: ${(pjson.version).statustitle}
-  Configpath: ${args[0]}
+  Configpath: ${args[0].statustitle}
   Author: ${(pjson.author).statustitle}
   Homepage: ${(pjson.homepage).statustitle}
   OS: ${(data.platform).statustitle}
