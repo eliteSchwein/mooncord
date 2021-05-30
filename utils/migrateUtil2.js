@@ -21,29 +21,25 @@ async function execute() {
 }
 
 function migrateConfigToMultiV1() {
-    if (typeof (database.version) !== 'undefined') {
-        if (database.version === '0.0.2') {
-            console.log(logSymbols.info, 'Migrate 0.0.2 Config to 0.0.3 Multi Config'.database)
-            const statusconfig = {
-                "update_interval": config.statusupdateinterval,
-                "use_percent": config.statusupdatepercent,
-                "min_interval": 15
-            }
-            saveData(statusconfig, args[1] + 'mooncord-status.json')
-            const webcamconfig = {
-                "url": config.webcamsnapshoturl,
-                "quality": 80,
-                "rotation": 0,
-                "vertical_mirror": false,
-                "horizontal_mirror": false
-            }
-            saveData(webcamconfig, args[1] + 'mooncord-webcam.json')
-            config.statusupdateinterval = undefined
-            config.statusupdatepercent = undefined
-            config.webcamsnapshoturl = undefined
-            saveData(config,  args[1] + 'mooncord.json')
-        }
+    console.log(logSymbols.info, 'Migrate 0.0.2 Config to 0.0.3 Multi Config'.database)
+    const statusconfig = {
+        "update_interval": config.statusupdateinterval,
+        "use_percent": config.statusupdatepercent,
+        "min_interval": 15
     }
+    saveData(statusconfig, args[1] + 'mooncord-status.json')
+    const webcamconfig = {
+        "url": config.webcamsnapshoturl,
+        "quality": 80,
+        "rotation": 0,
+        "vertical_mirror": false,
+        "horizontal_mirror": false
+    }
+    saveData(webcamconfig, args[1] + 'mooncord-webcam.json')
+    config.statusupdateinterval = undefined
+    config.statusupdatepercent = undefined
+    config.webcamsnapshoturl = undefined
+    saveData(config,  args[1] + 'mooncord.json')
 }
 async function migrateDatabase() {
     const firstDatabasePath = path.resolve(__dirname, '../discorddatabase.json')
