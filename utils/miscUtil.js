@@ -1,4 +1,4 @@
-const statusconfig = require('./statusconfig.json')
+const statusconfig = require('../statusconfig.json')
 const database = require('./databaseUtil')
 
 
