@@ -24,8 +24,6 @@ install_packages()
         echo "Remove Node File and Folder"
         rm -rf node-v11.15.0-linux-armv6l.tar.gz
         rm -rf node-v11.15.0-linux-armv6l
-        
-        generate_config
     fi
 
     echo "Install Dependencies"
@@ -56,25 +54,30 @@ modify_user()
 }
 
 setup(){
+    locate_config
     generate_config
 }
 
-generate_config()
-{
+
+locate_config()
+{ 
     echo -n "Where do you want your Configs? "
     read filepath
 
         if [ ! -d $filepath ]; then
         echo "Please insert a correct path"
         sleep 1
-        generate_config
-        break
+        locate_config
         fi
 
         $MCCONFIGPATH = $filepath
         echo "your config path is now $filepath"
 
     echo "Generate Configs"
+}
+
+generate_config()
+{
     cp $SCRIPTPATH/config.json $MCCONFIGPATH/config.json
     cp $SCRIPTPATH/statusconfig.json $MCCONFIGPATH/statusconfig.json
     cp $SCRIPTPATH/webcamconfig.json $MCCONFIGPATH/webcamconfig.json
