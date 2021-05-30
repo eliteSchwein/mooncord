@@ -1,4 +1,6 @@
-const config = require('../statusconfig.json')
+const args = process.argv.slice(2)
+
+const config = require(args[0] + 'mooncord-status.json')
 const status = require('../utils/statusUtil')
 const variables = require('../utils/variablesUtil')
 

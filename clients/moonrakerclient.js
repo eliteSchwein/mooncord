@@ -1,9 +1,11 @@
+const args = process.argv.slice(2)
+
 const fs = require('fs')
 const path = require('path')
 const WebSocketClient = require('websocket').client
 const { waitUntil } = require('async-wait-until')
 
-const config = require('../config.json')
+const config = require(args[0] + 'mooncord.json')
 const database = require('../utils/databaseUtil')
 const status = require('../utils/statusUtil')
 const variables = require('../utils/variablesUtil')

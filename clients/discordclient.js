@@ -1,10 +1,12 @@
+const args = process.argv.slice(2)
+
 const { waitUntil } = require('async-wait-until')
 const Discord = require('discord.js')
 const path = require('path')
 const variables = require('../utils/variablesUtil')
 const { GatewayServer, SlashCreator } = require('slash-create')
 
-const config = require('../config.json')
+const config = require(args[0] + 'mooncord.json')
 const events = require('../discord/events')
 
 
