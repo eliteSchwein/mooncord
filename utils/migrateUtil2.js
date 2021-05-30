@@ -1,9 +1,12 @@
+const args = process.argv.slice(2)
+
 const fs = require('fs')
 const logSymbols = require('log-symbols');
 const path = require('path')
 const colors = require('colors')
 
-const config = require('../config.json')
+const config = require(args[0] + 'config.json')
+
 
 colors.setTheme({
   database: 'grey',
@@ -13,17 +16,33 @@ colors.setTheme({
 execute()
 
 async function execute() {
-    await migrateDatabase()
-    migrateConfig()
+    //await migrateDatabase()
+    migrateConfigToMultiV1()
 }
 
-function migrateConfig() {
-    if (typeof (config.prefix) !== 'undefined') {
-        console.log(logSymbols.info, 'Migrate 0.0.1 Config to 0.0.2 Config'.database)
-        config.prefix = undefined
-        config.botapplicationkey = ""
-        config.botapplicationid = ""
-        saveData(config, '../config.json')
+function migrateConfigToMultiV1() {
+    if (typeof (database.version) !== 'undefined') {
+        if (database.version === '0.0.2') {
+            console.log(logSymbols.info, 'Migrate 0.0.2 Config to 0.0.3 Multi Config'.database)
+            const statusconfig = {
+                "update_interval": config.statusupdateinterval,
+                "use_percent": config.statusupdatepercent,
+                "min_interval": 15
+            }
+            saveData(statusconfig, args[1] + 'mooncord-status.json')
+            const webcamconfig = {
+                "url": config.webcamsnapshoturl,
+                "quality": 80,
+                "rotation": 0,
+                "vertical_mirror": false,
+                "horizontal_mirror": false
+            }
+            saveData(webcamconfig, args[1] + 'mooncord-webcam.json')
+            config.statusupdateinterval = undefined
+            config.statusupdatepercent = undefined
+            config.webcamsnapshoturl = undefined
+            saveData(config,  args[1] + 'mooncord.json')
+        }
     }
 }
 async function migrateDatabase() {

@@ -58,6 +58,7 @@ modify_user()
 setup(){
     locate_config
     generate_config
+    migrate_config
 }
 
 
@@ -74,18 +75,21 @@ locate_config()
 
         MCCONFIGPATH=$filepath
         echo "your config path is now $filepath"
-
-    echo "Generate Configs"
 }
 
 generate_config()
 {
+    echo "Generate Configs"
     cp $SCRIPTPATH/mooncord.json $MCCONFIGPATH/mooncord.json
     cp $SCRIPTPATH/mooncord-status.json $MCCONFIGPATH/mooncord-status.json
     cp $SCRIPTPATH/mooncord-webcam.json $MCCONFIGPATH/mooncord-webcam.json
     cp $SCRIPTPATH/database.json $MCPATH/database.json
-    touch $MCPATH/temp/configdir
-    echo $MCCONFIGPATH > $MCPATH/temp/configdir
+}
+
+migrate_config()
+{
+    echo "Migrate Configs"
+    npm run migrate2 MCPATH MCCONFIGPATH
 }
 
 start_MoonCord() {
