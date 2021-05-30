@@ -1,5 +1,5 @@
 const variables = require('./variablesUtil')
-const statusconfig = require(variables.getConfigPath() + '/statusconfig.json')
+const statusconfig = require(variables.getConfigPath() + 'statusconfig.json')
 const database = require('./databaseUtil')
 
 module.exports.init = () => {
