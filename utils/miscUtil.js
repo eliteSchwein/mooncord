@@ -1,4 +1,7 @@
 const variables = require('./variablesUtil')
+
+console.log(variables.getConfigPath())
+
 const statusconfig = require(variables.getConfigPath() + 'statusconfig.json')
 const database = require('./databaseUtil')
 
