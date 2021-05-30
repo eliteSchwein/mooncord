@@ -52,7 +52,6 @@ generate_config()
     cp $SCRIPTPATH/mooncord.json $MCCONFIGPATH/mooncord.json
     cp $SCRIPTPATH/mooncord-status.json $MCCONFIGPATH/mooncord-status.json
     cp $SCRIPTPATH/mooncord-webcam.json $MCCONFIGPATH/mooncord-webcam.json
-    cp $SCRIPTPATH/database.json $MCPATH/database.json
 }
 
 migrate_config()
