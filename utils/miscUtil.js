@@ -1,9 +1,11 @@
-const variables = require('./variablesUtil')
-
-console.log(variables.getConfigPath())
-
-const statusconfig = require(variables.getConfigPath() + 'statusconfig.json')
+const statusconfig = require('./statusconfig.json')
 const database = require('./databaseUtil')
+
+
+
+const args = process.argv.slice(2)
+
+console.log(args)
 
 module.exports.init = () => {
   if (statusconfig.use_percent) {
