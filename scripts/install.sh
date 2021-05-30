@@ -89,7 +89,7 @@ generate_config()
 migrate_config()
 {
     echo "Migrate Configs"
-    npm run migrate2 $MCPATH $MCCONFIGPATH
+    npm run migrate2 "$MCPATH/" $MCCONFIGPATH
 }
 
 start_MoonCord() {
