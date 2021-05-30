@@ -26,8 +26,6 @@ install_packages()
         rm -rf node-v11.15.0-linux-armv6l
         
         generate_config
-
-        edit_config
     fi
 
     echo "Install Dependencies"
@@ -69,8 +67,9 @@ generate_config()
         if [ ! -d $filepath ]; then
         echo "Please insert a correct path"
         sleep 1
+        generate_config
         fi
-        
+
         $MCCONFIGPATH = $filepath
         echo "your config path is now $filepath"
 
