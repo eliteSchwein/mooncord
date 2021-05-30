@@ -71,6 +71,7 @@ locate_config()
         fi
 
         MCCONFIGPATH = $filepath
+        echo "$MCCONFIGPATH"
         echo "your config path is now $filepath"
 
     echo "Generate Configs"
