@@ -1,8 +1,10 @@
 const Discord = require('discord.js')
-const logSymbols = require('log-symbols');
+const logSymbols = require('log-symbols')
+
+const args = process.argv.slice(2)
 
 const discordClient = require('../clients/discordclient') 
-const config = require('../statusconfig.json')
+const config = require(args[0] + 'statusconfig.json')
 const database = require('./databaseUtil')
 const messagemetadata = require('./statusmetadata.json')
 const thumbnail = require('./thumbnailUtil')

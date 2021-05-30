@@ -7,7 +7,6 @@ const moonrakerClient = require('./clients/moonrakerclient')
 const pjson = require('./package.json')
 const hsUtil = require('./utils/hsUtil')
 const miscUtil = require('./utils/miscUtil')
-const variables = require('./utils/variablesUtil')
 
 const args = process.argv.slice(2)
 
@@ -42,8 +41,6 @@ systemInfo.osInfo()
   Kernel: ${( data.kernel).statustitle}
   Arch: ${(data.arch).statustitle}`)
   const ram = await systemInfo.mem()
-  
-  variables.setConfigPath(args[0])
 
   if (ram.free <= parseInt('4_194_304')) {
     console.log(

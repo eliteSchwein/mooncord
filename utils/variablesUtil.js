@@ -9,11 +9,7 @@ let remainingprinttime = 0
 let printtime = 0
 let updatetimer = 0
 let inviteurl = ''
-let configpath = ''
 
-module.exports.setConfigPath = function (path) {
-  configpath = path
-}
 module.exports.setInviteUrl = function (url) {
   inviteurl = url
 }
@@ -48,7 +44,8 @@ module.exports.setPrintTime = function (newtime) {
   printtime = newtime
 }
 module.exports.getConfigPath = function () {
-  return configpath
+  const args = process.argv.slice(2)
+  return args[0]
 }
 module.exports.getInviteUrl = function() {
   return inviteurl

@@ -4,7 +4,9 @@ const fs = require('fs').promises
 const path = require('path')
 const jimp = require('jimp')
 
-const config = require('../webcamconfig.json')
+const args = process.argv.slice(2)
+
+const config = require(args[0] + 'webcamconfig.json')
 
 function retrieveWebcam () {
   return axios
