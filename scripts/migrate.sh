@@ -61,8 +61,8 @@ migrate_config()
 
 start_MoonCord() {
 
-    echo "Start MoonCord, please make sure you configured the Bot correctly!"
-    sudo systemctl start MoonCord
+    echo "Restart MoonCord, please make sure you configured the Bot correctly!"
+    sudo systemctl restart MoonCord
 }
 
 setup
