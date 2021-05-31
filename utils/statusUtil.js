@@ -104,6 +104,8 @@ async function generateEmbed(config, user) {
 
 function postStatus(message, altdiscordClient, altdatabase) {
 
+  console.log(config)
+
   const client = getDiscordClient(altdiscordClient)
 
   const maindatabase = getCurrentDatabase(altdatabase)
