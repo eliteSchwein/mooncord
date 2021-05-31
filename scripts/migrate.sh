@@ -56,6 +56,7 @@ migrate_config()
 {
     echo "Migrate Configs"
     npm run migrate2 $MCPATH $MCCONFIGPATH
+    sleep 2s
 }
 
 start_MoonCord() {
