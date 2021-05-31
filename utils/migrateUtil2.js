@@ -44,8 +44,11 @@ function migrateConfigToMultiV1() {
         "url": config.webcamsnapshoturl,
         "quality": 80,
         "rotation": 0,
+        "brightness": 0,
+        "contrast": 0,
         "vertical_mirror": false,
-        "horizontal_mirror": false
+        "horizontal_mirror": false,
+        "greyscale": false
     }
     saveData(newConfig, `${args[1]}/mooncord.json`)
 }
