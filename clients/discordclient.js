@@ -6,7 +6,7 @@ const path = require('path')
 const variables = require('../utils/variablesUtil')
 const { GatewayServer, SlashCreator } = require('slash-create')
 
-const config = require(args[0] + 'mooncord.json')
+const config = require(`${args[0]}/mooncord.json`)
 const events = require('../discord/events')
 
 
@@ -23,7 +23,7 @@ function enableEvents() {
 function loginBot() {
   console.log('  Connect Discord Bot'.statusmessage)
 
-  discordClient.login(config.bottoken)
+  discordClient.login(config.connection.bottoken)
 
   discordClient.on('ready', () => {
     connected = true
@@ -39,9 +39,9 @@ function enableCommands() {
   console.log('  Sync Slash Commands'.statusmessage)
 
   const creator = new SlashCreator({
-    applicationID: config.botapplicationid,
-    publicKey: config.botapplicationkey,
-    token: config.bottoken,
+    applicationID: config.connection.botapplicationid,
+    publicKey: config.connection.botapplicationkey,
+    token: config.connection.bottoken,
   });
 
   creator

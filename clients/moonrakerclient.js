@@ -5,7 +5,7 @@ const path = require('path')
 const WebSocketClient = require('websocket').client
 const { waitUntil } = require('async-wait-until')
 
-const config = require(args[0] + 'mooncord.json')
+const config = require(`${args[0]}/mooncord.json`)
 const database = require('../utils/databaseUtil')
 const status = require('../utils/statusUtil')
 const variables = require('../utils/variablesUtil')
@@ -51,7 +51,7 @@ const enableEvents = function (discordClient) {
       variables.setStatus('offline')
       status.triggerStatusUpdate(discordClient)
       setTimeout(() => {
-        client.connect(config.moonrakersocketurl)
+        client.connect(config.connection.moonrakersocketurl)
       }, 5000)
     })
     connection.on('message', (message) => {
@@ -65,7 +65,7 @@ const enableEvents = function (discordClient) {
 function connect() {
   console.log('  Connect to Moonraker'.statusmessage)
   
-  client.connect(config.moonrakersocketurl)
+  client.connect(config.connection.moonrakersocketurl)
 
   client.on('connectFailed', (error) => {
     console.log(`  Connect Error: ${error.toString()}`.error)

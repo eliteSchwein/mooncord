@@ -4,7 +4,7 @@ const logSymbols = require('log-symbols')
 const args = process.argv.slice(2)
 
 const discordClient = require('../clients/discordclient') 
-const config = require(args[0] + 'mooncord-status.json')
+const config = require(`${args[0]}/mooncord.json`)
 const database = require('./databaseUtil')
 const messagemetadata = require('./statusmetadata.json')
 const thumbnail = require('./thumbnailUtil')
@@ -116,11 +116,11 @@ function postStatus(message, altdiscordClient, altdatabase) {
         const guilddatabase = botdatabase.guilds[guild.id]
         for (const index in guilddatabase.broadcastchannels) {
           const channel = await client.channels.fetch(guilddatabase.broadcastchannels[index])
-          if (config.use_percent &&
+          if (config.status.use_percent &&
             message.title === messagemetadata.printing.title) {
             if (ramdatabase.cooldown === 0) {
               channel.send(message)
-              maindatabase.updateRamDatabase("cooldown", config.min_interval)
+              maindatabase.updateRamDatabase("cooldown", config.status.min_interval)
             }
           } else {
             channel.send(message)
@@ -144,11 +144,11 @@ function notifyStatus(message, altdiscordClient, altdatabase) {
     const clientid = notifylist[notifyindex]
     client.users.fetch(clientid)
       .then(async (user) => {
-        if (config.use_percent &&
+        if (config.status.use_percent &&
               message.title === messagemetadata.printing.title) {
           if (ramdatabase.cooldown === 0) {
             user.send(message).catch('console.error')
-            maindatabase.updateRamDatabase("cooldown", config.min_interval)
+            maindatabase.updateRamDatabase("cooldown", config.status.min_interval)
           }
         } else {
           user.send(message).catch('console.error')

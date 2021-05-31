@@ -5,7 +5,9 @@ const logSymbols = require('log-symbols');
 const path = require('path')
 const colors = require('colors')
 
-const config = require(args[0] + 'config.json')
+const config = require(`${args[0]}/config.json`)
+
+const newConfig = require(`${args[1]}/mooncord.json`)
 
 
 colors.setTheme({
@@ -21,25 +23,31 @@ async function execute() {
 }
 
 function migrateConfigToMultiV1() {
-    console.log(logSymbols.info, 'Migrate 0.0.2 Config to 0.0.3 Multi Config'.database)
-    const statusconfig = {
+    console.log(logSymbols.info, 'Migrate 0.0.2 Config to 0.0.3 Config'.database)
+    newConfig.connection = {
+        "moonrakersocketurl": config.moonrakersocketurl,
+        "moonrakerurl": config.moonrakerurl,
+        "bottoken": config.bottoken,
+        "botapplicationkey": config.botapplicationkey,
+        "botapplicationid": config.botapplicationid
+    }
+    newConfig.status = {
         "update_interval": config.statusupdateinterval,
         "use_percent": config.statusupdatepercent,
         "min_interval": 15
     }
-    saveData(statusconfig, args[1] + 'mooncord-status.json')
-    const webcamconfig = {
+    newConfig.permission = {
+        "controller": [config.masterid],
+        "guild_admin_as_bot_admin": true
+    }
+    newConfig.webcam = {
         "url": config.webcamsnapshoturl,
         "quality": 80,
         "rotation": 0,
         "vertical_mirror": false,
         "horizontal_mirror": false
     }
-    saveData(webcamconfig, args[1] + 'mooncord-webcam.json')
-    config.statusupdateinterval = undefined
-    config.statusupdatepercent = undefined
-    config.webcamsnapshoturl = undefined
-    saveData(config,  args[1] + 'mooncord.json')
+    saveData(newConfig, `${args[1]}/mooncord.json`)
 }
 async function migrateDatabase() {
     const firstDatabasePath = path.resolve(__dirname, '../discorddatabase.json')

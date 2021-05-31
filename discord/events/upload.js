@@ -6,7 +6,7 @@ const fs = require('fs')
 const https = require('https')
 const logSymbols = require('log-symbols');
 
-const config = require(args[0] + 'mooncord.json')
+const config = require(`${args[0]}/mooncord.json`)
 const database = require('../../utils/databaseUtil')
 const permission = require('../../utils/permissionUtil')
 
@@ -78,7 +78,7 @@ function uploadFile(message) {
     console.log(logSymbols.info, `upload ${file.name.replace(' ', '_')}`.upload)
     formData.append('file', fs.createReadStream(`temp/${file.name.replace(' ', '_')}`), file.name)
     axios
-      .post(`${config.moonrakerurl}/server/files/upload`, formData, {
+      .post(`${config.connection.moonrakerurl}/server/files/upload`, formData, {
         headers: formData.getHeaders()
       })
       .then(res => {
@@ -95,7 +95,7 @@ function uploadFile(message) {
       .catch(error => {
         if (error) {
           console.log((error).error)
-          message.channel.send(`<@${config.masterid}> Please Check the Console!`)
+          message.channel.send('Please Check the Console!')
           console.log(logSymbols.error, 'Upload Failed! Check your config!'.error)
           fs.unlink(`temp/${file.name.replace(' ', '_')}`, (err2) => {
             if (err2) {

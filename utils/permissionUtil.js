@@ -1,11 +1,11 @@
 const args = process.argv.slice(2)
 
 const discordClient = require('../clients/discordclient')
-const config = require(args[0] + '/mooncord.json')
+const config = require(`${args[0]}/mooncord.json`)
 const database = require('./databaseUtil')
 
 module.exports.hasAdmin = async function (user, guildid, altdiscordClient) {
-  if (user.id === config.masterid) {
+  if (config.permission.controller.includes(user.id)) {
     return true
   }
   if (typeof (guildid) === 'undefined') {
@@ -33,5 +33,5 @@ module.exports.hasAdmin = async function (user, guildid, altdiscordClient) {
 }
 
 module.exports.isMaster = function (user) {
-  return user.id === config.masterid
+  return config.permission.controller.includes(user.id)
 }

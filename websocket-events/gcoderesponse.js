@@ -1,6 +1,6 @@
 const args = process.argv.slice(2)
 
-const config = require(args[0] + 'mooncord-status.json')
+const config = require(`${args[0]}/mooncord.json`)
 const status = require('../utils/statusUtil')
 const variables = require('../utils/variablesUtil')
 
@@ -23,10 +23,10 @@ const event = (message, connection, discordClient) => {
           status.triggerStatusUpdate(discordClient)
         }
         variables.setStatus('printing')
-        if (!config.use_percent) {
+        if (!config.status.use_percent) {
           timer = setInterval(() => {
             status.triggerStatusUpdate(discordClient)
-          }, 1000 * config.update_interval)
+          }, 1000 * config.status.update_interval)
           variables.setUpdateTimer(timer)
         }
       }

@@ -1,6 +1,6 @@
 const args = process.argv.slice(2)
 
-const config = require(args[0] + 'mooncord-status.json')
+const config = require(`${args[0]}/mooncord.json`)
 const status = require('../utils/statusUtil')
 const variables = require('../utils/variablesUtil')
 
@@ -31,8 +31,8 @@ const event = (message, connection, discordClient) => {
 
       if (currentProgress.toFixed(0) === lastProgress) { return }
 
-      if (config.update_interval &&
-        currentProgress.toFixed(0) % config.update_interval === 0 &&
+      if (config.status.update_interval &&
+        currentProgress.toFixed(0) % config.status.update_interval === 0 &&
         currentProgress.toFixed(0) !== 0) {
         lastProgress = currentProgress.toFixed(0)
         status.triggerStatusUpdate(discordClient)

@@ -12,7 +12,7 @@ install_systemd_service()
     SERVICE=$(<$SCRIPTPATH/MoonCord.service)
     MCPATH_ESC=$(sed "s/\//\\\\\//g" <<< $MCPATH)
     MCNPM_ESC=$(sed "s/\//\\\\\//g" <<< $MCNPM)
-    MCCONFIGPATH_ESC=$(sed "s/\//\\\\\//g" <<< "$MCCONFIGPATH/")
+    MCCONFIGPATH_ESC=$(sed "s/\//\\\\\//g" <<< $MCCONFIGPATH)
 
     SERVICE=$(sed "s/MC_USER/$USER/g" <<< $SERVICE)
     SERVICE=$(sed "s/MC_DIR/$MCPATH_ESC/g" <<< $SERVICE)
@@ -50,14 +50,12 @@ generate_config()
 {
     echo "Generate Configs"
     cp $SCRIPTPATH/mooncord.json $MCCONFIGPATH/mooncord.json
-    cp $SCRIPTPATH/mooncord-status.json $MCCONFIGPATH/mooncord-status.json
-    cp $SCRIPTPATH/mooncord-webcam.json $MCCONFIGPATH/mooncord-webcam.json
 }
 
 migrate_config()
 {
     echo "Migrate Configs"
-    npm run migrate2 "$MCPATH/" "$MCCONFIGPATH/"
+    npm run migrate2 $MCPATH $MCCONFIGPATH
 }
 
 start_MoonCord() {
