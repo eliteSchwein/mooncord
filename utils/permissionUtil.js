@@ -26,7 +26,8 @@ module.exports.hasAdmin = async function (user, guildid, altdiscordClient) {
     return true
   }
   const member = await guild.members.fetch(user.id)
-  if (guilddatabase.adminroles.some(role => member.roles.cache.has(role))) {
+  if (config.permission.guild_admin_as_bot_admin &&
+    guilddatabase.adminroles.some(role => member.roles.cache.has(role))) {
     return true
   }
   return false
