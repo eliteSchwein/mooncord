@@ -17,9 +17,10 @@ function retrieveWebcam() {
     })
     .then(
       async (response) => {
-        console.log(response.data)
         const buffer = Buffer.from(response.data, 'base64')
+        console.log(buffer)
         const image = await jimp.read(buffer)
+        console.log(image)
         image.quality(config.webcam.quality)
         image.rotate(config.webcam.rotation)
         image.mirror(config.webcam.horizontal_mirror, config.webcam.vertical_mirror)
