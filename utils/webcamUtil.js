@@ -8,7 +8,7 @@ const args = process.argv.slice(2)
 
 const config = require(`${args[0]}/mooncord.json`)
 
-function retrieveWebcam() {
+async function retrieveWebcam() {
   const image = await jimp.read(config.webcam.url)
   console.log(image)
   return axios
