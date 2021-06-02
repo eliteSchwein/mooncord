@@ -9,7 +9,6 @@ const args = process.argv.slice(2)
 const config = require(`${args[0]}/mooncord.json`)
 
 function retrieveWebcam() {
-  console.log(config.webcam.url)
   return axios
     .get(config.webcam.url, {
       responseType: 'arraybuffer',
@@ -19,7 +18,7 @@ function retrieveWebcam() {
       async (response) => {
         const buffer = Buffer.from(response.data, 'base64')
         const image = await jimp.read(buffer)
-        image.quality(config.webcam.quality)
+        //image.quality(config.webcam.quality)
         image.rotate(config.webcam.rotation)
         image.mirror(config.webcam.horizontal_mirror, config.webcam.vertical_mirror)
         image.contrast(config.webcam.contrast)
