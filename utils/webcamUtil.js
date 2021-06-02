@@ -20,7 +20,6 @@ function retrieveWebcam() {
         }
         const editbuffer = await image.getBufferAsync(jimp.MIME_PNG)
         return new Discord.MessageAttachment(editbuffer, 'snapshot.png')
-    
     })
     .catch(
       async (error) => {
