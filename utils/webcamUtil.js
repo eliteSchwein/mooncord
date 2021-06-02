@@ -17,7 +17,7 @@ function retrieveWebcam() {
     })
     .then(
       async (response) => {
-        const webcambuffer = Buffer.from(response.data, 'base64')
+        const webcambuffer = await Buffer.from(response.data, 'base64')
         const image = await jimp.read(webcambuffer)
         image.quality(config.webcam.quality)
         image.rotate(config.webcam.rotation)
