@@ -1,4 +1,3 @@
-const axios = require('axios')
 const Discord = require('discord.js')
 const fs = require('fs').promises
 const path = require('path')
@@ -8,18 +7,9 @@ const args = process.argv.slice(2)
 
 const config = require(`${args[0]}/mooncord.json`)
 
-async function retrieveWebcam() {
-  console.log(config.webcam)
-  //const image = await jimp.read(config.webcam.url)
-  console.log(await jimp.read(config.webcam.url))
-  return axios
-    .get(config.webcam.url, {
-      responseType: 'arraybuffer',
-      timeout: 100
-    })
-    .then(
-      async (response) => {
-        const webcambuffer = await Buffer.from(response.data, 'base64')
+function retrieveWebcam() {
+  return jimp.read(config.webcam.url)
+    .then(image => {
         image.quality(config.webcam.quality)
         image.rotate(config.webcam.rotation)
         image.mirror(config.webcam.horizontal_mirror, config.webcam.vertical_mirror)
@@ -30,8 +20,8 @@ async function retrieveWebcam() {
         }
         const editbuffer = await image.getBufferAsync(jimp.MIME_PNG)
         return new Discord.MessageAttachment(editbuffer, 'snapshot.png')
-      }
-    )
+    
+    })
     .catch(
       async (error) => {
         if (error) {
