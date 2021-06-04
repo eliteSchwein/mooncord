@@ -34,7 +34,17 @@ function migrateConfigToMultiV1() {
     newConfig.status = {
         "update_interval": config.statusupdateinterval,
         "use_percent": config.statusupdatepercent,
-        "min_interval": 15
+        "min_interval": 15,
+        "before": {
+            "enable": false,
+            "delay": 0,
+            "execute": []
+        },
+        "after": {
+            "enable": false,
+            "delay": 0,
+            "execute": []
+        }
     }
     newConfig.permission = {
         "controller": [config.masterid],
