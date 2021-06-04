@@ -1,5 +1,5 @@
 const fs = require('fs')
-const logSymbols = require('log-symbols');
+const logSymbols = require('log-symbols')
 const path = require('path')
 const colors = require('colors')
 
@@ -8,7 +8,7 @@ const config = require('../config.json')
 colors.setTheme({
   database: 'grey',
   error: 'brightRed'
-});
+})
 
 execute()
 

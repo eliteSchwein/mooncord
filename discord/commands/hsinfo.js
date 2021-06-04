@@ -15,8 +15,8 @@ module.exports = class HelloCommand extends SlashCommand {
                 description: 'Select the component you want to know the information about.',
                 required: true
             }]
-        });
-        this.filePath = __filename;
+        })
+        this.filePath = __filename
     }
 
     async run(ctx) {
@@ -31,11 +31,11 @@ module.exports = class HelloCommand extends SlashCommand {
                     file: answer[0][1]
                 },
                 embeds: [answer[1].toJSON()]
-            });
+            })
         }
         catch (error) {
             console.log((error).error)
-            return 'An Error occured!';
+            return 'An Error occured!'
         }
     }
 }

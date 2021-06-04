@@ -30,8 +30,8 @@ module.exports = class HelloCommand extends SlashCommand {
                     required: true
                 }]
             }]
-        });
-        this.filePath = __filename;
+        })
+        this.filePath = __filename
     }
 
     async run(ctx) {
@@ -73,7 +73,7 @@ module.exports = class HelloCommand extends SlashCommand {
         }
         catch (error) {
             console.log((error).error)
-            return "An Error occured!";
+            return "An Error occured!"
         }
     }
 }

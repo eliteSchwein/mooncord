@@ -17,8 +17,8 @@ module.exports = class HelloCommand extends SlashCommand {
                 description: 'GCode that you want to execute.',
                 required: true
             }]
-        });
-        this.filePath = __filename;
+        })
+        this.filePath = __filename
     }
 
     async run(ctx) {

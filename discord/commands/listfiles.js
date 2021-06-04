@@ -15,8 +15,8 @@ module.exports = class HelloCommand extends SlashCommand {
         super(creator, {
             name: 'listfiles',
             description: 'List all Print Files.',
-        });
-        this.filePath = __filename;
+        })
+        this.filePath = __filename
     }
 
     async run(ctx) {
@@ -46,7 +46,7 @@ module.exports = class HelloCommand extends SlashCommand {
                     const commandmessage = await ctx.send({
                         file: files,
                         embeds: [commandFeedback.toJSON()]
-                    });
+                    })
                     commandFeedback = undefined
                     const channel = await discordClient.getClient().channels.fetch(ctx.channelID)
                     const message = await channel.messages.fetch(commandmessage.id)

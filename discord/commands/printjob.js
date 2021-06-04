@@ -1,4 +1,4 @@
-const { SlashCommand, CommandOptionType } = require('slash-create');
+const { SlashCommand, CommandOptionType } = require('slash-create')
 
 const discordClient = require('../../clients/discordclient')
 const moonrakerClient = require('../../clients/moonrakerclient')
@@ -40,8 +40,8 @@ module.exports = class HelloCommand extends SlashCommand {
                     required: true
                 }]
             }]
-        });
-        this.filePath = __filename;
+        })
+        this.filePath = __filename
     }
 
     async run(ctx) {

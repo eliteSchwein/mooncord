@@ -1,4 +1,4 @@
-const { SlashCommand } = require('slash-create');
+const { SlashCommand } = require('slash-create')
 
 const statusUtil = require('../../utils/statusUtil')
 const moonrakerClient = require('../../clients/moonrakerclient')
@@ -8,8 +8,8 @@ module.exports = class HelloCommand extends SlashCommand {
         super(creator, {
             name: 'status',
             description: 'Get the current Print Status'
-        });
-        this.filePath = __filename;
+        })
+        this.filePath = __filename
     }
 
     async run(ctx) {
@@ -33,7 +33,7 @@ module.exports = class HelloCommand extends SlashCommand {
             await ctx.send({
                 file: files,
                 embeds: [status.toJSON()]
-            });
+            })
         }
         catch (error) {
             console.log((error).error)

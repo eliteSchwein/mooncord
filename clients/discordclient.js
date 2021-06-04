@@ -42,18 +42,18 @@ function enableCommands() {
     applicationID: config.connection.botapplicationid,
     publicKey: config.connection.botapplicationkey,
     token: config.connection.bottoken,
-  });
+  })
 
   creator
     .registerCommandsIn(path.join(__dirname, '../discord/commands'))
-    .syncCommands();
+    .syncCommands()
   
   creator
     .withServer(
       new GatewayServer(
         (handler) => discordClient.ws.on('INTERACTION_CREATE', handler)
       )
-    );
+    )
 }
 
 module.exports = {}

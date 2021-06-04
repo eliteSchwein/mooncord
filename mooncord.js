@@ -21,7 +21,7 @@ colors.setTheme({
   success: 'brightGreen',
   printstatus: 'white',
   error: 'brightRed'
-});
+})
 
 systemInfo.osInfo()
   .then(async data => {

@@ -1,7 +1,7 @@
 const Discord = require('discord.js')
 const fs = require('fs')
 const path = require('path')
-const { SlashCommand } = require('slash-create');
+const { SlashCommand } = require('slash-create')
 
 const pjson = require('../../package.json')
 
@@ -10,8 +10,8 @@ module.exports = class HelloCommand extends SlashCommand {
         super(creator, {
             name: 'info',
             description: 'Send a Description about me.'
-        });
-        this.filePath = __filename;
+        })
+        this.filePath = __filename
     }
 
     async run(ctx) {
@@ -38,11 +38,11 @@ module.exports = class HelloCommand extends SlashCommand {
                     file: logobuffer
                 },
                 embeds: [infoEmbed.toJSON()]
-            });
+            })
         }
         catch (error) {
             console.log((error).error)
-            return "An Error occured!";
+            return "An Error occured!"
         }
     }
 }

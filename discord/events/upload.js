@@ -4,7 +4,7 @@ const axios = require('axios')
 const FormData = require('form-data')
 const fs = require('fs')
 const https = require('https')
-const logSymbols = require('log-symbols');
+const logSymbols = require('log-symbols')
 
 const config = require(`${args[0]}/mooncord.json`)
 const database = require('../../utils/databaseUtil')

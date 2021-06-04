@@ -1,4 +1,4 @@
-const { SlashCommand, CommandOptionType } = require('slash-create');
+const { SlashCommand, CommandOptionType } = require('slash-create')
 
 const moonrakerClient = require('../../clients/moonrakerclient')
 const handlers = require('../../utils/handlerUtil')
@@ -17,8 +17,8 @@ module.exports = class HelloCommand extends SlashCommand {
                 description: 'Shows Informations about a Print File.',
                 required: true
             }]
-        });
-        this.filePath = __filename;
+        })
+        this.filePath = __filename
     }
 
     run(ctx) {
@@ -59,11 +59,11 @@ module.exports = class HelloCommand extends SlashCommand {
                             ctx.send({
                                 file: files,
                                 embeds: [commandFeedback.toJSON()]
-                            });
+                            })
                         } else {
                             ctx.send({
                                 embeds: [commandFeedback.toJSON()]
-                            });
+                            })
                         }
                         commandFeedback = undefined
                     }

@@ -1,4 +1,4 @@
-const { SlashCommand, CommandOptionType } = require('slash-create');
+const { SlashCommand, CommandOptionType } = require('slash-create')
 
 const discordClient = require('../../clients/discordclient')
 const database = require('../../utils/databaseUtil')
@@ -15,8 +15,8 @@ module.exports = class HelloCommand extends SlashCommand {
                 description: 'Select a Channel to add/remove it as Broadcast channel.',
                 required: false
             }]
-        });
-        this.filePath = __filename;
+        })
+        this.filePath = __filename
     }
 
     async run(ctx) {
@@ -52,7 +52,7 @@ module.exports = class HelloCommand extends SlashCommand {
         }
         catch (error) {
             console.log((error).error)
-            return "An Error occured!";
+            return "An Error occured!"
         }
     }
 }

@@ -1,7 +1,7 @@
 const args = process.argv.slice(2)
 
 const fs = require('fs')
-const logSymbols = require('log-symbols');
+const logSymbols = require('log-symbols')
 const path = require('path')
 const colors = require('colors')
 
@@ -13,7 +13,7 @@ const newConfig = require(`${args[1]}/mooncord.json`)
 colors.setTheme({
   database: 'grey',
   error: 'brightRed'
-});
+})
 
 execute()
 

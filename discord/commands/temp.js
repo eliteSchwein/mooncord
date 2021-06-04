@@ -13,8 +13,8 @@ module.exports = class HelloCommand extends SlashCommand {
         super(creator, {
             name: 'temp',
             description: 'Get the current Temperatures from Klipper.'
-        });
-        this.filePath = __filename;
+        })
+        this.filePath = __filename
     }
 
     run(ctx) {
@@ -43,7 +43,7 @@ module.exports = class HelloCommand extends SlashCommand {
                         ctx.send({
                             file: files,
                             embeds: [commandFeedback.toJSON()]
-                        });
+                        })
                     }
                     clearInterval(feedbackInterval)
                 }
