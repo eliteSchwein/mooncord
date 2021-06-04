@@ -13,8 +13,6 @@ const thumbnail = require('./thumbnailUtil')
 const variables = require('./variablesUtil')
 const webcam = require('./webcamUtil')
 
-const connection = moonrakerClient.getConnection()
-
 function getCurrentDatabase(altdatabase){
   if(typeof(altdatabase) !== 'undefined'){
     return altdatabase
@@ -56,6 +54,8 @@ async function triggerStatusUpdate(altdiscordClient) {
 }
 
 async function executePostProcess(config) {
+  const connection = moonrakerClient.getConnection()
+  
   if (!config.enable || config.execute.length < 1) {
     return
   }
