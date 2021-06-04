@@ -75,35 +75,30 @@ async function executePostProcess(config, connection) {
     const execute = config.execute[index]
     if (execute.startsWith("gcode:")) {
       const gcode = execute.replace("gcode:", "")
-      console.log(`execute gcode: ${gcode}`)
       const id = Math.floor(Math.random() * parseInt('10_000')) + 1
       connection.send(`{"jsonrpc": "2.0", "method": "printer.gcode.script", "params": {"script": "${gcode}"}, "id": ${id}}`)
     }
     if (execute.startsWith("website_post:")) {
       const url = execute.replace("website_post:", "")
-      console.log(`execute post: ${url}`)
       triggerWebsite(url, true)
     }
     if (execute.startsWith("website:")) {
       const url = execute.replace("website:", "")
-      console.log(`execute get: ${url}`)
       triggerWebsite(url, false)
     }
-    await sleep(config.delay);
+    await sleep(config.delay)
     index++
   }
 
-  await sleep(config.delay);
+  await sleep(config.delay)
 }
 
 async function triggerWebsite(url, post) {
   if (post) {
-    const response = await axios.post(url);
-    console.log(response);
+    await axios.post(url)
     return
   }
-  const response = await axios.get(url);
-  console.log(response);
+  await axios.get(url)
 }
 
 async function sleep(delay) {
@@ -228,7 +223,7 @@ module.exports.triggerStatusUpdate = async function (altdiscordClient, altMoonra
 module.exports.getManualStatusEmbed = async function (user, altMoonrakerConnection) {
   const statusConfig = messagemetadata[variables.getStatus()]
   const parsedConfig = parseConfig(statusConfig)
-  
+
   const beforeStatus = config.status.before
   const afterStatus = config.status.after
 
