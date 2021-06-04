@@ -52,11 +52,12 @@ async function executePostProcess(config) {
   if (!config.enable || config.execute.length < 1) {
     return
   }
-  while (i < config.execute.length) {
-    const execute = config.execute[i]
+  let index
+  while (index < config.execute.length) {
+    const execute = config.execute[index]
     console.log(execute)
     await sleep(config.delay)
-    i++
+    index++
   }
 }
 
