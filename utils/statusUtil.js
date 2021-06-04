@@ -49,8 +49,8 @@ async function triggerStatusUpdate(altdiscordClient) {
 }
 
 async function executePostProcess(config) {
+  console.log(config)
   if (!config.enable || config.execute.length < 1) {
-    console.log(config.execute.length)
     return
   }
   let index
