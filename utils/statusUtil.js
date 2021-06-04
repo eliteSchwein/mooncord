@@ -1,5 +1,6 @@
 const Discord = require('discord.js')
 const logSymbols = require('log-symbols')
+const { waitUntil } = require('async-wait-until')
 
 const args = process.argv.slice(2)
 
@@ -58,7 +59,7 @@ async function executePostProcess(config) {
     console.log(index)
     const execute = config.execute[index]
     console.log(execute)
-    await setTimeout(() => {}, config.delay)
+    await waitUntil(r => setTimeout(r, config.delay), { timeout: config.delay + 500 })
     index++
   }
 }
