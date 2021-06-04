@@ -230,6 +230,8 @@ module.exports.getManualStatusEmbed = async function (user, altMoonrakerConnecti
   const parsedConfig = parseConfig(statusConfig)
 
   const connection = getMoonrakerConnection(altMoonrakerConnection, altMoonrakerConnection)
+
+  console.log(connection)
   
   await executePostProcess(beforeStatus, connection)
 
