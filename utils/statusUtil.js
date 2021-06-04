@@ -25,25 +25,39 @@ function getDiscordClient(altdiscordClient){
   return discordClient.getClient()
 }
 
-function triggerStatusUpdate(altdiscordClient) {
+async function triggerStatusUpdate(altdiscordClient) {
   console.log(logSymbols.info, `Printer Status: ${variables.getStatus()}`.printstatus)
+  const beforeStatus = config.status.before
+  const afterStatus = config.status.after
   const statusConfig = messagemetadata[variables.getStatus()]
 
   const client = getDiscordClient(altdiscordClient)
 
-  setTimeout(async () => {
-    const parsedConfig = parseConfig(statusConfig)
-    const embed = await generateEmbed(parsedConfig)
+  const parsedConfig = parseConfig(statusConfig)
+  const embed = await generateEmbed(parsedConfig)
 
-    if (typeof (parsedConfig.activity) !== 'undefined') {
-      client.user.setActivity(
-        parsedConfig.activity.text,
-        { type: parsedConfig.activity.type }
-      )
-    }
-    postStatus(embed, client)
-    notifyStatus(embed, client)
-  }, 1000)
+  if (typeof (parsedConfig.activity) !== 'undefined') {
+    client.user.setActivity(
+      parsedConfig.activity.text,
+      { type: parsedConfig.activity.type }
+    )
+  }
+  await executePostProcess(beforeStatus)
+  postStatus(embed, client)
+  notifyStatus(embed, client)
+  await executePostProcess(afterStatus)
+}
+
+async function executePostProcess(config) {
+  if (!config.enable || config.execute.length < 1) {
+    return
+  }
+  while (i < config.execute.length) {
+    const execute = config.execute[i]
+    console.log(execute)
+    await sleep(config.delay)
+    i++
+  }
 }
 
 function parseConfig(config) {
