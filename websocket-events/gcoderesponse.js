@@ -20,12 +20,12 @@ const event = (message, connection, discordClient) => {
         connection.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${printfile}"}, "id": ${id}}`)
         if (variables.getStatus() !== currentStatus) {
           variables.setStatus(currentStatus)
-          status.triggerStatusUpdate(discordClient)
+          status.triggerStatusUpdate(discordClient, connection)
         }
         variables.setStatus('printing')
         if (!config.status.use_percent) {
           timer = setInterval(() => {
-            status.triggerStatusUpdate(discordClient)
+            status.triggerStatusUpdate(discordClient, connection)
           }, 1000 * config.status.update_interval)
           variables.setUpdateTimer(timer)
         }

@@ -27,7 +27,14 @@ function getDiscordClient(altdiscordClient){
   return discordClient.getClient()
 }
 
-async function triggerStatusUpdate(altdiscordClient) {
+function getMoonrakerConnection(altMoonrakerConnection){
+  if (typeof (altMoonrakerConnection) !== 'undefined') {
+    return altMoonrakerConnection
+  }
+  return moonrakerClient.getConnection()
+}
+
+async function triggerStatusUpdate(altdiscordClient, altMoonrakerConnection) {
   console.log(logSymbols.info, `Printer Status: ${variables.getStatus()}`.printstatus)
   const beforeStatus = config.status.before
   const afterStatus = config.status.after
@@ -35,13 +42,15 @@ async function triggerStatusUpdate(altdiscordClient) {
 
   const client = getDiscordClient(altdiscordClient)
 
+  const connection = getMoonrakerConnection(altMoonrakerConnection)
+
   const parsedConfig = parseConfig(statusConfig)
   
-  await executePostProcess(beforeStatus)
+  await executePostProcess(beforeStatus, connection)
 
   const embed = await generateEmbed(parsedConfig)
 
-  await executePostProcess(afterStatus)
+  await executePostProcess(afterStatus, connection)
 
   if (typeof (parsedConfig.activity) !== 'undefined') {
     client.user.setActivity(
@@ -53,9 +62,7 @@ async function triggerStatusUpdate(altdiscordClient) {
   notifyStatus(embed, client)
 }
 
-async function executePostProcess(config) {
-  const connection = moonrakerClient.getConnection()
-  
+async function executePostProcess(config, connection) {
   if (!config.enable || config.execute.length < 1) {
     return
   }
@@ -210,19 +217,21 @@ function notifyStatus(message, altdiscordClient, altdatabase) {
   }
 }
 
-module.exports.triggerStatusUpdate = async function (altdiscordClient) {
-  await triggerStatusUpdate(altdiscordClient)
+module.exports.triggerStatusUpdate = async function (altdiscordClient, altMoonrakerConnection) {
+  await triggerStatusUpdate(altdiscordClient, altMoonrakerConnection)
 }
 
 module.exports.getManualStatusEmbed = async function (user) {
   const statusConfig = messagemetadata[variables.getStatus()]
   const parsedConfig = parseConfig(statusConfig)
+
+  const connection = getMoonrakerConnection(altMoonrakerConnection)
   
-  await executePostProcess(beforeStatus)
+  await executePostProcess(beforeStatus, connection)
 
   const embed = await generateEmbed(parsedConfig, user)
 
-  await executePostProcess(afterStatus)
+  await executePostProcess(afterStatus, connection)
 
   return embed
 }

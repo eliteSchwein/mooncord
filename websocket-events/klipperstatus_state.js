@@ -20,7 +20,7 @@ const event = (message, connection, discordClient) => {
           const currentStatus = 'pause'
           if (variables.getStatus() !== currentStatus) {
             variables.setStatus(currentStatus)
-            status.triggerStatusUpdate(discordClient)
+            status.triggerStatusUpdate(discordClient, connection)
             clearInterval(variables.getUpdateTimer())
           }
         }
@@ -29,15 +29,15 @@ const event = (message, connection, discordClient) => {
           if (variables.getStatus() !== currentStatus) {
             variables.setStatus(currentStatus)
             if (!config.status.use_percent) {
-              status.triggerStatusUpdate(discordClient)
+              status.triggerStatusUpdate(discordClient, connection)
               setTimeout(() => {
                 const timer = setInterval(() => {
-                  status.triggerStatusUpdate(discordClient)
+                  status.triggerStatusUpdate(discordClient, connection)
                 }, 1000 * config.status.update_interval)
                 variables.setUpdateTimer(timer)
               }, 1000 * config.status.update_interval)
             } else {
-              status.triggerStatusUpdate(discordClient)
+              status.triggerStatusUpdate(discordClient, connection)
             }
           }
         }
@@ -45,11 +45,11 @@ const event = (message, connection, discordClient) => {
           const currentStatus = 'done'
           if (variables.getStatus() !== currentStatus) {
             variables.setStatus(currentStatus)
-            status.triggerStatusUpdate(discordClient)
+            status.triggerStatusUpdate(discordClient, connection)
             clearInterval(variables.getUpdateTimer())
             setTimeout(() => {
               variables.setStatus('ready')
-              status.triggerStatusUpdate(discordClient)
+              status.triggerStatusUpdate(discordClient, connection)
             }, 1000)
           }
         }

@@ -24,14 +24,14 @@ const event = (message, connection, discordClient) => {
     }
 
     variables.setStatus(states[methode].status)
-    status.triggerStatusUpdate(discordClient)
+    status.triggerStatusUpdate(discordClient, connection)
   }
 }
 
 function changeStatusLater(state, discordClient) {
   setTimeout(() => {
     variables.setStatus(state)
-    status.triggerStatusUpdate(discordClient)
+    status.triggerStatusUpdate(discordClient, connection)
   }, 2000)
 }
 module.exports = event
