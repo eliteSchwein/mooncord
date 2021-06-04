@@ -228,22 +228,17 @@ module.exports.triggerStatusUpdate = async function (altdiscordClient, altMoonra
 module.exports.getManualStatusEmbed = async function (user, altMoonrakerConnection) {
   const statusConfig = messagemetadata[variables.getStatus()]
   const parsedConfig = parseConfig(statusConfig)
+  
+  const beforeStatus = config.status.before
+  const afterStatus = config.status.after
 
-  const connection = getMoonrakerConnection(altMoonrakerConnection, altMoonrakerConnection)
-
-  console.log(1)
+  const connection = getMoonrakerConnection(altMoonrakerConnection)
   
   await executePostProcess(beforeStatus, connection)
 
-  console.log(2)
-
   const embed = await generateEmbed(parsedConfig, user)
 
-  console.log(3)
-
   await executePostProcess(afterStatus, connection)
-
-  console.log(4)
 
   return embed
 }
