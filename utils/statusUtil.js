@@ -43,6 +43,7 @@ async function triggerStatusUpdate(altdiscordClient) {
     )
   }
   await executePostProcess(beforeStatus)
+  console.log("trigger status")
   postStatus(embed, client)
   notifyStatus(embed, client)
   await executePostProcess(afterStatus)
