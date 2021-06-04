@@ -53,7 +53,7 @@ async function executePostProcess(config) {
   if (!config.enable || config.execute.length < 1) {
     return
   }
-  let index
+  let index = 0
   while (index < config.execute.length) {
     console.log(index)
     const execute = config.execute[index]
