@@ -1,15 +1,19 @@
 const Discord = require('discord.js')
 const logSymbols = require('log-symbols')
+const axios = require('axios')
 
 const args = process.argv.slice(2)
 
 const discordClient = require('../clients/discordclient') 
+const moonrakerClient = require('../clients/moonrakerclient')
 const config = require(`${args[0]}/mooncord.json`)
 const database = require('./databaseUtil')
 const messagemetadata = require('./statusmetadata.json')
 const thumbnail = require('./thumbnailUtil')
 const variables = require('./variablesUtil')
 const webcam = require('./webcamUtil')
+
+const connection = moonrakerClient.getConnection()
 
 function getCurrentDatabase(altdatabase){
   if(typeof(altdatabase) !== 'undefined'){
@@ -34,7 +38,12 @@ async function triggerStatusUpdate(altdiscordClient) {
   const client = getDiscordClient(altdiscordClient)
 
   const parsedConfig = parseConfig(statusConfig)
+  
+  await executePostProcess(beforeStatus)
+
   const embed = await generateEmbed(parsedConfig)
+
+  await executePostProcess(afterStatus)
 
   if (typeof (parsedConfig.activity) !== 'undefined') {
     client.user.setActivity(
@@ -42,28 +51,48 @@ async function triggerStatusUpdate(altdiscordClient) {
       { type: parsedConfig.activity.type }
     )
   }
-  await executePostProcess(beforeStatus)
-  console.log("trigger status")
   postStatus(embed, client)
   notifyStatus(embed, client)
-  await sleep(afterStatus.delay);
-  await executePostProcess(afterStatus)
 }
 
 async function executePostProcess(config) {
-  console.log(config)
   if (!config.enable || config.execute.length < 1) {
     return
   }
+
+  await sleep(config.delay)
+
   let index = 0
+
   while (index < config.execute.length) {
-    console.log(index)
     const execute = config.execute[index]
-    console.log(execute)
+    if (execute.startsWith("gcode:")) {
+      const gcode = execute.replace("gcode:", "")
+      connection.send(`{"jsonrpc": "2.0", "method": "printer.gcode.script", "params": {"script": "${gcode}"}, "id": ${id}}`)
+    }
+    if (execute.startsWith("website_post:")) {
+      const url = execute.replace("website_post:", "")
+      triggerWebsite(url, true)
+    }
+    if (execute.startsWith("website:")) {
+      const url = execute.replace("website:", "")
+      triggerWebsite(url, false)
+    }
     await sleep(config.delay);
     index++
   }
+
   await sleep(config.delay);
+}
+
+async function triggerWebsite(url, post) {
+  if (post) {
+    const response = await axios.post(url);
+    console.log(response);
+    return
+  }
+  const response = await axios.get(url);
+  console.log(response);
 }
 
 async function sleep(delay) {
@@ -188,7 +217,14 @@ module.exports.triggerStatusUpdate = async function (altdiscordClient) {
 module.exports.getManualStatusEmbed = async function (user) {
   const statusConfig = messagemetadata[variables.getStatus()]
   const parsedConfig = parseConfig(statusConfig)
-  return await generateEmbed(parsedConfig, user)
+  
+  await executePostProcess(beforeStatus)
+
+  const embed = await generateEmbed(parsedConfig, user)
+
+  await executePostProcess(afterStatus)
+
+  return embed
 }
 
 module.exports.postBroadcastMessage = (message, altdiscordClient, altdatabase, altramdatabase) => {
