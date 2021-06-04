@@ -55,6 +55,7 @@ async function executePostProcess(config) {
   }
   let index
   while (index < config.execute.length) {
+    console.log(index)
     const execute = config.execute[index]
     console.log(execute)
     await sleep(config.delay)
