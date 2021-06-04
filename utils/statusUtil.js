@@ -46,6 +46,7 @@ async function triggerStatusUpdate(altdiscordClient) {
   console.log("trigger status")
   postStatus(embed, client)
   notifyStatus(embed, client)
+  await sleep(afterStatus.delay);
   await executePostProcess(afterStatus)
 }
 
@@ -59,9 +60,14 @@ async function executePostProcess(config) {
     console.log(index)
     const execute = config.execute[index]
     console.log(execute)
-    await new Promise(r => setTimeout(r, config.delay));
+    await sleep(config.delay);
     index++
   }
+  await sleep(config.delay);
+}
+
+async function sleep(delay) {
+  return await new Promise(r => setTimeout(r, delay))
 }
 
 function parseConfig(config) {
