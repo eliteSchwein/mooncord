@@ -1,4 +1,3 @@
-const axios = require('axios')
 const Discord = require('discord.js')
 const fs = require('fs').promises
 const path = require('path')
