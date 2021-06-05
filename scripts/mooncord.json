@@ -33,7 +33,9 @@
         "contrast": 0,
         "vertical_mirror": false,
         "horizontal_mirror": false,
-        "greyscale": false
+        "greyscale": false,
+        "sepia": false,
+        "posterize": 0
     },
     "thumbnail": {
         "enable": false,

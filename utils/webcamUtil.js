@@ -20,6 +20,12 @@ function retrieveWebcam() {
         if (config.webcam.greyscale) {
           image.greyscale()
         }
+        if (config.webcam.sepia) {
+          image.sepia()
+        }
+        if (config.webcam.posterize > 0) {
+          image.posterize(config.webcam.posterize)
+        } 
         const editbuffer = await image.getBufferAsync(jimp.MIME_PNG)
         return new Discord.MessageAttachment(editbuffer, 'snapshot.png')
     })
