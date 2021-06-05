@@ -10,7 +10,7 @@ const moonrakerClient = require('../clients/moonrakerclient')
 
 const config = require(`${args[0]}/mooncord.json`)
 
-function retrieveWebcam() {
+async function retrieveWebcam() {
 
   const beforeStatus = config.status.before
   const afterStatus = config.status.after
