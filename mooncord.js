@@ -2,11 +2,13 @@
 const colors = require('colors')
 const systemInfo = require('systeminformation')
 
+const config = require(`${args[0]}/mooncord.json`)
 const discordClient = require('./clients/discordclient')
 const moonrakerClient = require('./clients/moonrakerclient')
 const pjson = require('./package.json')
 const hsUtil = require('./utils/hsUtil')
 const miscUtil = require('./utils/miscUtil')
+const timelapseUtil = require('./utils/timelapseUtil')
 
 const args = process.argv.slice(2)
 
@@ -60,9 +62,13 @@ systemInfo.osInfo()
 
   await moonrakerClient.init(discordClient.getClient())
   
-    await hsUtil.init()
-    
-    miscUtil.init()
+  await hsUtil.init()
+  
+  miscUtil.init()
+  
+  if (config.thumbnail.enable) {
+    timelapseUtil.init()
+  }
 })
   .catch(error => {
     console.log("Mooncord couldnt start".error)

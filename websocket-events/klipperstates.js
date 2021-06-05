@@ -1,5 +1,6 @@
 const status = require('../utils/statusUtil')
 const variables = require('../utils/variablesUtil')
+const timelapseUtil = require('../utils/timelapseUtil')
 const states = require('./klipper_states.json')
 
 const event = (message, connection, discordClient) => {
@@ -21,6 +22,10 @@ const event = (message, connection, discordClient) => {
 
     if (typeof (states[methode].timedStatus) !== 'undefined') {
       changeStatusLater(states[methode].timedStatus, discordClient)
+    }
+
+    if (states[methode].render) {
+      timelapseUtil.render()
     }
 
     variables.setStatus(states[methode].status)

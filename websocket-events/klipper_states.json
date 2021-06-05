@@ -12,6 +12,7 @@
     "notify_gcode_response": {
         "status": "stop",
         "timedStatus": "ready",
+        "render": true,
         "requiredParams": ["// action:cancel"]
     }
 }

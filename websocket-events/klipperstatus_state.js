@@ -3,6 +3,7 @@ const args = process.argv.slice(2)
 const config = require(`${args[0]}/mooncord.json`)
 const status = require('../utils/statusUtil')
 const variables = require('../utils/variablesUtil')
+const timelapseUtil = require('../utils/timelapseUtil')
 
 const event = (message, connection, discordClient) => {
   if (message.type === 'utf8') {
@@ -44,6 +45,7 @@ const event = (message, connection, discordClient) => {
         if (klipperstatus.print_stats.state === 'complete' && variables.getStatus() !== 'ready') {
           const currentStatus = 'done'
           if (variables.getStatus() !== currentStatus) {
+            timelapseUtil.render()
             variables.setStatus(currentStatus)
             variables.updateLastGcodeFile()
             status.triggerStatusUpdate(discordClient)

@@ -27,11 +27,14 @@
     "axios": "^0.21.1",
     "colors": "^1.4.0",
     "discord.js": "^12.5.3",
+    "ffmpeg": "0.0.4",
+    "ffmpeg-stream": "^0.7.0",
     "form-data": "^4.0.0",
+    "glob": "^7.1.7",
     "jimp": "^0.16.1",
     "log-symbols": "^4.1.0",
-    "systeminformation": "^5.7.4",
     "slash-create": "^3.2.3",
+    "systeminformation": "^5.7.4",
     "websocket": "^1.0.34"
   },
   "devDependencies": {
