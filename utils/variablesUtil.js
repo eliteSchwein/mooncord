@@ -5,6 +5,7 @@ let lastgcodefile = ''
 let gcodestartbyte = 0
 let gcodeendbyte = 0
 let gcodethumbnail = ''
+let currentLayerHeight = 0.0
 let printprogress = 0
 let remainingprinttime = 0
 let printtime = 0
@@ -43,6 +44,9 @@ module.exports.setRemainingTime = function (remainingtime) {
 }
 module.exports.setPrintTime = function (newtime) {
   printtime = newtime
+}
+module.exports.setCurrentLayerHeight = function (height) {
+  currentLayerHeight = height
 }
 module.exports.updateLastGcodeFile = function () {
   lastgcodefile = gcodefile
@@ -92,6 +96,9 @@ module.exports.getFormatedPrintTime = function () {
 }
 module.exports.getLastGcodeFile = function () {
   return lastgcodefile
+}
+module.exports.getCurrentLayerHeight = function () {
+  return currentLayerHeight
 }
 module.exports.formatTime = (time) => { return formatTime(time / 1000) }
 

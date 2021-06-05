@@ -14,6 +14,8 @@ const event = (message, connection, discordClient) => {
 
     retrieveSoftwareVersion(result)
 
+    retrieveLayerHeight(result)
+
     if (hasCorrectData(result)) {
       const virtualSDcard = result.status.virtual_sdcard
       const currentProgress = calculateProgress(virtualSDcard)
@@ -39,6 +41,20 @@ const event = (message, connection, discordClient) => {
       }
     }
   }
+}
+
+function retrieveLayerHeight(result) {
+  if (typeof (result) === 'undefined') {
+    return
+  }
+  if (typeof (result.status) === 'undefined') {
+    return
+  }
+  if (typeof (result.status.gcode_move) === 'undefined') {
+    return
+  }
+  const gcode_position = result.status.gcode_move.gcode_position
+  variables.setCurrentLayerHeight(gcode_position[2])
 }
 
 function retrieveSoftwareVersion(result) {
