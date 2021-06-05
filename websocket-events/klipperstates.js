@@ -24,6 +24,7 @@ const event = (message, connection, discordClient) => {
     }
 
     variables.setStatus(states[methode].status)
+    variables.updateLastGcodeFile()
     status.triggerStatusUpdate(discordClient, connection)
   }
 }

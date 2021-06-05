@@ -1,6 +1,7 @@
 let status = 'unknown'
 let versions
 let gcodefile = ''
+let lastgcodefile = ''
 let gcodestartbyte = 0
 let gcodeendbyte = 0
 let gcodethumbnail = ''
@@ -42,6 +43,9 @@ module.exports.setRemainingTime = function (remainingtime) {
 }
 module.exports.setPrintTime = function (newtime) {
   printtime = newtime
+}
+module.exports.updateLastGcodeFile = function () {
+  lastgcodefile = gcodefile
 }
 module.exports.getConfigPath = function () {
   const args = process.argv.slice(2)
@@ -85,6 +89,9 @@ module.exports.getPrintTime = function () {
 }
 module.exports.getFormatedPrintTime = function () {
   return formatTime(printtime)
+}
+module.exports.getLastGcodeFile = function () {
+  return lastgcodefile
 }
 module.exports.formatTime = (time) => { return formatTime(time / 1000) }
 

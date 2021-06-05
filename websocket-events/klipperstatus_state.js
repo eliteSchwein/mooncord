@@ -45,6 +45,7 @@ const event = (message, connection, discordClient) => {
           const currentStatus = 'done'
           if (variables.getStatus() !== currentStatus) {
             variables.setStatus(currentStatus)
+            variables.updateLastGcodeFile()
             status.triggerStatusUpdate(discordClient, connection)
             clearInterval(variables.getUpdateTimer())
             setTimeout(() => {
