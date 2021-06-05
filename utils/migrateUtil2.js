@@ -59,8 +59,7 @@ function migrateConfigToMultiV1() {
         "vertical_mirror": false,
         "horizontal_mirror": false,
         "greyscale": false,
-        "sepia": false,
-        "posterize": 0
+        "sepia": false
     }
     saveData(newConfig, `${args[1]}/mooncord.json`)
 }
