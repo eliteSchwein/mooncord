@@ -1,7 +1,6 @@
 const { SlashCommand } = require('slash-create')
 
 const statusUtil = require('../../utils/statusUtil')
-const moonrakerClient = require('../../clients/moonrakerclient')
 
 module.exports = class HelloCommand extends SlashCommand {
     constructor(creator) {
@@ -16,7 +15,7 @@ module.exports = class HelloCommand extends SlashCommand {
         try {
             ctx.defer(false)
 
-            const status = await statusUtil.getManualStatusEmbed(ctx.user, moonrakerClient.getConnection())
+            const status = await statusUtil.getManualStatusEmbed(ctx.user)
 
             const statusfiles = status.files
 

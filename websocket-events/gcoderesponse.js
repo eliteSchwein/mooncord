@@ -3,6 +3,7 @@ const args = process.argv.slice(2)
 const config = require(`${args[0]}/mooncord.json`)
 const status = require('../utils/statusUtil')
 const variables = require('../utils/variablesUtil')
+const timelapseUtil = require('../utils/timelapseUtil')
 
 const event = (message, connection, discordClient) => {
   const id = Math.floor(Math.random() * parseInt('10_000')) + 1
@@ -20,12 +21,13 @@ const event = (message, connection, discordClient) => {
         connection.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${printfile}"}, "id": ${id}}`)
         if (variables.getStatus() !== currentStatus) {
           variables.setStatus(currentStatus)
-          status.triggerStatusUpdate(discordClient, connection)
+          timelapseUtil.start()
+          status.triggerStatusUpdate(discordClient)
         }
         variables.setStatus('printing')
         if (!config.status.use_percent) {
           timer = setInterval(() => {
-            status.triggerStatusUpdate(discordClient, connection)
+            status.triggerStatusUpdate(discordClient)
           }, 1000 * config.status.update_interval)
           variables.setUpdateTimer(timer)
         }

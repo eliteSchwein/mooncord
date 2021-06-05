@@ -1,11 +1,9 @@
 const Discord = require('discord.js')
 const logSymbols = require('log-symbols')
-const axios = require('axios')
 
 const args = process.argv.slice(2)
 
 const discordClient = require('../clients/discordclient') 
-const moonrakerClient = require('../clients/moonrakerclient')
 const config = require(`${args[0]}/mooncord.json`)
 const database = require('./databaseUtil')
 const messagemetadata = require('./statusmetadata.json')
@@ -27,30 +25,15 @@ function getDiscordClient(altdiscordClient){
   return discordClient.getClient()
 }
 
-function getMoonrakerConnection(altMoonrakerConnection){
-  if (typeof (altMoonrakerConnection) !== 'undefined') {
-    return altMoonrakerConnection
-  }
-  return moonrakerClient.getConnection()
-}
-
-async function triggerStatusUpdate(altdiscordClient, altMoonrakerConnection) {
+async function triggerStatusUpdate(altdiscordClient) {
   console.log(logSymbols.info, `Printer Status: ${variables.getStatus()}`.printstatus)
-  const beforeStatus = config.status.before
-  const afterStatus = config.status.after
   const statusConfig = messagemetadata[variables.getStatus()]
 
   const client = getDiscordClient(altdiscordClient)
 
-  const connection = getMoonrakerConnection(altMoonrakerConnection)
-
   const parsedConfig = parseConfig(statusConfig)
-  
-  await executePostProcess(beforeStatus, connection)
 
   const embed = await generateEmbed(parsedConfig)
-
-  await executePostProcess(afterStatus, connection)
 
   if (typeof (parsedConfig.activity) !== 'undefined') {
     client.user.setActivity(
@@ -60,49 +43,6 @@ async function triggerStatusUpdate(altdiscordClient, altMoonrakerConnection) {
   }
   postStatus(embed, client)
   notifyStatus(embed, client)
-}
-
-async function executePostProcess(config, connection) {
-  if (!config.enable || config.execute.length < 1) {
-    return
-  }
-
-  await sleep(config.delay)
-
-  let index = 0
-
-  while (index < config.execute.length) {
-    const execute = config.execute[index]
-    if (execute.startsWith("gcode:")) {
-      const gcode = execute.replace("gcode:", "")
-      const id = Math.floor(Math.random() * parseInt('10_000')) + 1
-      connection.send(`{"jsonrpc": "2.0", "method": "printer.gcode.script", "params": {"script": "${gcode}"}, "id": ${id}}`)
-    }
-    if (execute.startsWith("website_post:")) {
-      const url = execute.replace("website_post:", "")
-      triggerWebsite(url, true)
-    }
-    if (execute.startsWith("website:")) {
-      const url = execute.replace("website:", "")
-      triggerWebsite(url, false)
-    }
-    await sleep(config.delay)
-    index++
-  }
-
-  await sleep(config.delay)
-}
-
-async function triggerWebsite(url, post) {
-  if (post) {
-    await axios.post(url)
-    return
-  }
-  await axios.get(url)
-}
-
-async function sleep(delay) {
-  return await new Promise(r => setTimeout(r, delay))
 }
 
 function parseConfig(config) {
@@ -216,24 +156,15 @@ function notifyStatus(message, altdiscordClient, altdatabase) {
   }
 }
 
-module.exports.triggerStatusUpdate = async function (altdiscordClient, altMoonrakerConnection) {
-  await triggerStatusUpdate(altdiscordClient, altMoonrakerConnection)
+module.exports.triggerStatusUpdate = async function (altdiscordClient) {
+  await triggerStatusUpdate(altdiscordClient)
 }
 
-module.exports.getManualStatusEmbed = async function (user, altMoonrakerConnection) {
+module.exports.getManualStatusEmbed = async function (user) {
   const statusConfig = messagemetadata[variables.getStatus()]
   const parsedConfig = parseConfig(statusConfig)
 
-  const beforeStatus = config.status.before
-  const afterStatus = config.status.after
-
-  const connection = getMoonrakerConnection(altMoonrakerConnection)
-  
-  await executePostProcess(beforeStatus, connection)
-
   const embed = await generateEmbed(parsedConfig, user)
-
-  await executePostProcess(afterStatus, connection)
 
   return embed
 }

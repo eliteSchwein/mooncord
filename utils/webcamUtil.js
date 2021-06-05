@@ -2,12 +2,21 @@ const Discord = require('discord.js')
 const fs = require('fs').promises
 const path = require('path')
 const jimp = require('jimp')
+const axios = require('axios')
 
 const args = process.argv.slice(2)
+
+const moonrakerClient = require('../clients/moonrakerclient')
 
 const config = require(`${args[0]}/mooncord.json`)
 
 function retrieveWebcam() {
+
+  const beforeStatus = config.status.before
+  const afterStatus = config.status.after
+
+  await executePostProcess(beforeStatus)
+
   return jimp.read(config.webcam.url)
     .then(
       async image => {
@@ -23,6 +32,9 @@ function retrieveWebcam() {
           image.sepia()
         }
         const editbuffer = await image.getBufferAsync(jimp.MIME_PNG)
+
+        await executePostProcess(afterStatus)
+
         return new Discord.MessageAttachment(editbuffer, 'snapshot.png')
     })
     .catch(
@@ -33,6 +45,50 @@ function retrieveWebcam() {
         }
       }
     )
+}
+
+
+async function executePostProcess(config) {
+  if (!config.enable || config.execute.length < 1) {
+    return
+  }
+
+  await sleep(config.delay)
+
+  let index = 0
+
+  while (index < config.execute.length) {
+    const execute = config.execute[index]
+    if (execute.startsWith("gcode:")) {
+      const gcode = execute.replace("gcode:", "")
+      const id = Math.floor(Math.random() * parseInt('10_000')) + 1
+      moonrakerClient.getConnection().send(`{"jsonrpc": "2.0", "method": "printer.gcode.script", "params": {"script": "${gcode}"}, "id": ${id}}`)
+    }
+    if (execute.startsWith("website_post:")) {
+      const url = execute.replace("website_post:", "")
+      triggerWebsite(url, true)
+    }
+    if (execute.startsWith("website:")) {
+      const url = execute.replace("website:", "")
+      triggerWebsite(url, false)
+    }
+    await sleep(config.delay)
+    index++
+  }
+
+  await sleep(config.delay)
+}
+
+async function triggerWebsite(url, post) {
+  if (post) {
+    await axios.post(url)
+    return
+  }
+  await axios.get(url)
+}
+
+async function sleep(delay) {
+  return await new Promise(r => setTimeout(r, delay))
 }
 
 module.exports.retrieveWebcam = function () {

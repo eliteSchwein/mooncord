@@ -25,14 +25,14 @@ const event = (message, connection, discordClient) => {
 
     variables.setStatus(states[methode].status)
     variables.updateLastGcodeFile()
-    status.triggerStatusUpdate(discordClient, connection)
+    status.triggerStatusUpdate(discordClient)
   }
 }
 
 function changeStatusLater(state, discordClient) {
   setTimeout(() => {
     variables.setStatus(state)
-    status.triggerStatusUpdate(discordClient, connection)
+    status.triggerStatusUpdate(discordClient)
   }, 2000)
 }
 module.exports = event
