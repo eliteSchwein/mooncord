@@ -22,8 +22,6 @@ function retrieveWebcam() {
         }
         if (config.webcam.sepia) {
           image.sepia()
-          image.sepia()
-          image.sepia()
         }
         if (config.webcam.posterize > 0) {
           image.posterize(config.webcam.posterize)
