@@ -1,4 +1,6 @@
 'use strict'
+const args = process.argv.slice(2)
+
 const colors = require('colors')
 const systemInfo = require('systeminformation')
 
@@ -9,8 +11,6 @@ const pjson = require('./package.json')
 const hsUtil = require('./utils/hsUtil')
 const miscUtil = require('./utils/miscUtil')
 const timelapseUtil = require('./utils/timelapseUtil')
-
-const args = process.argv.slice(2)
 
 colors.setTheme({
   database: 'grey',
