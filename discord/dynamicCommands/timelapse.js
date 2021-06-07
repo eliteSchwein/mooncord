@@ -52,6 +52,8 @@ module.exports = class HelloCommand extends SlashCommand {
             }
             const embed = await generateEmbed()
 
+            console.log(embed)
+
             const timelapse = embed.files[0]
 
             const files = {
