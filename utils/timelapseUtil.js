@@ -64,7 +64,7 @@ module.exports.start = () => {
     }
     framecount = 1
     glob("../temp/timelapse/frame-*.jpg", options, function (er, files) {
-        console.log(er)
+        console.log(files)
         for (const file of files) {
             fs.unlink(file)
         }
