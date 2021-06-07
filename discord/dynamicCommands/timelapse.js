@@ -30,7 +30,7 @@ module.exports = class HelloCommand extends SlashCommand {
 
             ctx.defer(false)
 
-            console.log(ctx.options.length)
+            console.log(ctx.options)
 
             if (ctx.options.length > 0) {
                 const { emulate } = ctx.options
