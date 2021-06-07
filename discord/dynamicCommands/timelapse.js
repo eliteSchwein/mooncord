@@ -36,7 +36,7 @@ module.exports = class HelloCommand extends SlashCommand {
                 variablesUtil.setCurrentFile(emulate)
                 variablesUtil.updateLastGcodeFile()
                 variablesUtil.setCurrentFile('')
-                let frames = 10
+                let frames = 1200
                 const timer = setInterval(async () => {
                     if (frames < 1) {
                         timelapseUtil.render()
@@ -44,7 +44,7 @@ module.exports = class HelloCommand extends SlashCommand {
                     }
                     timelapseUtil.makeFrame()
                     frames--
-                }, 100)
+                }, 10)
             }
 
             if (variablesUtil.getLastGcodeFile() === '') {
