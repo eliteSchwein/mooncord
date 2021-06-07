@@ -25,7 +25,7 @@ async function render() {
     }
     const conv = ffmpeg()
     const input = conv.input({f: 'image2pipe', r: config.timelapse.framerate})
-    conv.output('../temp/timelapse/timelapse.mp4', {vcodec: 'libx264', pix_fmt: 'yuv420p'})
+    conv.output(path.resolve(__dirname, '../temp/timelapse/timelapse.mp4'), {vcodec: 'libx264', pix_fmt: 'yuv420p'})
     frames.map(filename => () =>
     new Promise((fulfill, reject) =>
         s3
@@ -48,7 +48,8 @@ async function makeFrame() {
     const frame = await fs.writeFileSync(path.resolve(__dirname,
         `../temp/timelapse/frame-${framecount}.png`),
         snapshot.attachment, 'base64')
-    frames.push(`../temp/timelapse/frame-${framecount}.png`)
+    frames.push(path.resolve(__dirname,
+        `../temp/timelapse/frame-${framecount}.png`))
     framecount ++
 }
 
