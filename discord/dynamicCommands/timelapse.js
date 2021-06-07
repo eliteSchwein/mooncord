@@ -15,7 +15,7 @@ module.exports = class HelloCommand extends SlashCommand {
         super(creator, {
             name: 'timelapse',
             description: 'Get the latest Timelapse.',
-            guildIDs: guildId,
+            //guildIDs: guildId,
             options: [{
                 type: CommandOptionType.STRING,
                 name: 'emulate',
