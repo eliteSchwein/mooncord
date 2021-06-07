@@ -9,8 +9,9 @@ module.exports = class HelloCommand extends SlashCommand {
     constructor(creator) {
         if (!config.thumbnail.enable) {
             super(creator, {
-                name: '',
-                description: ''
+                name: 'timelapse',
+                description: 'Get the latest Timelapse.',
+                guildIDs: '000000000000000000'
             })
             this.filePath = __filename
         } else {
