@@ -76,7 +76,7 @@ module.exports = class HelloCommand extends SlashCommand {
 async function generateEmbed() {
     const embed = new Discord.MessageEmbed()
         .setColor('#0099ff')
-        .setTitle(`Timelapse of ${variablesUtil.getLastGcodeFile()}`)
+        .setTitle('Timelapse')
         .setAuthor(variablesUtil.getLastGcodeFile())
         .attachFiles('./temp/timelapse/timelapse.mp4')
     
