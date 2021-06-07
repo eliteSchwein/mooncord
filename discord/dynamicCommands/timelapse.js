@@ -3,16 +3,6 @@ const Discord = require('discord.js')
 const config = require(`${args[0]}/mooncord.json`)
 const variablesUtil = require('../../utils/variablesUtil')
 
-async function generateEmbed() {
-    const embed = new Discord.MessageEmbed()
-        .setColor('#0099ff')
-        .setTitle(`Timelapse of ${variablesUtil.getLastGcodeFile()}`)
-        .setAuthor(variablesUtil.getLastGcodeFile())
-        .attachFiles('./temp/timelapse/timelapse.gif')
-    
-    return embed
-}
-
 module.exports = class HelloCommand extends SlashCommand {
     constructor(creator) {
         super(creator, {

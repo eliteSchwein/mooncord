@@ -2,42 +2,37 @@ const Discord = require('discord.js')
 const fs = require('fs')
 const path = require('path')
 const { SlashCommand } = require('slash-create')
-
-const pjson = require('../../package.json')
+const variablesUtil = require('../../utils/variablesUtil')
 
 module.exports = class HelloCommand extends SlashCommand {
     constructor(creator) {
         super(creator, {
             name: 'timelapse',
-            description: 'Send a Description about me.'
+            description: 'Get the latest Timelapse.'
         })
         this.filePath = __filename
     }
 
     async run(ctx) {
         try {
-            const description = `Version: ${pjson.version}\n
-            Author: ${pjson.author}\n
-            Homepage: ${pjson.homepage}\n`
-        
-            const logopath = path.resolve(__dirname, '../../images/logo.png')
-
-            const logobuffer = fs.readFileSync(logopath)
-
-            const infoEmbed = new Discord.MessageEmbed()
-                .setColor('#0099ff')
-                .setTitle('Informations')
-                .setDescription(description)
-                .setThumbnail('attachment://logo.png')
-        
+            
             ctx.defer(false)
 
+            if (variablesUtil.getLastGcodeFile() === '') {
+                return "There is no Thumbnail aviable!"
+            }
+            const embed = await generateEmbed()
+
+            const timelapse = embed.files[0]
+
+            const files = {
+                name: timelapse.name,
+                file: timelapse.attachment
+            }
+
             await ctx.send({
-                file: {
-                    name: 'logo.png',
-                    file: logobuffer
-                },
-                embeds: [infoEmbed.toJSON()]
+                file: files,
+                embeds: [embed.toJSON()]
             })
         }
         catch (error) {
@@ -45,4 +40,14 @@ module.exports = class HelloCommand extends SlashCommand {
             return "An Error occured!"
         }
     }
+}
+
+async function generateEmbed() {
+    const embed = new Discord.MessageEmbed()
+        .setColor('#0099ff')
+        .setTitle(`Timelapse of ${variablesUtil.getLastGcodeFile()}`)
+        .setAuthor(variablesUtil.getLastGcodeFile())
+        .attachFiles('./temp/timelapse/timelapse.gif')
+    
+    return embed
 }
