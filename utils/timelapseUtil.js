@@ -10,6 +10,8 @@ const webcamUtil = require('./webcamUtil')
 const variableUtil = require('./variablesUtil')
 const config = require(`${args[0]}/mooncord.json`)
 
+const conv = ffmpeg()
+
 let discordClient
 let moonrakerClient
 
@@ -26,9 +28,7 @@ async function render() {
     if (frames.length < 1) {
         return
     }
-    const conv = ffmpeg()
     conv
-        .input(path.resolve(__dirname, `../temp/timelapse/frame-%02d.png`))
         .inputFPS(1/5)
         .output(path.resolve(__dirname, '../temp/timelapse/timelapse.mp4'))
         .outputFPS(30)
@@ -44,6 +44,9 @@ async function makeFrame() {
     const frame = await fs.writeFileSync(path.resolve(__dirname,
         `../temp/timelapse/frame-${framecount}.png`),
         snapshot.attachment, 'base64')
+    
+    conv.input(path.resolve(__dirname,
+        `../temp/timelapse/frame-${framecount}.png`))
     frames.push(path.resolve(__dirname,
         `../temp/timelapse/frame-${framecount}.png`))
     framecount ++
