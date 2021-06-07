@@ -2,6 +2,7 @@ const args = process.argv.slice(2)
 
 const glob = require('glob')
 const fs = require('fs')
+const path = require('path')
 const ffmpeg = require('ffmpeg-stream')
 
 const webcamUtil = require('./webcamUtil')
@@ -44,8 +45,7 @@ async function makeFrame() {
         return
     }
     const snapshot = await webcamUtil.retrieveWebcam()
-    await fs.linkSync(`../temp/timelapse/frame-${framecount}.jpg`)
-    const frame = await fs.writeFileSync(`../temp/timelapse/frame-${framecount}.jpg`, snapshot, 'base64')
+    const frame = await fs.writeFileSync(path.resolve(__dirname, `../temp/timelapse/frame-${framecount}.jpg`), snapshot, 'base64')
     frames.push(`../temp/timelapse/frame-${framecount}.jpg`)
     framecount ++
 }
