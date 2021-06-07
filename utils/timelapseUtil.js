@@ -74,9 +74,9 @@ module.exports.start = () => {
             if (pattern.test(name)) {
 
                 // try to remove the file and log the result
-                fs.unlink(resolve(name), (err) => {
-                if (err) throw err;
-                console.log(`Deleted ${name}`);
+                fs.unlink(path.resolve(name), (err) => {
+                    if (err) throw err;
+                    console.log(`Deleted ${name}`);
                 });
             }
         }
