@@ -13,13 +13,13 @@ module.exports = class HelloCommand extends SlashCommand {
                 description: ''
             })
             this.filePath = __filename
-            return
+        } else {
+            super(creator, {
+                name: 'timelapse',
+                description: 'Get the latest Timelapse.'
+            })
+            this.filePath = __filename
         }
-        super(creator, {
-            name: 'timelapse',
-            description: 'Get the latest Timelapse.'
-        })
-        this.filePath = __filename
     }
 
     async run(ctx) {
