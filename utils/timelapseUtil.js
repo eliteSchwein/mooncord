@@ -74,7 +74,7 @@ module.exports.start = () => {
             if (pattern.test(name)) {
 
                 // try to remove the file and log the result
-                fs.unlink(path.resolve(name), (err) => {
+                fs.unlink(path.resolve(__dirname,`../temp/timelapse/${name}`), (err) => {
                     if (err) throw err;
                     console.log(`Deleted ${name}`);
                 });
