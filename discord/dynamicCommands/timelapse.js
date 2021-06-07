@@ -15,7 +15,6 @@ async function generateEmbed() {
 
 module.exports = class HelloCommand extends SlashCommand {
     constructor(creator) {
-        console.log('timelapse command')
         super(creator, {
             name: 'timelapse',
             description: 'Get the latest Timelapse.'
