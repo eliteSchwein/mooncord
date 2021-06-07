@@ -32,7 +32,6 @@ async function render() {
         .inputFPS(1/5)
         .output(path.resolve(__dirname, '../temp/timelapse/timelapse.mp4'))
         .outputFPS(30)
-        .noAudio()
         .run()
 }
 
