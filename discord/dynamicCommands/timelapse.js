@@ -37,10 +37,10 @@ module.exports = class HelloCommand extends SlashCommand {
                 variablesUtil.updateLastGcodeFile()
                 variablesUtil.setCurrentFile('')
                 let frames = 10
-                setInterval(async () => {
+                const timer = setInterval(async () => {
                     if (frames < 1) {
                         timelapseUtil.render()
-                        stop()
+                        clearInterval(timer)
                     }
                     timelapseUtil.makeFrame()
                     frames--
