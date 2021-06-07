@@ -1,7 +1,7 @@
 const args = process.argv.slice(2)
 
 const Discord = require('discord.js')
-const { SlashCommand } = require('slash-create')
+const { SlashCommand, CommandOptionType } = require('slash-create')
 const variablesUtil = require('../../utils/variablesUtil')
 const timelapseUtil = require('../../utils/timelapseUtil')
 const config = require(`${args[0]}/mooncord.json`)
@@ -15,11 +15,12 @@ module.exports = class HelloCommand extends SlashCommand {
         super(creator, {
             name: 'timelapse',
             description: 'Get the latest Timelapse.',
-            //guildIDs: guildId,
+            guildIDs: guildId,
             options: [{
                 type: CommandOptionType.STRING,
                 name: 'emulate',
-                description: 'Emulate file name.'
+                description: 'Emulate file name.',
+                required: false
             }]
         })
     }
