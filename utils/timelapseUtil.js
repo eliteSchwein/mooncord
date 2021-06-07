@@ -45,8 +45,8 @@ async function makeFrame() {
         return
     }
     const snapshot = await webcamUtil.retrieveWebcam()
-    const frame = await fs.writeFileSync(path.resolve(__dirname, `../temp/timelapse/frame-${framecount}.jpg`), snapshot)
-    frames.push(`../temp/timelapse/frame-${framecount}.jpg`)
+    const frame = await fs.writeFileSync(path.resolve(__dirname, `../temp/timelapse/frame-${framecount}.png`), snapshot, 'base64')
+    frames.push(`../temp/timelapse/frame-${framecount}.png`)
     framecount ++
 }
 
