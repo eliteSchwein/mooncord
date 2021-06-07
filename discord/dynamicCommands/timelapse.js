@@ -30,6 +30,8 @@ module.exports = class HelloCommand extends SlashCommand {
 
             ctx.defer(false)
 
+            console.log(ctx.options.length)
+
             if (ctx.options.length > 0) {
                 const { emulate } = ctx.options
                 variablesUtil.setCurrentFile(emulate)
@@ -55,7 +57,7 @@ module.exports = class HelloCommand extends SlashCommand {
                     }
                     timelapseUtil.makeFrame()
                     frames--
-                },100)
+                }, 100)
             }
 
             if (variablesUtil.getLastGcodeFile() === '') {
