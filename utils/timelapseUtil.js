@@ -3,7 +3,8 @@ const args = process.argv.slice(2)
 const glob = require('glob')
 const fs = require('fs')
 const path = require('path')
-const ffmpeg = require('ffmpeg-stream')
+const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path
+const ffmpeg = require('fluent-ffmpeg')
 
 const webcamUtil = require('./webcamUtil')
 const variableUtil = require('./variablesUtil')
@@ -16,6 +17,8 @@ let frames = []
 let running = false
 let framecount = 1
 
+ffmpeg.setFfmpegPath(ffmpegPath)
+
 async function render() {
     if (!running) {
         return
@@ -24,20 +27,13 @@ async function render() {
         return
     }
     const conv = ffmpeg()
-    const input = conv.input({f: 'image2pipe', r: config.timelapse.framerate})
-    conv.output(path.resolve(__dirname, '../temp/timelapse/timelapse.mp4'), {vcodec: 'libx264', pix_fmt: 'yuv420p'})
-    frames.map(filename => () =>
-    new Promise((fulfill, reject) =>
-        s3
-        .getObject({Bucket: '...', Key: filename})
-        .createReadStream()
-        .on('end', fulfill)
-        .on('error', reject)
-        .pipe(input, {end: false})
-    )
-    )
-    .reduce((prev, next) => prev.then(next), Promise.resolve())
-    .then(() => input.end())
+    conv
+        .input(path.resolve(__dirname, `../temp/timelapse/frame-%03d.png`))
+        .inputFPS(1/5)
+        .output(path.resolve(__dirname, '../temp/timelapse/timelapse.mp4'))
+        .outputFPS(30)
+        .noAudio()
+        .run()
 }
 
 async function makeFrame() {
