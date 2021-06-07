@@ -40,7 +40,7 @@ module.exports = class HelloCommand extends SlashCommand {
                 setInterval(async () => {
                     if (frames < 1) {
                         timelapseUtil.render()
-                        break
+                        stop()
                     }
                     timelapseUtil.makeFrame()
                     frames--
