@@ -1,6 +1,7 @@
-const { SlashCommand } = require('slash-create')
 const Discord = require('discord.js')
-const config = require(`${args[0]}/mooncord.json`)
+const fs = require('fs')
+const path = require('path')
+const { SlashCommand } = require('slash-create')
 const variablesUtil = require('../../utils/variablesUtil')
 
 module.exports = class HelloCommand extends SlashCommand {
@@ -14,6 +15,9 @@ module.exports = class HelloCommand extends SlashCommand {
 
     async run(ctx) {
         try {
+
+            ctx.defer(false)
+
             if (variablesUtil.getLastGcodeFile() === '') {
                 return "There is no Thumbnail aviable!"
             }
@@ -36,4 +40,14 @@ module.exports = class HelloCommand extends SlashCommand {
             return "An Error occured!"
         }
     }
+}
+
+async function generateEmbed() {
+    const embed = new Discord.MessageEmbed()
+        .setColor('#0099ff')
+        .setTitle(`Timelapse of ${variablesUtil.getLastGcodeFile()}`)
+        .setAuthor(variablesUtil.getLastGcodeFile())
+        .attachFiles('./temp/timelapse/timelapse.gif')
+    
+    return embed
 }

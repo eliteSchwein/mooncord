@@ -15,7 +15,7 @@ module.exports = class HelloCommand extends SlashCommand {
 
     async run(ctx) {
         try {
-            
+
             ctx.defer(false)
 
             if (variablesUtil.getLastGcodeFile() === '') {
