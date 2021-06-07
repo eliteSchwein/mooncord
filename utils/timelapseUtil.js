@@ -53,7 +53,6 @@ module.exports.init = (discordClient, moonrakerClient) => {
     running = true
     discordClient = discordClient
     moonrakerClient = moonrakerClient
-    console.log(discordClient)
     discordClient.registerDynamicCommand('timelapse')
 }
 module.exports.isRunning = () => { return running }
