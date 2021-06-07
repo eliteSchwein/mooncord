@@ -45,6 +45,7 @@ async function makeFrame() {
         return
     }
     const snapshot = await webcamUtil.retrieveWebcam()
+    console.log(snapshot)
     fs.writeFile(path.resolve(__dirname, `../temp/timelapse/frame-${framecount}.png`), snapshot, 'base64', function(err) {
         console.log(err);
     })
