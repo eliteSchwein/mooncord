@@ -3,6 +3,7 @@ const args = process.argv.slice(2)
 const Discord = require('discord.js')
 const { SlashCommand } = require('slash-create')
 const variablesUtil = require('../../utils/variablesUtil')
+const timelapseUtil = require('../../utils/timelapseUtil')
 const config = require(`${args[0]}/mooncord.json`)
 
 module.exports = class HelloCommand extends SlashCommand {
@@ -14,7 +15,13 @@ module.exports = class HelloCommand extends SlashCommand {
         super(creator, {
             name: 'timelapse',
             description: 'Get the latest Timelapse.',
-            guildIDs: guildId
+            guildIDs: guildId,
+            options: [{
+                type: CommandOptionType.STRING,
+                name: 'emulate',
+                description: 'Just something.',
+                required: true
+            }]
         })
     }
 
@@ -22,6 +29,34 @@ module.exports = class HelloCommand extends SlashCommand {
         try {
 
             ctx.defer(false)
+
+            if (ctx.options.length > 0) {
+                const { emulate } = ctx.options
+                variablesUtil.setCurrentFile(emulate)
+                variablesUtil.updateLastGcodeFile()
+                variablesUtil.setCurrentFile('')
+                let frames = 240
+                setInterval(async () => {
+                    if (frames < 1) {
+                        timelapseUtil.render()
+                        const embed = await generateEmbed()
+
+                        const timelapse = embed.files[0]
+
+                        const files = {
+                            name: timelapse.name,
+                            file: timelapse.attachment
+                        }
+
+                        await ctx.send({
+                            file: files,
+                            embeds: [embed.toJSON()]
+                        })
+                    }
+                    timelapseUtil.makeFrame()
+                    frames--
+                },100)
+            }
 
             if (variablesUtil.getLastGcodeFile() === '') {
                 return "There is no Thumbnail aviable!"
