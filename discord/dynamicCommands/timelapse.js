@@ -15,12 +15,10 @@ async function generateEmbed() {
 
 module.exports = class HelloCommand extends SlashCommand {
     constructor(creator) {
-        if (config.thumbnail.enable) {
-            super(creator, {
-                name: 'timelapse',
-                description: 'Get the latest Timelapse.'
-            })
-        }
+        super(creator, {
+            name: 'timelapse',
+            description: 'Get the latest Timelapse.'
+        })
         this.filePath = __filename
     }
 

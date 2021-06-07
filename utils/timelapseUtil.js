@@ -8,9 +8,6 @@ const webcamUtil = require('./webcamUtil')
 const variableUtil = require('./variablesUtil')
 const config = require(`${args[0]}/mooncord.json`)
 
-let discordClient
-let moonrakerClient
-
 let frames = []
 let running = false
 let framecount = 1
@@ -49,10 +46,8 @@ async function makeFrame() {
     framecount ++
 }
 
-module.exports.init = (discordClient, moonrakerClient) => {
+module.exports.init = () => {
     running = true
-    discordClient = discordClient
-    moonrakerClient = moonrakerClient
 }
 module.exports.isRunning = () => { return running }
 module.exports.makeFrame = () => { makeFrame() }
