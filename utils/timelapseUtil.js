@@ -28,7 +28,7 @@ async function render() {
     }
     const conv = ffmpeg()
     conv
-        .input(path.resolve(__dirname, `../temp/timelapse/frame-%03d.png`))
+        .input(path.resolve(__dirname, `../temp/timelapse/frame-%02d.png`))
         .inputFPS(1/5)
         .output(path.resolve(__dirname, '../temp/timelapse/timelapse.mp4'))
         .outputFPS(30)
