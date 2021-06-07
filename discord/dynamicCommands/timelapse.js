@@ -78,7 +78,7 @@ async function generateEmbed() {
         .setColor('#0099ff')
         .setTitle(`Timelapse of ${variablesUtil.getLastGcodeFile()}`)
         .setAuthor(variablesUtil.getLastGcodeFile())
-        .attachFiles('./temp/timelapse/timelapse.gif')
+        .attachFiles('./temp/timelapse/timelapse.mp4')
     
     return embed
 }
