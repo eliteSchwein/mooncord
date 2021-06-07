@@ -63,10 +63,22 @@ module.exports.start = () => {
         return
     }
     framecount = 1
-    glob("**/frame-*.jpg", options, function (er, files) {
-        console.log(files)
-        for (const file of files) {
-            fs.unlink(file)
+    const pattern = '/^frame-+/'
+    fs.readdir(path.resolve(__dirname,'../temp/timelapse'), (err, fileNames) => {
+        if (err) throw err;
+
+        // iterate through the found file names
+        for (const name of fileNames) {
+
+            // if file name matches the pattern
+            if (pattern.test(name)) {
+
+                // try to remove the file and log the result
+                fs.unlink(resolve(name), (err) => {
+                if (err) throw err;
+                console.log(`Deleted ${name}`);
+                });
+            }
         }
-    })
+    });
 }
