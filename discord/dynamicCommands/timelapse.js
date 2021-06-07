@@ -20,7 +20,7 @@ module.exports = class HelloCommand extends SlashCommand {
                 type: CommandOptionType.STRING,
                 name: 'emulate',
                 description: 'Just something.',
-                required: true
+                required: false
             }]
         })
     }
