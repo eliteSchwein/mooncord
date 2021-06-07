@@ -64,6 +64,9 @@ module.exports.start = () => {
     if (!running) {
         return
     }
+    fs.unlink(path.resolve(__dirname, '../temp/timelapse/timelapse.mp4'), (err) => {
+        if (err) throw err;
+    });
     framecount = 1
     const pattern = /^frame-+/
     fs.readdir(path.resolve(__dirname,'../temp/timelapse'), (err, fileNames) => {
