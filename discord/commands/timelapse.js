@@ -1,5 +1,6 @@
 const { SlashCommand } = require('slash-create')
 const Discord = require('discord.js')
+const config = require(`${args[0]}/mooncord.json`)
 const variablesUtil = require('../../utils/variablesUtil')
 
 async function generateEmbed() {
@@ -14,10 +15,12 @@ async function generateEmbed() {
 
 module.exports = class HelloCommand extends SlashCommand {
     constructor(creator) {
-        super(creator, {
-            name: 'timelapse',
-            description: 'Get the latest Timelapse.'
-        })
+        if (config.thumbnail.enable) {
+            super(creator, {
+                name: 'timelapse',
+                description: 'Get the latest Timelapse.'
+            })
+        }
         this.filePath = __filename
     }
 
