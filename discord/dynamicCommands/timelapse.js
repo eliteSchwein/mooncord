@@ -8,6 +8,11 @@ const config = require(`${args[0]}/mooncord.json`)
 module.exports = class HelloCommand extends SlashCommand {
     constructor(creator) {
         if (!config.thumbnail.enable) {
+            super(creator, {
+                name: '',
+                description: ''
+            })
+            this.filePath = __filename
             return
         }
         super(creator, {
