@@ -67,16 +67,12 @@ module.exports.start = () => {
     fs.readdir(path.resolve(__dirname,'../temp/timelapse'), (err, fileNames) => {
         if (err) throw err;
 
-        // iterate through the found file names
         for (const name of fileNames) {
 
-            // if file name matches the pattern
             if (pattern.test(name)) {
 
-                // try to remove the file and log the result
                 fs.unlink(path.resolve(__dirname,`../temp/timelapse/${name}`), (err) => {
                     if (err) throw err;
-                    console.log(`Deleted ${name}`);
                 });
             }
         }
