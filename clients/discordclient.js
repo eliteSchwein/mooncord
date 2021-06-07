@@ -75,8 +75,8 @@ module.exports.init = async () => {
 module.exports.isConnected = function() { return connected }
 module.exports.getClient = function () { return discordClient }
 module.exports.registerDynamicCommand = function(name) {
-  console.log(path.join(__dirname, `../discord/dynamicCommands/${name}.js`))
+  console.log(path.join(__dirname, `../discord/dynamicCommands/${name}`))
   creator
-    .registerCommand(path.join(__dirname, `../discord/dynamicCommands/${name}.js`))
+    .registerCommand(path.join(__dirname, `../discord/dynamicCommands/${name}`))
     .syncCommands()
 }
