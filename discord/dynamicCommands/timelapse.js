@@ -30,9 +30,7 @@ module.exports = class HelloCommand extends SlashCommand {
 
             ctx.defer(false)
 
-            console.log(ctx.options)
-
-            if (ctx.options.length > 0) {
+            if (typeof(ctx.options.emulate) != "undefined") {
                 const { emulate } = ctx.options
                 variablesUtil.setCurrentFile(emulate)
                 variablesUtil.updateLastGcodeFile()
