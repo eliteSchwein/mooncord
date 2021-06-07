@@ -7,13 +7,14 @@ const config = require(`${args[0]}/mooncord.json`)
 
 module.exports = class HelloCommand extends SlashCommand {
     constructor(creator) {
-        if (config.thumbnail.enable) {
-            super(creator, {
-                name: 'timelapse',
-                description: 'Get the latest Timelapse.'
-            })
-            this.filePath = __filename
+        if (!config.thumbnail.enable) {
+            return
         }
+        super(creator, {
+            name: 'timelapse',
+            description: 'Get the latest Timelapse.'
+        })
+        this.filePath = __filename
     }
 
     async run(ctx) {
