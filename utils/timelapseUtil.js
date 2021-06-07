@@ -63,10 +63,10 @@ module.exports.start = () => {
         return
     }
     framecount = 1
-    glob("../temp/timelapse/frame-*.jpg", options, function (er, files) {
-        console.log(files)
-        for (const file of files) {
-            fs.unlink(file)
-        }
-    })
+    //glob("../temp/timelapse/frame-*.jpg", options, function (er, files) {
+    //    console.log(files)
+     //   for (const file of files) {
+    //        fs.unlink(file)
+    //    }
+    //})
 }
