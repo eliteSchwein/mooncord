@@ -1,16 +1,21 @@
+const args = process.argv.slice(2)
+
 const Discord = require('discord.js')
 const fs = require('fs')
 const path = require('path')
 const { SlashCommand } = require('slash-create')
 const variablesUtil = require('../../utils/variablesUtil')
+const config = require(`${args[0]}/mooncord.json`)
 
 module.exports = class HelloCommand extends SlashCommand {
     constructor(creator) {
-        super(creator, {
-            name: 'timelapsedev',
-            description: 'Get the latest Timelapse.'
-        })
-        this.filePath = __filename
+        if (config.thumbnail.enable) {
+            super(creator, {
+                name: 'timelapse',
+                description: 'Get the latest Timelapse.'
+            })
+            this.filePath = __filename
+        }
     }
 
     async run(ctx) {
