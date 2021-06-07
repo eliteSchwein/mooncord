@@ -7,7 +7,7 @@ const variablesUtil = require('../../utils/variablesUtil')
 module.exports = class HelloCommand extends SlashCommand {
     constructor(creator) {
         super(creator, {
-            name: 'timelapse',
+            name: 'timelapsedev',
             description: 'Get the latest Timelapse.'
         })
         this.filePath = __filename
