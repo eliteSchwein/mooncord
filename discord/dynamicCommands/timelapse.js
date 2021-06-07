@@ -32,6 +32,7 @@ module.exports = class HelloCommand extends SlashCommand {
 
             if (typeof(ctx.options.emulate) != "undefined") {
                 const { emulate } = ctx.options
+                timelapseUtil.start()
                 variablesUtil.setCurrentFile(emulate)
                 variablesUtil.updateLastGcodeFile()
                 variablesUtil.setCurrentFile('')
