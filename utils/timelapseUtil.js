@@ -49,6 +49,7 @@ async function makeFrame() {
 
 module.exports.init = () => {
     running = true
+    console.log(discordClient)
     discordClient.registerDynamicCommand('timelapse')
 }
 module.exports.isRunning = () => { return running }
