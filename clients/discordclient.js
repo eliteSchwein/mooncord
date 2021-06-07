@@ -12,6 +12,7 @@ const events = require('../discord/events')
 
 const discordClient = new Discord.Client()
 
+let creator
 let connected = false
 
 function enableEvents() {
@@ -38,7 +39,7 @@ function loginBot() {
 function enableCommands() {
   console.log('  Sync Slash Commands'.statusmessage)
 
-  const creator = new SlashCreator({
+  creator = new SlashCreator({
     applicationID: config.connection.botapplicationid,
     publicKey: config.connection.botapplicationkey,
     token: config.connection.bottoken,
@@ -73,3 +74,8 @@ module.exports.init = async () => {
 }
 module.exports.isConnected = function() { return connected }
 module.exports.getClient = function () { return discordClient }
+module.exports.registerDynamicCommand = function(name) {
+  creator
+    .registerCommand(path.join(__dirname, `../discord/dynamicCommands/${name}`))
+    .syncCommands()
+}

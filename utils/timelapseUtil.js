@@ -6,6 +6,7 @@ const ffmpeg = require('ffmpeg-stream')
 
 const webcamUtil = require('./webcamUtil')
 const variableUtil = require('./variablesUtil')
+const discordClient = require('../clients/discordclient')
 const config = require(`${args[0]}/mooncord.json`)
 
 let frames = []
@@ -48,6 +49,7 @@ async function makeFrame() {
 
 module.exports.init = () => {
     running = true
+    discordClient.registerDynamicCommand('timelapse')
 }
 module.exports.isRunning = () => { return running }
 module.exports.makeFrame = () => { makeFrame() }
