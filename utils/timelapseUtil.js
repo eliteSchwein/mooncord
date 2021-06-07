@@ -63,7 +63,7 @@ module.exports.start = () => {
         return
     }
     framecount = 1
-    const pattern = '/^frame-+/'
+    const pattern = /^frame-+/
     fs.readdir(path.resolve(__dirname,'../temp/timelapse'), (err, fileNames) => {
         if (err) throw err;
 
