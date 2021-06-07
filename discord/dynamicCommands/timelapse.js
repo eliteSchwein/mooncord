@@ -40,19 +40,7 @@ module.exports = class HelloCommand extends SlashCommand {
                 setInterval(async () => {
                     if (frames < 1) {
                         timelapseUtil.render()
-                        const embed = await generateEmbed()
-
-                        const timelapse = embed.files[0]
-
-                        const files = {
-                            name: timelapse.name,
-                            file: timelapse.attachment
-                        }
-
-                        await ctx.send({
-                            file: files,
-                            embeds: [embed.toJSON()]
-                        })
+                        break
                     }
                     timelapseUtil.makeFrame()
                     frames--
