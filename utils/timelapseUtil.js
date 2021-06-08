@@ -7,7 +7,7 @@ const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path
 const ffmpeg = require('fluent-ffmpeg')
 
 const webcamUtil = require('./webcamUtil')
-const variableUtil = require('./variablesUtil')
+const variablesUtil = require('./variablesUtil')
 const config = require(`${args[0]}/mooncord.json`)
 
 const conv = ffmpeg()
