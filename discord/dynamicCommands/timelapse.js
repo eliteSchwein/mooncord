@@ -36,10 +36,10 @@ module.exports = class HelloCommand extends SlashCommand {
                 variablesUtil.setCurrentFile(emulate)
                 variablesUtil.updateLastGcodeFile()
                 variablesUtil.setCurrentFile('')
-                //timelapseUtil.render()
 
                 const message = await ctx.send(`Please wait its rendering!`)
-                console.log(message)
+                timelapseUtil.renderAndPost(message.channelID)
+                return
             }
 
             if (variablesUtil.getLastGcodeFile() === '') {

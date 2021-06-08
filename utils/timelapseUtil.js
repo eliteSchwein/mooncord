@@ -24,7 +24,6 @@ async function renderAndPost(channelID) {
     if (!running) {
         return
     }
-
     conv
         .addInput(path.resolve(__dirname,
             '../temp/timelapse/frame-%d.png'))
@@ -35,6 +34,13 @@ async function renderAndPost(channelID) {
         .noAudio()
         .videoCodec('libx264')
         .run()
+    const channel = await discordClient.getClient().channels.fetch(channelID)
+    channel.send(`\`Timelapse for ${variablesUtil.getLastGcodeFile()}\``, {
+        files: [{
+            attachment: path.resolve(__dirname, '../temp/timelapse/timelapse.mp4'),
+            name: 'timelapse.mp4'
+        }]
+    })
 }
 
 async function makeFrame() {
@@ -55,7 +61,7 @@ module.exports.init = (discordClient, moonrakerClient) => {
 }
 module.exports.isRunning = () => { return running }
 module.exports.makeFrame = () => { makeFrame() }
-module.exports.render = () => { render() }
+module.exports.renderAndPost = () => { renderAndPost() }
 module.exports.start = () => {
     if (!running) {
         return
