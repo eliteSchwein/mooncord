@@ -31,6 +31,22 @@ async function render() {
         .output(path.resolve(__dirname, '../temp/timelapse/timelapse.mp4'))
         .outputFPS(config.timelapse.framerate)
         .noAudio()
+        .on('start', function(commandLine) {
+            console.log('Spawned Ffmpeg with command: ' + commandLine);
+        })
+        .on('codecData', function(data) {
+            console.log('Input is ' + data.audio + ' audio ' +
+            'with ' + data.video + ' video');
+        })
+        .on('progress', function(progress) {
+            console.log('Processing: ' + progress.percent + '% done');
+        })
+        .on('stderr', function(stderrLine) {
+            console.log('Stderr output: ' + stderrLine);
+        })
+        .on('error', function (err, stdout, stderr) {
+            console.log('Cannot process video: ' + err.message);
+        })
         .run()
 }
 
