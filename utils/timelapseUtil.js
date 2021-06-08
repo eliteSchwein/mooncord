@@ -34,6 +34,7 @@ async function renderAndPost(channelID) {
         .noAudio()
         .videoCodec('libx264')
         .run()
+    console.log(discordClient)
     const channel = await discordClient.getClient().channels.fetch(channelID)
     channel.send(`\`Timelapse for ${variablesUtil.getLastGcodeFile()}\``, {
         files: [{
