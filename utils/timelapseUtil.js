@@ -20,7 +20,7 @@ let framecount = 1
 
 ffmpeg.setFfmpegPath(ffmpegPath)
 
-async function renderAndPost(channelID) {
+async function renderAndPost(channelid) {
     if (!running) {
         return
     }
@@ -34,8 +34,8 @@ async function renderAndPost(channelID) {
         .noAudio()
         .videoCodec('libx264')
         .on('end', async function (stdout, stderr) {
-            console.log(channelID)
-            const channel = await discordClient.getClient().channels.fetch(channelID)
+            console.log(channelid)
+            const channel = await discordClient.getClient().channels.fetch(channelid)
             channel.send(`\`Timelapse for ${variablesUtil.getLastGcodeFile()}\``, {
                 files: [{
                     attachment: path.resolve(__dirname, '../temp/timelapse/timelapse.mp4'),
