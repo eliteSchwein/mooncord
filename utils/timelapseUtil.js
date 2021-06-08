@@ -15,7 +15,6 @@ const conv = ffmpeg()
 let discordClient
 let moonrakerClient
 
-let frames = []
 let running = false
 let framecount = 1
 
@@ -23,9 +22,6 @@ ffmpeg.setFfmpegPath(ffmpegPath)
 
 async function render() {
     if (!running) {
-        return
-    }
-    if (frames.length < 1) {
         return
     }
 
@@ -47,8 +43,6 @@ async function makeFrame() {
     const frame = await fs.writeFileSync(path.resolve(__dirname,
         `../temp/timelapse/frame-${framecount}.png`),
         snapshot.attachment, 'base64')
-    frames.push(path.resolve(__dirname,
-        `../temp/timelapse/frame-${framecount}.png`))
     framecount ++
 }
 
