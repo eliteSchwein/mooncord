@@ -11,6 +11,7 @@ const variableUtil = require('./variablesUtil')
 const config = require(`${args[0]}/mooncord.json`)
 
 const conv = ffmpeg()
+const conv2 = ffmpeg()
 
 let discordClient
 let moonrakerClient
@@ -33,6 +34,32 @@ async function render() {
         .outputFPS(config.timelapse.framerate)
         .outputOptions("-pix_fmt yuv420p")
         .noAudio()
+        .videoCodec('libx264')
+        .on('start', function(commandLine) {
+            console.log('Spawned Ffmpeg with command: ' + commandLine);
+        })
+        .on('codecData', function(data) {
+            console.log('Input is ' + data.audio + ' audio ' +
+            'with ' + data.video + ' video');
+        })
+        .on('progress', function(progress) {
+            console.log('Processing: ' + progress.percent + '% done');
+        })
+        .on('stderr', function(stderrLine) {
+            console.log('Stderr output: ' + stderrLine);
+        })
+        .on('error', function (err, stdout, stderr) {
+            console.log('Cannot process video: ' + err.message);
+        })
+        .run()
+
+    conv2
+        .addInput(path.resolve(__dirname,
+            '../temp/timelapse/frame-%d.png'))
+        .inputFPS(config.timelapse.framerate)
+        .output(path.resolve(__dirname, '../temp/timelapse/timelapse.gif'))
+        .outputFPS(config.timelapse.framerate)
+        .outputOptions("-pix_fmt yuv420p")
         .videoCodec('libx264')
         .on('start', function(commandLine) {
             console.log('Spawned Ffmpeg with command: ' + commandLine);
