@@ -1,6 +1,7 @@
 const args = process.argv.slice(2)
 
 const Discord = require('discord.js')
+const path = require('path')
 const { SlashCommand, CommandOptionType } = require('slash-create')
 const variablesUtil = require('../../utils/variablesUtil')
 const timelapseUtil = require('../../utils/timelapseUtil')
@@ -78,7 +79,7 @@ async function generateEmbed() {
         .setColor('#0099ff')
         .setTitle('Timelapse')
         .setAuthor(variablesUtil.getLastGcodeFile())
-        .attachFiles('./temp/timelapse/timelapse.mp4')
+        .attachFiles(path.resolve(__dirname, '../temp/timelapse/timelapse.mp4'))
     
     return embed
 }
