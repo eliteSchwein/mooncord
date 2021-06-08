@@ -33,7 +33,6 @@ async function renderAndPost(channelID) {
         .outputOptions("-pix_fmt yuv420p")
         .noAudio()
         .videoCodec('libx264')
-        .run()
         .on('end', async function(stdout, stderr) {
             const channel = await discordClient.getClient().channels.fetch(channelID)
             channel.send(`\`Timelapse for ${variablesUtil.getLastGcodeFile()}\``, {
@@ -43,6 +42,7 @@ async function renderAndPost(channelID) {
                 }]
             })
         })
+        .run()
 }
 
 async function makeFrame() {
