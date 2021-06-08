@@ -42,20 +42,16 @@ module.exports = class HelloCommand extends SlashCommand {
             if (variablesUtil.getLastGcodeFile() === '') {
                 return "There is no Thumbnail aviable!"
             }
-            const embed = await generateEmbed()
 
             console.log(embed)
 
-            const timelapse = embed.files[0]
-
             const files = {
-                name: timelapse.name,
-                file: timelapse.attachment
+                name: 'timelapse.mp4',
+                file: path.resolve(__dirname, '../../temp/timelapse/timelapse.mp4')
             }
 
-            await ctx.send({
-                file: files,
-                embeds: [embed.toJSON()]
+            await ctx.send(`\`Timelapse for ${variablesUtil.getLastGcodeFile()}`, {
+                file: files
             })
         }
         catch (error) {
@@ -63,18 +59,4 @@ module.exports = class HelloCommand extends SlashCommand {
             return "An Error occured!"
         }
     }
-}
-
-async function generateEmbed() {
-    const embed = new Discord.MessageEmbed()
-        .setColor('#0099ff')
-        .setTitle('Timelapse')
-        .setAuthor(variablesUtil.getLastGcodeFile())
-        .setImage('attachment://timelapse.mp4')
-        .attachFiles(new Discord.MessageAttachment(
-            path.resolve(__dirname, '../../temp/timelapse/timelapse.mp4'),
-            'timelapse.mp4'
-        ))
-    
-    return embed
 }
