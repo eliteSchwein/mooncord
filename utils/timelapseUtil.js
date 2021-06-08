@@ -30,7 +30,7 @@ async function render() {
     }
 
     conv
-        .input(`../temp/timelapse/frame-%d.png`)
+        .input(`../temp/timelapse/frame-%i.png`)
         .inputFPS(1/5)
         .output(path.resolve(__dirname, '../temp/timelapse/timelapse.mp4'))
         .outputFPS(config.timelapse.framerate)
