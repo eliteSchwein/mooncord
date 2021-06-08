@@ -24,6 +24,8 @@ async function renderAndPost(channelid) {
     if (!running) {
         return
     }
+    console.log(channelid)
+    const channel = await discordClient.getClient().channels.fetch(channelid)
     conv
         .addInput(path.resolve(__dirname,
             '../temp/timelapse/frame-%d.png'))
@@ -34,8 +36,6 @@ async function renderAndPost(channelid) {
         .noAudio()
         .videoCodec('libx264')
         .on('end', async function (stdout, stderr) {
-            console.log(channelid)
-            const channel = await discordClient.getClient().channels.fetch(channelid)
             channel.send(`\`Timelapse for ${variablesUtil.getLastGcodeFile()}\``, {
                 files: [{
                     attachment: path.resolve(__dirname, '../temp/timelapse/timelapse.mp4'),
