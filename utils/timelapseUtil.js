@@ -28,7 +28,9 @@ async function render() {
     if (frames.length < 1) {
         return
     }
+
     conv
+        .input(`../temp/timelapse/frame-%d.png`)
         .inputFPS(1/5)
         .output(path.resolve(__dirname, '../temp/timelapse/timelapse.mp4'))
         .outputFPS(config.timelapse.framerate)
@@ -44,9 +46,6 @@ async function makeFrame() {
     const frame = await fs.writeFileSync(path.resolve(__dirname,
         `../temp/timelapse/frame-${framecount}.png`),
         snapshot.attachment, 'base64')
-    
-    conv.input(path.resolve(__dirname,
-        `../temp/timelapse/frame-${framecount}.png`))
     frames.push(path.resolve(__dirname,
         `../temp/timelapse/frame-${framecount}.png`))
     framecount ++
