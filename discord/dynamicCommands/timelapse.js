@@ -48,7 +48,7 @@ module.exports = class HelloCommand extends SlashCommand {
                 file: path.resolve(__dirname, '../../temp/timelapse/timelapse.mp4')
             }
 
-            await ctx.send(`\`Timelapse for ${variablesUtil.getLastGcodeFile()}`, {
+            await ctx.send(`\`Timelapse for ${variablesUtil.getLastGcodeFile()}\``, {
                 file: files
             })
         }
