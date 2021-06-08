@@ -28,7 +28,7 @@ async function render() {
     conv
         .addInput(path.resolve(__dirname,
             '../temp/timelapse/frame-%d.png'))
-        .inputFPS(1)
+        .inputFPS(config.timelapse.framerate)
         .output(path.resolve(__dirname, '../temp/timelapse/timelapse.mp4'))
         .outputFPS(config.timelapse.framerate)
         .noAudio()
