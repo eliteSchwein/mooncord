@@ -48,6 +48,8 @@ module.exports = class HelloCommand extends SlashCommand {
 
             const timelapse = embed.files[0]
 
+            console.log(timelapse)
+
             const files = {
                 name: timelapse.name,
                 file: timelapse.attachment
