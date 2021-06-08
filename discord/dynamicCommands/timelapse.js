@@ -44,11 +44,7 @@ module.exports = class HelloCommand extends SlashCommand {
             }
             const embed = await generateEmbed()
 
-            console.log(embed)
-
             const timelapse = embed.files[0]
-
-            console.log(timelapse)
 
             const files = {
                 name: timelapse.name,
@@ -72,7 +68,10 @@ async function generateEmbed() {
         .setColor('#0099ff')
         .setTitle('Timelapse')
         .setAuthor(variablesUtil.getLastGcodeFile())
-        .attachFiles(path.resolve(__dirname, '../../temp/timelapse/timelapse.mp4'))
+        .attachFiles(new Discord.MessageAttachment(
+            path.resolve(__dirname, '../../temp/timelapse/timelapse.mp4'),
+            'timelapse.mp4'
+        ))
     
     return embed
 }
