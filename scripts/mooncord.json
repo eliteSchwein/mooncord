@@ -1,10 +1,10 @@
 {
     "connection": {
-        "moonrakersocketurl": "ws://127.0.0.1/websocket",
-        "moonrakerurl": "http://127.0.0.1",
-        "bottoken": "",
-        "botapplicationkey": "",
-        "botapplicationid": ""
+        "moonraker_socket_url": "ws://127.0.0.1/websocket",
+        "moonraker_url": "http://127.0.0.1",
+        "bot_token": "",
+        "bot_application_key": "",
+        "bot_application_id": ""
     },
     "status": {
         "update_interval": 10,

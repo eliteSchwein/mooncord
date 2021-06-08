@@ -25,11 +25,11 @@ async function execute() {
 function migrateConfigToMultiV1() {
     console.log(logSymbols.info, 'Migrate 0.0.2 Config to 0.0.3 Config'.database)
     newConfig.connection = {
-        "moonrakersocketurl": config.moonrakersocketurl,
-        "moonrakerurl": config.moonrakerurl,
-        "bottoken": config.bottoken,
-        "botapplicationkey": config.botapplicationkey,
-        "botapplicationid": config.botapplicationid
+        "moonraker_socket_url": config.moonrakersocketurl,
+        "moonraker_url": config.moonrakerurl,
+        "bot_token": config.bottoken,
+        "bot_application_key": config.botapplicationkey,
+        "bot_application_id": config.botapplicationid
     }
     newConfig.status = {
         "update_interval": config.statusupdateinterval,

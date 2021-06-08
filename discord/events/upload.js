@@ -78,7 +78,7 @@ function uploadFile(message) {
     console.log(logSymbols.info, `upload ${file.name.replace(' ', '_')}`.upload)
     formData.append('file', fs.createReadStream(`temp/${file.name.replace(' ', '_')}`), file.name)
     axios
-      .post(`${config.connection.moonrakerurl}/server/files/upload`, formData, {
+      .post(`${config.connection.moonraker_url}/server/files/upload`, formData, {
         headers: formData.getHeaders()
       })
       .then(res => {

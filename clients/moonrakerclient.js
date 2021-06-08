@@ -51,7 +51,7 @@ const enableEvents = function (discordClient) {
       variables.setStatus('offline')
       status.triggerStatusUpdate(discordClient)
       setTimeout(() => {
-        client.connect(config.connection.moonrakersocketurl)
+        client.connect(config.connection.moonraker_socket_url)
       }, 5000)
     })
     connection.on('message', (message) => {
@@ -65,7 +65,7 @@ const enableEvents = function (discordClient) {
 function connect() {
   console.log('  Connect to Moonraker'.statusmessage)
   
-  client.connect(config.connection.moonrakersocketurl)
+  client.connect(config.connection.moonraker_socket_url)
 
   client.on('connectFailed', (error) => {
     console.log(`  Connect Error: ${error.toString()}`.error)

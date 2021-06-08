@@ -24,7 +24,7 @@ function enableEvents() {
 function loginBot() {
   console.log('  Connect Discord Bot'.statusmessage)
 
-  discordClient.login(config.connection.bottoken)
+  discordClient.login(config.connection.bot_token)
 
   discordClient.on('ready', () => {
     connected = true
@@ -40,9 +40,9 @@ function enableCommands() {
   console.log('  Sync Slash Commands'.statusmessage)
 
   creator = new SlashCreator({
-    applicationID: config.connection.botapplicationid,
-    publicKey: config.connection.botapplicationkey,
-    token: config.connection.bottoken,
+    applicationID: config.connection.bot_application_id,
+    publicKey: config.connection.bot_application_key,
+    token: config.connection.bot_token,
   })
 
   creator
