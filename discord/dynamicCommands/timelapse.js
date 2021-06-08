@@ -43,8 +43,6 @@ module.exports = class HelloCommand extends SlashCommand {
                 return "There is no Thumbnail aviable!"
             }
 
-            console.log(embed)
-
             const files = {
                 name: 'timelapse.mp4',
                 file: path.resolve(__dirname, '../../temp/timelapse/timelapse.mp4')
