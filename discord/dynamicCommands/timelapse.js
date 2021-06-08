@@ -38,6 +38,7 @@ module.exports = class HelloCommand extends SlashCommand {
                 variablesUtil.setCurrentFile('')
 
                 const message = await ctx.send(`Please wait its rendering!`)
+                console.log(message.channelID)
                 timelapseUtil.renderAndPost(message.channelID)
                 return
             }
