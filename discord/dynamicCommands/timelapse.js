@@ -70,7 +70,7 @@ async function generateEmbed() {
         .setColor('#0099ff')
         .setTitle('Timelapse')
         .setAuthor(variablesUtil.getLastGcodeFile())
-        .attachFiles(path.resolve(__dirname, '../temp/timelapse/timelapse.mp4'))
+        .attachFiles(path.resolve(__dirname, '../../temp/timelapse/timelapse.mp4'))
     
     return embed
 }
