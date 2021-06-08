@@ -20,7 +20,7 @@ let framecount = 1
 
 ffmpeg.setFfmpegPath(ffmpegPath)
 
-async function render() {
+async function renderAndPost(channelID) {
     if (!running) {
         return
     }
@@ -34,22 +34,6 @@ async function render() {
         .outputOptions("-pix_fmt yuv420p")
         .noAudio()
         .videoCodec('libx264')
-        .on('start', function(commandLine) {
-            console.log('Spawned Ffmpeg with command: ' + commandLine);
-        })
-        .on('codecData', function(data) {
-            console.log('Input is ' + data.audio + ' audio ' +
-            'with ' + data.video + ' video');
-        })
-        .on('progress', function(progress) {
-            console.log('Processing: ' + progress.percent + '% done');
-        })
-        .on('stderr', function(stderrLine) {
-            console.log('Stderr output: ' + stderrLine);
-        })
-        .on('error', function (err, stdout, stderr) {
-            console.log('Cannot process video: ' + err.message);
-        })
         .run()
 }
 

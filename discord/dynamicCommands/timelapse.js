@@ -36,7 +36,12 @@ module.exports = class HelloCommand extends SlashCommand {
                 variablesUtil.setCurrentFile(emulate)
                 variablesUtil.updateLastGcodeFile()
                 variablesUtil.setCurrentFile('')
-                timelapseUtil.render()
+                //timelapseUtil.render()
+
+                const message = await ctx.send(`\`Timelapse for ${variablesUtil.getLastGcodeFile()}\``, {
+                    file: files
+                })
+                console.log(message)
             }
 
             if (variablesUtil.getLastGcodeFile() === '') {
