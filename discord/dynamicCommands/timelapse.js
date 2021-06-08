@@ -68,6 +68,7 @@ async function generateEmbed() {
         .setColor('#0099ff')
         .setTitle('Timelapse')
         .setAuthor(variablesUtil.getLastGcodeFile())
+        .setImage('attachment://timelapse.mp4')
         .attachFiles(new Discord.MessageAttachment(
             path.resolve(__dirname, '../../temp/timelapse/timelapse.mp4'),
             'timelapse.mp4'
