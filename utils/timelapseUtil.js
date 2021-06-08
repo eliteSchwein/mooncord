@@ -34,14 +34,15 @@ async function renderAndPost(channelID) {
         .noAudio()
         .videoCodec('libx264')
         .run()
-    console.log(discordClient)
-    const channel = await discordClient.getClient().channels.fetch(channelID)
-    channel.send(`\`Timelapse for ${variablesUtil.getLastGcodeFile()}\``, {
-        files: [{
-            attachment: path.resolve(__dirname, '../temp/timelapse/timelapse.mp4'),
-            name: 'timelapse.mp4'
-        }]
-    })
+        .on('end', function(stdout, stderr) {
+            const channel = await discordClient.getClient().channels.fetch(channelID)
+            channel.send(`\`Timelapse for ${variablesUtil.getLastGcodeFile()}\``, {
+                files: [{
+                    attachment: path.resolve(__dirname, '../temp/timelapse/timelapse.mp4'),
+                    name: 'timelapse.mp4'
+                }]
+            })
+        })
 }
 
 async function makeFrame() {
