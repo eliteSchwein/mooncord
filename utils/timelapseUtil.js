@@ -31,7 +31,9 @@ async function render() {
         .inputFPS(config.timelapse.framerate)
         .output(path.resolve(__dirname, '../temp/timelapse/timelapse.mp4'))
         .outputFPS(config.timelapse.framerate)
+        .outputOptions("-pix_fmt yuv420p")
         .noAudio()
+        .videoCodec('libx264')
         .on('start', function(commandLine) {
             console.log('Spawned Ffmpeg with command: ' + commandLine);
         })
