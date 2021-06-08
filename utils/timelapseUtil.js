@@ -55,10 +55,10 @@ async function makeFrame() {
     framecount ++
 }
 
-module.exports.init = (discordClient, moonrakerClient) => {
+module.exports.init = (dcClient, mrClient) => {
     running = true
-    discordClient = discordClient
-    moonrakerClient = moonrakerClient
+    discordClient = dcClient
+    moonrakerClient = mrClient
 }
 module.exports.isRunning = () => { return running }
 module.exports.makeFrame = () => { makeFrame() }
