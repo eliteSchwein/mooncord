@@ -68,7 +68,7 @@ module.exports.getTimelapse = () => {
         const data = fs.readFileSync(path.resolve(__dirname, '../temp/timelapse/timelapse.mp4'))
         return new Discord.MessageAttachment(data, 'timelapse.mp4')
     } catch (error) {
-            console.log((error).error)
+        console.log((error).error)
     }
 }
 module.exports.start = () => {
