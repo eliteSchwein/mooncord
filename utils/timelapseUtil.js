@@ -42,7 +42,7 @@ async function renderAndPost(channelid) {
             const embed = new Discord.MessageEmbed()
                 .setTitle('timelapse test')
                 .attachFiles(path.resolve(__dirname, '../temp/timelapse/timelapse.mp4'))
-                .setImage(`attachment://timelapse.mp4`)
+                //.setImage(`attachment://timelapse.mp4`)
             channel.send(embed)
             channel.send(`\`Timelapse for ${variablesUtil.getLastGcodeFile()}\``, {
                 files: [{
