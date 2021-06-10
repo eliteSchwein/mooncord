@@ -37,19 +37,18 @@ module.exports = class HelloCommand extends SlashCommand {
                 variablesUtil.updateLastGcodeFile()
                 variablesUtil.setCurrentFile('')
 
-                const message = await ctx.send(`Please wait its rendering!`)
-                const channelid = message.channelID
-                timelapseUtil.renderAndPost(channelid)
-                return
+                await timelapseUtil.render()
             }
 
             if (variablesUtil.getLastGcodeFile() === '') {
                 return "There is no Thumbnail aviable!"
             }
 
+            const timelapse = timelapseUtil.getTimelapse()
+
             const files = {
-                name: 'timelapse.mp4',
-                file: path.resolve(__dirname, '../../temp/timelapse/timelapse.mp4')
+                name: timelapse.name,
+                file: timelapse.attachment
             }
 
             await ctx.send(`\`Timelapse for ${variablesUtil.getLastGcodeFile()}\``, {
