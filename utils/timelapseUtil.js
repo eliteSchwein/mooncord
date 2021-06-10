@@ -63,10 +63,14 @@ module.exports.init = (dcClient, mrClient) => {
 module.exports.isRunning = () => { return running }
 module.exports.makeFrame = () => { makeFrame() }
 module.exports.render = async () => { await render() }
-module.exports.getTimelapse = async () => {
-    const videobuffer = await fs.readFile(path.resolve(__dirname, '../temp/timelapse/timelapse.mp4'))
-    return new Discord.MessageAttachment(
-        videobuffer, 'timelapse.mp4')
+module.exports.getTimelapse = () => {
+    return fs.readFileSync(path.resolve(__dirname, '../temp/timelapse/timelapse.mp4')
+        .then(filestream => {
+            return new Discord.MessageAttachment(filestream, 'timelapse.mp4')
+        })
+        .err(() => {
+
+        }))
 }
 module.exports.start = () => {
     if (!running) {
