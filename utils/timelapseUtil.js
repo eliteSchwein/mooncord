@@ -64,8 +64,9 @@ module.exports.isRunning = () => { return running }
 module.exports.makeFrame = () => { makeFrame() }
 module.exports.render = async () => { await render() }
 module.exports.getTimelapse = async () => {
+    const videobuffer = await fs.readFile(path.resolve(__dirname, '../temp/timelapse/timelapse.mp4'))
     return new Discord.MessageAttachment(
-        await fs.readFile(path.resolve(__dirname, '../temp/timelapse/timelapse.mp4')), 'timelapse.mp4')
+        videobuffer, 'timelapse.mp4')
 }
 module.exports.start = () => {
     if (!running) {
