@@ -10,9 +10,9 @@ const config = require(`${args[0]}/mooncord.json`)
 module.exports = class HelloCommand extends SlashCommand {
     constructor(creator) {
         let guildId = undefined
-        //if (!config.timelapse.enable) {
+        if (!config.timelapse.enable) {
             guildId = '000000000000000000'
-        //}
+        }
         super(creator, {
             name: 'timelapse',
             description: 'Get the latest Timelapse.',

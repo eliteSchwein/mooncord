@@ -67,7 +67,7 @@ systemInfo.osInfo()
   miscUtil.init()
   
   if (config.timelapse.enable) {
-    //timelapseUtil.init(discordClient, moonrakerClient)
+    timelapseUtil.init(discordClient, moonrakerClient)
   }
 })
   .catch(error => {
