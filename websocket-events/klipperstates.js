@@ -1,9 +1,13 @@
+const args = process.argv.slice(2)
+
 const status = require('../utils/statusUtil')
 const variables = require('../utils/variablesUtil')
 const timelapseUtil = require('../utils/timelapseUtil')
+const Discord = require('discord.js')
 const states = require('./klipper_states.json')
+const config = require(`${args[0]}/mooncord.json`)
 
-const event = (message, connection, discordClient) => {
+const event = async (message, connection, discordClient) => {
   if (message.type === 'utf8') {
     const messageJson = JSON.parse(message.utf8Data)
     const methode = messageJson.method
@@ -24,13 +28,20 @@ const event = (message, connection, discordClient) => {
       changeStatusLater(states[methode].timedStatus, discordClient)
     }
 
-    if (states[methode].render) {
-      timelapseUtil.render()
-    }
-
     variables.setStatus(states[methode].status)
     variables.updateLastGcodeFile()
     status.triggerStatusUpdate(discordClient)
+
+    if (states[methode].render) {
+      await timelapseUtil.render()
+      if (config.timelapse.post_at_print_end) {
+        const timelapse = timelapseUtil.getTimelapse()
+        const embed = new Discord.MessageEmbed()
+          .setDescription(`\`Timelapse for ${variables.getLastGcodeFile()}\``)
+          .attachFiles(timelapse)
+        status.postBroadcastMessage(embed, discordClient)
+      }
+    }
   }
 }
 

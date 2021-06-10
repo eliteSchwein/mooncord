@@ -50,8 +50,12 @@ module.exports = class HelloCommand extends SlashCommand {
                 name: timelapse.name,
                 file: timelapse.attachment
             }
+            const embed = new Discord.MessageEmbed()
+            .setDescription(`\`Timelapse for ${variables.getLastGcodeFile()}\``)
+            .attachFiles(timelapse)
 
-            await ctx.send(`\`Timelapse for ${variablesUtil.getLastGcodeFile()}\``, {
+            await ctx.send({
+                embeds: [embed.toJSON()],
                 file: files
             })
         }

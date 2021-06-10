@@ -40,6 +40,6 @@
         "enable": false,
         "height": 0,
         "framerate": 10,
-        "use_at_print_end": false
+        "post_at_print_end": false
     }
 }
