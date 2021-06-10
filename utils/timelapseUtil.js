@@ -32,7 +32,8 @@ async function renderAndPost(channelid) {
         .outputFPS(config.timelapse.framerate)
         .outputOptions([
             '-pix_fmt yuv420p',
-            '-preset veryslow'])
+            '-preset faster',
+            '-crf 30'])
         .noAudio()
         .videoCodec('libx264')
         .on('end', async function (stdout, stderr) {
