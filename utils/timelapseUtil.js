@@ -64,14 +64,13 @@ module.exports.isRunning = () => { return running }
 module.exports.makeFrame = () => { makeFrame() }
 module.exports.render = async () => { await render() }
 module.exports.getTimelapse = () => {
-    return fs.readFile(path.resolve(__dirname, '../temp/timelapse/timelapse.mp4'))
-        .then(filestream => {
-            console.log(filestream)
-            return new Discord.MessageAttachment(filestream, 'timelapse.mp4')
-        })
-        .catch((error) => {
-            console.log(error.error)
-        })
+    return fs.readFile(path.resolve(__dirname, '../temp/timelapse/timelapse.mp4'), (error, data) => {
+        if (error) {
+            console.log((error).error)
+            return undefined
+        }
+        return new Discord.MessageAttachment(data, 'timelapse.mp4')
+    })
 }
 module.exports.start = () => {
     if (!running) {
