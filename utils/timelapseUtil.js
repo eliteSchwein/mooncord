@@ -69,8 +69,8 @@ module.exports.getTimelapse = () => {
             console.log(filestream)
             return new Discord.MessageAttachment(filestream, 'timelapse.mp4')
         })
-        .err(() => {
-
+        .catch((error) => {
+            console.log(error.error)
         }))
 }
 module.exports.start = () => {
