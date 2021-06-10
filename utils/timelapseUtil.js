@@ -1,6 +1,5 @@
 const args = process.argv.slice(2)
 
-const Discord = require('discord.js')
 const fs = require('fs')
 const path = require('path')
 const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path
@@ -38,12 +37,7 @@ async function renderAndPost(channelid) {
         .videoCodec('libx264')
         .on('end', async function (stdout, stderr) {
             const channel = await discordClient.getClient().channels.fetch(channelid)
-            
-            const embed = new Discord.MessageEmbed()
-                .setTitle('timelapse test')
-                .attachFiles(path.resolve(__dirname, '../temp/timelapse/timelapse.mp4'))
-                //.setImage(`attachment://timelapse.mp4`)
-            channel.send(embed)
+
             channel.send(`\`Timelapse for ${variablesUtil.getLastGcodeFile()}\``, {
                 files: [{
                     attachment: path.resolve(__dirname, '../temp/timelapse/timelapse.mp4'),
