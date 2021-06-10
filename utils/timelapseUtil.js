@@ -30,10 +30,11 @@ async function renderAndPost(channelid) {
         .inputFPS(config.timelapse.framerate)
         .output(path.resolve(__dirname, '../temp/timelapse/timelapse.mp4'))
         .outputFPS(config.timelapse.framerate)
-        .outputOptions("-pix_fmt yuv420p")
+        .outputOptions([
+            '-pix_fmt yuv420p',
+            '-preset faster'])
         .noAudio()
         .videoCodec('libx264')
-        .preset('faster')
         .on('end', async function (stdout, stderr) {
             const channel = await discordClient.getClient().channels.fetch(channelid)
             channel.send(`\`Timelapse for ${variablesUtil.getLastGcodeFile()}\``, {
