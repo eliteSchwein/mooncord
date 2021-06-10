@@ -64,6 +64,7 @@ module.exports.isRunning = () => { return running }
 module.exports.makeFrame = () => { makeFrame() }
 module.exports.render = async () => { await render() }
 module.exports.getTimelapse = () => {
+    console.log(fs.readFileSync(path.resolve(__dirname, '../temp/timelapse/timelapse.mp4')))
     return fs.readFile(path.resolve(__dirname, '../temp/timelapse/timelapse.mp4'), (error, data) => {
         if (error) {
             console.log((error).error)
