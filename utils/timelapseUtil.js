@@ -1,6 +1,6 @@
 const args = process.argv.slice(2)
 
-const glob = require('glob')
+const Discord = require('discord.js')
 const fs = require('fs')
 const path = require('path')
 const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path
