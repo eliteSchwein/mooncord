@@ -18,6 +18,7 @@ let moonrakerClient
 
 let running = false
 let framecount = 1
+let lastHeight = 0
 
 ffmpeg.setFfmpegPath(ffmpegPath)
 async function render() {
@@ -59,6 +60,16 @@ module.exports.init = (dcClient, mrClient) => {
     running = true
     discordClient = dcClient
     moonrakerClient = mrClient
+    if(config.timelapse.height > 0) {
+        setInterval(async () => {
+            await waitUntil(() => variablesUtil.getStatus() == 'printing', { timeout: Number.POSITIVE_INFINITY })
+            if(variablesUtil.getCurrentLayerHeight() == lastHeight) { return }
+            if(variablesUtil.getCurrentLayerHeight() % config.timelapse.height === 0) {
+                makeFrame()
+                lastHeight = variablesUtil.getCurrentLayerHeight()
+            }
+        }, 500)
+    }
 }
 module.exports.isRunning = () => { return running }
 module.exports.makeFrame = () => { makeFrame() }
@@ -80,7 +91,8 @@ module.exports.start = () => {
     }
     fs.unlink(path.resolve(__dirname, '../temp/timelapse/timelapse.mp4'), (err) => {
         if (err) return;
-    });
+    })
+    lastHeight = 0
     framecount = 1
     const pattern = /^frame-+/
     fs.readdir(path.resolve(__dirname,'../temp/timelapse'), (err, fileNames) => {
