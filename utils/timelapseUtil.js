@@ -62,6 +62,7 @@ module.exports.init = (dcClient, mrClient) => {
     moonrakerClient = mrClient
     if(config.timelapse.height > 0) {
         setInterval(async () => {
+            console.log('rescan')
             await waitUntil(() => variablesUtil.getStatus() == 'printing', { timeout: Number.POSITIVE_INFINITY })
             if(variablesUtil.getCurrentLayerHeight() == lastHeight) { return }
             if(variablesUtil.getCurrentLayerHeight() % config.timelapse.height === 0) {
