@@ -11,7 +11,11 @@ let remainingprinttime = 0
 let printtime = 0
 let updatetimer = 0
 let inviteurl = ''
+let mculist = []
 
+module.exports.setMCUList = function (list) {
+  mculist = list
+}
 module.exports.setInviteUrl = function (url) {
   inviteurl = url
 }
@@ -50,6 +54,9 @@ module.exports.setCurrentLayerHeight = function (height) {
 }
 module.exports.updateLastGcodeFile = function () {
   lastgcodefile = gcodefile
+}
+module.exports.getMCUList = function () {
+  return mculist
 }
 module.exports.getConfigPath = function () {
   const args = process.argv.slice(2)
