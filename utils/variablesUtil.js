@@ -13,8 +13,11 @@ let updatetimer = 0
 let inviteurl = ''
 let mculist = []
 
-module.exports.setMCUList = function (list) {
-  mculist = list
+module.exports.addToMCUList = function (mcu) {
+  mculist.push(mcu)
+}
+module.exports.clearMCUList = function () {
+  mculist = []
 }
 module.exports.setInviteUrl = function (url) {
   inviteurl = url
