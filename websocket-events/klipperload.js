@@ -1,5 +1,7 @@
 const variables = require('../utils/variablesUtil')
 
+const dcClient = require('../clients/discordclient')
+
 const event = (message, connection, discordClient) => {
   if (message.type === 'utf8') {
     const messageJson = JSON.parse(message.utf8Data)
@@ -25,6 +27,7 @@ function loadMCUList(config) {
       variables.addToMCUList(key)
     }
   })
+  console.log(dcClient)
 }
 
 function retrieveMCUStatus(message) {

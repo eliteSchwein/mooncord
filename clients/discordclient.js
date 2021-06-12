@@ -75,3 +75,6 @@ module.exports.init = async () => {
 }
 module.exports.isConnected = function() { return connected }
 module.exports.getClient = function () { return discordClient }
+module.exports.reloadCoammand = (commandname) => {
+  console.log(creator.commands)
+}
