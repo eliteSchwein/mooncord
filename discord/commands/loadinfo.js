@@ -40,6 +40,10 @@ module.exports = class HelloCommand extends SlashCommand {
             return 'An Error occured!'
         }
     }
+    onUnload() {
+        return 'okay'
+    }
+}
 }
 function generateChoices() {
     const componentlist = components.choices()
