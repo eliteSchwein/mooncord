@@ -11,13 +11,13 @@ let remainingprinttime = 0
 let printtime = 0
 let updatetimer = 0
 let inviteurl = ''
-let mculist = []
+let mculist = {}
 
 module.exports.addToMCUList = function (mcu) {
-  mculist.push(mcu)
+  mculist[mcu] = null
 }
 module.exports.clearMCUList = function () {
-  mculist = []
+  mculist = {}
 }
 module.exports.setInviteUrl = function (url) {
   inviteurl = url
