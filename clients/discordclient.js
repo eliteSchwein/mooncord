@@ -36,8 +36,10 @@ function loginBot() {
   })
 }
 
-function enableCommands() {
-  console.log('  Sync Slash Commands'.statusmessage)
+function enableCommands(console) {
+  if (console) {
+    console.log('  Sync Slash Commands'.statusmessage)
+  }
 
   creator
     .registerCommandsIn(path.join(__dirname, '../discord/commands'))
@@ -77,7 +79,7 @@ module.exports.init = async () => {
   loginBot()
   await waitUntil(() => connected === true, { timeout: Number.POSITIVE_INFINITY })
   enableCreator()
-  enableCommands()
+  enableCommands( true )
   enableServer()
   enableEvents()
   
@@ -89,5 +91,5 @@ module.exports.reloadCommands = async () => {
     creator.unregisterCommand(value)
   }
   creator.syncCommands()
-  enableCommands()
+  enableCommands( false )
 }
