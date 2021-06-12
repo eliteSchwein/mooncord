@@ -20,6 +20,9 @@ module.exports = class HelloCommand extends SlashCommand {
         })
         this.filePath = __filename
     }
+    async onUnload() {
+        return 'okay'
+    }
 
     async run(ctx) {
         try {
@@ -39,9 +42,6 @@ module.exports = class HelloCommand extends SlashCommand {
             console.log(logSymbols.error, `Loadinfo Command: ${error}`.error)
             return 'An Error occured!'
         }
-    }
-    onUnload() {
-        return 'okay'
     }
 }
 function generateChoices() {
