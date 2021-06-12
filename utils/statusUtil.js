@@ -1,5 +1,6 @@
 const Discord = require('discord.js')
 const logSymbols = require('log-symbols')
+const { waitUntil } = require('async-wait-until')
 
 const args = process.argv.slice(2)
 
@@ -26,6 +27,8 @@ function getDiscordClient(altdiscordClient){
 }
 
 async function triggerStatusUpdate(altdiscordClient) {
+  console.log(altdiscordClient)
+  //await waitUntil(() => altdiscordClient === true, { timeout: Number.POSITIVE_INFINITY })
   console.log(logSymbols.info, `Printer Status: ${variables.getStatus()}`.printstatus)
   const statusConfig = messagemetadata[variables.getStatus()]
 
