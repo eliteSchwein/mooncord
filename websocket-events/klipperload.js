@@ -12,7 +12,7 @@ const event = (message, connection, discordClient) => {
       loadMCUList(statusmessage.configfile.config)
       return
     }
-    if(JSON.stringify.match(/(mcu)/g)) { retrieveMCUStatus(message) }
+    if(JSON.stringify(statusmessage).match(/(mcu)/g)) { retrieveMCUStatus(message) }
   }
 }
 
