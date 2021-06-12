@@ -14,6 +14,7 @@ const event = (message, connection, discordClient) => {
   }
 }
 function loadMcu(config) {
+  console.log(config)
   console.log(Object.fromEntries(Object.entries(config).filter(([key]) => key.match(/(mcu)/g))))
 
 }
