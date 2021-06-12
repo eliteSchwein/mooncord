@@ -40,7 +40,7 @@ async function retrieveWebcam() {
     .catch(
       async error => {
         if (error) {
-          console.log((error).error)
+          console.log(`Webcam Error: ${error}`.error)
           return new Discord.MessageAttachment(await fs.readFile(path.resolve(__dirname, '../images/snapshot-error.png')), 'snapshot-error.png')
         }
       }
