@@ -76,5 +76,6 @@ module.exports.init = async () => {
 module.exports.isConnected = function() { return connected }
 module.exports.getClient = function () { return discordClient }
 module.exports.reloadCommand = (commandname) => {
-  creator.reregisterCommand(`global:${commandname}`)
+  const commandapi = creator.api
+  console.log(commandapi.getCommands())
 }
