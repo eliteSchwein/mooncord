@@ -17,7 +17,12 @@ const event = (message, connection, discordClient) => {
 }
 function loadMcu(config) {
   console.log(config)
-  console.log(JSON.fromEntries(JSON.entries(config).filter(([key]) => key.match(/(mcu)/g))))
+  //console.log(JSON.fromEntries(JSON.entries(config).filter(([key]) => key.match(/(mcu)/g))))
+  Object.keys(config).forEach( key => {
+    if (key.match(/(mcu)/g)) {
+      console.log(key)
+    }
+  })
 
 }
 module.exports = event
