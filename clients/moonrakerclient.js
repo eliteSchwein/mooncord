@@ -18,7 +18,7 @@ let connected = false
 
 let WSconnection
 
-const enableEvents = function (discordClient) {
+const enableEvents = async (discordClient) => {
   console.log('  Enable Moonraker Events'.statusmessage)
 
   client.on('connect', (connection) => {
