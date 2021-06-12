@@ -1,4 +1,5 @@
 const { SlashCommand } = require('slash-create')
+const logSymbols = require('log-symbols')
 
 const discordClient = require('../../clients/discordclient')
 const moonrakerClient = require('../../clients/moonrakerclient')
@@ -66,7 +67,7 @@ module.exports = class HelloCommand extends SlashCommand {
             }, 500)
         }
         catch (error) {
-            console.log((error).error)
+            console.log(logSymbols.error, `Listfiles Command: ${error}`.error)
             connection.removeListener('message', handler)
             commandFeedback = undefined
             return "An Error occured!"

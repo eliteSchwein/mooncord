@@ -1,4 +1,5 @@
 const { SlashCommand, CommandOptionType } = require('slash-create')
+const logSymbols = require('log-symbols')
 
 const discordClient = require('../../clients/discordclient')
 const database = require('../../utils/databaseUtil')
@@ -51,7 +52,7 @@ module.exports = class HelloCommand extends SlashCommand {
             
         }
         catch (error) {
-            console.log((error).error)
+            console.log(logSymbols.error, `Channel Command: ${error}`.error)
             return "An Error occured!"
         }
     }

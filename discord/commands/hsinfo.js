@@ -1,4 +1,5 @@
 const { SlashCommand, CommandOptionType } = require('slash-create')
+const logSymbols = require('log-symbols')
 
 const components = require('../../utils/hsComponents')
 const hsUtil = require('../../utils/hsUtil')
@@ -34,7 +35,7 @@ module.exports = class HelloCommand extends SlashCommand {
             })
         }
         catch (error) {
-            console.log((error).error)
+            console.log(logSymbols.error, `HSinfo Command: ${error}`.error)
             return 'An Error occured!'
         }
     }

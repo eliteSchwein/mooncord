@@ -90,7 +90,7 @@ async function migrateDatabase() {
             await fs.unlinkSync(firstDatabasePath)
         }
     } catch (error) {
-        console.error((error).error)
+        console.error(logSymbols.error, `Migration Util2: ${error}`.error)
     }
 }
 

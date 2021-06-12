@@ -1,4 +1,5 @@
 const { SlashCommand, CommandOptionType } = require('slash-create')
+const logSymbols = require('log-symbols')
 
 const moonrakerClient = require('../../clients/moonrakerclient')
 const handlers = require('../../utils/handlerUtil')
@@ -81,7 +82,7 @@ module.exports = class HelloCommand extends SlashCommand {
            }, 500)
         }
         catch (error) {
-            console.log((error).error)
+            console.log(logSymbols.error, `Fileinfo Command: ${error}`.error)
             commandFeedback = undefined
             connection.removeListener('message', handler)
             return 'An Error occured!'

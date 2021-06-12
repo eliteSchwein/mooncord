@@ -2,6 +2,7 @@ const Discord = require('discord.js')
 const fs = require('fs')
 const path = require('path')
 const { SlashCommand } = require('slash-create')
+const logSymbols = require('log-symbols')
 
 const pjson = require('../../package.json')
 
@@ -41,7 +42,7 @@ module.exports = class HelloCommand extends SlashCommand {
             })
         }
         catch (error) {
-            console.log((error).error)
+            console.log(logSymbols.error, `Info Command: ${error}`.error)
             return "An Error occured!"
         }
     }

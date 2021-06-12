@@ -1,4 +1,5 @@
 const { SlashCommand } = require('slash-create')
+const logSymbols = require('log-symbols')
 
 const statusUtil = require('../../utils/statusUtil')
 
@@ -35,7 +36,7 @@ module.exports = class HelloCommand extends SlashCommand {
             })
         }
         catch (error) {
-            console.log((error).error)
+            console.log(logSymbols.error, `Status Command: ${error}`.error)
             return "An Error occured!"
         }
     }

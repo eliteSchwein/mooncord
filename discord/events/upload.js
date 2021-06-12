@@ -84,9 +84,9 @@ function uploadFile(message) {
       .then(res => {
         console.log(logSymbols.success, `uploaded ${file.name.replace(' ', '_')}`.uploadsuccess)
         message.react('✅')
-        fs.unlink(`temp/${file.name.replace(' ', '_')}`, (err) => {
-          if (err) {
-            console.log((err).error)
+        fs.unlink(`temp/${file.name.replace(' ', '_')}`, (error) => {
+          if (error) {
+            console.log(logSymbols.error, `Upload Event: ${error}`.error)
           }
         })
         uploadInProgress = false
@@ -94,12 +94,12 @@ function uploadFile(message) {
       })
       .catch(error => {
         if (error) {
-          console.log((error).error)
+            console.log(logSymbols.error, `Upload Event: ${error}`.error)
           message.channel.send('Please Check the Console!')
           console.log(logSymbols.error, 'Upload Failed! Check your config!'.error)
-          fs.unlink(`temp/${file.name.replace(' ', '_')}`, (err2) => {
-            if (err2) {
-              console.log((err2).error)
+          fs.unlink(`temp/${file.name.replace(' ', '_')}`, (error2) => {
+            if (error2) {
+            console.log(logSymbols.error, `Upload Event: ${error2}`.error)
             }
           })
           uploadInProgress = false

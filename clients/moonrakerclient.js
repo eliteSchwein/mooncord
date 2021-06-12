@@ -4,6 +4,7 @@ const fs = require('fs')
 const path = require('path')
 const WebSocketClient = require('websocket').client
 const { waitUntil } = require('async-wait-until')
+const logSymbols = require('log-symbols')
 
 const config = require(`${args[0]}/mooncord.json`)
 const database = require('../utils/databaseUtil')
@@ -68,7 +69,7 @@ function connect() {
   client.connect(config.connection.moonraker_socket_url)
 
   client.on('connectFailed', (error) => {
-    console.log(`  Connect Error: ${error.toString()}`.error)
+    console.log(logSymbols.error, `Moonrakerclient: ${error}`.error)
     variables.setStatus('offline')
     console.log('  Please check your Config!'.error)
     connected = false

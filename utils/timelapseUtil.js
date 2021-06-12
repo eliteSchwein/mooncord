@@ -6,6 +6,7 @@ const Discord = require('discord.js')
 const path = require('path')
 const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path
 const ffmpeg = require('fluent-ffmpeg')
+const logSymbols = require('log-symbols')
 
 const webcamUtil = require('./webcamUtil')
 const variablesUtil = require('./variablesUtil')
@@ -82,7 +83,7 @@ module.exports.getTimelapse = () => {
         const data = fs.readFileSync(path.resolve(__dirname, '../temp/timelapse/timelapse.mp4'))
         return new Discord.MessageAttachment(data, 'timelapse.mp4')
     } catch (error) {
-        console.log((error).error)
+        console.log(logSymbols.error, `Timelapse Util: ${error}`.error)
     }
 }
 module.exports.start = () => {

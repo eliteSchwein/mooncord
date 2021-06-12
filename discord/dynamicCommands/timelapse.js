@@ -3,6 +3,8 @@ const args = process.argv.slice(2)
 const Discord = require('discord.js')
 const path = require('path')
 const { SlashCommand, CommandOptionType } = require('slash-create')
+const logSymbols = require('log-symbols')
+
 const variablesUtil = require('../../utils/variablesUtil')
 const timelapseUtil = require('../../utils/timelapseUtil')
 const config = require(`${args[0]}/mooncord.json`)
@@ -60,7 +62,7 @@ module.exports = class HelloCommand extends SlashCommand {
             })
         }
         catch (error) {
-            console.log((error).error)
+            console.log(logSymbols.error, `Timelapse Command: ${error}`.error)
             return "An Error occured!"
         }
     }

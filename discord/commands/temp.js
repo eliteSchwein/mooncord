@@ -2,6 +2,7 @@ const Discord = require('discord.js')
 const fs = require('fs')
 const path = require('path')
 const { SlashCommand } = require('slash-create')
+const logSymbols = require('log-symbols')
 
 const moonrakerClient = require('../../clients/moonrakerclient')
 
@@ -58,7 +59,7 @@ module.exports = class HelloCommand extends SlashCommand {
            }, 500)
         }
         catch (error) {
-            console.log((error).error)
+            console.log(logSymbols.error, `Temp Command: ${error}`.error)
             connection.removeListener('message', handler)
             return "An Error occured!"
         }

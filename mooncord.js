@@ -71,6 +71,6 @@ systemInfo.osInfo()
   }
 })
   .catch(error => {
-    console.log("Mooncord couldnt start".error)
-    console.log((error).error)
+    console.log('Mooncord couldnt start'.error)
+    console.log(`Reason: ${error}`.error)
 })

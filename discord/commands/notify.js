@@ -1,4 +1,5 @@
 const { SlashCommand } = require('slash-create')
+const logSymbols = require('log-symbols')
 
 const database = require('../../utils/databaseUtil')
 
@@ -20,7 +21,7 @@ module.exports = class HelloCommand extends SlashCommand {
             return `I will no longer notify you of the print status via DM, ${ctx.user.username}!`
         }
         catch (error) {
-            console.log((error).error)
+            console.log(logSymbols.error, `Notify Command: ${error}`.error)
             return "An Error occured!"
         }
     }

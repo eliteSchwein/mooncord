@@ -125,7 +125,7 @@ function postStatus(message, altdiscordClient, altdatabase) {
           }
         }
       })
-      .catch((error) => { console.log((error).error) })
+      .catch((error) => { console.log(logSymbols.error, `Status Util: ${error}`.error) })
   }
 }
 
@@ -152,7 +152,7 @@ function notifyStatus(message, altdiscordClient, altdatabase) {
           user.send(message).catch('console.error')
         }
       })
-      .catch((error) => { console.log((error).error) })
+      .catch((error) => { console.log(logSymbols.error, `Status Util: ${error}`.error) })
   }
 }
 
