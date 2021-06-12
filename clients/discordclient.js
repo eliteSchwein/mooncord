@@ -78,5 +78,5 @@ module.exports.getClient = function () { return discordClient }
 module.exports.reloadCommand = async (commandname) => {
   const commands = creator.commands
   console.log(commands.get(`global:${commandname}`))
-  creator.reregisterCommand(commands.get(`global:${commandname}`))
+  creator.unregisterCommand(commands.get(`global:${commandname}`))
 }
