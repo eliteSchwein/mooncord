@@ -56,6 +56,9 @@ module.exports = class HelloCommand extends SlashCommand {
             return "An Error occured!"
         }
     }
+    async onUnload() {
+        return 'okay'
+    }
 }
 async function editChannel(channelid, guildid) {
     const guild = await discordClient.getClient().guilds.fetch(guildid)

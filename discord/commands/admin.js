@@ -77,6 +77,9 @@ module.exports = class HelloCommand extends SlashCommand {
             return "An Error occured!"
         }
     }
+    async onUnload() {
+        return 'okay'
+    }
 }
 
 async function editAdmin(isRole, adminid, guildid) {

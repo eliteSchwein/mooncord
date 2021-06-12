@@ -64,6 +64,9 @@ module.exports = class HelloCommand extends SlashCommand {
             return "An Error occured!"
         }
     }
+    async onUnload() {
+        return 'okay'
+    }
 }
 
 function handler (message) {
