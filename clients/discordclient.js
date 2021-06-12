@@ -36,8 +36,8 @@ function loginBot() {
   })
 }
 
-function enableCommands(console) {
-  if (console) {
+function enableCommands(useconsole) {
+  if (useconsole) {
     console.log('  Sync Slash Commands'.statusmessage)
   }
 
