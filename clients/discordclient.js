@@ -86,6 +86,7 @@ module.exports.isConnected = function() { return connected }
 module.exports.getClient = function () { return discordClient }
 module.exports.reloadCommands = async () => {
   Object.keys(creator.commands).forEach(command => {
+    console.log(command)
     creator.unregisterCommand(command)
   })
   creator.syncCommands()
