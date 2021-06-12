@@ -7,8 +7,10 @@ const event = (message, connection, discordClient) => {
     if (typeof (messageJson.result) === 'undefined') { return }
     if (typeof (messageJson.result.status) === 'undefined') { return }
 
-    if (typeof (messageJson.result.configfile) !== 'undefined') {
-      loadMcu(messageJson.result.status.configfile.config)
+    const statusmessage = messageJson.result.status
+
+    if (typeof (statusmessage.configfile) !== 'undefined') {
+      loadMcu(statusmessage.configfile.config)
       return
     }
   }
