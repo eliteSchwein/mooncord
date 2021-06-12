@@ -7,7 +7,7 @@ const hsUtil = require('../../utils/hsUtil')
 module.exports = class HelloCommand extends SlashCommand {
     constructor(creator) {
         super(creator, {
-            name: 'hsinfo',
+            name: 'loadinfo',
             description: 'Get the current Hardware and Software Informations.',
             options: [{
                 choices: components.choices(),
@@ -35,7 +35,7 @@ module.exports = class HelloCommand extends SlashCommand {
             })
         }
         catch (error) {
-            console.log(logSymbols.error, `HSinfo Command: ${error}`.error)
+            console.log(logSymbols.error, `Loadinfo Command: ${error}`.error)
             return 'An Error occured!'
         }
     }
