@@ -1,7 +1,5 @@
 const variables = require('../utils/variablesUtil')
 
-const dcClient = require('../clients/discordclient')
-
 const event = (message, connection, discordClient) => {
   if (message.type === 'utf8') {
     const messageJson = JSON.parse(message.utf8Data)
@@ -11,14 +9,14 @@ const event = (message, connection, discordClient) => {
     const statusmessage = messageJson.result.status
 
     if (typeof (statusmessage.configfile) !== 'undefined') {
-      loadMCUList(statusmessage.configfile.config)
+      loadMCUList(statusmessage.configfile.config, discordClient)
       return
     }
     if(JSON.stringify(statusmessage).match(/(mcu)/g)) { retrieveMCUStatus(statusmessage) }
   }
 }
 
-function loadMCUList(config) {
+function loadMCUList(config, discordClient) {
   variables.clearMCUList()
   Object.keys(config).forEach(key => {
     const mcuconfig = config[key]
@@ -27,7 +25,7 @@ function loadMCUList(config) {
       variables.addToMCUList(key)
     }
   })
-  console.log(dcClient)
+  console.log(discordClient)
 }
 
 function retrieveMCUStatus(message) {
