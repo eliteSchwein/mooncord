@@ -30,7 +30,6 @@
     "discord.js": "^12.5.3",
     "fluent-ffmpeg": "^2.1.2",
     "form-data": "^4.0.0",
-    "glob": "^7.1.7",
     "jimp": "^0.16.1",
     "log-symbols": "^4.1.0",
     "slash-create": "^3.2.3",
