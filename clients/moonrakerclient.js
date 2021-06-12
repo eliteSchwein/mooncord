@@ -53,7 +53,7 @@ const enableEvents = function (discordClient) {
       console.log('  Reconnect in 5 sec'.error)
       connected = false
       variables.setStatus('offline')
-      status.triggerStatusUpdate(discordClient)
+      status.triggerStatusUpdate(discordClient.getClient())
       setTimeout(() => {
         client.connect(config.connection.moonraker_socket_url)
       }, 5000)

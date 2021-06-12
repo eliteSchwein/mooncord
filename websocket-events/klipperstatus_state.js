@@ -30,15 +30,15 @@ const event = (message, connection, discordClient) => {
           if (variables.getStatus() !== currentStatus) {
             variables.setStatus(currentStatus)
             if (!config.status.use_percent) {
-              status.triggerStatusUpdate(discordClient)
+              status.triggerStatusUpdate(discordClient.getClient())
               setTimeout(() => {
                 const timer = setInterval(() => {
-                  status.triggerStatusUpdate(discordClient)
+                  status.triggerStatusUpdate(discordClient.getClient())
                 }, 1000 * config.status.update_interval)
                 variables.setUpdateTimer(timer)
               }, 1000 * config.status.update_interval)
             } else {
-              status.triggerStatusUpdate(discordClient)
+              status.triggerStatusUpdate(discordClient.getClient())
             }
           }
         }
@@ -48,11 +48,11 @@ const event = (message, connection, discordClient) => {
             timelapseUtil.render()
             variables.setStatus(currentStatus)
             variables.updateLastGcodeFile()
-            status.triggerStatusUpdate(discordClient)
+            status.triggerStatusUpdate(discordClient.getClient())
             clearInterval(variables.getUpdateTimer())
             setTimeout(() => {
               variables.setStatus('ready')
-              status.triggerStatusUpdate(discordClient)
+              status.triggerStatusUpdate(discordClient.getClient())
             }, 1000)
           }
         }

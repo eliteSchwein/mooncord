@@ -60,7 +60,7 @@ systemInfo.osInfo()
 
   await discordClient.init()
 
-  await moonrakerClient.init(discordClient.getClient())
+  await moonrakerClient.init(discordClient)
   
   await hsUtil.init()
   
