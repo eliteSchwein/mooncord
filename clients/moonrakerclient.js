@@ -41,6 +41,7 @@ const enableEvents = function (discordClient) {
 
       setInterval(() => {
         connection.send(`{"jsonrpc": "2.0", "method": "machine.update.status", "params":{"refresh": "false"}, "id": ${id}}`)
+        connection.send(`{"jsonrpc": "2.0", "method": "printer.system_stats", "params":{"refresh": "false"}, "id": ${id}}`)
         connection.send(`{"jsonrpc": "2.0", "method": "printer.objects.query", "params": {"objects": {"webhooks": null, "virtual_sdcard": null, "print_stats": null, "gcode_move": null}}, "id": ${id}}`)
       }, 250)
     }, 250)
