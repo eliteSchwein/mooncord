@@ -8,7 +8,7 @@ const config = require(`${args[0]}/mooncord.json`)
 const discordClient = require('./clients/discordclient')
 const moonrakerClient = require('./clients/moonrakerclient')
 const pjson = require('./package.json')
-const hsUtil = require('./utils/hsUtil')
+const loadUtil = require('./utils/loadUtil')
 const miscUtil = require('./utils/miscUtil')
 const timelapseUtil = require('./utils/timelapseUtil')
 
@@ -60,7 +60,7 @@ systemInfo.osInfo()
 
   await moonrakerClient.init(discordClient)
   
-  await hsUtil.init()
+  await loadUtil.init()
   
   miscUtil.init()
   

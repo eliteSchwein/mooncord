@@ -2,7 +2,7 @@ const { SlashCommand, CommandOptionType } = require('slash-create')
 const logSymbols = require('log-symbols')
 
 const components = require('../../utils/hsComponents')
-const hsUtil = require('../../utils/hsUtil')
+const loadUtil = require('../../utils/loadUtil')
 const variablesUtil = require('../../utils/variablesUtil')
 
 module.exports = class HelloCommand extends SlashCommand {
@@ -28,7 +28,7 @@ module.exports = class HelloCommand extends SlashCommand {
         try {
             ctx.defer(false)
 
-            const answer = await hsUtil.getInformation(ctx.options.component)
+            const answer = await loadUtil.getInformation(ctx.options.component)
 
             await ctx.send({
                 file: {
