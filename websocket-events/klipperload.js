@@ -6,8 +6,7 @@ const event = (message, connection, discordClient) => {
     const messageJson = JSON.parse(message.utf8Data)
     if (typeof (messageJson.result) === 'undefined') { return }
     if (typeof (messageJson.result.status) === 'undefined') { return }
-    console.log(messageJson.result.status.system_stats)
-    console.log(messageJson.result.status.mcu)
+    console.log(messageJson.result.status)
   }
 }
 module.exports = event
