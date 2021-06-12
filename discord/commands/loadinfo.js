@@ -45,7 +45,7 @@ function generateChoices() {
     const componentlist = components.choices()
     const mculist = variablesUtil.getMCUList()
     Object.keys(mculist).forEach(key => {
-        components.push({name: key, value: key})
+        componentlist.push({name: key, value: key})
     })
     return componentlist
 }
