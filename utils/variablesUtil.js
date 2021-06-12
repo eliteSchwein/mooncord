@@ -16,6 +16,9 @@ let mculist = {}
 module.exports.addToMCUList = function (mcu) {
   mculist[mcu] = null
 }
+module.exports.updateMCUStatus = function (mcu, status) {
+  mculist[mcu] = status
+}
 module.exports.clearMCUList = function () {
   mculist = {}
 }
