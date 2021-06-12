@@ -58,8 +58,6 @@ systemInfo.osInfo()
     process.exit(5)
   }
 
-  await discordClient.init()
-
   await moonrakerClient.init(discordClient)
   
   await hsUtil.init()
@@ -69,6 +67,8 @@ systemInfo.osInfo()
   if (config.timelapse.enable) {
     timelapseUtil.init(discordClient, moonrakerClient)
   }
+
+  await discordClient.init()
 })
   .catch(error => {
     console.log('Mooncord couldnt start'.error)
