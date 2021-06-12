@@ -25,7 +25,7 @@ const event = (message, connection, discordClient, database) => {
           .setThumbnail('attachment://notification.png')
           .setTimestamp()
           .setDescription(message)
-        status.postBroadcastMessage(broadcastembed, discordClient.getClient(), database)
+        status.postBroadcastMessage(broadcastembed, discordClient, database)
       }
       if(params[0].startsWith("mooncord.invite")) {
         const id = Math.floor(Math.random() * parseInt('10_000')) + 1

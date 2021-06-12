@@ -9,14 +9,14 @@ const event = (message, connection, discordClient) => {
     const statusmessage = messageJson.result.status
 
     if (typeof (statusmessage.configfile) !== 'undefined') {
-      loadMCUList(statusmessage.configfile.config, discordClient)
+      loadMCUList(statusmessage.configfile.config)
       return
     }
     if(JSON.stringify(statusmessage).match(/(mcu)/g)) { retrieveMCUStatus(statusmessage) }
   }
 }
 
-function loadMCUList(config, discordClient) {
+function loadMCUList(config) {
   variables.clearMCUList()
   Object.keys(config).forEach(key => {
     const mcuconfig = config[key]
@@ -25,7 +25,6 @@ function loadMCUList(config, discordClient) {
       variables.addToMCUList(key)
     }
   })
-  discordClient.reloadCommands()
 }
 
 function retrieveMCUStatus(message) {

@@ -22,12 +22,12 @@ const event = (message, connection, discordClient) => {
         if (variables.getStatus() !== currentStatus) {
           variables.setStatus(currentStatus)
           timelapseUtil.start()
-          status.triggerStatusUpdate(discordClient.getClient())
+          status.triggerStatusUpdate(discordClient)
         }
         variables.setStatus('printing')
         if (!config.status.use_percent) {
           timer = setInterval(() => {
-            status.triggerStatusUpdate(discordClient.getClient())
+            status.triggerStatusUpdate(discordClient)
           }, 1000 * config.status.update_interval)
           variables.setUpdateTimer(timer)
         }

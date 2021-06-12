@@ -86,10 +86,3 @@ module.exports.init = async () => {
 }
 module.exports.isConnected = function() { return connected }
 module.exports.getClient = function () { return discordClient }
-module.exports.reloadCommands = async () => {
-  for (const [key, value] of creator.commands) {
-    creator.unregisterCommand(value)
-  }
-  creator.syncCommands()
-  enableCommands( false )
-}

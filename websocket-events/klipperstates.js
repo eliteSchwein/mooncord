@@ -25,12 +25,12 @@ const event = async (message, connection, discordClient) => {
     if (variables.getStatus() === states[methode].status) { return }
 
     if (typeof (states[methode].timedStatus) !== 'undefined') {
-      changeStatusLater(states[methode].timedStatus, discordClient.getClient())
+      changeStatusLater(states[methode].timedStatus, discordClient)
     }
 
     variables.setStatus(states[methode].status)
     variables.updateLastGcodeFile()
-    status.triggerStatusUpdate(discordClient.getClient())
+    status.triggerStatusUpdate(discordClient)
 
     if(typeof(states[methode].render) === 'undefined') { return }
 
@@ -41,7 +41,7 @@ const event = async (message, connection, discordClient) => {
         const embed = new Discord.MessageEmbed()
           .setDescription(`\`Timelapse for ${variables.getLastGcodeFile()}\``)
           .attachFiles(timelapse)
-        status.postBroadcastMessage(embed, discordClient.getClient())
+        status.postBroadcastMessage(embed, discordClient)
       }
     }
   }

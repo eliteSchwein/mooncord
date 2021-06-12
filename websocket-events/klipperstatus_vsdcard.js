@@ -28,7 +28,7 @@ const event = (message, connection, discordClient) => {
       if (currentProgress.toFixed(0) === 100) { return }
       if (currentProgress.toFixed(0) === variables.getProgress()) { return }
 
-      discordClient.getClient().user.setActivity(`Printing: ${currentProgress.toFixed(0)}%`, { type: 'WATCHING' })
+      discordClient.user.setActivity(`Printing: ${currentProgress.toFixed(0)}%`, { type: 'WATCHING' })
       variables.setProgress(currentProgress.toFixed(0))
 
       if (currentProgress.toFixed(0) === lastProgress) { return }
@@ -37,7 +37,7 @@ const event = (message, connection, discordClient) => {
         currentProgress.toFixed(0) % config.status.update_interval === 0 &&
         currentProgress.toFixed(0) !== 0) {
         lastProgress = currentProgress.toFixed(0)
-        status.triggerStatusUpdate(discordClient.getClient())
+        status.triggerStatusUpdate(discordClient)
       }
     }
   }
