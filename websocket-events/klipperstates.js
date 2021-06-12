@@ -32,6 +32,8 @@ const event = async (message, connection, discordClient) => {
     variables.updateLastGcodeFile()
     status.triggerStatusUpdate(discordClient)
 
+    if(typeof(states[methode].render) === 'undefined') { return }
+
     if (states[methode].render) {
       await timelapseUtil.render()
       if (config.timelapse.post_at_print_end) {
