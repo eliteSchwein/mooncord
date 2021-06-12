@@ -18,10 +18,10 @@ let connected = false
 
 let WSconnection
 
-const enableEvents = async (discordClient) => {
+const enableEvents = (discordClient) => {
   console.log('  Enable Moonraker Events'.statusmessage)
 
-  client.on('connect', (connection) => {
+  client.on('connect', async (connection) => {
     const id = Math.floor(Math.random() * parseInt('10_000')) + 1
     console.log('  Moonraker Client Connected'.success)
 
