@@ -31,7 +31,6 @@ function retrieveMCUStatus(message) {
   variables.clearMCUList()
   Object.keys(message).forEach(key => {
     variables.updateMCUStatus(key, message[key])
-    console.log(message[key])
   })
 }
 
