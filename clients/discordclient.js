@@ -39,16 +39,23 @@ function loginBot() {
 function enableCommands() {
   console.log('  Sync Slash Commands'.statusmessage)
 
+  creator
+    .registerCommandsIn(path.join(__dirname, '../discord/commands'))
+    .registerCommandsIn(path.join(__dirname, '../discord/dynamicCommands'))
+    .syncCommands()
+}
+function enableCreator() {
+  console.log('  Enable Slash Command Creator'.statusmessage)
+
   creator = new SlashCreator({
     applicationID: config.connection.bot_application_id,
     publicKey: config.connection.bot_application_key,
     token: config.connection.bot_token,
   })
+}
 
-  creator
-    .registerCommandsIn(path.join(__dirname, '../discord/commands'))
-    .registerCommandsIn(path.join(__dirname, '../discord/dynamicCommands'))
-    .syncCommands()
+function enableServer() {
+  console.log('  Enable Slash Command Server'.statusmessage)
   
   creator
     .withServer(
@@ -69,15 +76,18 @@ module.exports.init = async () => {
                               `)
   loginBot()
   await waitUntil(() => connected === true, { timeout: Number.POSITIVE_INFINITY })
+  enableCreator()
   enableCommands()
+  enableServer()
   enableEvents()
   
 }
 module.exports.isConnected = function() { return connected }
 module.exports.getClient = function () { return discordClient }
-module.exports.reloadCommand = async (commandname) => {
-  const command = creator.commands.get(`global:${commandname}`)
-  creator.unregisterCommand(command)
-  creator.registerCommand(command)
+module.exports.reloadCommands = async () => {
+  Object.keys(creator.commands).forEach(command => {
+    creator.unregisterCommand(command)
+  })
   creator.syncCommands()
+  enableCommands()
 }
