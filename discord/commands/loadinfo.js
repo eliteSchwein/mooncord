@@ -3,6 +3,7 @@ const logSymbols = require('log-symbols')
 
 const components = require('../../utils/hsComponents')
 const hsUtil = require('../../utils/hsUtil')
+const variablesUtil = require('../../utils/variablesUtil')
 
 module.exports = class HelloCommand extends SlashCommand {
     constructor(creator) {
@@ -10,7 +11,7 @@ module.exports = class HelloCommand extends SlashCommand {
             name: 'loadinfo',
             description: 'Get the current Hardware and Software Informations.',
             options: [{
-                choices: components.choices(),
+                choices: generateChoices(),
                 type: CommandOptionType.STRING,
                 name: 'component',
                 description: 'Select the component you want to know the information about.',
@@ -39,4 +40,12 @@ module.exports = class HelloCommand extends SlashCommand {
             return 'An Error occured!'
         }
     }
+}
+function generateChoices() {
+    const components = components.choices()
+    const mculist = variablesUtil.getMCUList()
+    Object.keys(mculist).forEach(key => {
+        components.push({name: key, value: key})
+    })
+    return components
 }
