@@ -51,8 +51,6 @@ function parseConfig(config) {
     .replace(/(\${formatedPrintTime})/g, variables.getFormatedPrintTime())
     .replace(/(\${formatedETAPrintTime})/g, variables.getFormatedRemainingTime())
     .replace(/(\${printProgress})/g, variables.getProgress())
-  
-  console.log(parsedConfig)
 
   return JSON.parse(parsedConfig)
 }
