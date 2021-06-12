@@ -18,9 +18,10 @@ const event = (message, connection, discordClient) => {
 
 function loadMCUList(config) {
   variables.clearMCUList()
-  Object.keys(config).forEach( key => {
-    if (key.match(/(mcu)/g)) {
-      console.log(config[key])
+  Object.keys(config).forEach(key => {
+    const mcuconfig = config[key]
+    if (key.match(/(mcu)/g) &&
+      mcuconfig.serial !== '/tmp/klipper_host_mcu') {
       variables.addToMCUList(key)
     }
   })
