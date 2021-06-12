@@ -44,7 +44,6 @@ module.exports = class HelloCommand extends SlashCommand {
         return 'okay'
     }
 }
-}
 function generateChoices() {
     const componentlist = components.choices()
     const mculist = variablesUtil.getMCUList()
