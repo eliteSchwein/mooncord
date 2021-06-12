@@ -76,6 +76,6 @@ module.exports.init = async () => {
 module.exports.isConnected = function() { return connected }
 module.exports.getClient = function () { return discordClient }
 module.exports.reloadCommand = async (commandname) => {
-  const commandapi = creator.api
-  console.log(await commandapi.getCommands())
+  const commands = creator.commands
+  console.log(commands.get(`global:${commandname}`))
 }
