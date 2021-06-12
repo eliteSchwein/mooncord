@@ -41,6 +41,7 @@ const enableEvents = function (discordClient) {
       console.log('  Initial Automatic Moonraker commands'.statusmessage)
 
       setInterval(() => {
+        console.log(variables.getMCUList())
         connection.send(`{"jsonrpc": "2.0", "method": "machine.update.status", "params":{"refresh": "false"}, "id": ${id}}`)
         connection.send(`{"jsonrpc": "2.0", "method": "printer.objects.query", "params": {"objects": {"webhooks": null, "virtual_sdcard": null, "print_stats": null, "gcode_move": null, "system_stats": null, "mcu": null}}, "id": ${id}}`)
       }, 250)

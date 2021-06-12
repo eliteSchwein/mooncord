@@ -10,19 +10,19 @@ const event = (message, connection, discordClient) => {
     const statusmessage = messageJson.result.status
 
     if (typeof (statusmessage.configfile) !== 'undefined') {
-      loadMcu(statusmessage.configfile.config)
+      loadMcuList(statusmessage.configfile.config)
       return
     }
   }
 }
-function loadMcu(config) {
-  console.log(config)
-  //console.log(JSON.fromEntries(JSON.entries(config).filter(([key]) => key.match(/(mcu)/g))))
+
+function loadMcuList(config) {
+  variables.clearMCUList()
   Object.keys(config).forEach( key => {
     if (key.match(/(mcu)/g)) {
-      console.log(key)
+      variables.addToMCUList(key)
     }
   })
-
 }
+
 module.exports = event
