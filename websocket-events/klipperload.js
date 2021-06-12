@@ -25,7 +25,7 @@ function loadMCUList(config, discordClient) {
       variables.addToMCUList(key)
     }
   })
-  console.log(discordClient)
+  discordClient.reloadCommand('loadinfo')
 }
 
 function retrieveMCUStatus(message) {
