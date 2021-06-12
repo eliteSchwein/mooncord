@@ -50,5 +50,6 @@ function generateChoices() {
     Object.keys(mculist).forEach(key => {
         componentlist.push({name: key, value: key})
     })
+    console.log(componentlist)
     return componentlist
 }
