@@ -9,6 +9,8 @@ const event = (message, connection, discordClient) => {
 
     const statusmessage = messageJson.result.status
 
+    console.log(statusmessage)
+
     if (typeof (statusmessage.configfile) !== 'undefined') {
       loadMcuList(statusmessage.configfile.config)
       return
