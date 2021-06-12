@@ -37,13 +37,18 @@ function loginBot() {
 }
 
 function enableCommands() {
-  console.log('  Prepare Slash Commands'.statusmessage)
+  console.log('  Sync Slash Commands'.statusmessage)
 
   creator = new SlashCreator({
     applicationID: config.connection.bot_application_id,
     publicKey: config.connection.bot_application_key,
     token: config.connection.bot_token,
   })
+
+  creator
+    .registerCommandsIn(path.join(__dirname, '../discord/commands'))
+    .registerCommandsIn(path.join(__dirname, '../discord/dynamicCommands'))
+    .syncCommands()
   
   creator
     .withServer(
@@ -70,10 +75,3 @@ module.exports.init = async () => {
 }
 module.exports.isConnected = function() { return connected }
 module.exports.getClient = function () { return discordClient }
-module.exports.enableCommands = function () {
-  console.log('  Sync Slash Commands'.statusmessage)
-  creator
-    .registerCommandsIn(path.join(__dirname, '../discord/commands'))
-    .registerCommandsIn(path.join(__dirname, '../discord/dynamicCommands'))
-    .syncCommands()
-}
