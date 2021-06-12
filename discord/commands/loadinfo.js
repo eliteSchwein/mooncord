@@ -42,10 +42,10 @@ module.exports = class HelloCommand extends SlashCommand {
     }
 }
 function generateChoices() {
-    const components = components.choices()
+    const componentlist = components.choices()
     const mculist = variablesUtil.getMCUList()
     Object.keys(mculist).forEach(key => {
         components.push({name: key, value: key})
     })
-    return components
+    return componentlist
 }
