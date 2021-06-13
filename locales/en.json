@@ -2,9 +2,16 @@
     "commands": {
         "admin": {
             "description": "Manage Admin Role or User.",
+            "command": "admin",
             "options": {
-                "role": "Select a Role.",
-                "user": "Select a User."
+                "role": {
+                    "name": "role",
+                    "description": "Select a Role."
+                },
+                "user": {
+                    "name": "user",
+                    "description": "Select a User."
+                }
             },
             "answer": {
                 "added": "${mention} is now a Admin, ${username}!",
@@ -13,8 +20,12 @@
         },
         "editchannel": {
             "description": "Add or Remove broadcast channel.",
+            "command": "editchannel",
             "options": {
-                "channel": "Select a Channel to add/remove it as Broadcast channel."
+                "channel": {
+                    "name": "channel",
+                    "description": "Select a Channel to add/remove it as Broadcast channel."
+                } 
             },
             "answer": {
                 "not_textchannel": "${channel} is not a Text Channel, ${username}!",
@@ -24,8 +35,12 @@
         },
         "execute": {
             "description": "Execute a GCode Command.",
+            "command": "execute",
             "options": {
-                "gcode": "GCode that you want to execute."
+                "gcode": {
+                    "name": "gcode",
+                    "description": "GCode that you want to execute."
+                }
             },
             "answer": {
                 "success": "Command Executed!",
@@ -35,14 +50,100 @@
         },
         "fileinfo": {
             "description": "Shows Informations about a Print File.",
+            "command": "fileinfo",
             "options": {
-                "file": "Specifies a Print File."
+                "file": {
+                    "name": "file",
+                    "description": "Specifies a Print File."
+                }
             },
             "answer": {
                 "file_not_found": "File not Found!"
             },
             "embed": {
                 "title": "File Informations"
+            }
+        },
+        "info": {
+            "description": "Send a Description about me.",
+            "command": "info",
+            "embed": {
+                "title": "Informations",
+                "description": "Version: ${version}\nAuthor: ${author}\nHomepage: ${homepage}"
+            }
+        },
+        "listfiles": {
+            "description": "List all Print Files.",
+            "command": "listfiles",
+            "answer": {
+                "no_files_found": "There are currently no Files!"
+            },
+            "embed": {
+                "title": "Print Files"
+            }
+        },
+        "loadinfo": {
+            "description": "Get the current Hardware and Software Informations.",
+            "command": "loadinfo",
+            "options": {
+                "file": {
+                    "name": "component",
+                    "description": "Select the component you want to know the information about."
+                }
+            },
+            "answer": {
+                "no_data": "There was no Data found for ${component}!"
+            }
+        },
+        "notify": {
+            "description": "Should i DM you with the current print status?",
+            "command": "notifyme",
+            "answer": {
+                "activated": "I will notify you of the print status via DM, ${username}!",
+                "deactivated": "I will no longer notify you of the print status via DM, ${username}!"
+            }
+        },
+        "printjob": {
+            "description": "Control or start a Print Job.",
+            "command": "printjob",
+            "options": {
+                "pause": {
+                    "name": "pause",
+                    "description": "Pause Print Job"
+                },
+                "cancel": {
+                    "name": "cancel",
+                    "description": "Cancel Print Job"
+                },
+                "resume": {
+                    "name": "resume",
+                    "description": "Resume Print Job"
+                },
+                "start": {
+                    "name": "start",
+                    "description": "Start new Print Job",
+                    "options": {
+                        "name": "file",
+                        "description": "Select a Print File."
+                    }
+                }
+            },
+            "answer": {
+                "file_not_found": "File not Found!"
+            },
+            "embed": {
+                "title": "Start Print Job?"
+            }
+        },
+        "status": {
+            "description": "Get the current Print Status.",
+            "command": "status"
+        },
+        "temp": {
+            "description": "Get the current Temperatures from Klipper.",
+            "command": "temp",
+            "embed": {
+                "title": "Temperatures"
             }
         }
     },
