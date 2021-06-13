@@ -147,6 +147,16 @@
             }
         }
     },
+    "dynamic_commands": {
+        "timelapse": {
+            "description": "Get the latest Timelapse.",
+            "command": "timelapse",
+            "answer": {
+                "no_timelapse": "There is no Thumbnail aviable!",
+                "timelapse_found": "`Timelapse for ${gcode_file}`"
+            }
+        }
+    },
     "errors": {
         "not_ready": "This Command is not ready, ${username}!",
         "command_failed": "An Error occured!",
