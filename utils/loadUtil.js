@@ -5,6 +5,12 @@ const si = require('systeminformation')
 
 const componentHandler = require('./hsComponents')
 
+module.exports.getDefaultEmbed = (img, title) => {
+  const image = getImage(img)
+  const embed = getDefaultEmbed(image[0], title)
+  return [image, embed]
+}
+
 module.exports.getInformation = async function (component) {
   const img = getImage(component)
   const componentData = componentHandler[component]
@@ -36,7 +42,7 @@ function getImage(component) {
   return [`${component}.png`, imgBuffer]
 }
 
-function getDefaultEmbed(img,title) {
+function getDefaultEmbed(img, title) {
   return new Discord.MessageEmbed()
     .setColor('#0099ff')
     .setTitle(title)

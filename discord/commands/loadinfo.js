@@ -28,7 +28,15 @@ module.exports = class HelloCommand extends SlashCommand {
         try {
             ctx.defer(false)
 
-            const answer = await loadUtil.getInformation(ctx.options.component)
+            const component = ctx.options.component
+
+            let answer
+
+            if (component.startsWith('mcu')) {
+                answer = await retrieveMCUComponent(component)
+            } else {
+                answer = await loadUtil.getInformation(ctx.options.component)
+            }
 
             await ctx.send({
                 file: {
@@ -43,6 +51,19 @@ module.exports = class HelloCommand extends SlashCommand {
             return 'An Error occured!'
         }
     }
+}
+async function retrieveMCUComponent(mcu) {
+    const template = loadUtil.getDefaultEmbed('mcu', mcu)
+    const embed = template[1]
+    
+    const mcudata = variablesUtil.getMCUList[mcu]
+    const mcuload = (mcudata.last_stats.mcu_task_avg + 3 * mcudata.last_stats.mcu_task_stddev) / 0.0025
+
+    embed.addField('Chipset', mcudata.mcu_constants.MCU, true)
+    embed.addField('Version', mcudata.mcu_version, true)
+    embed.addField('Load', mcuload, true)
+
+    return [template[0], embed]
 }
 function generateChoices() {
     const componentlist = components.choices()
