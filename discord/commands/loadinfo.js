@@ -58,7 +58,7 @@ async function retrieveMCUComponent(mcu) {
 
     const mcudata = variablesUtil.getMCUList()[mcu]
     const mcuload = (mcudata.last_stats.mcu_task_avg + 3 * mcudata.last_stats.mcu_task_stddev) / 0.0025
-    const mcufreq = (mcudata.last_stats.freq / parseInt('1_000_000'))
+    const mcufreq = (mcudata.last_stats.freq / 1000000)
 
     embed.addField('Chipset', mcudata.mcu_constants.MCU, true)
     embed.addField('Version', mcudata.mcu_version, true)
