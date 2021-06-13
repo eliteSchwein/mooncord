@@ -173,6 +173,7 @@
         }
     },
     "errors": {
+        "check_console": "Please Check the Console!",
         "not_ready": "This Command is not ready, ${username}!",
         "command_failed": "An Error occured!",
         "command_timeout": "Command execution failed!",
