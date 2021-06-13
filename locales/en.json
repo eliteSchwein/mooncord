@@ -129,7 +129,22 @@
                 }
             },
             "answer": {
-                "file_not_found": "File not Found!"
+                "file_not_found": "File not Found!",
+                "resume": {
+                    "status_not_valid": "${username} the Print Job isn\\`t currently Pausing!",
+                    "status_valid": "${username} you resumed the Print Job!",
+                    "status_same": "${username} the Print Job is running!"
+                },
+                "cancel": {
+                    "status_not_valid": "${username} there isn\\`t currently any active Print Job!",
+                    "status_valid": "${username} you aborted the Print Job!",
+                    "status_same": ""
+                },
+                "pause": {
+                    "status_not_valid": "${username} there isn\\`t currently any active Print Job!",
+                    "status_valid": "${username} you paused the Print Job!",
+                    "status_same": "${username} the current Print Job is already Paused!"
+                }
             },
             "embed": {
                 "title": "Start Print Job?"
