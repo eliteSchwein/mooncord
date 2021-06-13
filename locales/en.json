@@ -1,0 +1,63 @@
+{
+    "commands": {
+        "admin": {
+            "description": "Manage Admin Role or User.",
+            "options": {
+                "role": "Select a Role.",
+                "user": "Select a User."
+            },
+            "answer": {
+                "added": "${mention} is now a Admin, ${username}!",
+                "removed": "${mention} is not longer a Admin, ${username}!"
+            }
+        },
+        "editchannel": {
+            "description": "Add or Remove broadcast channel.",
+            "options": {
+                "channel": "Select a Channel to add/remove it as Broadcast channel."
+            },
+            "answer": {
+                "not_textchannel": "${channel} is not a Text Channel, ${username}!",
+                "activated": "${channel} is now a Broadcast Channel, ${username}!",
+                "deactivated": "${channel} is not longer a Broadcast Channel, ${username}!"
+            }
+        },
+        "execute": {
+            "description": "Execute a GCode Command.",
+            "options": {
+                "gcode": "GCode that you want to execute."
+            },
+            "answer": {
+                "success": "Command Executed!",
+                "error": "Error: `${gcode_feedback}`",
+                "unknown": "Unknown GCode Command: `${gcode_feedback}`"
+            }
+        },
+        "fileinfo": {
+            "description": "Shows Informations about a Print File.",
+            "options": {
+                "file": "Specifies a Print File."
+            },
+            "answer": {
+                "file_not_found": "File not Found!"
+            },
+            "embed": {
+                "title": "File Informations"
+            }
+        }
+    },
+    "errors": {
+        "not_ready": "This Command is not ready, ${username}!",
+        "command_failed": "An Error occured!",
+        "command_timeout": "Command execution failed!",
+        "guild_only": "This Command is only aviable on a Guild, ${username}",
+        "controller_only": "You dont have the Permissions, ${username}",
+        "admin_only": "You dont have the Permissions, ${username}"
+    },
+    "events": {
+
+    },
+    "status": {
+
+    }
+}
