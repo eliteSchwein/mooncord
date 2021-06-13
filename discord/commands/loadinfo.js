@@ -56,8 +56,6 @@ async function retrieveMCUComponent(mcu) {
     const template = loadUtil.getDefaultEmbed('mcu', mcu)
     const embed = template[1]
 
-    console.log(variablesUtil.getMCUList())
-
     const mcudata = variablesUtil.getMCUList()[mcu]
     const mcuload = (mcudata.last_stats.mcu_task_avg + 3 * mcudata.last_stats.mcu_task_stddev) / 0.0025
 
