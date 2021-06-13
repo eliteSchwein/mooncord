@@ -58,12 +58,14 @@ async function retrieveMCUComponent(mcu) {
 
     const mcudata = variablesUtil.getMCUList()[mcu]
     const mcuload = (mcudata.last_stats.mcu_task_avg + 3 * mcudata.last_stats.mcu_task_stddev) / 0.0025
-    const mcufreq = (mcudata.last_stats.freq / 1000000)
+    const mcuawake = mcudata.last_stats.mcu_awake / 5
+    const mcufreq = mcudata.last_stats.freq / 1000000
 
     embed.addField('Chipset', mcudata.mcu_constants.MCU, true)
     embed.addField('Version', mcudata.mcu_version, true)
     embed.addField('Load', mcuload.toFixed(1), true)
-    embed.addField('Freq', mcufreq.toFixed(1), true)
+    embed.addField('Awake', mcuawake.toFixed(1), true)
+    embed.addField('Freq', `${mcufreq.toFixed(1)} MHz`, true)
 
     return [template[0], embed]
 }
