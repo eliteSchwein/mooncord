@@ -4,30 +4,33 @@ const logSymbols = require('log-symbols')
 const discordClient = require('../../clients/discordclient')
 const database = require('../../utils/databaseUtil')
 const permission = require('../../utils/permissionUtil')
+const locale = require('../../utils/localeUtil')
+
+const commandlocale = locale.commands.admin
 
 module.exports = class HelloCommand extends SlashCommand {
     constructor(creator) {
         super(creator, {
-            name: 'admin',
-            description: 'Manage Admin Role or User.',
+            name: commandlocale.command,
+            description: commandlocale.description,
             options: [{
                 type: CommandOptionType.SUB_COMMAND,
-                name: 'role',
-                description: 'Modify Role',
+                name: commandlocale.options.role.name,
+                description: commandlocale.options.role.description,
                 options: [{
                     type: CommandOptionType.ROLE,
-                    name: 'role',
-                    description: 'Select a Role.',
+                    name: commandlocale.options.role.options.role.name,
+                    description: commandlocale.options.role.options.role.description,
                     required: true
                 }]
             },{
                 type: CommandOptionType.SUB_COMMAND,
-                name: 'user',
-                description: 'Modify User',
+                name: commandlocale.options.user.name,
+                description: commandlocale.options.user.description,
                 options: [{
                     type: CommandOptionType.USER,
-                    name: 'user',
-                    description: 'Select a User.',
+                    name: commandlocale.options.user.options.user.name,
+                    description: commandlocale.options.user.options.user.description,
                     required: true
                 }]
             }]
@@ -38,11 +41,11 @@ module.exports = class HelloCommand extends SlashCommand {
     async run(ctx) {
         try {
             if (typeof (ctx.guildID) === 'undefined') {
-                return `This Command is only aviable on a Guild, ${ctx.user.username}!`
+                return locale.commands.errors.guild_only.replace(/(\${username})/g, ctx.user.username)
             }
             
             if (!permission.isMaster(ctx.user)) {
-                return `You dont have the Permissions, ${ctx.user.username}!`
+                return locale.commands.errors.master_only.replace(/(\${username})/g, ctx.user.username)
             }
 
             let isRole
@@ -67,14 +70,19 @@ module.exports = class HelloCommand extends SlashCommand {
             }
 
             if (result) {
-                return `${answermention} is now a Admin, ${ctx.user.username}!`
+                return commandlocale.answer.added
+                    .replace(/(\${username})/g, ctx.user.username)
+                    .replace(/(\${mention})/g, answermention)
             } 
-                return `${answermention} is not longer a Admin, ${ctx.user.username}!`
+
+            return commandlocale.answer.removed
+                .replace(/(\${username})/g, ctx.user.username)
+                .replace(/(\${mention})/g, answermention)
             
         }
         catch (error) {
             console.log(logSymbols.error, `Admin Command: ${error}`.error)
-            return "An Error occured!"
+            return locale.commands.errors.command_failed
         }
     }
     async onUnload() {
