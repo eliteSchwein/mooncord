@@ -3,6 +3,9 @@ const logSymbols = require('log-symbols')
 
 const moonrakerClient = require('../../clients/moonrakerclient')
 const permission = require('../../utils/permissionUtil')
+const locale = require('../../utils/localeUtil')
+
+const commandlocale = locale.commands.execute
 
 let commandFeedback
 let connection
@@ -10,12 +13,12 @@ let connection
 module.exports = class HelloCommand extends SlashCommand {
     constructor(creator) {
         super(creator, {
-            name: 'execute',
-            description: 'Execute a GCode Command',
+            name: commandlocale.command,
+            description: commandlocale.description,
             options: [{
                 type: CommandOptionType.STRING,
-                name: 'gcode',
-                description: 'GCode that you want to execute.',
+                name: commandlocale.options.gcode.name,
+                description: commandlocale.options.gcode.description,
                 required: true
             }]
         })
@@ -25,10 +28,10 @@ module.exports = class HelloCommand extends SlashCommand {
     async run(ctx) {
         try {
             if (!await permission.hasAdmin(ctx.user, ctx.guildID)) {
-                return `You dont have the Permissions, ${ctx.user.username}!`
+                return locale.errors.guild_only.replace(/(\${username})/g, ctx.user.username)
             }
             if (typeof (commandFeedback) !== 'undefined') {
-                return `This Command is not ready, ${ctx.user.username}!`
+                return locale.errors.not_ready.replace(/(\${username})/g, ctx.user.username)
             }
             
             const {gcode} = ctx.options
@@ -57,7 +60,7 @@ module.exports = class HelloCommand extends SlashCommand {
                 if (timeout === 4) {
                     commandFeedback = undefined
                     ctx.send({
-                        content: 'Command execution failed!'
+                        content: locale.errors.command_timeout
                     })
                     clearInterval(feedbackInterval)
                     connection.removeListener('message', gcodeHandler)
@@ -69,7 +72,7 @@ module.exports = class HelloCommand extends SlashCommand {
             console.log(logSymbols.error, `Execute Command: ${error}`.error)
             connection.removeListener('message', handler)
             commandFeedback = undefined
-            return "An Error occured!"
+            return locale.errors.command_failed
         }
     }
     async onUnload() {
@@ -83,12 +86,12 @@ function handler (message) {
         let command = ''
         if (messageJson.params[0].includes('Unknown command')) {
             command = messageJson.params[0].replace('// Unknown command:', '').replace(/"/g, '')
-            commandFeedback = `Unknown GCode Command: \`${command}\``
+            commandFeedback = commandlocale.answer.unknown.replace(/(\${gcode_feedback})/g, command)
         } else if (messageJson.params[0].includes('Error')) {
             command = messageJson.params[0].replace('!! Error on ', '').replace(/\\/g, '')
-            commandFeedback = `Error: \`${command}\``
+            commandFeedback = commandlocale.answer.error.replace(/(\${gcode_feedback})/g, command)
         } else {
-            commandFeedback = 'Command Executed!'
+            commandFeedback = commandlocale.answer.success
         }
     }
 }
