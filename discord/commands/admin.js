@@ -8,7 +8,6 @@ const locale = require('../../utils/localeUtil')
 
 const commandlocale = locale.commands.admin
 
-console.log(commandlocale)
 module.exports = class HelloCommand extends SlashCommand {
     constructor(creator) {
         super(creator, {
@@ -42,11 +41,11 @@ module.exports = class HelloCommand extends SlashCommand {
     async run(ctx) {
         try {
             if (typeof (ctx.guildID) === 'undefined') {
-                return locale.commands.errors.guild_only.replace(/(\${username})/g, ctx.user.username)
+                return locale.errors.guild_only.replace(/(\${username})/g, ctx.user.username)
             }
             
             if (!permission.isMaster(ctx.user)) {
-                return locale.commands.errors.master_only.replace(/(\${username})/g, ctx.user.username)
+                return locale.errors.master_only.replace(/(\${username})/g, ctx.user.username)
             }
 
             let isRole
@@ -83,7 +82,7 @@ module.exports = class HelloCommand extends SlashCommand {
         }
         catch (error) {
             console.log(logSymbols.error, `Admin Command: ${error}`.error)
-            return locale.commands.errors.command_failed
+            return locale.errors.command_failed
         }
     }
     async onUnload() {
