@@ -51,14 +51,14 @@ module.exports = class HelloCommand extends SlashCommand {
             let isRole
             let adminid
 
-            if (ctx.subcommands[0] === 'role') {
+            if (ctx.subcommands[0] === [commandlocale.options.role.name]) {
                 isRole = true
-                adminid = ctx.options.role.role
+                adminid = ctx.options[commandlocale.options.role.name][commandlocale.options.role.options.role.name]
             }
 
-            if (ctx.subcommands[0] === 'user') {
+            if (ctx.subcommands[0] === [commandlocale.options.user.name]) {
                 isRole = false
-                adminid = ctx.options.user.user
+                adminid = ctx.options[commandlocale.options.user.name][commandlocale.options.user.options.user.name]
             }
 
             const result = await editAdmin(isRole, adminid, ctx.guildID)
