@@ -61,7 +61,6 @@ module.exports = class HelloCommand extends SlashCommand {
                 adminid = ctx.options[commandlocale.options.user.name][commandlocale.options.user.options.user.name]
             }
 
-            console.log(`role?${isRole}`)
             const result = await editAdmin(isRole, adminid, ctx.guildID)
 
             let answermention = `<@${adminid}>`
