@@ -51,6 +51,8 @@ module.exports = class HelloCommand extends SlashCommand {
             let isRole
             let adminid
 
+            console.log(ctx.subcommands)
+
             if (ctx.subcommands[0] === [commandlocale.options.role.name]) {
                 isRole = true
                 adminid = ctx.options[commandlocale.options.role.name][commandlocale.options.role.options.role.name]
