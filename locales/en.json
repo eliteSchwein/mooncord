@@ -244,6 +244,57 @@
         }
     },
     "status": {
-
+        "disconnected":{
+            "title": "Printer Disconnected!",
+            "activity": "wait for Klipper"
+        },
+        "error":{
+            "title": "A Error occured!",
+            "activity": "wait for User"
+        },
+        "offline":{
+            "title": "Connection Lost!",
+            "activity": "wait for Moonraker"
+        },
+        "shutdown":{
+            "title": "Klipper Shutdown",
+            "activity": "wait for Klipper"
+        },
+        "stop":{
+            "title": "Print stopped",
+            "activity": "Print stop"
+        },
+        "ready":{
+            "title": "Printer Ready",
+            "activity": "for GCODE File..."
+        },
+        "startup":{
+            "title": "Printer starting",
+            "activity": "Printer start"
+        },
+        "start":{
+            "title": "Print started",
+            "activity": "start ${gcode_file}"
+        },
+        "done":{
+            "title": "Print Done",
+            "activity": "Finished Print"
+        },
+        "pause":{
+            "title": "Print Paused",
+            "activity": "take a Break"
+        },
+        "printing":{
+            "title": "Printing",
+            "activity": "Printing: ${print_progress}%"
+        },
+        "fields": {
+            "print_time": "Print Time",
+            "eta_print_time": "ETA Print Time",
+            "print_progress": "Progress"
+        }
+    },
+    "timelapse": {
+        "for_gcode": "Timelapse for ${gcode_file}"
     }
 }
