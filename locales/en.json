@@ -188,7 +188,8 @@
         "command_timeout": "Command execution failed!",
         "guild_only": "This Command is only aviable on a Guild, ${username}",
         "controller_only": "You dont have the Permissions, ${username}",
-        "admin_only": "You dont have the Permissions, ${username}"
+        "admin_only": "You dont have the Permissions, ${username}",
+        "no_data": "There was no Data found for ${component}!"
     },
     "events": {
         "print_job_start": {
@@ -250,9 +251,6 @@
             "load": "Load",
             "awake": "Awake",
             "frequency": "Freq"
-        },
-        "error": {  
-            "no_data": "There was no Data found for ${component}!"
         }
     },
     "status": {
