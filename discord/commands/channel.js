@@ -4,16 +4,19 @@ const logSymbols = require('log-symbols')
 const discordClient = require('../../clients/discordclient')
 const database = require('../../utils/databaseUtil')
 const permission = require('../../utils/permissionUtil')
+const locale = require('../../utils/localeUtil')
+
+const commandlocale = locale.commands.editchannel
 
 module.exports = class HelloCommand extends SlashCommand {
     constructor(creator) {
         super(creator, {
-            name: 'editchannel',
-            description: 'Add or Remove broadcast channel.',
+            name: commandlocale.command,
+            description: commandlocale.description,
             options: [{
                 type: CommandOptionType.CHANNEL,
-                name: 'channel',
-                description: 'Select a Channel to add/remove it as Broadcast channel.',
+                name: commandlocale.options.channel.name,
+                description: commandlocale.options.channel.description,
                 required: false
             }]
         })
@@ -23,37 +26,43 @@ module.exports = class HelloCommand extends SlashCommand {
     async run(ctx) {
         try {
             if (typeof (ctx.guildID) === 'undefined') {
-                return `This Command is only aviable on a Guild, ${ctx.user.username}!`
+                return locale.errors.guild_only.replace(/(\${username})/g, ctx.user.username)
             }
 
             if (!await permission.hasAdmin(ctx.user, ctx.guildID)) {
-                return `You dont have the Permissions, ${ctx.user.username}!`
+                return locale.errors.admin_only.replace(/(\${username})/g, ctx.user.username)
             }
 
             let channel
             let channelresult
 
-            if (typeof (ctx.options.channel) === 'undefined') {
+            if (typeof (ctx.options[commandlocale.options.channel.name]) === 'undefined') {
                 channelresult = await editChannel(ctx.channelID, ctx.guildID)
-                channel = 'This Channel'
+                channel = `<#${ctx.channelID}>`
             } else {
                 channelresult = await editChannel(ctx.options.channel, ctx.guildID)
-                channel = `<#${ctx.options.channel}>`
+                channel = `<#${ctx.options[commandlocale.options.channel.name]}>`
             }
 
             if (typeof (channelresult) === 'undefined') {
-                return `${channel} is not a Text Channel, ${ctx.user.username}!`
+                return commandlocale.answer.not_textchannel
+                    .replace(/(\${username})/g, ctx.user.username)
+                    .replace(/(\${channel})/g, channel)
             }
 
             if (channelresult) {
-                return `${channel} is now a Broadcast Channel, ${ctx.user.username}!`
+                return commandlocale.answer.activated
+                    .replace(/(\${username})/g, ctx.user.username)
+                    .replace(/(\${channel})/g, channel)
             } 
-                return `${channel} is not longer a Broadcast Channel, ${ctx.user.username}!`
+            return commandlocale.answer.deactivated
+                .replace(/(\${username})/g, ctx.user.username)
+                .replace(/(\${channel})/g, channel)
             
         }
         catch (error) {
             console.log(logSymbols.error, `Channel Command: ${error}`.error)
-            return "An Error occured!"
+            return locale.errors.command_failed
         }
     }
     async onUnload() {
