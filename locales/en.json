@@ -8,16 +8,20 @@
                     "name": "role",
                     "description": "Modify Role.",
                     "options": {
-                        "name": "role",
-                        "description": "Select a Role."
+                        "role": {
+                            "name": "role",
+                            "description": "Select a Role."
+                        }
                     }
                 },
                 "user": {
                     "name": "user",
                     "description": "Modify a User.",
                     "options": {
-                        "name": "user",
-                        "description": "Select a User."
+                        "user": {
+                            "name": "user",
+                            "description": "Select a User."
+                        }
                     }
                 }
             },
