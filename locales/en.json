@@ -90,9 +90,6 @@
                     "name": "component",
                     "description": "Select the component you want to know the information about."
                 }
-            },
-            "answer": {
-                "no_data": "There was no Data found for ${component}!"
             }
         },
         "notify": {
@@ -182,7 +179,69 @@
         "admin_only": "You dont have the Permissions, ${username}"
     },
     "events": {
-
+        "print_job_start": {
+            "answer":{
+                "abort": "Print Job request aborted, ${username}!",
+                "executed": "Print Job request executed, ${username}!"
+            }
+        }
+    },
+    "hscomponents": {
+        "cpu": {
+            "title": "CPU",
+            "model": "Model",
+            "manufacturer": "Manufacturer",
+            "usage": "Usage",
+            "cores": "Cores",
+            "threads": "Threads",
+            "temperature": "Temp",
+            "frequency": "Freq",
+            "max_frequency": "Max Freq"
+        },
+        "disk": {
+            "title": "Disks",
+            "name": "Disk ${disk_index} Name",
+            "type": "Disk ${disk_index} Type",
+            "model": "Disk ${disk_index} Model",
+            "vendor": "Disk ${disk_index} Vendor",
+            "used": "Disk ${disk_index} Used"
+        },
+        "os": {
+            "title": "OS",
+            "platform": "Platform",
+            "logofile": "Logofile",
+            "distro": "Distro",
+            "release": "Release",
+            "kernel": "Kernel",
+            "arch": "Arch",
+            "hostname": "Hostname"
+        },
+        "partitions": {
+            "title": "Partitions",
+            "name": "Partition ${partition_index} Name",
+            "type": "Partition ${partition_index} Type",
+            "mount": "Partition ${partition_index} Mount",
+            "size": "Partition ${partition_index} Size",
+            "used": "Partition ${partition_index} Used"
+        },
+        "ram": {
+            "title": "Ram",
+            "total": "Total",
+            "used": "Used",
+            "swap_total": "Swap Total",
+            "swap_used": "Swap Used"
+        },
+        "mcu": {
+            "title": "MCU",
+            "chipset": "Chipset",
+            "version": "Version",
+            "load": "Load",
+            "awake": "Awake",
+            "frequency": "Freq"
+        },
+        "error": {  
+            "no_data": "There was no Data found for ${component}!"
+        }
     },
     "status": {
 
