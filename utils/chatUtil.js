@@ -57,7 +57,7 @@ module.exports.generatePageEmbed = (pageUp, currentPage, data, title, icon, user
   let entries = '\n'
   for (let i = (newpage * maxEntries) + newpage; i <= maxEntries + (newpage * maxEntries) + newpage; i++) {
     if (i < data.length) {
-      entries = entries.concat(`${data[i].filename}\n`)
+      entries = entries.concat(`${data[i].path}\n`)
     }
   }
 
