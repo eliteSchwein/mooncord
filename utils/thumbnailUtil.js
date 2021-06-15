@@ -11,7 +11,7 @@ const path = require('path')
 
 async function retrieveThumbnail (url) {
   let thumbnail
-  getBase64(`${statusconfig.connection.moonraker_url}/server/files/gcodes/${url}`).then((buffer) => {
+  await getBase64(`${statusconfig.connection.moonraker_url}/server/files/gcodes/${url}`).then((buffer) => {
     thumbnail = buffer
     console.log(buffer)
   })
