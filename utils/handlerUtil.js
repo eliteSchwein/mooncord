@@ -8,7 +8,8 @@ module.exports.printFileHandler = async (message, title, color) => {
     return await printFileHandler(message, title, color)
 }
 async function printFileHandler (message, title, color) {
-  const messageJson = JSON.parse(message.utf8Data)
+    const messageJson = JSON.parse(message.utf8Data)
+    console.log(messageJson)
   let commandFeedback
   if (typeof (messageJson.error) !== 'undefined') {
       commandFeedback = `Not Found!`
