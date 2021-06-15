@@ -97,6 +97,6 @@ module.exports = class HelloCommand extends SlashCommand {
 }
 
 async function handler (message) {
-    commandFeedback = await handlers.printFileHandler(message, 'File Informations', '#0099ff')
+    commandFeedback = await handlers.printFileHandler(message, locale.fileinfo.title, '#0099ff')
     connection.removeListener('message', handler)
 }

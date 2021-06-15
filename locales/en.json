@@ -68,9 +68,6 @@
                     "name": "file",
                     "description": "Specifies a Print File."
                 }
-            },
-            "embed": {
-                "title": "File Informations"
             }
         },
         "info": {
@@ -190,6 +187,7 @@
         "file_not_found": "File not Found!"
     },
     "fileinfo": {
+        "title": "File Informations",
         "print_time": "Print Time",
         "slicer": "Slicer",
         "slicer_version": "Slicer version",
