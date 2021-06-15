@@ -3,6 +3,9 @@ const logSymbols = require('log-symbols')
 
 const moonrakerClient = require('../../clients/moonrakerclient')
 const handlers = require('../../utils/handlerUtil')
+const locale = require('../../utils/localeUtil')
+
+const commandlocale = locale.commands.fileinfo
 
 let commandFeedback
 let connection
@@ -10,12 +13,12 @@ let connection
 module.exports = class HelloCommand extends SlashCommand {
     constructor(creator) {
         super(creator, {
-            name: 'fileinfo',
-            description: 'Execute a GCode Command',
+            name: commandlocale.command,
+            description: commandlocale.description,
             options: [{
                 type: CommandOptionType.STRING,
-                name: 'file',
-                description: 'Shows Informations about a Print File.',
+                name: commandlocale.options.file.name,
+                description: commandlocale.options.file.description,
                 required: true
             }]
         })
@@ -25,7 +28,7 @@ module.exports = class HelloCommand extends SlashCommand {
     run(ctx) {
         try {
             if (typeof (commandFeedback) !== 'undefined') {
-                return `This Command is not ready, ${ctx.user.username}!`
+                return locale.errors.not_ready.replace(/(\${username})/g, ctx.user.username)
             }
             let gcodefile = ctx.options.file
             if (!gcodefile.endsWith('.gcode')) {
@@ -48,7 +51,7 @@ module.exports = class HelloCommand extends SlashCommand {
                     if (commandFeedback === 'Not Found!') {
                         commandFeedback = undefined
                         ctx.send({
-                            content: 'File not Found!'
+                            content: locale.errors.file_not_found
                         })
                     } else {
                         if (commandFeedback.files.length > 0) {
@@ -72,7 +75,7 @@ module.exports = class HelloCommand extends SlashCommand {
                 }
                 if (timeout === 4) {
                     ctx.send({
-                        content: 'Command execution failed!'
+                        content: locale.errors.command_timeout
                     })
                     commandFeedback = undefined
                     clearInterval(feedbackInterval)
@@ -85,7 +88,7 @@ module.exports = class HelloCommand extends SlashCommand {
             console.log(logSymbols.error, `Fileinfo Command: ${error}`.error)
             commandFeedback = undefined
             connection.removeListener('message', handler)
-            return 'An Error occured!'
+            return locale.errors.command_failed
         }
     }
     async onUnload() {
