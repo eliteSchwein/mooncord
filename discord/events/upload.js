@@ -41,7 +41,6 @@ const enableEvent = function (discordClient) {
     if (!await permission.hasAdmin(msg.author, guildid, discordClient)) {
       return
     }
-    msg.react('🔄')
     upload(msg)
   })
 }
@@ -77,10 +76,11 @@ function uploadNext() {
   uploadList.splice(0, 1)
 }
 
-function uploadFile(message) {
+async function uploadFile(message) {
   const file = message.attachments.array()[0]
   const formData = new FormData()
   const tempFile = fs.createWriteStream(`temp/${file.name.replace(' ', '_')}`)
+  const loadingReaction = await message.react('🔄')
   uploadInProgress = true
   tempFile.on('finish', () => {
     console.log(logSymbols.info, `upload ${file.name.replace(' ', '_')}`.upload)
@@ -91,7 +91,7 @@ function uploadFile(message) {
       })
       .then(async res => {
         console.log(logSymbols.success, `uploaded ${file.name.replace(' ', '_')}`.uploadsuccess)
-        await message.reactions.removeAll()
+        loadingReaction.remove()
         message.react('✅')
         fs.unlink(`temp/${file.name.replace(' ', '_')}`, (error) => {
           if (error) {
