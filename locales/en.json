@@ -199,7 +199,7 @@
             }
         }
     },
-    "hscomponents": {
+    "loadinfo": {
         "cpu": {
             "title": "CPU",
             "model": "Model",
@@ -245,7 +245,6 @@
             "swap_used": "Swap Used"
         },
         "mcu": {
-            "title": "MCU",
             "chipset": "Chipset",
             "version": "Version",
             "load": "Load",

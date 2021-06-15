@@ -4,17 +4,20 @@ const logSymbols = require('log-symbols')
 const components = require('../../utils/hsComponents')
 const loadUtil = require('../../utils/loadUtil')
 const variablesUtil = require('../../utils/variablesUtil')
+const locale = require('../../utils/localeUtil')
+
+const commandlocale = locale.commands.loadinfo
 
 module.exports = class HelloCommand extends SlashCommand {
     constructor(creator) {
         super(creator, {
-            name: 'loadinfo',
-            description: 'Get the current Hardware and Software Informations.',
+            name: commandlocale.command,
+            description: commandlocale.description,
             options: [{
                 choices: generateChoices(),
                 type: CommandOptionType.STRING,
-                name: 'component',
-                description: 'Select the component you want to know the information about.',
+                name: commandlocale.options.file.name,
+                description: commandlocale.options.file.description,
                 required: true
             }]
         })
@@ -48,7 +51,7 @@ module.exports = class HelloCommand extends SlashCommand {
         }
         catch (error) {
             console.log(logSymbols.error, `Loadinfo Command: ${error}`.error)
-            return 'An Error occured!'
+            return locale.errors.command_failed
         }
     }
 }
@@ -61,11 +64,11 @@ async function retrieveMCUComponent(mcu) {
     const mcuawake = mcudata.last_stats.mcu_awake / 5
     const mcufreq = mcudata.last_stats.freq / 1000000
 
-    embed.addField('Chipset', mcudata.mcu_constants.MCU, true)
-    embed.addField('Version', mcudata.mcu_version, true)
-    embed.addField('Load', mcuload.toFixed(1), true)
-    embed.addField('Awake', mcuawake.toFixed(1), true)
-    embed.addField('Freq', `${mcufreq.toFixed(1)} MHz`, true)
+    embed.addField(locale.loadinfo.mcu.chipset, mcudata.mcu_constants.MCU, true)
+    embed.addField(locale.loadinfo.mcu.version, mcudata.mcu_version, true)
+    embed.addField(locale.loadinfo.mcu.load, mcuload.toFixed(1), true)
+    embed.addField(locale.loadinfo.mcu.awake, mcuawake.toFixed(1), true)
+    embed.addField(locale.loadinfo.mcu.freq, `${mcufreq.toFixed(1)} MHz`, true)
 
     return [template[0], embed]
 }
