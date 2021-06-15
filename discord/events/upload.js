@@ -25,20 +25,23 @@ const enableEvent = function (discordClient) {
     if (!msg.attachments.array()[0].name.endsWith('.gcode')) {
       return
     }
+
     let guildid
+
     if (msg.guild !== null) {
       guildid = msg.guild.id
+
+      const guilddatabase = database.getGuildDatabase(msg.guild)
+      const broadcastchannels = guilddatabase.broadcastchannels
+      
+      if (!broadcastchannels.includes(msg.channel.id)) {
+        return
+      }
     }
     if (!await permission.hasAdmin(msg.author, guildid, discordClient)) {
       return
     }
-    const guilddatabase = database.getGuildDatabase(msg.guild)
-    for (const index in guilddatabase.broadcastchannels) {
-      const channel = msg.guild.channels.cache.get(guilddatabase.broadcastchannels[index])
-      if (channel.id === msg.channel.id) {
-        upload(msg)
-      }
-    }
+    upload(msg)
   })
 }
 module.exports = enableEvent
