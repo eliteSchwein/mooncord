@@ -7,11 +7,13 @@ const variables = require('./variablesUtil')
 const Discord = require('discord.js')
 const fs = require('fs').promises
 const axios = require('axios')
+const path = require('path')
 
-async function retrieveThumbnail (path) {
+async function retrieveThumbnail (url) {
   let thumbnail
-  getBase64(`${statusconfig.connection.moonraker_url}/server/files/gcodes/${path}`).then((buffer) => {
+  getBase64(`${statusconfig.connection.moonraker_url}/server/files/gcodes/${url}`).then((buffer) => {
     thumbnail = buffer
+    console.log(buffer)
   })
   if (typeof (thumbnail) === 'undefined' || thumbnail === '') {
     return new Discord.MessageAttachment(await fs.readFile(path.resolve(__dirname, '../images/thumbnail_not_found.png')), 'thumbnail_not_found.png')
