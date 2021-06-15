@@ -3,23 +3,27 @@ const fs = require('fs')
 const path = require('path')
 const { SlashCommand } = require('slash-create')
 const logSymbols = require('log-symbols')
+const locale = require('../../utils/localeUtil')
+
+const commandlocale = locale.commands.fileinfo
 
 const pjson = require('../../package.json')
 
 module.exports = class HelloCommand extends SlashCommand {
     constructor(creator) {
         super(creator, {
-            name: 'info',
-            description: 'Send a Description about me.'
+            name: commandlocale.command,
+            description: commandlocale.description
         })
         this.filePath = __filename
     }
 
     async run(ctx) {
         try {
-            const description = `Version: ${pjson.version}\n
-            Author: ${pjson.author}\n
-            Homepage: ${pjson.homepage}\n`
+            const description = commandlocale.embed.description
+                .replace(/(\${version})/g, pjson.version)
+                .replace(/(\${author})/g, pjson.author)
+                .replace(/(\${homepage})/g, pjson.homepage)
         
             const logopath = path.resolve(__dirname, '../../images/logo.png')
 
@@ -27,7 +31,7 @@ module.exports = class HelloCommand extends SlashCommand {
 
             const infoEmbed = new Discord.MessageEmbed()
                 .setColor('#0099ff')
-                .setTitle('Informations')
+                .setTitle(commandlocale.embed.title)
                 .setDescription(description)
                 .setThumbnail('attachment://logo.png')
         
@@ -43,7 +47,7 @@ module.exports = class HelloCommand extends SlashCommand {
         }
         catch (error) {
             console.log(logSymbols.error, `Info Command: ${error}`.error)
-            return "An Error occured!"
+            return locale.errors.command_failed
         }
     }
     async onUnload() {
