@@ -6,6 +6,7 @@ const variables = require('./variablesUtil')
 
 const Discord = require('discord.js')
 const fs = require('fs').promises
+const axios = require('axios')
 
 async function retrieveThumbnail (path) {
   const thumbnail = getBase64(`${statusconfig.connection.moonraker_url}/server/files/gcodes/${path}`)
