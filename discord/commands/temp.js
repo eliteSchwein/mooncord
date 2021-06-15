@@ -78,12 +78,12 @@ function handler (message) {
 
         const iconbuffer = fs.readFileSync(iconpath)
 
-        const iconattachment = new Discord.MessageAttachment(iconbuffer, 'thermometer.png')
+        const iconattachment = new Discord.MessageAttachment(iconbuffer, 'temps.png')
 
         commandFeedback = new Discord.MessageEmbed()
             .setColor('#0099ff')
             .setTitle('Temperatures')
-            .setThumbnail('attachment://thermometer.png')
+            .setThumbnail('attachment://temps.png')
             .attachFiles(iconattachment)
         
         for (const temp in temps) {
