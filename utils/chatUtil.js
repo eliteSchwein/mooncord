@@ -44,7 +44,8 @@ module.exports.retrieveCurrentPage = (embed) => {
 }
 module.exports.generatePageEmbed = (pageUp, currentPage, data, title, icon, user) => {
   let newpage = currentPage
-  const maxpage =((data.length / maxEntries) - 0.1).toFixed(0)
+  const maxpage = ((data.length / maxEntries) - 0.1).toFixed(0)
+  console.log(((data.length / maxEntries) - 0.1))
   if (pageUp) {
     if (currentPage !== maxpage - 1) {
       newpage = currentPage + 1
@@ -57,7 +58,6 @@ module.exports.generatePageEmbed = (pageUp, currentPage, data, title, icon, user
   let entries = '\n'
   for (let i = (newpage * maxEntries) + newpage; i <= maxEntries + (newpage * maxEntries) + newpage; i++) {
     if (i < data.length) {
-      console.log(data[i])
       entries = entries.concat(`${data[i].path}\n`)
     }
   }
