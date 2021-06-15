@@ -43,7 +43,6 @@ module.exports.retrieveCurrentPage = (embed) => {
   return Number.parseInt(currentPageString) - 1
 }
 module.exports.generatePageEmbed = (pageUp, currentPage, files, title, icon, user) => {
-  console.log(currentPage)
   let newpage = currentPage
   const maxpage =((files.length / maxEntries) - 0.1).toFixed(0)
   if (pageUp) {
