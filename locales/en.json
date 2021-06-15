@@ -81,9 +81,6 @@
         "listfiles": {
             "description": "List all Print Files.",
             "command": "listfiles",
-            "answer": {
-                "no_files_found": "There are currently no Files!"
-            },
             "embed": {
                 "title": "Print Files"
             }
@@ -176,6 +173,7 @@
         }
     },
     "errors": {
+        "no_files_found": "There are currently no Files!",
         "check_console": "Please Check the Console!",
         "not_ready": "This Command is not ready, ${username}!",
         "command_failed": "An Error occured!",

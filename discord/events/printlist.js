@@ -1,6 +1,9 @@
 const moonrakerClient = require('../../clients/moonrakerclient')
 const chatUtil = require('../../utils/chatUtil')
 const permission = require('../../utils/permissionUtil')
+const locale = require('../../utils/localeUtil')
+
+const commandlocale = locale.commands.listfiles
 
 let connection
 let pageUp
@@ -22,7 +25,7 @@ const enableEvent = function (discordClient) {
             return
         }
         const {title} = message.embeds[0]
-        if (title !== 'Print Files') {
+        if (title !== commandlocale.embed.title) {
             return
         }
         if (message.channel.type === 'text') {
@@ -66,7 +69,7 @@ async function executeMessage(message, user) {
         }
         if (timeout === 10) {
             await message.edit({
-                content: 'There are currently no Files!'
+                content: locale.errors.no_files_found
             })
             commandFeedback = undefined
             connection.removeListener('message', handler)
@@ -84,7 +87,7 @@ async function handler (message, channel) {
             pageUp,
             page,
             messageJson.result,
-            'Print Files',
+            commandlocale.embed.title,
             'printlist.png',
             requester[channel.id])
     }

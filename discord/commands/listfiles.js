@@ -5,6 +5,9 @@ const discordClient = require('../../clients/discordclient')
 const moonrakerClient = require('../../clients/moonrakerclient')
 const chatUtil = require('../../utils/chatUtil')
 const permission = require('../../utils/permissionUtil')
+const locale = require('../../utils/localeUtil')
+
+const commandlocale = locale.commands.listfiles
 
 let commandFeedback
 let connection
@@ -14,8 +17,8 @@ let timeout = 0
 module.exports = class HelloCommand extends SlashCommand {
     constructor(creator) {
         super(creator, {
-            name: 'listfiles',
-            description: 'List all Print Files.',
+            name: commandlocale.command,
+            description: commandlocale.description
         })
         this.filePath = __filename
     }
@@ -23,10 +26,10 @@ module.exports = class HelloCommand extends SlashCommand {
     async run(ctx) {
         try {
             if (typeof (commandFeedback) !== 'undefined') {
-                return `This Command is not ready, ${ctx.user.username}!`
+                return locale.errors.not_ready.replace(/(\${username})/g, ctx.user.username)
             }
             if (!await permission.hasAdmin(ctx.user, ctx.guildID)) {
-                return `You dont have the Permissions, ${ctx.user.username}!`
+                return locale.errors.admin_only.replace(/(\${username})/g, ctx.user.username)
             }
             const id = Math.floor(Math.random() * parseInt('10_000')) + 1
             connection = moonrakerClient.getConnection()
@@ -57,7 +60,7 @@ module.exports = class HelloCommand extends SlashCommand {
                 }
                 if (timeout === 10) {
                     ctx.send({
-                        content: 'There are currently no Files!'
+                        content: locale.errors.no_files_found
                     })
                     commandFeedback = undefined
                     connection.removeListener('message', handler)
@@ -70,7 +73,7 @@ module.exports = class HelloCommand extends SlashCommand {
             console.log(logSymbols.error, `Listfiles Command: ${error}`.error)
             connection.removeListener('message', handler)
             commandFeedback = undefined
-            return "An Error occured!"
+            return locale.errors.command_failed
         }
     }
     async onUnload() {
@@ -86,7 +89,7 @@ async function handler (message) {
             true,
             -1,
             messageJson.result,
-            'Print Files',
+            commandlocale.embed.title,
             'printlist.png')
     }
 }
