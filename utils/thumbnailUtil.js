@@ -9,7 +9,10 @@ const fs = require('fs').promises
 const axios = require('axios')
 
 async function retrieveThumbnail (path) {
-  const thumbnail = await getBase64(`${statusconfig.connection.moonraker_url}/server/files/gcodes/${path}`)
+  let thumbnail
+  getBase64(`${statusconfig.connection.moonraker_url}/server/files/gcodes/${path}`).then((buffer) => {
+    thumbnail = buffer
+  })
   if (typeof (thumbnail) === 'undefined' || thumbnail === '') {
     return new Discord.MessageAttachment(await fs.readFile(path.resolve(__dirname, '../images/thumbnail_not_found.png')), 'thumbnail_not_found.png')
   }
