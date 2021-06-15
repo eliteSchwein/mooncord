@@ -87,8 +87,8 @@ async function handler (message) {
     if(JSON.stringify(messageJson).match(/(modified)/g)) {
         connection.removeListener('message', handler)
         commandFeedback = await chatUtil.generatePageEmbed(
-            true,
-            0,
+            false,
+            1,
             messageJson.result,
             commandlocale.embed.title,
             'printlist.png')
