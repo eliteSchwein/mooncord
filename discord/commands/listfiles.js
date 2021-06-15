@@ -18,7 +18,8 @@ module.exports = class HelloCommand extends SlashCommand {
     constructor(creator) {
         super(creator, {
             name: commandlocale.command,
-            description: commandlocale.description
+            description: commandlocale.description,
+            guildIDs: '626717239210672139'
         })
         this.filePath = __filename
     }
