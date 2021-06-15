@@ -54,6 +54,7 @@ module.exports.generatePageEmbed = (pageUp, currentPage, data, title, icon, user
       newpage = currentPage - 1
     }
   }
+  console.log(data)
   let entries = '\n'
   for (let i = (newpage * maxEntries) + newpage; i <= maxEntries + (newpage * maxEntries) + newpage; i++) {
     if (i < data.length) {
