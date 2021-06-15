@@ -93,7 +93,7 @@ async function uploadFile(message) {
       })
       .then(async res => {
         console.log(logSymbols.success, `uploaded ${file.name.replace(' ', '_')}`.uploadsuccess)
-        loadingReaction.users.remove(discordClient.client.user)
+        loadingReaction.users.remove(discordClient.user)
         message.react('✅')
         fs.unlink(`temp/${file.name.replace(' ', '_')}`, (error) => {
           if (error) {
