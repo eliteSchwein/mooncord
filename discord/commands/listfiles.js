@@ -85,7 +85,6 @@ async function handler (message) {
     const messageJson = JSON.parse(message.utf8Data)
     if(JSON.stringify(messageJson).match(/(modified)/g)) {
         connection.removeListener('message', handler)
-        console.log(messageJson.result)
         commandFeedback = await chatUtil.generatePageEmbed(
             true,
             -1,
