@@ -13,8 +13,10 @@ const permission = require('../../utils/permissionUtil')
 const uploadList = []
 let uploadWaitTimer = 0
 let uploadInProgress = false
+let discordClient
 
-const enableEvent = function (discordClient) {
+const enableEvent = function (dcClient) {
+  discordClient = dcClient
   discordClient.on('message', async (msg) => {
     if (msg.channel.type !== 'text' && msg.channel.type !== 'dm') {
       return
