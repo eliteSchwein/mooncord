@@ -2,6 +2,7 @@ const Discord = require('discord.js')
 
 const thumbnail = require('./thumbnailUtil')
 const variables = require('./variablesUtil')
+const locale = require('./localeUtil')
 
 module.exports = {}
 module.exports.printFileHandler = async (message, title, color) => {
@@ -16,10 +17,10 @@ async function printFileHandler (message, title, color) {
   }
   if (typeof (messageJson.result.filename) !== 'undefined') {
       const description = ''
-          .concat(`Print Time: ${variables.formatTime(messageJson.result.estimated_time * 1000)}\n`)
-          .concat(`Slicer: ${messageJson.result.slicer}\n`)
-          .concat(`Slicer Version: ${messageJson.result.slicer_version}\n`)
-          .concat(`Height: ${messageJson.result.object_height}mm`)
+          .concat(`${locale.fileinfo.print_time}: ${variables.formatTime(messageJson.result.estimated_time * 1000)}\n`)
+          .concat(`${locale.fileinfo.slicer}: ${messageJson.result.slicer}\n`)
+          .concat(`${locale.fileinfo.slicer_version}: ${messageJson.result.slicer_version}\n`)
+          .concat(`${locale.fileinfo.height}: ${messageJson.result.object_height}mm`)
       
       commandFeedback = new Discord.MessageEmbed()
           .setColor(color)

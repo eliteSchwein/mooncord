@@ -189,6 +189,12 @@
         "no_data": "There was no Data found for ${component}!",
         "file_not_found": "File not Found!"
     },
+    "fileinfo": {
+        "print_time": "Print Time",
+        "slicer": "Slicer",
+        "slicer_version": "Slicer version",
+        "height": "Height"
+    },
     "events": {
         "print_job_start": {
             "answer":{
