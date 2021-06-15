@@ -9,7 +9,6 @@ module.exports.printFileHandler = async (message, title, color) => {
 }
 async function printFileHandler (message, title, color) {
     const messageJson = JSON.parse(message.utf8Data)
-    console.log(messageJson)
   let commandFeedback
   if (typeof (messageJson.error) !== 'undefined') {
       commandFeedback = `Not Found!`
@@ -27,6 +26,7 @@ async function printFileHandler (message, title, color) {
           .setTitle(title)
           .setAuthor(messageJson.result.filename)
           .setDescription(description)
+      console.log(messageJson.result.thumbnails)
       if (typeof (messageJson.result.thumbnails) !== 'undefined') {
           const parsedThumbnail = await thumbnail.buildThumbnail(messageJson.result.thumbnails[1].data)
           commandFeedback
