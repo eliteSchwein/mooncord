@@ -41,6 +41,7 @@ const enableEvent = function (discordClient) {
     if (!await permission.hasAdmin(msg.author, guildid, discordClient)) {
       return
     }
+    msg.react('🔄')
     upload(msg)
   })
 }
@@ -88,8 +89,9 @@ function uploadFile(message) {
       .post(`${config.connection.moonraker_url}/server/files/upload`, formData, {
         headers: formData.getHeaders()
       })
-      .then(res => {
+      .then(async res => {
         console.log(logSymbols.success, `uploaded ${file.name.replace(' ', '_')}`.uploadsuccess)
+        await message.reactions.removeAll()
         message.react('✅')
         fs.unlink(`temp/${file.name.replace(' ', '_')}`, (error) => {
           if (error) {
