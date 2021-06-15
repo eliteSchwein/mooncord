@@ -26,8 +26,7 @@ const enableEvent = function (discordClient) {
       return
     }
     let guildid
-    console.log(typeof (msg.guild))
-    if (typeof (msg.guild) !== null) {
+    if (msg.guild !== null) {
       guildid = msg.guild.id
     }
     if (!await permission.hasAdmin(msg.author, guildid, discordClient)) {
