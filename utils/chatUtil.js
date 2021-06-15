@@ -42,9 +42,9 @@ module.exports.retrieveCurrentPage = (embed) => {
   const currentPageString = pages.replace('Page ', '').split('/')[0]
   return Number.parseInt(currentPageString) - 1
 }
-module.exports.generatePageEmbed = (pageUp, currentPage, files, title, icon, user) => {
+module.exports.generatePageEmbed = (pageUp, currentPage, data, title, icon, user) => {
   let newpage = currentPage
-  const maxpage =((files.length / maxEntries) - 0.1).toFixed(0)
+  const maxpage =((data.length / maxEntries) - 0.1).toFixed(0)
   if (pageUp) {
     if (currentPage !== maxpage - 1) {
       newpage = currentPage + 1
@@ -56,8 +56,8 @@ module.exports.generatePageEmbed = (pageUp, currentPage, files, title, icon, use
   }
   let entries = '\n'
   for (let i = (newpage * maxEntries) + newpage; i <= maxEntries + (newpage * maxEntries) + newpage; i++) {
-    if (i < files.length) {
-      entries = entries.concat(`${files[i].path}\n`)
+    if (i < data.length) {
+      entries = entries.concat(`${data[i].path}\n`)
     }
   }
 
