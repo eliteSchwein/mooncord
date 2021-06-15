@@ -26,13 +26,14 @@ async function printFileHandler (message, title, color) {
           .setTitle(title)
           .setAuthor(messageJson.result.filename)
           .setDescription(description)
-      console.log(messageJson.result.thumbnails)
+      let path
       if (typeof (messageJson.result.thumbnails) !== 'undefined') {
-          const parsedThumbnail = await thumbnail.buildThumbnail(messageJson.result.thumbnails[1].data)
-          commandFeedback
-              .attachFiles(parsedThumbnail)
-              .setThumbnail(`attachment://${parsedThumbnail.name}`)
+          path = messageJson.result.thumbnails[1].relative_path
       }
+        const parsedThumbnail = await thumbnail.buildThumbnail(path)
+        commandFeedback
+            .attachFiles(parsedThumbnail)
+            .setThumbnail(`attachment://${parsedThumbnail.name}`)
       return commandFeedback
   }
 }

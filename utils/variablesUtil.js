@@ -43,7 +43,7 @@ module.exports.setStartByte = function (startbyte) {
 module.exports.setEndByte = function (endbyte) {
   gcodeendbyte = endbyte
 }
-module.exports.setThumbnail = function (thumbnail) {
+module.exports.setThumbnailPath = function (thumbnail) {
   gcodethumbnail = thumbnail
 }
 module.exports.setProgress = function (progress) {
@@ -77,7 +77,7 @@ module.exports.getUpdateTimer = function () {
 module.exports.getStatus = function () {
   return status
 }
-module.exports.getThumbnail = function () {
+module.exports.getThumbnailPath = function () {
   return gcodethumbnail
 }
 module.exports.getCurrentFile = function () {

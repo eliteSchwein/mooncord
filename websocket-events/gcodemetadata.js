@@ -6,7 +6,7 @@ const event = (message) => {
     const { result } = messageJson
     if (typeof (result) !== 'undefined') {
       if (typeof (result.thumbnails) !== 'undefined') {
-        variables.setThumbnail(result.thumbnails[1].data)
+        variables.setThumbnailPath(result.thumbnails[1].relative_path)
       }
       if (typeof (result.gcode_start_byte) !== 'undefined') {
         variables.setStartByte(result.gcode_start_byte)
