@@ -14,7 +14,7 @@ async function retrieveThumbnail (url) {
 
   await getBase64(`${statusconfig.connection.moonraker_url}/server/files/gcodes/${url}`).then((buffer) => {
     thumbnail = buffer
-  })
+  }).catch((err) => {})
 
   if (typeof (thumbnail) === 'undefined' || thumbnail === '') {
     return new Discord.MessageAttachment(await fs.readFile(path.resolve(__dirname, '../images/thumbnail_not_found.png')), 'thumbnail_not_found.png')
