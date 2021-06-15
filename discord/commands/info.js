@@ -5,7 +5,7 @@ const { SlashCommand } = require('slash-create')
 const logSymbols = require('log-symbols')
 const locale = require('../../utils/localeUtil')
 
-const commandlocale = locale.commands.fileinfo
+const commandlocale = locale.commands.info
 
 const pjson = require('../../package.json')
 
