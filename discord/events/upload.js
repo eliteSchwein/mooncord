@@ -25,7 +25,11 @@ const enableEvent = function (discordClient) {
     if (!msg.attachments.array()[0].name.endsWith('.gcode')) {
       return
     }
-    if (!await permission.hasAdmin(msg.author, msg.guild.id, discordClient)) {
+    let guildid
+    if (typeof (msg.guild) !== null) {
+      guildid = msg.guild.id
+    }
+    if (!await permission.hasAdmin(msg.author, guildid, discordClient)) {
       return
     }
     const guilddatabase = database.getGuildDatabase(msg.guild)
