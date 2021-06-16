@@ -144,7 +144,9 @@
                     "status_not_valid": "${username} there isn`t currently any active Print Job!",
                     "status_valid": "${username} you paused the Print Job!",
                     "status_same": "${username} the current Print Job is already Paused!"
-                }
+                },
+                "abort": "Print Job request aborted, ${username}!",
+                "executed": "Print Job request executed, ${username}!"
             },
             "embed": {
                 "title": "Start Print Job?"

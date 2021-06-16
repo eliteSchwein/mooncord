@@ -7,6 +7,9 @@ const handlers = require('../../utils/handlerUtil')
 const permission = require('../../utils/permissionUtil')
 const variables = require('../../utils/variablesUtil')
 const metadata = require('../commands-metadata/printjob.json')
+const locale = require('../../utils/localeUtil')
+
+const commandlocale = locale.commands.printjob
 
 let commandFeedback
 let connection
@@ -16,28 +19,28 @@ let timeout = 0
 module.exports = class HelloCommand extends SlashCommand {
     constructor(creator) {
         super(creator, {
-            name: 'printjob',
-            description: 'Control or start a Print Job.',
+            name: commandlocale.command,
+            description: commandlocale.description,
             options: [{
                 type: CommandOptionType.SUB_COMMAND,
-                name: 'pause',
-                description: 'Pause Print Job'
+                name: commandlocale.options.pause.name,
+                description: commandlocale.options.pause.description
             },{
                 type: CommandOptionType.SUB_COMMAND,
-                name: 'cancel',
-                description: 'Cancel Print Job'
+                name: commandlocale.options.cancel.name,
+                description: commandlocale.options.cancel.description
             },{
                 type: CommandOptionType.SUB_COMMAND,
-                name: 'resume',
-                description: 'Resume Print Job'
+                name: commandlocale.options.resume.name,
+                description: commandlocale.options.resume.description
             },{
                 type: CommandOptionType.SUB_COMMAND,
-                name: 'start',
-                description: 'Start new Print Job',
+                name: commandlocale.options.start.name,
+                description: commandlocale.options.start.description,
                 options: [{
                     type: CommandOptionType.STRING,
-                    name: 'file',
-                    description: 'Select a Print File.',
+                    name: commandlocale.options.start.options.file.name,
+                    description: commandlocale.options.start.options.file.description,
                     required: true
                 }]
             }]
@@ -48,7 +51,7 @@ module.exports = class HelloCommand extends SlashCommand {
     async run(ctx) {
         try {
             if (!await permission.hasAdmin(ctx.user, ctx.guildID)) {
-                return `You dont have the Permissions, ${ctx.user.username}!`
+                return locale.errors.admin_only.replace(/(\${username})/g, ctx.user.username)
             }
             const subcommand = ctx.subcommands[0]
             const currentStatus = variables.getStatus()
@@ -57,20 +60,21 @@ module.exports = class HelloCommand extends SlashCommand {
             connection = moonrakerClient.getConnection()
 
             if (typeof (commandFeedback) !== 'undefined') {
-                return `This Command is not ready, ${ctx.user.username}!`
+                return locale.errors.not_ready.replace(/(\${username})/g, ctx.user.username)
             }
 
             if (Object.keys(metadata).includes(subcommand)) {
                 const subcommandmeta = metadata[subcommand]
+                const lang_command_meta = commandlocale.answer[subcommand]
                 if (subcommand === currentStatus) {
-                    return subcommandmeta.statusSame.replace(/(\${username})/g, ctx.user.username)
+                    return lang_command_meta.statusSame.replace(/(\${username})/g, ctx.user.username)
                 }
 
                 if (!subcommandmeta.requiredStatus.includes(currentStatus)) {
-                    return subcommandmeta.statusNotValid.replace(/(\${username})/g, ctx.user.username)
+                    return lang_command_meta.statusNotValid.replace(/(\${username})/g, ctx.user.username)
                 }
                 connection.send(`{"jsonrpc": "2.0", "method": "printer.gcode.script", "params": {"script": "${subcommandmeta.macro}"}, "id": ${id}}`)
-                return subcommandmeta.statusValid.replace(/(\${username})/g, ctx.user.username)
+                return lang_command_meta.statusValid.replace(/(\${username})/g, ctx.user.username)
             }
             
             if (subcommand === 'start') {
@@ -83,7 +87,7 @@ module.exports = class HelloCommand extends SlashCommand {
             console.log(logSymbols.error, `Printjob Command: ${error}`.error)
             connection.removeListener('message', handler)
             commandFeedback = undefined
-            return "An Error occured!"
+            return locale.errors.command_failed
         }
     }
     async onUnload() {
@@ -118,7 +122,7 @@ function startPrintJob(commandContext) {
         if (timeout === 4) {
             clearInterval(feedbackHandler)
             postStart({
-                content: 'Command execution failed!'
+                content: locale.errors.command_timeout
             }, commandContext)
             return
         }
@@ -130,7 +134,7 @@ function startPrintJob(commandContext) {
         if (commandFeedback === 'Not Found!') {
             clearInterval(feedbackHandler)
             postStart({
-                content: 'File not Found!'
+                content: locale.errors.file_not_found
             }, commandContext)
             return
         }
@@ -155,6 +159,6 @@ function startPrintJob(commandContext) {
 }
 
 async function handler (message) {
-    commandFeedback = await handlers.printFileHandler(message, 'Start Print Job?', '#0099ff')
+    commandFeedback = await handlers.printFileHandler(message, commandlocale.embed.title, '#0099ff')
     connection.removeListener('message', handler)
 }
