@@ -47,7 +47,7 @@ function getDifference(software, softwareinfo) {
 
 async function postUpdate(updateData, discordClient, database) {
   if (Object.keys(updateData).length === 0) { return }
-  await waitUntil(() => discordClient !== null, { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 1000 })
+  await waitUntil(() => discordClient.user !== null, { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 1000 })
   console.log(logSymbols.info, `There are some Updates!`.printstatus)
   const notifyembed = new Discord.MessageEmbed()
     .setColor('#fcf803')
