@@ -1,136 +1,136 @@
 {
     "disconnected":{
-        "title": "Printer Disconnected!",
+        "title": "${locale.title}",
         "color": "#c90000",
         "activity": {
             "type": "LISTENING",
-            "text": "wait for Klipper"
+            "text": "${locale.activity}"
         }
     },
     "error":{
-        "title": "A Error occured!",
+        "title": "${locale.title}",
         "color": "#c90000",
         "activity": {
             "type": "LISTENING",
-            "text": "wait for User"
+            "text": "${locale.activity}"
         }
     },
     "offline":{
-        "title": "Connection Lost!",
+        "title": "${locale.title}",
         "color": "#c90000",
         "activity": {
             "type": "LISTENING",
-            "text": "wait for Moonraker"
+            "text": "${locale.activity}"
         }
     },
     "shutdown":{
-        "title": "Klipper Shutdown",
+        "title": "${locale.title}",
         "color": "#c90000",
         "activity": {
             "type": "LISTENING",
-            "text": "wait for Klipper"
+            "text": "${locale.activity}"
         }
     },
     "stop":{
-        "title": "Print stopped",
+        "title": "${locale.title}",
         "color": "#c90000",
-        "author": "${currentFile}",
+        "author": "${gcode_file}",
         "thumbnail": true,
         "activity": {
             "type": "LISTENING",
-            "text": "Print stop"
+            "text": "${locale.activity}"
         }
     },
     "ready":{
-        "title": "Printer Ready",
+        "title": "${locale.title}",
         "color": "#0099ff",
         "activity": {
             "type": "LISTENING",
-            "text": "for GCODE File..."
+            "text": "${locale.activity}"
         },
         "versions": true
     },
     "startup":{
-        "title": "Printer starting",
+        "title": "${locale.title}",
         "color": "#0099ff",
         "activity": {
             "type": "WATCHING",
-            "text": "Printer start"
+            "text": "${locale.activity}"
         }
     },
     "start":{
-        "title": "Print started",
+        "title": "${locale.title}",
         "color": "#25db00",
-        "author": "${currentFile}",
+        "author": "${gcode_file}",
         "thumbnail": true,
         "activity": {
             "type": "LISTENING",
-            "text": "start ${currentFile}"
+            "text": "${locale.activity}"
         },
         "fields": [
             {
-                "name": "Print Time",
-                "value": "${formatedPrintTime}"
+                "name": "${locale.print_time}",
+                "value": "${print_time_value}"
             }
         ]
     },
     "done":{
-        "title": "Print Done",
+        "title": "${locale.title}",
         "color": "#25db00",
-        "author": "${currentFile}",
+        "author": "${gcode_file}",
         "thumbnail": true,
         "activity": {
             "type": "WATCHING",
-            "text": "Finished Print"
+            "text": "${locale.activity}"
         },
         "fields": [
             {
-                "name": "Print Time",
-                "value": "${formatedPrintTime}"
+                "name": "${locale.print_time}",
+                "value": "${value_print_time}"
             }
         ]
     },
     "pause":{
-        "title": "Print Paused",
+        "title": "${locale.title}",
         "color": "#dbd400",
-        "author": "${currentFile}",
+        "author": "${gcode_file}",
         "thumbnail": true,
         "activity": {
             "type": "PLAYING",
-            "text": "take a Break"
+            "text": "${locale.activity}"
         },
         "fields": [
             {
-                "name": "Print Time",
-                "value": "${formatedPrintTime}"
+                "name": "${locale.print_time}",
+                "value": "${value_print_time}"
             },
             {
-                "name": "ETA Print Time",
-                "value": "${formatedETAPrintTime}"
+                "name": "${locale.eta_print_time}",
+                "value": "${value_eta_print_time}"
             },
             {
-                "name": "Progress",
-                "value": "${printProgress}%"
+                "name": "${locale.print_progress}",
+                "value": "${value_print_progress}%"
             }
         ]
     },
     "printing":{
-        "title": "Printing",
+        "title": "${locale.title}",
         "color": "#0099ff",
-        "author": "${currentFile}",
+        "author": "${gcode_file}",
         "thumbnail": true,
         "fields": [
             {
-                "name": "Print Time",
-                "value": "${formatedPrintTime}"
+                "name": "${locale.print_time}",
+                "value": "${value_print_time}"
             },
             {
-                "name": "ETA Print Time",
-                "value": "${formatedETAPrintTime}"
+                "name": "${locale.eta_print_time}",
+                "value": "${value_eta_print_time}"
             },
             {
-                "name": "Progress",
-                "value": "${printProgress}%"
+                "name": "${locale.print_progress}",
+                "value": "${value_print_progress}%"
             }
         ]
     }

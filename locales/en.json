@@ -297,7 +297,7 @@
         },
         "printing":{
             "title": "Printing",
-            "activity": "Printing: ${print_progress}%"
+            "activity": "Printing: ${value_print_progress}%"
         },
         "fields": {
             "print_time": "Print Time",

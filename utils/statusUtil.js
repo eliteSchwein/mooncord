@@ -11,6 +11,7 @@ const messagemetadata = require('./statusmetadata.json')
 const thumbnail = require('./thumbnailUtil')
 const variables = require('./variablesUtil')
 const webcam = require('./webcamUtil')
+const locale = require('./localeUtil')
 
 function getCurrentDatabase(altdatabase){
   if(typeof(altdatabase) !== 'undefined'){
@@ -30,10 +31,11 @@ async function triggerStatusUpdate(altdiscordClient) {
   await waitUntil(() => altdiscordClient.user !== null, { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 1000 })
   console.log(logSymbols.info, `Printer Status: ${variables.getStatus()}`.printstatus)
   const statusConfig = messagemetadata[variables.getStatus()]
+  const statusLocale = locale.status[variables.getStatus()]
 
   const client = getDiscordClient(altdiscordClient)
 
-  const parsedConfig = parseConfig(statusConfig)
+  const parsedConfig = parseConfig(statusConfig, statusLocale)
 
   const embed = await generateEmbed(parsedConfig)
 
@@ -47,12 +49,17 @@ async function triggerStatusUpdate(altdiscordClient) {
   notifyStatus(embed, client)
 }
 
-function parseConfig(config) {
-  const parsedConfig = JSON.stringify(config)
-    .replace(/(\${currentFile})/g, variables.getCurrentFile())
-    .replace(/(\${formatedPrintTime})/g, variables.getFormatedPrintTime())
-    .replace(/(\${formatedETAPrintTime})/g, variables.getFormatedRemainingTime())
-    .replace(/(\${printProgress})/g, variables.getProgress())
+function parseConfig(config, localeconfig) {
+  const parsedConfig = JSON.stringify(config) 
+    .replace(/(\${locale.title})/g, localeconfig.title)
+    .replace(/(\${locale.activity})/g, localeconfig.activity)
+    .replace(/(\${locale.print_time})/g, locale.status.fields.print_time)
+    .replace(/(\${locale.eta_print_time})/g, locale.status.fields.eta_print_time)
+    .replace(/(\${locale.print_progress})/g, locale.status.fields.print_progress)
+    .replace(/(\${gcode_file})/g, variables.getCurrentFile())
+    .replace(/(\${value_print_time})/g, variables.getFormatedPrintTime())
+    .replace(/(\${value_eta_print_time})/g, variables.getFormatedRemainingTime())
+    .replace(/(\${value_print_progress})/g, variables.getProgress())
 
   return JSON.parse(parsedConfig)
 }

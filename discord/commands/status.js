@@ -2,12 +2,15 @@ const { SlashCommand } = require('slash-create')
 const logSymbols = require('log-symbols')
 
 const statusUtil = require('../../utils/statusUtil')
+const locale = require('../../utils/localeUtil')
+
+const commandlocale = locale.commands.status
 
 module.exports = class HelloCommand extends SlashCommand {
     constructor(creator) {
         super(creator, {
-            name: 'status',
-            description: 'Get the current Print Status'
+            name: commandlocale.command,
+            description: commandlocale.description
         })
         this.filePath = __filename
     }
@@ -37,7 +40,7 @@ module.exports = class HelloCommand extends SlashCommand {
         }
         catch (error) {
             console.log(logSymbols.error, `Status Command: ${error}`.error)
-            return "An Error occured!"
+            return locale.errors.command_failed
         }
     }
     async onUnload() {
