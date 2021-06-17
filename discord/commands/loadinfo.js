@@ -10,7 +10,7 @@ const commandlocale = locale.commands.loadinfo
 
 module.exports = class LoadInfoCommand extends SlashCommand {
     constructor(creator) {
-        console.log(logSymbols.info, 'Load Load Info Command'.commandload)
+        console.log('  Load Load Info Command'.commandload)
         super(creator, {
             name: commandlocale.command,
             description: commandlocale.description,
