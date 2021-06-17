@@ -1,77 +1,77 @@
 {
     "commands": {
         "admin": {
-            "description": "Manage Admin Role or User.",
+            "description": "Gérer les rôles d'administrateur et d'utilisateur.",
             "command": "admin",
             "options": {
                 "role": {
-                    "name": "role",
-                    "description": "Modify Role.",
+                    "name": "rôle",
+                    "description": "Modifier le rôle.",
                     "options": {
                         "role": {
-                            "name": "role",
-                            "description": "Select a Role."
+                            "name": "rôle",
+                            "description": "Sélectionnez un rôle."
                         }
                     }
                 },
                 "user": {
-                    "name": "user",
-                    "description": "Modify a User.",
+                    "name": "utilisateur",
+                    "description": "Modifier un utilisateur.",
                     "options": {
                         "user": {
-                            "name": "user",
-                            "description": "Select a User."
+                            "name": "utilisateur",
+                            "description": "Sélectionnez un utilisateur."
                         }
                     }
                 }
             },
             "answer": {
-                "added": "${mention} is now a Admin, ${username}!",
-                "removed": "${mention} is not longer a Admin, ${username}!"
+                "added": "${mention} est maintenant administrateur, ${username}!",
+                "removed": "${mention} n'est plus administrateur, ${username}!"
             }
         },
         "editchannel": {
-            "description": "Add or Remove broadcast channel.",
-            "command": "editchannel",
+            "description": "Ajouter ou supprimer la diffusion d'un canal.",
+            "command": "editcanal",
             "options": {
                 "channel": {
-                    "name": "channel",
-                    "description": "Select a Channel to add/remove it as Broadcast channel."
+                    "name": "canal",
+                    "description": "Sélectionnez un canal pour l'ajouter/supprimer en tant que canal de diffusion."
                 } 
             },
             "answer": {
-                "not_textchannel": "${channel} is not a Text Channel, ${username}!",
-                "activated": "${channel} is now a Broadcast Channel, ${username}!",
-                "deactivated": "${channel} is not longer a Broadcast Channel, ${username}!"
+                "not_textchannel": "${channel} n'est pas un canal texte, ${username}!",
+                "activated": "${channel} est maintenant un canal de diffusion, ${username}!",
+                "deactivated": "${channel} n'est plus un canal de diffusion, ${username}!"
             }
         },
         "execute": {
-            "description": "Execute a GCode Command.",
+            "description": "Exécuter une commande GCode.",
             "command": "execute",
             "options": {
                 "gcode": {
                     "name": "gcode",
-                    "description": "GCode that you want to execute."
+                    "description": "Vous voulez exécuter GCode."
                 }
             },
             "answer": {
-                "success": "Command Executed!",
-                "error": "Error: `${gcode_feedback}`",
-                "unknown": "Unknown GCode Command: `${gcode_feedback}`"
+                "success": "Commande exécutée !",
+                "error": "Erreur: `${gcode_feedback}`",
+                "unknown": "Commande GCode inconnue: `${gcode_feedback}`"
             }
         },
         "fileinfo": {
-            "description": "Shows Informations about a Print File.",
-            "command": "fileinfo",
+            "description": "Afficher les informations sur un fichier d'impression.",
+            "command": "fichierinfo",
             "options": {
                 "file": {
-                    "name": "file",
-                    "description": "Specifies a Print File."
+                    "name": "fichier",
+                    "description": "Spécifiez le fichier d'impression."
                 }
             }
         },
         "info": {
-            "description": "Send a Description about me.",
+            "description": "Envoyer une description de moi.",
             "command": "info",
             "embed": {
                 "title": "Informations",
@@ -79,237 +79,237 @@
             }
         },
         "listfiles": {
-            "description": "List all Print Files.",
-            "command": "listfiles",
+            "description": "Liste tous les fichiers d'impression.",
+            "command": "listefichier",
             "embed": {
-                "title": "Print Files"
+                "title": "Fichier d'impression"
             }
         },
         "loadinfo": {
-            "description": "Get the current Hardware and Software Informations.",
-            "command": "loadinfo",
+            "description": "Obtenir les informations actuelles sur le matériel et les logiciels.",
+            "command": "chargerinfo",
             "options": {
                 "file": {
-                    "name": "component",
-                    "description": "Select the component you want to know the information about."
+                    "name": "composant",
+                    "description": "Sélectionnez le composent sur lequel vous voulez des informations."
                 }
             }
         },
         "notify": {
-            "description": "Should i DM you with the current print status?",
-            "command": "notifyme",
+            "description": "Puis-je vous envoyer un MP avec l'état de l'impression en cours ?",
+            "command": "notifiemoi",
             "answer": {
-                "activated": "I will notify you of the print status via DM, ${username}!",
-                "deactivated": "I will no longer notify you of the print status via DM, ${username}!"
+                "activated": "Je vous informerai de l'état de l'impression en cours via MP, ${username}!",
+                "deactivated": "Je ne vous informerai pas de l'état de l'impression en cours via MP, ${username}!"
             }
         },
         "printjob": {
-            "description": "Control or start a Print Job.",
-            "command": "printjob",
+            "description": "Contrôler ou démarrer une impression.",
+            "command": "impressionjob",
             "options": {
                 "pause": {
                     "name": "pause",
-                    "description": "Pause Print Job"
+                    "description": "Impression en pause"
                 },
                 "cancel": {
-                    "name": "cancel",
-                    "description": "Cancel Print Job"
+                    "name": "annuler",
+                    "description": "Impression annulée"
                 },
                 "resume": {
-                    "name": "resume",
-                    "description": "Resume Print Job"
+                    "name": "reprendre",
+                    "description": "Reprendre le travail d'impression"
                 },
                 "start": {
-                    "name": "start",
-                    "description": "Start new Print Job",
+                    "name": "debuter",
+                    "description": "Débuter une impression",
                     "options": {
                         "file": {
-                            "name": "file",
-                            "description": "Select a Print File."
+                            "name": "fichier",
+                            "description": "Sélectionnez un fichier d'impression."
                         }
                     }
                 }
             },
             "answer": {
-                "file_not_found": "File not Found!",
+                "file_not_found": "Fichier non trouvé !",
                 "resume": {
-                    "status_not_valid": "${username} the Print Job isn`t currently Pausing!",
-                    "status_valid": "${username} you resumed the Print Job!",
-                    "status_same": "${username} the Print Job is running!"
+                    "status_not_valid": "${username} l'impression n'est actuellement pas en pause !",
+                    "status_valid": "${username} l'impression reprend !",
+                    "status_same": "${username} l'impression est en cours !"
                 },
                 "cancel": {
-                    "status_not_valid": "${username} there isn`t currently any active Print Job!",
-                    "status_valid": "${username} you aborted the Print Job!",
+                    "status_not_valid": "${username} aucune impression en cours !",
+                    "status_valid": "${username} l'impression a été annuler !",
                     "status_same": ""
                 },
                 "pause": {
-                    "status_not_valid": "${username} there isn`t currently any active Print Job!",
-                    "status_valid": "${username} you paused the Print Job!",
-                    "status_same": "${username} the current Print Job is already Paused!"
+                    "status_not_valid": "${username} il n'y a actuellement aucune impression en cours !",
+                    "status_valid": "${username} l'impression est en pause !",
+                    "status_same": "${username} l'impression actuelle est déja en pause !"
                 },
-                "abort": "Print Job request aborted, ${username}!",
-                "executed": "Print Job request executed, ${username}!"
+                "abort": "Demande d'impression annuler, ${username}!",
+                "executed": "Demande d'impression effectuée, ${username}!"
             },
             "embed": {
-                "title": "Start Print Job?"
+                "title": "Débuter l'impression ?"
             }
         },
         "status": {
-            "description": "Get the current Print Status.",
-            "command": "status"
+            "description": "Obtenir l'état d'impression actuel",
+            "command": "etat"
         },
         "temp": {
-            "description": "Get the current Temperatures from Klipper.",
-            "command": "temp",
+            "description": "Obtenir les températures actuelles de Klipper.",
+            "command": "temperatures",
             "embed": {
-                "title": "Temperatures",
+                "title": "Températures",
                 "fields": {
-                    "current_temp": "Current",
-                    "target_temp": "Target",
-                    "current_power": "Power"
+                    "current_temp": "Actuelle",
+                    "target_temp": "Cible",
+                    "current_power": "Puissance"
                 }
             }
         }
     },
     "dynamic_commands": {
         "timelapse": {
-            "description": "Get the latest Timelapse.",
+            "description": "Obtenir le dernier Time Lapse.",
             "command": "timelapse"
         }
     },
     "errors": {
-        "admin_only": "You dont have the Permissions, ${username}",
-        "check_console": "Please Check the Console!",
-        "command_failed": "An Error occured!",
-        "command_timeout": "Command execution failed!",
-        "controller_only": "You dont have the Permissions, ${username}",
-        "file_not_found": "File not Found!",
-        "guild_only": "This Command is only aviable on a Guild, ${username}",
-        "no_data": "There was no Data found for ${component}!",
-        "no_files_found": "There are currently no Files!",
-        "no_timelapse": "There is no Timelapse aviable!",
-        "not_ready": "This Command is not ready, ${username}!"
+        "admin_only": "Vous n'avez pas les permissions, ${username}",
+        "check_console": "Veuillez vérifier la console !",
+        "command_failed": "Une erreur s'est produite !",
+        "command_timeout": "L'exécution de la commande a échoué !",
+        "controller_only": "Vous n'avez pas les permissions, ${username}",
+        "file_not_found": "Fichier non trouvé !",
+        "guild_only": "Cette commande n'est disponible que sur la guilde, ${username}",
+        "no_data": "Aucune donnée n'a été trouvée pour ${component}!",
+        "no_files_found": "Il n'y a actuellement aucun fichier !",
+        "no_timelapse": "Aucun Timelapse disponible !",
+        "not_ready": "Cette commande n'est pas prête, ${username}!"
     },
     "fileinfo": {
-        "title": "File Informations",
-        "print_time": "Print Time",
-        "slicer": "Slicer",
-        "slicer_version": "Slicer version",
-        "height": "Height"
+        "title": "Informations sur le fichier",
+        "print_time": "Temps d'impression",
+        "slicer": "Découpeur",
+        "slicer_version": "Version du découpeur",
+        "height": "Hauteur"
     },
     "events": {
         "print_job_start": {
             "answer":{
-                "abort": "Print Job request aborted, ${username}!",
-                "executed": "Print Job request executed, ${username}!"
+                "abort": "Demande d'impression annuler, ${username}!",
+                "executed": "Demande d'impression effectuée, ${username}!"
             }
         }
     },
     "loadinfo": {
         "cpu": {
             "title": "CPU",
-            "model": "Model",
-            "manufacturer": "Manufacturer",
-            "usage": "Usage",
+            "model": "Modèle",
+            "manufacturer": "Fabricant",
+            "usage": "Utilisation",
             "cores": "Cores",
             "threads": "Threads",
-            "temperature": "Temp",
-            "frequency": "Freq",
-            "max_frequency": "Max Freq"
+            "temperature": "Température",
+            "frequency": "Fréquance",
+            "max_frequency": "Fréquance Max"
         },
         "disk": {
-            "title": "Disks",
-            "name": "Disk ${disk_index} Name",
-            "type": "Disk ${disk_index} Type",
-            "model": "Disk ${disk_index} Model",
-            "vendor": "Disk ${disk_index} Vendor",
-            "used": "Disk ${disk_index} Used"
+            "title": "Disques",
+            "name": "Disque ${disk_index} Nom",
+            "type": "Disque ${disk_index} Type",
+            "model": "Disque ${disk_index} Modèle",
+            "vendor": "Disque ${disk_index} Vendeur",
+            "used": "Disque ${disk_index} Utilisation"
         },
         "os": {
-            "title": "OS",
-            "platform": "Platform",
-            "logofile": "Logofile",
-            "distro": "Distro",
-            "release": "Release",
-            "kernel": "Kernel",
-            "arch": "Arch",
-            "hostname": "Hostname"
+            "title": "Système d'exploitation",
+            "platform": "Plate-forme",
+            "logofile": "Logo de fichier",
+            "distro": "Distribution",
+            "release": "Parution",
+            "kernel": "Noyau",
+            "arch": "Architecture",
+            "hostname": "Nom de l'hôte"
         },
         "partitions": {
             "title": "Partitions",
-            "name": "Partition ${partition_index} Name",
+            "name": "Partition ${partition_index} Nom",
             "type": "Partition ${partition_index} Type",
-            "mount": "Partition ${partition_index} Mount",
-            "size": "Partition ${partition_index} Size",
-            "used": "Partition ${partition_index} Used"
+            "mount": "Partition ${partition_index} Monture",
+            "size": "Partition ${partition_index} Taille",
+            "used": "Partition ${partition_index} Utilisation"
         },
         "ram": {
-            "title": "Ram",
+            "title": "RAM",
             "total": "Total",
-            "used": "Used",
-            "swap_total": "Swap Total",
-            "swap_used": "Swap Used"
+            "used": "Utilisation",
+            "swap_total": "Échanges totaux",
+            "swap_used": "Échanges effectués"
         },
         "mcu": {
-            "chipset": "Chipset",
+            "chipset": "Puce",
             "version": "Version",
-            "load": "Load",
-            "awake": "Awake",
-            "frequency": "Freq"
+            "load": "Charge",
+            "awake": "Éveille",
+            "frequency": "Fréquence"
         }
     },
     "status": {
         "disconnected":{
-            "title": "Printer Disconnected!",
-            "activity": "wait for Klipper"
+            "title": "Imprimante déconnectée !",
+            "activity": "En attente de Klipper"
         },
         "error":{
-            "title": "A Error occured!",
-            "activity": "wait for User"
+            "title": "Une erreur s'est produite !",
+            "activity": "En attente de l'utilisateur"
         },
         "offline":{
-            "title": "Connection Lost!",
-            "activity": "wait for Moonraker"
+            "title": "Connexion perdue !",
+            "activity": "En attente de Moonraker"
         },
         "shutdown":{
-            "title": "Klipper Shutdown",
-            "activity": "wait for Klipper"
+            "title": "Klipper s'est arrêté",
+            "activity": "En attente de Klipper"
         },
         "stop":{
-            "title": "Print stopped",
-            "activity": "Print stop"
+            "title": "L'impression s'est arrêté",
+            "activity": "Impression arrêtée"
         },
         "ready":{
-            "title": "Printer Ready",
-            "activity": "for GCODE File..."
+            "title": "Imprimante prête",
+            "activity": "pour le fichier GCODE..."
         },
         "startup":{
-            "title": "Printer starting",
-            "activity": "Printer start"
+            "title": "Démarrage de l'imprimante",
+            "activity": "Imprimante démarrée"
         },
         "start":{
-            "title": "Print started",
-            "activity": "start ${gcode_file}"
+            "title": "Démarrage de l'impression",
+            "activity": "Démarrage de ${gcode_file}"
         },
         "done":{
-            "title": "Print Done",
-            "activity": "Finished Print"
+            "title": "Impression terminée",
+            "activity": "Impression finie"
         },
         "pause":{
-            "title": "Print Paused",
-            "activity": "take a Break"
+            "title": "Impression en pause",
+            "activity": "Fait une pause"
         },
         "printing":{
-            "title": "Printing",
-            "activity": "Printing: ${value_print_progress}%"
+            "title": "Impression en cours",
+            "activity": "Impression: ${value_print_progress}%"
         },
         "fields": {
-            "print_time": "Print Time",
-            "eta_print_time": "ETA Print Time",
-            "print_progress": "Progress"
+            "print_time": "Temps d'impression",
+            "eta_print_time": "Temps d'impression restant",
+            "print_progress": "Progression"
         }
     },
     "timelapse": {
-        "for_gcode": "Timelapse for ${gcode_file}"
+        "for_gcode": "Time lapse pour ${gcode_file}"
     }
 }
