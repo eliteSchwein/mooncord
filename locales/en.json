@@ -123,8 +123,10 @@
                     "name": "start",
                     "description": "Start new Print Job",
                     "options": {
-                        "name": "file",
-                        "description": "Select a Print File."
+                        "file": {
+                            "name": "file",
+                            "description": "Select a Print File."
+                        }
                     }
                 }
             },
