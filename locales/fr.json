@@ -219,7 +219,7 @@
         },
         "disk": {
             "title": "Disques",
-            "name": "Disque ${disk_index} Nom,
+            "name": "Disque ${disk_index} Nom",
             "type": "Disque ${disk_index} Type",
             "model": "Disque ${disk_index} Modèle",
             "vendor": "Disque ${disk_index} Vendeur",
