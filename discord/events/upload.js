@@ -9,6 +9,7 @@ const logSymbols = require('log-symbols')
 const config = require(`${args[0]}/mooncord.json`)
 const database = require('../../utils/databaseUtil')
 const permission = require('../../utils/permissionUtil')
+const locale = require('../../utils/localeUtil')
 
 const uploadList = []
 let uploadWaitTimer = 0
@@ -106,7 +107,7 @@ async function uploadFile(message) {
       .catch(error => {
         if (error) {
             console.log(logSymbols.error, `Upload Event: ${error}`.error)
-          message.channel.send('Please Check the Console!')
+          message.channel.send(locale.errors.check_console)
           console.log(logSymbols.error, 'Upload Failed! Check your config!'.error)
           fs.unlink(`temp/${file.name.replace(' ', '_')}`, (error2) => {
             if (error2) {
