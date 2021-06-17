@@ -1,7 +1,7 @@
 {
     "commands": {
         "admin": {
-            "description": "Manage Admin Role or User.",
+            "description": "Gérer le rôle d'administrateur et d'utilisateur.",
             "command": "admin",
             "options": {
                 "role": {
