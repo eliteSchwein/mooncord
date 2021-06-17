@@ -10,7 +10,7 @@ const commandlocale = locale.commands.editchannel
 
 module.exports = class EditChannelCommand extends SlashCommand {
     constructor(creator) {
-        console.log(logSymbols.info, 'Load Edit Channel Command')
+        console.log(logSymbols.info, 'Load Edit Channel Command'.statusmessage)
         super(creator, {
             name: commandlocale.command,
             description: commandlocale.description,

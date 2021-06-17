@@ -12,7 +12,7 @@ let connection
 
 module.exports = class ExecuteCommand extends SlashCommand {
     constructor(creator) {
-        console.log(logSymbols.info, 'Load Execute Command')
+        console.log(logSymbols.info, 'Load Execute Command'.statusmessage)
         super(creator, {
             name: commandlocale.command,
             description: commandlocale.description,

@@ -11,7 +11,7 @@ const pjson = require('../../package.json')
 
 module.exports = class InfoCommand extends SlashCommand {
     constructor(creator) {
-        console.log(logSymbols.info, 'Load Info Command')
+        console.log(logSymbols.info, 'Load Info Command'.statusmessage)
         super(creator, {
             name: commandlocale.command,
             description: commandlocale.description

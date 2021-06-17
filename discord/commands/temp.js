@@ -11,7 +11,7 @@ let connection
 
 module.exports = class TempCommand extends SlashCommand {
     constructor(creator) {
-        console.log(logSymbols.info, 'Load Temp Command')
+        console.log(logSymbols.info, 'Load Temp Command'.statusmessage)
         super(creator, {
             name: 'temp',
             description: 'Get the current Temperatures from Klipper.'

@@ -16,7 +16,7 @@ let timeout = 0
 
 module.exports = class ListFilesCommand extends SlashCommand {
     constructor(creator) {
-        console.log(logSymbols.info, 'Load List Files Command')
+        console.log(logSymbols.info, 'Load List Files Command'.statusmessage)
         super(creator, {
             name: commandlocale.command,
             description: commandlocale.description
