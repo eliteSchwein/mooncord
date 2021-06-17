@@ -9,8 +9,9 @@ const commandlocale = locale.commands.info
 
 const pjson = require('../../package.json')
 
-module.exports = class HelloCommand extends SlashCommand {
+module.exports = class InfoCommand extends SlashCommand {
     constructor(creator) {
+        console.log(logSymbols.info, 'Load Info Command')
         super(creator, {
             name: commandlocale.command,
             description: commandlocale.description

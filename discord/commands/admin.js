@@ -8,8 +8,9 @@ const locale = require('../../utils/localeUtil')
 
 const commandlocale = locale.commands.admin
 
-module.exports = class HelloCommand extends SlashCommand {
+module.exports = class AdminCommand extends SlashCommand {
     constructor(creator) {
+        console.log(logSymbols.info, 'Load Admin Command')
         super(creator, {
             name: commandlocale.command,
             description: commandlocale.description,

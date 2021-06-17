@@ -14,8 +14,9 @@ let connection
 
 let timeout = 0
 
-module.exports = class HelloCommand extends SlashCommand {
+module.exports = class ListFilesCommand extends SlashCommand {
     constructor(creator) {
+        console.log(logSymbols.info, 'Load List Files Command')
         super(creator, {
             name: commandlocale.command,
             description: commandlocale.description

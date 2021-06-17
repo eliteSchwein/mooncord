@@ -10,8 +10,9 @@ const commandlocale = locale.commands.fileinfo
 let commandFeedback
 let connection
 
-module.exports = class HelloCommand extends SlashCommand {
+module.exports = class FileInfoCommand extends SlashCommand {
     constructor(creator) {
+        console.log(logSymbols.info, 'Load File Info Command')
         super(creator, {
             name: commandlocale.command,
             description: commandlocale.description,

@@ -10,8 +10,9 @@ const commandlocale = locale.commands.execute
 let commandFeedback
 let connection
 
-module.exports = class HelloCommand extends SlashCommand {
+module.exports = class ExecuteCommand extends SlashCommand {
     constructor(creator) {
+        console.log(logSymbols.info, 'Load Execute Command')
         super(creator, {
             name: commandlocale.command,
             description: commandlocale.description,

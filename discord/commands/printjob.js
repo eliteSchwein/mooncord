@@ -16,8 +16,9 @@ let connection
 
 let timeout = 0
 
-module.exports = class HelloCommand extends SlashCommand {
+module.exports = class PrintJobCommand extends SlashCommand {
     constructor(creator) {
+        console.log(logSymbols.info, 'Load Print Job Command')
         super(creator, {
             name: commandlocale.command,
             description: commandlocale.description,

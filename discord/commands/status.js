@@ -6,8 +6,9 @@ const locale = require('../../utils/localeUtil')
 
 const commandlocale = locale.commands.status
 
-module.exports = class HelloCommand extends SlashCommand {
+module.exports = class StatusCommand extends SlashCommand {
     constructor(creator) {
+        console.log(logSymbols.info, 'Load Status Command')
         super(creator, {
             name: commandlocale.command,
             description: commandlocale.description

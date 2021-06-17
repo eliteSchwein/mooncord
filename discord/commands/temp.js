@@ -9,8 +9,9 @@ const moonrakerClient = require('../../clients/moonrakerclient')
 let commandFeedback
 let connection
 
-module.exports = class HelloCommand extends SlashCommand {
+module.exports = class TempCommand extends SlashCommand {
     constructor(creator) {
+        console.log(logSymbols.info, 'Load Temp Command')
         super(creator, {
             name: 'temp',
             description: 'Get the current Temperatures from Klipper.'

@@ -8,8 +8,9 @@ const locale = require('../../utils/localeUtil')
 
 const commandlocale = locale.commands.editchannel
 
-module.exports = class HelloCommand extends SlashCommand {
+module.exports = class EditChannelCommand extends SlashCommand {
     constructor(creator) {
+        console.log(logSymbols.info, 'Load Edit Channel Command')
         super(creator, {
             name: commandlocale.command,
             description: commandlocale.description,
