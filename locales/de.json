@@ -160,9 +160,9 @@
         },
         "temp": {
             "description": "Bekomme die aktuellen Klipper Temperaturen.",
-            "command": "temp",
+            "command": "temperaturen",
             "embed": {
-                "title": "Temperaturen",
+                "title": "temperaturen",
                 "fields": {
                     "current_temp": "Aktuell",
                     "target_temp": "Ziel",
