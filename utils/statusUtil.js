@@ -33,6 +33,8 @@ async function triggerStatusUpdate(altdiscordClient) {
   const statusConfig = messagemetadata[variables.getStatus()]
   const statusLocale = locale.status[variables.getStatus()]
 
+  console.log(statusLocale)
+
   const client = getDiscordClient(altdiscordClient)
 
   const parsedConfig = parseConfig(statusConfig, statusLocale)
