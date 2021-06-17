@@ -10,6 +10,7 @@ const logSymbols = require('log-symbols')
 
 const webcamUtil = require('./webcamUtil')
 const variablesUtil = require('./variablesUtil')
+const locale = require('./localeUtil')
 const config = require(`${args[0]}/mooncord.json`)
 
 const conv = ffmpeg()
@@ -57,6 +58,18 @@ async function makeFrame() {
     framecount ++
 }
 
+function getTimelapse() {
+    if (!running) {
+        return
+    }
+    try {
+        const data = fs.readFileSync(path.resolve(__dirname, '../temp/timelapse/timelapse.mp4'))
+        return new Discord.MessageAttachment(data, 'timelapse.mp4')
+    } catch (error) {
+        console.log(logSymbols.error, `Timelapse Util: ${error}`.error)
+    }
+}
+
 module.exports.init = (dcClient, mrClient) => {
     running = true
     discordClient = dcClient
@@ -75,16 +88,18 @@ module.exports.init = (dcClient, mrClient) => {
 module.exports.isRunning = () => { return running }
 module.exports.makeFrame = () => { makeFrame() }
 module.exports.render = async () => { await render() }
-module.exports.getTimelapse = () => {
+module.exports.getTimelapse = () => { return getTimelapse() }
+module.exports.getEmbed = () => {
     if (!running) {
         return
     }
-    try {
-        const data = fs.readFileSync(path.resolve(__dirname, '../temp/timelapse/timelapse.mp4'))
-        return new Discord.MessageAttachment(data, 'timelapse.mp4')
-    } catch (error) {
-        console.log(logSymbols.error, `Timelapse Util: ${error}`.error)
-    }
+    const timelapse = getTimelapse()
+    const description = locale.timelapse.for_gcode
+        .replace(/(\${gcode_file})/g, variablesUtil.getLastGcodeFile())
+    const embed = new Discord.MessageEmbed()
+        .setDescription(description)
+        .attachFiles(timelapse)
+    return embed
 }
 module.exports.start = () => {
     if (!running) {

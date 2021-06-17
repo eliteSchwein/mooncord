@@ -174,11 +174,7 @@
     "dynamic_commands": {
         "timelapse": {
             "description": "Get the latest Timelapse.",
-            "command": "timelapse",
-            "answer": {
-                "no_timelapse": "There is no Thumbnail aviable!",
-                "timelapse_found": "`Timelapse for ${gcode_file}`"
-            }
+            "command": "timelapse"
         }
     },
     "errors": {
@@ -191,7 +187,8 @@
         "controller_only": "You dont have the Permissions, ${username}",
         "admin_only": "You dont have the Permissions, ${username}",
         "no_data": "There was no Data found for ${component}!",
-        "file_not_found": "File not Found!"
+        "file_not_found": "File not Found!",
+        "no_timelapse": "There is no Timelapse aviable!"
     },
     "fileinfo": {
         "title": "File Informations",

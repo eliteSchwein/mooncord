@@ -7,6 +7,9 @@ const logSymbols = require('log-symbols')
 
 const variablesUtil = require('../../utils/variablesUtil')
 const timelapseUtil = require('../../utils/timelapseUtil')
+const locale = require('../../utils/localeUtil')
+
+const commandlocale = locale.dynamic_commands.timelapse
 const config = require(`${args[0]}/mooncord.json`)
 
 module.exports = class HelloCommand extends SlashCommand {
@@ -16,8 +19,8 @@ module.exports = class HelloCommand extends SlashCommand {
             guildId = '000000000000000000'
         }
         super(creator, {
-            name: 'timelapse',
-            description: 'Get the latest Timelapse.',
+            name: commandlocale.command,
+            description: commandlocale.description,
             guildIDs: guildId,
             options: [{
                 type: CommandOptionType.STRING,
@@ -43,27 +46,26 @@ module.exports = class HelloCommand extends SlashCommand {
             }
 
             if (variablesUtil.getLastGcodeFile() === '') {
-                return "There is no Thumbnail aviable!"
+                return locale.errors.no_timelapse
             }
 
-            const timelapse = timelapseUtil.getTimelapse()
+            const timelapseEmbed = timelapseUtil.getEmbed()
+
+            const timelapse = timelapseEmbed.files[0]
 
             const files = {
                 name: timelapse.name,
                 file: timelapse.attachment
             }
-            const embed = new Discord.MessageEmbed()
-            .setDescription(`\`Timelapse for ${variablesUtil.getLastGcodeFile()}\``)
-            .attachFiles(timelapse)
 
             await ctx.send({
-                embeds: [embed.toJSON()],
+                embeds: [timelapseEmbed.toJSON()],
                 file: files
             })
         }
         catch (error) {
             console.log(logSymbols.error, `Timelapse Command: ${error}`.error)
-            return "An Error occured!"
+            return locale.errors.command_failed
         }
     }
     async onUnload() {

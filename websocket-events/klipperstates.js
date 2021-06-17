@@ -37,11 +37,7 @@ const event = async (message, connection, discordClient) => {
     if (states[methode].render) {
       await timelapseUtil.render()
       if (config.timelapse.post_at_print_end) {
-        const timelapse = timelapseUtil.getTimelapse()
-        const embed = new Discord.MessageEmbed()
-          .setDescription(`\`Timelapse for ${variables.getLastGcodeFile()}\``)
-          .attachFiles(timelapse)
-        status.postBroadcastMessage(embed, discordClient)
+        status.postBroadcastMessage(timelapseUtil.getEmbed(), discordClient)
       }
     }
   }
