@@ -30,14 +30,10 @@ function getDiscordClient(altdiscordClient){
 async function triggerStatusUpdate(altdiscordClient) {
   await waitUntil(() => altdiscordClient.user !== null, { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 1000 })
   console.log(logSymbols.info, `Printer Status: ${variables.getStatus()}`.printstatus)
-  const statusConfig = messagemetadata[variables.getStatus()]
-  const statusLocale = locale.status[variables.getStatus()]
-
-  console.log(statusLocale)
 
   const client = getDiscordClient(altdiscordClient)
 
-  const parsedConfig = parseConfig(statusConfig, statusLocale)
+  const parsedConfig = parseConfig()
 
   const embed = await generateEmbed(parsedConfig)
 
@@ -51,10 +47,13 @@ async function triggerStatusUpdate(altdiscordClient) {
   notifyStatus(embed, client)
 }
 
-function parseConfig(config, localeconfig) {
+function parseConfig() {
+  const status = variables.getStatus()
+  const config = messagemetadata[status]
+  const localeConfig = locale.status[status]
   const parsedConfig = JSON.stringify(config) 
-    .replace(/(\${locale.title})/g, localeconfig.title)
-    .replace(/(\${locale.activity})/g, localeconfig.activity)
+    .replace(/(\${locale.title})/g, localeConfig.title)
+    .replace(/(\${locale.activity})/g, localeConfig.activity)
     .replace(/(\${locale.print_time})/g, locale.status.fields.print_time)
     .replace(/(\${locale.eta_print_time})/g, locale.status.fields.eta_print_time)
     .replace(/(\${locale.print_progress})/g, locale.status.fields.print_progress)
@@ -172,9 +171,7 @@ module.exports.triggerStatusUpdate = async function (altdiscordClient) {
 }
 
 module.exports.getManualStatusEmbed = async function (user) {
-  const statusConfig = messagemetadata[variables.getStatus()]
-  const parsedConfig = parseConfig(statusConfig)
-
+  const parsedConfig = parseConfig()
   const embed = await generateEmbed(parsedConfig, user)
 
   return embed
