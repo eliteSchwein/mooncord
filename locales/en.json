@@ -162,7 +162,12 @@
             "description": "Get the current Temperatures from Klipper.",
             "command": "temp",
             "embed": {
-                "title": "Temperatures"
+                "title": "Temperatures",
+                "fields": {
+                    "current_temp": "Current",
+                    "target_temp": "Target",
+                    "current_power": "Power"
+                }
             }
         }
     },
