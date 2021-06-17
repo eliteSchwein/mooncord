@@ -45,7 +45,6 @@ function enableEvents(discordClient) {
     connection.on('close', () => {
       console.log('  WebSocket Connection Closed'.error)
       console.log('  Reconnect in 5 sec'.error)
-      connected = false
       variables.setStatus('offline')
       status.triggerStatusUpdate(discordClient.getClient())
       setTimeout(() => {
@@ -79,7 +78,6 @@ function connect() {
     console.log(logSymbols.error, `Moonrakerclient: ${error}`.error)
     variables.setStatus('offline')
     console.log('  Please check your Config!'.error)
-    connected = false
     setTimeout(() => {
       process.exit(5)
     }, 2000)
