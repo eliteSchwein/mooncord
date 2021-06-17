@@ -28,7 +28,7 @@ function getDiscordClient(altdiscordClient){
 }
 
 async function triggerStatusUpdate(altdiscordClient) {
-  await waitUntil(() => altdiscordClient.user !== null, { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 1000 })
+  await waitUntil(() => altdiscordClient !== null, { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 1000 })
   console.log(logSymbols.info, `Printer Status: ${variables.getStatus()}`.printstatus)
 
   const client = getDiscordClient(altdiscordClient)

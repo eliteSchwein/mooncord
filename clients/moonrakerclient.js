@@ -14,22 +14,16 @@ const events = require('../websocket-events')
 
 const client = new WebSocketClient()
 
-let connected = false
-
 let WSconnection
 
-const enableEvents = (discordClient) => {
+function enableEvents(discordClient) {
   console.log('  Enable Moonraker Events'.statusmessage)
 
   client.on('connect', async (connection) => {
     const id = Math.floor(Math.random() * parseInt('10_000')) + 1
     console.log('  Moonraker Client Connected'.success)
 
-    connected = true
-
     WSconnection = connection
-
-    await waitUntil(() => connection.connected === true, { timeout: Number.POSITIVE_INFINITY })
 
     console.log('  Sent initial Moonraker commands'.statusmessage)
 
@@ -65,6 +59,7 @@ const enableEvents = (discordClient) => {
     })
   })
 }
+
 
 function getMCUList() {
   const rawmculist = variables.getMCUList()
@@ -102,6 +97,6 @@ module.exports.init = async (discordClient) => {
                               `)
   connect()
   enableEvents(discordClient)
-  await waitUntil(() => connected === true, { timeout: Number.POSITIVE_INFINITY })
+  await waitUntil(() => WSconnection.connected === true, { timeout: Number.POSITIVE_INFINITY })
 }
 module.exports.getConnection = () => { return WSconnection }
