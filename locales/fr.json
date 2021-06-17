@@ -2,15 +2,15 @@
     "commands": {
         "admin": {
             "description": "Gérer le rôle d'administrateur et d'utilisateur.",
-            "command": "admin",
+            "command": "administrateur",
             "options": {
                 "role": {
-                    "name": "role",
-                    "description": "Modify Role.",
+                    "name": "rôle",
+                    "description": "Modifier le rôle.",
                     "options": {
                         "role": {
-                            "name": "role",
-                            "description": "Select a Role."
+                            "name": "rôle",
+                            "description": "Selectioner un rôle."
                         }
                     }
                 },
