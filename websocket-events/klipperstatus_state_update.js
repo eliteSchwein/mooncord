@@ -45,7 +45,7 @@ function getDifference(software, softwareinfo) {
   }
 }
 
-await function postUpdate(updateData, discordClient, database) {
+async function postUpdate(updateData, discordClient, database) {
   if (Object.keys(updateData).length === 0) { return }
   await waitUntil(() => discordClient !== null, { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 1000 })
   console.log(logSymbols.info, `There are some Updates!`.printstatus)
