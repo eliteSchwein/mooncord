@@ -95,6 +95,7 @@ module.exports.init = async (discordClient) => {
                               `)
   connect()
   enableEvents(discordClient)
+  await waitUntil(() => typeof(WSconnection) !== 'undefined', { timeout: Number.POSITIVE_INFINITY })
   await waitUntil(() => WSconnection.connected === true, { timeout: Number.POSITIVE_INFINITY })
 }
 module.exports.getConnection = () => { return WSconnection }
