@@ -8,7 +8,7 @@ const commandlocale = locale.commands.notify
 
 module.exports = class NotifyCommand extends SlashCommand {
     constructor(creator) {
-        console.log(logSymbols.info, 'Load Notify Command'.statusmessage)
+        console.log(logSymbols.info, 'Load Notify Command'.commandload)
         super(creator, {
             name: commandlocale.command,
             description: commandlocale.description

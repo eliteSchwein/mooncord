@@ -18,7 +18,7 @@ let timeout = 0
 
 module.exports = class PrintJobCommand extends SlashCommand {
     constructor(creator) {
-        console.log(logSymbols.info, 'Load Print Job Command'.statusmessage)
+        console.log(logSymbols.info, 'Load Print Job Command'.commandload)
         super(creator, {
             name: commandlocale.command,
             description: commandlocale.description,

@@ -12,7 +12,7 @@ let connection
 
 module.exports = class FileInfoCommand extends SlashCommand {
     constructor(creator) {
-        console.log(logSymbols.info, 'Load File Info Command'.statusmessage)
+        console.log(logSymbols.info, 'Load File Info Command'.commandload)
         super(creator, {
             name: commandlocale.command,
             description: commandlocale.description,

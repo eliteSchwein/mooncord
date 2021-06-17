@@ -10,7 +10,7 @@ const commandlocale = locale.commands.admin
 
 module.exports = class AdminCommand extends SlashCommand {
     constructor(creator) {
-        console.log(logSymbols.info, 'Load Admin Command'.statusmessage)
+        console.log(logSymbols.info, 'Load Admin Command'.commandload)
         super(creator, {
             name: commandlocale.command,
             description: commandlocale.description,

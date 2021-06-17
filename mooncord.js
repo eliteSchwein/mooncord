@@ -14,6 +14,7 @@ const timelapseUtil = require('./utils/timelapseUtil')
 
 colors.setTheme({
   database: 'grey',
+  commandload: 'grey',
   upload: 'grey',
   uploadsuccess: 'green',
   statustitle: 'cyan',
