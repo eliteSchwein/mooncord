@@ -33,7 +33,6 @@ module.exports = class LoadInfoCommand extends SlashCommand {
 
         const component = ctx.options[commandlocale.options.component.name]
 
-        console.log(component)
         let answer
 
         if (component.startsWith('mcu')) {
