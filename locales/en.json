@@ -313,7 +313,7 @@
         "for_gcode": "Timelapse for ${gcode_file}"
     },
     "update": {
-        "title": "Systemupdates",
+        "title": "System Updates",
         "system": "System",
         "packages": "Packages"
     }
