@@ -33,8 +33,8 @@ module.exports = class ExecuteCommand extends SlashCommand {
         if (typeof (commandFeedback) !== 'undefined') {
             return locale.errors.not_ready.replace(/(\${username})/g, ctx.user.username)
         }
-        
-        const {gcode} = ctx.options
+    
+        const { gcode } = ctx.options
         const id = Math.floor(Math.random() * parseInt('10_000')) + 1
         connection = moonrakerClient.getConnection()
 
@@ -72,7 +72,7 @@ module.exports = class ExecuteCommand extends SlashCommand {
         console.log(logSymbols.error, `Execute Command: ${error}`.error)
         connection.removeListener('message', handler)
         commandFeedback = undefined
-        return locale.errors.command_failed
+        ctx.send(locale.errors.command_failed)
     }
     onUnload() {
         return 'okay'
