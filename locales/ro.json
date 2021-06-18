@@ -223,7 +223,7 @@
             "type": "Tip Disc ${disk_index}",
             "model": "Model Disc ${disk_index}",
             "vendor": "Furnizor Disc ${disk_index}",
-            "used": "Utilizare Disc ${disk_index}"
+            "size": "Capacitate Disc ${disk_index}"
         },
         "os": {
             "title": "Sistem de Operare",
@@ -240,7 +240,7 @@
             "name": "Nume Partiție ${partition_index}",
             "type": "Tip Partiție ${partition_index}",
             "mount": "Montare Partiție ${partition_index}",
-            "size": "Mărime Partiție ${partition_index}",
+            "size": "Capacitate Partiție ${partition_index}",
             "used": "Utilizare Partiție ${partition_index}"
         },
         "ram": {

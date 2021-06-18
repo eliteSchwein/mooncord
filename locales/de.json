@@ -223,7 +223,7 @@
             "type": "Festplatte ${disk_index} Typ",
             "model": "Festplatte ${disk_index} Modell",
             "vendor": "Festplatte ${disk_index} Hersteller",
-            "used": "Festplatte ${disk_index} Auslastung"
+            "size": "Festplatte ${disk_index} Größe"
         },
         "os": {
             "title": "Betriebsystem",

@@ -223,7 +223,7 @@
             "type": "Disk ${disk_index} Type",
             "model": "Disk ${disk_index} Model",
             "vendor": "Disk ${disk_index} Vendor",
-            "used": "Disk ${disk_index} Used"
+            "size": "Disk ${disk_index} Size"
         },
         "os": {
             "title": "OS",

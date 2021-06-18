@@ -19,7 +19,7 @@ const template = {
         "value":  "${disk.vendor}"
     },
     "used": {
-        "title": locale.loadinfo.disk.used,
+        "title": locale.loadinfo.disk.size,
         "value":  "${disk.size}"
     },
 }
