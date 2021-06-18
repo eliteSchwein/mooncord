@@ -15,7 +15,7 @@ module.exports.getFields = async () => {
         value:`${(ram.used / (1024 ** 3)).toFixed(2)}GB`,
         inline: true
     },{
-        name: locale.loadinfo.ram.swap,
+        name: locale.loadinfo.ram.swap_total,
         value:`${(ram.swaptotal / (1024 ** 3)).toFixed(2)}GB`,
         inline: true
     },{
