@@ -2,6 +2,7 @@ const { SlashCommand, CommandOptionType } = require('slash-create')
 const logSymbols = require('log-symbols')
 
 const moonrakerClient = require('../../clients/moonrakerclient')
+const discordClient = require('../../clients/discordclient')
 const permission = require('../../utils/permissionUtil')
 const locale = require('../../utils/localeUtil')
 
@@ -27,6 +28,7 @@ module.exports = class ExecuteCommand extends SlashCommand {
     }
 
     async run(ctx) {
+        //if (!await permission.hasAdmin(ctx.user, ctx.guildID, discordClient.getClient())) {
         if (!await permission.hasAdmin(ctx.user, ctx.guildID)) {
             return locale.errors.guild_only.replace(/(\${username})/g, ctx.user.username)
         }
@@ -70,9 +72,9 @@ module.exports = class ExecuteCommand extends SlashCommand {
     }
     onError(error, ctx) {
         console.log(logSymbols.error, `Execute Command: ${error}`.error)
+        ctx.send(locale.errors.command_failed)
         connection.removeListener('message', handler)
         commandFeedback = undefined
-        ctx.send(locale.errors.command_failed)
     }
     onUnload() {
         return 'okay'
