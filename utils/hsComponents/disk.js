@@ -25,7 +25,7 @@ const template = {
 }
 
 module.exports = {}
-module.exports.getTitle = () => { return 'Disks' }
+module.exports.getTitle = () => { return locale.loadinfo.disk.title }
 module.exports.getFields = async () => {
     const disks = await si.diskLayout()
     

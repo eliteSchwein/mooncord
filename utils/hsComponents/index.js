@@ -1,3 +1,5 @@
+const locale = require('../localeUtil')
+
 module.exports = {
   cpu: require('./cpu'),
   ram: require('./ram'),
@@ -9,23 +11,23 @@ module.exports = {
 module.exports.choices = () => {
     return [
         {
-            name: 'CPU',
+            name: locale.loadinfo.cpu.title,
             value: 'cpu'
         },
         {
-            name: 'RAM',
+            name: locale.loadinfo.ram.title,
             value: 'ram'
         },
         {
-            name: 'Disks',
+            name: locale.loadinfo.disk.title,
             value: 'disk'
         },
         {
-            name: 'Partitions',
+            name: locale.loadinfo.partitions.title,
             value: 'partitions'
         },
         {
-            name: 'OS',
+            name: locale.loadinfo.os.title,
             value: 'os'
         },
     ]
