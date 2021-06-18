@@ -232,7 +232,7 @@
             "distro": "发行版",
             "release": "發布版本",
             "kernel": "内核",
-            "arch": "Arch",
+            "arch": "架構",
             "hostname": "主機名稱"
         },
         "partitions": {
