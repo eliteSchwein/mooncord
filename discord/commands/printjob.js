@@ -50,7 +50,7 @@ module.exports = class PrintJobCommand extends SlashCommand {
     }
 
     async run(ctx) {
-        if (!await permission.hasAdmin(ctx.user, ctx.guildID)) {
+        if (!await permission.hasAdmin(ctx.user, ctx.guildID, discordClient.getClient())) {
             return locale.errors.admin_only.replace(/(\${username})/g, ctx.user.username)
         }
         const subcommand = ctx.subcommands[0]
