@@ -38,7 +38,7 @@ module.exports = class LoadInfoCommand extends SlashCommand {
         if (component.startsWith('mcu')) {
             answer = await retrieveMCUComponent(component)
         } else {
-            answer = await loadUtil.getInformation(ctx.options.component)
+            answer = await loadUtil.getInformation(component)
         }
 
         await ctx.send({
