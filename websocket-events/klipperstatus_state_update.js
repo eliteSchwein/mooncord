@@ -4,6 +4,7 @@ const path = require('path')
 
 const status = require('../utils/statusUtil')
 const variables = require('../utils/variablesUtil')
+const locale = require('../utils/localeUtil')
 
 const event = (message, connection, discordClient, database) => {
   if (message.type === 'utf8') {
@@ -51,13 +52,13 @@ async function postUpdate(updateData, discordClient, database) {
   console.log(logSymbols.info, `There are some Updates!`.printstatus)
   const notifyembed = new Discord.MessageEmbed()
     .setColor('#fcf803')
-    .setTitle('Systemupdates')
+    .setTitle(locale.update.title)
     .attachFiles(path.resolve(__dirname, '../images/update.png'))
     .setThumbnail('attachment://update.png')
     .setTimestamp()
   for (const software in updateData) {
     if (software === 'system') {
-      notifyembed.addField('System', `Packages: ${updateData[software].packages}`, true)
+      notifyembed.addField(locale.update.system, `${locale.update.packages}: ${updateData[software].packages}`, true)
     } else {
       notifyembed.addField(software, `${updateData[software].current} \n🆕 ${updateData[software].remote}`, true)
     }

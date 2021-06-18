@@ -311,5 +311,10 @@
     },
     "timelapse": {
         "for_gcode": "Time lapse pour ${gcode_file}"
+    },
+    "update": {
+        "title": "System Updates",
+        "system": "System",
+        "packages": "Packages"
     }
 }

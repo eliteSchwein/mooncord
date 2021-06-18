@@ -3,6 +3,7 @@ const args = process.argv.slice(2)
 const config = require(`${args[0]}/mooncord.json`)
 const status = require('../utils/statusUtil')
 const variables = require('../utils/variablesUtil')
+const locale = require('../utils/localeUtil')
 
 let lastProgress = 0
 
@@ -27,8 +28,10 @@ const event = (message, connection, discordClient) => {
       if (currentProgress.toFixed(0) === 0) { return }
       if (currentProgress.toFixed(0) === 100) { return }
       if (currentProgress.toFixed(0) === variables.getProgress()) { return }
-
-      discordClient.user.setActivity(`Printing: ${currentProgress.toFixed(0)}%`, { type: 'WATCHING' })
+      
+      discordClient.user.setActivity(
+        locale.status.printing.activity.replace(/(\${value_print_progress})/g, currentProgress.toFixed(0))
+        , { type: 'WATCHING' })
       variables.setProgress(currentProgress.toFixed(0))
 
       if (currentProgress.toFixed(0) === lastProgress) { return }
