@@ -28,8 +28,7 @@ module.exports = class ExecuteCommand extends SlashCommand {
     }
 
     async run(ctx) {
-        //if (!await permission.hasAdmin(ctx.user, ctx.guildID, discordClient.getClient())) {
-        if (!await permission.hasAdmin(ctx.user, ctx.guildID)) {
+        if (!await permission.hasAdmin(ctx.user, ctx.guildID, discordClient.getClient())) {
             return locale.errors.guild_only.replace(/(\${username})/g, ctx.user.username)
         }
         if (typeof (commandFeedback) !== 'undefined') {
