@@ -313,7 +313,7 @@
         "for_gcode": "Zeitraffer für ${gcode_file}"
     },
     "update": {
-        "title": "System Updates",
+        "title": "System Aktualisierungen",
         "system": "System",
         "packages": "Pakete"
     }
