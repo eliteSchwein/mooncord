@@ -1,0 +1,320 @@
+{
+    "commands": {
+        "admin": {
+            "description": "更改管理員或用戶。",
+            "command": "管理員",
+            "options": {
+                "role": {
+                    "name": "身份組",
+                    "description": "更改身份組。",
+                    "options": {
+                        "role": {
+                            "name": "身份組",
+                            "description": "選擇身份組。"
+                        }
+                    }
+                },
+                "user": {
+                    "name": "使用者",
+                    "description": "更改使用者。",
+                    "options": {
+                        "user": {
+                            "name": "使用者",
+                            "description": "選擇使用者。"
+                        }
+                    }
+                }
+            },
+            "answer": {
+                "added": "${mention} 現在是管理員， ${username}!",
+                "removed": "${mention} 不在是管理員， ${username}!"
+            }
+        },
+        "editchannel": {
+            "description": "添加或刪除廣播頻道。",
+            "command": "更改頻道",
+            "options": {
+                "channel": {
+                    "name": "頻道",
+                    "description": "選擇添加或刪除一個頻道為廣播頻道。"
+                } 
+            },
+            "answer": {
+                "not_textchannel": "${channel} 不是語音頻道， ${username}!",
+                "activated": "${channel} 已被設為廣播頻道， ${username}!",
+                "deactivated": "${channel} 不再是廣播頻道， ${username}!"
+            }
+        },
+        "execute": {
+            "description": "執行一個GCode指令。",
+            "command": "執行",
+            "options": {
+                "gcode": {
+                    "name": "gcode",
+                    "description": "你想要執行的GCode。"
+                }
+            },
+            "answer": {
+                "success": "指令成功執行！",
+                "error": "錯誤： `${gcode_feedback}`",
+                "unknown": "未知的GCode指令： `${gcode_feedback}`"
+            }
+        },
+        "fileinfo": {
+            "description": "顯示列印檔案資訊。",
+            "command": "檔案資訊",
+            "options": {
+                "file": {
+                    "name": "檔案",
+                    "description": "指定一個列印檔案。"
+                }
+            }
+        },
+        "info": {
+            "description": "發送關於我的描述。",
+            "command": "資訊",
+            "embed": {
+                "title": "資訊",
+                "description": "版本： ${version}\n作者： ${author}\n首頁： ${homepage}"
+            }
+        },
+        "listfiles": {
+            "description": "顯示所有列印檔案。",
+            "command": "顯示檔案",
+            "embed": {
+                "title": "列印檔案"
+            }
+        },
+        "loadinfo": {
+            "description": "取得當前的硬體和軟體資訊。",
+            "command": "加載資訊",
+            "options": {
+                "file": {
+                    "name": "零件",
+                    "description": "選擇你想獲得資訊的零件。"
+                }
+            }
+        },
+        "notify": {
+            "description": "需要我私訊你當前的列印狀態？",
+            "command": "通知我",
+            "answer": {
+                "activated": "我會私訊你當前的列印狀態， ${username}!",
+                "deactivated": "我不會在私訊你當前的列印狀態， ${username}!"
+            }
+        },
+        "printjob": {
+            "description": "管理或開始一個列印工作。",
+            "command": "列印工作",
+            "options": {
+                "pause": {
+                    "name": "暫停",
+                    "description": "暫停列印工作"
+                },
+                "cancel": {
+                    "name": "取消",
+                    "description": "取消列印工作"
+                },
+                "resume": {
+                    "name": "恢復",
+                    "description": "恢復列印工作"
+                },
+                "start": {
+                    "name": "開始",
+                    "description": "開始新的列印工作",
+                    "options": {
+                        "file": {
+                            "name": "檔案",
+                            "description": "選擇列印檔案。"
+                        }
+                    }
+                }
+            },
+            "answer": {
+                "file_not_found": "未找到檔案！",
+                "resume": {
+                    "status_not_valid": "${username} 當前列印狀態不是暫停！",
+                    "status_valid": "${username} 恢復了列印工作！",
+                    "status_same": "${username} 列印工作正在運行！"
+                },
+                "cancel": {
+                    "status_not_valid": "${username} 沒有正在運行的列印工作！",
+                    "status_valid": "${username} 你取消了列印工作！",
+                    "status_same": ""
+                },
+                "pause": {
+                    "status_not_valid": "${username} 沒有正在運行的列印工作！",
+                    "status_valid": "${username} 你暫停了列印工作！",
+                    "status_same": "${username} 列印狀態已暫停！"
+                },
+                "abort": "請求取消列印工作， ${username}!",
+                "executed": "執行選擇的列印工作， ${username}!"
+            },
+            "embed": {
+                "title": "開始列印工作？"
+            }
+        },
+        "status": {
+            "description": "取得當前的列印狀態。",
+            "command": "狀態"
+        },
+        "temp": {
+            "description": "從Klipper取得當前溫度。",
+            "command": "溫度",
+            "embed": {
+                "title": "溫度",
+                "fields": {
+                    "current_temp": "當前",
+                    "target_temp": "目標",
+                    "current_power": "功率"
+                }
+            }
+        }
+    },
+    "dynamic_commands": {
+        "timelapse": {
+            "description": "取得最新縮時攝影",
+            "command": "縮時攝影"
+        }
+    },
+    "errors": {
+        "admin_only": "你沒有權限， ${username}",
+        "check_console": "請查看控制台！",
+        "command_failed": "發生錯誤！",
+        "command_timeout": "命令執行失敗！",
+        "controller_only": "你沒有權限， ${username}",
+        "file_not_found": "未找到檔案！",
+        "guild_only": "這個指令只能在伺服器上執行， ${username}",
+        "no_data": "沒有找到關於${component}的數據！",
+        "no_files_found": "沒有找到任何檔案！",
+        "no_timelapse": "沒有找到延時攝影！",
+        "not_ready": "這個命令還沒有準備好， ${username}!"
+    },
+    "fileinfo": {
+        "title": "檔案信息",
+        "print_time": "列印時間",
+        "slicer": "切片軟體",
+        "slicer_version": "切片軟體版本",
+        "height": "高度"
+    },
+    "events": {
+        "print_job_start": {
+            "answer":{
+                "abort": "取消請求列印工作， ${username}!",
+                "executed": "執行請求列印工作， ${username}!"
+            }
+        }
+    },
+    "loadinfo": {
+        "cpu": {
+            "title": "CPU",
+            "model": "型號",
+            "manufacturer": "製造商",
+            "usage": "使用率",
+            "cores": "核心",
+            "threads": "執行緒",
+            "temperature": "溫度",
+            "frequency": "頻率",
+            "max_frequency": "最高頻率"
+        },
+        "disk": {
+            "title": "磁盤",
+            "name": "磁盤 ${disk_index} 名稱",
+            "type": "磁盤 ${disk_index} 類型",
+            "model": "磁盤 ${disk_index} 型號",
+            "vendor": "磁盤 ${disk_index} 發售商",
+            "Size": "磁盤 ${disk_index} 容量"
+        },
+        "os": {
+            "title": "操作系統 ",
+            "platform": "平台",
+            "logofile": "Logofile",
+            "distro": "发行版",
+            "release": "發布版本",
+            "kernel": "内核",
+            "arch": "Arch",
+            "hostname": "主機名稱"
+        },
+        "partitions": {
+            "title": "磁盤分區",
+            "name": "磁盤分區 ${partition_index} 名稱",
+            "type": "磁盤分區 ${partition_index} 類型",
+            "mount": "磁盤分區 ${partition_index} 挂载",
+            "size": "磁盤分區 ${partition_index} 容量",
+            "used": "磁盤分區 ${partition_index} 使用中"
+        },
+        "ram": {
+            "title": "內存",
+            "total": "共計",
+            "used": "使用中",
+            "swap_total": "交換分區大小",
+            "swap_used": "交換分區使用大小"
+        },
+        "mcu": {
+            "chipset": "芯片組",
+            "version": "版本",
+            "load": "負荷",
+            "awake": "喚醒",
+            "frequency": "頻率"
+        }
+    },
+    "status": {
+        "disconnected":{
+            "title": "列印機離線！",
+            "activity": "正在等待Klipper"
+        },
+        "error":{
+            "title": "發生錯誤！",
+            "activity": "等待使用者"
+        },
+        "offline":{
+            "title": "連線中斷！",
+            "activity": "正在等待Moonraker"
+        },
+        "shutdown":{
+            "title": "關閉Klipper",
+            "activity": "正在等待Klipper"
+        },
+        "stop":{
+            "title": "列印暫停",
+            "activity": "列印暫停"
+        },
+        "ready":{
+            "title": "列印機就緒",
+            "activity": "取GCODE文件。。。"
+        },
+        "startup":{
+            "title": "列印機開始中",
+            "activity": "列印機開始"
+        },
+        "start":{
+            "title": "列印機啟動",
+            "activity": "開始${gcode_file}"
+        },
+        "done":{
+            "title": "列印完成",
+            "activity": "完成列印"
+        },
+        "pause":{
+            "title": "列印暫停",
+            "activity": "休息一下"
+        },
+        "printing":{
+            "title": "列印進度",
+            "activity": "列印進度： ${value_print_progress}%"
+        },
+        "fields": {
+            "print_time": "列印時間",
+            "eta_print_time": "預計列印時間",
+            "print_progress": "進度"
+        }
+    },
+    "timelapse": {
+        "for_gcode": "${gcode_file}的縮時攝影"
+    },
+    "update": {
+        "title": "系統更新",
+        "system": "系統",
+        "packages": "軟體包"
+    }
+}
