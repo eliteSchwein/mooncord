@@ -23,52 +23,50 @@ module.exports = class TempCommand extends SlashCommand {
     }
 
     run(ctx) {
-        try {
-            
-            connection = moonrakerClient.getConnection()
-            const id = Math.floor(Math.random() * parseInt('10_000')) + 1
+        connection = moonrakerClient.getConnection()
+        const id = Math.floor(Math.random() * parseInt('10_000')) + 1
 
-            let timeout = 0
+        let timeout = 0
 
-            commandFeedback = undefined
+        commandFeedback = undefined
 
-            ctx.defer(false)
+        ctx.defer(false)
 
-            connection.on('message', handler)
-            connection.send(`{"jsonrpc": "2.0", "method": "server.temperature_store", "id": ${id}}`)
+        connection.on('message', handler)
+        connection.send(`{"jsonrpc": "2.0", "method": "server.temperature_store", "id": ${id}}`)
 
-            const feedbackInterval = setInterval(() => {
-                if (typeof (commandFeedback) !== 'undefined') {
-                    {
-                        const thumbnail = commandFeedback.files[0]
-                        const files = {
-                            name: thumbnail.name,
-                            file: thumbnail.attachment
-                        }
-                        ctx.send({
-                            file: files,
-                            embeds: [commandFeedback.toJSON()]
-                        })
+        const feedbackInterval = setInterval(() => {
+            if (typeof (commandFeedback) !== 'undefined') {
+                {
+                    const thumbnail = commandFeedback.files[0]
+                    const files = {
+                        name: thumbnail.name,
+                        file: thumbnail.attachment
                     }
-                    clearInterval(feedbackInterval)
-                }
-                if (timeout === 4) {
                     ctx.send({
-                        content: locale.errors.command_timeout
+                        file: files,
+                        embeds: [commandFeedback.toJSON()]
                     })
-                    connection.removeListener('message', handler)
-                    clearInterval(feedbackInterval)
                 }
-                timeout++
-           }, 500)
-        }
-        catch (error) {
-            console.log(logSymbols.error, `Temp Command: ${error}`.error)
-            connection.removeListener('message', handler)
-            return locale.errors.command_failed
-        }
+                clearInterval(feedbackInterval)
+            }
+            if (timeout === 4) {
+                ctx.send({
+                    content: locale.errors.command_timeout
+                })
+                connection.removeListener('message', handler)
+                clearInterval(feedbackInterval)
+            }
+            timeout++
+        }, 500)
     }
-    async onUnload() {
+    onError(error, ctx) {
+        console.log(logSymbols.error, `Temp Command: ${error}`.error)
+        ctx.send(locale.errors.command_failed)
+        connection.removeListener('message', handler)
+        commandFeedback = undefined
+    }
+    onUnload() {
         return 'okay'
     }
 }

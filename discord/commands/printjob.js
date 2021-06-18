@@ -50,49 +50,47 @@ module.exports = class PrintJobCommand extends SlashCommand {
     }
 
     async run(ctx) {
-        try {
-            if (!await permission.hasAdmin(ctx.user, ctx.guildID)) {
-                return locale.errors.admin_only.replace(/(\${username})/g, ctx.user.username)
-            }
-            const subcommand = ctx.subcommands[0]
-            const currentStatus = variables.getStatus()
-            const id = Math.floor(Math.random() * parseInt('10_000')) + 1
-
-            connection = moonrakerClient.getConnection()
-
-            if (typeof (commandFeedback) !== 'undefined') {
-                return locale.errors.not_ready.replace(/(\${username})/g, ctx.user.username)
-            }
-
-            if (Object.keys(metadata).includes(subcommand)) {
-                const subcommandmeta = metadata[subcommand]
-                const lang_command_meta = commandlocale.answer[subcommand]
-                if (subcommand === currentStatus) {
-                    return lang_command_meta.statusSame.replace(/(\${username})/g, ctx.user.username)
-                }
-
-                if (!subcommandmeta.requiredStatus.includes(currentStatus)) {
-                    return lang_command_meta.statusNotValid.replace(/(\${username})/g, ctx.user.username)
-                }
-                connection.send(`{"jsonrpc": "2.0", "method": "printer.gcode.script", "params": {"script": "${subcommandmeta.macro}"}, "id": ${id}}`)
-                return lang_command_meta.statusValid.replace(/(\${username})/g, ctx.user.username)
-            }
-            
-            if (subcommand === 'start') {
-                ctx.defer(false)
-
-                startPrintJob(ctx)
-            }
+        if (!await permission.hasAdmin(ctx.user, ctx.guildID)) {
+            return locale.errors.admin_only.replace(/(\${username})/g, ctx.user.username)
         }
-        catch (error) {
-            console.log(logSymbols.error, `Printjob Command: ${error}`.error)
-            connection.removeListener('message', handler)
-            commandFeedback = undefined
-            return locale.errors.command_failed
+        const subcommand = ctx.subcommands[0]
+        const currentStatus = variables.getStatus()
+        const id = Math.floor(Math.random() * parseInt('10_000')) + 1
+
+        connection = moonrakerClient.getConnection()
+
+        if (typeof (commandFeedback) !== 'undefined') {
+            return locale.errors.not_ready.replace(/(\${username})/g, ctx.user.username)
+        }
+
+        if (Object.keys(metadata).includes(subcommand)) {
+            const subcommandmeta = metadata[subcommand]
+            const lang_command_meta = commandlocale.answer[subcommand]
+            if (subcommand === currentStatus) {
+                return lang_command_meta.statusSame.replace(/(\${username})/g, ctx.user.username)
+            }
+
+            if (!subcommandmeta.requiredStatus.includes(currentStatus)) {
+                return lang_command_meta.statusNotValid.replace(/(\${username})/g, ctx.user.username)
+            }
+            connection.send(`{"jsonrpc": "2.0", "method": "printer.gcode.script", "params": {"script": "${subcommandmeta.macro}"}, "id": ${id}}`)
+            return lang_command_meta.statusValid.replace(/(\${username})/g, ctx.user.username)
+        }
+        
+        if (subcommand === 'start') {
+            ctx.defer(false)
+
+            startPrintJob(ctx)
         }
     }
-    async onUnload() {
+    onUnload() {
         return 'okay'
+    }
+    onError(error, ctx) {
+        console.log(logSymbols.error, `Printjob Command: ${error}`.error)
+        ctx.send(locale.errors.command_failed)
+        connection.removeListener('message', handler)
+        commandFeedback = undefined
     }
 }
 

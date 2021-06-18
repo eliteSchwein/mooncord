@@ -27,72 +27,70 @@ module.exports = class FileInfoCommand extends SlashCommand {
     }
 
     run(ctx) {
-        try {
+        if (typeof (commandFeedback) !== 'undefined') {
+            return locale.errors.not_ready.replace(/(\${username})/g, ctx.user.username)
+        }
+        let gcodefile = ctx.options.file
+        if (!gcodefile.endsWith('.gcode')) {
+            gcodefile += '.gcode'
+        }
+
+        const id = Math.floor(Math.random() * parseInt('10_000')) + 1
+        connection = moonrakerClient.getConnection()
+
+        let timeout = 0
+
+        commandFeedback = undefined
+
+        ctx.defer(false)
+
+        connection.on('message', handler)
+        connection.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${gcodefile}"}, "id": ${id}}`)
+        const feedbackInterval = setInterval(() => {
             if (typeof (commandFeedback) !== 'undefined') {
-                return locale.errors.not_ready.replace(/(\${username})/g, ctx.user.username)
-            }
-            let gcodefile = ctx.options.file
-            if (!gcodefile.endsWith('.gcode')) {
-                gcodefile += '.gcode'
-            }
-
-            const id = Math.floor(Math.random() * parseInt('10_000')) + 1
-            connection = moonrakerClient.getConnection()
-
-            let timeout = 0
-
-            commandFeedback = undefined
-
-            ctx.defer(false)
-
-            connection.on('message', handler)
-            connection.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${gcodefile}"}, "id": ${id}}`)
-            const feedbackInterval = setInterval(() => {
-                if (typeof (commandFeedback) !== 'undefined') {
-                    if (commandFeedback === 'Not Found!') {
-                        commandFeedback = undefined
+                if (commandFeedback === 'Not Found!') {
+                    commandFeedback = undefined
+                    ctx.send({
+                        content: locale.errors.file_not_found
+                    })
+                } else {
+                    if (commandFeedback.files.length > 0) {
+                        const thumbnail = commandFeedback.files[0]
+                        const files = {
+                            name: thumbnail.name,
+                            file: thumbnail.attachment
+                        }
                         ctx.send({
-                            content: locale.errors.file_not_found
+                            file: files,
+                            embeds: [commandFeedback.toJSON()]
                         })
                     } else {
-                        if (commandFeedback.files.length > 0) {
-                            const thumbnail = commandFeedback.files[0]
-                            const files = {
-                                name: thumbnail.name,
-                                file: thumbnail.attachment
-                            }
-                            ctx.send({
-                                file: files,
-                                embeds: [commandFeedback.toJSON()]
-                            })
-                        } else {
-                            ctx.send({
-                                embeds: [commandFeedback.toJSON()]
-                            })
-                        }
-                        commandFeedback = undefined
+                        ctx.send({
+                            embeds: [commandFeedback.toJSON()]
+                        })
                     }
-                    clearInterval(feedbackInterval)
-                }
-                if (timeout === 4) {
-                    ctx.send({
-                        content: locale.errors.command_timeout
-                    })
                     commandFeedback = undefined
-                    clearInterval(feedbackInterval)
-                    connection.removeListener('message', handler)
                 }
-                timeout++
-           }, 500)
-        }
-        catch (error) {
-            console.log(logSymbols.error, `Fileinfo Command: ${error}`.error)
-            commandFeedback = undefined
-            connection.removeListener('message', handler)
-            return locale.errors.command_failed
-        }
+                clearInterval(feedbackInterval)
+            }
+            if (timeout === 4) {
+                ctx.send({
+                    content: locale.errors.command_timeout
+                })
+                commandFeedback = undefined
+                clearInterval(feedbackInterval)
+                connection.removeListener('message', handler)
+            }
+            timeout++
+        }, 500)
     }
-    async onUnload() {
+    onError(error, ctx) {
+        console.log(logSymbols.error, `Fileinfo Command: ${error}`.error)
+        ctx.send(locale.errors.command_failed)
+        connection.removeListener('message', handler)
+        commandFeedback = undefined
+    }
+    onUnload() {
         return 'okay'
     }
 }

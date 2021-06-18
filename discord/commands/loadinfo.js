@@ -24,36 +24,34 @@ module.exports = class LoadInfoCommand extends SlashCommand {
         })
         this.filePath = __filename
     }
-    async onUnload() {
+    onUnload() {
         return 'okay'
     }
 
     async run(ctx) {
-        try {
-            ctx.defer(false)
+        ctx.defer(false)
 
-            const component = ctx.options.component
+        const component = ctx.options.component
 
-            let answer
+        let answer
 
-            if (component.startsWith('mcu')) {
-                answer = await retrieveMCUComponent(component)
-            } else {
-                answer = await loadUtil.getInformation(ctx.options.component)
-            }
-
-            await ctx.send({
-                file: {
-                    name: answer[0][0],
-                    file: answer[0][1]
-                },
-                embeds: [answer[1].toJSON()]
-            })
+        if (component.startsWith('mcu')) {
+            answer = await retrieveMCUComponent(component)
+        } else {
+            answer = await loadUtil.getInformation(ctx.options.component)
         }
-        catch (error) {
-            console.log(logSymbols.error, `Loadinfo Command: ${error}`.error)
-            return locale.errors.command_failed
-        }
+
+        await ctx.send({
+            file: {
+                name: answer[0][0],
+                file: answer[0][1]
+            },
+            embeds: [answer[1].toJSON()]
+        })
+    }
+    onError(error, ctx) {
+        console.log(logSymbols.error, `Loadinfo Command: ${error}`.error)
+        ctx.send(locale.errors.command_failed)
     }
 }
 async function retrieveMCUComponent(mcu) {

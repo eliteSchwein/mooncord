@@ -20,38 +20,36 @@ module.exports = class InfoCommand extends SlashCommand {
     }
 
     async run(ctx) {
-        try {
-            const description = commandlocale.embed.description
-                .replace(/(\${version})/g, pjson.version)
-                .replace(/(\${author})/g, pjson.author)
-                .replace(/(\${homepage})/g, pjson.homepage)
-        
-            const logopath = path.resolve(__dirname, '../../images/logo.png')
+        const description = commandlocale.embed.description
+            .replace(/(\${version})/g, pjson.version)
+            .replace(/(\${author})/g, pjson.author)
+            .replace(/(\${homepage})/g, pjson.homepage)
+    
+        const logopath = path.resolve(__dirname, '../../images/logo.png')
 
-            const logobuffer = fs.readFileSync(logopath)
+        const logobuffer = fs.readFileSync(logopath)
 
-            const infoEmbed = new Discord.MessageEmbed()
-                .setColor('#0099ff')
-                .setTitle(commandlocale.embed.title)
-                .setDescription(description)
-                .setThumbnail('attachment://logo.png')
-        
-            ctx.defer(false)
+        const infoEmbed = new Discord.MessageEmbed()
+            .setColor('#0099ff')
+            .setTitle(commandlocale.embed.title)
+            .setDescription(description)
+            .setThumbnail('attachment://logo.png')
+    
+        ctx.defer(false)
 
-            await ctx.send({
-                file: {
-                    name: 'logo.png',
-                    file: logobuffer
-                },
-                embeds: [infoEmbed.toJSON()]
-            })
-        }
-        catch (error) {
-            console.log(logSymbols.error, `Info Command: ${error}`.error)
-            return locale.errors.command_failed
-        }
+        await ctx.send({
+            file: {
+                name: 'logo.png',
+                file: logobuffer
+            },
+            embeds: [infoEmbed.toJSON()]
+        })
     }
-    async onUnload() {
+    onError(error, ctx) {
+        console.log(logSymbols.error, `Info Command: ${error}`.error)
+        ctx.send(locale.errors.command_failed)
+    }
+    onUnload() {
         return 'okay'
     }
 }

@@ -25,48 +25,45 @@ module.exports = class EditChannelCommand extends SlashCommand {
     }
 
     async run(ctx) {
-        try {
-            if (typeof (ctx.guildID) === 'undefined') {
-                return locale.errors.guild_only.replace(/(\${username})/g, ctx.user.username)
-            }
+        if (typeof (ctx.guildID) === 'undefined') {
+            return locale.errors.guild_only.replace(/(\${username})/g, ctx.user.username)
+        }
 
-            if (!await permission.hasAdmin(ctx.user, ctx.guildID)) {
-                return locale.errors.admin_only.replace(/(\${username})/g, ctx.user.username)
-            }
+        if (!await permission.hasAdmin(ctx.user, ctx.guildID)) {
+            return locale.errors.admin_only.replace(/(\${username})/g, ctx.user.username)
+        }
 
-            let channel
-            let channelresult
+        let channel
+        let channelresult
 
-            if (typeof (ctx.options[commandlocale.options.channel.name]) === 'undefined') {
-                channelresult = await editChannel(ctx.channelID, ctx.guildID)
-                channel = `<#${ctx.channelID}>`
-            } else {
-                channelresult = await editChannel(ctx.options.channel, ctx.guildID)
-                channel = `<#${ctx.options[commandlocale.options.channel.name]}>`
-            }
+        if (typeof (ctx.options[commandlocale.options.channel.name]) === 'undefined') {
+            channelresult = await editChannel(ctx.channelID, ctx.guildID)
+            channel = `<#${ctx.channelID}>`
+        } else {
+            channelresult = await editChannel(ctx.options.channel, ctx.guildID)
+            channel = `<#${ctx.options[commandlocale.options.channel.name]}>`
+        }
 
-            if (typeof (channelresult) === 'undefined') {
-                return commandlocale.answer.not_textchannel
-                    .replace(/(\${username})/g, ctx.user.username)
-                    .replace(/(\${channel})/g, channel)
-            }
-
-            if (channelresult) {
-                return commandlocale.answer.activated
-                    .replace(/(\${username})/g, ctx.user.username)
-                    .replace(/(\${channel})/g, channel)
-            } 
-            return commandlocale.answer.deactivated
+        if (typeof (channelresult) === 'undefined') {
+            return commandlocale.answer.not_textchannel
                 .replace(/(\${username})/g, ctx.user.username)
                 .replace(/(\${channel})/g, channel)
-            
         }
-        catch (error) {
-            console.log(logSymbols.error, `Channel Command: ${error}`.error)
-            return locale.errors.command_failed
-        }
+
+        if (channelresult) {
+            return commandlocale.answer.activated
+                .replace(/(\${username})/g, ctx.user.username)
+                .replace(/(\${channel})/g, channel)
+        } 
+        return commandlocale.answer.deactivated
+            .replace(/(\${username})/g, ctx.user.username)
+            .replace(/(\${channel})/g, channel)
     }
-    async onUnload() {
+    onError(error, ctx) {
+        console.log(logSymbols.error, `Channel Command: ${error}`.error)
+        ctx.send(locale.errors.command_failed)
+    }
+    onUnload() {
         return 'okay'
     }
 }

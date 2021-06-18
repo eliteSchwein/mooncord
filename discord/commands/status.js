@@ -17,34 +17,32 @@ module.exports = class StatusCommand extends SlashCommand {
     }
 
     async run(ctx) {
-        try {
-            ctx.defer(false)
+        ctx.defer(false)
 
-            const status = await statusUtil.getManualStatusEmbed(ctx.user)
+        const status = await statusUtil.getManualStatusEmbed(ctx.user)
 
-            const statusfiles = status.files
+        const statusfiles = status.files
 
-            const files = []
+        const files = []
 
-            for (const statusfileindex in statusfiles) {
-                const statusfile = statusfiles[statusfileindex]
-                files.push({
-                    name: statusfile.name,
-                    file: statusfile.attachment
-                })
-            }
-
-            await ctx.send({
-                file: files,
-                embeds: [status.toJSON()]
+        for (const statusfileindex in statusfiles) {
+            const statusfile = statusfiles[statusfileindex]
+            files.push({
+                name: statusfile.name,
+                file: statusfile.attachment
             })
         }
-        catch (error) {
-            console.log(logSymbols.error, `Status Command: ${error}`.error)
-            return locale.errors.command_failed
-        }
+
+        await ctx.send({
+            file: files,
+            embeds: [status.toJSON()]
+        })
     }
-    async onUnload() {
+    onError(error, ctx) {
+        console.log(logSymbols.error, `Status Command: ${error}`.error)
+        ctx.send(locale.errors.command_failed)
+    }
+    onUnload() {
         return 'okay'
     }
 }

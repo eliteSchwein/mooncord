@@ -40,53 +40,50 @@ module.exports = class AdminCommand extends SlashCommand {
     }
 
     async run(ctx) {
-        try {
-            if (typeof (ctx.guildID) === 'undefined') {
-                return locale.errors.guild_only.replace(/(\${username})/g, ctx.user.username)
-            }
-            
-            if (!permission.isMaster(ctx.user)) {
-                return locale.errors.master_only.replace(/(\${username})/g, ctx.user.username)
-            }
+        if (typeof (ctx.guildID) === 'undefined') {
+            return locale.errors.guild_only.replace(/(\${username})/g, ctx.user.username)
+        }
+        
+        if (!permission.isMaster(ctx.user)) {
+            return locale.errors.master_only.replace(/(\${username})/g, ctx.user.username)
+        }
 
-            let isRole
-            let adminid
+        let isRole
+        let adminid
 
-            if (ctx.subcommands[0] === commandlocale.options.role.name) {
-                isRole = true
-                adminid = ctx.options[commandlocale.options.role.name][commandlocale.options.role.options.role.name]
-            }
+        if (ctx.subcommands[0] === commandlocale.options.role.name) {
+            isRole = true
+            adminid = ctx.options[commandlocale.options.role.name][commandlocale.options.role.options.role.name]
+        }
 
-            if (ctx.subcommands[0] === commandlocale.options.user.name) {
-                isRole = false
-                adminid = ctx.options[commandlocale.options.user.name][commandlocale.options.user.options.user.name]
-            }
+        if (ctx.subcommands[0] === commandlocale.options.user.name) {
+            isRole = false
+            adminid = ctx.options[commandlocale.options.user.name][commandlocale.options.user.options.user.name]
+        }
 
-            const result = await editAdmin(isRole, adminid, ctx.guildID)
+        const result = await editAdmin(isRole, adminid, ctx.guildID)
 
-            let answermention = `<@${adminid}>`
+        let answermention = `<@${adminid}>`
 
-            if (isRole) {
-                answermention = answermention.replace(/<@/g,'<@&')
-            }
+        if (isRole) {
+            answermention = answermention.replace(/<@/g,'<@&')
+        }
 
-            if (result) {
-                return commandlocale.answer.added
-                    .replace(/(\${username})/g, ctx.user.username)
-                    .replace(/(\${mention})/g, answermention)
-            } 
-
-            return commandlocale.answer.removed
+        if (result) {
+            return commandlocale.answer.added
                 .replace(/(\${username})/g, ctx.user.username)
                 .replace(/(\${mention})/g, answermention)
-            
-        }
-        catch (error) {
-            console.log(logSymbols.error, `Admin Command: ${error}`.error)
-            return locale.errors.command_failed
-        }
+        } 
+
+        return commandlocale.answer.removed
+            .replace(/(\${username})/g, ctx.user.username)
+            .replace(/(\${mention})/g, answermention)
     }
-    async onUnload() {
+    onError(error, ctx) {
+        console.log(logSymbols.error, `Admin Command: ${error}`.error)
+        ctx.send(locale.errors.command_failed)
+    }
+    onUnload() {
         return 'okay'
     }
 }

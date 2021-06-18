@@ -33,43 +33,40 @@ module.exports = class HelloCommand extends SlashCommand {
     }
 
     async run(ctx) {
-        try {
+        ctx.defer(false)
 
-            ctx.defer(false)
+        if (typeof(ctx.options.emulate) != "undefined") {
+            const { emulate } = ctx.options
+            variablesUtil.setCurrentFile(emulate)
+            variablesUtil.updateLastGcodeFile()
+            variablesUtil.setCurrentFile('')
 
-            if (typeof(ctx.options.emulate) != "undefined") {
-                const { emulate } = ctx.options
-                variablesUtil.setCurrentFile(emulate)
-                variablesUtil.updateLastGcodeFile()
-                variablesUtil.setCurrentFile('')
-
-                await timelapseUtil.render()
-            }
-
-            if (variablesUtil.getLastGcodeFile() === '') {
-                return locale.errors.no_timelapse
-            }
-
-            const timelapseEmbed = timelapseUtil.getEmbed()
-
-            const timelapse = timelapseEmbed.files[0]
-
-            const files = {
-                name: timelapse.name,
-                file: timelapse.attachment
-            }
-
-            await ctx.send({
-                embeds: [timelapseEmbed.toJSON()],
-                file: files
-            })
+            await timelapseUtil.render()
         }
-        catch (error) {
-            console.log(logSymbols.error, `Timelapse Command: ${error}`.error)
-            return locale.errors.command_failed
+
+        if (variablesUtil.getLastGcodeFile() === '') {
+            return locale.errors.no_timelapse
         }
+
+        const timelapseEmbed = timelapseUtil.getEmbed()
+
+        const timelapse = timelapseEmbed.files[0]
+
+        const files = {
+            name: timelapse.name,
+            file: timelapse.attachment
+        }
+
+        await ctx.send({
+            embeds: [timelapseEmbed.toJSON()],
+            file: files
+        })
     }
-    async onUnload() {
+    onError(error, ctx) {
+        console.log(logSymbols.error, `Timelapse Command: ${error}`.error)
+        ctx.send(locale.errors.command_failed)
+    }
+    onUnload() {
         return 'okay'
     }
 }

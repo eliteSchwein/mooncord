@@ -17,21 +17,19 @@ module.exports = class NotifyCommand extends SlashCommand {
     }
 
     run(ctx) {
-        try {
-            const notifyStatus = database.updateNotify(ctx.user)
-            if (notifyStatus) {
-                return commandlocale.answer.activated
-                .replace(/(\${username})/g, ctx.user.username)
-            }
-            return commandlocale.answer.deactivated
+        const notifyStatus = database.updateNotify(ctx.user)
+        if (notifyStatus) {
+            return commandlocale.answer.activated
             .replace(/(\${username})/g, ctx.user.username)
         }
-        catch (error) {
-            console.log(logSymbols.error, `Notify Command: ${error}`.error)
-            return locale.errors.command_failed
-        }
+        return commandlocale.answer.deactivated
+            .replace(/(\${username})/g, ctx.user.username)
     }
-    async onUnload() {
+    onError(error, ctx) {
+        console.log(logSymbols.error, `Notify Command: ${error}`.error)
+        ctx.send(locale.errors.command_failed)
+    }
+    onUnload() {
         return 'okay'
     }
 }
