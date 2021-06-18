@@ -37,6 +37,7 @@ systemInfo.osInfo()
                                                     
   Version: ${(pjson.version).statustitle}
   Configpath: ${args[0].statustitle}
+  Locale: ${config.language}
   Author: ${(pjson.author).statustitle}
   Homepage: ${(pjson.homepage).statustitle}
   OS: ${(data.platform).statustitle}
