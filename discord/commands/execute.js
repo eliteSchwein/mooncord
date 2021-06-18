@@ -27,56 +27,54 @@ module.exports = class ExecuteCommand extends SlashCommand {
     }
 
     async run(ctx) {
-        try {
-            if (!await permission.hasAdmin(ctx.user, ctx.guildID)) {
-                return locale.errors.guild_only.replace(/(\${username})/g, ctx.user.username)
-            }
+        if (!await permission.hasAdmin(ctx.user, ctx.guildID)) {
+            return locale.errors.guild_only.replace(/(\${username})/g, ctx.user.username)
+        }
+        if (typeof (commandFeedback) !== 'undefined') {
+            return locale.errors.not_ready.replace(/(\${username})/g, ctx.user.username)
+        }
+        
+        const {gcode} = ctx.options
+        const id = Math.floor(Math.random() * parseInt('10_000')) + 1
+        connection = moonrakerClient.getConnection()
+
+        let timeout = 0
+
+        commandFeedback = undefined
+
+        ctx.defer(false)
+
+        const gcodeHandler = handler
+
+        connection.on('message', gcodeHandler)
+        connection.send(`{"jsonrpc": "2.0", "method": "printer.gcode.script", "params": {"script": "${gcode}"}, "id": ${id}}`)
+        const feedbackInterval = setInterval(() => {
             if (typeof (commandFeedback) !== 'undefined') {
-                return locale.errors.not_ready.replace(/(\${username})/g, ctx.user.username)
+                connection.removeListener('message', gcodeHandler)
+                ctx.send({
+                    content: commandFeedback
+                })
+                commandFeedback = undefined
+                clearInterval(feedbackInterval)
             }
-            
-            const {gcode} = ctx.options
-            const id = Math.floor(Math.random() * parseInt('10_000')) + 1
-            connection = moonrakerClient.getConnection()
-
-            let timeout = 0
-
-            commandFeedback = undefined
-
-            ctx.defer(false)
-
-            const gcodeHandler = handler
-
-            connection.on('message', gcodeHandler)
-            connection.send(`{"jsonrpc": "2.0", "method": "printer.gcode.script", "params": {"script": "${gcode}"}, "id": ${id}}`)
-            const feedbackInterval = setInterval(() => {
-                if (typeof (commandFeedback) !== 'undefined') {
-                    connection.removeListener('message', gcodeHandler)
-                    ctx.send({
-                        content: commandFeedback
-                    })
-                    commandFeedback = undefined
-                    clearInterval(feedbackInterval)
-                }
-                if (timeout === 4) {
-                    commandFeedback = undefined
-                    ctx.send({
-                        content: locale.errors.command_timeout
-                    })
-                    clearInterval(feedbackInterval)
-                    connection.removeListener('message', gcodeHandler)
-                }
-                timeout++
-           }, 500)
-        }
-        catch (error) {
-            console.log(logSymbols.error, `Execute Command: ${error}`.error)
-            connection.removeListener('message', handler)
-            commandFeedback = undefined
-            return locale.errors.command_failed
-        }
+            if (timeout === 4) {
+                commandFeedback = undefined
+                ctx.send({
+                    content: locale.errors.command_timeout
+                })
+                clearInterval(feedbackInterval)
+                connection.removeListener('message', gcodeHandler)
+            }
+            timeout++
+        }, 500)
     }
-    async onUnload() {
+    onError(error, ctx) {
+        console.log(logSymbols.error, `Execute Command: ${error}`.error)
+        connection.removeListener('message', handler)
+        commandFeedback = undefined
+        return locale.errors.command_failed
+    }
+    onUnload() {
         return 'okay'
     }
 }
