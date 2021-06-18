@@ -22,8 +22,11 @@ module.exports.getInformation = async function (component) {
       embed.addField(field.name, field.value, field.inline)
     }
   } else {
+    const description = locale.errors.no_data
+      .replace(/(\${component})/g, componentData.getTitle())
+    
     embed.setColor('#c90000')
-    embed.setDescription(`There are currently no ${componentData.getTitle()} data available`)
+    embed.setDescription(description)
   }
   return [img, embed]
 }
