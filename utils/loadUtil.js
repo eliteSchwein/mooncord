@@ -4,6 +4,7 @@ const path = require('path')
 const si = require('systeminformation')
 
 const componentHandler = require('./hsComponents')
+const locale = require('./localeUtil')
 
 module.exports.getDefaultEmbed = (img, title) => {
   const image = getImage(img)
