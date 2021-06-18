@@ -32,7 +32,6 @@ function loginBot() {
     console.log(`  ${'Discordbot Connected'.success}
     ${'Name:'.successname} ${(discordClient.user.tag).successvalue}
     ${'Invite:'.successname} ${variables.getInviteUrl()}`.successvalue)
-    discordClient.user.setActivity('Init....', { type: 'WATCHING' })
   })
 }
 
