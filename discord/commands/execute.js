@@ -35,7 +35,7 @@ module.exports = class ExecuteCommand extends SlashCommand {
             return locale.errors.not_ready.replace(/(\${username})/g, ctx.user.username)
         }
     
-        const { gcode } = ctx.options
+        const gcode = ctx.options[commandlocale.options.gcode.name]
         const id = Math.floor(Math.random() * parseInt('10_000')) + 1
         connection = moonrakerClient.getConnection()
 
