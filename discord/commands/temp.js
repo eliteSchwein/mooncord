@@ -76,7 +76,7 @@ function handler (message) {
     if (JSON.stringify(messageJson).includes('temperature')) {
         const temps = messageJson.result
 
-        const iconpath = path.resolve(__dirname, '../../images/thermometer.png')
+        const iconpath = path.resolve(__dirname, '../../images/temps.png')
 
         const iconbuffer = fs.readFileSync(iconpath)
 
