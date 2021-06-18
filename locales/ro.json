@@ -89,7 +89,7 @@
             "description": "Obțineți informațiile curente despre hardware și software.",
             "command": "info-sistem",
             "options": {
-                "file": {
+                "component": {
                     "name": "component",
                     "description": "Selectează componentul despre care vrei să afli informații."
                 }

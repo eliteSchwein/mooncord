@@ -89,7 +89,7 @@
             "description": "Erhalte aktuelle Hardware und Software Informationen.",
             "command": "lastinfo",
             "options": {
-                "file": {
+                "component": {
                     "name": "komponente",
                     "description": "Wähle die Komponente wovon du die Informationen wissen willst."
                 }

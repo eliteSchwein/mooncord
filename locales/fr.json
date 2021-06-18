@@ -89,7 +89,7 @@
             "description": "Obtenir les informations actuelles sur le matériel et les logiciels.",
             "command": "chargerinfo",
             "options": {
-                "file": {
+                "component": {
                     "name": "composant",
                     "description": "Sélectionnez le composent sur lequel vous voulez des informations."
                 }

@@ -17,8 +17,8 @@ module.exports = class LoadInfoCommand extends SlashCommand {
             options: [{
                 choices: generateChoices(),
                 type: CommandOptionType.STRING,
-                name: commandlocale.options.file.name,
-                description: commandlocale.options.file.description,
+                name: commandlocale.options.component.name,
+                description: commandlocale.options.component.description,
                 required: true
             }]
         })
@@ -31,7 +31,7 @@ module.exports = class LoadInfoCommand extends SlashCommand {
     async run(ctx) {
         ctx.defer(false)
 
-        const component = `${ctx.options.component}`
+        const component = ctx.options[commandlocale.options.component.description]
 
         console.log(component)
         let answer

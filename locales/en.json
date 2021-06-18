@@ -89,7 +89,7 @@
             "description": "Get the current Hardware and Software Informations.",
             "command": "loadinfo",
             "options": {
-                "file": {
+                "component": {
                     "name": "component",
                     "description": "Select the component you want to know the information about."
                 }
