@@ -29,7 +29,7 @@ module.exports = class EditChannelCommand extends SlashCommand {
             return locale.errors.guild_only.replace(/(\${username})/g, ctx.user.username)
         }
 
-        if (!await permission.hasAdmin(ctx.user, ctx.guildID)) {
+        if (!await permission.hasAdmin(ctx.user, ctx.guildID, discordClient.getClient())) {
             return locale.errors.admin_only.replace(/(\${username})/g, ctx.user.username)
         }
 
