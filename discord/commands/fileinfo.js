@@ -30,7 +30,7 @@ module.exports = class FileInfoCommand extends SlashCommand {
         if (typeof (commandFeedback) !== 'undefined') {
             return locale.errors.not_ready.replace(/(\${username})/g, ctx.user.username)
         }
-        let gcodefile = ctx.options.file
+        let gcodefile = ctx.options[commandlocale.options.file.name]
         if (!gcodefile.endsWith('.gcode')) {
             gcodefile += '.gcode'
         }
