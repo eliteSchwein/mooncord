@@ -28,7 +28,9 @@ function loadMCUList(config) {
 function retrieveMCUStatus(message) {
   variables.clearMCUList()
   Object.keys(message).forEach(key => {
-    variables.updateMCUStatus(key, message[key])
+    if (key.match(/(mcu)/g)) {
+      variables.updateMCUStatus(key, message[key])
+    }
   })
 }
 
