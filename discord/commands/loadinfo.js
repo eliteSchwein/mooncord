@@ -70,10 +70,10 @@ async function retrieveMCUComponent(mcu) {
 
     console.log(mcudata)
     console.log(typeof (mcudata) === 'undefined')
-    console.log(mcudata === {})
+    console.log(JSON.stringify(mcudata) === '{}')
 
     if ( typeof(mcudata) === 'undefined' ) { return [template[0], generateMCUNoData(mcu, embed)] }
-    if (mcudata === {}) { return [template[0], generateMCUNoData(mcu, embed)] }
+    if (JSON.stringify(mcudata) === '{}') { return [template[0], generateMCUNoData(mcu, embed)] }
 
     const mcuload = (mcudata.last_stats.mcu_task_avg + 3 * mcudata.last_stats.mcu_task_stddev) / 0.0025
     const mcuawake = mcudata.last_stats.mcu_awake / 5
