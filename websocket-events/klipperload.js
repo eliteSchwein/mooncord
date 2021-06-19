@@ -20,6 +20,7 @@ function loadMCUList(config) {
   variables.clearMCUList()
   Object.keys(config).forEach(key => {
     if (key.match(/(mcu)/g)) {
+      console.log(key)
       variables.addToMCUList(key)
     }
   })
