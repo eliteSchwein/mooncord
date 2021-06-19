@@ -30,6 +30,7 @@ function retrieveMCUStatus(message) {
   Object.keys(message).forEach(key => {
     if (key.match(/(mcu)/g)) {
       console.log(key)
+      console.log(message[key])
       variables.updateMCUStatus(key, message[key])
     }
   })
