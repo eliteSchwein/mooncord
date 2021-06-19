@@ -56,7 +56,7 @@ module.exports = class LoadInfoCommand extends SlashCommand {
 }
 function generateMCUNoData(mcu, embed) {
     const description = locale.errors.no_data
-        .replace(/(\${component})/g, mcu)
+        .replace(/(\${component})/g, `\`${mcu}\``)
     embed.setDescription(description)
     embed.setColor('#c90000')
     return embed

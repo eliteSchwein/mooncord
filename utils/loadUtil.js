@@ -24,7 +24,7 @@ module.exports.getInformation = async function (component) {
     }
   } else {
     const description = locale.errors.no_data
-      .replace(/(\${component})/g, componentData.getTitle())
+      .replace(/(\${component})/g, `\`${componentData.getTitle()}\``)
     
     embed.setColor('#c90000')
     embed.setDescription(description)
