@@ -68,8 +68,7 @@ async function retrieveMCUComponent(mcu) {
 
     const mcudata = variablesUtil.getMCUList()[mcu]
 
-    console.log(mcudata)
-    if ( typeof(mcudata) === 'undefinied' ) { return [template[0], generateMCUNoData(mcu, embed)] }
+    if ( typeof(mcudata) === 'undefined' ) { return [template[0], generateMCUNoData(mcu, embed)] }
     if (mcudata === {}) { return [template[0], generateMCUNoData(mcu, embed)] }
 
     const mcuload = (mcudata.last_stats.mcu_task_avg + 3 * mcudata.last_stats.mcu_task_stddev) / 0.0025
