@@ -68,6 +68,8 @@ async function retrieveMCUComponent(mcu) {
 
     const mcudata = variablesUtil.getMCUList()[mcu]
 
+    console.log(variablesUtil.getMCUList())
+
     console.log(mcudata)
     console.log(typeof (mcudata) === 'undefined')
     console.log(JSON.stringify(mcudata) === '{}')
