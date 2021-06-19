@@ -54,18 +54,23 @@ module.exports = class LoadInfoCommand extends SlashCommand {
         ctx.send(locale.errors.command_failed)
     }
 }
+function generateMCUNoData(mcu, embed) {
+    const description = locale.errors.no_data
+        .replace(/(\${component})/g, mcu)
+    embed.setDescription(description)
+    embed.setColor('#c90000')
+    return embed
+
+}
 async function retrieveMCUComponent(mcu) {
     const template = loadUtil.getDefaultEmbed('mcu', mcu)
     const embed = template[1]
 
     const mcudata = variablesUtil.getMCUList()[mcu]
-    if (mcudata === {}) {
-        const description = locale.errors.no_data
-            .replace(/(\${component})/g, mcu)
-        embed.setDescription(description)
-        embed.setColor('#c90000')
-        return [template[0], embed]
-    }
+
+    if ( typeof(mcudata) === 'undefinied' ) { return [template[0], generateMCUNoData(mcu, embed)] }
+    if (mcudata === {}) { return [template[0], generateMCUNoData(mcu, embed)] }
+
     const mcuload = (mcudata.last_stats.mcu_task_avg + 3 * mcudata.last_stats.mcu_task_stddev) / 0.0025
     const mcuawake = mcudata.last_stats.mcu_awake / 5
     const mcufreq = mcudata.last_stats.freq / 1000000
