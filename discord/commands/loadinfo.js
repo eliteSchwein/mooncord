@@ -60,7 +60,7 @@ async function retrieveMCUComponent(mcu) {
 
     const mcudata = variablesUtil.getMCUList()[mcu]
     console.log(mcudata)
-    if (typeof (mcudata) === 'undefined') {
+    if (mcudata === {}) {
         const description = locale.errors.no_data
             .replace(/(\${component})/g, mcu)
         embed.setDescription(description)
