@@ -60,7 +60,7 @@ async function retrieveMCUComponent(mcu) {
 
     const mcudata = variablesUtil.getMCUList()[mcu]
 
-    if (typeof (mcudata) === 'undefined') {
+    if (typeof (mcudata.last_stats) === 'undefined') {
         const description = locale.errors.no_data
         embed.setDescription(description)
         embed.setColor('#c90000')
