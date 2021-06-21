@@ -178,8 +178,8 @@
         }
     },
     "misc": {
-        "please_wait": "Please Wait!",
-        "wait_related": "Related"
+        "please_wait": "Attendez s'il vous plaît !",
+        "wait_related": "Rapport en cours"
     },
     "errors": {
         "admin_only": "Vous n'avez pas les permissions, ${username}",
