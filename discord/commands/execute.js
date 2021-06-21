@@ -29,10 +29,10 @@ module.exports = class ExecuteCommand extends SlashCommand {
 
     async run(ctx) {
         if (!await permission.hasAdmin(ctx.user, ctx.guildID, discordClient.getClient())) {
-            return locale.errors.guild_only.replace(/(\${username})/g, ctx.user.username)
+            return locale.getAdminOnlyError(ctx.user.username)
         }
         if (typeof (commandFeedback) !== 'undefined') {
-            return locale.errors.not_ready.replace(/(\${username})/g, ctx.user.username)
+            return locale.getCommandNotReadyError(ctx.user.username)
         }
     
         const gcode = ctx.options[commandlocale.options.gcode.name]

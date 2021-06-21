@@ -26,11 +26,11 @@ module.exports = class EditChannelCommand extends SlashCommand {
 
     async run(ctx) {
         if (typeof (ctx.guildID) === 'undefined') {
-            return locale.errors.guild_only.replace(/(\${username})/g, ctx.user.username)
+            return locale.getGuildOnlyError(ctx.user.username)
         }
 
         if (!await permission.hasAdmin(ctx.user, ctx.guildID, discordClient.getClient())) {
-            return locale.errors.admin_only.replace(/(\${username})/g, ctx.user.username)
+            return locale.getAdminOnlyError(ctx.user.username)
         }
 
         let channel

@@ -33,6 +33,6 @@ module.exports.hasAdmin = async function (user, guildid, altdiscordClient) {
   return false
 }
 
-module.exports.isMaster = function (user) {
+module.exports.hasController = function (user) {
   return config.permission.controller.includes(user.id)
 }

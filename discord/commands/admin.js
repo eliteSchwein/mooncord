@@ -41,11 +41,11 @@ module.exports = class AdminCommand extends SlashCommand {
 
     async run(ctx) {
         if (typeof (ctx.guildID) === 'undefined') {
-            return locale.errors.guild_only.replace(/(\${username})/g, ctx.user.username)
+            return locale.getGuildOnlyError(ctx.user.username)
         }
         
-        if (!permission.isMaster(ctx.user)) {
-            return locale.errors.master_only.replace(/(\${username})/g, ctx.user.username)
+        if (!permission.hasController(ctx.user)) {
+            return locale.getControllerOnlyError(ctx.user.username)
         }
 
         let isRole

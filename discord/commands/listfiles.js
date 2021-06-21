@@ -27,10 +27,10 @@ module.exports = class ListFilesCommand extends SlashCommand {
 
     async run(ctx) {
         if (typeof (commandFeedback) !== 'undefined') {
-            return locale.errors.not_ready.replace(/(\${username})/g, ctx.user.username)
+            return locale.getCommandNotReadyError(ctx.user.username)
         }
         if (!await permission.hasAdmin(ctx.user, ctx.guildID, discordClient.getClient())) {
-            return locale.errors.admin_only.replace(/(\${username})/g, ctx.user.username)
+            return locale.getAdminOnlyError(ctx.user.username)
         }
         const id = Math.floor(Math.random() * parseInt('10_000')) + 1
         connection = moonrakerClient.getConnection()

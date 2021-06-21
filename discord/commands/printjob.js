@@ -51,7 +51,7 @@ module.exports = class PrintJobCommand extends SlashCommand {
 
     async run(ctx) {
         if (!await permission.hasAdmin(ctx.user, ctx.guildID, discordClient.getClient())) {
-            return locale.errors.admin_only.replace(/(\${username})/g, ctx.user.username)
+            return locale.getAdminOnlyError(ctx.user.username)
         }
         const subcommand = ctx.subcommands[0]
         const currentStatus = variables.getStatus()
@@ -60,7 +60,7 @@ module.exports = class PrintJobCommand extends SlashCommand {
         connection = moonrakerClient.getConnection()
 
         if (typeof (commandFeedback) !== 'undefined') {
-            return locale.errors.not_ready.replace(/(\${username})/g, ctx.user.username)
+            return locale.getCommandNotReadyError(ctx.user.username)
         }
 
         if (Object.keys(metadata).includes(subcommand)) {
