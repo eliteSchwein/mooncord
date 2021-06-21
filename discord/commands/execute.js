@@ -11,6 +11,8 @@ const commandlocale = locale.commands.execute
 let commandFeedback
 let connection
 
+let lastid = 0
+
 module.exports = class ExecuteCommand extends SlashCommand {
     constructor(creator) {
         console.log('  Load Execute Command'.commandload)
@@ -51,11 +53,14 @@ module.exports = class ExecuteCommand extends SlashCommand {
         connection.send(`{"jsonrpc": "2.0", "method": "printer.gcode.script", "params": {"script": "${gcode}"}, "id": ${id}}`)
         const feedbackInterval = setInterval(() => {
             if (typeof (commandFeedback) !== 'undefined') {
+                if( lastid === id ) { return }
+                lastid = id
                 connection.removeListener('message', gcodeHandler)
                 ctx.send({
                     content: commandFeedback
                 })
                 commandFeedback = undefined
+                lastid = 0
                 clearInterval(feedbackInterval)
             }
             if (timeout === 4) {

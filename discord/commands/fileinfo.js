@@ -10,6 +10,8 @@ const commandlocale = locale.commands.fileinfo
 let commandFeedback
 let connection
 
+let lastid = 0
+
 module.exports = class FileInfoCommand extends SlashCommand {
     constructor(creator) {
         console.log('  Load File Info Command'.commandload)
@@ -48,6 +50,8 @@ module.exports = class FileInfoCommand extends SlashCommand {
         connection.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${gcodefile}"}, "id": ${id}}`)
         const feedbackInterval = setInterval(() => {
             if (typeof (commandFeedback) !== 'undefined') {
+                if( lastid === id ) { return }
+                lastid = id
                 if (commandFeedback === 'Not Found!') {
                     commandFeedback = undefined
                     ctx.send({
@@ -71,6 +75,7 @@ module.exports = class FileInfoCommand extends SlashCommand {
                     }
                     commandFeedback = undefined
                 }
+                lastid = 0
                 clearInterval(feedbackInterval)
             }
             if (timeout === 4) {

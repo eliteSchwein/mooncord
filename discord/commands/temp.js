@@ -12,6 +12,8 @@ const commandlocale = locale.commands.temp
 let commandFeedback
 let connection
 
+let lastid = 0
+
 module.exports = class TempCommand extends SlashCommand {
     constructor(creator) {
         console.log('  Load Temp Command'.commandload)
@@ -38,6 +40,8 @@ module.exports = class TempCommand extends SlashCommand {
         const feedbackInterval = setInterval(() => {
             if (typeof (commandFeedback) !== 'undefined') {
                 {
+                    if( lastid === id ) { return }
+                    lastid = id
                     const thumbnail = commandFeedback.files[0]
                     const files = {
                         name: thumbnail.name,
@@ -47,6 +51,7 @@ module.exports = class TempCommand extends SlashCommand {
                         file: files,
                         embeds: [commandFeedback.toJSON()]
                     })
+                    lastid = 0
                 }
                 clearInterval(feedbackInterval)
             }
