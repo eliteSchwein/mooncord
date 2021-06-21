@@ -10,7 +10,7 @@ module.exports = {}
 module.exports.getWaitEmbed = (user, relation, icon) => {
 
   const title = locale.misc.wait_related
-    .replace(/(\${relation})/g, `\`${relation}\``)
+    .replace(/(\${relation})/g, relation)
 
   const waitEmbed = new Discord.MessageEmbed()
     .setColor('#c90000')
