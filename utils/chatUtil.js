@@ -7,7 +7,10 @@ const locale = require('./localeUtil')
 const maxEntries = 5
 
 module.exports = {}
-module.exports.getWaitEmbed = (user, icon) => {
+module.exports.getWaitEmbed = (user, relation, icon) => {
+
+  const title = locale.misc.wait_related
+    .replace(/(\${relation})/g, `\`${relation}\``)
 
   const waitEmbed = new Discord.MessageEmbed()
     .setColor('#c90000')
@@ -24,7 +27,7 @@ module.exports.getWaitEmbed = (user, icon) => {
     const imgBuffer = fs.readFileSync(imgPath)
     const thumbnail = new Discord.MessageAttachment(imgBuffer, icon)
     waitEmbed
-      .setAuthor(locale.misc.wait_related, `attachment://${icon}`)
+      .setAuthor(title, `attachment://${icon}`)
       .attachFiles(thumbnail)
   }
   

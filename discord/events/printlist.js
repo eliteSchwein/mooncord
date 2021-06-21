@@ -57,7 +57,7 @@ async function executeMessage(message, user) {
     commandFeedback[message.channel.id] = undefined
     requester[channel.id] = user
     
-    await message.edit(chatUtil.getWaitEmbed(user, 'printlist.png'))
+    await message.edit(chatUtil.getWaitEmbed(user, commandlocale.embed.title, 'printlist.png'))
 
     connection.on('message', (message) => handler(message, channel))
     connection.send(`{"jsonrpc": "2.0", "method": "server.files.list", "params": {"root": "gcodes"}, "id": ${id}}`)
