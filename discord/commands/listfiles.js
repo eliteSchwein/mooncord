@@ -12,6 +12,7 @@ const commandlocale = locale.commands.listfiles
 let commandFeedback
 let connection
 
+let lastid = 0
 let timeout = 0
 
 module.exports = class ListFilesCommand extends SlashCommand {
@@ -42,6 +43,8 @@ module.exports = class ListFilesCommand extends SlashCommand {
 
         const feedbackInterval = setInterval(async () => {
             if (typeof (commandFeedback) !== 'undefined') {
+                if(lastid === id) { return }
+                lastid = id
                 const thumbnail = commandFeedback.files[0]
                 const files = {
                     name: thumbnail.name,
