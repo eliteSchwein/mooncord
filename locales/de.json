@@ -80,7 +80,7 @@
         },
         "listfiles": {
             "description": "Zeigt dir alle Druck Dateien.",
-            "command": "listedateien",
+            "command": "druckaufträge",
             "embed": {
                 "title": "Druck Dateien"
             }
