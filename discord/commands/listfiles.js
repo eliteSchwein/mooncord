@@ -59,6 +59,7 @@ module.exports = class ListFilesCommand extends SlashCommand {
                 const message = await channel.messages.fetch(commandmessage.id)
                 message.react('◀️')
                 message.react('▶️')
+                lastid = 0
                 clearInterval(feedbackInterval)
             }
             if (timeout === 10) {
