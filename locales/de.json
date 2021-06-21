@@ -177,6 +177,10 @@
             "command": "zeitraffer"
         }
     },
+    "misc": {
+        "please_wait": "Bette Warten!",
+        "wait_related": "Zugehörigkeit"
+    },
     "errors": {
         "admin_only": "Du hast nicht das Recht dazu, ${username}",
         "check_console": "Bitte die Konsole prüfen!",

@@ -2,6 +2,8 @@ const Discord = require('discord.js')
 const fs = require('fs')
 const path = require('path')
 
+const locale = require('./localeUtil')
+
 const maxEntries = 5
 
 module.exports = {}
@@ -9,7 +11,7 @@ module.exports.getWaitEmbed = (user, icon) => {
 
   const waitEmbed = new Discord.MessageEmbed()
     .setColor('#c90000')
-    .setDescription('🕐 Please Wait!')
+    .setDescription(`🕐 ${locale.misc.please_wait}`)
   
   if (typeof (user) !== 'undefined') {
     waitEmbed
@@ -22,7 +24,7 @@ module.exports.getWaitEmbed = (user, icon) => {
     const imgBuffer = fs.readFileSync(imgPath)
     const thumbnail = new Discord.MessageAttachment(imgBuffer, icon)
     waitEmbed
-      .setAuthor('Related', `attachment://${icon}`)
+      .setAuthor(locale.misc.wait_related, `attachment://${icon}`)
       .attachFiles(thumbnail)
   }
   

@@ -177,6 +177,10 @@
             "command": "縮時攝影"
         }
     },
+    "misc": {
+        "please_wait": "Please Wait!",
+        "wait_related": "Related"
+    },
     "errors": {
         "admin_only": "你沒有權限， ${username}",
         "check_console": "請查看控制台！",

@@ -177,6 +177,10 @@
             "command": "timelapse"
         }
     },
+    "misc": {
+        "please_wait": "Please Wait!",
+        "wait_related": "Related"
+    },
     "errors": {
         "admin_only": "Nu deții Permisiunile necesare, ${username}",
         "check_console": "Verifică Consola!",
