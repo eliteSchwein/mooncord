@@ -178,8 +178,8 @@
         }
     },
     "misc": {
-        "please_wait": "Please Wait!",
-        "wait_related": "Related"
+        "please_wait": "Te rog așteaptă!!",
+        "wait_related": "Referitor la ${relation}"
     },
     "errors": {
         "admin_only": "Nu deții Permisiunile necesare, ${username}",

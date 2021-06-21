@@ -179,7 +179,7 @@
     },
     "misc": {
         "please_wait": "Bette Warten!",
-        "wait_related": "Zugehörigkeit"
+        "wait_related": "Gehört zu ${relation}"
     },
     "errors": {
         "admin_only": "Du hast nicht das Recht dazu, ${username}",

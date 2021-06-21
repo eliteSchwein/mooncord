@@ -178,8 +178,8 @@
         }
     },
     "misc": {
-        "please_wait": "Please Wait!",
-        "wait_related": "Related"
+        "please_wait": "請等待!",
+        "wait_related": "與 ${relation} 相關"
     },
     "errors": {
         "admin_only": "你沒有權限， ${username}",

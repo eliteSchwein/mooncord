@@ -179,7 +179,7 @@
     },
     "misc": {
         "please_wait": "Attendez s'il vous plaît !",
-        "wait_related": "Rapport en cours"
+        "wait_related": "Concernant ${relation}"
     },
     "errors": {
         "admin_only": "Vous n'avez pas les permissions, ${username}",

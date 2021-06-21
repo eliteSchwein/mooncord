@@ -179,7 +179,7 @@
     },
     "misc": {
         "please_wait": "Please Wait!",
-        "wait_related": "Related"
+        "wait_related": "Related to ${relation}"
     },
     "errors": {
         "admin_only": "You dont have the Permissions, ${username}",
