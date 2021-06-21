@@ -28,7 +28,7 @@ module.exports = class FileInfoCommand extends SlashCommand {
 
     run(ctx) {
         if (typeof (commandFeedback) !== 'undefined') {
-            return locale.errors.not_ready.replace(/(\${username})/g, ctx.user.username)
+            return locale.getCommandNotReadyError(ctx.user.username)
         }
         let gcodefile = ctx.options[commandlocale.options.file.name]
         if (!gcodefile.endsWith('.gcode')) {
