@@ -65,9 +65,9 @@ module.exports = class PrintJobCommand extends SlashCommand {
         }
 
         console.log(subcommand)
-        console.log(syntaxLocale.answer)
+        console.log(syntaxLocale.options)
 
-        const key = getKeyByValue(syntaxLocale.answer, subcommand)
+        const key = getKeyByValue(syntaxLocale.options, subcommand)
 
         console.log(key)
         if (Object.keys(metadata).includes(subcommand)) {
