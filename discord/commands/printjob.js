@@ -69,6 +69,9 @@ module.exports = class PrintJobCommand extends SlashCommand {
         if (Object.keys(metadata).includes(key)) {
             const subcommandmeta = metadata[key]
             const lang_command_meta = messageLocale.answer[key]
+
+            console.log(lang_command_meta)
+
             if (subcommand === currentStatus) {
                 return lang_command_meta.statusSame.replace(/(\${username})/g, ctx.user.username)
             }
