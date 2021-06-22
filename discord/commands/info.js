@@ -5,7 +5,8 @@ const { SlashCommand } = require('slash-create')
 const logSymbols = require('log-symbols')
 const locale = require('../../utils/localeUtil')
 
-const commandlocale = locale.commands.info
+const messageLocale = locale.commands.info
+const syntaxLocale = locale.syntaxlocale.commands.info
 
 const pjson = require('../../package.json')
 
@@ -13,14 +14,14 @@ module.exports = class InfoCommand extends SlashCommand {
     constructor(creator) {
         console.log('  Load Info Command'.commandload)
         super(creator, {
-            name: commandlocale.command,
-            description: commandlocale.description
+            name: syntaxLocale.command,
+            description: messageLocale.description
         })
         this.filePath = __filename
     }
 
     async run(ctx) {
-        const description = commandlocale.embed.description
+        const description = messageLocale.embed.description
             .replace(/(\${version})/g, pjson.version)
             .replace(/(\${author})/g, pjson.author)
             .replace(/(\${homepage})/g, pjson.homepage)
@@ -31,7 +32,7 @@ module.exports = class InfoCommand extends SlashCommand {
 
         const infoEmbed = new Discord.MessageEmbed()
             .setColor('#0099ff')
-            .setTitle(commandlocale.embed.title)
+            .setTitle(messageLocale.embed.title)
             .setDescription(description)
             .setThumbnail('attachment://logo.png')
     

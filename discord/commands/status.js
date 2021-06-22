@@ -4,14 +4,15 @@ const logSymbols = require('log-symbols')
 const statusUtil = require('../../utils/statusUtil')
 const locale = require('../../utils/localeUtil')
 
-const commandlocale = locale.commands.status
+const messageLocale = locale.commands.status
+const syntaxLocale = locale.syntaxlocale.commands.status
 
 module.exports = class StatusCommand extends SlashCommand {
     constructor(creator) {
         console.log('  Load Status Command'.commandload)
         super(creator, {
-            name: commandlocale.command,
-            description: commandlocale.description
+            name: syntaxLocale.command,
+            description: messageLocale.description
         })
         this.filePath = __filename
     }

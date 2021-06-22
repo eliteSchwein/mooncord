@@ -6,19 +6,20 @@ const loadUtil = require('../../utils/loadUtil')
 const variablesUtil = require('../../utils/variablesUtil')
 const locale = require('../../utils/localeUtil')
 
-const commandlocale = locale.commands.loadinfo
+const messageLocale = locale.commands.loadinfo
+const syntaxLocale = locale.syntaxlocale.commands.loadinfo
 
 module.exports = class LoadInfoCommand extends SlashCommand {
     constructor(creator) {
         console.log('  Load Load Info Command'.commandload)
         super(creator, {
-            name: commandlocale.command,
-            description: commandlocale.description,
+            name: syntaxLocale.command,
+            description: messageLocale.description,
             options: [{
                 choices: generateChoices(),
                 type: CommandOptionType.STRING,
-                name: commandlocale.options.component.name,
-                description: commandlocale.options.component.description,
+                name: syntaxLocale.options.component.name,
+                description: messageLocale.options.component.description,
                 required: true
             }]
         })
@@ -31,7 +32,7 @@ module.exports = class LoadInfoCommand extends SlashCommand {
     async run(ctx) {
         ctx.defer(false)
 
-        const component = ctx.options[commandlocale.options.component.name]
+        const component = ctx.options[syntaxLocale.options.component.name]
 
         let answer
 

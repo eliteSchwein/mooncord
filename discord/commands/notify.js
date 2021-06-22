@@ -4,14 +4,15 @@ const logSymbols = require('log-symbols')
 const database = require('../../utils/databaseUtil')
 const locale = require('../../utils/localeUtil')
 
-const commandlocale = locale.commands.notify
+const messageLocale = locale.commands.notify
+const syntaxLocale = locale.syntaxlocale.commands.notify
 
 module.exports = class NotifyCommand extends SlashCommand {
     constructor(creator) {
         console.log('  Load Notify Command'.commandload)
         super(creator, {
-            name: commandlocale.command,
-            description: commandlocale.description
+            name: syntaxLocale.command,
+            description: messageLocale.description
         })
         this.filePath = __filename
     }
@@ -19,10 +20,10 @@ module.exports = class NotifyCommand extends SlashCommand {
     run(ctx) {
         const notifyStatus = database.updateNotify(ctx.user)
         if (notifyStatus) {
-            return commandlocale.answer.activated
+            return messageLocale.answer.activated
             .replace(/(\${username})/g, ctx.user.username)
         }
-        return commandlocale.answer.deactivated
+        return messageLocale.answer.deactivated
             .replace(/(\${username})/g, ctx.user.username)
     }
     onError(error, ctx) {

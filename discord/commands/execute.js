@@ -6,7 +6,8 @@ const discordClient = require('../../clients/discordclient')
 const permission = require('../../utils/permissionUtil')
 const locale = require('../../utils/localeUtil')
 
-const commandlocale = locale.commands.execute
+const messageLocale = locale.commands.execute
+const syntaxLocale = locale.syntaxlocale.commands.execute
 
 let commandFeedback
 let connection
@@ -17,12 +18,12 @@ module.exports = class ExecuteCommand extends SlashCommand {
     constructor(creator) {
         console.log('  Load Execute Command'.commandload)
         super(creator, {
-            name: commandlocale.command,
-            description: commandlocale.description,
+            name: syntaxLocale.command,
+            description: messageLocale.description,
             options: [{
                 type: CommandOptionType.STRING,
-                name: commandlocale.options.gcode.name,
-                description: commandlocale.options.gcode.description,
+                name: syntaxLocale.options.gcode.name,
+                description: messageLocale.options.gcode.description,
                 required: true
             }]
         })
@@ -37,7 +38,7 @@ module.exports = class ExecuteCommand extends SlashCommand {
             return locale.getCommandNotReadyError(ctx.user.username)
         }
     
-        const gcode = ctx.options[commandlocale.options.gcode.name]
+        const gcode = ctx.options[syntaxLocale.options.gcode.name]
         const id = Math.floor(Math.random() * parseInt('10_000')) + 1
         connection = moonrakerClient.getConnection()
 
@@ -91,12 +92,12 @@ function handler (message) {
         let command = ''
         if (messageJson.params[0].includes('Unknown command')) {
             command = messageJson.params[0].replace('// Unknown command:', '').replace(/"/g, '')
-            commandFeedback = commandlocale.answer.unknown.replace(/(\${gcode_feedback})/g, command)
+            commandFeedback = messageLocale.answer.unknown.replace(/(\${gcode_feedback})/g, command)
         } else if (messageJson.params[0].includes('Error')) {
             command = messageJson.params[0].replace('!! Error on ', '').replace(/\\/g, '')
-            commandFeedback = commandlocale.answer.error.replace(/(\${gcode_feedback})/g, command)
+            commandFeedback = messageLocale.answer.error.replace(/(\${gcode_feedback})/g, command)
         } else {
-            commandFeedback = commandlocale.answer.success
+            commandFeedback = messageLocale.answer.success
         }
     }
 }

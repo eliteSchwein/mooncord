@@ -7,7 +7,8 @@ const logSymbols = require('log-symbols')
 const moonrakerClient = require('../../clients/moonrakerclient')
 const locale = require('../../utils/localeUtil')
 
-const commandlocale = locale.commands.temp
+const messageLocale = locale.commands.temp
+const syntaxLocale = locale.syntaxlocale.commands.temp
 
 let commandFeedback
 let connection
@@ -18,8 +19,8 @@ module.exports = class TempCommand extends SlashCommand {
     constructor(creator) {
         console.log('  Load Temp Command'.commandload)
         super(creator, {
-            name: commandlocale.command,
-            description: commandlocale.description
+            name: syntaxLocale.command,
+            description: messageLocale.description
         })
         this.filePath = __filename
     }
@@ -89,7 +90,7 @@ function handler (message) {
 
         commandFeedback = new Discord.MessageEmbed()
             .setColor('#0099ff')
-            .setTitle(commandlocale.embed.title)
+            .setTitle(messageLocale.embed.title)
             .setThumbnail('attachment://temps.png')
             .attachFiles(iconattachment)
         
@@ -103,16 +104,16 @@ function handler (message) {
                 const targetTemp = temps[temp].targets[temps[temp].targets.length - 1]
                 const power = calculatePercent(temps[temp].powers[temps[temp].powers.length - 1])
 
-                commandFeedback.addField(`♨${temp.replace('heater_generic ', '')}`, `${commandlocale.embed.fields.current_temp}: \`${currentTemp}°C\`
-                 ${commandlocale.embed.fields.target_temp}:\`${targetTemp}°C\`
-                 ${commandlocale.embed.fields.current_power}:\`${power}%\``, true)
+                commandFeedback.addField(`♨${temp.replace('heater_generic ', '')}`, `${messageLocale.embed.fields.current_temp}: \`${currentTemp}°C\`
+                 ${messageLocale.embed.fields.target_temp}:\`${targetTemp}°C\`
+                 ${messageLocale.embed.fields.current_power}:\`${power}%\``, true)
             } else if (temp.includes('temperature_fan')) {
                 const targetTemp = temps[temp].targets[temps[temp].targets.length - 1]
                 const power = calculatePercent(temps[temp].powers[temps[temp].powers.length - 1])
 
-                commandFeedback.addField(`❄${temp}`, `${commandlocale.embed.fields.current_temp}: \`${currentTemp}°C\`
-                 ${commandlocale.embed.fields.target_temp}:\`${targetTemp}°C\`
-                 ${commandlocale.embed.fields.current_power}:\`${power}%\``, true)
+                commandFeedback.addField(`❄${temp}`, `${messageLocale.embed.fields.current_temp}: \`${currentTemp}°C\`
+                 ${messageLocale.embed.fields.target_temp}:\`${targetTemp}°C\`
+                 ${messageLocale.embed.fields.current_power}:\`${power}%\``, true)
             }
         }
         connection.removeListener('message', handler)

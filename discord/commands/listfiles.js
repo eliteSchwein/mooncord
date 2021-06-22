@@ -7,7 +7,8 @@ const chatUtil = require('../../utils/chatUtil')
 const permission = require('../../utils/permissionUtil')
 const locale = require('../../utils/localeUtil')
 
-const commandlocale = locale.commands.listfiles
+const messageLocale = locale.commands.listfiles
+const syntaxLocale = locale.syntaxlocale.commands.listfiles
 
 let commandFeedback
 let connection
@@ -19,8 +20,8 @@ module.exports = class ListFilesCommand extends SlashCommand {
     constructor(creator) {
         console.log('  Load List Files Command'.commandload)
         super(creator, {
-            name: commandlocale.command,
-            description: commandlocale.description
+            name: syntaxLocale.command,
+            description: messageLocale.description
         })
         this.filePath = __filename
     }
@@ -92,7 +93,7 @@ async function handler (message) {
             false,
             1,
             messageJson.result,
-            commandlocale.embed.title,
+            messageLocale.embed.title,
             'printlist.png')
     }
 }

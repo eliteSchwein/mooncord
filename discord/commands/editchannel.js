@@ -6,18 +6,19 @@ const database = require('../../utils/databaseUtil')
 const permission = require('../../utils/permissionUtil')
 const locale = require('../../utils/localeUtil')
 
-const commandlocale = locale.commands.editchannel
+const messageLocale = locale.commands.editchannel
+const syntaxLocale = locale.syntaxlocale.commands.editchannel
 
 module.exports = class EditChannelCommand extends SlashCommand {
     constructor(creator) {
         console.log('  Load Edit Channel Command'.commandload)
         super(creator, {
-            name: commandlocale.command,
-            description: commandlocale.description,
+            name: syntaxLocale.command,
+            description: messageLocale.description,
             options: [{
                 type: CommandOptionType.CHANNEL,
-                name: commandlocale.options.channel.name,
-                description: commandlocale.options.channel.description,
+                name: syntaxLocale.options.channel.name,
+                description: messageLocale.options.channel.description,
                 required: false
             }]
         })
@@ -36,26 +37,26 @@ module.exports = class EditChannelCommand extends SlashCommand {
         let channel
         let channelresult
 
-        if (typeof (ctx.options[commandlocale.options.channel.name]) === 'undefined') {
+        if (typeof (ctx.options[syntaxLocale.options.channel.name]) === 'undefined') {
             channelresult = await editChannel(ctx.channelID, ctx.guildID)
             channel = `<#${ctx.channelID}>`
         } else {
             channelresult = await editChannel(ctx.options.channel, ctx.guildID)
-            channel = `<#${ctx.options[commandlocale.options.channel.name]}>`
+            channel = `<#${ctx.options[syntaxLocale.options.channel.name]}>`
         }
 
         if (typeof (channelresult) === 'undefined') {
-            return commandlocale.answer.not_textchannel
+            return messageLocale.answer.not_textchannel
                 .replace(/(\${username})/g, ctx.user.username)
                 .replace(/(\${channel})/g, channel)
         }
 
         if (channelresult) {
-            return commandlocale.answer.activated
+            return messageLocale.answer.activated
                 .replace(/(\${username})/g, ctx.user.username)
                 .replace(/(\${channel})/g, channel)
         } 
-        return commandlocale.answer.deactivated
+        return messageLocale.answer.deactivated
             .replace(/(\${username})/g, ctx.user.username)
             .replace(/(\${channel})/g, channel)
     }

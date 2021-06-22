@@ -5,7 +5,8 @@ const moonrakerClient = require('../../clients/moonrakerclient')
 const handlers = require('../../utils/handlerUtil')
 const locale = require('../../utils/localeUtil')
 
-const commandlocale = locale.commands.fileinfo
+const messageLocale = locale.commands.fileinfo
+const syntaxLocale = locale.syntaxlocale.commands.fileinfo
 
 let commandFeedback
 let connection
@@ -16,12 +17,12 @@ module.exports = class FileInfoCommand extends SlashCommand {
     constructor(creator) {
         console.log('  Load File Info Command'.commandload)
         super(creator, {
-            name: commandlocale.command,
-            description: commandlocale.description,
+            name: syntaxLocale.command,
+            description: messageLocale.description,
             options: [{
                 type: CommandOptionType.STRING,
-                name: commandlocale.options.file.name,
-                description: commandlocale.options.file.description,
+                name: syntaxLocale.options.file.name,
+                description: messageLocale.options.file.description,
                 required: true
             }]
         })
@@ -32,7 +33,7 @@ module.exports = class FileInfoCommand extends SlashCommand {
         if (typeof (commandFeedback) !== 'undefined') {
             return locale.getCommandNotReadyError(ctx.user.username)
         }
-        let gcodefile = ctx.options[commandlocale.options.file.name]
+        let gcodefile = ctx.options[syntaxLocale.options.file.name]
         if (!gcodefile.endsWith('.gcode')) {
             gcodefile += '.gcode'
         }

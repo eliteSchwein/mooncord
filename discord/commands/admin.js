@@ -6,32 +6,33 @@ const database = require('../../utils/databaseUtil')
 const permission = require('../../utils/permissionUtil')
 const locale = require('../../utils/localeUtil')
 
-const commandlocale = locale.commands.admin
+const messageLocale = locale.commands.admin
+const commandSyntax = locale.syntaxlocale.commands.admin
 
 module.exports = class AdminCommand extends SlashCommand {
     constructor(creator) {
         console.log('  Load Admin Command'.commandload)
         super(creator, {
-            name: commandlocale.command,
-            description: commandlocale.description,
+            name: commandSyntax.command,
+            description: messageLocale.description,
             options: [{
                 type: CommandOptionType.SUB_COMMAND,
-                name: commandlocale.options.role.name,
-                description: commandlocale.options.role.description,
+                name: commandSyntax.options.role.name,
+                description: messageLocale.options.role.description,
                 options: [{
                     type: CommandOptionType.ROLE,
-                    name: commandlocale.options.role.options.role.name,
-                    description: commandlocale.options.role.options.role.description,
+                    name: commandSyntax.options.role.options.role.name,
+                    description: messageLocale.options.role.options.role.description,
                     required: true
                 }]
             },{
                 type: CommandOptionType.SUB_COMMAND,
-                name: commandlocale.options.user.name,
-                description: commandlocale.options.user.description,
+                name: commandSyntax.options.user.name,
+                description: messageLocale.options.user.description,
                 options: [{
                     type: CommandOptionType.USER,
-                    name: commandlocale.options.user.options.user.name,
-                    description: commandlocale.options.user.options.user.description,
+                    name: commandSyntax.options.user.options.user.name,
+                    description: messageLocale.options.user.options.user.description,
                     required: true
                 }]
             }]
@@ -51,14 +52,14 @@ module.exports = class AdminCommand extends SlashCommand {
         let isRole
         let adminid
 
-        if (ctx.subcommands[0] === commandlocale.options.role.name) {
+        if (ctx.subcommands[0] === syntaxLocale.options.role.name) {
             isRole = true
-            adminid = ctx.options[commandlocale.options.role.name][commandlocale.options.role.options.role.name]
+            adminid = ctx.options[syntaxLocale.options.role.name][syntaxLocale.options.role.options.role.name]
         }
 
-        if (ctx.subcommands[0] === commandlocale.options.user.name) {
+        if (ctx.subcommands[0] === syntaxLocale.options.user.name) {
             isRole = false
-            adminid = ctx.options[commandlocale.options.user.name][commandlocale.options.user.options.user.name]
+            adminid = ctx.options[syntaxLocale.options.user.name][syntaxLocale.options.user.options.user.name]
         }
 
         const result = await editAdmin(isRole, adminid, ctx.guildID)
@@ -70,12 +71,12 @@ module.exports = class AdminCommand extends SlashCommand {
         }
 
         if (result) {
-            return commandlocale.answer.added
+            return messageLocale.answer.added
                 .replace(/(\${username})/g, ctx.user.username)
                 .replace(/(\${mention})/g, answermention)
         } 
 
-        return commandlocale.answer.removed
+        return messageLocale.answer.removed
             .replace(/(\${username})/g, ctx.user.username)
             .replace(/(\${mention})/g, answermention)
     }
