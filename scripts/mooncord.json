@@ -21,7 +21,10 @@
             "execute": []
         }
     },
-    "language": "en",
+    "language": {
+        "messages": "en",
+        "command_syntax": "en"
+    },
     "permission": {
         "controller": [],
         "guild_admin_as_bot_admin": true
