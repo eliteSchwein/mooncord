@@ -64,15 +64,11 @@ module.exports = class PrintJobCommand extends SlashCommand {
             return locale.getCommandNotReadyError(ctx.user.username)
         }
 
-        console.log(subcommand)
-        console.log(syntaxLocale.options)
-
         const key = getKeyByValue(syntaxLocale.options, subcommand)
 
-        console.log(key)
-        if (Object.keys(metadata).includes(subcommand)) {
-            const subcommandmeta = metadata[subcommand]
-            const lang_command_meta = messageLocale.answer[subcommand]
+        if (Object.keys(metadata).includes(key)) {
+            const subcommandmeta = metadata[key]
+            const lang_command_meta = messageLocale.answer[key]
             if (subcommand === currentStatus) {
                 return lang_command_meta.statusSame.replace(/(\${username})/g, ctx.user.username)
             }
