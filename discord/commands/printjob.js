@@ -64,6 +64,8 @@ module.exports = class PrintJobCommand extends SlashCommand {
             return locale.getCommandNotReadyError(ctx.user.username)
         }
 
+        console.log(subcommand)
+
         const key = getKeyByValue(syntaxLocale, subcommand)
 
         console.log(key)
