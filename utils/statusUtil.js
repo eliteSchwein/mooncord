@@ -104,11 +104,8 @@ async function generateEmbed(config, user) {
       }
     }
   }
-
-  if (typeof (user) === 'undefined') {
-    embed.setFooter('Automatic')
-    embed.setTimestamp()
-  }
+  
+  embed.setTimestamp()
   
   return embed
 }
