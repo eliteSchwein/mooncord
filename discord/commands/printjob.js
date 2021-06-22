@@ -70,17 +70,15 @@ module.exports = class PrintJobCommand extends SlashCommand {
             const subcommandmeta = metadata[key]
             const lang_command_meta = messageLocale.answer[key]
 
-            console.log(lang_command_meta)
-
             if (subcommand === currentStatus) {
-                return lang_command_meta.statusSame.replace(/(\${username})/g, ctx.user.username)
+                return lang_command_meta.status_same.replace(/(\${username})/g, ctx.user.username)
             }
 
             if (!subcommandmeta.requiredStatus.includes(currentStatus)) {
-                return lang_command_meta.statusNotValid.replace(/(\${username})/g, ctx.user.username)
+                return lang_command_meta.status_not_valid.replace(/(\${username})/g, ctx.user.username)
             }
             connection.send(`{"jsonrpc": "2.0", "method": "printer.gcode.script", "params": {"script": "${subcommandmeta.macro}"}, "id": ${id}}`)
-            return lang_command_meta.statusValid.replace(/(\${username})/g, ctx.user.username)
+            return lang_command_meta.status_valid.replace(/(\${username})/g, ctx.user.username)
         }
         
         if (subcommand === 'start') {
