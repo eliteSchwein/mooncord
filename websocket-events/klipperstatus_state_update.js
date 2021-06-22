@@ -1,11 +1,11 @@
+const { waitUntil } = require('async-wait-until')
 const Discord = require('discord.js')
 const logSymbols = require('log-symbols')
 const path = require('path')
-const { waitUntil } = require('async-wait-until')
 
+const locale = require('../utils/localeUtil')
 const status = require('../utils/statusUtil')
 const variables = require('../utils/variablesUtil')
-const locale = require('../utils/localeUtil')
 
 const event = (message, connection, discordClient, database) => {
   if (message.type === 'utf8') {

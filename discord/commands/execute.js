@@ -1,10 +1,10 @@
-const { SlashCommand, CommandOptionType } = require('slash-create')
 const logSymbols = require('log-symbols')
+const { SlashCommand, CommandOptionType } = require('slash-create')
 
-const moonrakerClient = require('../../clients/moonrakerclient')
 const discordClient = require('../../clients/discordclient')
-const permission = require('../../utils/permissionUtil')
+const moonrakerClient = require('../../clients/moonrakerclient')
 const locale = require('../../utils/localeUtil')
+const permission = require('../../utils/permissionUtil')
 
 const messageLocale = locale.commands.execute
 const syntaxLocale = locale.syntaxlocale.commands.execute
@@ -39,7 +39,7 @@ module.exports = class ExecuteCommand extends SlashCommand {
         }
     
         const gcode = ctx.options[syntaxLocale.options.gcode.name]
-        const id = Math.floor(Math.random() * parseInt('10_000')) + 1
+        const id = Math.floor(Math.random() * Number.parseInt('10_000')) + 1
         connection = moonrakerClient.getConnection()
 
         let timeout = 0
@@ -75,12 +75,14 @@ module.exports = class ExecuteCommand extends SlashCommand {
             timeout++
         }, 500)
     }
+
     onError(error, ctx) {
         console.log(logSymbols.error, `Execute Command: ${error}`.error)
         ctx.send(locale.errors.command_failed)
         connection.removeListener('message', handler)
         commandFeedback = undefined
     }
+
     onUnload() {
         return 'okay'
     }

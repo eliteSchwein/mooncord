@@ -1,14 +1,14 @@
 const args = process.argv.slice(2)
 
 const config = require(`${args[0]}/mooncord.json`)
+const locale = require('../utils/localeUtil')
 const status = require('../utils/statusUtil')
 const variables = require('../utils/variablesUtil')
-const locale = require('../utils/localeUtil')
 
 let lastProgress = 0
 
 const event = (message, connection, discordClient) => {
-  const id = Math.floor(Math.random() * parseInt('10_000')) + 1
+  const id = Math.floor(Math.random() * Number.parseInt('10_000')) + 1
   if (message.type === 'utf8') {
     const messageJson = JSON.parse(message.utf8Data)
     const { result } = messageJson
@@ -56,7 +56,7 @@ function retrieveLayerHeight(result) {
   if (typeof (result.status.gcode_move) === 'undefined') {
     return
   }
-  const gcode_position = result.status.gcode_move.gcode_position
+  const {gcode_position} = result.status.gcode_move
   variables.setCurrentLayerHeight(gcode_position[2])
 }
 

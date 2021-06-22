@@ -50,7 +50,7 @@ async function retrieveWebcam() {
 
 
 async function executePostProcess(config) {
-  if (!config.enable || config.execute.length < 1) {
+  if (!config.enable || config.execute.length === 0) {
     return
   }
 
@@ -62,7 +62,7 @@ async function executePostProcess(config) {
     const execute = config.execute[index]
     if (execute.startsWith("gcode:")) {
       const gcode = execute.replace("gcode:", "")
-      const id = Math.floor(Math.random() * parseInt('10_000')) + 1
+      const id = Math.floor(Math.random() * Number.parseInt('10_000')) + 1
       moonrakerClient.getConnection().send(`{"jsonrpc": "2.0", "method": "printer.gcode.script", "params": {"script": "${gcode}"}, "id": ${id}}`)
     }
     if (execute.startsWith("website_post:")) {

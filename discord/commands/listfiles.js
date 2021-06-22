@@ -1,11 +1,11 @@
-const { SlashCommand } = require('slash-create')
 const logSymbols = require('log-symbols')
+const { SlashCommand } = require('slash-create')
 
 const discordClient = require('../../clients/discordclient')
 const moonrakerClient = require('../../clients/moonrakerclient')
 const chatUtil = require('../../utils/chatUtil')
-const permission = require('../../utils/permissionUtil')
 const locale = require('../../utils/localeUtil')
+const permission = require('../../utils/permissionUtil')
 
 const messageLocale = locale.commands.listfiles
 const syntaxLocale = locale.syntaxlocale.commands.listfiles
@@ -33,7 +33,7 @@ module.exports = class ListFilesCommand extends SlashCommand {
         if (!await permission.hasAdmin(ctx.user, ctx.guildID, discordClient.getClient())) {
             return locale.getAdminOnlyError(ctx.user.username)
         }
-        const id = Math.floor(Math.random() * parseInt('10_000')) + 1
+        const id = Math.floor(Math.random() * Number.parseInt('10_000')) + 1
         connection = moonrakerClient.getConnection()
 
         connection.on('message', handler)
@@ -74,12 +74,14 @@ module.exports = class ListFilesCommand extends SlashCommand {
             timeout++
         }, 500)
     }
+
     onError(error, ctx) {
         console.log(logSymbols.error, `Listfiles Command: ${error}`.error)
         ctx.send(locale.errors.command_failed)
         connection.removeListener('message', handler)
         commandFeedback = undefined
     }
+
     onUnload() {
         return 'okay'
     }
@@ -87,7 +89,7 @@ module.exports = class ListFilesCommand extends SlashCommand {
 
 async function handler (message) {
     const messageJson = JSON.parse(message.utf8Data)
-    if(JSON.stringify(messageJson).match(/(modified)/g)) {
+    if(/(modified)/g.test(JSON.stringify(messageJson))) {
         connection.removeListener('message', handler)
         commandFeedback = await chatUtil.generatePageEmbed(
             false,

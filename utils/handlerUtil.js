@@ -1,8 +1,8 @@
 const Discord = require('discord.js')
 
+const locale = require('./localeUtil')
 const thumbnail = require('./thumbnailUtil')
 const variables = require('./variablesUtil')
-const locale = require('./localeUtil')
 
 module.exports = {}
 module.exports.printFileHandler = async (message, title, color) => {

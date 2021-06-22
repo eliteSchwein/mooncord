@@ -1,10 +1,10 @@
-const { SlashCommand, CommandOptionType } = require('slash-create')
 const logSymbols = require('log-symbols')
+const { SlashCommand, CommandOptionType } = require('slash-create')
 
 const components = require('../../utils/hsComponents')
 const loadUtil = require('../../utils/loadUtil')
-const variablesUtil = require('../../utils/variablesUtil')
 const locale = require('../../utils/localeUtil')
+const variablesUtil = require('../../utils/variablesUtil')
 
 const messageLocale = locale.commands.loadinfo
 const syntaxLocale = locale.syntaxlocale.commands.loadinfo
@@ -25,6 +25,7 @@ module.exports = class LoadInfoCommand extends SlashCommand {
         })
         this.filePath = __filename
     }
+
     onUnload() {
         return 'okay'
     }
@@ -50,6 +51,7 @@ module.exports = class LoadInfoCommand extends SlashCommand {
             embeds: [answer[1].toJSON()]
         })
     }
+
     onError(error, ctx) {
         console.log(logSymbols.error, `Loadinfo Command: ${error}`.error)
         ctx.send(locale.errors.command_failed)
@@ -74,7 +76,7 @@ async function retrieveMCUComponent(mcu) {
 
     const mcuload = (mcudata.last_stats.mcu_task_avg + 3 * mcudata.last_stats.mcu_task_stddev) / 0.0025
     const mcuawake = mcudata.last_stats.mcu_awake / 5
-    const mcufreq = mcudata.last_stats.freq / 1000000
+    const mcufreq = mcudata.last_stats.freq / Number.parseInt('1_000_000')
 
     embed.addField(locale.loadinfo.mcu.chipset, mcudata.mcu_constants.MCU, true)
     embed.addField(locale.loadinfo.mcu.version, mcudata.mcu_version, true)

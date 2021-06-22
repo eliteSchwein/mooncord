@@ -1,5 +1,5 @@
-const { SlashCommand } = require('slash-create')
 const logSymbols = require('log-symbols')
+const { SlashCommand } = require('slash-create')
 
 const database = require('../../utils/databaseUtil')
 const locale = require('../../utils/localeUtil')
@@ -26,10 +26,12 @@ module.exports = class NotifyCommand extends SlashCommand {
         return messageLocale.answer.deactivated
             .replace(/(\${username})/g, ctx.user.username)
     }
+
     onError(error, ctx) {
         console.log(logSymbols.error, `Notify Command: ${error}`.error)
         ctx.send(locale.errors.command_failed)
     }
+
     onUnload() {
         return 'okay'
     }

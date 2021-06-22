@@ -1,16 +1,17 @@
 const args = process.argv.slice(2)
 
 const { waitUntil } = require('async-wait-until')
-const fs = require('fs')
 const Discord = require('discord.js')
+const fs = require('fs')
 const path = require('path')
 const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path
 const ffmpeg = require('fluent-ffmpeg')
 const logSymbols = require('log-symbols')
 
-const webcamUtil = require('./webcamUtil')
-const variablesUtil = require('./variablesUtil')
 const locale = require('./localeUtil')
+const variablesUtil = require('./variablesUtil')
+const webcamUtil = require('./webcamUtil')
+
 const config = require(`${args[0]}/mooncord.json`)
 
 const conv = ffmpeg()
@@ -40,7 +41,7 @@ async function render() {
             '-crf 30'])
         .noAudio()
         .videoCodec('libx264')
-        .on('end', async function (stdout, stderr) {
+        .on('end', async (stdout, stderr) => {
             renderdone = true
         })
         .run()
@@ -96,30 +97,29 @@ module.exports.getEmbed = () => {
     const timelapse = getTimelapse()
     const description = locale.timelapse.for_gcode
         .replace(/(\${gcode_file})/g, variablesUtil.getLastGcodeFile())
-    const embed = new Discord.MessageEmbed()
+    return new Discord.MessageEmbed()
         .setDescription(description)
         .attachFiles(timelapse)
-    return embed
 }
 module.exports.start = () => {
     if (!running) {
         return
     }
     fs.unlink(path.resolve(__dirname, '../temp/timelapse/timelapse.mp4'), (err) => {
-        if (err) return;
+        if (err) {}
     })
     lastHeight = 0
     framecount = 1
     const pattern = /^frame-+/
     fs.readdir(path.resolve(__dirname,'../temp/timelapse'), (err, fileNames) => {
-        if (err) return;
+        if (err) {return;}
 
         for (const name of fileNames) {
 
             if (pattern.test(name)) {
 
                 fs.unlink(path.resolve(__dirname,`../temp/timelapse/${name}`), (err) => {
-                    if (err) return;
+                    if (err) {}
                 });
             }
         }

@@ -1,7 +1,7 @@
 const moonrakerClient = require('../../clients/moonrakerclient')
 const chatUtil = require('../../utils/chatUtil')
-const permission = require('../../utils/permissionUtil')
 const locale = require('../../utils/localeUtil')
+const permission = require('../../utils/permissionUtil')
 
 const commandlocale = locale.commands.printjob
 
@@ -35,7 +35,7 @@ const enableEvent = function (discordClient) {
         
         if (messageReaction.emoji.name === '✅') {
             const gcodefile = message.embeds[0].author.name
-            const id = Math.floor(Math.random() * parseInt('10_000')) + 1
+            const id = Math.floor(Math.random() * Number.parseInt('10_000')) + 1
 
             if (message.channel.type === 'text') {
                 await message.reactions.removeAll()

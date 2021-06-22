@@ -1,10 +1,10 @@
-const { SlashCommand, CommandOptionType } = require('slash-create')
 const logSymbols = require('log-symbols')
+const { SlashCommand, CommandOptionType } = require('slash-create')
 
 const discordClient = require('../../clients/discordclient')
 const database = require('../../utils/databaseUtil')
-const permission = require('../../utils/permissionUtil')
 const locale = require('../../utils/localeUtil')
+const permission = require('../../utils/permissionUtil')
 
 const messageLocale = locale.commands.editchannel
 const syntaxLocale = locale.syntaxlocale.commands.editchannel
@@ -60,10 +60,12 @@ module.exports = class EditChannelCommand extends SlashCommand {
             .replace(/(\${username})/g, ctx.user.username)
             .replace(/(\${channel})/g, channel)
     }
+
     onError(error, ctx) {
         console.log(logSymbols.error, `Channel Command: ${error}`.error)
         ctx.send(locale.errors.command_failed)
     }
+
     onUnload() {
         return 'okay'
     }

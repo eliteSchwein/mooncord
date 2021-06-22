@@ -1,5 +1,5 @@
-const { SlashCommand, CommandOptionType } = require('slash-create')
 const logSymbols = require('log-symbols')
+const { SlashCommand, CommandOptionType } = require('slash-create')
 
 const moonrakerClient = require('../../clients/moonrakerclient')
 const handlers = require('../../utils/handlerUtil')
@@ -38,7 +38,7 @@ module.exports = class FileInfoCommand extends SlashCommand {
             gcodefile += '.gcode'
         }
 
-        const id = Math.floor(Math.random() * parseInt('10_000')) + 1
+        const id = Math.floor(Math.random() * Number.parseInt('10_000')) + 1
         connection = moonrakerClient.getConnection()
 
         let timeout = 0
@@ -90,12 +90,14 @@ module.exports = class FileInfoCommand extends SlashCommand {
             timeout++
         }, 500)
     }
+
     onError(error, ctx) {
         console.log(logSymbols.error, `Fileinfo Command: ${error}`.error)
         ctx.send(locale.errors.command_failed)
         connection.removeListener('message', handler)
         commandFeedback = undefined
     }
+
     onUnload() {
         return 'okay'
     }

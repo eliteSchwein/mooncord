@@ -1,8 +1,8 @@
 const Discord = require('discord.js')
 const fs = require('fs')
+const logSymbols = require('log-symbols')
 const path = require('path')
 const { SlashCommand } = require('slash-create')
-const logSymbols = require('log-symbols')
 
 const moonrakerClient = require('../../clients/moonrakerclient')
 const locale = require('../../utils/localeUtil')
@@ -27,7 +27,7 @@ module.exports = class TempCommand extends SlashCommand {
 
     run(ctx) {
         connection = moonrakerClient.getConnection()
-        const id = Math.floor(Math.random() * parseInt('10_000')) + 1
+        const id = Math.floor(Math.random() * Number.parseInt('10_000')) + 1
 
         let timeout = 0
 
@@ -66,12 +66,14 @@ module.exports = class TempCommand extends SlashCommand {
             timeout++
         }, 500)
     }
+
     onError(error, ctx) {
         console.log(logSymbols.error, `Temp Command: ${error}`.error)
         ctx.send(locale.errors.command_failed)
         connection.removeListener('message', handler)
         commandFeedback = undefined
     }
+
     onUnload() {
         return 'okay'
     }

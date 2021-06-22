@@ -1,8 +1,9 @@
 const Discord = require('discord.js')
 const fs = require('fs')
+const logSymbols = require('log-symbols')
 const path = require('path')
 const { SlashCommand } = require('slash-create')
-const logSymbols = require('log-symbols')
+
 const locale = require('../../utils/localeUtil')
 
 const messageLocale = locale.commands.info
@@ -46,10 +47,12 @@ module.exports = class InfoCommand extends SlashCommand {
             embeds: [infoEmbed.toJSON()]
         })
     }
+
     onError(error, ctx) {
         console.log(logSymbols.error, `Info Command: ${error}`.error)
         ctx.send(locale.errors.command_failed)
     }
+
     onUnload() {
         return 'okay'
     }

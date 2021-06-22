@@ -2,8 +2,8 @@ const args = process.argv.slice(2)
 
 const config = require(`${args[0]}/mooncord.json`)
 const status = require('../utils/statusUtil')
-const variables = require('../utils/variablesUtil')
 const timelapseUtil = require('../utils/timelapseUtil')
+const variables = require('../utils/variablesUtil')
 
 const event = (message, connection, discordClient) => {
   if (message.type === 'utf8') {

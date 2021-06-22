@@ -1,9 +1,9 @@
 const args = process.argv.slice(2)
 
+const colors = require('colors')
 const fs = require('fs')
 const logSymbols = require('log-symbols')
 const path = require('path')
-const colors = require('colors')
 
 const config = require(`${args[0]}/config.json`)
 
@@ -18,7 +18,7 @@ colors.setTheme({
 execute()
 
 async function execute() {
-    //await migrateDatabase()
+    // await migrateDatabase()
     migrateConfigToMultiV1()
 }
 

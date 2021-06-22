@@ -1,10 +1,12 @@
 const args = process.argv.slice(2)
 
-const status = require('../utils/statusUtil')
-const variables = require('../utils/variablesUtil')
-const timelapseUtil = require('../utils/timelapseUtil')
 const Discord = require('discord.js')
+
+const status = require('../utils/statusUtil')
+const timelapseUtil = require('../utils/timelapseUtil')
+const variables = require('../utils/variablesUtil')
 const states = require('./klipper_states.json')
+
 const config = require(`${args[0]}/mooncord.json`)
 
 const event = async (message, connection, discordClient) => {

@@ -1,13 +1,13 @@
-const { SlashCommand, CommandOptionType } = require('slash-create')
 const logSymbols = require('log-symbols')
+const { SlashCommand, CommandOptionType } = require('slash-create')
 
 const discordClient = require('../../clients/discordclient')
 const moonrakerClient = require('../../clients/moonrakerclient')
 const handlers = require('../../utils/handlerUtil')
+const locale = require('../../utils/localeUtil')
 const permission = require('../../utils/permissionUtil')
 const variables = require('../../utils/variablesUtil')
 const metadata = require('../commands-metadata/printjob.json')
-const locale = require('../../utils/localeUtil')
 
 const messageLocale = locale.commands.printjob
 const syntaxLocale = locale.syntaxlocale.commands.printjob
@@ -56,7 +56,7 @@ module.exports = class PrintJobCommand extends SlashCommand {
         }
         const subcommand = ctx.subcommands[0]
         const currentStatus = variables.getStatus()
-        const id = Math.floor(Math.random() * parseInt('10_000')) + 1
+        const id = Math.floor(Math.random() * Number.parseInt('10_000')) + 1
 
         connection = moonrakerClient.getConnection()
 
@@ -87,9 +87,11 @@ module.exports = class PrintJobCommand extends SlashCommand {
             startPrintJob(ctx)
         }
     }
+
     onUnload() {
         return 'okay'
     }
+
     onError(error, ctx) {
         console.log(logSymbols.error, `Printjob Command: ${error}`.error)
         ctx.send(locale.errors.command_failed)
@@ -116,7 +118,7 @@ async function postStart(message, commandContext) {
 }
 
 function startPrintJob(commandContext) {
-    const id = Math.floor(Math.random() * parseInt('10_000')) + 1
+    const id = Math.floor(Math.random() * Number.parseInt('10_000')) + 1
     const gcodefile = commandContext.options.start[syntaxLocale.options.start.options.file.name]
     connection.on('message', handler)
     connection.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${gcodefile}"}, "id": ${id}}`)

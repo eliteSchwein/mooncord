@@ -1,8 +1,8 @@
-const { SlashCommand } = require('slash-create')
 const logSymbols = require('log-symbols')
+const { SlashCommand } = require('slash-create')
 
-const statusUtil = require('../../utils/statusUtil')
 const locale = require('../../utils/localeUtil')
+const statusUtil = require('../../utils/statusUtil')
 
 const messageLocale = locale.commands.status
 const syntaxLocale = locale.syntaxlocale.commands.status
@@ -39,10 +39,12 @@ module.exports = class StatusCommand extends SlashCommand {
             embeds: [status.toJSON()]
         })
     }
+
     onError(error, ctx) {
         console.log(logSymbols.error, `Status Command: ${error}`.error)
         ctx.send(locale.errors.command_failed)
     }
+
     onUnload() {
         return 'okay'
     }

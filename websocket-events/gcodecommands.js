@@ -6,11 +6,11 @@ const path = require('path')
 
 const config = require(`${args[0]}/mooncord.json`)
 const status = require('../utils/statusUtil')
-const variables = require('../utils/variablesUtil')
 const timelapseUtil = require('../utils/timelapseUtil')
+const variables = require('../utils/variablesUtil')
 
 const event = (message, connection, discordClient, database) => {
-  const id = Math.floor(Math.random() * parseInt('10_000')) + 1
+  const id = Math.floor(Math.random() * Number.parseInt('10_000')) + 1
   if (message.type === 'utf8') {
     const messageJson = JSON.parse(message.utf8Data)
     const methode = messageJson.method
@@ -28,7 +28,7 @@ const event = (message, connection, discordClient, database) => {
         status.postBroadcastMessage(broadcastembed, discordClient, database)
       }
       if(params[0].startsWith("mooncord.invite")) {
-        const id = Math.floor(Math.random() * parseInt('10_000')) + 1
+        const id = Math.floor(Math.random() * Number.parseInt('10_000')) + 1
         connection.send(`{"jsonrpc": "2.0", "method": "printer.gcode.script", "params": {"script": "RESPOND PREFIX=mooncord.response MSG=${variables.getInviteUrl()}"}, "id": ${id}}`)
       }
       if (params[0].startsWith("timelapse photo")) {

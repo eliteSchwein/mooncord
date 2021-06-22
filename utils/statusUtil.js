@@ -1,17 +1,18 @@
+const { waitUntil } = require('async-wait-until')
 const Discord = require('discord.js')
 const logSymbols = require('log-symbols')
-const { waitUntil } = require('async-wait-until')
 
 const args = process.argv.slice(2)
 
-const discordClient = require('../clients/discordclient') 
+const discordClient = require('../clients/discordclient')
+ 
 const config = require(`${args[0]}/mooncord.json`)
 const database = require('./databaseUtil')
+const locale = require('./localeUtil')
 const messagemetadata = require('./statusmetadata.json')
 const thumbnail = require('./thumbnailUtil')
 const variables = require('./variablesUtil')
 const webcam = require('./webcamUtil')
-const locale = require('./localeUtil')
 
 function getCurrentDatabase(altdatabase){
   if(typeof(altdatabase) !== 'undefined'){
@@ -173,9 +174,7 @@ module.exports.triggerStatusUpdate = async function (altdiscordClient) {
 
 module.exports.getManualStatusEmbed = async function (user) {
   const parsedConfig = parseConfig()
-  const embed = await generateEmbed(parsedConfig, user)
-
-  return embed
+  return await generateEmbed(parsedConfig, user)
 }
 
 module.exports.postBroadcastMessage = (message, altdiscordClient, altdatabase, altramdatabase) => {

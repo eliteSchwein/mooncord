@@ -1,4 +1,5 @@
 const si = require('systeminformation')
+
 const locale = require('../localeUtil')
 
 module.exports = {}

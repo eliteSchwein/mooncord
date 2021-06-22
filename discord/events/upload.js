@@ -8,8 +8,8 @@ const logSymbols = require('log-symbols')
 
 const config = require(`${args[0]}/mooncord.json`)
 const database = require('../../utils/databaseUtil')
-const permission = require('../../utils/permissionUtil')
 const locale = require('../../utils/localeUtil')
+const permission = require('../../utils/permissionUtil')
 
 const uploadList = []
 let uploadWaitTimer = 0
@@ -35,7 +35,7 @@ const enableEvent = function (dcClient) {
       guildid = msg.guild.id
 
       const guilddatabase = database.getGuildDatabase(msg.guild)
-      const broadcastchannels = guilddatabase.broadcastchannels
+      const {broadcastchannels} = guilddatabase
       
       if (!broadcastchannels.includes(msg.channel.id)) {
         return

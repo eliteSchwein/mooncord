@@ -17,7 +17,7 @@ function updateNotifyData(data) {
 
 function getRamDatabase(key) {
   if(typeof(key) === 'undefined')
-    return ramDatabase 
+    {return ramDatabase} 
 
   return ramDatabase[key]
 }

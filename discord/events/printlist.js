@@ -1,7 +1,7 @@
 const moonrakerClient = require('../../clients/moonrakerclient')
 const chatUtil = require('../../utils/chatUtil')
-const permission = require('../../utils/permissionUtil')
 const locale = require('../../utils/localeUtil')
+const permission = require('../../utils/permissionUtil')
 
 const commandlocale = locale.commands.listfiles
 
@@ -51,7 +51,7 @@ const enableEvent = function (discordClient) {
 }
 
 async function executeMessage(message, user) {
-    const id = Math.floor(Math.random() * parseInt('10_000')) + 1
+    const id = Math.floor(Math.random() * Number.parseInt('10_000')) + 1
     const {channel} = message
 
     commandFeedback[message.channel.id] = undefined
@@ -82,7 +82,7 @@ async function executeMessage(message, user) {
 async function handler (message, channel) {
     const messageJson = JSON.parse(message.utf8Data)
     connection.removeListener('message', handler)
-    if (JSON.stringify(messageJson).match(/(modified)/g)) {
+    if (/(modified)/g.test(JSON.stringify(messageJson))) {
         commandFeedback[channel.id] = await chatUtil.generatePageEmbed(
             pageUp,
             page,
