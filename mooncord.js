@@ -18,6 +18,7 @@ colors.setTheme({
   upload: 'grey',
   uploadsuccess: 'green',
   statustitle: 'cyan',
+  throttlewarn: 'yellow',
   statusmessage: 'brightCyan',
   successvalue: 'green',
   successname: 'brightGreen',
