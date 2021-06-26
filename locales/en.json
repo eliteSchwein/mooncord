@@ -329,10 +329,6 @@
                 "name": "Under Voltage",
                 "suggestion": "Please check your Power Delivery."
             },
-            "frequency_capped": {
-                "name": "Frequency is capped",
-                "suggestion": "Please check your Power Delivery or your cooling Solution."
-            },
             "temperature_limit_active": {
                 "name": "Temperature Throttle",
                 "suggestion": "Please check your cooling Solution."

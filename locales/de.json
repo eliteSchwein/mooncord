@@ -329,10 +329,6 @@
                 "name": "Unter Spannung",
                 "suggestion": "Bitte überprüfe deine Spannungs Versorgung."
             },
-            "frequency_capped": {
-                "name": "Frequenz Limiterung",
-                "suggestion": "Bitte überprüfe deine Spannungs Versorgung und Kühllösung."
-            },
             "temperature_limit_active": {
                 "name": "Temperatur Limiterung",
                 "suggestion": "Bitte überprüfe deine Kühllösung."
