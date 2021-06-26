@@ -1,7 +1,7 @@
 const logSymbols = require('log-symbols')
 const { SlashCommand, CommandOptionType } = require('slash-create')
 
-const discordClient = require('../../clients/discordclient')
+const discordClient = require('../../clients/discordClient')
 const database = require('../../utils/databaseUtil')
 const locale = require('../../utils/localeUtil')
 const permission = require('../../utils/permissionUtil')
