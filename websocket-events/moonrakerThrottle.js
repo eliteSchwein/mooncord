@@ -32,6 +32,7 @@ function retrieveThrottle(result) {
     return
   }
   for (const flag in flags) {
+    console.log(flag)
     if (validFlags.includes(flag)) {
       if (posted.includes(flag)) { }
       else {
