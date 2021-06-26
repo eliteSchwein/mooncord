@@ -334,7 +334,7 @@
                 "suggestion": "Bitte überprüfe deine Spannungs Versorgung und Kühllösung."
             },
             "temperature_limit_active": {
-                "name": "Temperatur Limit",
+                "name": "Temperatur Limiterung",
                 "suggestion": "Bitte überprüfe deine Kühllösung."
             }
         }
