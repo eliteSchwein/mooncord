@@ -5,6 +5,7 @@ const path = require('path')
 
 const status = require('../utils/statusUtil')
 const locale = require('../utils/localeUtil')
+const chatUtil = require('../utils/chatUtil')
 
 let posted = []
 const validFlags = [
@@ -54,19 +55,16 @@ async function postThrottle(throttle, discordClient, database) {
     .replace(' ', '_')
     .replace('-', '_')
   
-  const description = locale.throttle.sentence
+  const sentence = locale.throttle.sentence
     .replace(/(\${reason})/g, `\`${locale.throttle.reasons[key].name}\``)
+  const suggestion = locale.throttle.reasons[key].suggestion
   
   console.log(logSymbols.warning, `A Throttle occured: ${throttle}!`.throttlewarn)
   
-  const throttleEmbed = new Discord.MessageEmbed()
-    .setColor('#fcad03')
-    .setTitle(locale.throttle.title)
-    .attachFiles(path.resolve(__dirname, '../images/warning.png'))
-    .setThumbnail('attachment://warning.png')
-    .setTimestamp()
-    .setDescription(`${description}
-    ${locale.throttle.reasons[key].suggestion}`)
+  const throttleEmbed = chatUtil.generateWarnEmbed(
+    locale.throttle.title,
+    `${sentence}
+  ${suggestion}`)
   
   status.postBroadcastMessage(throttleEmbed, discordClient, database)
 }
