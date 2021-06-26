@@ -323,7 +323,7 @@
     },
     "throttle": {
         "title": "Throttle occured!",
-        "sentence": "The System is currently throttled because of ${reason}",
+        "sentence": "The System is currently throttled because of ${reason}!",
         "reasons": {
             "under_voltage_detected": {
                 "name": "Under Voltage",
