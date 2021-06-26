@@ -332,6 +332,10 @@
             "temperature_limit_active": {
                 "name": "Temperature Throttle",
                 "suggestion": "Please check your cooling Solution."
+            },
+            "frequency_capped": {
+                "name": "Temperature Throttle",
+                "suggestion": "Please check your cooling Solution."
             }
         }
     }

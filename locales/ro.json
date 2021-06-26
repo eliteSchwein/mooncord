@@ -332,6 +332,10 @@
             "temperature_limit_active": {
                 "name": "Supraîncălzirii",
                 "suggestion": "Verifică sursa de răcire."
+            },
+            "frequency_capped": {
+                "name": "Supraîncălzirii",
+                "suggestion": "Verifică sursa de răcire."
             }
         }
     }

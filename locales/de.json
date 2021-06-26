@@ -332,6 +332,10 @@
             "temperature_limit_active": {
                 "name": "Temperatur Limiterung",
                 "suggestion": "Bitte überprüfe deine Kühllösung."
+            },
+            "frequency_capped": {
+                "name": "Temperatur Limiterung",
+                "suggestion": "Bitte überprüfe deine Kühllösung."
             }
         }
     }

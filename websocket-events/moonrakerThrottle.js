@@ -8,6 +8,7 @@ const locale = require('../utils/localeUtil')
 
 let posted = []
 const validFlags = [
+  'Frequency Capped',
   'Under-Voltage Detected',
   'Temperature Limit Active'
 ]
