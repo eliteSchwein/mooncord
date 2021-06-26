@@ -57,17 +57,17 @@ async function postThrottle(throttle, discordClient, database) {
   const description = locale.throttle.sentence
     .replace(/(\${reason})/g, `\`${locale.throttle.reasons[key].name}\``)
   
-  console.log(logSymbols.warning, `There is a Throttle!`.throttlewarn)
+  console.log(logSymbols.warning, `A Throttle occured: ${throttle}!`.throttlewarn)
   
-  const notifyembed = new Discord.MessageEmbed()
-    .setColor('#fcf803')
+  const throttleEmbed = new Discord.MessageEmbed()
+    .setColor('#fcad03')
     .setTitle(locale.throttle.title)
-    .attachFiles(path.resolve(__dirname, '../images/update.png'))
-    .setThumbnail('attachment://update.png')
+    .attachFiles(path.resolve(__dirname, '../images/warning.png'))
+    .setThumbnail('attachment://warning.png')
     .setTimestamp()
     .setDescription(`${description}
     ${locale.throttle.reasons[key].suggestion}`)
   
-  status.postBroadcastMessage(notifyembed, discordClient, database)
+  status.postBroadcastMessage(throttleEmbed, discordClient, database)
 }
 module.exports = event
