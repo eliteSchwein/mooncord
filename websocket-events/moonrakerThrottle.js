@@ -31,8 +31,8 @@ function retrieveThrottle(result) {
     posted = []
     return
   }
-  for (const flag in flags) {
-    console.log(flag)
+  for (const index in flags) {
+    const flag = flags[index]
     if (validFlags.includes(flag)) {
       if (posted.includes(flag)) { }
       else {
