@@ -8,3 +8,4 @@ const event = (message, connection, discordClient) => {
     if (typeof (messageJson.result.status) === 'undefined') { return }
   }
 }
+module.exports = event
