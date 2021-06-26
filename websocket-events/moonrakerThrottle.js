@@ -18,14 +18,14 @@ const event = (message, connection, discordClient, database) => {
       retrieveStats(messageJson.result.moonraker_stats)
     }
     if (typeof (messageJson.result.throttled_state) !== 'undefined') {
-      retrieveThrottle(messageJson.result.throttled_state)
+      retrieveThrottle(messageJson.result.throttled_state, discordClient, database)
     }
   }
 }
 function retrieveStats(result) {
   //console.log(result)
 }
-function retrieveThrottle(result) {
+function retrieveThrottle(result, discordClient, database) {
   const { flags } = result
   if (flags.length === 0) {
     posted = []
