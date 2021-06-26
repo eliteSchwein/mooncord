@@ -55,7 +55,7 @@ async function postThrottle(throttle, discordClient, database) {
     .replace('-', '_')
   
   const description = locale.throttle.sentence
-    .replace(/(\$reason)/g, locale.throttle.reasons[key].name)
+    .replace(/(\${reason})/g, `\`${locale.throttle.reasons[key].name}\``)
   
   console.log(logSymbols.warning, `There is a Throttle!`.throttlewarn)
   
