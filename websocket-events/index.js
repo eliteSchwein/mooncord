@@ -8,5 +8,6 @@ module.exports = {
   klipperStatusState: require('./klipperStatusState'),
   klipperStatusVirtualSDCard: require('./klipperStatusVirtualSDCard'),
   klipperLoad: require('./klipperLoad'),
+  moonrakerThrottle: require('./moonrakerThrottle'),
   versions: require('./versions')
 }
