@@ -6,9 +6,8 @@ const loadUtil = require('../loadUtil')
 module.exports = {}
 module.exports.getTitle = () => { return locale.loadinfo.cpu.title }
 module.exports.getFields = async () => {
+    const usageData = loadUtil.getUsageData()
     const cpu = await si.cpu()
-    const load = loadUtil.getCPULoad()
-    const cpuTemp = await si.cpuTemperature()
     const cpuFreq = await si.cpuCurrentSpeed()
     
     return [{
@@ -21,7 +20,7 @@ module.exports.getFields = async () => {
         inline: true
     },{
         name: locale.loadinfo.cpu.usage,
-        value: `${load.currentLoad.toFixed(2)}%`,
+        value: `${usageData.cpu.load.currentLoad.toFixed(2)}%`,
         inline: true
     },{
         name: locale.loadinfo.cpu.cores,
@@ -33,7 +32,7 @@ module.exports.getFields = async () => {
         inline: true
     },{
         name: locale.loadinfo.cpu.temperature,
-        value: `${cpuTemp.main.toFixed(2)}°C`,
+        value: `${usageData.cpu.temp.main.toFixed(2)}°C`,
         inline: true
     },{
         name: locale.loadinfo.cpu.frequency,
