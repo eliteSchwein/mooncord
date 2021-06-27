@@ -1,12 +1,13 @@
 const si = require('systeminformation')
 
 const locale = require('../localeUtil')
+const loadUtil = require('../loadUtil')
 
 module.exports = {}
 module.exports.getTitle = () => { return locale.loadinfo.cpu.title }
 module.exports.getFields = async () => {
     const cpu = await si.cpu()
-    const load = await si.currentLoad()
+    const load = loadUtil.getCPULoad()
     const cpuTemp = await si.cpuTemperature()
     const cpuFreq = await si.cpuCurrentSpeed()
     

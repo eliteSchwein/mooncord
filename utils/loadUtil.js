@@ -6,6 +6,10 @@ const si = require('systeminformation')
 const componentHandler = require('./hsComponents')
 const locale = require('./localeUtil')
 
+let cpuLoad
+
+module.exports.getCPULoad = () => { return cpuLoad }
+
 module.exports.getDefaultEmbed = (img, title) => {
   const image = getImage(img)
   const embed = getDefaultEmbed(image[0], title)
@@ -34,7 +38,7 @@ module.exports.getInformation = async function (component) {
 
 module.exports.init = () => {
   setInterval(async () => {
-    await si.currentLoad()
+    cpuLoad = await si.currentLoad()
   }, 1000)
 }
 
