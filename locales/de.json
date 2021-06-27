@@ -252,7 +252,7 @@
             "total": "Gesamt",
             "used": "Auslastung",
             "swap_total": "Swap gesamt",
-            "swap_used": "Swap Auslatung"
+            "swap_used": "Swap Auslastung"
         },
         "mcu": {
             "chipset": "Chipsatz",
