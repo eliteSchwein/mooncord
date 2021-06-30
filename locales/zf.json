@@ -320,5 +320,23 @@
         "title": "系統更新",
         "system": "系統",
         "packages": "軟體包"
+    },
+    "throttle": {
+        "title": "功率限制！",
+        "sentence": "應為${reason}，所以功率正在被限制！",
+        "reasons": {
+            "under_voltage_detected": {
+            "name": "欠電壓",
+            "suggestion": "請檢查您的供電系統。"
+            },
+            "frequency_capped": {
+            "name": "溫控調頻",
+            "suggestion": "請檢查您的散熱系統。"
+            },
+            "temperature_limit_active": {
+            "name": "溫控調頻",
+            "suggestion": "請檢查您的散熱系統。"
+            }
+        }
     }
 }
