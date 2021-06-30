@@ -320,5 +320,23 @@
         "title": "System Updates",
         "system": "System",
         "packages": "Packages"
+    },
+    "throttle": {
+        "title": "Throttle occured!",
+        "sentence": "The System is currently throttled because of ${reason}!",
+        "reasons": {
+            "under_voltage_detected": {
+                "name": "Under Voltage",
+                "suggestion": "Please check your Power Delivery."
+            },
+            "temperature_limit_active": {
+                "name": "Temperature Throttle",
+                "suggestion": "Please check your cooling Solution."
+            },
+            "frequency_capped": {
+                "name": "Temperature Throttle",
+                "suggestion": "Please check your cooling Solution."
+            }
+        }
     }
 }

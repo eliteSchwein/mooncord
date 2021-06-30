@@ -1,13 +1,13 @@
 const logSymbols = require('log-symbols')
 const { SlashCommand, CommandOptionType } = require('slash-create')
 
-const discordClient = require('../../clients/discordclient')
-const moonrakerClient = require('../../clients/moonrakerclient')
+const discordClient = require('../../clients/discordClient')
+const moonrakerClient = require('../../clients/moonrakerClient')
 const handlers = require('../../utils/handlerUtil')
 const locale = require('../../utils/localeUtil')
 const permission = require('../../utils/permissionUtil')
 const variables = require('../../utils/variablesUtil')
-const metadata = require('../commands-metadata/printjob.json')
+const metadata = require('../commands-metadata/print_job.json')
 
 const messageLocale = locale.commands.printjob
 const syntaxLocale = locale.syntaxlocale.commands.printjob

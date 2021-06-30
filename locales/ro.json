@@ -320,5 +320,23 @@
         "title": "Actualizări de Sistem",
         "system": "Sistem",
         "packages": "Pachete"
+    },
+    "throttle": {
+        "title": "Limitare de sistem detectată!",
+        "sentence": "Sistemul momentan este limitat din cauza ${reason}",
+        "reasons": {
+            "under_voltage_detected": {
+                "name": "Sub-Voltajului",
+                "suggestion": "Verifică sursa de alimentare."
+            },
+            "temperature_limit_active": {
+                "name": "Supraîncălzirii",
+                "suggestion": "Verifică sursa de răcire."
+            },
+            "frequency_capped": {
+                "name": "Supraîncălzirii",
+                "suggestion": "Verifică sursa de răcire."
+            }
+        }
     }
 }

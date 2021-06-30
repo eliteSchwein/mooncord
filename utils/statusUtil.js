@@ -4,12 +4,12 @@ const logSymbols = require('log-symbols')
 
 const args = process.argv.slice(2)
 
-const discordClient = require('../clients/discordclient')
+const discordClient = require('../clients/discordClient')
  
 const config = require(`${args[0]}/mooncord.json`)
 const database = require('./databaseUtil')
 const locale = require('./localeUtil')
-const messagemetadata = require('./statusmetadata.json')
+const messagemetadata = require('./status_meta_data.json')
 const thumbnail = require('./thumbnailUtil')
 const variables = require('./variablesUtil')
 const webcam = require('./webcamUtil')

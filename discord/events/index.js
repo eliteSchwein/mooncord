@@ -1,10 +1,10 @@
-const printjobstart = require('./printjobstart')
-const printlist = require('./printlist')
+const printJobStart = require('./printJobStart')
+const printList = require('./printList')
 const upload = require('./upload')
 
 const enableEvent = function (discordClient) {
   upload(discordClient)
-  printjobstart(discordClient)
-  printlist(discordClient)
+  printJobStart(discordClient)
+  printList(discordClient)
 }
 module.exports = enableEvent

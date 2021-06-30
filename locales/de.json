@@ -252,7 +252,7 @@
             "total": "Gesamt",
             "used": "Auslastung",
             "swap_total": "Swap gesamt",
-            "swap_used": "Swap Auslatung"
+            "swap_used": "Swap Auslastung"
         },
         "mcu": {
             "chipset": "Chipsatz",
@@ -320,5 +320,23 @@
         "title": "System Aktualisierungen",
         "system": "System",
         "packages": "Pakete"
+    },
+    "throttle": {
+        "title": "Drosselung erkannt!",
+        "sentence": "Das System wird durch ${reason} gedrosselt!",
+        "reasons": {
+            "under_voltage_detected": {
+                "name": "Unter Spannung",
+                "suggestion": "Bitte überprüfe deine Spannungs Versorgung."
+            },
+            "temperature_limit_active": {
+                "name": "Temperatur Limiterung",
+                "suggestion": "Bitte überprüfe deine Kühllösung."
+            },
+            "frequency_capped": {
+                "name": "Temperatur Limiterung",
+                "suggestion": "Bitte überprüfe deine Kühllösung."
+            }
+        }
     }
 }

@@ -5,8 +5,8 @@ const colors = require('colors')
 const systemInfo = require('systeminformation')
 
 const config = require(`${args[0]}/mooncord.json`)
-const discordClient = require('./clients/discordclient')
-const moonrakerClient = require('./clients/moonrakerclient')
+const discordClient = require('./clients/discordClient')
+const moonrakerClient = require('./clients/moonrakerClient')
 const pjson = require('./package.json')
 const loadUtil = require('./utils/loadUtil')
 const miscUtil = require('./utils/miscUtil')
@@ -18,6 +18,7 @@ colors.setTheme({
   upload: 'grey',
   uploadsuccess: 'green',
   statustitle: 'cyan',
+  throttlewarn: 'yellow',
   statusmessage: 'brightCyan',
   successvalue: 'green',
   successname: 'brightGreen',

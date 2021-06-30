@@ -7,7 +7,7 @@ const axios = require('axios')
 
 const args = process.argv.slice(2)
 
-const moonrakerClient = require('../clients/moonrakerclient')
+const moonrakerClient = require('../clients/moonrakerClient')
 
 const config = require(`${args[0]}/mooncord.json`)
 

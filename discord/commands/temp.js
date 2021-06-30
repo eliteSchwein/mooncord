@@ -4,7 +4,7 @@ const logSymbols = require('log-symbols')
 const path = require('path')
 const { SlashCommand } = require('slash-create')
 
-const moonrakerClient = require('../../clients/moonrakerclient')
+const moonrakerClient = require('../../clients/moonrakerClient')
 const locale = require('../../utils/localeUtil')
 
 const messageLocale = locale.commands.temp

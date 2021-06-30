@@ -6,6 +6,15 @@ const si = require('systeminformation')
 const componentHandler = require('./hsComponents')
 const locale = require('./localeUtil')
 
+let usageData = {
+  'cpu': {
+    'load': 0,
+    'temp': 0
+  }
+}
+
+module.exports.getUsageData = () => { return usageData }
+
 module.exports.getDefaultEmbed = (img, title) => {
   const image = getImage(img)
   const embed = getDefaultEmbed(image[0], title)
@@ -34,7 +43,13 @@ module.exports.getInformation = async function (component) {
 
 module.exports.init = () => {
   setInterval(async () => {
-    await si.currentLoad()
+    const ram = await si.mem()
+    const partitions = await si.fsSize()
+
+    usageData.cpu.load = await si.currentLoad()
+    usageData.cpu.temp = await si.cpuTemperature()
+    
+    
   }, 1000)
 }
 

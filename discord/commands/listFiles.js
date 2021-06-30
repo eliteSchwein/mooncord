@@ -1,8 +1,8 @@
 const logSymbols = require('log-symbols')
 const { SlashCommand } = require('slash-create')
 
-const discordClient = require('../../clients/discordclient')
-const moonrakerClient = require('../../clients/moonrakerclient')
+const discordClient = require('../../clients/discordClient')
+const moonrakerClient = require('../../clients/moonrakerClient')
 const chatUtil = require('../../utils/chatUtil')
 const locale = require('../../utils/localeUtil')
 const permission = require('../../utils/permissionUtil')
