@@ -320,5 +320,23 @@
         "title": "Mises à jour du système",
         "system": "Système",
         "packages": "Paquets"
+    },
+    "throttle": {
+        "title": "Une surchauffe s'est produit !",
+        "sentence": "Le système est actuellement en surchauffe à cause de ${reason}!",
+        "reasons": {
+            "under_voltage_detected": {
+                "name": "Réduction du voltage",
+                "suggestion": "Vérifiez la puissance délivrée."
+            },
+            "frequency_capped": {
+                "name": "Température limite",
+                "suggestion": "Vérifiez le système de refroidissement."
+            },
+            "temperature_limit_active": {
+                "name": "Température limite",
+                "suggestion": "Vérifiez le système de refroidissement."
+            }
+        }
     }
 }
