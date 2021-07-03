@@ -34,7 +34,6 @@ const event = async (message, connection, discordClient) => {
     if (klipperstatus.print_stats.state === 'printing' && (typeof (printfile) !== 'undefined' || printfile !== '')) {
       const currentStatus = 'printing'
       if (variables.getStatus() === currentStatus) { return }
-      console.log('oöiphauadghjpöäksadoj0i h+')
       variables.setStatus(currentStatus)
       if (!config.status.use_percent) {
         status.triggerStatusUpdate(discordClient)
