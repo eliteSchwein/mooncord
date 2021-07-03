@@ -29,7 +29,6 @@ const event = async (message, connection, discordClient) => {
     if (typeof (states[methode].timedStatus) !== 'undefined') {
       changeStatusLater(states[methode].timedStatus, discordClient)
     }
-      console.log('klipperStates')
 
     variables.setStatus(states[methode].status)
     variables.updateLastGcodeFile()

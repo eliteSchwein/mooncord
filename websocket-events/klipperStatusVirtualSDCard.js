@@ -42,7 +42,6 @@ const event = async (message, connection, discordClient) => {
       if (config.status.update_interval &&
         currentProgress.toFixed(0) % config.status.update_interval === 0 &&
         currentProgress.toFixed(0) !== 0) {
-        console.log('klipperStatusState')
         lastProgress = currentProgress.toFixed(0)
         status.triggerStatusUpdate(discordClient)
       }
