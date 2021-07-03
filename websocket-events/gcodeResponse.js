@@ -27,6 +27,8 @@ const event = async (message, connection, discordClient) => {
 
         connection.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${printfile}"}, "id": ${id}}`)
 
+        variables.setCurrentFile(printfile)
+
         await waitUntil(() => variables.getPrintTime() > 0, { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 250 })
         await status.triggerStatusUpdate(discordClient)
 
