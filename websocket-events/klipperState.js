@@ -5,14 +5,15 @@ const event = (message, connection, discordClient) => {
   if (message.type === 'utf8') {
     const messageJson = JSON.parse(message.utf8Data)
     const { result } = messageJson
-    if (typeof (result) !== 'undefined' && typeof (result.klippy_state) !== 'undefined') {
-      const currentStatus = result.klippy_state
-      if (variables.getStatus() !== currentStatus) {
-        variables.setStatus(currentStatus)
-        status.triggerStatusUpdate(discordClient)
-        console.log('trigger by klipperState')
-      }
-    }
+    
+    if(typeof (result) === 'undefined') { return }
+    if (typeof (result.klippy_state) === 'undefined') { return }
+    
+    const currentStatus = result.klippy_state
+    if (variables.getStatus() === currentStatus) { return }
+    variables.setStatus(currentStatus)
+    status.triggerStatusUpdate(discordClient)
+    console.log('trigger by klipperState')
   }
 }
 module.exports = event

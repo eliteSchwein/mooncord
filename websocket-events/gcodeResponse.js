@@ -34,7 +34,6 @@ const event = async (message, connection, discordClient) => {
 
         timelapseUtil.start()
         variables.setStatus('printing')
-      console.log('trigger by gcodeResponse')
 
         if (!config.status.use_percent) {
           timer = setInterval(() => {
