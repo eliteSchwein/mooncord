@@ -137,7 +137,7 @@
                 "value": "${value_print_progress}%"
             },
             {
-                "name": "${locale.print_layer}",
+                "name": "${locale.print_layers}",
                 "value": "${value_current_layer}/${value_max_layer}"
             }
         ]
