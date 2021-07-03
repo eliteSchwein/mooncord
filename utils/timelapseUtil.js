@@ -101,7 +101,7 @@ module.exports.init = (dcClient, mrClient) => {
     if(config.timelapse.frame_every_layer) {
         setInterval(async () => {
             if (variablesUtil.getStatus() !== 'printing') { return }
-            if (variablesUtil.getCurrentLayer === lastLayer) { return }
+            if (variablesUtil.getCurrentLayer() === lastLayer) { return }
             
             makeFrame()
             lastHeight = variablesUtil.getCurrentLayer()
