@@ -29,7 +29,7 @@ const event = async (message, connection, discordClient) => {
       if (currentProgress === 100) { return }
       if (currentProgress.toFixed(0) === variables.getProgress()) { return }
 
-      console.log(currentProgress)
+      console.log(currentProgress.toFixed(0) + ' '+ variables.getProgress())
 
       await waitUntil(() => discordClient.user !== null, { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 1000 })
       
