@@ -5,6 +5,8 @@ const event = (message) => {
     const messageJson = JSON.parse(message.utf8Data)
     const { result } = messageJson
 
+    console.log(result)
+
     if (typeof (result) === 'undefined') { return }
     if (typeof (result.gcode_start_byte) === 'undefined') { return }
 
