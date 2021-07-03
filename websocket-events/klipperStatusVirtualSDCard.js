@@ -29,6 +29,8 @@ const event = async (message, connection, discordClient) => {
       if (currentProgress.toFixed(0) === 100) { return }
       if (currentProgress.toFixed(0) === variables.getProgress()) { return }
 
+      console.log(currentProgress)
+
       await waitUntil(() => discordClient.user !== null, { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 1000 })
       
       discordClient.user.setActivity(
@@ -43,7 +45,6 @@ const event = async (message, connection, discordClient) => {
         currentProgress.toFixed(0) !== 0) {
         lastProgress = currentProgress.toFixed(0)
         status.triggerStatusUpdate(discordClient)
-        console.log('trigger by klipperStatusVirtualSDCard '+variables.getStatus())
       }
     }
   }
