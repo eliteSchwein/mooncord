@@ -22,7 +22,7 @@ const event = async (message, connection, discordClient) => {
         const currentStatus = 'start'
         connection.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${printfile}"}, "id": ${id}}`)
 
-        if (variables.getStatus() === currentStatus) { return }
+        //if (variables.getStatus() === currentStatus) { return }
 
         variables.setStatus(currentStatus)
 
