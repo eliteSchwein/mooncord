@@ -310,7 +310,8 @@
         "fields": {
             "print_time": "Print Time",
             "eta_print_time": "ETA Print Time",
-            "print_progress": "Progress"
+            "print_progress": "Progress",
+            "print_layers": "Layer"
         }
     },
     "timelapse": {

@@ -310,7 +310,8 @@
         "fields": {
             "print_time": "Druck Zeit",
             "eta_print_time": "Verbleibende Druck Zeit",
-            "print_progress": "Fortschritt"
+            "print_progress": "Fortschritt",
+            "print_layers": "Schicht"
         }
     },
     "timelapse": {

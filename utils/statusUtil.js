@@ -57,12 +57,15 @@ function parseConfig() {
     .replace(/(\${locale.title})/g, localeConfig.title)
     .replace(/(\${locale.activity})/g, localeConfig.activity)
     .replace(/(\${locale.print_time})/g, locale.status.fields.print_time)
+    .replace(/(\${locale.print_layers})/g, locale.status.fields.print_layers)
     .replace(/(\${locale.eta_print_time})/g, locale.status.fields.eta_print_time)
     .replace(/(\${locale.print_progress})/g, locale.status.fields.print_progress)
     .replace(/(\${gcode_file})/g, variables.getCurrentFile())
     .replace(/(\${value_print_time})/g, variables.getFormatedPrintTime())
     .replace(/(\${value_eta_print_time})/g, variables.getFormatedRemainingTime())
     .replace(/(\${value_print_progress})/g, variables.getProgress())
+    .replace(/(\${value_current_layer})/g, variables.getCurrentLayer())
+    .replace(/(\${value_max_layer})/g, variables.getMaxLayers())
 
   return JSON.parse(parsedConfig)
 }
