@@ -43,6 +43,7 @@ const event = async (message, connection, discordClient) => {
         currentProgress.toFixed(0) !== 0) {
         lastProgress = currentProgress.toFixed(0)
         status.triggerStatusUpdate(discordClient)
+        console.log('trigger by klipperStatusVirtualSDCard '+variables.getStatus())
       }
     }
   }
