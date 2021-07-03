@@ -5,14 +5,25 @@ let lastgcodefile = ''
 let gcodestartbyte = 0
 let gcodeendbyte = 0
 let gcodethumbnail = ''
-let currentLayerHeight = 0
 let printprogress = 0
 let remainingprinttime = 0
 let printtime = 0
 let updatetimer = 0
 let inviteurl = ''
 let mculist = {}
+let layerheight = 0
+let objectheight = 0
+let firstlayerheight = 0
+let currentlayer = 0
 
+module.exports.setCurrentLayer = function (z) {
+  currentlayer = z
+}
+module.exports.setLayerHeights = function (layer, maxlayer, firstlayer) {
+  layerheight = layer
+  objectheight = maxlayer
+  firstlayerheight = firstlayer
+}
 module.exports.addToMCUList = function (mcu) {
   mculist[mcu] = null
 }
@@ -55,11 +66,26 @@ module.exports.setRemainingTime = function (remainingtime) {
 module.exports.setPrintTime = function (newtime) {
   printtime = newtime
 }
-module.exports.setCurrentLayerHeight = function (height) {
-  currentLayerHeight = height
-}
 module.exports.updateLastGcodeFile = function () {
   lastgcodefile = gcodefile
+}
+module.exports.getMaxLayers = function () {
+  const max = Math.ceil((this.objectheight - this.firstlayerheight) / this.layerheight + 1)
+  return max > 0 ? max : 0
+}
+module.exports.getCurrentLayer = function () {
+  let current_layer = Math.ceil((this.currentlayer - this.firstlayerheight) / this.layerheight + 1)
+  current_layer = (current_layer <= this.max_layers) ? current_layer : this.max_layers
+  return current_layer > 0 ? current_layer : 0
+}
+module.exports.getLayerHeight = function () {
+  return layerheight
+}
+module.exports.getObjectHeight = function () {
+  return objectheight
+}
+module.exports.getFirstLayerHeight = function () {
+  return firstlayerheight
 }
 module.exports.getMCUList = function () {
   return mculist
@@ -109,9 +135,6 @@ module.exports.getFormatedPrintTime = function () {
 }
 module.exports.getLastGcodeFile = function () {
   return lastgcodefile
-}
-module.exports.getCurrentLayerHeight = function () {
-  return currentLayerHeight
 }
 module.exports.formatTime = (time) => { return formatTime(time / 1000) }
 

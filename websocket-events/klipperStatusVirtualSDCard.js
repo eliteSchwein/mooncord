@@ -1,5 +1,7 @@
 const args = process.argv.slice(2)
 
+const { waitUntil } = require('async-wait-until')
+
 const config = require(`${args[0]}/mooncord.json`)
 const locale = require('../utils/localeUtil')
 const status = require('../utils/statusUtil')
@@ -7,7 +9,7 @@ const variables = require('../utils/variablesUtil')
 
 let lastProgress = 0
 
-const event = (message, connection, discordClient) => {
+const event = async (message, connection, discordClient) => {
   const id = Math.floor(Math.random() * Number.parseInt('10_000')) + 1
   if (message.type === 'utf8') {
     const messageJson = JSON.parse(message.utf8Data)
@@ -23,11 +25,11 @@ const event = (message, connection, discordClient) => {
 
       if (variables.getStatus() !== 'printing') { return }
 
-      connection.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${variables.getCurrentFile()}"}, "id": ${id}}`)
-
       if (currentProgress.toFixed(0) === 0) { return }
       if (currentProgress.toFixed(0) === 100) { return }
       if (currentProgress.toFixed(0) === variables.getProgress()) { return }
+
+      await waitUntil(() => discordClient.user !== null, { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 1000 })
       
       discordClient.user.setActivity(
         locale.status.printing.activity.replace(/(\${value_print_progress})/g, currentProgress.toFixed(0))
@@ -57,7 +59,7 @@ function retrieveLayerHeight(result) {
     return
   }
   const {gcode_position} = result.status.gcode_move
-  variables.setCurrentLayerHeight(gcode_position[2])
+  variables.setCurrentLayer(gcode_position[2])
 }
 
 function retrieveSoftwareVersion(result) {
