@@ -33,35 +33,33 @@ const event = async (message, connection, discordClient) => {
     }
     if (klipperstatus.print_stats.state === 'printing' && (typeof (printfile) !== 'undefined' || printfile !== '')) {
       const currentStatus = 'printing'
+      if (variables.getStatus() === currentStatus) { return }
       console.log('oöiphauadghjpöäksadoj0i h+')
-      if (variables.getStatus() !== currentStatus) {
-        variables.setStatus(currentStatus)
-        if (!config.status.use_percent) {
-          status.triggerStatusUpdate(discordClient)
-          setTimeout(() => {
-            const timer = setInterval(() => {
-              status.triggerStatusUpdate(discordClient)
-            }, 1000 * config.status.update_interval)
-            variables.setUpdateTimer(timer)
+      variables.setStatus(currentStatus)
+      if (!config.status.use_percent) {
+        status.triggerStatusUpdate(discordClient)
+        setTimeout(() => {
+          const timer = setInterval(() => {
+            status.triggerStatusUpdate(discordClient)
           }, 1000 * config.status.update_interval)
-        } else {
-          status.triggerStatusUpdate(discordClient)
-        }
+          variables.setUpdateTimer(timer)
+        }, 1000 * config.status.update_interval)
+      } else {
+        status.triggerStatusUpdate(discordClient)
       }
     }
     if (klipperstatus.print_stats.state === 'complete' && variables.getStatus() !== 'ready') {
       const currentStatus = 'done'
-      if (variables.getStatus() !== currentStatus) {
-        timelapseUtil.render()
-        variables.setStatus(currentStatus)
-        variables.updateLastGcodeFile()
+      if (variables.getStatus() === currentStatus) { return }
+      timelapseUtil.render()
+      variables.setStatus(currentStatus)
+      variables.updateLastGcodeFile()
+      status.triggerStatusUpdate(discordClient)
+      clearInterval(variables.getUpdateTimer())
+      setTimeout(() => {
+        variables.setStatus('ready')
         status.triggerStatusUpdate(discordClient)
-        clearInterval(variables.getUpdateTimer())
-        setTimeout(() => {
-          variables.setStatus('ready')
-          status.triggerStatusUpdate(discordClient)
-        }, 1000)
-      }
+      }, 1000)
     }
   }
 }
