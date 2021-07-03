@@ -35,7 +35,7 @@ const event = async (message, connection, discordClient) => {
       const currentStatus = 'printing'
       if (variables.getStatus() === currentStatus) { return }
       variables.setStatus(currentStatus)
-      console.log('trigger by klipperStatusState')
+      console.log('trigger by klipperStatusState '+variables.getStatus())
       status.triggerStatusUpdate(discordClient)
       if (!config.status.use_percent) {
         setTimeout(() => {
