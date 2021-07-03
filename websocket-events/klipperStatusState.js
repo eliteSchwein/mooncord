@@ -35,6 +35,7 @@ const event = async (message, connection, discordClient) => {
     if (klipperstatus.print_stats.state === 'printing' && (typeof (printfile) !== 'undefined' || printfile !== '')) {
       const currentStatus = 'printing'
       if (variables.getStatus() === currentStatus) { return }
+      console.log('klipperStatusState')
       variables.setStatus(currentStatus)
       status.triggerStatusUpdate(discordClient)
 

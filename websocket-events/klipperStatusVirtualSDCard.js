@@ -29,8 +29,6 @@ const event = async (message, connection, discordClient) => {
       if (currentProgress === 100) { return }
       if (currentProgress.toFixed(0) === variables.getProgress()) { return }
 
-      console.log(currentProgress.toFixed(0) + ' '+ variables.getProgress())
-
       variables.setProgress(currentProgress.toFixed(0))
 
       await waitUntil(() => discordClient.user !== null, { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 1000 })
@@ -44,6 +42,7 @@ const event = async (message, connection, discordClient) => {
       if (config.status.update_interval &&
         currentProgress.toFixed(0) % config.status.update_interval === 0 &&
         currentProgress.toFixed(0) !== 0) {
+        console.log('klipperStatusState')
         lastProgress = currentProgress.toFixed(0)
         status.triggerStatusUpdate(discordClient)
       }
