@@ -24,27 +24,12 @@ module.exports = class HelloCommand extends SlashCommand {
         super(creator, {
             name: syntaxLocale.command,
             description: messageLocale.description,
-            guildIDs: guildId,
-            options: [{
-                type: CommandOptionType.STRING,
-                name: 'emulate',
-                description: 'Emulate file name.',
-                required: false
-            }]
+            guildIDs: guildId
         })
     }
 
     async run(ctx) {
         ctx.defer(false)
-
-        if (typeof(ctx.options.emulate) !== "undefined") {
-            const { emulate } = ctx.options
-            variablesUtil.setCurrentFile(emulate)
-            variablesUtil.updateLastGcodeFile()
-            variablesUtil.setCurrentFile('')
-
-            await timelapseUtil.render()
-        }
 
         if (variablesUtil.getLastGcodeFile() === '') {
             return locale.errors.no_timelapse
