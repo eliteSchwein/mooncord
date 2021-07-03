@@ -25,8 +25,8 @@ const event = async (message, connection, discordClient) => {
 
       if (variables.getStatus() !== 'printing') { return }
 
-      if (currentProgress.toFixed(0) === 0) { return }
-      if (currentProgress.toFixed(0) === 100) { return }
+      if (currentProgress === 0) { return }
+      if (currentProgress === 100) { return }
       if (currentProgress.toFixed(0) === variables.getProgress()) { return }
 
       console.log(currentProgress)
