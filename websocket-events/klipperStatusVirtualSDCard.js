@@ -31,12 +31,13 @@ const event = async (message, connection, discordClient) => {
 
       console.log(currentProgress.toFixed(0) + ' '+ variables.getProgress())
 
+      variables.setProgress(currentProgress.toFixed(0))
+
       await waitUntil(() => discordClient.user !== null, { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 1000 })
       
       discordClient.user.setActivity(
         locale.status.printing.activity.replace(/(\${value_print_progress})/g, currentProgress.toFixed(0))
         , { type: 'WATCHING' })
-      variables.setProgress(currentProgress.toFixed(0))
 
       if (currentProgress.toFixed(0) === lastProgress) { return }
 
