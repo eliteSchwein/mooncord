@@ -20,11 +20,12 @@ const event = async (message, connection, discordClient) => {
         const removeFileTag = removeSize.slice(12)
         const printfile = removeFileTag
         const currentStatus = 'start'
+
+        variables.setStatus(currentStatus)
+        
         connection.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${printfile}"}, "id": ${id}}`)
 
         //if (variables.getStatus() === currentStatus) { return }
-
-        variables.setStatus(currentStatus)
 
         await waitUntil(() => variables.getRemainingTime() > 0, { timeout: Number.POSITIVE_INFINITY })
         
