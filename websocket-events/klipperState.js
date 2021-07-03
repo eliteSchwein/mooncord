@@ -11,6 +11,7 @@ const event = (message, connection, discordClient) => {
     
     const currentStatus = result.klippy_state
     if (variables.getStatus() === currentStatus) { return }
+      console.log('klipperState')
     variables.setStatus(currentStatus)
     status.triggerStatusUpdate(discordClient)
   }
