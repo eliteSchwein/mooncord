@@ -24,13 +24,11 @@ let framecount = 1
 let lastLayer = 0
 
 ffmpeg.setFfmpegPath(ffmpegPath)
-async function render() {
-    if (!running) {
-        return
-    }
+
+function checkForFrames() {
     const pattern = /^frame-+/
-    fs.readdir(path.resolve(__dirname,'../temp/timelapse'), (err, fileNames) => {
-        if (err) { return }
+    return fs.readdir(path.resolve(__dirname,'../temp/timelapse'), (err, fileNames) => {
+        if (err) { return true }
 
         for (const name of fileNames) {
             if (pattern.test(name)) {
@@ -38,7 +36,14 @@ async function render() {
             }
         }
     });
+}
+async function render() {
+    if (!running) {
+        return
+    }
     let renderdone = false
+
+    if(!checkForFrames()) { return }
     
     try {
         conv
