@@ -47,6 +47,7 @@ async function triggerStatusUpdate(altdiscordClient) {
   }
   postStatus(embed, client)
   notifyStatus(embed, client)
+  return true
 }
 
 function parseConfig() {

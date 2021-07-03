@@ -5,7 +5,7 @@ const status = require('../utils/statusUtil')
 const timelapseUtil = require('../utils/timelapseUtil')
 const variables = require('../utils/variablesUtil')
 
-const event = (message, connection, discordClient) => {
+const event = async (message, connection, discordClient) => {
   const id = Math.floor(Math.random() * Number.parseInt('10_000')) + 1
   if (message.type === 'utf8') {
     const messageJson = JSON.parse(message.utf8Data)
@@ -22,7 +22,7 @@ const event = (message, connection, discordClient) => {
         if (variables.getStatus() !== currentStatus) {
           variables.setStatus(currentStatus)
           console.log(variables.getStatus())
-          status.triggerStatusUpdate(discordClient)
+          await status.triggerStatusUpdate(discordClient)
           timelapseUtil.start()
         }
         variables.setStatus('printing')
