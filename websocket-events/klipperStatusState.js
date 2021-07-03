@@ -25,11 +25,12 @@ const event = async (message, connection, discordClient) => {
     variables.setRemainingTime(remainingprinttime)
     if (klipperstatus.print_stats.state === 'paused') {
       const currentStatus = 'pause'
-      if (variables.getStatus() !== currentStatus) {
-        variables.setStatus(currentStatus)
-        status.triggerStatusUpdate(discordClient)
-        clearInterval(variables.getUpdateTimer())
-      }
+
+      if (variables.getStatus() === currentStatus) { return }
+
+      variables.setStatus(currentStatus)
+      status.triggerStatusUpdate(discordClient)
+      clearInterval(variables.getUpdateTimer())
     }
     if (klipperstatus.print_stats.state === 'printing' && (typeof (printfile) !== 'undefined' || printfile !== '')) {
       const currentStatus = 'printing'
@@ -39,20 +40,25 @@ const event = async (message, connection, discordClient) => {
       status.triggerStatusUpdate(discordClient)
 
       if (!config.status.use_percent) { return }
-      
+
       const timer = setInterval(() => {
+        console.log('trigger by klipperStatusState '+variables.getStatus()+' '+currentStatus)
         status.triggerStatusUpdate(discordClient)
       }, 1000 * config.status.update_interval)
       variables.setUpdateTimer(timer)
     }
     if (klipperstatus.print_stats.state === 'complete' && variables.getStatus() !== 'ready') {
       const currentStatus = 'done'
+
       if (variables.getStatus() === currentStatus) { return }
+
       timelapseUtil.render()
       variables.setStatus(currentStatus)
       variables.updateLastGcodeFile()
       status.triggerStatusUpdate(discordClient)
+      
       clearInterval(variables.getUpdateTimer())
+
       setTimeout(() => {
         variables.setStatus('ready')
         status.triggerStatusUpdate(discordClient)
