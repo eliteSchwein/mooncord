@@ -28,7 +28,7 @@ const event = async (message, connection, discordClient) => {
         //if (variables.getStatus() === currentStatus) { return }
 
         while (variables.getRemainingTime() == 0) {
-          console.log('iaklsjdbiug')
+          console.log(variables.getFormatedRemainingTime())
         }
 
         //await waitUntil(() => variables.getRemainingTime() > 0, { timeout: Number.POSITIVE_INFINITY })
