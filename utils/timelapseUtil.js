@@ -43,31 +43,24 @@ async function render() {
     }
     let renderdone = false
 
-    if(!checkForFrames()) { return }
+    if (!checkForFrames()) { return }
     
-    try {
-        conv
-            .addInput(path.resolve(__dirname,
-                '../temp/timelapse/frame-%d.png'))
-            .inputFPS(config.timelapse.framerate)
-            .output(path.resolve(__dirname, '../temp/timelapse/timelapse.mp4'))
-            .outputFPS(config.timelapse.framerate)
-            .outputOptions([
-                '-pix_fmt yuv420p',
-                '-preset faster',
-                '-crf 30'])
-            .noAudio()
-            .videoCodec('libx264')
-            .on('end', async (stdout, stderr) => {
-                if (stderr) {
-                    console.log(logSymbols.error, `Timelapse Util: ${stderr}`.error)
-                }
-                renderdone = true
-            })
-            .run()
-    } catch (error) {
-        console.log(logSymbols.error, `Timelapse Util: ${error}`.error)
-    }
+    conv
+        .addInput(path.resolve(__dirname,
+            '../temp/timelapse/frame-%d.png'))
+        .inputFPS(config.timelapse.framerate)
+        .output(path.resolve(__dirname, '../temp/timelapse/timelapse.mp4'))
+        .outputFPS(config.timelapse.framerate)
+        .outputOptions([
+            '-pix_fmt yuv420p',
+            '-preset faster',
+            '-crf 30'])
+        .noAudio()
+        .videoCodec('libx264')
+        .on('end', async (stdout, stderr) => {
+            renderdone = true
+        })
+        .run()
     await waitUntil(() => renderdone === true, { timeout: Number.POSITIVE_INFINITY })
 }
 
