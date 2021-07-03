@@ -28,6 +28,7 @@ const event = async (message, connection, discordClient) => {
         connection.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${printfile}"}, "id": ${id}}`)
 
         const handler = setInterval(async () => {
+          console.log(variables.getRemainingTime())
           if(variables.getRemainingTime() === 0) { return }
           await status.triggerStatusUpdate(discordClient)
           timelapseUtil.start()
