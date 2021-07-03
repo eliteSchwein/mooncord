@@ -33,6 +33,7 @@ const event = (message, connection, discordClient) => {
     }
     if (klipperstatus.print_stats.state === 'printing' && (typeof (printfile) !== 'undefined' || printfile !== '')) {
       const currentStatus = 'printing'
+      console.log('oöiphauadghjpöäksadoj0i h+')
       if (variables.getStatus() !== currentStatus) {
         variables.setStatus(currentStatus)
         if (!config.status.use_percent) {
