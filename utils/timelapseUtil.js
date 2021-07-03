@@ -95,11 +95,9 @@ module.exports.init = (dcClient, mrClient) => {
         setInterval(async () => {
             if (variablesUtil.getStatus() !== 'printing') { return }
             if (variablesUtil.getCurrentLayer() === lastLayer) { return }
-
-            console.log(lastLayer)
             
             makeFrame()
-            lastHeight = variablesUtil.getCurrentLayer()
+            lastLayer = variablesUtil.getCurrentLayer()
         }, 500)
     }
 }
