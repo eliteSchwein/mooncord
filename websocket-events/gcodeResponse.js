@@ -21,9 +21,9 @@ const event = async (message, connection, discordClient) => {
         const printfile = removeFileTag
         const currentStatus = 'start'
         connection.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${printfile}"}, "id": ${id}}`)
+        await waitUntil(() => variables.getRemainingTime() > 0, { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 250 })
         if (variables.getStatus() !== currentStatus) {
           variables.setStatus(currentStatus)
-          await waitUntil(() => variables.getRemainingTime() > 0, { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 250 })
           await status.triggerStatusUpdate(discordClient)
           timelapseUtil.start()
         }
