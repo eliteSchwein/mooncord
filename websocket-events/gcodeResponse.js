@@ -26,9 +26,7 @@ const event = async (message, connection, discordClient) => {
 
         variables.setStatus(currentStatus)
 
-        console.log(variables.getStatus() === currentStatus)
-
-        await waitUntil(() => variables.getRemainingTime() > 0, { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 250 })
+        await waitUntil(() => variables.getRemainingTime() > 0, { timeout: Number.POSITIVE_INFINITY })
         await status.triggerStatusUpdate(discordClient)
 
         timelapseUtil.start()

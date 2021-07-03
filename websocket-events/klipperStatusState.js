@@ -5,7 +5,7 @@ const status = require('../utils/statusUtil')
 const timelapseUtil = require('../utils/timelapseUtil')
 const variables = require('../utils/variablesUtil')
 
-const event = (message, connection, discordClient) => {
+const event = async (message, connection, discordClient) => {
   if (message.type !== 'utf8') { return }
 
   const messageJson = JSON.parse(message.utf8Data)
