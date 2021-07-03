@@ -22,8 +22,8 @@ const event = (message, connection, discordClient) => {
         connection.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${printfile}"}, "id": ${id}}`)
         if (variables.getStatus() !== currentStatus) {
           variables.setStatus(currentStatus)
-          timelapseUtil.start()
           status.triggerStatusUpdate(discordClient)
+          timelapseUtil.start()
         }
         variables.setStatus('printing')
         if (!config.status.use_percent) {

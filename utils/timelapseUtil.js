@@ -43,6 +43,9 @@ async function render() {
             .noAudio()
             .videoCodec('libx264')
             .on('end', async (stdout, stderr) => {
+                if (stderr) {
+                    console.log(logSymbols.error, `Timelapse Util: ${stderr}`.error)
+                }
                 renderdone = true
             })
             .run()
