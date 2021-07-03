@@ -22,6 +22,8 @@ const event = async (message, connection, discordClient) => {
         const currentStatus = 'start'
         connection.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${printfile}"}, "id": ${id}}`)
 
+        console.log(variables.getStatus() === currentStatus)
+
         if (variables.getStatus() === currentStatus) { return }
 
         variables.setStatus(currentStatus)
@@ -31,7 +33,7 @@ const event = async (message, connection, discordClient) => {
 
         timelapseUtil.start()
         variables.setStatus('printing')
-        
+
         if (!config.status.use_percent) {
           timer = setInterval(() => {
             status.triggerStatusUpdate(discordClient)
