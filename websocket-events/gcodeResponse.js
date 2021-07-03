@@ -1,5 +1,7 @@
 const args = process.argv.slice(2)
 
+const { waitUntil } = require('async-wait-until')
+
 const config = require(`${args[0]}/mooncord.json`)
 const status = require('../utils/statusUtil')
 const timelapseUtil = require('../utils/timelapseUtil')
@@ -21,7 +23,7 @@ const event = async (message, connection, discordClient) => {
         connection.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${printfile}"}, "id": ${id}}`)
         if (variables.getStatus() !== currentStatus) {
           variables.setStatus(currentStatus)
-          console.log(variables.getStatus())
+          await waitUntil(() => variables.getRemainingTime() > 0, { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 250 })
           await status.triggerStatusUpdate(discordClient)
           timelapseUtil.start()
         }

@@ -70,12 +70,12 @@ module.exports.updateLastGcodeFile = function () {
   lastgcodefile = gcodefile
 }
 module.exports.getMaxLayers = function () {
-  const max = Math.ceil((this.objectheight - this.firstlayerheight) / this.layerheight + 1)
+  const max = Math.ceil((objectheight - firstlayerheight) / layerheight + 1)
   return max > 0 ? max : 0
 }
 module.exports.getCurrentLayer = function () {
-  let current_layer = Math.ceil((this.currentlayer - this.firstlayerheight) / this.layerheight + 1)
-  current_layer = (current_layer <= this.max_layers) ? current_layer : this.max_layers
+  let current_layer = Math.ceil((currentlayer - firstlayerheight) / layerheight + 1)
+  current_layer = (current_layer <= max_layers) ? current_layer : max_layers
   return current_layer > 0 ? current_layer : 0
 }
 module.exports.getLayerHeight = function () {
