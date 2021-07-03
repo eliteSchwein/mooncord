@@ -27,6 +27,10 @@ const event = async (message, connection, discordClient) => {
 
         //if (variables.getStatus() === currentStatus) { return }
 
+        while (variables.getRemainingTime() == 0) {
+          console.log('iaklsjdbiug')
+        }
+
         //await waitUntil(() => variables.getRemainingTime() > 0, { timeout: Number.POSITIVE_INFINITY })
         
         status.triggerStatusUpdate(discordClient)
