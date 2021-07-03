@@ -31,7 +31,7 @@ async function render() {
     }
     let renderdone = false
 
-    const frames = glob.sync("../temp/timelapse/frame-*");
+    const frames = glob.sync("../temp/timelapse/frame-*.png");
     console.log(frames)
     try {
         conv
