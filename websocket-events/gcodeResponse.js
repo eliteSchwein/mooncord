@@ -22,11 +22,11 @@ const event = async (message, connection, discordClient) => {
         const currentStatus = 'start'
         connection.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${printfile}"}, "id": ${id}}`)
 
-        console.log(variables.getStatus() === currentStatus)
-
         if (variables.getStatus() === currentStatus) { return }
 
         variables.setStatus(currentStatus)
+
+        console.log(variables.getStatus() === currentStatus)
 
         await waitUntil(() => variables.getRemainingTime() > 0, { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 250 })
         await status.triggerStatusUpdate(discordClient)
