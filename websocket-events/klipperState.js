@@ -10,6 +10,7 @@ const event = (message, connection, discordClient) => {
       if (variables.getStatus() !== currentStatus) {
         variables.setStatus(currentStatus)
         status.triggerStatusUpdate(discordClient)
+        console.log('trigger by klipperState')
       }
     }
   }

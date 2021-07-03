@@ -35,16 +35,15 @@ const event = async (message, connection, discordClient) => {
       const currentStatus = 'printing'
       if (variables.getStatus() === currentStatus) { return }
       variables.setStatus(currentStatus)
+      console.log('trigger by klipperStatusState')
+      status.triggerStatusUpdate(discordClient)
       if (!config.status.use_percent) {
-        status.triggerStatusUpdate(discordClient)
         setTimeout(() => {
           const timer = setInterval(() => {
             status.triggerStatusUpdate(discordClient)
           }, 1000 * config.status.update_interval)
           variables.setUpdateTimer(timer)
         }, 1000 * config.status.update_interval)
-      } else {
-        status.triggerStatusUpdate(discordClient)
       }
     }
     if (klipperstatus.print_stats.state === 'complete' && variables.getStatus() !== 'ready') {
