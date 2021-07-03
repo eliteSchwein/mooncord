@@ -103,7 +103,7 @@ module.exports.init = (dcClient, mrClient) => {
             if (variablesUtil.getStatus() !== 'printing') { return }
             if (variablesUtil.getCurrentLayer() === lastLayer) { return }
 
-            console.log(variablesUtil.getCurrentLayer())
+            console.log(lastLayer)
             
             makeFrame()
             lastHeight = variablesUtil.getCurrentLayer()
