@@ -8,8 +8,6 @@ const event = (message) => {
     if (typeof (result) === 'undefined') { return }
     if (typeof (result.gcode_start_byte) === 'undefined') { return }
 
-    console.log(result)
-
     variables.setStartByte(result.gcode_start_byte)
     variables.setEndByte(result.gcode_end_byte)
     variables.setPrintTime(result.estimated_time)
