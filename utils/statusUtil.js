@@ -32,10 +32,12 @@ async function triggerStatusUpdate(altdiscordClient) {
 
   const client = getDiscordClient(altdiscordClient)
 
-  await waitUntil(() => client.user !== null, { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 1500 })
-  console.log(logSymbols.info, `Printer Status: ${variables.getStatus()}`.printstatus)
+  const currentStatus = variables.getStatus()
 
-  const parsedConfig = parseConfig()
+  await waitUntil(() => client.user !== null, { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 1500 })
+  console.log(logSymbols.info, `Printer Status: ${currentStatus}`.printstatus)
+
+  const parsedConfig = parseConfig(currentStatus)
 
   const embed = await generateEmbed(parsedConfig)
 
@@ -50,8 +52,7 @@ async function triggerStatusUpdate(altdiscordClient) {
   return true
 }
 
-function parseConfig() {
-  const status = variables.getStatus()
+function parseConfig(status) {
   const config = messagemetadata[status]
   const localeConfig = locale.status[status]
   const parsedConfig = JSON.stringify(config) 
@@ -174,7 +175,8 @@ module.exports.triggerStatusUpdate = async function (altdiscordClient) {
 }
 
 module.exports.getManualStatusEmbed = async function (user) {
-  const parsedConfig = parseConfig()
+  const currentStatus = variables.getStatus()
+  const parsedConfig = parseConfig(currentStatus)
   return await generateEmbed(parsedConfig, user)
 }
 
