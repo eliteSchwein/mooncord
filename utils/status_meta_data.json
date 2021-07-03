@@ -114,7 +114,7 @@
             },
             {
                 "name": "${locale.print_layers}",
-                "value": "${value_current_layer}:${value_max_layer}"
+                "value": "${value_current_layer}/${value_max_layer}"
             }
         ]
     },
