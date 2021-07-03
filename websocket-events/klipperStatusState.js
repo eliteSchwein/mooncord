@@ -39,9 +39,7 @@ const event = async (message, connection, discordClient) => {
       variables.setStatus(currentStatus)
       status.triggerStatusUpdate(discordClient)
 
-      if (!config.status.use_percent) { return }
-
-      console.log(config.status.use_percent)
+      if (config.status.use_percent) { return }
 
       const timer = setInterval(() => {
         console.log('trigger by klipperStatusState '+variables.getStatus()+' '+currentStatus)
