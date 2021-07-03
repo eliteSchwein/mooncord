@@ -27,21 +27,18 @@ const event = async (message, connection, discordClient) => {
 
         connection.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${printfile}"}, "id": ${id}}`)
 
-        const handler = setInterval(async () => {
-          console.log(variables.getRemainingTime())
-          if(variables.getRemainingTime() === 0) { return }
-          await status.triggerStatusUpdate(discordClient)
-          timelapseUtil.start()
-          variables.setStatus('printing')
+        await waitUntil(() => variables.getPrintTime() > 0, { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 250 })
+        await status.triggerStatusUpdate(discordClient)
 
-          if (!config.status.use_percent) {
-            timer = setInterval(() => {
-              status.triggerStatusUpdate(discordClient)
-            }, 1000 * config.status.update_interval)
-            variables.setUpdateTimer(timer)
-          }
-          clearInterval(handler)
-        }, 100)
+        timelapseUtil.start()
+        variables.setStatus('printing')
+
+        if (!config.status.use_percent) {
+          timer = setInterval(() => {
+            status.triggerStatusUpdate(discordClient)
+          }, 1000 * config.status.update_interval)
+          variables.setUpdateTimer(timer)
+        }
       }
     }
   }
