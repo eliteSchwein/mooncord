@@ -27,8 +27,8 @@ const event = async (message, connection, discordClient) => {
         variables.setStatus(currentStatus)
 
         await waitUntil(() => variables.getRemainingTime() > 0, { timeout: Number.POSITIVE_INFINITY })
-        await status.triggerStatusUpdate(discordClient)
-
+        
+        status.triggerStatusUpdate(discordClient)
         timelapseUtil.start()
         variables.setStatus('printing')
 
