@@ -33,7 +33,7 @@ const event = async (message, connection, discordClient) => {
     variables.setStatus(states[methode].status)
     variables.updateLastGcodeFile()
     await status.triggerStatusUpdate(discordClient)
-      console.log('trigger by klipperStates')
+      console.log('trigger by klipperStates '+variables.getStatus())
 
     if(typeof(states[methode].render) === 'undefined') { return }
 
