@@ -75,7 +75,6 @@ module.exports.getMaxLayers = function () {
 }
 module.exports.getCurrentLayer = function () {
   let current_layer = Math.ceil((currentlayer - firstlayerheight) / layerheight + 1)
-  console.log(current_layer)
   current_layer = (current_layer <= this.getMaxLayers()) ? current_layer : this.getMaxLayers()
   return current_layer > 0 ? current_layer : 0
 }
