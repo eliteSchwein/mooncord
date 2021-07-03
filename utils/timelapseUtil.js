@@ -2,6 +2,7 @@ const args = process.argv.slice(2)
 
 const { waitUntil } = require('async-wait-until')
 const Discord = require('discord.js')
+const glob = require('glob')
 const fs = require('fs')
 const path = require('path')
 const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path
@@ -29,6 +30,9 @@ async function render() {
         return
     }
     let renderdone = false
+
+    const frames = glob.sync("../temp/timelapse/frame-*");
+    console.log(frames)
     try {
         conv
             .addInput(path.resolve(__dirname,
@@ -118,7 +122,7 @@ module.exports.start = () => {
     framecount = 1
     const pattern = /^frame-+/
     fs.readdir(path.resolve(__dirname,'../temp/timelapse'), (err, fileNames) => {
-        if (err) {return;}
+        if (err) { return }
 
         for (const name of fileNames) {
 
