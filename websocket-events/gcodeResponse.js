@@ -18,6 +18,7 @@ const event = (message, connection, discordClient) => {
         const removeFileTag = removeSize.slice(12)
         const printfile = removeFileTag
         const currentStatus = 'start'
+        console.log('print start')
         connection.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${printfile}"}, "id": ${id}}`)
         if (variables.getStatus() !== currentStatus) {
           variables.setStatus(currentStatus)
