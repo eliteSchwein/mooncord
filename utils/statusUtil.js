@@ -129,7 +129,7 @@ function postStatus(message, altdiscordClient, altdatabase) {
         for (const index in guilddatabase.broadcastchannels) {
           const channel = await client.channels.fetch(guilddatabase.broadcastchannels[index])
           if (config.status.use_percent &&
-            message.title === localeConfig.title) {
+            message.title === locale.status.printing.title) {
             if (ramdatabase.cooldown === 0) {
               await removeOldStatus(channel, client)
               channel.send(message)
@@ -167,7 +167,7 @@ function notifyStatus(message, altdiscordClient, altdatabase) {
     client.users.fetch(clientid)
       .then(async (user) => {
         if (config.status.use_percent &&
-              message.title === localeConfig.title) {
+              message.title === locale.status.printing.title) {
           if (ramdatabase.cooldown === 0) {
             await removeOldStatus(user.dmChannel, client)
             user.send(message).catch('console.error')
