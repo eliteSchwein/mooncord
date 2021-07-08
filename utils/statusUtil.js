@@ -129,8 +129,9 @@ function postStatus(message, altdiscordClient, altdatabase) {
         for (const index in guilddatabase.broadcastchannels) {
           const channel = await client.channels.fetch(guilddatabase.broadcastchannels[index])
           if (config.status.use_percent &&
-            message.title === messagemetadata.printing.title) {
+            message.title === localeConfig.title) {
             if (ramdatabase.cooldown === 0) {
+              await removeOldStatus(channel, client)
               channel.send(message)
               maindatabase.updateRamDatabase("cooldown", config.status.min_interval)
             }
@@ -141,6 +142,15 @@ function postStatus(message, altdiscordClient, altdatabase) {
       })
       .catch((error) => { console.log(logSymbols.error, `Status Util: ${error}`.error) })
   }
+}
+
+async function removeOldStatus(channel, discordClient) {
+  const lastMessage = await channel.message.fetch({ limit: 1 }).first()
+
+  if (lastMessage.author.id !== discordClient.user.id) { return }
+  if (lastMessage.embeds.size === 0) { return }
+
+  await lastMessage.delete()
 }
 
 function notifyStatus(message, altdiscordClient, altdatabase) {
@@ -157,8 +167,9 @@ function notifyStatus(message, altdiscordClient, altdatabase) {
     client.users.fetch(clientid)
       .then(async (user) => {
         if (config.status.use_percent &&
-              message.title === messagemetadata.printing.title) {
+              message.title === localeConfig.title) {
           if (ramdatabase.cooldown === 0) {
+            await removeOldStatus(user.dmChannel, client)
             user.send(message).catch('console.error')
             maindatabase.updateRamDatabase("cooldown", config.status.min_interval)
           }
