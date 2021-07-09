@@ -31,7 +31,7 @@ function retrieveStats(result) {
 }
 function retrieveThrottle(result, discordClient, database) {
   const { flags } = result
-  console.log(flags)
+  console.log(posted)
   if (!flags.includes('Currently Throttled')) {
     posted = []
     return
