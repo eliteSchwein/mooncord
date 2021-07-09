@@ -1,18 +1,21 @@
 {
     "notify_klippy_disconnected": {
-        "status": "disconnected"
+        "status": "disconnected",
+        "preventStatus": ["pause"]
     },
     "notify_klippy_ready": {
         "status": "ready",
         "preventStatus": ["printing"]
     },
     "notify_klippy_shutdown": {
-        "status": "shutdown"
+        "status": "shutdown",
+        "preventStatus": ["pause"]
     },
     "notify_gcode_response": {
         "status": "stop",
         "timedStatus": "ready",
         "render": true,
-        "requiredParams": ["// action:cancel"]
+        "requiredParams": ["// action:cancel"],
+        "preventStatus": ["pause"]
     }
 }
