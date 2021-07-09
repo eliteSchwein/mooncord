@@ -8,6 +8,8 @@ const locale = require('../utils/localeUtil')
 const chatUtil = require('../utils/chatUtil')
 
 let posted = []
+let notThrottledCounter = 5
+
 const validFlags = [
   'Frequency Capped',
   'Under-Voltage Detected',
@@ -31,14 +33,20 @@ function retrieveStats(result) {
 }
 function retrieveThrottle(result, discordClient, database) {
   const { flags } = result
-  console.log(flags)
   if (!flags.includes('Currently Throttled')) {
-    posted = []
+    if (notThrottledCounter === 0) {
+      posted = []
+      return
+    }
+    notThrottledCounter--
     return
   }
   for (const index in flags) {
     const flag = flags[index]
     if (validFlags.includes(flag)) {
+
+      notThrottledCounter = 5
+
       if (!posted.includes(flag)) {
         posted.push(flag)
         postThrottle(flag, discordClient, database)
