@@ -25,6 +25,7 @@ module.exports = class EmergencyStopCommand extends SlashCommand {
         if (!await permission.hasAdmin(ctx.user, ctx.guildID, discordClient.getClient())) {
             return locale.getAdminOnlyError(ctx.user.username)
         }
+        
         connection = moonrakerClient.getConnection()
         const id = Math.floor(Math.random() * Number.parseInt('10_000')) + 1
 

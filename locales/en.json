@@ -77,6 +77,16 @@
                 }
             }
         },
+        "get_log": {
+            "description": "Retrieve a Log.",
+            "command": "getlog",
+            "options": {
+                "log_file": {
+                    "name": "logfile",
+                    "description": "Specifies the Log File."
+                }
+            }
+        },
         "info": {
             "description": "Send a Description about me.",
             "command": "info",

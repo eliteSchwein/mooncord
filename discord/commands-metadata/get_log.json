@@ -1,0 +1,16 @@
+{
+    "choices" : [
+        {
+            "name": "Klipper",
+            "value": "klipper"
+        },
+        {
+            "name": "Moonraker",
+            "value": "moonraker"
+        }
+    ],
+    "files": {
+        "klipper": "/server/files/klippy.log",
+        "moonraker": "/server/files/moonraker.log"
+    }
+}
