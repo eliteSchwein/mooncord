@@ -38,6 +38,7 @@ function retrieveThrottle(result, discordClient, database) {
   for (const index in flags) {
     const flag = flags[index]
     if (validFlags.includes(flag)) {
+      console.log(posted.includes(flag))
       if (!posted.includes(flag)) {
         posted.push(flag)
         postThrottle(flag, discordClient, database)
