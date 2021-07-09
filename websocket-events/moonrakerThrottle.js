@@ -42,6 +42,8 @@ function retrieveThrottle(result, discordClient, database) {
       if (!posted.includes(flag)) {
         posted.push(flag)
         postThrottle(flag, discordClient, database)
+      } else {
+        console.log(flag)
       }
     }
   }
