@@ -45,6 +45,13 @@
                 "deactivated": "${channel} is not longer a Broadcast Channel, ${username}!"
             }
         },
+        "emergency_stop": {
+            "description": "Emergency Stop the Printer?",
+            "command": "emergencystop",
+            "answer": {
+                "executed": "Emergency Stop executed, ${username}!"
+            }
+        },
         "execute": {
             "description": "Execute a GCode Command.",
             "command": "execute",

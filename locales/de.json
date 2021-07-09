@@ -45,6 +45,13 @@
                 "deactivated": "${channel} ist kein Nachrichten Kanal mehr, ${username}!"
             }
         },
+        "emergency_stop": {
+            "description": "Not Stop ausführen?",
+            "command": "notstop",
+            "answer": {
+                "executed": "Not Stop ausgeführt, ${username}!"
+            }
+        },
         "execute": {
             "description": "Führe einen GCode Befehl aus.",
             "command": "ausführen",
