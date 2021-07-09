@@ -30,7 +30,6 @@ module.exports = class EmergencyStopCommand extends SlashCommand {
 
         ctx.defer(false)
 
-        connection.on('message', handler)
         connection.send(`{"jsonrpc": "2.0", "method": "printer.emergency_stop", "id": ${id}}`)
             return messageLocale.answer.executed
                 .replace(/(\${username})/g, ctx.user.username)
@@ -39,7 +38,6 @@ module.exports = class EmergencyStopCommand extends SlashCommand {
     onError(error, ctx) {
         console.log(logSymbols.error, `Emergency Stop Command: ${error}`.error)
         ctx.send(locale.errors.command_failed)
-        connection.removeListener('message', handler)
     }
 
     onUnload() {
