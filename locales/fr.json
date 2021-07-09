@@ -45,6 +45,13 @@
                 "deactivated": "${channel} n'est plus un canal de diffusion, ${username}!"
             }
         },
+        "emergency_stop": {
+            "description": "Arrêter l'imprimante d'urgence ?",
+            "command": "urgencestop",
+            "answer": {
+                "executed": "Arrêter d'urgence exécuté, ${username}!"
+            }
+        },
         "execute": {
             "description": "Exécuter une commande GCode.",
             "command": "execute",
