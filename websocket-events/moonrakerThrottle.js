@@ -8,7 +8,7 @@ const locale = require('../utils/localeUtil')
 const chatUtil = require('../utils/chatUtil')
 
 let posted = []
-let notThrottledCounter = 5
+let notThrottledCounter = 30
 
 const validFlags = [
   'Frequency Capped',
@@ -45,7 +45,7 @@ function retrieveThrottle(result, discordClient, database) {
     const flag = flags[index]
     if (validFlags.includes(flag)) {
 
-      notThrottledCounter = 5
+      notThrottledCounter = 30
 
       if (!posted.includes(flag)) {
         posted.push(flag)
