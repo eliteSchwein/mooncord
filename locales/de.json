@@ -77,6 +77,16 @@
                 }
             }
         },
+        "get_log": {
+            "description": "Erhalte einen Log.",
+            "command": "log",
+            "options": {
+                "log_file": {
+                    "name": "logdatei",
+                    "description": "Spezifiere die Log Datei."
+                }
+            }
+        },
         "info": {
             "description": "Schickt dir eine Beschreibung über mich.",
             "command": "info",
