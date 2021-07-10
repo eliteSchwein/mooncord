@@ -45,6 +45,13 @@
                 "deactivated": "${channel} nu mai este un Canal de Difuzare, ${username}!"
             }
         },
+        "emergency_stop": {
+            "description": "Oprire de Urgență a Imprimantei?",
+            "command": "oprire-urgenta",
+            "answer": {
+                "executed": "Oprirea de Urgență a fost executată, ${username}!"
+            }
+        },
         "execute": {
             "description": "Executați o comandă Cod-G.",
             "command": "executa",
@@ -68,6 +75,20 @@
                     "name": "fișier",
                     "description": "Specifică un Fișier de Printat."
                 }
+            }
+        },
+        "get_log": {
+            "description": "Preia un Fișier Jurnal.",
+            "command": "jurnal",
+            "options": {
+                "log_file": {
+                    "name": "fisier-jurnal",
+                    "description": "Specifică Fișierul Jurnal."
+                }
+            },
+            "answer": {
+                "retrieved": "Acesta este Fișierul Jurnal curent pentru ${service}",
+                "not_found": "Momentan nu există niciun Fișier Jurnal pentru ${service}"
             }
         },
         "info": {
