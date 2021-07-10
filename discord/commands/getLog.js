@@ -63,7 +63,6 @@ module.exports = class EditChannelCommand extends SlashCommand {
 }
 
 async function getLog(servicename) {
-    const outputFilename = `temp/${servicename}.log`
     const buffer = await axios.request({
         responseType: 'arraybuffer',
         url: `${config.connection.moonraker_url}${metadata.files[servicename]}`,
@@ -72,6 +71,5 @@ async function getLog(servicename) {
             'Content-Type': 'text/plain',
         },
     })
-    await fs.writeFileSync(outputFilename, buffer)
-    return outputFilename
+    return buffer.data
 }
