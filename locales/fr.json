@@ -77,6 +77,20 @@
                 }
             }
         },
+        "get_log": {
+            "description": "Récupére le log.",
+            "command": "recuplog",
+            "options": {
+                "log_file": {
+                    "name": "Fichier du log",
+                    "description": "Spécifiez le fichier du log."
+                }
+            },
+            "answer": {
+                "retrieved": "Voici le log pour ${service}",
+                "not_found": "Il n'y a aucun log pour ${service}"
+            }
+        },
         "info": {
             "description": "Envoyer une description de moi.",
             "command": "info",
