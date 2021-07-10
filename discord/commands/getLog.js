@@ -1,6 +1,9 @@
 const logSymbols = require('log-symbols')
 const { SlashCommand, CommandOptionType } = require('slash-create')
+const axios = require('axios')
+const fs = require('fs')
 
+const config = require(`${args[0]}/mooncord.json`)
 const discordClient = require('../../clients/discordClient')
 const locale = require('../../utils/localeUtil')
 const permission = require('../../utils/permissionUtil')
@@ -31,7 +34,11 @@ module.exports = class EditChannelCommand extends SlashCommand {
             return locale.getControllerOnlyError(ctx.user.username)
         }
 
+        const service = ctx.options[0]
+
         ctx.defer(false)
+
+        getLog(service)
     }
 
     onError(error, ctx) {
@@ -42,4 +49,17 @@ module.exports = class EditChannelCommand extends SlashCommand {
     onUnload() {
         return 'okay'
     }
+}
+
+function getLog(servicename) {
+    return axios.request({
+        responseType: 'arraybuffer',
+        url: `${config.connection.moonraker_url}${metadata.files[servicename]}`,
+        method: 'get',
+        headers: {
+            'Content-Type': 'text/plain',
+        },
+    }).then((result) => {
+        console.log(result)
+    });
 }
