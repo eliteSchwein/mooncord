@@ -43,7 +43,7 @@ module.exports = class EditChannelCommand extends SlashCommand {
         const logFile = await getLog(service)
         console.log(logFile)
 
-        await ctx.send({
+        return ({
             content: messageLocale.answer.retrieved
                 .replace(/(\${service})/g, `\`${service}\``),
             file: {
