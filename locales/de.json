@@ -85,6 +85,9 @@
                     "name": "logdatei",
                     "description": "Spezifiere die Log Datei."
                 }
+            },
+            "answer": {
+                "retrieved": "Hier ist der aktuelle Log für ${service}"
             }
         },
         "info": {

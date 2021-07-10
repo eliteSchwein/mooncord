@@ -85,6 +85,9 @@
                     "name": "logfile",
                     "description": "Specifies the Log File."
                 }
+            },
+            "answer": {
+                "retrieved": "Here is the current Log for ${service}"
             }
         },
         "info": {
