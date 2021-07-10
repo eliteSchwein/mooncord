@@ -40,7 +40,7 @@ module.exports = class EditChannelCommand extends SlashCommand {
 
         ctx.defer(false)
 
-        const logFile = getLog(service)
+        const logFile = await getLog(service)
 
         await ctx.send({
             content: messageLocale.answer.retrieved
@@ -62,17 +62,16 @@ module.exports = class EditChannelCommand extends SlashCommand {
     }
 }
 
-function getLog(servicename) {
-    return axios.request({
+async function getLog(servicename) {
+    const outputFilename = `temp/${servicename}.log`
+    const buffer = await axios.request({
         responseType: 'arraybuffer',
         url: `${config.connection.moonraker_url}${metadata.files[servicename]}`,
         method: 'get',
         headers: {
             'Content-Type': 'text/plain',
         },
-    }).then(async (result) => {
-        const outputFilename = `temp/${servicename}.log`
-        await fs.writeFile(outputFilename, result.data)
-        return outputFilename
-    });
+    })
+    await fs.writeFileSync(outputFilename, buffer)
+    return outputFilename
 }
