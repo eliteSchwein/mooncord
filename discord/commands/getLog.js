@@ -56,6 +56,10 @@ module.exports = class EditChannelCommand extends SlashCommand {
                     file: result.data
                 }
             })
+        }).catch(async (error) => {
+            await ctx.send(
+                messageLocale.answer.not_found
+                    .replace(/(\${service})/g, `\`${service}\``)) 
         });
     }
 

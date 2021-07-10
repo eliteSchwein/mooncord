@@ -87,7 +87,8 @@
                 }
             },
             "answer": {
-                "retrieved": "Here is the current Log for ${service}"
+                "retrieved": "Here is the current Log for ${service}",
+                "not_found": "There is currently no Log for ${service}"
             }
         },
         "info": {

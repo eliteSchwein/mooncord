@@ -87,7 +87,8 @@
                 }
             },
             "answer": {
-                "retrieved": "Hier ist der aktuelle Log für ${service}"
+                "retrieved": "Hier ist der aktuelle Log für ${service}",
+                "not_found": "Derzeit gibt es keinen Log für ${service}"
             }
         },
         "info": {
