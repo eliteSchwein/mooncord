@@ -25,7 +25,7 @@ module.exports = class EditChannelCommand extends SlashCommand {
                 type: CommandOptionType.STRING,
                 name: syntaxLocale.options.log_file.name,
                 description: messageLocale.options.log_file.description,
-                required: false
+                required: true
             }]
         })
         this.filePath = __filename
@@ -43,6 +43,7 @@ module.exports = class EditChannelCommand extends SlashCommand {
         const logFile = getLog(service)
 
         return ({
+            content: '',
             file: {
                 name: `${service}.log`,
                 file: logFile
