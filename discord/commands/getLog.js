@@ -36,7 +36,7 @@ module.exports = class EditChannelCommand extends SlashCommand {
             return locale.getControllerOnlyError(ctx.user.username)
         }
 
-        const service = ctx.options[0]
+        const service = ctx.options[syntaxLocale.options.log_file.name]
 
         ctx.defer(false)
 
