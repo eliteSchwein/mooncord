@@ -70,9 +70,9 @@ function getLog(servicename) {
         headers: {
             'Content-Type': 'text/plain',
         },
-    }).then((result) => {
+    }).then(async (result) => {
         const outputFilename = `temp/${servicename}.log`
-        fs.writeFileSync(outputFilename, result.data)
+        await fs.writeFile(outputFilename, result.data)
         return outputFilename
     });
 }
