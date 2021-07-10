@@ -1,3 +1,5 @@
+const args = process.argv.slice(2)
+
 const logSymbols = require('log-symbols')
 const { SlashCommand, CommandOptionType } = require('slash-create')
 const axios = require('axios')
