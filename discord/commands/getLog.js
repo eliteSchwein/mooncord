@@ -71,6 +71,6 @@ async function getLog(servicename) {
             'Content-Type': 'text/plain',
         },
     })
-    console.log(buffer)
+    console.log(buffer.data)
     return buffer.data
 }
