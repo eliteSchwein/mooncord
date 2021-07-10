@@ -41,6 +41,7 @@ module.exports = class EditChannelCommand extends SlashCommand {
         ctx.defer(false)
 
         const logFile = await getLog(service)
+        console.log(logFile)
 
         await ctx.send({
             content: messageLocale.answer.retrieved
@@ -71,6 +72,5 @@ async function getLog(servicename) {
             'Content-Type': 'text/plain',
         },
     })
-    console.log(buffer.data)
     return buffer.data
 }
