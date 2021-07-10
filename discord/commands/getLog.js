@@ -71,8 +71,7 @@ function getLog(servicename) {
             'Content-Type': 'text/plain',
         },
     }).then((result) => {
-        const outputFilename = `/temp/${servicename}.log`
-        fs.unlinkSync(outputFilename)
+        const outputFilename = `temp/${servicename}.log`
         fs.writeFileSync(outputFilename, result.data)
         return outputFilename
     });
