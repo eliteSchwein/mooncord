@@ -30,7 +30,7 @@ module.exports = class EditChannelCommand extends SlashCommand {
     }
 
     async run(ctx) {
-        if (!await permission.hasCotnroller(ctx.user, ctx.guildID, discordClient.getClient())) {
+        if (!await permission.hasController(ctx.user, ctx.guildID, discordClient.getClient())) {
             return locale.getControllerOnlyError(ctx.user.username)
         }
 
@@ -38,7 +38,14 @@ module.exports = class EditChannelCommand extends SlashCommand {
 
         ctx.defer(false)
 
-        getLog(service)
+        const logFile = getLog(service)
+
+        return ({
+            file: {
+                name: `${service}.log`,
+                file: logFile
+            }
+        })
     }
 
     onError(error, ctx) {
@@ -60,6 +67,9 @@ function getLog(servicename) {
             'Content-Type': 'text/plain',
         },
     }).then((result) => {
-        console.log(result)
+        const outputFilename = `/temp/${servicename}.log`
+        fs.unlinkSync(outputFilename)
+        fs.writeFileSync(outputFilename, result.data)
+        return outputFilename
     });
 }
