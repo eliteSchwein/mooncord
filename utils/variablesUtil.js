@@ -68,6 +68,7 @@ module.exports.setPrintTime = function (newtime) {
 }
 module.exports.updateLastGcodeFile = function () {
   lastgcodefile = gcodefile
+  gcodefile = ''
 }
 module.exports.getMaxLayers = function () {
   const max = Math.ceil((objectheight - firstlayerheight) / layerheight + 1)
