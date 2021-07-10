@@ -42,8 +42,7 @@ module.exports = class EditChannelCommand extends SlashCommand {
 
         const logFile = getLog(service)
 
-        return ({
-            content: '',
+        return ('', {
             file: {
                 name: `${service}.log`,
                 file: logFile
