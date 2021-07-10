@@ -31,7 +31,6 @@ function enableEvents(discordClient) {
     connection.send(`{"jsonrpc": "2.0", "method": "printer.info", "id": ${id}}`)
     connection.send(`{"jsonrpc": "2.0", "method": "server.info", "id": ${id}}`)
     connection.send(`{"jsonrpc": "2.0", "method": "printer.objects.query", "params": {"objects": {"configfile": null }}, "id": ${id}}`)
-    connection.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${variables.getCurrentFile()}"}, "id": ${id}}`)
 
     console.log('  Initial Automatic Moonraker commands'.statusmessage)
 
