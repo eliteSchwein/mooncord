@@ -42,7 +42,7 @@ module.exports = class EditChannelCommand extends SlashCommand {
 
         axios.request({
             responseType: 'arraybuffer',
-            url: `${config.connection.moonraker_url}${metadata.files[servicename]}`,
+            url: `${config.connection.moonraker_url}${metadata.files[service]}`,
             method: 'get',
             headers: {
                 'Content-Type': 'text/plain',
