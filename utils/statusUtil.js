@@ -150,7 +150,6 @@ async function removeOldStatus(channel, discordClient) {
 
   if (lastMessage.author.id !== discordClient.user.id) { return }
   if (lastMessage.embeds.size === 0) { return }
-  console.log(lastMessage.embeds[0])
   if (lastMessage.embeds[0].title !== locale.status.printing.title) { return }
 
   await lastMessage.delete()
