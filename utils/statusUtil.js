@@ -145,13 +145,13 @@ function postStatus(message, altdiscordClient, altdatabase) {
 }
 
 async function removeOldStatus(channel, discordClient) {
-  console.log(typeof(channel))
   let lastMessage = await channel.messages.fetch({ limit: 1 })
   lastMessage = lastMessage.first()
 
   if (lastMessage.author.id !== discordClient.user.id) { return }
   if (lastMessage.embeds.size === 0) { return }
-  if (lastMessage.embeds.title !== locale.status.printing.title) { return }
+  console.log(lastMessage.embeds[0])
+  if (lastMessage.embeds[0].title !== locale.status.printing.title) { return }
 
   await lastMessage.delete()
 }
