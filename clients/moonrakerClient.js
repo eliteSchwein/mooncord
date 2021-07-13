@@ -1,18 +1,16 @@
-const args = process.argv.slice(2)
-
 const fs = require('fs')
 const path = require('path')
 const WebSocketClient = require('websocket').client
 const { waitUntil } = require('async-wait-until')
 const logSymbols = require('log-symbols')
-
-const config = require(`${args[0]}/mooncord.json`)
 const database = require('../utils/databaseUtil')
 const status = require('../utils/statusUtil')
 const variables = require('../utils/variablesUtil')
 const events = require('../websocket-events')
 
 const client = new WebSocketClient()
+
+let url
 
 let WSconnection
 
@@ -51,7 +49,7 @@ function enableEvents(discordClient) {
       variables.setStatus('offline')
       status.triggerStatusUpdate(discordClient.getClient())
       setTimeout(() => {
-        client.connect(config.connection.moonraker_socket_url)
+        client.connect(url)
       }, 5000)
     })
     connection.on('message', (message) => {
@@ -75,7 +73,7 @@ function getMCUList() {
 function connect() {
   console.log('  Connect to Moonraker'.statusmessage)
   
-  client.connect(config.connection.moonraker_socket_url)
+  client.connect(url)
 
   client.on('connectFailed', (error) => {
     console.log(logSymbols.error, `Moonrakerclient: ${error}`.error)
@@ -88,7 +86,8 @@ function connect() {
 }
 
 module.exports = {}
-module.exports.init = async (discordClient) => {
+module.exports.init = async (discordClient, moonrakerUrl) => {
+  url = moonrakerUrl
   console.log(`\n
   ${
   ` __  __                        _           

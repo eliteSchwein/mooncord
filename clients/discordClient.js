@@ -1,5 +1,3 @@
-const args = process.argv.slice(2)
-
 const { waitUntil } = require('async-wait-until')
 const Discord = require('discord.js')
 const path = require('path')
@@ -8,7 +6,6 @@ const variables = require('../utils/variablesUtil')
 
 const { GatewayServer, SlashCreator } = require('slash-create')
 
-const config = require(`${args[0]}/mooncord.json`)
 const events = require('../discord/events')
 
 
@@ -16,6 +13,9 @@ const discordClient = new Discord.Client()
 
 let creator
 let connected = false
+let token
+let applicationID
+let applicationKey
 
 function enableEvents() {
   console.log('  Enable Discord Events'.statusmessage)
@@ -26,7 +26,7 @@ function enableEvents() {
 function loginBot() {
   console.log('  Connect Discord Bot'.statusmessage)
 
-  discordClient.login(config.connection.bot_token)
+  discordClient.login(token)
 
   discordClient.on('ready', () => {
     connected = true
@@ -51,9 +51,9 @@ function enableCreator() {
   console.log('  Enable Slash Command Creator'.statusmessage)
 
   creator = new SlashCreator({
-    applicationID: config.connection.bot_application_id,
-    publicKey: config.connection.bot_application_key,
-    token: config.connection.bot_token,
+    applicationID: applicationID,
+    publicKey: applicationKey,
+    token: token,
   })
 }
 
@@ -69,7 +69,10 @@ function enableServer() {
 }
 
 module.exports = {}
-module.exports.init = async () => {
+module.exports.init = async (discordToken, discordApplicationID, discordApplicationKey) => {
+  token = discordToken
+  applicationID = discordApplicationID
+  applicationKey = discordApplicationKey
   console.log(`\n
   ${
   ` ___  _                   _

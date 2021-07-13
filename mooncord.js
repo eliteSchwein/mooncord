@@ -61,7 +61,7 @@ systemInfo.osInfo()
     process.exit(5)
   }
 
-  await moonrakerClient.init(discordClient)
+  await moonrakerClient.init(discordClient, config.connection.moonraker_socket_url)
   
   await loadUtil.init()
   
@@ -71,7 +71,9 @@ systemInfo.osInfo()
     timelapseUtil.init(discordClient, moonrakerClient)
   }
 
-  await discordClient.init()
+  await discordClient.init(config.connection.bot_token,
+    config.connection.bot_application_id,
+    config.connection.bot_application_key)
 })
   .catch(error => {
     console.log('Mooncord couldnt start'.error)
