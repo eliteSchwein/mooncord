@@ -2,9 +2,13 @@ const Discord = require('discord.js')
 const fs = require('fs')
 const path = require('path')
 const si = require('systeminformation')
+const { waitUntil } = require('async-wait-until')
 
 const componentHandler = require('./hsComponents')
 const locale = require('./localeUtil')
+const chatUtil = require('./chatUtil')
+const status = require('./statusUtil')
+const discordClient = require('../clients/discordClient')
 
 let usageData = {
   'cpu': {
@@ -12,6 +16,8 @@ let usageData = {
     'temp': 0
   }
 }
+
+let throttleCoolDown = 0
 
 module.exports.getUsageData = () => { return usageData }
 
@@ -46,11 +52,56 @@ module.exports.init = () => {
     const ram = await si.mem()
     const partitions = await si.fsSize()
 
+    let throttled = false
+
     usageData.cpu.load = await si.currentLoad()
     usageData.cpu.temp = await si.cpuTemperature()
+
+    if (throttleCoolDown > 0) { return }
     
+    if (isCPUOverloaded()) { throttled = true }
+    if (isCPUOverheating()) { throttled = true }
+    if (isRAMFull(ram)) { throttled = true }
+    if (isPartitionsFull(partitions)) { throttled = true }
     
+    if (throttled) {
+      throttleCoolDown = 60
+    }
   }, 1000)
+}
+
+function isCPUOverloaded() {
+  if (usageData.cpu.load.currentLoad > 95) {
+    postThrottle('high_cpu_load')
+    return true
+  }
+  return false
+}
+
+function isCPUOverheating() {
+  if (usageData.cpu.temp.main > 80) {
+    postThrottle('high_cpu_temp')
+    return true
+  }
+  return false
+}
+function isRAMFull(ram) {
+  if (ram.free < Number.parseInt('100_000_000')) {
+    postThrottle('high_ram_usage')
+    return true
+  }
+  return false
+}
+function isPartitionsFull(partitions) {
+  let anyFull = false
+  for (const index in partitions) {
+    const partition = partitions[index]
+    if (partition.aviable < Number.parseInt('100_000_000')) {
+      postThrottle('high_partition_usage', partition.mount)
+      anyFull = true
+    }
+  }
+  return anyFull
 }
 
 function getImage(component) {
@@ -59,6 +110,26 @@ function getImage(component) {
   const imgBuffer = fs.readFileSync(imgPath)
 
   return [`${component}.png`, imgBuffer]
+}
+
+async function postThrottle(component, section) {
+  if(typeof(section) === 'undefined') { section = '' }
+
+  await waitUntil(() => discordClient.getClient().user !== null, { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 1000 })
+  
+  const sentence = locale.loadthrottle.sentence
+    .replace(/(\${reason})/g, `\`${locale.loadthrottle[component].name}\``)
+  const suggestion = locale.loadthrottle[component].suggestion
+    .replace(/(\${component_section})/g, `\`${section}\``)
+  
+  console.log(logSymbols.warning, `A System Warn occured: ${component}!`.throttlewarn)
+  
+  const throttleEmbed = chatUtil.generateWarnEmbed(
+    locale.loadthrottle.title,
+    `${sentence}
+  ${suggestion}`)
+  
+  status.postBroadcastMessage(throttleEmbed, discordClient, database)
 }
 
 function getDefaultEmbed(img, title) {
