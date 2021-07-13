@@ -60,8 +60,6 @@ module.exports.init = () => {
     usageData.cpu.temp = await si.cpuTemperature()
 
     if (throttleCoolDown > 0) { return }
-
-    console.log(database)
     
     if (isCPUOverloaded()) { throttled = true }
     if (isCPUOverheating()) { throttled = true }
