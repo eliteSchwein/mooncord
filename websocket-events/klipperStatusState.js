@@ -17,6 +17,7 @@ const event = async (message, connection, discordClient) => {
 
 
   const klipperstatus = result.status
+  console.log(klipperstatus)
   if (typeof (klipperstatus.print_stats) !== 'undefined') {
     const printfile = klipperstatus.print_stats.filename
     variables.setCurrentFile(printfile)
