@@ -79,7 +79,7 @@ async function migrateConfigToMultiV1() {
     await fs.unlinkSync(path.resolve(__dirname, '../config.json'))
 }
 
-function saveData(datadata, datapath) {
+async function saveData(datadata, datapath) {
     if (!fs.existsSync(path.resolve(__dirname, datapath))) {
         const newFileStream = fs.createWriteStream(path.resolve(__dirname, datapath))
         newFileStream.once('open', () => {
@@ -87,12 +87,6 @@ function saveData(datadata, datapath) {
             newFileStream.end()
         })
     }
-    fs.writeFile(path.resolve(__dirname, datapath), JSON.stringify(datadata, null, 4), (err) => {
-    if (err) { throw err }
-        console.log(logSymbols.info, `The Data for ${datapath} has been migrated!`.database)
-        if (datapath === '../config.json') {
-            console.log(logSymbols.warning, `Please Read the Update Notes, you need to reconfigure the Bot!`.database)
-            process.exit(5)
-        }
-    })
+    await fs.writeFile(path.resolve(__dirname, datapath), JSON.stringify(datadata, null, 4))
+    console.log(logSymbols.info, `The Data for ${datapath} has been migrated!`.database)
 }
