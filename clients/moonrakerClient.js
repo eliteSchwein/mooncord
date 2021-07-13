@@ -102,3 +102,4 @@ module.exports.init = async (discordClient, moonrakerUrl, fullLoad) => {
   await waitUntil(() => WSconnection.connected === true, { timeout: Number.POSITIVE_INFINITY })
 }
 module.exports.getConnection = () => { return WSconnection }
+module.exports.getClient = () => { return client }
