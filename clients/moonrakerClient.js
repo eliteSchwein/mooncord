@@ -86,7 +86,7 @@ function connect() {
 }
 
 module.exports = {}
-module.exports.init = async (discordClient, moonrakerUrl) => {
+module.exports.init = async (discordClient, moonrakerUrl, fullLoad) => {
   url = moonrakerUrl
   console.log(`\n
   ${
@@ -96,6 +96,7 @@ module.exports.init = async (discordClient, moonrakerUrl) => {
   |_|  |_\\___/\\___/_||_|_| \\__,_|_\\_\\___|_|`.statustitle}
                               `)
   connect()
+  if(!fullLoad) { return }
   enableEvents(discordClient)
   await waitUntil(() => typeof(WSconnection) !== 'undefined', { timeout: Number.POSITIVE_INFINITY })
   await waitUntil(() => WSconnection.connected === true, { timeout: Number.POSITIVE_INFINITY })
