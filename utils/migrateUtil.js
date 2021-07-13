@@ -18,7 +18,6 @@ colors.setTheme({
 execute()
 
 async function execute() {
-    console.log(await hasLegacyConfig())
     if (!await hasLegacyConfig()) { return }
 
     config = require('../config.json')
