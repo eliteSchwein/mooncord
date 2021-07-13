@@ -37,12 +37,15 @@ async function execute() {
 
 async function migrateConfig(message, connection) {
     if (message.type !== 'utf8') { return }
+
     const messageJson = JSON.parse(message.utf8Data)
+
     if (typeof (messageJson.result) === 'undefined') { return }
     if (typeof (messageJson.result.config) === 'undefined') { return }
-    console.log(messageJson.result.config.server)
-    //await migrateConfigToMultiV1()
-    //connection.close()
+    
+    configPath = messageJson.result.config.server.config_path
+    await migrateConfigToMultiV1()
+    connection.close()
 }
 
 function hasLegacyConfig() {
@@ -90,7 +93,7 @@ async function migrateConfigToMultiV1() {
         "sepia": false
     }
     saveData(tempConfig, `${configPath}/mooncord.json`)
-    await fs.unlinkSync('../config.json')
+    await fs.unlinkSync(path.resolve(__dirname, '../config.json'))
 }
 
 function saveData(datadata, datapath) {
