@@ -18,7 +18,7 @@ colors.setTheme({
 execute()
 
 async function execute() {
-    console.log(hasLegacyConfig())
+    console.log(await hasLegacyConfig())
     if (!await hasLegacyConfig()) { return }
 
     config = require('../config.json')
@@ -44,7 +44,7 @@ async function migrateConfig(message, connection) {
 }
 
 async function hasLegacyConfig() {
-    return await fs.existsSync('../config.json')
+    return await fs.exists('../config.json')
 }
 
 async function migrateConfigToMultiV1() {
