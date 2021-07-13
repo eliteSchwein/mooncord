@@ -288,19 +288,19 @@
         "sentence": "There is currently a System Warning because of ${reason}!",
         "high_cpu_load": {
             "name": "High CPU Load",
-            "suggestion": "check what causes the High CPU Usage."
+            "suggestion": "Please check what causes the High CPU Usage."
         },
         "high_cpu_temp": {
             "name": "High CPU Temp",
             "suggestion": "Please check your cooling Solution."
         },
         "high_ram_usage": {
-            "name": "High RAM Usage",
-            "suggestion": "check what causes the High RAM Usage."
+            "name": "High Ram Usage",
+            "suggestion": "Please check what causes the High Ram Usage."
         },
         "high_partition_usage": {
             "name": "High Partition Usage",
-            "suggestion": "remove some Files from ${component_section}."
+            "suggestion": "Remove some Files from ${component_section}."
         }
     },
     "status": {

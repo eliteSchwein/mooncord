@@ -283,6 +283,26 @@
             "frequency": "Takt"
         }
     },
+    "loadthrottle": {
+        "title": "System Warnung",
+        "sentence": "Es gibt derzeit eine System Warnung durch ${reason}!",
+        "high_cpu_load": {
+            "name": "Hohe CPU Last",
+            "suggestion": "Bitte überprüfe was die Hohe CPU Last auslöst."
+        },
+        "high_cpu_temp": {
+            "name": "Hohe CPU Temperatur",
+            "suggestion": "Bitte überprüfe deine Kühllösung."
+        },
+        "high_ram_usage": {
+            "name": "Hohe Ram Verbrauch",
+            "suggestion": "Bitte überprüfe was den Hohe Ram Verbrauch auslöst."
+        },
+        "high_partition_usage": {
+            "name": "Hohe Partition Auslastung",
+            "suggestion": "Entferne paar Dateien aus ${component_section}."
+        }
+    },
     "status": {
         "disconnected":{
             "title": "Drucker getrennt!",
