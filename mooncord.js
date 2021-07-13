@@ -60,8 +60,6 @@ systemInfo.osInfo()
       process.exit(5)
     }
 
-    const config = require(`${args[0]}/mooncord.json`)
-
     await moonrakerClient.init(discordClient,
       config.connection.moonraker_socket_url)
     
