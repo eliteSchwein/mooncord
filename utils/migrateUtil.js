@@ -45,7 +45,7 @@ async function hasLegacyConfig() {
     return await fs.existsSync('config.json')
 }
 
-await function migrateConfigToMultiV1() {
+async function migrateConfigToMultiV1() {
     console.log(logSymbols.info, 'Migrate 0.0.2 Config to 0.0.3 Config'.database)
     await fs.writeFileSync('mooncord.json', '{}')
     const tempConfig = require('mooncord.json')
