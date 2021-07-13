@@ -9,6 +9,7 @@ const moonrakerClient = require('../clients/moonrakerClient')
 
 let client
 let config
+let configPath
 
 colors.setTheme({
   database: 'grey',
@@ -47,8 +48,7 @@ async function hasLegacyConfig() {
 
 async function migrateConfigToMultiV1() {
     console.log(logSymbols.info, 'Migrate 0.0.2 Config to 0.0.3 Config'.database)
-    await fs.writeFileSync('mooncord.json', '{}')
-    const tempConfig = require('mooncord.json')
+    const tempConfig = {}
     tempConfig.connection = {
         "moonraker_socket_url": config.moonrakersocketurl,
         "moonraker_url": config.moonrakerurl,
@@ -86,7 +86,7 @@ async function migrateConfigToMultiV1() {
         "greyscale": false,
         "sepia": false
     }
-    saveData(tempConfig, `${args[1]}/mooncord.json`)
+    saveData(tempConfig, `${configPath}/mooncord.json`)
     await fs.unlinkSync('config.json')
 }
 
