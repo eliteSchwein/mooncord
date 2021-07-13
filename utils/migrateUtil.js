@@ -43,8 +43,8 @@ async function migrateConfig(message, connection) {
     //connection.close()
 }
 
-async function hasLegacyConfig() {
-    return await fs.exists('../config.json')
+function hasLegacyConfig() {
+    return fs.existsSync('../config.json')
 }
 
 async function migrateConfigToMultiV1() {
