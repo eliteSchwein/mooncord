@@ -60,7 +60,7 @@ function runServiceMigration() {
 
 async function migrateConfigToMultiV1() {
     console.log(logSymbols.info, 'Migrate 0.0.2 Config to 0.0.3 Config'.database)
-    const tempConfig = {}
+    const tempConfig = require(path.resolve(__dirname, '../scripts/mooncord.json'))
     tempConfig.connection = {
         "moonraker_socket_url": config.moonrakersocketurl,
         "moonraker_url": config.moonrakerurl,
@@ -68,36 +68,13 @@ async function migrateConfigToMultiV1() {
         "bot_application_key": config.botapplicationkey,
         "bot_application_id": config.botapplicationid
     }
-    tempConfig.status = {
-        "update_interval": config.statusupdateinterval,
-        "use_percent": config.statusupdatepercent,
-        "min_interval": 15,
-        "before": {
-            "enable": false,
-            "delay": 0,
-            "execute": []
-        },
-        "after": {
-            "enable": false,
-            "delay": 0,
-            "execute": []
-        }
-    }
+    tempConfig.status.update_interval = config.statusupdateinterval
+    tempConfig.status.use_percent = config.statusupdatepercent
     tempConfig.permission = {
         "controller": [config.masterid],
         "guild_admin_as_bot_admin": true
     }
-    tempConfig.webcam = {
-        "url": config.webcamsnapshoturl,
-        "quality": 80,
-        "rotation": 0,
-        "brightness": 0,
-        "contrast": 0,
-        "vertical_mirror": false,
-        "horizontal_mirror": false,
-        "greyscale": false,
-        "sepia": false
-    }
+    tempConfig.webcam.url = config.webcamsnapshoturl
     saveData(tempConfig, `${configPath}/mooncord.json`)
     await fs.unlinkSync(path.resolve(__dirname, '../config.json'))
 }
