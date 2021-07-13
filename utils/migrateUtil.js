@@ -80,11 +80,15 @@ async function migrateConfigToMultiV1() {
 }
 
 function saveData(datadata, datapath) {
-    console.log(datadata)
-    const newFileStream = fs.createWriteStream(path.resolve(__dirname, datapath))
-    newFileStream.once('open', () => {
-        newFileStream.write(datadata)
-        newFileStream.end()
+    if (!fs.existsSync(path.resolve(__dirname, datapath))) {
+        const newFileStream = fs.createWriteStream(path.resolve(__dirname, datapath))
+        newFileStream.once('open', () => {
+            newFileStream.write('{}')
+            newFileStream.end()
+        })
+    }
+    fs.writeFile(path.resolve(__dirname, datapath), JSON.stringify(datadata, null, 4), (err) => {
+    if (err) { throw err }
+        console.log(logSymbols.info, `The Data for ${datapath} has been migrated!`.database)
     })
-    console.log(logSymbols.info, `The Data for ${datapath} has been migrated!`.database)
 }

@@ -24,9 +24,9 @@ install_systemd_service()
 }
 
 start_MoonCord() {
-
     sudo systemctl restart MoonCord
 }
 
 install_systemd_service
+sleep 10
 start_MoonCord
