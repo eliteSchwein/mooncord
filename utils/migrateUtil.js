@@ -2,15 +2,16 @@ const colors = require('colors')
 const fs = require('fs')
 const logSymbols = require('log-symbols')
 const path = require('path')
+const WebSocketClient = require('websocket').client
 
-//const moonrakerClient = require('../clients/moonrakerClient')
+const client = new WebSocketClient()
 
-let client
 let config
 let configPath
 
 colors.setTheme({
   database: 'grey',
+  statusmessage: 'brightCyan',
   error: 'brightRed'
 })
 
@@ -20,16 +21,17 @@ async function execute() {
     if (!await hasLegacyConfig()) { return }
 
     config = require('config.json')
-    
-    //moonrakerClient.init(undefined, config.moonrakersocketurl, false)
 
-    //client = moonrakerClient.getClient()
-    //client.on('connect', async (connection) => {
-   //     connection.on('message', (message) => {
-   //         migrateConfig(message, connection)
-   //     })
-   //     connection.send('{"jsonrpc": "2.0","method": "server.config","id": 5616}')
-   // })
+    console.log(logSymbols.info, 'Connect to Moonraker'.statusmessage)
+
+    client.connect(config.moonrakersocketurl)
+    
+    client.on('connect', async (connection) => {
+        connection.on('message', (message) => {
+            migrateConfig(message, connection)
+        })
+        connection.send('{"jsonrpc": "2.0","method": "server.config","id": 5616}')
+    })
 }
 
 async function migrateConfig(message, connection) {
