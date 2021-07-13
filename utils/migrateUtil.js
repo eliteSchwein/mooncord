@@ -37,9 +37,9 @@ async function execute() {
 
 async function migrateConfig(message, connection) {
     if (message.type !== 'utf8') { return }
+    const messageJson = JSON.parse(message.utf8Data)
     if (typeof (messageJson.result) === 'undefined') { return }
     if (typeof (messageJson.result.config) === 'undefined') { return }
-    const messageJson = JSON.parse(message.utf8Data)
     console.log(messageJson.result.config.server)
     //await migrateConfigToMultiV1()
     //connection.close()
