@@ -20,12 +20,12 @@ execute()
 async function execute() {
     if (!await hasLegacyConfig()) { return }
 
-    config = require('config.json')
+    config = require('./config.json')
 
     console.log(logSymbols.info, 'Connect to Moonraker'.statusmessage)
 
     client.connect(config.moonrakersocketurl)
-    
+
     client.on('connect', async (connection) => {
         connection.on('message', (message) => {
             migrateConfig(message, connection)
@@ -43,7 +43,7 @@ async function migrateConfig(message, connection) {
 }
 
 async function hasLegacyConfig() {
-    return await fs.existsSync('config.json')
+    return await fs.existsSync('./config.json')
 }
 
 async function migrateConfigToMultiV1() {
