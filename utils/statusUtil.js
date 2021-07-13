@@ -123,6 +123,7 @@ function postStatus(message, altdiscordClient, altdatabase) {
   const ramdatabase = maindatabase.getRamDatabase()
   
   for (const guildid in botdatabase.guilds) {
+    console.log(guildid)
     client.guilds.fetch(guildid)
       .then(async (guild) => {
         const guilddatabase = botdatabase.guilds[guild.id]
