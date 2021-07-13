@@ -3,9 +3,7 @@ const fs = require('fs')
 const logSymbols = require('log-symbols')
 const path = require('path')
 
-const moonrakerClient = require('../clients/moonrakerClient')
-
-//const newConfig = require(`${args[1]}/mooncord.json`)
+//const moonrakerClient = require('../clients/moonrakerClient')
 
 let client
 let config
@@ -23,15 +21,15 @@ async function execute() {
 
     config = require('config.json')
     
-    moonrakerClient.init(undefined, config.moonrakersocketurl, false)
+    //moonrakerClient.init(undefined, config.moonrakersocketurl, false)
 
-    client = moonrakerClient.getClient()
-    client.on('connect', async (connection) => {
-        connection.on('message', (message) => {
-            migrateConfig(message, connection)
-        })
-        connection.send('{"jsonrpc": "2.0","method": "server.config","id": 5616}')
-    })
+    //client = moonrakerClient.getClient()
+    //client.on('connect', async (connection) => {
+   //     connection.on('message', (message) => {
+   //         migrateConfig(message, connection)
+   //     })
+   //     connection.send('{"jsonrpc": "2.0","method": "server.config","id": 5616}')
+   // })
 }
 
 async function migrateConfig(message, connection) {
