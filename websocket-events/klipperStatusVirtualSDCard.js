@@ -24,9 +24,7 @@ const event = async (message, connection, discordClient) => {
       const currentProgress = calculateProgress(virtualSDcard)
 
       if (variables.getStatus() !== 'printing') { return }
-
-      if (currentProgress === 0) { return }
-      if (currentProgress === 100) { return }
+      
       if (currentProgress.toFixed(0) === variables.getProgress()) { return }
 
       variables.setProgress(currentProgress.toFixed(0))
