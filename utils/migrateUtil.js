@@ -3,6 +3,7 @@ const fs = require('fs')
 const logSymbols = require('log-symbols')
 const path = require('path')
 const WebSocketClient = require('websocket').client
+const shell = require('shelljs')
 
 const client = new WebSocketClient()
 
@@ -11,7 +12,6 @@ let configPath
 
 colors.setTheme({
   database: 'grey',
-  statusmessage: 'brightCyan',
   error: 'brightRed'
 })
 
@@ -23,7 +23,7 @@ async function execute() {
 
     config = require('../config.json')
 
-    console.log(logSymbols.info, 'Connect to Moonraker'.statusmessage)
+    console.log(logSymbols.info, 'Connect to Moonraker'.database)
 
     client.connect(config.moonrakersocketurl)
 
@@ -45,11 +45,18 @@ async function migrateConfig(message, connection) {
     
     configPath = messageJson.result.config.server.config_path
     await migrateConfigToMultiV1()
+    runServiceMigration()
+    console.log(logSymbols.info, 'Migration Done!'.database)
     connection.close()
 }
 
 function hasLegacyConfig() {
     return fs.existsSync(path.resolve(__dirname, '../config.json'))
+}
+
+function runServiceMigration() {
+    console.log(logSymbols.info, 'Migrate Service File'.database)
+    shell.exec(`bash ${path.resolve(__dirname, '../scripts/migrate.sh')} ${configPath}`)
 }
 
 async function migrateConfigToMultiV1() {
