@@ -17,12 +17,14 @@ const event = async (message, connection, discordClient) => {
 
 
   const klipperstatus = result.status
-  console.log(klipperstatus)
   if (typeof (klipperstatus.print_stats) !== 'undefined') {
     const printfile = klipperstatus.print_stats.filename
     variables.setCurrentFile(printfile)
-    const printduration = klipperstatus.print_stats.print_duration.toFixed(0)
+    variables.setPrintTime(klipperstatus.print_stats.total_duration)
+
+    const printduration = klipperstatus.print_stats.print_duration
     const remainingprinttime = variables.getPrintTime() - printduration
+    
     variables.setRemainingTime(remainingprinttime)
     if (klipperstatus.print_stats.state === 'paused') {
       const currentStatus = 'pause'

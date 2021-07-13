@@ -10,7 +10,6 @@ const event = (message) => {
 
     variables.setStartByte(result.gcode_start_byte)
     variables.setEndByte(result.gcode_end_byte)
-    variables.setPrintTime(result.estimated_time)
     variables.setLayerHeights(result.layer_height,
       result.object_height, result.first_layer_height)
     
