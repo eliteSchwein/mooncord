@@ -116,6 +116,26 @@
                 }
             }
         },
+        "loadthrottle": {
+            "title": "Avertissement système",
+            "sentence": "Il y a un avertissement système a cause de ${reason}!",
+            "high_cpu_load": {
+                "name": "Charge CPU importante",
+                "suggestion": "Veuillez vérifier les causes de l'utilisation importante du processeur."
+            },
+            "high_cpu_temp": {
+                "name": "Température CPU élevé",
+                "suggestion": "Veuillez vérifier votre système de refroidissement."
+            },
+            "high_ram_usage": {
+                "name": "Utilisation importante de la RAM",
+                "suggestion": "Veuillez vérifier les causes de l'utilisation importante de la RAM."
+            },
+            "high_partition_usage": {
+                "name": "Utilisation élevée des partitions",
+                "suggestion": "Supprimer des fichiers de ${component_section}."
+            }
+        },
         "notify": {
             "description": "Puis-je vous envoyer un MP avec l'état de l'impression en cours ?",
             "command": "notifiemoi",
