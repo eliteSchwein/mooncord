@@ -2,6 +2,7 @@ const Discord = require('discord.js')
 const fs = require('fs')
 const path = require('path')
 const si = require('systeminformation')
+const logSymbols = require('log-symbols')
 const { waitUntil } = require('async-wait-until')
 
 const componentHandler = require('./hsComponents')
