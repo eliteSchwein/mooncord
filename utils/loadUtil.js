@@ -133,7 +133,7 @@ async function postThrottle(component, section) {
     `${sentence}
   ${suggestion}`)
   
-  status.postBroadcastMessage(throttleEmbed, discordClient, database)
+  status.postBroadcastMessage(throttleEmbed, discordClient.getClient(), database)
 }
 
 function getDefaultEmbed(img, title) {
