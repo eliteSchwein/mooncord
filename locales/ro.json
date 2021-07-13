@@ -116,6 +116,26 @@
                 }
             }
         },
+        "loadthrottle": {
+            "title": "Avertizare de Sistem",
+            "sentence": "Există un Avertisment de Sistem din cauza ${reason}!",
+            "high_cpu_load": {
+                "name": "Procesorului suprautilizat",
+                "suggestion": "Verifică ce poate cauza Suprautilizarea Procesorului."
+            },
+            "high_cpu_temp": {
+                "name": "Supraîncălzirii Procesorului",
+                "suggestion": "Verifică sursa de răcire."
+            },
+            "high_ram_usage": {
+                "name": "Memoriei RAM prea pline",
+                "suggestion": "Verifică ce poate Suprautiliza Memoria RAM."
+            },
+            "high_partition_usage": {
+                "name": "Partiției prea pline",
+                "suggestion": "Eliberează niște spațiu din ${component_section}."
+            }
+        },
         "notify": {
             "description": "Dorești MP cu statusul curent al printării?",
             "command": "notificare",
