@@ -28,5 +28,4 @@ start_MoonCord() {
 }
 
 install_systemd_service
-sleep 10
 start_MoonCord

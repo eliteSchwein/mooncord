@@ -15,7 +15,9 @@ colors.setTheme({
   error: 'brightRed'
 })
 
-module.exports.execute = async() => {
+execute()
+
+async function execute() {
     if (!await hasLegacyConfig()) { return }
 
     config = require('../config.json')
