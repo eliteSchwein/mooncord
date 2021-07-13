@@ -46,6 +46,7 @@ async function migrateConfig(message, connection) {
     await migrateConfigToMultiV1()
     runServiceMigration()
     console.log(logSymbols.info, 'Migration Done!'.database)
+    await fs.unlinkSync(path.resolve(__dirname, '../config.json'))
     connection.close()
 }
 
@@ -76,7 +77,6 @@ async function migrateConfigToMultiV1() {
     }
     tempConfig.webcam.url = config.webcamsnapshoturl
     saveData(tempConfig, `${configPath}/mooncord.json`)
-    await fs.unlinkSync(path.resolve(__dirname, '../config.json'))
 }
 
 function saveData(datadata, datapath) {
