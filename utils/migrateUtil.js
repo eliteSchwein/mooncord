@@ -44,7 +44,7 @@ async function migrateConfig(message, connection) {
 }
 
 function hasLegacyConfig() {
-    return fs.existsSync('../config.json')
+    return fs.existsSync(path.resolve(__dirname, '../config.json'))
 }
 
 async function migrateConfigToMultiV1() {
