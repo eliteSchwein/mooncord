@@ -20,7 +20,7 @@ execute()
 async function execute() {
     if (!await hasLegacyConfig()) { return }
 
-    config = require('./config.json')
+    config = require('../config.json')
 
     console.log(logSymbols.info, 'Connect to Moonraker'.statusmessage)
 
@@ -43,7 +43,7 @@ async function migrateConfig(message, connection) {
 }
 
 async function hasLegacyConfig() {
-    return await fs.existsSync('./config.json')
+    return await fs.existsSync('../config.json')
 }
 
 async function migrateConfigToMultiV1() {
@@ -87,7 +87,7 @@ async function migrateConfigToMultiV1() {
         "sepia": false
     }
     saveData(tempConfig, `${configPath}/mooncord.json`)
-    await fs.unlinkSync('config.json')
+    await fs.unlinkSync('../config.json')
 }
 
 function saveData(datadata, datapath) {
