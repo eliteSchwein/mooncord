@@ -9,6 +9,7 @@ const componentHandler = require('./hsComponents')
 const locale = require('./localeUtil')
 const chatUtil = require('./chatUtil')
 const status = require('./statusUtil')
+const database = require('./databaseUtil')
 const discordClient = require('../clients/discordClient')
 
 let usageData = {
