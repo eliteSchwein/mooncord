@@ -41,6 +41,7 @@ function enableEvents(discordClient) {
       
       if(variables.getCurrentFile() !== '')
         connection.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${variables.getCurrentFile()}"}, "id": ${id}}`)
+        connection.send(`{"jsonrpc": "2.0", "method": "server.history.get_job", "params": {"uid": "${variables.getJobID()}"}, "id": ${id}}`)
     }, 250)
 
     connection.on('close', () => {

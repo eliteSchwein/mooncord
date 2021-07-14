@@ -39,7 +39,13 @@
         "activity": {
             "type": "LISTENING",
             "text": "${locale.activity}"
-        }
+        },
+        "fields": [
+            {
+                "name": "${locale.print_time}",
+                "value": "${value_print_time}"
+            }
+        ]
     },
     "ready":{
         "title": "${locale.title}",

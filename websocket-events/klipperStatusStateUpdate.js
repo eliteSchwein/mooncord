@@ -8,21 +8,21 @@ const status = require('../utils/statusUtil')
 const variables = require('../utils/variablesUtil')
 
 const event = (message, connection, discordClient, database) => {
-  if (message.type === 'utf8') {
-    const messageJson = JSON.parse(message.utf8Data)
-    const { result } = messageJson
-    if (typeof (result) !== 'undefined' && typeof (result.version_info) !== 'undefined') {
-      const diffVersions = {}
-      for (const software in result.version_info) {
-        const softwareinfo = result.version_info[software]
-        const difference = getDifference(software, softwareinfo)
-        if (typeof (difference) !== 'undefined') {
-          diffVersions[software] = difference
-        }
+  if (message.type !== 'utf8') { return }
+  
+  const messageJson = JSON.parse(message.utf8Data)
+  const { result } = messageJson
+  if (typeof (result) !== 'undefined' && typeof (result.version_info) !== 'undefined') {
+    const diffVersions = {}
+    for (const software in result.version_info) {
+      const softwareinfo = result.version_info[software]
+      const difference = getDifference(software, softwareinfo)
+      if (typeof (difference) !== 'undefined') {
+        diffVersions[software] = difference
       }
-      postUpdate(diffVersions, discordClient, database)
-      variables.setVersions(result.version_info)
     }
+    postUpdate(diffVersions, discordClient, database)
+    variables.setVersions(result.version_info)
   }
 }
 

@@ -17,15 +17,15 @@ const validFlags = [
 ]
 
 const event = (message, connection, discordClient, database) => {
-  if (message.type === 'utf8') {
-    const messageJson = JSON.parse(message.utf8Data)
-    if (typeof (messageJson.result) === 'undefined') { return }
-    if (typeof (messageJson.result.moonraker_stats) !== 'undefined') {
-      retrieveStats(messageJson.result.moonraker_stats)
-    }
-    if (typeof (messageJson.result.throttled_state) !== 'undefined') {
-      retrieveThrottle(messageJson.result.throttled_state, discordClient, database)
-    }
+  if (message.type !== 'utf8') { return }
+  
+  const messageJson = JSON.parse(message.utf8Data)
+  if (typeof (messageJson.result) === 'undefined') { return }
+  if (typeof (messageJson.result.moonraker_stats) !== 'undefined') {
+    retrieveStats(messageJson.result.moonraker_stats)
+  }
+  if (typeof (messageJson.result.throttled_state) !== 'undefined') {
+    retrieveThrottle(messageJson.result.throttled_state, discordClient, database)
   }
 }
 function retrieveStats(result) {
