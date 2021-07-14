@@ -18,17 +18,17 @@ const event = async (message, connection, discordClient) => {
   if (typeof (methode) === 'undefined') { return }
   if (!Object.keys(states).includes(methode)) { return }
 
-  if (typeof (states[methode].preventStatus) !== 'undefined' && states[methode].preventStatus.includes(variables.getStatus())) { return }
+  if (typeof (states[methode].prevent_status) !== 'undefined' && states[methode].prevent_status.includes(variables.getStatus())) { return }
   
-  if (typeof (states[methode].requiredParams) !== 'undefined') {
+  if (typeof (states[methode].required_params) !== 'undefined') {
     if (typeof (params) === 'undefined') { return }
-    if (!states[methode].requiredParams.some(param => params.includes(param))) { return }
+    if (!states[methode].required_params.some(param => params.includes(param))) { return }
   }
 
   if (variables.getStatus() === states[methode].status) { return }
 
-  if (typeof (states[methode].timedStatus) !== 'undefined') {
-    changeStatusLater(states[methode].timedStatus, discordClient)
+  if (typeof (states[methode].timed_status) !== 'undefined') {
+    changeStatusLater(states[methode].timed_status, discordClient)
   }
 
   variables.setStatus(states[methode].status)

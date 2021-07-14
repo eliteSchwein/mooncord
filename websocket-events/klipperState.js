@@ -1,5 +1,6 @@
 const status = require('../utils/statusUtil')
 const variables = require('../utils/variablesUtil')
+const states = require('./klipper_state.json')
 
 const event = (message, connection, discordClient) => {
   if (message.type !== 'utf8') { return }
@@ -13,7 +14,7 @@ const event = (message, connection, discordClient) => {
   const currentStatus = result.klippy_state
   if (variables.getStatus() === currentStatus) { return }
 
-  console.log(currentStatus)
+  if (typeof (states[currentStatus].prevent_status) !== 'undefined' && states[currentStatus].prevent_status.includes(variables.getStatus())) { return }
 
   variables.setStatus(currentStatus)
   
