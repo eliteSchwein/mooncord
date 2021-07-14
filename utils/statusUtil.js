@@ -68,7 +68,7 @@ function parseConfig(status) {
     .replace(/(\${value_print_progress})/g, variables.getProgress())
     .replace(/(\${value_current_layer})/g, variables.getCurrentLayer())
     .replace(/(\${value_max_layer})/g, variables.getMaxLayers())
-
+  console.log(variables.getTimes())
   return JSON.parse(parsedConfig)
 }
 
