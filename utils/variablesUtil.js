@@ -113,7 +113,7 @@ module.exports.getTimes = () => {
   }
 }
 
-module.exports.formatTime = (time) => { return formatTime(time / 1000) }
+module.exports.formatTime = (time) => { return formatTime(time) }
 
 function formatTime(seconds) {
   if (isNaN(+seconds) || !isFinite(seconds)) seconds = 0
