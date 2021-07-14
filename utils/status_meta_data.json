@@ -76,7 +76,7 @@
         "fields": [
             {
                 "name": "${locale.print_time}",
-                "value": "${value_print_time}"
+                "value": "${value_eta_print_time}"
             }
         ]
     },

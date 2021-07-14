@@ -25,12 +25,13 @@ const event = async (message, connection, discordClient) => {
       if (variables.getStatus() === currentStatus) { return }
 
       variables.setStatus(currentStatus)
+      variables.updateTimeData('duration', 0)
 
       connection.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${printfile}"}, "id": ${id}}`)
 
       variables.setCurrentPrintJob(printfile)
 
-      await waitUntil(() => variables.getPrintTime() > 0, { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 250 })
+      await waitUntil(() => variables.getTimes().total > 0, { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 250 })
       await status.triggerStatusUpdate(discordClient)
 
       timelapseUtil.start()
