@@ -32,7 +32,7 @@ const event = async (message, connection, discordClient) => {
     }
     if (klipperstatus.print_stats.state === 'printing' && (typeof (printfile) !== 'undefined' || printfile !== '')) {
       const currentStatus = 'printing'
-      console.log(variables.getStatus())
+      console.log(variables.dump)
       if (variables.getStatus() === '') { return }
       if (variables.getStatus() === currentStatus) { return }
       if (variables.getProgress().toFixed() === 100) { return }
