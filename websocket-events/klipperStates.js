@@ -11,14 +11,14 @@ const config = require(`${args[0]}/mooncord.json`)
 
 const event = async (message, connection, discordClient) => {
   if (message.type !== 'utf8') { return }
-  
+
   const messageJson = JSON.parse(message.utf8Data)
   const methode = messageJson.method
   const { params } = messageJson
   if (typeof (methode) === 'undefined') { return }
   if (!Object.keys(states).includes(methode)) { return }
 
-  if (typeof (states[methode].preventStatus) !== 'undefined' && states[methode].preventStatus.some(invalidState => variables.getStatus() === invalidState)) { return }
+  if (typeof (states[methode].preventStatus) !== 'undefined' && states[methode].preventStatus.includes(variables.getStatus())) { return }
   
   if (typeof (states[methode].requiredParams) !== 'undefined') {
     if (typeof (params) === 'undefined') { return }
