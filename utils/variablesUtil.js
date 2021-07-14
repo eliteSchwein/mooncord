@@ -21,8 +21,7 @@ const data = {
     "times": {
       "multiplier": 0,
       "duration": 0,
-      "actual_duration": 0,
-      "actual_total_duration": 0,
+      "file_total_duration": 0,
       "slicer_total_duration": 0
     }
   }
@@ -95,15 +94,13 @@ module.exports.getTimes = () => {
   const endTime = Math.floor(Date.now() / 1000)
   const duration = data.print_job.times.duration
 
-  let total = data.print_job.times.actual_total_duration
-  let actual = data.print_job.times.actual_duration
+  let total = data.print_job.times.file_total_duration
 
-  if (actual === 0) {
+  if (total === 0) {
     total = data.print_job.times.slicer_total_duration
-    actual = data.print_job.times.slicer_total_duration
   }
   
-  const left = (actual - duration) / data.print_job.times.multiplier
+  const left = (total - duration) / data.print_job.times.multiplier
   const end = endTime + (total - duration)
 
   return {

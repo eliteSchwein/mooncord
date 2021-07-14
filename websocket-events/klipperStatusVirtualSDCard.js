@@ -11,7 +11,6 @@ let lastProgress = 0
 
 const event = async (message, connection, discordClient) => {
   if (message.type !== 'utf8') { return }
-  
   const messageJson = JSON.parse(message.utf8Data)
   const { result } = messageJson
 

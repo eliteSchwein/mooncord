@@ -4,11 +4,11 @@ module.exports = {
   gcodeResponse: require('./gcodeResponse'),
   klipperState: require('./klipperState'),
   klipperStates: require('./klipperStates'),
+  klipperDisplayStatus: require('./klipperDisplayStatus'),
   klipperStatusStateUpdate: require('./klipperStatusStateUpdate'),
   klipperStatusState: require('./klipperStatusState'),
   klipperStatusVirtualSDCard: require('./klipperStatusVirtualSDCard'),
   klipperLoad: require('./klipperLoad'),
-  moonrakerJob: require('./moonrakerJob'),
   moonrakerThrottle: require('./moonrakerThrottle'),
   versions: require('./versions')
 }
