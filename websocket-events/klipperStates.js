@@ -18,7 +18,6 @@ const event = async (message, connection, discordClient) => {
   if (typeof (methode) === 'undefined') { return }
   if (!Object.keys(states).includes(methode)) { return }
 
-  console.log(states[methode].preventStatus.includes(variables.getStatus()))
   if (typeof (states[methode].preventStatus) !== 'undefined' && states[methode].preventStatus.includes(variables.getStatus())) { return }
   
   if (typeof (states[methode].requiredParams) !== 'undefined') {
