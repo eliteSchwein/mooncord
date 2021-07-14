@@ -12,7 +12,7 @@ const event = async (message, connection, discordClient) => {
   const { result } = messageJson
 
   if (typeof (result) === 'undefined') { return }
-  if (typeof (result).status === 'undefined') { return }
+  if (typeof (result.status) === 'undefined') { return }
   if (variables.getStatus() === 'start') { return }
 
 
