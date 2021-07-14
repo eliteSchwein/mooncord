@@ -4,6 +4,9 @@ const event = (message) => {
   if (message.type !== 'utf8') { return }
   
   const messageJson = JSON.parse(message.utf8Data)
+
+  console.log(messageJson)
+
   const { result } = messageJson
 
   if (typeof (result) === 'undefined') { return }
