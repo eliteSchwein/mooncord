@@ -115,10 +115,20 @@ module.exports.getTimes = () => {
 
 module.exports.formatTime = (time) => { return formatTime(time / 1000) }
 
-function formatTime (seconds) {
+function formatTime(seconds) {
+  if (isNaN(+seconds) || !isFinite(seconds)) seconds = 0
+  let isNeg = false
+  if (seconds < 0) {
+    seconds = Math.abs(seconds)
+    isNeg = true
+  }
   const h = Math.floor(seconds / 3600)
-  seconds %= 3600
-  const m = (`0${  Math.floor(seconds / 60)}`).slice(-2)
-  const s = (`0${  (seconds % 60).toFixed(0)}`).slice(-2)
-  return String(`${h}:${m}:${s}`).replace('-1', '00')
+  const m = Math.floor(seconds % 3600 / 60)
+  const s = Math.floor(seconds % 3600 % 60)
+
+  let r = s + 's' // always show seconds
+  r = m + 'm ' + r // always show minutes
+  if (h > 0) r = h + 'h ' + r // only show hours if relevent
+
+  return (isNeg) ? '-' + r : r
 }
