@@ -32,10 +32,11 @@ const event = async (message, connection, discordClient) => {
     }
     if (klipperstatus.print_stats.state === 'printing' && (typeof (printfile) !== 'undefined' || printfile !== '')) {
       const currentStatus = 'printing'
-      console.log(variables.dump)
       if (variables.getStatus() === '') { return }
       if (variables.getStatus() === currentStatus) { return }
+      if (variables.getTimes().duration === 0) { return }
       if (variables.getProgress().toFixed() === 100) { return }
+      console.log(variables.dump)
       variables.setStatus(currentStatus)
       status.triggerStatusUpdate(discordClient)
 
