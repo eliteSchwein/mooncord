@@ -1,6 +1,7 @@
 const variables = require('../utils/variablesUtil')
 
 const event = (message) => {
+  console.log(message)
   if (message.type !== 'utf8') { return }
   
   const messageJson = JSON.parse(message.utf8Data)
