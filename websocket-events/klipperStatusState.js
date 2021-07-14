@@ -35,6 +35,7 @@ const event = async (message, connection, discordClient) => {
       console.log(variables.getStatus())
       if (variables.getStatus() === '') { return }
       if (variables.getStatus() === currentStatus) { return }
+      if (variables.getProgress().toFixed() === 100) { return }
       variables.setStatus(currentStatus)
       status.triggerStatusUpdate(discordClient)
 
