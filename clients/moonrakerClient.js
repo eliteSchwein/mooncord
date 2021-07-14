@@ -39,8 +39,8 @@ function enableEvents(discordClient) {
       connection.send(`{"jsonrpc": "2.0", "method": "printer.objects.query", "params": {"objects": {"webhooks": null, "virtual_sdcard": null, "print_stats": null, "gcode_move": null, "system_stats": null }}, "id": ${id}}`)
       connection.send(`{"jsonrpc": "2.0", "method": "printer.objects.query", "params": {"objects": ${JSON.stringify(mculist)}}, "id": ${id}}`)
       
-      if(variables.getCurrentFile() !== '')
-        connection.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${variables.getCurrentFile()}"}, "id": ${id}}`)
+      if(variables.getCurrentPrintJob() !== '')
+        connection.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${variables.getCurrentPrintJob()}"}, "id": ${id}}`)
         connection.send(`{"jsonrpc": "2.0", "method": "server.history.get_job", "params": {"uid": "${variables.getJobID()}"}, "id": ${id}}`)
     }, 250)
 
