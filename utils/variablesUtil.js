@@ -27,6 +27,7 @@ const data = {
     }
   }
 }
+module.exports.dump = data
 
 module.exports.setCurrentLayer = (z) => { data.layer.current = z }
 module.exports.setLayerHeights = (layerHeight, objectHeight, firstLayerHeight) => {
