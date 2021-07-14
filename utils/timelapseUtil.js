@@ -111,7 +111,7 @@ module.exports.getEmbed = () => {
     }
     const timelapse = getTimelapse()
     const description = locale.timelapse.for_gcode
-        .replace(/(\${gcode_file})/g, variablesUtil.getLastGcodeFile())
+        .replace(/(\${gcode_file})/g, variablesUtil.getLastPrintJob())
     return new Discord.MessageEmbed()
         .setDescription(description)
         .attachFiles(timelapse)

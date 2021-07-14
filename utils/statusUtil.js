@@ -62,7 +62,7 @@ function parseConfig(status) {
     .replace(/(\${locale.print_layers})/g, locale.status.fields.print_layers)
     .replace(/(\${locale.eta_print_time})/g, locale.status.fields.eta_print_time)
     .replace(/(\${locale.print_progress})/g, locale.status.fields.print_progress)
-    .replace(/(\${gcode_file})/g, variables.getCurrentFile())
+    .replace(/(\${gcode_file})/g, variables.getCurrentPrintJob())
     .replace(/(\${value_print_time})/g, variables.formatTime(variables.getTimes().duration))
     .replace(/(\${value_eta_print_time})/g, variables.formatTime(variables.getTimes().left))
     .replace(/(\${value_print_progress})/g, variables.getProgress())
