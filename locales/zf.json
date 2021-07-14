@@ -262,6 +262,26 @@
             "frequency": "頻率"
         }
     },
+    "loadthrottle": {
+        "title": "系統警告",
+        "sentence": "目前有一個系統警告，因為${reason}！",
+        "high_cpu_load": {
+            "name": "CPU超載",
+            "suggestion": "請檢查導致CPU超載的原因。"
+        },
+        "high_cpu_temp": {
+            "name": "CPU過熱",
+            "suggestion": "請檢查您的散熱系統。"
+        },
+        "high_ram_usage": {
+            "name": "記憶體不足",
+            "suggestion": "請檢查導致記憶體不足的原因。"
+        },
+        "high_partition_usage": {
+            "name": "儲存空間不足",
+            "suggestion": "請從${component_section}刪除一些文件。"
+        }
+    },
     "status": {
         "disconnected":{
             "title": "列印機離線！",
