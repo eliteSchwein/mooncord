@@ -32,19 +32,19 @@ function getDiscordClient(altdiscordClient){
   return discordClient.getClient()
 }
 
-async function postStatusChange(altdiscordClient, status) {
+async function postStatusChange(altdiscordClient) {
   const parsedConfig = parseConfig(currentStatus)
 
   const embed = await generateEmbed(parsedConfig)
 
   if (typeof (parsedConfig.activity) !== 'undefined') {
-    client.user.setActivity(
+    altdiscordClient.user.setActivity(
       parsedConfig.activity.text,
       { type: parsedConfig.activity.type }
     )
   }
-  postStatus(embed, client)
-  notifyStatus(embed, client)
+  postStatus(embed, altdiscordClient)
+  notifyStatus(embed, altdiscordClient)
 }
 
 async function changeStatus(altdiscordClient, newStatus) {
@@ -65,6 +65,8 @@ async function changeStatus(altdiscordClient, newStatus) {
   console.log(logSymbols.info, `Printer Status: ${newStatus}`.printstatus)
 
   currentStatus = newStatus
+
+  postStatusChange(client)
 
   statusWaitList.shift()
   return true
