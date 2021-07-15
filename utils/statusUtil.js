@@ -43,8 +43,8 @@ async function postStatusChange(altdiscordClient) {
       { type: parsedConfig.activity.type }
     )
   }
-  postStatus(embed, altdiscordClient)
-  notifyStatus(embed, altdiscordClient)
+  await postStatus(embed, altdiscordClient)
+  await notifyStatus(embed, altdiscordClient)
 }
 
 async function changeStatus(altdiscordClient, newStatus) {
@@ -66,7 +66,7 @@ async function changeStatus(altdiscordClient, newStatus) {
 
   currentStatus = newStatus
 
-  postStatusChange(client)
+  await postStatusChange(client)
 
   statusWaitList.shift()
   return true
@@ -134,7 +134,7 @@ async function generateEmbed(config, user) {
   return embed
 }
 
-function postStatus(message, altdiscordClient, altdatabase) {
+async function postStatus(message, altdiscordClient, altdatabase) {
   const client = getDiscordClient(altdiscordClient)
 
   const maindatabase = getCurrentDatabase(altdatabase)
@@ -142,24 +142,21 @@ function postStatus(message, altdiscordClient, altdatabase) {
   const ramdatabase = maindatabase.getRamDatabase()
   
   for (const guildid in botdatabase.guilds) {
-    client.guilds.fetch(guildid)
-      .then(async (guild) => {
-        const guilddatabase = botdatabase.guilds[guild.id]
-        for (const index in guilddatabase.broadcastchannels) {
-          const channel = await client.channels.fetch(guilddatabase.broadcastchannels[index])
-          if (config.status.use_percent &&
-            message.title === locale.status.printing.title) {
-            if (ramdatabase.cooldown === 0) {
-              await removeOldStatus(channel, client)
-              channel.send(message)
-              maindatabase.updateRamDatabase("cooldown", config.status.min_interval)
-            }
-          } else {
-            channel.send(message)
-          }
+    const guild = await client.guilds.fetch(guildid)
+    const guilddatabase = botdatabase.guilds[guild.id]
+    for (const index in guilddatabase.broadcastchannels) {
+      const channel = await client.channels.fetch(guilddatabase.broadcastchannels[index])
+      if (config.status.use_percent &&
+        message.title === locale.status.printing.title) {
+        if (ramdatabase.cooldown === 0) {
+          await removeOldStatus(channel, client)
+          channel.send(message)
+          maindatabase.updateRamDatabase("cooldown", config.status.min_interval)
         }
-      })
-      .catch((error) => { console.log(logSymbols.error, `Status Util: ${error}`.error) })
+      } else {
+        channel.send(message)
+      }
+    }
   }
 }
 
@@ -175,7 +172,7 @@ async function removeOldStatus(channel, discordClient) {
   await lastMessage.delete()
 }
 
-function notifyStatus(message, altdiscordClient, altdatabase) {
+async function notifyStatus(message, altdiscordClient, altdatabase) {
   const client = getDiscordClient(altdiscordClient)
 
   const maindatabase = getCurrentDatabase(altdatabase)
@@ -186,20 +183,17 @@ function notifyStatus(message, altdiscordClient, altdatabase) {
 
   for (const notifyindex in notifylist) {
     const clientid = notifylist[notifyindex]
-    client.users.fetch(clientid)
-      .then(async (user) => {
-        if (config.status.use_percent &&
-              message.title === locale.status.printing.title) {
-          if (ramdatabase.cooldown === 0) {
-            await removeOldStatus(user.dmChannel, client)
-            user.send(message).catch('console.error')
-            maindatabase.updateRamDatabase("cooldown", config.status.min_interval)
-          }
-        } else {
-          user.send(message).catch('console.error')
-        }
-      })
-      .catch((error) => { console.log(logSymbols.error, `Status Util: ${error}`.error) })
+    const user = await client.users.fetch(clientid)
+    if (config.status.use_percent &&
+          message.title === locale.status.printing.title) {
+      if (ramdatabase.cooldown === 0) {
+        await removeOldStatus(user.dmChannel, client)
+        user.send(message).catch('console.error')
+        maindatabase.updateRamDatabase("cooldown", config.status.min_interval)
+      }
+    } else {
+      user.send(message).catch('console.error')
+    }
   }
 }
 
