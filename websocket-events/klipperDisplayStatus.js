@@ -2,6 +2,7 @@ const args = process.argv.slice(2)
 
 const variables = require('../utils/variablesUtil')
 const statusUtil = require('../utils/statusUtil')
+const locale = require('../utils/localeUtil')
 
 const config = require(`${args[0]}/mooncord.json`)
 
@@ -35,7 +36,7 @@ function postProgress(discordClient, progress) {
   if (config.status.update_interval &&
     progress.toFixed() % config.status.update_interval === 0 &&
     progress.toFixed(0) !== 0) {
-      status.changeStatus(discordClient, 'printing')
+      statusUtil.changeStatus(discordClient, 'printing')
   }
 }
 module.exports = event
