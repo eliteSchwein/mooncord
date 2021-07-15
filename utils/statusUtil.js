@@ -60,7 +60,7 @@ async function changeStatus(altdiscordClient, newStatus) {
 
   statusWaitList.push(id)
 
-  await waitUntil(() => statusWaitList[0] === id, { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 250 })
+  await waitUntil(() => statusWaitList[0] === id, { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 2000 })
 
   console.log(logSymbols.info, `Printer Status: ${newStatus}`.printstatus)
 
