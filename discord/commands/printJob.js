@@ -6,7 +6,7 @@ const moonrakerClient = require('../../clients/moonrakerClient')
 const handlers = require('../../utils/handlerUtil')
 const locale = require('../../utils/localeUtil')
 const permission = require('../../utils/permissionUtil')
-const variables = require('../../utils/variablesUtil')
+const statusUtil = require('../../utils/statusUtil')
 const metadata = require('../commands-metadata/print_job.json')
 
 const messageLocale = locale.commands.printjob
@@ -55,7 +55,7 @@ module.exports = class PrintJobCommand extends SlashCommand {
             return locale.getAdminOnlyError(ctx.user.username)
         }
         const subcommand = ctx.subcommands[0]
-        const currentStatus = variables.getStatus()
+        const currentStatus = statusUtil.getStatus()
         const id = Math.floor(Math.random() * Number.parseInt('10_000')) + 1
 
         connection = moonrakerClient.getConnection()

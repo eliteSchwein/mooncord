@@ -198,7 +198,6 @@ module.exports.changeStatus = async function (altdiscordClient, newStatus) {
 }
 
 module.exports.getManualStatusEmbed = async function (user) {
-  const currentStatus = variables.getStatus()
   const parsedConfig = parseConfig(currentStatus)
   return await generateEmbed(parsedConfig, user)
 }
@@ -207,3 +206,4 @@ module.exports.postBroadcastMessage = (message, altdiscordClient, altdatabase, a
   postStatus(message, altdiscordClient, altdatabase, altramdatabase)
   notifyStatus(message, altdiscordClient, altdatabase, altramdatabase)
 }
+module.exports.getStatus = () => { return currentStatus }

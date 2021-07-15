@@ -26,8 +26,6 @@ const event = async (message, connection, discordClient) => {
       clearInterval(variables.getUpdateTimer())
     }
     if (klipperstatus.print_stats.state === 'printing' && (typeof (printfile) !== 'undefined' || printfile !== '')) {
-      if (variables.getStatus() === '') { return }
-      
       if (variables.getTimes().duration === 0) { return }
       if (variables.getProgress().toFixed() === 100) { return }
       
@@ -40,7 +38,7 @@ const event = async (message, connection, discordClient) => {
       }, 1000 * config.status.update_interval)
       variables.setUpdateTimer(timer)
     }
-    if (klipperstatus.print_stats.state === 'complete' && variables.getStatus() !== 'ready') {
+    if (klipperstatus.print_stats.state === 'complete' && status.getStatus() !== 'ready') {
 
       timelapseUtil.render()
       variables.updateLastGcodeFile()
