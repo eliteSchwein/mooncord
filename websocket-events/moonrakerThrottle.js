@@ -56,8 +56,6 @@ function retrieveThrottle(result, discordClient, database) {
 }
 
 async function postThrottle(throttle, discordClient, database) {
-  await waitUntil(() => discordClient.user !== null, { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 1000 })
-
   const key = throttle
     .toLowerCase()
     .replace(' ', '_')

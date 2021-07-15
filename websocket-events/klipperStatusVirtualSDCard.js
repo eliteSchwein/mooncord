@@ -27,8 +27,6 @@ const event = async (message, connection, discordClient) => {
     if (currentProgress.toFixed(0) === variables.getProgress()) { return }
 
     variables.setProgress(currentProgress.toFixed(0))
-
-    await waitUntil(() => discordClient.user !== null, { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 1000 })
     
     discordClient.user.setActivity(
       locale.status.printing.activity.replace(/(\${value_print_progress})/g, currentProgress.toFixed(0))
