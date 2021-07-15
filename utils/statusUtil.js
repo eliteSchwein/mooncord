@@ -55,8 +55,9 @@ async function changeStatus(altdiscordClient, newStatus) {
 
   if(!currentStatusMeta.allow_same && currentStatus === newStatus) { return false }
   if(currentStatusMeta.order_id > 0 && 
-    newStatusMeta.order_id > 0 && 
-    currentStatusMeta.order_id + 1 !== newStatusMeta.order_id) { return false }
+    newStatusMeta.order_id > 0 && (
+    currentStatusMeta.order_id + 1 !== newStatusMeta.order_id ||
+    currentStatusMeta.order_id === newStatusMeta.order_id)) { return false }
 
   statusWaitList.push(id)
 
