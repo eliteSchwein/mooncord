@@ -12,12 +12,9 @@ const event = (message, connection, discordClient) => {
   if (typeof (result.klippy_state) === 'undefined') { return }
   
   const currentStatus = result.klippy_state
-  if (variables.getStatus() === currentStatus) { return }
 
   if (typeof (states[currentStatus].prevent_status) !== 'undefined' && states[currentStatus].prevent_status.includes(variables.getStatus())) { return }
 
-  variables.setStatus(currentStatus)
-  
-  status.triggerStatusUpdate(discordClient)
+  status.changeStatus(discordClient, currentStatus)
 }
 module.exports = event

@@ -31,9 +31,8 @@ const event = async (message, connection, discordClient) => {
     changeStatusLater(states[methode].timed_status, discordClient)
   }
 
-  variables.setStatus(states[methode].status)
   variables.updateLastGcodeFile()
-  await status.triggerStatusUpdate(discordClient)
+  await status.changeStatus(discordClient, states[methode].status)
 
   if(typeof(states[methode].render) === 'undefined') { return }
 
@@ -47,8 +46,7 @@ const event = async (message, connection, discordClient) => {
 
 function changeStatusLater(state, discordClient) {
   setTimeout(() => {
-    variables.setStatus(state)
-    status.triggerStatusUpdate(discordClient)
+    status.changeStatus(discordClient, state)
   }, 2000)
 }
 module.exports = event

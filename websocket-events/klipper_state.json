@@ -1,5 +1,5 @@
 {
     "ready": {
-        "prevent_status": ["printing"]
+        "prevent_status": []
     }
 }

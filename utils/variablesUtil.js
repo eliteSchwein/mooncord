@@ -10,7 +10,6 @@ const data = {
   "update_timer": 0,
   "moonraker_versions": {},
   "print_job": {
-    "status": "",
     "job_id": "",
     "current_file": "",
     "last_file": "",
@@ -42,7 +41,6 @@ module.exports.clearMCUList = () => { data.mcu_list = {} }
 module.exports.setInviteUrl = (url) => { data.invite_url = url }
 module.exports.setUpdateTimer = (newUpdateTimer) => { data.update_timer = newUpdateTimer }
 
-module.exports.setStatus = (newStatus) => { data.print_job.status = newStatus }
 module.exports.setVersions = (currentVersions) => { data.moonraker_versions = currentVersions }
 
 module.exports.setCurrentPrintJob = (currentFile) => { data.print_job.current_file = currentFile }
@@ -80,7 +78,6 @@ module.exports.getConfigPath = () => {
 module.exports.getInviteUrl = function() { return data.invite_url }
 module.exports.getUpdateTimer = () => { return data.update_timer }
 
-module.exports.getStatus = () => { return data.print_job.status }
 module.exports.getVersions = () => { return data.moonraker_versions }
 
 module.exports.getThumbnailPath = () => { return data.print_job.thumbnail }

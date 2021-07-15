@@ -1,7 +1,7 @@
 {
     "notify_klippy_disconnected": {
         "status": "disconnected",
-        "prevent_status": ["pause"]
+        "prevent_status": []
     },
     "notify_klippy_ready": {
         "status": "ready",
@@ -9,7 +9,7 @@
     },
     "notify_klippy_shutdown": {
         "status": "shutdown",
-        "prevent_status": ["pause"]
+        "prevent_status": []
     },
     "notify_gcode_response": {
         "status": "stop",

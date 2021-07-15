@@ -9,10 +9,12 @@ const discordClient = require('../clients/discordClient')
 const config = require(`${args[0]}/mooncord.json`)
 const database = require('./databaseUtil')
 const locale = require('./localeUtil')
-const messagemetadata = require('./status_meta_data.json')
+const metadata = require('./status_meta_data.json')
 const thumbnail = require('./thumbnailUtil')
 const variables = require('./variablesUtil')
 const webcam = require('./webcamUtil')
+
+let currentStatus = "ready"
 
 function getCurrentDatabase(altdatabase){
   if(typeof(altdatabase) !== 'undefined'){
@@ -28,14 +30,8 @@ function getDiscordClient(altdiscordClient){
   return discordClient.getClient()
 }
 
-async function triggerStatusUpdate(altdiscordClient) {
-
-  const client = getDiscordClient(altdiscordClient)
-
-  const currentStatus = variables.getStatus()
-
+async function postStatusChange(altdiscordClient, status) {
   await waitUntil(() => client.user !== null, { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 1500 })
-  console.log(logSymbols.info, `Printer Status: ${currentStatus}`.printstatus)
 
   const parsedConfig = parseConfig(currentStatus)
 
@@ -49,11 +45,25 @@ async function triggerStatusUpdate(altdiscordClient) {
   }
   postStatus(embed, client)
   notifyStatus(embed, client)
-  return true
+}
+
+async function changeStatus(altdiscordClient, newStatus) {
+
+  const client = getDiscordClient(altdiscordClient)
+  const currentStatusMeta = metadata[currentStatus].meta_data
+  const newStatusMeta = metadata[newStatus].meta_data
+
+  if(!currentStatusMeta.allow_same && currentStatus === newStatus) { return }
+  if(currentStatusMeta.order_id > 0 && currentStatusMeta.order_id > newStatusMeta.order_id) { return }
+
+  currentStatus = newStatus
+
+  console.log(logSymbols.info, `Printer Status: ${newStatus}`.printstatus)
+
 }
 
 function parseConfig(status) {
-  const config = messagemetadata[status]
+  const config = metadata[status]
   const localeConfig = locale.status[status]
   const parsedConfig = JSON.stringify(config) 
     .replace(/(\${locale.title})/g, localeConfig.title)
@@ -183,8 +193,8 @@ function notifyStatus(message, altdiscordClient, altdatabase) {
   }
 }
 
-module.exports.triggerStatusUpdate = async function (altdiscordClient) {
-  await triggerStatusUpdate(altdiscordClient)
+module.exports.changeStatus = async function (altdiscordClient, newStatus) {
+  await changeStatus(altdiscordClient, newStatus)
 }
 
 module.exports.getManualStatusEmbed = async function (user) {

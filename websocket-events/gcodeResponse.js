@@ -20,11 +20,7 @@ const event = async (message, connection, discordClient) => {
       const removeSize = params[0].slice(0, Math.max(0, params[0].indexOf(' Size')))
       const removeFileTag = removeSize.slice(12)
       const printfile = removeFileTag
-      const currentStatus = 'start'
 
-      if (variables.getStatus() === currentStatus) { return }
-
-      variables.setStatus(currentStatus)
       variables.updateTimeData('duration', 0)
 
       connection.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${printfile}"}, "id": ${id}}`)
@@ -32,14 +28,13 @@ const event = async (message, connection, discordClient) => {
       variables.setCurrentPrintJob(printfile)
 
       await waitUntil(() => variables.getTimes().total > 0, { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 250 })
-      await status.triggerStatusUpdate(discordClient)
+      await status.changeStatus(discordClient, 'start')
 
       timelapseUtil.start()
-      variables.setStatus('printing')
 
       if (!config.status.use_percent) {
         timer = setInterval(() => {
-          status.triggerStatusUpdate(discordClient)
+          await status.changeStatus(discordClient, 'printing')
         }, 1000 * config.status.update_interval)
         variables.setUpdateTimer(timer)
       }

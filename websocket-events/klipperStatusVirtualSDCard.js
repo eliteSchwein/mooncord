@@ -22,7 +22,7 @@ const event = async (message, connection, discordClient) => {
     const virtualSDcard = result.status.virtual_sdcard
     const currentProgress = calculateProgress(virtualSDcard)
 
-    if (variables.getStatus() !== 'printing') { return }
+    if (status.getStatus() !== 'printing') { return }
     
     if (currentProgress.toFixed(0) === variables.getProgress()) { return }
 
@@ -40,7 +40,7 @@ const event = async (message, connection, discordClient) => {
       currentProgress.toFixed(0) % config.status.update_interval === 0 &&
       currentProgress.toFixed(0) !== 0) {
       lastProgress = currentProgress.toFixed(0)
-      status.triggerStatusUpdate(discordClient)
+      status.changeStatus(discordClient, 'printing')
     }
   }
 }

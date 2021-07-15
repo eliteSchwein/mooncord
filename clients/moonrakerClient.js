@@ -46,8 +46,7 @@ function enableEvents(discordClient) {
     connection.on('close', () => {
       console.log('  WebSocket Connection Closed'.error)
       console.log('  Reconnect in 5 sec'.error)
-      variables.setStatus('offline')
-      status.triggerStatusUpdate(discordClient.getClient())
+      status.changeStatus(discordClient.getClient(), 'offline')
       setTimeout(() => {
         client.connect(url)
       }, 5000)
