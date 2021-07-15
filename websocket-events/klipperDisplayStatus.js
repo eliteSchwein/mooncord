@@ -20,17 +20,13 @@ const event = (message, connection, discordClient) => {
 
   variables.updateTimeData('file_total_duration', variables.getTimes().duration / progress)
 
-  postProgress(discordClient, progress, variables.getProgress())
+  postProgress(discordClient, (progress * 100).toFixed())
   
   variables.setProgress((progress * 100).toFixed())
 }
 
-function postProgress(discordClient, progress, oldProgress) {
-  console.log(progress + ' ' + oldProgress)
-  console.log(config.status.update_interval &&
-    progress.toFixed() % config.status.update_interval === 0 &&
-    progress.toFixed() !== 0)
-  if (oldProgress === progress) { return }
+function postProgress(discordClient, progress) {
+  if (variables.getProgress() === progress) { return }
   
   discordClient.user.setActivity(
     locale.status.printing.activity.replace(/(\${value_print_progress})/g, variables.getProgress())
@@ -39,7 +35,7 @@ function postProgress(discordClient, progress, oldProgress) {
 
   if (config.status.update_interval &&
     progress.toFixed() % config.status.update_interval === 0 &&
-    progress.toFixed() !== 0) {
+    progress.toFixed(0) !== 0) {
       statusUtil.changeStatus(discordClient, 'printing')
   }
 }
