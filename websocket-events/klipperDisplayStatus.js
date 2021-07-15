@@ -27,6 +27,7 @@ const event = (message, connection, discordClient) => {
 
 function postProgress(discordClient, progress) {
   if (variables.getProgress() === progress) { return }
+  console.log(progress === 100)
   if (progress === 100) { return }
   
   discordClient.user.setActivity(
