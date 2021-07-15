@@ -13,7 +13,7 @@ const event = (message, connection, discordClient) => {
   
   const currentStatus = result.klippy_state
 
-  if (typeof (states[currentStatus].prevent_status) !== 'undefined' && states[currentStatus].prevent_status.includes(variables.getStatus())) { return }
+  if (typeof (states[currentStatus].prevent_status) !== 'undefined' && states[currentStatus].prevent_status.includes(status.getStatus())) { return }
 
   status.changeStatus(discordClient, currentStatus)
 }
