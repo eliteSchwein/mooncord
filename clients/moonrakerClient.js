@@ -1,5 +1,3 @@
-const fs = require('fs')
-const path = require('path')
 const WebSocketClient = require('websocket').client
 const { waitUntil } = require('async-wait-until')
 const logSymbols = require('log-symbols')

@@ -1,6 +1,4 @@
 const status = require('../utils/statusUtil')
-const variables = require('../utils/variablesUtil')
-const states = require('./klipper_state.json')
 
 const event = (message, connection, discordClient) => {
   if (message.type !== 'utf8') { return }

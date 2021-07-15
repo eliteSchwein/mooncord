@@ -1,4 +1,3 @@
-const { waitUntil } = require('async-wait-until')
 const Discord = require('discord.js')
 const logSymbols = require('log-symbols')
 const path = require('path')

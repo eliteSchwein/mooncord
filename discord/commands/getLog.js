@@ -3,7 +3,6 @@ const args = process.argv.slice(2)
 const logSymbols = require('log-symbols')
 const { SlashCommand, CommandOptionType } = require('slash-create')
 const axios = require('axios')
-const fs = require('fs')
 
 const config = require(`${args[0]}/mooncord.json`)
 const discordClient = require('../../clients/discordClient')

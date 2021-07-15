@@ -1,9 +1,7 @@
 const args = process.argv.slice(2)
 
-const Discord = require('discord.js')
 const logSymbols = require('log-symbols')
-const path = require('path')
-const { SlashCommand, CommandOptionType } = require('slash-create')
+const { SlashCommand } = require('slash-create')
 
 const locale = require('../../utils/localeUtil')
 const timelapseUtil = require('../../utils/timelapseUtil')

@@ -1,10 +1,6 @@
-const args = process.argv.slice(2)
-
 const Discord = require('discord.js')
-const logSymbols = require('log-symbols')
 const path = require('path')
 
-const config = require(`${args[0]}/mooncord.json`)
 const status = require('../utils/statusUtil')
 const timelapseUtil = require('../utils/timelapseUtil')
 const variables = require('../utils/variablesUtil')
