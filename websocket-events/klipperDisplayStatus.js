@@ -27,14 +27,12 @@ const event = (message, connection, discordClient) => {
 
 function postProgress(discordClient, progress) {
   if (variables.getProgress() === progress) { return }
-  console.log(progress === Number(100))
-  if (progress === 100) { return }
+  
+  if (statusUtil.getStatus() !== 'printing') { return }
   
   discordClient.user.setActivity(
     locale.status.printing.activity.replace(/(\${value_print_progress})/g, progress)
     , { type: 'WATCHING' })
-  
-  if (statusUtil.getStatus() !== 'printing') { return }
 
   if (config.status.update_interval &&
     progress % config.status.update_interval === 0 &&
