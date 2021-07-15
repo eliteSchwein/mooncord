@@ -9,6 +9,7 @@ const variables = require('../utils/variablesUtil')
 const event = (message, connection, discordClient, database) => {
   if (message.type !== 'utf8') { return }
   
+  console.log(discordClient.ws.ping)
   const messageJson = JSON.parse(message.utf8Data)
   const { result } = messageJson
   if (typeof (result) !== 'undefined' && typeof (result.version_info) !== 'undefined') {
