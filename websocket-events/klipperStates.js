@@ -31,7 +31,7 @@ const event = async (message, connection, discordClient) => {
     changeStatusLater(states[methode].timed_status, discordClient)
   }
 
-  variables.updateLastGcodeFile()
+  variables.updateLastPrintJob()
   await status.changeStatus(discordClient, states[methode].status)
 
   if(typeof(states[methode].render) === 'undefined') { return }
