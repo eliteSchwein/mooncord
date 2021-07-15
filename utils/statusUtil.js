@@ -31,8 +31,6 @@ function getDiscordClient(altdiscordClient){
 }
 
 async function postStatusChange(altdiscordClient, status) {
-  await waitUntil(() => client.user !== null, { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 1500 })
-
   const parsedConfig = parseConfig(currentStatus)
 
   const embed = await generateEmbed(parsedConfig)
