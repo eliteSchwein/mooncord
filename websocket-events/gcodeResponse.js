@@ -34,7 +34,7 @@ const event = async (message, connection, discordClient) => {
 
       if (!config.status.use_percent) {
         timer = setInterval(() => {
-          await status.changeStatus(discordClient, 'printing')
+          status.changeStatus(discordClient, 'printing')
         }, 1000 * config.status.update_interval)
         variables.setUpdateTimer(timer)
       }
