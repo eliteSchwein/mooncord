@@ -31,10 +31,11 @@ const event = async (message, connection, discordClient) => {
         variables.getTimes().total === 0 ||
         variables.getTimes().left === -Infinity) { return }
       if (variables.getMaxLayers === 0) { return }
-      if (status.getStatus() === 'printing') { return }
+      if (status.getStatus() === 'printing' ||
+        status.getStatus() === 'start') { return }
       
-      status.changeStatus(discordClient, 'start')
-      status.changeStatus(discordClient, 'printing')
+      await status.changeStatus(discordClient, 'start')
+      await status.changeStatus(discordClient, 'printing')
 
       if (config.status.use_percent) { return }
 
