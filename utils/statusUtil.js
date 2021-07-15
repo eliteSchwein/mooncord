@@ -195,7 +195,7 @@ function notifyStatus(message, altdiscordClient, altdatabase) {
 }
 
 module.exports.changeStatus = async function (altdiscordClient, newStatus) {
-  await changeStatus(altdiscordClient, newStatus)
+  return await changeStatus(altdiscordClient, newStatus)
 }
 
 module.exports.getManualStatusEmbed = async function (user) {
