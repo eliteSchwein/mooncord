@@ -31,6 +31,7 @@ const event = async (message, connection, discordClient) => {
         variables.getTimes().total === 0 ||
         variables.getTimes().left === -Infinity) { return }
       if (variables.getMaxLayers === 0) { return }
+      if (variables.getProgress() === 100) { return }
       if (status.getStatus() === 'printing' ||
         status.getStatus() === 'start') { return }
       
