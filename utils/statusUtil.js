@@ -14,7 +14,7 @@ const thumbnail = require('./thumbnailUtil')
 const variables = require('./variablesUtil')
 const webcam = require('./webcamUtil')
 
-let currentStatus = "ready"
+let currentStatus = "startup"
 
 function getCurrentDatabase(altdatabase){
   if(typeof(altdatabase) !== 'undefined'){
