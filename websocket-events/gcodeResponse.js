@@ -1,10 +1,3 @@
-const args = process.argv.slice(2)
-
-const { waitUntil } = require('async-wait-until')
-
-const config = require(`${args[0]}/mooncord.json`)
-const status = require('../utils/statusUtil')
-const timelapseUtil = require('../utils/timelapseUtil')
 const variables = require('../utils/variablesUtil')
 
 const event = async (message, connection, discordClient) => {
@@ -26,18 +19,6 @@ const event = async (message, connection, discordClient) => {
       connection.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${printfile}"}, "id": ${id}}`)
 
       variables.setCurrentPrintJob(printfile)
-
-      await waitUntil(() => variables.getTimes().total > 0, { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 250 })
-      if (!await status.changeStatus(discordClient, 'start')) { return }
-
-      timelapseUtil.start()
-
-      if (!config.status.use_percent) {
-        timer = setInterval(() => {
-          status.changeStatus(discordClient, 'printing')
-        }, 1000 * config.status.update_interval)
-        variables.setUpdateTimer(timer)
-      }
     }
   }
 }
