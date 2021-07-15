@@ -77,7 +77,7 @@ function connect() {
 
   client.on('connectFailed', (error) => {
     console.log(logSymbols.error, `Moonrakerclient: ${error}`.error)
-    variables.setStatus('offline')
+    status.changeStatus(discordClient.getClient(), 'offline')
     console.log('  Please check your Config!'.error)
     setTimeout(() => {
       process.exit(5)
