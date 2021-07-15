@@ -14,6 +14,8 @@ const thumbnail = require('./thumbnailUtil')
 const variables = require('./variablesUtil')
 const webcam = require('./webcamUtil')
 
+const statusWaitList = []
+
 let currentStatus = "startup"
 
 function getCurrentDatabase(altdatabase){
@@ -46,7 +48,7 @@ async function postStatusChange(altdiscordClient, status) {
 }
 
 async function changeStatus(altdiscordClient, newStatus) {
-
+  const id = Math.floor(Math.random() * Number.parseInt('10_000')) + 1
   const client = getDiscordClient(altdiscordClient)
   const currentStatusMeta = metadata[currentStatus].meta_data
   const newStatusMeta = metadata[newStatus].meta_data
@@ -56,10 +58,15 @@ async function changeStatus(altdiscordClient, newStatus) {
     newStatusMeta.order_id > 0 && 
     currentStatusMeta.order_id + 1 !== newStatusMeta.order_id) { return false }
 
-  currentStatus = newStatus
+  statusWaitList.push(id)
+
+  await waitUntil(() => statusWaitList[0] === id, { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 250 })
 
   console.log(logSymbols.info, `Printer Status: ${newStatus}`.printstatus)
 
+  currentStatus = newStatus
+
+  statusWaitList.shift()
   return true
 }
 
