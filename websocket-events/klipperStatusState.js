@@ -29,6 +29,7 @@ const event = async (message, connection, discordClient) => {
       if (variables.getTimes().duration === 0) { return }
       if (variables.getProgress().toFixed() === 100) { return }
       
+      await status.changeStatus(discordClient, 'start')
       await status.changeStatus(discordClient, 'printing')
 
       if (config.status.use_percent) { return }
