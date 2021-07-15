@@ -28,7 +28,6 @@ const event = async (message, connection, discordClient) => {
     if (klipperstatus.print_stats.state === 'printing' && (typeof (printfile) !== 'undefined' || printfile !== '')) {
       if (variables.getTimes().duration === 0) { return }
       
-      console.log(await status.changeStatus(discordClient, 'start'))
       await status.changeStatus(discordClient, 'start')
       await status.changeStatus(discordClient, 'printing')
 
