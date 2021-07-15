@@ -32,8 +32,8 @@ function getDiscordClient(altdiscordClient){
   return discordClient.getClient()
 }
 
-async function postStatusChange(altdiscordClient) {
-  const parsedConfig = parseConfig(currentStatus)
+async function postStatusChange(altdiscordClient, status) {
+  const parsedConfig = parseConfig(status)
 
   const embed = await generateEmbed(parsedConfig)
 
@@ -43,8 +43,8 @@ async function postStatusChange(altdiscordClient) {
       { type: parsedConfig.activity.type }
     )
   }
-  await postStatus(embed, altdiscordClient)
-  await notifyStatus(embed, altdiscordClient)
+  postStatus(embed, altdiscordClient)
+  notifyStatus(embed, altdiscordClient)
 }
 
 async function changeStatus(altdiscordClient, newStatus) {
@@ -60,13 +60,13 @@ async function changeStatus(altdiscordClient, newStatus) {
 
   statusWaitList.push(id)
 
+  currentStatus = newStatus
+
   await waitUntil(() => statusWaitList[0] === id, { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 2000 })
 
   console.log(logSymbols.info, `Printer Status: ${newStatus}`.printstatus)
 
-  currentStatus = newStatus
-
-  await postStatusChange(client)
+  await postStatusChange(client, newStatus)
 
   statusWaitList.shift()
   return true
@@ -134,7 +134,7 @@ async function generateEmbed(config, user) {
   return embed
 }
 
-async function postStatus(message, altdiscordClient, altdatabase) {
+function postStatus(message, altdiscordClient, altdatabase) {
   const client = getDiscordClient(altdiscordClient)
 
   const maindatabase = getCurrentDatabase(altdatabase)
@@ -142,21 +142,24 @@ async function postStatus(message, altdiscordClient, altdatabase) {
   const ramdatabase = maindatabase.getRamDatabase()
   
   for (const guildid in botdatabase.guilds) {
-    const guild = await client.guilds.fetch(guildid)
-    const guilddatabase = botdatabase.guilds[guild.id]
-    for (const index in guilddatabase.broadcastchannels) {
-      const channel = await client.channels.fetch(guilddatabase.broadcastchannels[index])
-      if (config.status.use_percent &&
-        message.title === locale.status.printing.title) {
-        if (ramdatabase.cooldown === 0) {
-          await removeOldStatus(channel, client)
-          channel.send(message)
-          maindatabase.updateRamDatabase("cooldown", config.status.min_interval)
+    client.guilds.fetch(guildid)
+      .then(async (guild) => {
+        const guilddatabase = botdatabase.guilds[guild.id]
+        for (const index in guilddatabase.broadcastchannels) {
+          const channel = await client.channels.fetch(guilddatabase.broadcastchannels[index])
+          if (config.status.use_percent &&
+            message.title === locale.status.printing.title) {
+            if (ramdatabase.cooldown === 0) {
+              await removeOldStatus(channel, client)
+              channel.send(message)
+              maindatabase.updateRamDatabase("cooldown", config.status.min_interval)
+            }
+          } else {
+            channel.send(message)
+          }
         }
-      } else {
-        channel.send(message)
-      }
-    }
+      })
+      .catch((error) => { console.log(logSymbols.error, `Status Util: ${error}`.error) })
   }
 }
 
@@ -172,7 +175,7 @@ async function removeOldStatus(channel, discordClient) {
   await lastMessage.delete()
 }
 
-async function notifyStatus(message, altdiscordClient, altdatabase) {
+function notifyStatus(message, altdiscordClient, altdatabase) {
   const client = getDiscordClient(altdiscordClient)
 
   const maindatabase = getCurrentDatabase(altdatabase)
@@ -183,17 +186,20 @@ async function notifyStatus(message, altdiscordClient, altdatabase) {
 
   for (const notifyindex in notifylist) {
     const clientid = notifylist[notifyindex]
-    const user = await client.users.fetch(clientid)
-    if (config.status.use_percent &&
-          message.title === locale.status.printing.title) {
-      if (ramdatabase.cooldown === 0) {
-        await removeOldStatus(user.dmChannel, client)
-        user.send(message).catch('console.error')
-        maindatabase.updateRamDatabase("cooldown", config.status.min_interval)
-      }
-    } else {
-      user.send(message).catch('console.error')
-    }
+    client.users.fetch(clientid)
+      .then(async (user) => {
+        if (config.status.use_percent &&
+              message.title === locale.status.printing.title) {
+          if (ramdatabase.cooldown === 0) {
+            await removeOldStatus(user.dmChannel, client)
+            user.send(message).catch('console.error')
+            maindatabase.updateRamDatabase("cooldown", config.status.min_interval)
+          }
+        } else {
+          user.send(message).catch('console.error')
+        }
+      })
+      .catch((error) => { console.log(logSymbols.error, `Status Util: ${error}`.error) })
   }
 }
 
