@@ -51,15 +51,16 @@ async function changeStatus(altdiscordClient, newStatus) {
   const currentStatusMeta = metadata[currentStatus].meta_data
   const newStatusMeta = metadata[newStatus].meta_data
 
-  if(!currentStatusMeta.allow_same && currentStatus === newStatus) { return }
+  if(!currentStatusMeta.allow_same && currentStatus === newStatus) { return false }
   if(currentStatusMeta.order_id > 0 && 
     newStatusMeta.order_id > 0 && 
-    currentStatusMeta.order_id + 1 !== newStatusMeta.order_id) { return }
+    currentStatusMeta.order_id + 1 !== newStatusMeta.order_id) { return false }
 
   currentStatus = newStatus
 
   console.log(logSymbols.info, `Printer Status: ${newStatus}`.printstatus)
 
+  return true
 }
 
 function parseConfig(status) {

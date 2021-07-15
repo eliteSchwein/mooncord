@@ -30,7 +30,7 @@ const event = async (message, connection, discordClient) => {
   }
 
   variables.updateLastPrintJob()
-  await status.changeStatus(discordClient, states[methode].status)
+  if(!await status.changeStatus(discordClient, states[methode].status)) { return }
 
   if(typeof(states[methode].render) === 'undefined') { return }
 

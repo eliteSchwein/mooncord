@@ -28,7 +28,7 @@ const event = async (message, connection, discordClient) => {
       variables.setCurrentPrintJob(printfile)
 
       await waitUntil(() => variables.getTimes().total > 0, { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 250 })
-      await status.changeStatus(discordClient, 'start')
+      if (!await status.changeStatus(discordClient, 'start')) { return }
 
       timelapseUtil.start()
 
