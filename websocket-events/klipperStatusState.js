@@ -35,9 +35,9 @@ const event = async (message, connection, discordClient) => {
         variables.getTimes().left === -Infinity) { return }
       
       if (variables.getMaxLayers === 0) { return }
-
-      console.log(variables.getProgress())
-      if (variables.getProgress() === 100) { return }
+      
+      if (variables.getProgress() === 100 ||
+        variables.getProgress() === 0) { return }
       
       await status.changeStatus(discordClient, 'start')
       await status.changeStatus(discordClient, 'printing')
