@@ -27,6 +27,7 @@ const event = (message, connection, discordClient) => {
 
 function postProgress(discordClient, progress) {
   if (variables.getProgress() === progress) { return }
+  if (statusUtil.getStatus() !== 'printing') { return }
   
   discordClient.user.setActivity(
     locale.status.printing.activity.replace(/(\${value_print_progress})/g, variables.getProgress())
