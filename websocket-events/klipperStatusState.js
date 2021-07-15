@@ -30,7 +30,8 @@ const event = async (message, connection, discordClient) => {
       if (variables.getTimes().duration === 0 ||
         variables.getTimes().total === 0 ||
         variables.getTimes().left === -Infinity) { return }
-      if(variables.getMaxLayers === 0) { return }
+      if (variables.getMaxLayers === 0) { return }
+      if(status.getStatus() === 'printing') { return }
       
       await status.changeStatus(discordClient, 'start')
       await status.changeStatus(discordClient, 'printing')
