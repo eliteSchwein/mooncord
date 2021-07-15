@@ -26,14 +26,18 @@ const event = async (message, connection, discordClient) => {
       clearInterval(variables.getUpdateTimer())
     }
     if (klipperstatus.print_stats.state === 'printing' && (typeof (printfile) !== 'undefined' || printfile !== '')) {
+      
+      if (status.getStatus() === 'printing' ||
+        status.getStatus() === 'start') { return }
 
       if (variables.getTimes().duration === 0 ||
         variables.getTimes().total === 0 ||
         variables.getTimes().left === -Infinity) { return }
+      
       if (variables.getMaxLayers === 0) { return }
+
+      console.log(variables.getProgress())
       if (variables.getProgress() === 100) { return }
-      if (status.getStatus() === 'printing' ||
-        status.getStatus() === 'start') { return }
       
       await status.changeStatus(discordClient, 'start')
       await status.changeStatus(discordClient, 'printing')
