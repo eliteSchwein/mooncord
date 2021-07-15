@@ -54,7 +54,7 @@ async function changeStatus(altdiscordClient, newStatus) {
   const newStatusMeta = metadata[newStatus].meta_data
 
   if(!currentStatusMeta.allow_same && currentStatus === newStatus) { return }
-  if(currentStatusMeta.order_id > 0 && currentStatusMeta.order_id > newStatusMeta.order_id) { return }
+  if(currentStatusMeta.order_id > 0 && currentStatusMeta.order_id + 1 !== newStatusMeta.order_id) { return }
 
   currentStatus = newStatus
 
