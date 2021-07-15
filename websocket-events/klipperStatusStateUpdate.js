@@ -37,6 +37,7 @@ function getDifference(software, softwareinfo) {
   } else {
     if (softwareinfo.version !== softwareinfo.remote_version &&
       (typeof (variables.getVersions()) === 'undefined' ||
+        typeof(variables.getVersions()[software]) === 'undefined' ||
         softwareinfo.remote_version !== variables.getVersions()[software].remote_version)) {
       return {
         'current': softwareinfo.version,
