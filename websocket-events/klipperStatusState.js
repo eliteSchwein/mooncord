@@ -52,7 +52,7 @@ const event = async (message, connection, discordClient) => {
     if (klipperstatus.print_stats.state === 'complete' && status.getStatus() !== 'ready') {
 
       timelapseUtil.render()
-      variables.updateLastGcodeFile()
+      variables.updateLastPrintJob()
       await status.changeStatus(discordClient, 'done')
       
       clearInterval(variables.getUpdateTimer())
