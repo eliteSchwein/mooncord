@@ -33,10 +33,8 @@ const event = async (message, connection, discordClient) => {
       if (variables.getMaxLayers === 0) { return }
       if (status.getStatus() === 'printing') { return }
       
-      console.log("update status")
-      
-      await status.changeStatus(discordClient, 'start')
-      await status.changeStatus(discordClient, 'printing')
+      status.changeStatus(discordClient, 'start')
+      status.changeStatus(discordClient, 'printing')
 
       if (config.status.use_percent) { return }
 
