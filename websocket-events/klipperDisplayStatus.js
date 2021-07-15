@@ -34,8 +34,8 @@ function postProgress(discordClient, progress) {
   
 
   if (config.status.update_interval &&
-    progress.toFixed() % config.status.update_interval === 0 &&
-    progress.toFixed(0) !== 0) {
+    progress % config.status.update_interval === 0 &&
+    progress !== 0) {
       statusUtil.changeStatus(discordClient, 'printing')
   }
 }
