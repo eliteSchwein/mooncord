@@ -29,7 +29,7 @@ function postProgress(discordClient, progress) {
   if (variables.getProgress() === progress) { return }
   
   discordClient.user.setActivity(
-    locale.status.printing.activity.replace(/(\${value_print_progress})/g, variables.getProgress() + 1)
+    locale.status.printing.activity.replace(/(\${value_print_progress})/g, (variables.getProgress() + 1))
     , { type: 'WATCHING' })
   
   if (statusUtil.getStatus() !== 'printing') { return }
