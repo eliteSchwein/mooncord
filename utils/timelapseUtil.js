@@ -10,6 +10,7 @@ const logSymbols = require('log-symbols')
 
 const locale = require('./localeUtil')
 const variablesUtil = require('./variablesUtil')
+const statusUtil = require('./statusUtil')
 const webcamUtil = require('./webcamUtil')
 
 const config = require(`${args[0]}/mooncord.json`)
@@ -93,7 +94,7 @@ module.exports.init = (dcClient, mrClient) => {
     moonrakerClient = mrClient
     if(config.timelapse.frame_every_layer) {
         setInterval(async () => {
-            if (variablesUtil.getStatus() !== 'printing') { return }
+            if (statusUtil.getStatus() !== 'printing') { return }
             if (variablesUtil.getCurrentLayer() === lastLayer) { return }
             
             makeFrame()
