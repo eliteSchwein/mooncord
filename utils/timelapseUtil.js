@@ -28,7 +28,7 @@ ffmpeg.setFfmpegPath(ffmpegPath)
 
 function checkForFrames() {
     const pattern = /^frame-+/
-    return fs.readdir(path.resolve(__dirname,'../temp/timelapse'), (err, fileNames) => {
+    return fs.readdirSync(path.resolve(__dirname,'../temp/timelapse'), (err, fileNames) => {
         if (err) { return false }
 
         for (const name of fileNames) {
