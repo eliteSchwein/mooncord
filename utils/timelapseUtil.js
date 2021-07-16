@@ -45,8 +45,7 @@ async function render() {
     let renderdone = false
 
     const hasFrames = checkForFrames()
-
-    console.log(hasFrames)
+    
     if (!hasFrames) { return }
     
     conv
