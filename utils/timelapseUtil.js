@@ -45,6 +45,7 @@ async function render() {
     }
     let renderdone = false
 
+    console.log(checkForFrames())
     if (!checkForFrames()) { console.log('no frames'); return }
     
     conv
