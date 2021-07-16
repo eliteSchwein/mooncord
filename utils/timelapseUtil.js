@@ -32,7 +32,6 @@ function checkForFrames() {
         if (err) { return false }
 
         for (const name of fileNames) {
-            console.log(pattern.test(name))
             if (pattern.test(name)) {
                 return true
             }
@@ -45,8 +44,10 @@ async function render() {
     }
     let renderdone = false
 
-    console.log(checkForFrames())
-    if (!checkForFrames()) { console.log('no frames'); return }
+    const hasFrames = checkForFrames()
+
+    console.log(hasFrames)
+    if (!hasFrames) { return }
     
     conv
         .addInput(path.resolve(__dirname,
