@@ -39,8 +39,6 @@ const event = async (message, connection, discordClient) => {
         !isFinite(times.total) ||
         !isFinite(times.left)) { return }
       
-      console.log(times)
-      
       if (variables.getMaxLayers === 0) { return }
       
       if (variables.getProgress() === 100 ||
