@@ -34,6 +34,8 @@ const event = async (message, connection, discordClient) => {
         variables.getTimes().total === 0 ||
         variables.getTimes().left === -Infinity) { return }
       
+      console.log(variables.getTimes())
+      
       if (variables.getMaxLayers === 0) { return }
       
       if (variables.getProgress() === 100 ||
