@@ -132,9 +132,6 @@ module.exports.getEmbed = () => {
         .attachFiles(timelapse)
 }
 module.exports.start = () => {
-    if (!running) {
-        return
-    }
     fs.unlink(path.resolve(__dirname, '../temp/timelapse/timelapse.mp4'), (err) => {
         if (err) {}
     })
