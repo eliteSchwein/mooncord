@@ -93,9 +93,9 @@ module.exports.getTimes = () => {
 
   let total = data.print_job.times.file_total_duration
 
-  console.log(total)
-
-  if (total === 0) {
+  if (total === 0 ||
+    isNaN(total) ||
+    !isFinite(total)) {
     total = data.print_job.times.slicer_total_duration
   }
   
