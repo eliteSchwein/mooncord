@@ -44,7 +44,7 @@ async function render() {
     }
     let renderdone = false
 
-    if (!checkForFrames()) { return }
+    if (!checkForFrames()) { console.log('no frames'); return }
     
     conv
         .addInput(path.resolve(__dirname,
