@@ -38,6 +38,8 @@ const event = async (message, connection, discordClient) => {
         isNaN(times.total) ||
         isNaN(times.left)) { return }
       
+      console.log(times)
+      
       if (variables.getMaxLayers === 0) { return }
       
       if (variables.getProgress() === 100 ||
