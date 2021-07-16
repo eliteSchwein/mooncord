@@ -35,10 +35,8 @@ const event = async (message, connection, discordClient) => {
       if (times.duration === 0 ||
         times.total === 0 ||
         times.left === -Infinity ||
-        times.total === NaN ||
-        times.left === NaN) { return }
-      
-      console.log(times)
+        isNaN(times.total) ||
+        isNaN(times.left)) { return }
       
       if (variables.getMaxLayers === 0) { return }
       
