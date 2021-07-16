@@ -1,3 +1,5 @@
+const args = process.argv.slice(2)
+
 const Discord = require('discord.js')
 const fs = require('fs')
 const path = require('path')
@@ -11,6 +13,8 @@ const chatUtil = require('./chatUtil')
 const status = require('./statusUtil')
 const database = require('./databaseUtil')
 const discordClient = require('../clients/discordClient')
+
+const config = require(`${args[0]}/mooncord.json`)
 
 let usageData = {
   'cpu': {
@@ -58,6 +62,8 @@ module.exports.init = () => {
 
     usageData.cpu.load = await si.currentLoad()
     usageData.cpu.temp = await si.cpuTemperature()
+    
+    if (!config.system_notifications.system_warns) { return }
 
     if (throttleCoolDown > 0) { return }
     

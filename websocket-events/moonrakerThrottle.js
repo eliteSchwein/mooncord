@@ -1,8 +1,12 @@
+const args = process.argv.slice(2)
+
 const logSymbols = require('log-symbols')
 
 const status = require('../utils/statusUtil')
 const locale = require('../utils/localeUtil')
 const chatUtil = require('../utils/chatUtil')
+
+const config = require(`${args[0]}/mooncord.json`)
 
 let posted = []
 let notThrottledCounter = 30
@@ -21,6 +25,7 @@ const event = (message, connection, discordClient, database) => {
   if (typeof (messageJson.result.moonraker_stats) !== 'undefined') {
     retrieveStats(messageJson.result.moonraker_stats)
   }
+  if (!config.system_notifications.moonraker_throttle) { return }
   if (typeof (messageJson.result.throttled_state) !== 'undefined') {
     retrieveThrottle(messageJson.result.throttled_state, discordClient, database)
   }

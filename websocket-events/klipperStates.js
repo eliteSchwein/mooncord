@@ -1,7 +1,5 @@
 const args = process.argv.slice(2)
 
-const Discord = require('discord.js')
-
 const status = require('../utils/statusUtil')
 const timelapseUtil = require('../utils/timelapseUtil')
 const variables = require('../utils/variablesUtil')
