@@ -29,12 +29,14 @@ const event = async (message, connection, discordClient) => {
       
       if (status.getStatus() === 'printing' ||
         status.getStatus() === 'start') { return }
-
-      if (variables.getTimes().duration === 0 ||
-        variables.getTimes().total === 0 ||
-        variables.getTimes().left === -Infinity) { return }
       
-      console.log(variables.getTimes())
+      const times = variables.getTimes()
+
+      if (times.duration === 0 ||
+        times.total === 0 ||
+        times.left === -Infinity ||
+        times.total === NaN ||
+        times.left === NaN) { return }
       
       if (variables.getMaxLayers === 0) { return }
       
