@@ -44,6 +44,8 @@ const event = async (message, connection, discordClient) => {
       if (variables.getProgress() === 100 ||
         variables.getProgress() === 0) { return }
       
+      timelapseUtil.start()
+      
       await status.changeStatus(discordClient, 'start')
       await status.changeStatus(discordClient, 'printing')
 
