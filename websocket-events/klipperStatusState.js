@@ -34,9 +34,10 @@ const event = async (message, connection, discordClient) => {
 
       if (times.duration === 0 ||
         times.total === 0 ||
-        times.left === -Infinity ||
         isNaN(times.total) ||
-        isNaN(times.left)) { return }
+        isNaN(times.left) ||
+        !isFinite(times.total) ||
+        !isFinite(times.left)) { return }
       
       console.log(times)
       
