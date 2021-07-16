@@ -29,7 +29,7 @@ module.exports = class HelloCommand extends SlashCommand {
     async run(ctx) {
         ctx.defer(false)
 
-        if (variablesUtil.getLastGcodeFile() === '') {
+        if (variablesUtil.getLastPrintJob() === '') {
             return locale.errors.no_timelapse
         }
 
