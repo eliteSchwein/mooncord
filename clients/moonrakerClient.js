@@ -70,7 +70,7 @@ function getMCUList() {
   return mculist
 }
 
-function connect() {
+function connect(discordClient) {
   console.log('  Connect to Moonraker'.statusmessage)
   
   client.connect(url)
@@ -95,7 +95,7 @@ module.exports.init = async (discordClient, moonrakerUrl) => {
   | |\\/| / _ \\/ _ \\ ' \\| '_/ _\` | / / -_) '_|
   |_|  |_\\___/\\___/_||_|_| \\__,_|_\\_\\___|_|`.statustitle}
                               `)
-  connect()
+  connect(discordClient)
   enableEvents(discordClient)
   await waitUntil(() => typeof(WSconnection) !== 'undefined', { timeout: Number.POSITIVE_INFINITY })
   await waitUntil(() => WSconnection.connected === true, { timeout: Number.POSITIVE_INFINITY })
