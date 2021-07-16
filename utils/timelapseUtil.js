@@ -23,6 +23,7 @@ let moonrakerClient
 let running = false
 let framecount = 1
 let lastLayer = 0
+let lastPercent = 0
 
 ffmpeg.setFfmpegPath(ffmpegPath)
 
@@ -45,7 +46,7 @@ async function render() {
     let renderdone = false
 
     const hasFrames = checkForFrames()
-    
+
     if (!hasFrames) { return }
     
     conv
@@ -90,17 +91,28 @@ function getTimelapse() {
     }
 }
 
+function generateLayerFrame() {
+    if (variablesUtil.getCurrentLayer() === lastLayer) { return }
+    makeFrame()
+    lastLayer = variablesUtil.getCurrentLayer()
+}
+function generatePercentFrame() {
+    if (variablesUtil.getProgress() === lastPercent) { return }
+    makeFrame()
+    lastPercent = variablesUtil.getProgress()
+}
+
 module.exports.init = (dcClient, mrClient) => {
     running = true
     discordClient = dcClient
     moonrakerClient = mrClient
-    if(config.timelapse.frame_every_layer) {
-        setInterval(async () => {
+    if (config.timelapse.frame_every_layer ||
+        config.timelapse.frame_every_percent) {
+        setInterval(() => {
             if (statusUtil.getStatus() !== 'printing') { return }
-            if (variablesUtil.getCurrentLayer() === lastLayer) { return }
-            
-            makeFrame()
-            lastLayer = variablesUtil.getCurrentLayer()
+
+            generateLayerFrame()
+            generatePercentFrame()
         }, 500)
     }
 }

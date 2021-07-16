@@ -44,6 +44,7 @@
         "enable": false,
         "framerate": 10,
         "frame_every_layer": false,
+        "frame_every_percent": false,
         "post_at_print_end": false
     }
 }
