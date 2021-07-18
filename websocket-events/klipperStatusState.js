@@ -61,6 +61,9 @@ const event = async (message, connection, discordClient) => {
       timelapseUtil.render()
       variables.updateLastPrintJob()
       await status.changeStatus(discordClient, 'done')
+      if (config.timelapse.post_at_print_end) {
+        status.postBroadcastMessage(timelapseUtil.getEmbed(), discordClient)
+      }
       
       clearInterval(variables.getUpdateTimer())
 
