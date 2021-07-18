@@ -1,42 +1,51 @@
-const { SlashCommand } = require('slash-create');
+const logSymbols = require('log-symbols')
+const { SlashCommand } = require('slash-create')
 
+const locale = require('../../utils/localeUtil')
 const statusUtil = require('../../utils/statusUtil')
 
-module.exports = class HelloCommand extends SlashCommand {
+const messageLocale = locale.commands.status
+const syntaxLocale = locale.syntaxlocale.commands.status
+
+module.exports = class StatusCommand extends SlashCommand {
     constructor(creator) {
+        console.log('  Load Status Command'.commandload)
         super(creator, {
-            name: 'status',
-            description: 'Get the current Print Status'
-        });
-        this.filePath = __filename;
+            name: syntaxLocale.command,
+            description: messageLocale.description
+        })
+        this.filePath = __filename
     }
 
     async run(ctx) {
-        try {
-            ctx.defer(false)
+        ctx.defer(false)
 
-            const status = await statusUtil.getManualStatusEmbed(ctx.user)
+        const status = await statusUtil.getManualStatusEmbed(ctx.user)
 
-            const statusfiles = status.files
+        const statusfiles = status.files
 
-            const files = []
+        const files = []
 
-            for (const statusfileindex in statusfiles) {
-                const statusfile = statusfiles[statusfileindex]
-                files.push({
-                    name: statusfile.name,
-                    file: statusfile.attachment
-                })
-            }
-
-            await ctx.send({
-                file: files,
-                embeds: [status.toJSON()]
-            });
+        for (const statusfileindex in statusfiles) {
+            const statusfile = statusfiles[statusfileindex]
+            files.push({
+                name: statusfile.name,
+                file: statusfile.attachment
+            })
         }
-        catch (error) {
-            console.log((error).error)
-            return "An Error occured!"
-        }
+
+        await ctx.send({
+            file: files,
+            embeds: [status.toJSON()]
+        })
+    }
+
+    onError(error, ctx) {
+        console.log(logSymbols.error, `Status Command: ${error}`.error)
+        ctx.send(locale.errors.command_failed)
+    }
+
+    onUnload() {
+        return 'okay'
     }
 }

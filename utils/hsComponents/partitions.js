@@ -1,25 +1,32 @@
 const si = require('systeminformation')
 
+const locale = require('../localeUtil')
+
 const template = {
-    "Partition ${partitionindex} Name": {
+    "name": {
+        "title": locale.loadinfo.partitions.name,
         "value":  "${partition.fs}"
     },
-    "Partition ${partitionindex} Type": {
+    "type": {
+        "title": locale.loadinfo.partitions.type,
         "value":  "${partition.type}"
     },
-    "Partition ${partitionindex} Mount": {
+    "mount": {
+        "title": locale.loadinfo.partitions.mount,
         "value":  "${partition.mount}"
     },
-    "Partition ${partitionindex} Size": {
+    "size": {
+        "title": locale.loadinfo.partitions.size,
         "value":  "${partition.size}"
     },
-    "Partition ${partitionindex} Used": {
+    "used": {
+        "title": locale.loadinfo.partitions.used,
         "value":  "${partition.used}"
     },
 }
 
 module.exports = {}
-module.exports.getTitle = () => { return 'Disks' }
+module.exports.getTitle = () => { return locale.loadinfo.partitions.title }
 module.exports.getFields = async () => {
     const partitions = await si.fsSize()
     
@@ -32,7 +39,7 @@ module.exports.getFields = async () => {
         const stringTemplate = JSON.stringify(template)
 
         const translatedTemplate = stringTemplate
-            .replace(/(\${partitionindex})/g, partitionindex)
+            .replace(/(\${partition_index})/g, partitionindex)
             .replace(/(\${partition.fs})/g, partition.fs)
             .replace(/(\${partition.type})/g, partition.type)
             .replace(/(\${partition.mount})/g, partition.mount)
@@ -43,7 +50,7 @@ module.exports.getFields = async () => {
         
         for (const index in translatedJSONTemplate) {
             fields.push({
-                name: index,
+                name: translatedJSONTemplate[index].title,
                 value: translatedJSONTemplate[index].value,
                 inline: true
             })

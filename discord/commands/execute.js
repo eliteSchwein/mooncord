@@ -1,75 +1,90 @@
+const logSymbols = require('log-symbols')
 const { SlashCommand, CommandOptionType } = require('slash-create')
 
-const moonrakerClient = require('../../clients/moonrakerclient')
+const discordClient = require('../../clients/discordClient')
+const moonrakerClient = require('../../clients/moonrakerClient')
+const locale = require('../../utils/localeUtil')
 const permission = require('../../utils/permissionUtil')
+
+const messageLocale = locale.commands.execute
+const syntaxLocale = locale.syntaxlocale.commands.execute
 
 let commandFeedback
 let connection
 
-module.exports = class HelloCommand extends SlashCommand {
+let lastid = 0
+
+module.exports = class ExecuteCommand extends SlashCommand {
     constructor(creator) {
+        console.log('  Load Execute Command'.commandload)
         super(creator, {
-            name: 'execute',
-            description: 'Execute a GCode Command',
+            name: syntaxLocale.command,
+            description: messageLocale.description,
             options: [{
                 type: CommandOptionType.STRING,
-                name: 'gcode',
-                description: 'GCode that you want to execute.',
+                name: syntaxLocale.options.gcode.name,
+                description: messageLocale.options.gcode.description,
                 required: true
             }]
-        });
-        this.filePath = __filename;
+        })
+        this.filePath = __filename
     }
 
     async run(ctx) {
-        try {
-            if (!await permission.hasAdmin(ctx.user, ctx.guildID)) {
-                return `You dont have the Permissions, ${ctx.user.username}!`
-            }
+        if (!await permission.hasAdmin(ctx.user, ctx.guildID, discordClient.getClient())) {
+            return locale.getAdminOnlyError(ctx.user.username)
+        }
+        if (typeof (commandFeedback) !== 'undefined') {
+            return locale.getCommandNotReadyError(ctx.user.username)
+        }
+    
+        const gcode = ctx.options[syntaxLocale.options.gcode.name]
+        const id = Math.floor(Math.random() * Number.parseInt('10_000')) + 1
+        connection = moonrakerClient.getConnection()
+
+        let timeout = 0
+
+        commandFeedback = undefined
+
+        ctx.defer(false)
+
+        const gcodeHandler = handler
+
+        connection.on('message', gcodeHandler)
+        connection.send(`{"jsonrpc": "2.0", "method": "printer.gcode.script", "params": {"script": "${gcode}"}, "id": ${id}}`)
+        const feedbackInterval = setInterval(() => {
             if (typeof (commandFeedback) !== 'undefined') {
-                return `This Command is not ready, ${ctx.user.username}!`
+                if( lastid === id ) { return }
+                lastid = id
+                connection.removeListener('message', gcodeHandler)
+                ctx.send({
+                    content: commandFeedback
+                })
+                commandFeedback = undefined
+                lastid = 0
+                clearInterval(feedbackInterval)
             }
-            
-            const {gcode} = ctx.options
-            const id = Math.floor(Math.random() * parseInt('10_000')) + 1
-            connection = moonrakerClient.getConnection()
+            if (timeout === 4) {
+                commandFeedback = undefined
+                ctx.send({
+                    content: locale.errors.command_timeout
+                })
+                clearInterval(feedbackInterval)
+                connection.removeListener('message', gcodeHandler)
+            }
+            timeout++
+        }, 500)
+    }
 
-            let timeout = 0
+    onError(error, ctx) {
+        console.log(logSymbols.error, `Execute Command: ${error}`.error)
+        ctx.send(locale.errors.command_failed)
+        connection.removeListener('message', handler)
+        commandFeedback = undefined
+    }
 
-            commandFeedback = undefined
-
-            ctx.defer(false)
-
-            const gcodeHandler = handler
-
-            connection.on('message', gcodeHandler)
-            connection.send(`{"jsonrpc": "2.0", "method": "printer.gcode.script", "params": {"script": "${gcode}"}, "id": ${id}}`)
-            const feedbackInterval = setInterval(() => {
-                if (typeof (commandFeedback) !== 'undefined') {
-                    connection.removeListener('message', gcodeHandler)
-                    ctx.send({
-                        content: commandFeedback
-                    })
-                    commandFeedback = undefined
-                    clearInterval(feedbackInterval)
-                }
-                if (timeout === 4) {
-                    commandFeedback = undefined
-                    ctx.send({
-                        content: 'Command execution failed!'
-                    })
-                    clearInterval(feedbackInterval)
-                    connection.removeListener('message', gcodeHandler)
-                }
-                timeout++
-           }, 500)
-        }
-        catch (error) {
-            console.log((error).error)
-            connection.removeListener('message', handler)
-            commandFeedback = undefined
-            return "An Error occured!"
-        }
+    onUnload() {
+        return 'okay'
     }
 }
 
@@ -79,12 +94,12 @@ function handler (message) {
         let command = ''
         if (messageJson.params[0].includes('Unknown command')) {
             command = messageJson.params[0].replace('// Unknown command:', '').replace(/"/g, '')
-            commandFeedback = `Unknown GCode Command: \`${command}\``
+            commandFeedback = messageLocale.answer.unknown.replace(/(\${gcode_feedback})/g, command)
         } else if (messageJson.params[0].includes('Error')) {
             command = messageJson.params[0].replace('!! Error on ', '').replace(/\\/g, '')
-            commandFeedback = `Error: \`${command}\``
+            commandFeedback = messageLocale.answer.error.replace(/(\${gcode_feedback})/g, command)
         } else {
-            commandFeedback = 'Command Executed!'
+            commandFeedback = messageLocale.answer.success
         }
     }
 }

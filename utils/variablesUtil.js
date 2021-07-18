@@ -1,86 +1,131 @@
-let status = 'unknown'
-let versions
-let gcodefile = ''
-let gcodestartbyte = 0
-let gcodeendbyte = 0
-let gcodethumbnail = ''
-let printprogress = 0
-let remainingprinttime = 0
-let printtime = 0
-let updatetimer = 0
+const data = {
+  "layer": {
+    "current": 0,
+    "layer_height": 0,
+    "object_height": 0,
+    "first_layer_height": 0
+  },
+  "mcu_list": {},
+  "invite_url": "",
+  "update_timer": 0,
+  "moonraker_versions": {},
+  "print_job": {
+    "job_id": "",
+    "current_file": "",
+    "last_file": "",
+    "start_byte": 0,
+    "end_byte": 0,
+    "thumbnail": "",
+    "progress": 0,
+    "times": {
+      "multiplier": 0,
+      "duration": 0,
+      "file_total_duration": 0,
+      "slicer_total_duration": 0
+    }
+  }
+}
+module.exports.dump = data
 
-module.exports.setUpdateTimer = function (newupdatetimer) {
-  updatetimer = newupdatetimer
+module.exports.setCurrentLayer = (z) => { data.layer.current = z }
+module.exports.setLayerHeights = (layerHeight, objectHeight, firstLayerHeight) => {
+  data.layer.layer_height = layerHeight
+  data.layer.object_height = objectHeight
+  data.layer.first_layer_height = firstLayerHeight
 }
-module.exports.setStatus = function (newstatus) {
-  status = newstatus
-}
-module.exports.setVersions = function (newversions) {
-  versions = newversions
-}
-module.exports.setCurrentFile = function (newfile) {
-  gcodefile = newfile
-}
-module.exports.setStartByte = function (startbyte) {
-  gcodestartbyte = startbyte
-}
-module.exports.setEndByte = function (endbyte) {
-  gcodeendbyte = endbyte
-}
-module.exports.setThumbnail = function (thumbnail) {
-  gcodethumbnail = thumbnail
-}
-module.exports.setProgress = function (progress) {
-  printprogress = progress
-}
-module.exports.setRemainingTime = function (remainingtime) {
-  remainingprinttime = remainingtime
-}
-module.exports.setPrintTime = function (newtime) {
-  printtime = newtime
-}
-module.exports.getUpdateTimer = function () {
-  return updatetimer
-}
-module.exports.getStatus = function () {
-  return status
-}
-module.exports.getThumbnail = function () {
-  return gcodethumbnail
-}
-module.exports.getCurrentFile = function () {
-  return gcodefile
-}
-module.exports.getProgress = function () {
-  return printprogress
-}
-module.exports.getRemainingTime = function () {
-  return remainingprinttime
-}
-module.exports.getFormatedRemainingTime = function () {
-  return formatTime(remainingprinttime)
-}
-module.exports.getVersions = function () {
-  return versions
-}
-module.exports.getStartByte = function () {
-  return gcodestartbyte
-}
-module.exports.getEndByte = function () {
-  return gcodeendbyte
-}
-module.exports.getPrintTime = function () {
-  return printtime
-}
-module.exports.getFormatedPrintTime = function () {
-  return formatTime(printtime)
-}
-module.exports.formatTime = (time) => { return formatTime(time / 1000) }
 
-function formatTime (seconds) {
-  const h = Math.floor(seconds / 3600);
-  seconds %= 3600;
-  const m = (`0${  Math.floor(seconds / 60)}`).slice(-2);
-  const s = (`0${  (seconds % 60).toFixed(0)}`).slice(-2);
-  return String(`${h}:${m}:${s}`).replace('-1', '00')
+module.exports.addToMCUList = (mcu) => { data.mcu_list[mcu] = null }
+module.exports.updateMCUStatus = (mcu, status) => { data.mcu_list[mcu] = status }
+module.exports.clearMCUList = () => { data.mcu_list = {} }
+
+module.exports.setInviteUrl = (url) => { data.invite_url = url }
+module.exports.setUpdateTimer = (newUpdateTimer) => { data.update_timer = newUpdateTimer }
+
+module.exports.setVersions = (currentVersions) => { data.moonraker_versions = currentVersions }
+
+module.exports.setCurrentPrintJob = (currentFile) => { data.print_job.current_file = currentFile }
+module.exports.setStartByte = (startByte) => { data.print_job.start_byte = startByte }
+module.exports.setEndByte = (endByte) => { data.print_job.end_byte = endByte }
+module.exports.setThumbnailPath = (thumbnail) => { data.print_job.thumbnail = thumbnail }
+module.exports.setProgress = (progress) => { data.print_job.progress = progress }
+module.exports.setJobID = (id) => { data.print_job.job_id = id }
+module.exports.updateTimeData = (key, times) => { data.print_job.times[key] = times }
+module.exports.updateLastPrintJob = () => {
+  data.print_job.last_file = data.print_job.current_file
+  data.print_job.current_file = ''
+}
+
+module.exports.getMaxLayers = () => {
+  const max = Math.ceil((data.layer.object_height - data.layer.first_layer_height) / data.layer.layer_height + 1)
+  return max > 0 ? max : 0
+}
+module.exports.getCurrentLayer = () => {
+  let current_layer = Math.ceil((data.layer.current - data.layer.first_layer_height) / data.layer.layer_height + 1)
+  current_layer = (current_layer <= this.getMaxLayers()) ? current_layer : this.getMaxLayers()
+  return current_layer > 0 ? current_layer : 0
+}
+module.exports.getLayerHeight = () => { return data.layer.layer_height }
+module.exports.getObjectHeight = () => { return data.layer.object_height }
+module.exports.getFirstLayerHeight = () => { return data.layer.first_layer_height }
+
+module.exports.getMCUList = () => { return data.mcu_list }
+
+module.exports.getConfigPath = () => {
+  const args = process.argv.slice(2)
+  return args[0]
+}
+
+module.exports.getInviteUrl = function() { return data.invite_url }
+module.exports.getUpdateTimer = () => { return data.update_timer }
+
+module.exports.getVersions = () => { return data.moonraker_versions }
+
+module.exports.getThumbnailPath = () => { return data.print_job.thumbnail }
+module.exports.getCurrentPrintJob = () => { return data.print_job.current_file }
+module.exports.getLastPrintJob = () => { return data.print_job.last_file }
+module.exports.getProgress = () => { return data.print_job.progress }
+module.exports.getStartByte = () => { return data.print_job.start_byte }
+module.exports.getEndByte = () => { return data.print_job.end_byte }
+module.exports.getJobID = () => { return data.print_job.job_id }
+module.exports.getTimes = () => {
+  const endTime = Math.floor(Date.now() / 1000)
+  const {duration} = data.print_job.times
+
+  let total = data.print_job.times.file_total_duration
+
+  if (total === 0 ||
+    isNaN(total) ||
+    !isFinite(total)) {
+    total = data.print_job.times.slicer_total_duration
+  }
+  
+  const left = (total - duration) / data.print_job.times.multiplier
+  const end = endTime + (total - duration)
+
+  return {
+    total,
+    duration,
+    left,
+    end
+  }
+}
+
+module.exports.formatTime = (time) => { return formatTime(time) }
+
+function formatTime(seconds) {
+  if (isNaN(Number(seconds)) || !isFinite(seconds)) {seconds = 0}
+  let isNeg = false
+  if (seconds < 0) {
+    seconds = Math.abs(seconds)
+    isNeg = true
+  }
+  const h = Math.floor(seconds / 3600)
+  const m = Math.floor(seconds % 3600 / 60)
+  const s = Math.floor(seconds % 3600 % 60)
+
+  let r = `${s  }s` // always show seconds
+  r = `${m  }m ${  r}` // always show minutes
+  if (h > 0) {r = `${h  }h ${  r}`} // only show hours if relevent
+
+  return (isNeg) ? `-${  r}` : r
 }

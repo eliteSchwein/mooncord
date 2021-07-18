@@ -1,67 +1,81 @@
 const Discord = require('discord.js')
 const fs = require('fs')
+const logSymbols = require('log-symbols')
 const path = require('path')
 const { SlashCommand } = require('slash-create')
 
-const moonrakerClient = require('../../clients/moonrakerclient')
+const moonrakerClient = require('../../clients/moonrakerClient')
+const locale = require('../../utils/localeUtil')
+
+const messageLocale = locale.commands.temp
+const syntaxLocale = locale.syntaxlocale.commands.temp
 
 let commandFeedback
 let connection
 
-module.exports = class HelloCommand extends SlashCommand {
+let lastid = 0
+
+module.exports = class TempCommand extends SlashCommand {
     constructor(creator) {
+        console.log('  Load Temp Command'.commandload)
         super(creator, {
-            name: 'temp',
-            description: 'Get the current Temperatures from Klipper.'
-        });
-        this.filePath = __filename;
+            name: syntaxLocale.command,
+            description: messageLocale.description
+        })
+        this.filePath = __filename
     }
 
     run(ctx) {
-        try {
-            
-            connection = moonrakerClient.getConnection()
-            const id = Math.floor(Math.random() * parseInt('10_000')) + 1
+        connection = moonrakerClient.getConnection()
+        const id = Math.floor(Math.random() * Number.parseInt('10_000')) + 1
 
-            let timeout = 0
+        let timeout = 0
 
-            commandFeedback = undefined
+        commandFeedback = undefined
 
-            ctx.defer(false)
+        ctx.defer(false)
 
-            connection.on('message', handler)
-            connection.send(`{"jsonrpc": "2.0", "method": "server.temperature_store", "id": ${id}}`)
+        connection.on('message', handler)
+        connection.send(`{"jsonrpc": "2.0", "method": "server.temperature_store", "id": ${id}}`)
 
-            const feedbackInterval = setInterval(() => {
-                if (typeof (commandFeedback) !== 'undefined') {
-                    {
-                        const thumbnail = commandFeedback.files[0]
-                        const files = {
-                            name: thumbnail.name,
-                            file: thumbnail.attachment
-                        }
-                        ctx.send({
-                            file: files,
-                            embeds: [commandFeedback.toJSON()]
-                        });
+        const feedbackInterval = setInterval(() => {
+            if (typeof (commandFeedback) !== 'undefined') {
+                {
+                    if( lastid === id ) { return }
+                    lastid = id
+                    const thumbnail = commandFeedback.files[0]
+                    const files = {
+                        name: thumbnail.name,
+                        file: thumbnail.attachment
                     }
-                    clearInterval(feedbackInterval)
-                }
-                if (timeout === 4) {
                     ctx.send({
-                        content: 'Command execution failed!'
+                        file: files,
+                        embeds: [commandFeedback.toJSON()]
                     })
-                    connection.removeListener('message', handler)
-                    clearInterval(feedbackInterval)
+                    lastid = 0
                 }
-                timeout++
-           }, 500)
-        }
-        catch (error) {
-            console.log((error).error)
-            connection.removeListener('message', handler)
-            return "An Error occured!"
-        }
+                clearInterval(feedbackInterval)
+            }
+            if (timeout === 4) {
+                ctx.send({
+                    content: locale.errors.command_timeout
+                })
+                connection.removeListener('message', handler)
+                clearInterval(feedbackInterval)
+            }
+            timeout++
+        }, 500)
+    }
+
+    onError(error, ctx) {
+        console.log(logSymbols.error, `Temp Command: ${error}`.error)
+        ctx.send(locale.errors.command_failed)
+        connection.removeListener('message', handler)
+        commandFeedback = undefined
+    }
+
+    onUnload() {
+        return 'okay'
     }
 }
 
@@ -70,16 +84,16 @@ function handler (message) {
     if (JSON.stringify(messageJson).includes('temperature')) {
         const temps = messageJson.result
 
-        const iconpath = path.resolve(__dirname, '../../images/thermometer.png')
+        const iconpath = path.resolve(__dirname, '../../images/temps.png')
 
         const iconbuffer = fs.readFileSync(iconpath)
 
-        const iconattachment = new Discord.MessageAttachment(iconbuffer, 'thermometer.png')
+        const iconattachment = new Discord.MessageAttachment(iconbuffer, 'temps.png')
 
         commandFeedback = new Discord.MessageEmbed()
             .setColor('#0099ff')
-            .setTitle('Temperatures')
-            .setThumbnail('attachment://thermometer.png')
+            .setTitle(messageLocale.embed.title)
+            .setThumbnail('attachment://temps.png')
             .attachFiles(iconattachment)
         
         for (const temp in temps) {
@@ -92,16 +106,16 @@ function handler (message) {
                 const targetTemp = temps[temp].targets[temps[temp].targets.length - 1]
                 const power = calculatePercent(temps[temp].powers[temps[temp].powers.length - 1])
 
-                commandFeedback.addField(`♨${temp.replace('heater_generic ', '')}`, `Current: \`${currentTemp}°C\`
-                 Target:\`${targetTemp}°C\`
-                 Power:\`${power}%\``, true)
+                commandFeedback.addField(`♨${temp.replace('heater_generic ', '')}`, `${messageLocale.embed.fields.current_temp}: \`${currentTemp}°C\`
+                 ${messageLocale.embed.fields.target_temp}:\`${targetTemp}°C\`
+                 ${messageLocale.embed.fields.current_power}:\`${power}%\``, true)
             } else if (temp.includes('temperature_fan')) {
                 const targetTemp = temps[temp].targets[temps[temp].targets.length - 1]
                 const power = calculatePercent(temps[temp].powers[temps[temp].powers.length - 1])
 
-                commandFeedback.addField(`❄${temp}`, `Current: \`${currentTemp}°C\`
-                 Target:\`${targetTemp}°C\`
-                 Power:\`${power}%\``, true)
+                commandFeedback.addField(`❄${temp}`, `${messageLocale.embed.fields.current_temp}: \`${currentTemp}°C\`
+                 ${messageLocale.embed.fields.target_temp}:\`${targetTemp}°C\`
+                 ${messageLocale.embed.fields.current_power}:\`${power}%\``, true)
             }
         }
         connection.removeListener('message', handler)

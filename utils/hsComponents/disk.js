@@ -1,25 +1,32 @@
 const si = require('systeminformation')
 
+const locale = require('../localeUtil')
+
 const template = {
-    "Disk ${diskindex} Name": {
+    "name": {
+        "title": locale.loadinfo.disk.name,
         "value":  "${disk.device}"
     },
-    "Disk ${diskindex} Type": {
+    "type": {
+        "title": locale.loadinfo.disk.type,
         "value":  "${disk.type}"
     },
-    "Disk ${diskindex} Model": {
+    "model": {
+        "title": locale.loadinfo.disk.model,
         "value":  "${disk.name}"
     },
-    "Disk ${diskindex} Vendor": {
+    "vendor": {
+        "title": locale.loadinfo.disk.vendor,
         "value":  "${disk.vendor}"
     },
-    "Disk ${diskindex} Used": {
+    "used": {
+        "title": locale.loadinfo.disk.size,
         "value":  "${disk.size}"
     },
 }
 
 module.exports = {}
-module.exports.getTitle = () => { return 'Disks' }
+module.exports.getTitle = () => { return locale.loadinfo.disk.title }
 module.exports.getFields = async () => {
     const disks = await si.diskLayout()
     
@@ -34,7 +41,7 @@ module.exports.getFields = async () => {
         const stringTemplate = JSON.stringify(template)
 
         const translatedTemplate = stringTemplate
-            .replace(/(\${diskindex})/g, diskindex)
+            .replace(/(\${disk_index})/g, diskindex)
             .replace(/(\${disk.device})/g, disk.device)
             .replace(/(\${disk.type})/g, disk.type)
             .replace(/(\${disk.name})/g, disk.name)
@@ -45,7 +52,7 @@ module.exports.getFields = async () => {
         
         for (const index in translatedJSONTemplate) {
             fields.push({
-                name: index,
+                name: translatedJSONTemplate[index].title,
                 value: translatedJSONTemplate[index].value,
                 inline: true
             })

@@ -1,0 +1,384 @@
+{
+    "commands": {
+        "admin": {
+            "description": "Konfiguriere einen Nutzer oder Rolle als Admin.",
+            "command": "admin",
+            "options": {
+                "role": {
+                    "name": "rolle",
+                    "description": "Modifiziere eine Rolle.",
+                    "options": {
+                        "role": {
+                            "name": "rolle",
+                            "description": "Wähle eine Rolle aus."
+                        }
+                    }
+                },
+                "user": {
+                    "name": "nutzer",
+                    "description": "Modifiziere einen User.",
+                    "options": {
+                        "user": {
+                            "name": "nutzer",
+                            "description": "Wähle einen Benutzer."
+                        }
+                    }
+                }
+            },
+            "answer": {
+                "added": "${mention} ist nun ein Admin, ${username}!",
+                "removed": "${mention} ist kein Admin mehr, ${username}!"
+            }
+        },
+        "editchannel": {
+            "description": "Addiere oder Entferne einen Nachrichten Kanal.",
+            "command": "nachrichtenkanal",
+            "options": {
+                "channel": {
+                    "name": "kanal",
+                    "description": "Selektiere einen Kanal zum addieren oder entfernen."
+                } 
+            },
+            "answer": {
+                "not_textchannel": "${channel} ist kein Text Kanal, ${username}!",
+                "activated": "${channel} ist nun ein Nachrichten Kanal, ${username}!",
+                "deactivated": "${channel} ist kein Nachrichten Kanal mehr, ${username}!"
+            }
+        },
+        "emergency_stop": {
+            "description": "Not Stop ausführen?",
+            "command": "notstop",
+            "answer": {
+                "executed": "Not Stop ausgeführt, ${username}!"
+            }
+        },
+        "execute": {
+            "description": "Führe einen GCode Befehl aus.",
+            "command": "ausführen",
+            "options": {
+                "gcode": {
+                    "name": "gcode",
+                    "description": "GCode wo du ausführen willst."
+                }
+            },
+            "answer": {
+                "success": "Befehl ausgeführt!",
+                "error": "Fehler: `${gcode_feedback}`",
+                "unknown": "Unbekannter GCode Befehl: `${gcode_feedback}`"
+            }
+        },
+        "fileinfo": {
+            "description": "Zeigt dir Informationen über eine Druck Datei.",
+            "command": "dateiinfo",
+            "options": {
+                "file": {
+                    "name": "datei",
+                    "description": "Spezifiere eine Datei."
+                }
+            }
+        },
+        "get_log": {
+            "description": "Erhalte einen Log.",
+            "command": "log",
+            "options": {
+                "log_file": {
+                    "name": "logdatei",
+                    "description": "Spezifiere die Log Datei."
+                }
+            },
+            "answer": {
+                "retrieved": "Hier ist der aktuelle Log für ${service}",
+                "not_found": "Derzeit gibt es keinen Log für ${service}"
+            }
+        },
+        "info": {
+            "description": "Schickt dir eine Beschreibung über mich.",
+            "command": "info",
+            "embed": {
+                "title": "Informations",
+                "description": "Version: ${version}\nAutor: ${author}\nHomepage: ${homepage}"
+            }
+        },
+        "listfiles": {
+            "description": "Zeigt dir alle Druck Dateien.",
+            "command": "druckaufträge",
+            "embed": {
+                "title": "Druck Dateien"
+            }
+        },
+        "loadinfo": {
+            "description": "Erhalte aktuelle Hardware und Software Informationen.",
+            "command": "lastinfo",
+            "options": {
+                "component": {
+                    "name": "komponente",
+                    "description": "Wähle die Komponente wovon du die Informationen wissen willst."
+                }
+            }
+        },
+        "notify": {
+            "description": "Soll ich dir denn Druck Status via Private Nachricht schicken?",
+            "command": "benachrichtung",
+            "answer": {
+                "activated": "Ich informiere dich über denn aktuellen Druck Status via Private Nachricht, ${username}!",
+                "deactivated": "Ich informiere dich nicht mehr über denn aktuellen Druck Status via Private Nachricht, ${username}!"
+            }
+        },
+        "printjob": {
+            "description": "Steuer oder Starte ein Druck Auftrag.",
+            "command": "auftrag",
+            "options": {
+                "pause": {
+                    "name": "pause",
+                    "description": "Pausiere Druck Auftrag"
+                },
+                "cancel": {
+                    "name": "abbruch",
+                    "description": "Brech einen Druck Auftrag ab"
+                },
+                "resume": {
+                    "name": "fortsetzen",
+                    "description": "Setz einen Druck Auftrag fort"
+                },
+                "start": {
+                    "name": "start",
+                    "description": "Starte einen Druck Auftrag",
+                    "options": {
+                        "file": {
+                            "name": "datei",
+                            "description": "Spezifiere eine Datei."
+                        }
+                    }
+                }
+            },
+            "answer": {
+                "file_not_found": "Datei nicht gefunden!",
+                "resume": {
+                    "status_not_valid": "${username} der Druck Auftrag pausiert gerade nicht!",
+                    "status_valid": "${username} der Druck Auftrag wird fortgesetzt!",
+                    "status_same": "${username} der Druck Auftrag läuft bereits!"
+                },
+                "cancel": {
+                    "status_not_valid": "${username} es läuft derzeit kein Druck Auftrag!",
+                    "status_valid": "${username} der Druck Auftrag wurde abgebrochen!",
+                    "status_same": ""
+                },
+                "pause": {
+                    "status_not_valid": "${username} es läuft derzeit kein Druck Auftrag!",
+                    "status_valid": "${username} der Druck Auftrag wurde pausiert!",
+                    "status_same": "${username} der Druck Auftrag ist bereits pausiert!"
+                },
+                "abort": "Druck Auftrag abgebrochen, ${username}!",
+                "executed": "Druck Auftrag gestartet, ${username}!"
+            },
+            "embed": {
+                "title": "Druck Auftrag starten?"
+            }
+        },
+        "status": {
+            "description": "Bekomme denn aktuellen Druck Status.",
+            "command": "status"
+        },
+        "temp": {
+            "description": "Bekomme die aktuellen Klipper Temperaturen.",
+            "command": "temperaturen",
+            "embed": {
+                "title": "temperaturen",
+                "fields": {
+                    "current_temp": "Aktuell",
+                    "target_temp": "Ziel",
+                    "current_power": "Power"
+                }
+            }
+        }
+    },
+    "dynamic_commands": {
+        "timelapse": {
+            "description": "Bekomme die aktuellste Zeitraffer.",
+            "command": "zeitraffer"
+        }
+    },
+    "misc": {
+        "please_wait": "Bette Warten!",
+        "wait_related": "Gehört zu ${relation}"
+    },
+    "errors": {
+        "admin_only": "Du hast nicht das Recht dazu, ${username}",
+        "check_console": "Bitte die Konsole prüfen!",
+        "command_failed": "Ein Fehler ist aufgetreten!",
+        "command_timeout": "Befehl konnte nicht ausgeführt werden!",
+        "controller_only": "Du hast nicht das Recht dazu,  ${username}",
+        "file_not_found": "Datei nicht gefunden!",
+        "guild_only": "Dieser Befehl ist nur auf Server verfügbar, ${username}",
+        "no_data": "Es wurden keine Daten für ${component} gefunden!",
+        "no_files_found": "Es sind derzeit keine Dateien vorhanden!",
+        "no_timelapse": "Es gibt derzeit keine Zeitraffer!",
+        "not_ready": "Der Befehl ist noch nicht bereit, ${username}!"
+    },
+    "fileinfo": {
+        "title": "Datei Informationen",
+        "print_time": "Druckzeit",
+        "slicer": "Slicer",
+        "slicer_version": "Slicer Version",
+        "height": "Höhe"
+    },
+    "events": {
+        "print_job_start": {
+            "answer":{
+                "abort": "Druck Auftrag abgebrochen, ${username}!",
+                "executed": "Druck Auftrag gestartet, ${username}!"
+            }
+        }
+    },
+    "loadinfo": {
+        "cpu": {
+            "title": "CPU",
+            "model": "Modell",
+            "manufacturer": "Hersteller",
+            "usage": "Auslastung",
+            "cores": "Kerne",
+            "threads": "Threads",
+            "temperature": "Temperatur",
+            "frequency": "Takt",
+            "max_frequency": "Max Takt"
+        },
+        "disk": {
+            "title": "Festplatten",
+            "name": "Festplatte ${disk_index} Name",
+            "type": "Festplatte ${disk_index} Typ",
+            "model": "Festplatte ${disk_index} Modell",
+            "vendor": "Festplatte ${disk_index} Hersteller",
+            "size": "Festplatte ${disk_index} Größe"
+        },
+        "os": {
+            "title": "Betriebsystem",
+            "platform": "Plattform",
+            "logofile": "Logodatei",
+            "distro": "Distro",
+            "release": "Release",
+            "kernel": "Kernel",
+            "arch": "Architektur",
+            "hostname": "Hostname"
+        },
+        "partitions": {
+            "title": "Partitionen",
+            "name": "Partition ${partition_index} Name",
+            "type": "Partition ${partition_index} Typ",
+            "mount": "Partition ${partition_index} Einhängeort",
+            "size": "Partition ${partition_index} Größe",
+            "used": "Partition ${partition_index} Auslastung"
+        },
+        "ram": {
+            "title": "Ram",
+            "total": "Gesamt",
+            "used": "Auslastung",
+            "swap_total": "Swap gesamt",
+            "swap_used": "Swap Auslastung"
+        },
+        "mcu": {
+            "chipset": "Chipsatz",
+            "version": "Version",
+            "load": "Last",
+            "awake": "Wach Status",
+            "frequency": "Takt"
+        }
+    },
+    "loadthrottle": {
+        "title": "System Warnung",
+        "sentence": "Es gibt derzeit eine System Warnung durch ${reason}!",
+        "high_cpu_load": {
+            "name": "Hohe CPU Last",
+            "suggestion": "Bitte überprüfe was die Hohe CPU Last auslöst."
+        },
+        "high_cpu_temp": {
+            "name": "Hohe CPU Temperatur",
+            "suggestion": "Bitte überprüfe deine Kühllösung."
+        },
+        "high_ram_usage": {
+            "name": "Hohe Ram Verbrauch",
+            "suggestion": "Bitte überprüfe was den Hohe Ram Verbrauch auslöst."
+        },
+        "high_partition_usage": {
+            "name": "Hohe Partition Auslastung",
+            "suggestion": "Entferne paar Dateien aus ${component_section}."
+        }
+    },
+    "status": {
+        "disconnected":{
+            "title": "Drucker getrennt!",
+            "activity": "warte auf Klipper"
+        },
+        "error":{
+            "title": "Ein Fehler ist aufgetreten!",
+            "activity": "warte auf Nutzer"
+        },
+        "offline":{
+            "title": "Verbindung verloren!",
+            "activity": "warte auf Moonraker"
+        },
+        "shutdown":{
+            "title": "Klipper fährt herunter",
+            "activity": "warte auf Klipper"
+        },
+        "stop":{
+            "title": "Druck angehalten",
+            "activity": "Druck angehalten"
+        },
+        "ready":{
+            "title": "Drucker Bereit",
+            "activity": "warte auf einen Druck Auftrag..."
+        },
+        "startup":{
+            "title": "Drucker fährt hoch",
+            "activity": "Drucker fährt hoch"
+        },
+        "start":{
+            "title": "Druck gestartet",
+            "activity": "starte ${gcode_file}"
+        },
+        "done":{
+            "title": "Druck fertig",
+            "activity": "Druck abgeschlossen"
+        },
+        "pause":{
+            "title": "Druck pausiert",
+            "activity": "Drinkt ein Bier 🍺 Prost!"
+        },
+        "printing":{
+            "title": "Drucke",
+            "activity": "Druckfortschritt: ${value_print_progress}%"
+        },
+        "fields": {
+            "print_time": "Druck Zeit",
+            "eta_print_time": "Verbleibende Druck Zeit",
+            "print_progress": "Fortschritt",
+            "print_layers": "Schicht"
+        }
+    },
+    "timelapse": {
+        "for_gcode": "Zeitraffer für ${gcode_file}"
+    },
+    "update": {
+        "title": "System Aktualisierungen",
+        "system": "System",
+        "packages": "Pakete"
+    },
+    "throttle": {
+        "title": "Drosselung erkannt!",
+        "sentence": "Das System wird durch ${reason} gedrosselt!",
+        "reasons": {
+            "under_voltage_detected": {
+                "name": "Unter Spannung",
+                "suggestion": "Bitte überprüfe deine Spannungs Versorgung."
+            },
+            "temperature_limit_active": {
+                "name": "Temperatur Limiterung",
+                "suggestion": "Bitte überprüfe deine Kühllösung."
+            },
+            "frequency_capped": {
+                "name": "Temperatur Limiterung",
+                "suggestion": "Bitte überprüfe deine Kühllösung."
+            }
+        }
+    }
+}

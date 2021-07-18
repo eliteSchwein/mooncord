@@ -1,17 +1,21 @@
 {
     "notify_klippy_disconnected": {
-        "status": "disconnected"
+        "status": "disconnected",
+        "prevent_status": []
     },
     "notify_klippy_ready": {
         "status": "ready",
-        "preventStatus": ["printing"]
+        "prevent_status": ["printing"]
     },
     "notify_klippy_shutdown": {
-        "status": "shutdown"
+        "status": "shutdown",
+        "prevent_status": []
     },
     "notify_gcode_response": {
         "status": "stop",
-        "timedStatus": "ready",
-        "requiredParams": ["// action:cancel"]
+        "timed_status": "ready",
+        "render": true,
+        "required_params": ["// action:cancel"],
+        "prevent_status": ["pause"]
     }
 }

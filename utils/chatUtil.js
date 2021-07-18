@@ -2,14 +2,19 @@ const Discord = require('discord.js')
 const fs = require('fs')
 const path = require('path')
 
+const locale = require('./localeUtil')
+
 const maxEntries = 5
 
 module.exports = {}
-module.exports.getWaitEmbed = (user, icon) => {
+module.exports.getWaitEmbed = (user, relation, icon) => {
+
+  const title = locale.misc.wait_related
+    .replace(/(\${relation})/g, relation)
 
   const waitEmbed = new Discord.MessageEmbed()
     .setColor('#c90000')
-    .setDescription('🕐 Please Wait!')
+    .setDescription(`🕐 ${locale.misc.please_wait}`)
   
   if (typeof (user) !== 'undefined') {
     waitEmbed
@@ -22,7 +27,7 @@ module.exports.getWaitEmbed = (user, icon) => {
     const imgBuffer = fs.readFileSync(imgPath)
     const thumbnail = new Discord.MessageAttachment(imgBuffer, icon)
     waitEmbed
-      .setAuthor('Related', `attachment://${icon}`)
+      .setAuthor(title, `attachment://${icon}`)
       .attachFiles(thumbnail)
   }
   
@@ -37,6 +42,15 @@ module.exports.hasMessageEmbed = (message) => {
   }
   return true
 }
+module.exports.generateWarnEmbed = (title, description) => {
+  return new Discord.MessageEmbed()
+    .setColor('#fcad03')
+    .setTitle(title)
+    .attachFiles(path.resolve(__dirname, '../images/warning.png'))
+    .setThumbnail('attachment://warning.png')
+    .setTimestamp()
+    .setDescription(description)
+}
 module.exports.retrieveCurrentPage = (embed) => {
   const pages = embed.author.name
   const currentPageString = pages.replace('Page ', '').split('/')[0]
@@ -44,7 +58,7 @@ module.exports.retrieveCurrentPage = (embed) => {
 }
 module.exports.generatePageEmbed = (pageUp, currentPage, data, title, icon, user) => {
   let newpage = currentPage
-  const maxpage =((data.length / maxEntries) - 0.1).toFixed(0)
+  const maxpage = Math.ceil((data.length / maxEntries) - 0.1)
   if (pageUp) {
     if (currentPage !== maxpage - 1) {
       newpage = currentPage + 1
@@ -57,7 +71,7 @@ module.exports.generatePageEmbed = (pageUp, currentPage, data, title, icon, user
   let entries = '\n'
   for (let i = (newpage * maxEntries) + newpage; i <= maxEntries + (newpage * maxEntries) + newpage; i++) {
     if (i < data.length) {
-      entries = entries.concat(`${data[i].filename}\n`)
+      entries = entries.concat(`${data[i].path}\n`)
     }
   }
 

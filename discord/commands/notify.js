@@ -1,27 +1,38 @@
-const { SlashCommand } = require('slash-create');
+const logSymbols = require('log-symbols')
+const { SlashCommand } = require('slash-create')
 
 const database = require('../../utils/databaseUtil')
+const locale = require('../../utils/localeUtil')
 
-module.exports = class HelloCommand extends SlashCommand {
+const messageLocale = locale.commands.notify
+const syntaxLocale = locale.syntaxlocale.commands.notify
+
+module.exports = class NotifyCommand extends SlashCommand {
     constructor(creator) {
+        console.log('  Load Notify Command'.commandload)
         super(creator, {
-            name: 'notifyme',
-            description: 'Should i DM you with the current print status?'
-        });
-        this.filePath = __filename;
+            name: syntaxLocale.command,
+            description: messageLocale.description
+        })
+        this.filePath = __filename
     }
 
     run(ctx) {
-        try {
-            const notifyStatus = database.updateNotify(ctx.user)
-            if (notifyStatus) {
-                return `I will notify you of the print status via DM, ${ctx.user.username}!`;
-            }
-            return `I will no longer notify you of the print status via DM, ${ctx.user.username}!`;
+        const notifyStatus = database.updateNotify(ctx.user)
+        if (notifyStatus) {
+            return messageLocale.answer.activated
+            .replace(/(\${username})/g, ctx.user.username)
         }
-        catch (error) {
-            console.log((error).error)
-            return "An Error occured!"
-        }
+        return messageLocale.answer.deactivated
+            .replace(/(\${username})/g, ctx.user.username)
+    }
+
+    onError(error, ctx) {
+        console.log(logSymbols.error, `Notify Command: ${error}`.error)
+        ctx.send(locale.errors.command_failed)
+    }
+
+    onUnload() {
+        return 'okay'
     }
 }

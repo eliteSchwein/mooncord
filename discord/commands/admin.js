@@ -1,80 +1,93 @@
+const logSymbols = require('log-symbols')
 const { SlashCommand, CommandOptionType } = require('slash-create')
 
-const discordClient = require('../../clients/discordclient')
+const discordClient = require('../../clients/discordClient')
 const database = require('../../utils/databaseUtil')
+const locale = require('../../utils/localeUtil')
 const permission = require('../../utils/permissionUtil')
 
-module.exports = class HelloCommand extends SlashCommand {
+const messageLocale = locale.commands.admin
+const commandSyntax = locale.syntaxlocale.commands.admin
+
+module.exports = class AdminCommand extends SlashCommand {
     constructor(creator) {
+        console.log('  Load Admin Command'.commandload)
         super(creator, {
-            name: 'admin',
-            description: 'Manage Admin Role or User.',
+            name: commandSyntax.command,
+            description: messageLocale.description,
             options: [{
                 type: CommandOptionType.SUB_COMMAND,
-                name: 'role',
-                description: 'Modify Role',
+                name: commandSyntax.options.role.name,
+                description: messageLocale.options.role.description,
                 options: [{
                     type: CommandOptionType.ROLE,
-                    name: 'role',
-                    description: 'Select a Role.',
+                    name: commandSyntax.options.role.options.role.name,
+                    description: messageLocale.options.role.options.role.description,
                     required: true
                 }]
             },{
                 type: CommandOptionType.SUB_COMMAND,
-                name: 'user',
-                description: 'Modify User',
+                name: commandSyntax.options.user.name,
+                description: messageLocale.options.user.description,
                 options: [{
                     type: CommandOptionType.USER,
-                    name: 'user',
-                    description: 'Select a User.',
+                    name: commandSyntax.options.user.options.user.name,
+                    description: messageLocale.options.user.options.user.description,
                     required: true
                 }]
             }]
-        });
-        this.filePath = __filename;
+        })
+        this.filePath = __filename
     }
 
     async run(ctx) {
-        try {
-            if (typeof (ctx.guildID) === 'undefined') {
-                return `This Command is only aviable on a Guild, ${ctx.user.username}!`
-            }
-            
-            if (!permission.isMaster(ctx.user)) {
-                return `You dont have the Permissions, ${ctx.user.username}!`
-            }
-
-            let isRole
-            let adminid
-
-            if (ctx.subcommands[0] === 'role') {
-                isRole = true
-                adminid = ctx.options.role.role
-            }
-
-            if (ctx.subcommands[0] === 'user') {
-                isRole = false
-                adminid = ctx.options.user.user
-            }
-
-            const result = await editAdmin(isRole, adminid, ctx.guildID)
-
-            let answermention = `<@${adminid}>`
-
-            if (isRole) {
-                answermention = answermention.replace(/<@/g,'<@&')
-            }
-
-            if (result) {
-                return `${answermention} is now a Admin, ${ctx.user.username}!`
-            } 
-                return `${answermention} is not longer a Admin, ${ctx.user.username}!`
-            
+        if (typeof (ctx.guildID) === 'undefined') {
+            return locale.getGuildOnlyError(ctx.user.username)
         }
-        catch (error) {
-            console.log((error).error)
-            return "An Error occured!";
+        
+        if (!permission.hasController(ctx.user)) {
+            return locale.getControllerOnlyError(ctx.user.username)
         }
+
+        let isRole
+        let adminid
+
+        if (ctx.subcommands[0] === syntaxLocale.options.role.name) {
+            isRole = true
+            adminid = ctx.options[syntaxLocale.options.role.name][syntaxLocale.options.role.options.role.name]
+        }
+
+        if (ctx.subcommands[0] === syntaxLocale.options.user.name) {
+            isRole = false
+            adminid = ctx.options[syntaxLocale.options.user.name][syntaxLocale.options.user.options.user.name]
+        }
+
+        const result = await editAdmin(isRole, adminid, ctx.guildID)
+
+        let answermention = `<@${adminid}>`
+
+        if (isRole) {
+            answermention = answermention.replace(/<@/g,'<@&')
+        }
+
+        if (result) {
+            return messageLocale.answer.added
+                .replace(/(\${username})/g, ctx.user.username)
+                .replace(/(\${mention})/g, answermention)
+        } 
+
+        return messageLocale.answer.removed
+            .replace(/(\${username})/g, ctx.user.username)
+            .replace(/(\${mention})/g, answermention)
+    }
+
+    onError(error, ctx) {
+        console.log(logSymbols.error, `Admin Command: ${error}`.error)
+        ctx.send(locale.errors.command_failed)
+    }
+
+    onUnload() {
+        return 'okay'
     }
 }
 

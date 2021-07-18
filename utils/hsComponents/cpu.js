@@ -1,43 +1,45 @@
 const si = require('systeminformation')
 
+const loadUtil = require('../loadUtil')
+const locale = require('../localeUtil')
+
 module.exports = {}
-module.exports.getTitle = () => { return 'CPU' }
+module.exports.getTitle = () => { return locale.loadinfo.cpu.title }
 module.exports.getFields = async () => {
+    const usageData = loadUtil.getUsageData()
     const cpu = await si.cpu()
-    const load = await si.currentLoad()
-    const cpuTemp = await si.cpuTemperature()
     const cpuFreq = await si.cpuCurrentSpeed()
     
     return [{
-        name: 'Model',
+        name: locale.loadinfo.cpu.model,
         value: cpu.brand,
         inline: true
     },{
-        name: 'Manufacturer',
+        name: locale.loadinfo.cpu.manufacturer,
         value: cpu.manufacturer,
         inline: true
     },{
-        name: 'Usage',
-        value: `${load.currentLoad.toFixed(2)}%`,
+        name: locale.loadinfo.cpu.usage,
+        value: `${usageData.cpu.load.currentLoad.toFixed(2)}%`,
         inline: true
     },{
-        name: 'Cores',
+        name: locale.loadinfo.cpu.cores,
         value: `${cpu.physicalCores}`,
         inline: true
     },{
-        name: 'Threads',
+        name: locale.loadinfo.cpu.threads,
         value: ` ${cpu.cores}`,
         inline: true
     },{
-        name: 'Temp',
-        value: `${cpuTemp.main.toFixed(2)}°C`,
+        name: locale.loadinfo.cpu.temperature,
+        value: `${usageData.cpu.temp.main.toFixed(2)}°C`,
         inline: true
     },{
-        name: 'Freq',
+        name: locale.loadinfo.cpu.frequency,
         value: `${cpuFreq.avg}GHz`,
         inline: true
     },{
-        name: 'Max Freq',
+        name: locale.loadinfo.cpu.max_frequency,
         value: `${cpuFreq.max}GHz`,
         inline: true
     }]

@@ -1,0 +1,384 @@
+{
+    "commands": {
+        "admin": {
+            "description": "Gérer les rôles d'administrateur et d'utilisateur.",
+            "command": "admin",
+            "options": {
+                "role": {
+                    "name": "rôle",
+                    "description": "Modifier le rôle.",
+                    "options": {
+                        "role": {
+                            "name": "rôle",
+                            "description": "Sélectionnez un rôle."
+                        }
+                    }
+                },
+                "user": {
+                    "name": "utilisateur",
+                    "description": "Modifier un utilisateur.",
+                    "options": {
+                        "user": {
+                            "name": "utilisateur",
+                            "description": "Sélectionnez un utilisateur."
+                        }
+                    }
+                }
+            },
+            "answer": {
+                "added": "${mention} est maintenant administrateur, ${username}!",
+                "removed": "${mention} n'est plus administrateur, ${username}!"
+            }
+        },
+        "editchannel": {
+            "description": "Ajouter ou supprimer la diffusion d'un canal.",
+            "command": "editcanal",
+            "options": {
+                "channel": {
+                    "name": "canal",
+                    "description": "Sélectionnez un canal pour l'ajouter/supprimer en tant que canal de diffusion."
+                } 
+            },
+            "answer": {
+                "not_textchannel": "${channel} n'est pas un canal texte, ${username}!",
+                "activated": "${channel} est maintenant un canal de diffusion, ${username}!",
+                "deactivated": "${channel} n'est plus un canal de diffusion, ${username}!"
+            }
+        },
+        "emergency_stop": {
+            "description": "Arrêter l'imprimante d'urgence ?",
+            "command": "urgencestop",
+            "answer": {
+                "executed": "Arrêter d'urgence exécuté, ${username}!"
+            }
+        },
+        "execute": {
+            "description": "Exécuter une commande GCode.",
+            "command": "execute",
+            "options": {
+                "gcode": {
+                    "name": "gcode",
+                    "description": "Vous voulez exécuter GCode."
+                }
+            },
+            "answer": {
+                "success": "Commande exécutée !",
+                "error": "Erreur: `${gcode_feedback}`",
+                "unknown": "Commande GCode inconnue: `${gcode_feedback}`"
+            }
+        },
+        "fileinfo": {
+            "description": "Afficher les informations sur un fichier d'impression.",
+            "command": "fichierinfo",
+            "options": {
+                "file": {
+                    "name": "fichier",
+                    "description": "Spécifiez le fichier d'impression."
+                }
+            }
+        },
+        "get_log": {
+            "description": "Récupére le log.",
+            "command": "recuplog",
+            "options": {
+                "log_file": {
+                    "name": "Fichier du log",
+                    "description": "Spécifiez le fichier du log."
+                }
+            },
+            "answer": {
+                "retrieved": "Voici le log pour ${service}",
+                "not_found": "Il n'y a aucun log pour ${service}"
+            }
+        },
+        "info": {
+            "description": "Envoyer une description de moi.",
+            "command": "info",
+            "embed": {
+                "title": "Informations",
+                "description": "Version: ${version}\nAuthor: ${author}\nHomepage: ${homepage}"
+            }
+        },
+        "listfiles": {
+            "description": "Liste tous les fichiers d'impression.",
+            "command": "listefichier",
+            "embed": {
+                "title": "Fichier d'impression"
+            }
+        },
+        "loadinfo": {
+            "description": "Obtenir les informations actuelles sur le matériel et les logiciels.",
+            "command": "chargerinfo",
+            "options": {
+                "component": {
+                    "name": "composant",
+                    "description": "Sélectionnez le composent sur lequel vous voulez des informations."
+                }
+            }
+        },
+        "loadthrottle": {
+            "title": "Avertissement système",
+            "sentence": "Il y a un avertissement système a cause de ${reason}!",
+            "high_cpu_load": {
+                "name": "Charge CPU importante",
+                "suggestion": "Veuillez vérifier les causes de l'utilisation importante du processeur."
+            },
+            "high_cpu_temp": {
+                "name": "Température CPU élevé",
+                "suggestion": "Veuillez vérifier votre système de refroidissement."
+            },
+            "high_ram_usage": {
+                "name": "Utilisation importante de la RAM",
+                "suggestion": "Veuillez vérifier les causes de l'utilisation importante de la RAM."
+            },
+            "high_partition_usage": {
+                "name": "Utilisation élevée des partitions",
+                "suggestion": "Supprimer des fichiers de ${component_section}."
+            }
+        },
+        "notify": {
+            "description": "Puis-je vous envoyer un MP avec l'état de l'impression en cours ?",
+            "command": "notifiemoi",
+            "answer": {
+                "activated": "Je vous informerai de l'état de l'impression en cours via MP, ${username}!",
+                "deactivated": "Je ne vous informerai pas de l'état de l'impression en cours via MP, ${username}!"
+            }
+        },
+        "printjob": {
+            "description": "Contrôler ou démarrer une impression.",
+            "command": "impressionjob",
+            "options": {
+                "pause": {
+                    "name": "pause",
+                    "description": "Impression en pause"
+                },
+                "cancel": {
+                    "name": "annuler",
+                    "description": "Impression annulée"
+                },
+                "resume": {
+                    "name": "reprendre",
+                    "description": "Reprendre le travail d'impression"
+                },
+                "start": {
+                    "name": "debuter",
+                    "description": "Débuter une impression",
+                    "options": {
+                        "file": {
+                            "name": "fichier",
+                            "description": "Sélectionnez un fichier d'impression."
+                        }
+                    }
+                }
+            },
+            "answer": {
+                "file_not_found": "Fichier non trouvé !",
+                "resume": {
+                    "status_not_valid": "${username} l'impression n'est actuellement pas en pause !",
+                    "status_valid": "${username} l'impression reprend !",
+                    "status_same": "${username} l'impression est en cours !"
+                },
+                "cancel": {
+                    "status_not_valid": "${username} aucune impression en cours !",
+                    "status_valid": "${username} l'impression a été annuler !",
+                    "status_same": ""
+                },
+                "pause": {
+                    "status_not_valid": "${username} il n'y a actuellement aucune impression en cours !",
+                    "status_valid": "${username} l'impression est en pause !",
+                    "status_same": "${username} l'impression actuelle est déja en pause !"
+                },
+                "abort": "Demande d'impression annuler, ${username}!",
+                "executed": "Demande d'impression effectuée, ${username}!"
+            },
+            "embed": {
+                "title": "Débuter l'impression ?"
+            }
+        },
+        "status": {
+            "description": "Obtenir l'état d'impression actuel",
+            "command": "etat"
+        },
+        "temp": {
+            "description": "Obtenir les températures actuelles de Klipper.",
+            "command": "temperatures",
+            "embed": {
+                "title": "Températures",
+                "fields": {
+                    "current_temp": "Actuelle",
+                    "target_temp": "Cible",
+                    "current_power": "Puissance"
+                }
+            }
+        }
+    },
+    "dynamic_commands": {
+        "timelapse": {
+            "description": "Obtenir le dernier Time Lapse.",
+            "command": "timelapse"
+        }
+    },
+    "misc": {
+        "please_wait": "Attendez s'il vous plaît !",
+        "wait_related": "Concernant ${relation}"
+    },
+    "errors": {
+        "admin_only": "Vous n'avez pas les permissions, ${username}",
+        "check_console": "Veuillez vérifier la console !",
+        "command_failed": "Une erreur s'est produite !",
+        "command_timeout": "L'exécution de la commande a échoué !",
+        "controller_only": "Vous n'avez pas les permissions, ${username}",
+        "file_not_found": "Fichier non trouvé !",
+        "guild_only": "Cette commande n'est disponible que sur la guilde, ${username}",
+        "no_data": "Aucune donnée n'a été trouvée pour ${component}!",
+        "no_files_found": "Il n'y a actuellement aucun fichier !",
+        "no_timelapse": "Aucun Timelapse disponible !",
+        "not_ready": "Cette commande n'est pas prête, ${username}!"
+    },
+    "fileinfo": {
+        "title": "Informations sur le fichier",
+        "print_time": "Temps d'impression",
+        "slicer": "Découpeur",
+        "slicer_version": "Version du découpeur",
+        "height": "Hauteur"
+    },
+    "events": {
+        "print_job_start": {
+            "answer":{
+                "abort": "Demande d'impression annuler, ${username}!",
+                "executed": "Demande d'impression effectuée, ${username}!"
+            }
+        }
+    },
+    "loadinfo": {
+        "cpu": {
+            "title": "CPU",
+            "model": "Modèle",
+            "manufacturer": "Fabricant",
+            "usage": "Utilisation",
+            "cores": "Cores",
+            "threads": "Threads",
+            "temperature": "Température",
+            "frequency": "Fréquance",
+            "max_frequency": "Fréquance Max"
+        },
+        "disk": {
+            "title": "Disques",
+            "name": "Disque ${disk_index} Nom",
+            "type": "Disque ${disk_index} Type",
+            "model": "Disque ${disk_index} Modèle",
+            "vendor": "Disque ${disk_index} Vendeur",
+            "size": "Disque ${disk_index} Taille"
+        },
+        "os": {
+            "title": "Système d'exploitation",
+            "platform": "Plate-forme",
+            "logofile": "Logo de fichier",
+            "distro": "Distribution",
+            "release": "Parution",
+            "kernel": "Noyau",
+            "arch": "Architecture",
+            "hostname": "Nom de l'hôte"
+        },
+        "partitions": {
+            "title": "Partitions",
+            "name": "Partition ${partition_index} Nom",
+            "type": "Partition ${partition_index} Type",
+            "mount": "Partition ${partition_index} Monture",
+            "size": "Partition ${partition_index} Taille",
+            "used": "Partition ${partition_index} Utilisation"
+        },
+        "ram": {
+            "title": "RAM",
+            "total": "Total",
+            "used": "Utilisation",
+            "swap_total": "Échanges totaux",
+            "swap_used": "Échanges effectués"
+        },
+        "mcu": {
+            "chipset": "Puce",
+            "version": "Version",
+            "load": "Charge",
+            "awake": "Éveille",
+            "frequency": "Fréquence"
+        }
+    },
+    "status": {
+        "disconnected":{
+            "title": "Imprimante déconnectée !",
+            "activity": "En attente de Klipper"
+        },
+        "error":{
+            "title": "Une erreur s'est produite !",
+            "activity": "En attente de l'utilisateur"
+        },
+        "offline":{
+            "title": "Connexion perdue !",
+            "activity": "En attente de Moonraker"
+        },
+        "shutdown":{
+            "title": "Klipper s'est arrêté",
+            "activity": "En attente de Klipper"
+        },
+        "stop":{
+            "title": "L'impression s'est arrêté",
+            "activity": "Impression arrêtée"
+        },
+        "ready":{
+            "title": "Imprimante prête",
+            "activity": "pour le fichier GCODE..."
+        },
+        "startup":{
+            "title": "Démarrage de l'imprimante",
+            "activity": "Imprimante démarrée"
+        },
+        "start":{
+            "title": "Démarrage de l'impression",
+            "activity": "Démarrage de ${gcode_file}"
+        },
+        "done":{
+            "title": "Impression terminée",
+            "activity": "Impression finie"
+        },
+        "pause":{
+            "title": "Impression en pause",
+            "activity": "Une pause ? Apéro 🍾 !!"
+        },
+        "printing":{
+            "title": "Impression en cours",
+            "activity": "Impression: ${value_print_progress}%"
+        },
+        "fields": {
+            "print_time": "Temps d'impression",
+            "eta_print_time": "Temps d'impression restant",
+            "print_progress": "Progression",
+            "print_layers": "Couche"
+        }
+    },
+    "timelapse": {
+        "for_gcode": "Time lapse pour ${gcode_file}"
+    },
+    "update": {
+        "title": "Mises à jour du système",
+        "system": "Système",
+        "packages": "Paquets"
+    },
+    "throttle": {
+        "title": "Une surchauffe s'est produit !",
+        "sentence": "Le système est actuellement en surchauffe à cause de ${reason}!",
+        "reasons": {
+            "under_voltage_detected": {
+                "name": "Réduction du voltage",
+                "suggestion": "Vérifiez la puissance délivrée."
+            },
+            "frequency_capped": {
+                "name": "Température limite",
+                "suggestion": "Vérifiez le système de refroidissement."
+            },
+            "temperature_limit_active": {
+                "name": "Température limite",
+                "suggestion": "Vérifiez le système de refroidissement."
+            }
+        }
+    }
+}

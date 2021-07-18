@@ -1,0 +1,210 @@
+{
+    "disconnected":{
+        "meta_data": {
+            "order_id": 0,
+            "allow_same": false,
+            "prevent": []
+        },
+        "title": "${locale.title}",
+        "color": "#c90000",
+        "activity": {
+            "type": "LISTENING",
+            "text": "${locale.activity}"
+        }
+    },
+    "error":{
+        "meta_data": {
+            "order_id": 0,
+            "allow_same": false,
+            "prevent": []
+        },
+        "title": "${locale.title}",
+        "color": "#c90000",
+        "activity": {
+            "type": "LISTENING",
+            "text": "${locale.activity}"
+        }
+    },
+    "offline":{
+        "meta_data": {
+            "order_id": 0,
+            "allow_same": false,
+            "prevent": []
+        },
+        "title": "${locale.title}",
+        "color": "#c90000",
+        "activity": {
+            "type": "LISTENING",
+            "text": "${locale.activity}"
+        }
+    },
+    "shutdown":{
+        "meta_data": {
+            "order_id": 0,
+            "allow_same": false,
+            "prevent": [
+                "pause",
+                "start",
+                "printing"
+            ]
+        },
+        "title": "${locale.title}",
+        "color": "#c90000",
+        "activity": {
+            "type": "LISTENING",
+            "text": "${locale.activity}"
+        }
+    },
+    "stop":{
+        "meta_data": {
+            "order_id": 0,
+            "allow_same": false,
+            "prevent": []
+        },
+        "title": "${locale.title}",
+        "color": "#c90000",
+        "author": "${gcode_file}",
+        "thumbnail": true,
+        "activity": {
+            "type": "LISTENING",
+            "text": "${locale.activity}"
+        },
+        "fields": [
+            {
+                "name": "${locale.print_time}",
+                "value": "${value_print_time}"
+            }
+        ]
+    },
+    "ready":{
+        "meta_data": {
+            "order_id": 1,
+            "allow_same": false,
+            "prevent": []
+        },
+        "title": "${locale.title}",
+        "color": "#0099ff",
+        "activity": {
+            "type": "LISTENING",
+            "text": "${locale.activity}"
+        },
+        "versions": true
+    },
+    "startup":{
+        "meta_data": {
+            "order_id": 0,
+            "allow_same": false,
+            "prevent": []
+        },
+        "title": "${locale.title}",
+        "color": "#0099ff",
+        "activity": {
+            "type": "WATCHING",
+            "text": "${locale.activity}"
+        }
+    },
+    "start":{
+        "meta_data": {
+            "order_id": 2,
+            "allow_same": false,
+            "prevent": []
+        },
+        "title": "${locale.title}",
+        "color": "#25db00",
+        "author": "${gcode_file}",
+        "thumbnail": true,
+        "activity": {
+            "type": "LISTENING",
+            "text": "${locale.activity}"
+        },
+        "fields": [
+            {
+                "name": "${locale.print_time}",
+                "value": "${value_eta_print_time}"
+            }
+        ]
+    },
+    "done":{
+        "meta_data": {
+            "order_id": 0,
+            "allow_same": false,
+            "prevent": []
+        },
+        "title": "${locale.title}",
+        "color": "#25db00",
+        "author": "${gcode_file}",
+        "thumbnail": true,
+        "activity": {
+            "type": "WATCHING",
+            "text": "${locale.activity}"
+        },
+        "fields": [
+            {
+                "name": "${locale.print_time}",
+                "value": "${value_print_time}"
+            }
+        ]
+    },
+    "pause":{
+        "meta_data": {
+            "order_id": 0,
+            "allow_same": false,
+            "prevent": []
+        },
+        "title": "${locale.title}",
+        "color": "#dbd400",
+        "author": "${gcode_file}",
+        "thumbnail": true,
+        "activity": {
+            "type": "PLAYING",
+            "text": "${locale.activity}"
+        },
+        "fields": [
+            {
+                "name": "${locale.print_time}",
+                "value": "${value_print_time}"
+            },
+            {
+                "name": "${locale.eta_print_time}",
+                "value": "${value_eta_print_time}"
+            },
+            {
+                "name": "${locale.print_progress}",
+                "value": "${value_print_progress}%"
+            },
+            {
+                "name": "${locale.print_layers}",
+                "value": "${value_current_layer}/${value_max_layer}"
+            }
+        ]
+    },
+    "printing":{
+        "meta_data": {
+            "order_id": 3,
+            "allow_same": true,
+            "prevent": []
+        },
+        "title": "${locale.title}",
+        "color": "#0099ff",
+        "author": "${gcode_file}",
+        "thumbnail": true,
+        "fields": [
+            {
+                "name": "${locale.print_time}",
+                "value": "${value_print_time}"
+            },
+            {
+                "name": "${locale.eta_print_time}",
+                "value": "${value_eta_print_time}"
+            },
+            {
+                "name": "${locale.print_progress}",
+                "value": "${value_print_progress}%"
+            },
+            {
+                "name": "${locale.print_layers}",
+                "value": "${value_current_layer}/${value_max_layer}"
+            }
+        ]
+    }
+}

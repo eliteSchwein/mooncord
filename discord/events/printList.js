@@ -1,6 +1,9 @@
-const moonrakerClient = require('../../clients/moonrakerclient')
+const moonrakerClient = require('../../clients/moonrakerClient')
 const chatUtil = require('../../utils/chatUtil')
+const locale = require('../../utils/localeUtil')
 const permission = require('../../utils/permissionUtil')
+
+const commandlocale = locale.commands.listfiles
 
 let connection
 let pageUp
@@ -22,7 +25,7 @@ const enableEvent = function (discordClient) {
             return
         }
         const {title} = message.embeds[0]
-        if (title !== 'Print Files') {
+        if (title !== commandlocale.embed.title) {
             return
         }
         if (message.channel.type === 'text') {
@@ -48,13 +51,13 @@ const enableEvent = function (discordClient) {
 }
 
 async function executeMessage(message, user) {
-    const id = Math.floor(Math.random() * parseInt('10_000')) + 1
+    const id = Math.floor(Math.random() * Number.parseInt('10_000')) + 1
     const {channel} = message
 
     commandFeedback[message.channel.id] = undefined
     requester[channel.id] = user
     
-    await message.edit(chatUtil.getWaitEmbed(user, 'printlist.png'))
+    await message.edit(chatUtil.getWaitEmbed(user, commandlocale.embed.title, 'printlist.png'))
 
     connection.on('message', (message) => handler(message, channel))
     connection.send(`{"jsonrpc": "2.0", "method": "server.files.list", "params": {"root": "gcodes"}, "id": ${id}}`)
@@ -66,7 +69,7 @@ async function executeMessage(message, user) {
         }
         if (timeout === 10) {
             await message.edit({
-                content: 'There are currently no Files!'
+                content: locale.errors.no_files_found
             })
             commandFeedback = undefined
             connection.removeListener('message', handler)
@@ -79,12 +82,12 @@ async function executeMessage(message, user) {
 async function handler (message, channel) {
     const messageJson = JSON.parse(message.utf8Data)
     connection.removeListener('message', handler)
-    if (JSON.stringify(messageJson).match(/(modified)/g)) {
+    if (/(modified)/g.test(JSON.stringify(messageJson))) {
         commandFeedback[channel.id] = await chatUtil.generatePageEmbed(
             pageUp,
             page,
             messageJson.result,
-            'Print Files',
+            commandlocale.embed.title,
             'printlist.png',
             requester[channel.id])
     }

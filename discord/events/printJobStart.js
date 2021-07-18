@@ -1,6 +1,9 @@
-const moonrakerClient = require('../../clients/moonrakerclient')
+const moonrakerClient = require('../../clients/moonrakerClient')
 const chatUtil = require('../../utils/chatUtil')
+const locale = require('../../utils/localeUtil')
 const permission = require('../../utils/permissionUtil')
+
+const commandlocale = locale.commands.printjob
 
 const enableEvent = function (discordClient) {
     discordClient.on('messageReactionAdd', async (messageReaction, user) => {
@@ -12,7 +15,7 @@ const enableEvent = function (discordClient) {
             return
         }
         const {title} = message.embeds[0]
-        if (title !== 'Start Print Job?') {
+        if (title !== commandlocale.embed.title) {
             return
         }
         if (message.channel.type === 'text') {
@@ -25,19 +28,20 @@ const enableEvent = function (discordClient) {
             if (message.channel.type === 'text') {
                 await message.reactions.removeAll()
             }
-            await message.edit(`Print Job request aborted, ${user.username}!`)
+            await message.edit(commandlocale.answer.abort.replace(/(\${username})/g, user.username))
             await message.suppressEmbeds(true)
             return
         }
         
         if (messageReaction.emoji.name === '✅') {
             const gcodefile = message.embeds[0].author.name
-            const id = Math.floor(Math.random() * parseInt('10_000')) + 1
+            const id = Math.floor(Math.random() * Number.parseInt('10_000')) + 1
 
             if (message.channel.type === 'text') {
                 await message.reactions.removeAll()
+                
             }
-            await message.edit(`Print Job request executed, ${user.username}!`)
+            await message.edit(commandlocale.answer.executed.replace(/(\${username})/g, user.username))
             await message.suppressEmbeds(true)
 
             moonrakerClient.getConnection().send(`{"jsonrpc": "2.0", "method": "printer.print.start", "params": {"filename": "${gcodefile}"}, "id": ${id}}`)

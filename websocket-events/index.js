@@ -1,10 +1,14 @@
 module.exports = {
-  gcodemetadata: require('./gcodemetadata'),
-  gcoderesponse: require('./gcoderesponse'),
-  klipperstate: require('./klipperstate'),
-  klipperstates: require('./klipperstates'),
-  klipperstatus_state_update: require('./klipperstatus_state_update'),
-  klipperstatus_state: require('./klipperstatus_state'),
-  klipperstatus_vsdcard: require('./klipperstatus_vsdcard'),
+  gcodeMetaData: require('./gcodeMetaData'),
+  gcodeCommands: require('./gcodeCommands'),
+  gcodeResponse: require('./gcodeResponse'),
+  klipperState: require('./klipperState'),
+  klipperStates: require('./klipperStates'),
+  klipperDisplayStatus: require('./klipperDisplayStatus'),
+  klipperStatusStateUpdate: require('./klipperStatusStateUpdate'),
+  klipperStatusState: require('./klipperStatusState'),
+  klipperStatusVirtualSDCard: require('./klipperStatusVirtualSDCard'),
+  klipperLoad: require('./klipperLoad'),
+  moonrakerThrottle: require('./moonrakerThrottle'),
   versions: require('./versions')
 }

@@ -1,0 +1,14 @@
+{
+    "resume": {
+        "requiredStatus" : ["pause"],
+        "macro": "RESUME"
+    },
+    "cancel": {
+        "requiredStatus" : ["pause", "printing"],
+        "macro": "CANCEL_PRINT"
+    },
+    "pause": {
+        "requiredStatus" : ["printing"],
+        "macro": "PAUSE"
+    }
+}
