@@ -10,7 +10,7 @@
 
 ## Discord Community Server
 
-[![Discord](https://img.shields.io/discord/626717239210672139)](https://discord.gg/TdxUZFZtVa)
+[![Discord](https://img.shields.io/discord/865168027652456448)](https://discord.gg/TdxUZFZtVa)
 
 ## Preparations
 
