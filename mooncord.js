@@ -4,6 +4,7 @@ const args = process.argv.slice(2)
 const config = require(`${args[0]}/mooncord.json`)
 const colors = require('colors')
 const systemInfo = require('systeminformation')
+
 const discordClient = require('./clients/discordClient')
 const moonrakerClient = require('./clients/moonrakerClient')
 const pjson = require('./package.json')

@@ -1,8 +1,8 @@
 const args = process.argv.slice(2)
 
-const variables = require('../utils/variablesUtil')
-const statusUtil = require('../utils/statusUtil')
 const locale = require('../utils/localeUtil')
+const statusUtil = require('../utils/statusUtil')
+const variables = require('../utils/variablesUtil')
 
 const config = require(`${args[0]}/mooncord.json`)
 
@@ -16,13 +16,13 @@ const event = (message, connection, discordClient) => {
   if (typeof (result.status) === 'undefined') { return }
   if (typeof (result.status.display_status) === 'undefined') { return }
 
-  const progress = result.status.display_status.progress
+  const {progress} = result.status.display_status
 
   variables.updateTimeData('file_total_duration', variables.getTimes().duration / progress)
 
-  postProgress(discordClient, (progress * 100).toFixed())
+  postProgress(discordClient, (progress * 100).toFixed(0))
   
-  variables.setProgress((progress * 100).toFixed())
+  variables.setProgress((progress * 100).toFixed(0))
 }
 
 function postProgress(discordClient, progress) {

@@ -43,14 +43,13 @@ module.exports.hasMessageEmbed = (message) => {
   return true
 }
 module.exports.generateWarnEmbed = (title, description) => {
-  const warnEmbed = new Discord.MessageEmbed()
+  return new Discord.MessageEmbed()
     .setColor('#fcad03')
     .setTitle(title)
     .attachFiles(path.resolve(__dirname, '../images/warning.png'))
     .setThumbnail('attachment://warning.png')
     .setTimestamp()
     .setDescription(description)
-  return warnEmbed
 }
 module.exports.retrieveCurrentPage = (embed) => {
   const pages = embed.author.name

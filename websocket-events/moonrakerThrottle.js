@@ -2,20 +2,20 @@ const args = process.argv.slice(2)
 
 const logSymbols = require('log-symbols')
 
-const status = require('../utils/statusUtil')
-const locale = require('../utils/localeUtil')
 const chatUtil = require('../utils/chatUtil')
+const locale = require('../utils/localeUtil')
+const status = require('../utils/statusUtil')
 
 const config = require(`${args[0]}/mooncord.json`)
 
 let posted = []
 let notThrottledCounter = 30
 
-const validFlags = [
+const validFlags = new Set([
   'Frequency Capped',
   'Under-Voltage Detected',
   'Temperature Limit Active'
-]
+])
 
 const event = (message, connection, discordClient, database) => {
   if (message.type !== 'utf8') { return }
@@ -31,7 +31,7 @@ const event = (message, connection, discordClient, database) => {
   }
 }
 function retrieveStats(result) {
-  //console.log(result)
+  // console.log(result)
 }
 function retrieveThrottle(result, discordClient, database) {
   const { flags } = result
@@ -45,7 +45,7 @@ function retrieveThrottle(result, discordClient, database) {
   }
   for (const index in flags) {
     const flag = flags[index]
-    if (validFlags.includes(flag)) {
+    if (validFlags.has(flag)) {
 
       notThrottledCounter = 30
 
@@ -65,7 +65,7 @@ async function postThrottle(throttle, discordClient, database) {
   
   const sentence = locale.throttle.sentence
     .replace(/(\${reason})/g, `\`${locale.throttle.reasons[key].name}\``)
-  const suggestion = locale.throttle.reasons[key].suggestion
+  const {suggestion} = locale.throttle.reasons[key]
   
   console.log(logSymbols.warning, `A Throttle occured: ${throttle}!`.throttlewarn)
   

@@ -1,7 +1,7 @@
 const si = require('systeminformation')
 
-const locale = require('../localeUtil')
 const loadUtil = require('../loadUtil')
+const locale = require('../localeUtil')
 
 module.exports = {}
 module.exports.getTitle = () => { return locale.loadinfo.cpu.title }

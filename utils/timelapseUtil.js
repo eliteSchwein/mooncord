@@ -9,8 +9,8 @@ const ffmpeg = require('fluent-ffmpeg')
 const logSymbols = require('log-symbols')
 
 const locale = require('./localeUtil')
-const variablesUtil = require('./variablesUtil')
 const statusUtil = require('./statusUtil')
+const variablesUtil = require('./variablesUtil')
 const webcamUtil = require('./webcamUtil')
 
 const config = require(`${args[0]}/mooncord.json`)

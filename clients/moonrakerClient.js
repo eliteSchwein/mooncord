@@ -1,6 +1,7 @@
 const WebSocketClient = require('websocket').client
 const { waitUntil } = require('async-wait-until')
 const logSymbols = require('log-symbols')
+
 const database = require('../utils/databaseUtil')
 const status = require('../utils/statusUtil')
 const variables = require('../utils/variablesUtil')
@@ -41,7 +42,7 @@ async function enableEvents(discordClient) {
       connection.send(`{"jsonrpc": "2.0", "method": "printer.objects.query", "params": {"objects": ${JSON.stringify(mculist)}}, "id": ${id}}`)
       
       if(variables.getCurrentPrintJob() !== '')
-        connection.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${variables.getCurrentPrintJob()}"}, "id": ${id}}`)
+        {connection.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${variables.getCurrentPrintJob()}"}, "id": ${id}}`)}
     }, 250)
 
     connection.on('close', () => {

@@ -1,22 +1,22 @@
 const args = process.argv.slice(2)
 
+const { waitUntil } = require('async-wait-until')
 const Discord = require('discord.js')
 const fs = require('fs')
+const logSymbols = require('log-symbols')
 const path = require('path')
 const si = require('systeminformation')
-const logSymbols = require('log-symbols')
-const { waitUntil } = require('async-wait-until')
 
+const discordClient = require('../clients/discordClient')
+const chatUtil = require('./chatUtil')
+const database = require('./databaseUtil')
 const componentHandler = require('./hsComponents')
 const locale = require('./localeUtil')
-const chatUtil = require('./chatUtil')
 const status = require('./statusUtil')
-const database = require('./databaseUtil')
-const discordClient = require('../clients/discordClient')
 
 const config = require(`${args[0]}/mooncord.json`)
 
-let usageData = {
+const usageData = {
   'cpu': {
     'load': 0,
     'temp': 0

@@ -89,7 +89,7 @@ module.exports.getEndByte = () => { return data.print_job.end_byte }
 module.exports.getJobID = () => { return data.print_job.job_id }
 module.exports.getTimes = () => {
   const endTime = Math.floor(Date.now() / 1000)
-  const duration = data.print_job.times.duration
+  const {duration} = data.print_job.times
 
   let total = data.print_job.times.file_total_duration
 
@@ -103,17 +103,17 @@ module.exports.getTimes = () => {
   const end = endTime + (total - duration)
 
   return {
-    'total': total,
-    'duration': duration,
-    'left': left,
-    'end': end
+    total,
+    duration,
+    left,
+    end
   }
 }
 
 module.exports.formatTime = (time) => { return formatTime(time) }
 
 function formatTime(seconds) {
-  if (isNaN(+seconds) || !isFinite(seconds)) seconds = 0
+  if (isNaN(Number(seconds)) || !isFinite(seconds)) {seconds = 0}
   let isNeg = false
   if (seconds < 0) {
     seconds = Math.abs(seconds)
@@ -123,9 +123,9 @@ function formatTime(seconds) {
   const m = Math.floor(seconds % 3600 / 60)
   const s = Math.floor(seconds % 3600 % 60)
 
-  let r = s + 's' // always show seconds
-  r = m + 'm ' + r // always show minutes
-  if (h > 0) r = h + 'h ' + r // only show hours if relevent
+  let r = `${s  }s` // always show seconds
+  r = `${m  }m ${  r}` // always show minutes
+  if (h > 0) {r = `${h  }h ${  r}`} // only show hours if relevent
 
-  return (isNeg) ? '-' + r : r
+  return (isNeg) ? `-${  r}` : r
 }

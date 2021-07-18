@@ -1,12 +1,10 @@
 const { waitUntil } = require('async-wait-until')
 const Discord = require('discord.js')
 const path = require('path')
-
-const variables = require('../utils/variablesUtil')
-
 const { GatewayServer, SlashCreator } = require('slash-create')
 
 const events = require('../discord/events')
+const variables = require('../utils/variablesUtil')
 
 
 const discordClient = new Discord.Client()
@@ -51,9 +49,9 @@ function enableCreator() {
   console.log('  Enable Slash Command Creator'.statusmessage)
 
   creator = new SlashCreator({
-    applicationID: applicationID,
+    applicationID,
     publicKey: applicationKey,
-    token: token,
+    token,
   })
 }
 
