@@ -7,31 +7,31 @@ const locale = require('../../utils/localeUtil')
 const permission = require('../../utils/permissionUtil')
 
 const messageLocale = locale.commands.admin
-const commandSyntax = locale.syntaxlocale.commands.admin
+const syntaxLocale = locale.syntaxlocale.commands.admin
 
 module.exports = class AdminCommand extends SlashCommand {
     constructor(creator) {
         console.log('  Load Admin Command'.commandload)
         super(creator, {
-            name: commandSyntax.command,
+            name: syntaxLocale.command,
             description: messageLocale.description,
             options: [{
                 type: CommandOptionType.SUB_COMMAND,
-                name: commandSyntax.options.role.name,
+                name: syntaxLocale.options.role.name,
                 description: messageLocale.options.role.description,
                 options: [{
                     type: CommandOptionType.ROLE,
-                    name: commandSyntax.options.role.options.role.name,
+                    name: syntaxLocale.options.role.options.role.name,
                     description: messageLocale.options.role.options.role.description,
                     required: true
                 }]
             },{
                 type: CommandOptionType.SUB_COMMAND,
-                name: commandSyntax.options.user.name,
+                name: syntaxLocale.options.user.name,
                 description: messageLocale.options.user.description,
                 options: [{
                     type: CommandOptionType.USER,
-                    name: commandSyntax.options.user.options.user.name,
+                    name: syntaxLocale.options.user.options.user.name,
                     description: messageLocale.options.user.options.user.description,
                     required: true
                 }]
