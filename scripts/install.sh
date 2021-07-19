@@ -89,7 +89,6 @@ open_config() {
 }
 
 start_MoonCord() {
-
     echo "Start MoonCord, please make sure you configured the Bot correctly!"
     sudo systemctl start MoonCord
 }
