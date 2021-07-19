@@ -5,21 +5,21 @@
             "command": "admin",
             "options": {
                 "role": {
-                    "name": "role",
+                    "name": "rol",
                     "description": "Pas rol aan.",
                     "options": {
                         "role": {
-                            "name": "role",
+                            "name": "rol",
                             "description": "Selecteer een rol."
                         }
                     }
                 },
                 "user": {
-                    "name": "user",
+                    "name": "gebruiker",
                     "description": "Bewerk een gebruiker.",
                     "options": {
                         "user": {
-                            "name": "user",
+                            "name": "gebruiker",
                             "description": "Selecteer een gebruiker."
                         }
                     }
@@ -32,10 +32,10 @@
         },
         "editchannel": {
             "description": "Beheer aankondigingskanalen.",
-            "command": "editchannel",
+            "command": "kanaal",
             "options": {
                 "channel": {
-                    "name": "channel",
+                    "name": "kanaal",
                     "description": "Selecteer een kanaal om toe te voegen of te verwijderen als aankondingskanaal."
                 } 
             },
@@ -47,14 +47,14 @@
         },
         "emergency_stop": {
             "description": "Noodstop uitvoeren op de printer?",
-            "command": "emergencystop",
+            "command": "noodstop",
             "answer": {
                 "executed": "Noodstop uitgevoerd, ${username}!"
             }
         },
         "execute": {
             "description": "Voer een GCode-commando uit.",
-            "command": "execute",
+            "command": "commando",
             "options": {
                 "gcode": {
                     "name": "gcode",
@@ -69,20 +69,20 @@
         },
         "fileinfo": {
             "description": "Toont informatie over een printbestand.",
-            "command": "fileinfo",
+            "command": "bestandsinfo",
             "options": {
                 "file": {
-                    "name": "file",
+                    "name": "bestand",
                     "description": "Specificeert een printbestand."
                 }
             }
         },
         "get_log": {
             "description": "Haalt een log op.",
-            "command": "getlog",
+            "command": "logboek",
             "options": {
                 "log_file": {
-                    "name": "logfile",
+                    "name": "logbestand",
                     "description": "Specificeert het logbestand."
                 }
             },
@@ -101,14 +101,14 @@
         },
         "listfiles": {
             "description": "Laat alle printbestanden zien.",
-            "command": "listfiles",
+            "command": "bestenden",
             "embed": {
                 "title": "Printbestanden"
             }
         },
         "loadinfo": {
             "description": "Haal informatie op over de huidige hard- en software.",
-            "command": "loadinfo",
+            "command": "systeeminfo",
             "options": {
                 "component": {
                     "name": "component",
@@ -118,7 +118,7 @@
         },
         "notify": {
             "description": "Zal ik je een DM sturen met meer informatie over de printer?",
-            "command": "notifyme",
+            "command": "pingme",
             "answer": {
                 "activated": "Ik zal je op de hoogte houden over de voortgang van de printer via DM, ${username}!",
                 "deactivated": "Ik zal je niet langer op de hoogte houden over de voortgang van de printer in DM, ${username}!"
@@ -126,18 +126,18 @@
         },
         "printjob": {
             "description": "Bestuur of start een printopdracht.",
-            "command": "printjob",
+            "command": "opdracht",
             "options": {
                 "pause": {
-                    "name": "pause",
+                    "name": "pauze",
                     "description": "Pauseer de printopdracht"
                 },
                 "cancel": {
-                    "name": "cancel",
+                    "name": "afbreken",
                     "description": "Breek de printopdracht af"
                 },
                 "resume": {
-                    "name": "resume",
+                    "name": "hervat",
                     "description": "Hervat de printopdracht"
                 },
                 "start": {
