@@ -20,7 +20,6 @@ const event = (message, connection, discordClient, database) => {
         diffVersions[software] = difference
       }
     }
-    console.log(variables.getVersions())
     variables.setVersions(result.version_info)
     postUpdate(diffVersions, discordClient, database)
   }
@@ -32,7 +31,7 @@ function getDifference(software, softwareinfo) {
 
     let oldPackageAmount = 0
 
-    if (Object.keys(variables.getVersions).length > 0) {
+    if (Object.keys(variables.getVersions()).length > 0) {
       oldPackageAmount = variables.getVersions()[software].package_count
     }
 
