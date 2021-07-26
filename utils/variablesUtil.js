@@ -1,4 +1,4 @@
-const data = {
+const rawData = {
   "layer": {
     "current": 0,
     "layer_height": 0,
@@ -25,7 +25,13 @@ const data = {
     }
   }
 }
+
+let data = {}
+
 module.exports.dump = data
+module.exports.dumpRaw = rawData
+
+module.exports.init = () => { data = rawData }
 
 module.exports.setCurrentLayer = (z) => { data.layer.current = z }
 module.exports.setLayerHeights = (layerHeight, objectHeight, firstLayerHeight) => {

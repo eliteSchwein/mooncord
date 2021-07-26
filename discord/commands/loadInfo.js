@@ -1,5 +1,4 @@
 const logSymbols = require('log-symbols')
-const { waitUntil } = require('async-wait-until')
 const { SlashCommand, CommandOptionType } = require('slash-create')
 
 const components = require('../../utils/hsComponents')
@@ -12,7 +11,7 @@ const syntaxLocale = locale.syntaxlocale.commands.loadinfo
 
 module.exports = class LoadInfoCommand extends SlashCommand {
     async constructor(creator) {
-        await waitUntil(() => variablesUtil.getMCUList() !== {}, { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 1500 })
+        console.log('  Load Load Info Command'.commandload)
         super(creator, {
             name: syntaxLocale.command,
             description: messageLocale.description,

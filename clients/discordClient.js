@@ -35,7 +35,8 @@ function loginBot() {
   })
 }
 
-function enableCommands(useconsole) {
+async function enableCommands(useconsole) {
+  await waitUntil(() => variables.dump !== variables.dumpRaw, { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 1500 })
   if (useconsole) {
     console.log('  Sync Slash Commands'.statusmessage)
   }
