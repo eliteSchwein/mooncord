@@ -36,6 +36,7 @@ function getDifference(software, softwareinfo) {
     }
 
     if (softwareinfo.package_count !== oldPackageAmount) {
+      console.log(`System: ${softwareinfo.package_count} ${oldPackageAmount}`)
       return {
         'packages': softwareinfo.package_count
       }
@@ -50,6 +51,7 @@ function getDifference(software, softwareinfo) {
     }
     
     if (softwareinfo.remote_version !== oldVersionData) {
+      console.log(`App: ${softwareinfo.version} ${softwareinfo.remote_version}`)
       return {
         'current': softwareinfo.version,
         'remote': softwareinfo.remote_version
