@@ -13,13 +13,14 @@ const event = (message, connection, discordClient) => {
     loadMCUList(statusmessage.configfile.config)
     return
   }
-  if(/^(mcu)+(?!temp)$/g.test(JSON.stringify(statusmessage))) { retrieveMCUStatus(statusmessage) }
+  if(/(mcu)/g.test(JSON.stringify(statusmessage))) { retrieveMCUStatus(statusmessage) }
 }
 
 function loadMCUList(config) {
   variables.clearMCUList()
   Object.keys(config).forEach(key => {
-    if (/^(mcu)+(?!temp)$/g.test(key)) {
+    if (!/(temp)/g.test(key) && 
+        /(mcu)/g.test(key)) {
       variables.addToMCUList(key)
     }
   })
@@ -27,7 +28,8 @@ function loadMCUList(config) {
 
 function retrieveMCUStatus(message) {
   Object.keys(message).forEach(key => {
-    if (/^(mcu)+(?!temp)$/g.test(key)) {
+    if (!/(temp)/g.test(key) && 
+        /(mcu)/g.test(key)) {
       variables.updateMCUStatus(key, message[key])
     }
   })
