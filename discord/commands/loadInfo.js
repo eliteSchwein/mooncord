@@ -76,7 +76,7 @@ async function retrieveMCUComponent(mcu) {
 
     const mcuload = (mcudata.last_stats.mcu_task_avg + 3 * mcudata.last_stats.mcu_task_stddev) / 0.0025
     const mcuawake = mcudata.last_stats.mcu_awake / 5
-    const mcufreq = mcudata.last_stats.freq / Number.parseInt('1_000_000')
+    const mcufreq = mcudata.last_stats.freq / 1000000
 
     console.log(mcufreq + " " + mcudata.last_stats.freq)
 
