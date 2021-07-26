@@ -33,7 +33,7 @@
     "log-symbols": "^4.1.0",
     "shelljs": "^0.8.4",
     "slash-create": "^3.3.0",
-    "systeminformation": "^5.7.8",
+    "systeminformation": "^5.7.10",
     "websocket": "^1.0.34"
   },
   "devDependencies": {
