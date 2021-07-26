@@ -21,8 +21,6 @@ async function enableEvents(discordClient) {
     console.log('  Moonraker Client Connected'.success)
 
     WSconnection = connection
-    
-    await waitUntil(() => discordClient.getClient().user !== null, { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 1500 })
 
     console.log('  Sent initial Moonraker commands'.statusmessage)
 
