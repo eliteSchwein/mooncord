@@ -65,6 +65,8 @@ async function changeStatus(altdiscordClient, newStatus) {
 
   await waitUntil(() => statusWaitList[0] === id, { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 2000 })
 
+  await waitUntil(() => client.user !== null, { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 1500 })
+
   console.log(logSymbols.info, `Printer Status: ${newStatus}`.printstatus)
 
   await postStatusChange(client, newStatus)
@@ -205,10 +207,6 @@ function notifyStatus(message, altdiscordClient, altdatabase) {
 }
 
 module.exports.changeStatus = async function (altdiscordClient, newStatus) {
-  const client = getDiscordClient(altdiscordClient)
-
-  await waitUntil(() => client.user !== null, { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 1500 })
-  
   return await changeStatus(altdiscordClient, newStatus)
 }
 
