@@ -35,8 +35,7 @@ function loginBot() {
   })
 }
 
-async function enableCommands(useconsole) {
-  await waitUntil(() => variables.dump !== variables.dumpRaw, { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 1500 })
+function enableCommands(useconsole) {
   if (useconsole) {
     console.log('  Sync Slash Commands'.statusmessage)
   }
@@ -72,6 +71,10 @@ module.exports.init = async (discordToken, discordApplicationID, discordApplicat
   token = discordToken
   applicationID = discordApplicationID
   applicationKey = discordApplicationKey
+
+  await waitUntil(() => variables.dump !== variables.dumpRaw, { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 1500 })
+  await waitUntil(() => Object.keys(variables.getMCUList()).length > 0, { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 1500 })
+  
   console.log(`\n
   ${
   ` ___  _                   _
