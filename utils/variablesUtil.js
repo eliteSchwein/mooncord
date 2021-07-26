@@ -26,12 +26,10 @@ const rawData = {
   }
 }
 
-let data = {}
+let data = Object.assign({}, rawData)
 
 module.exports.dump = data
 module.exports.dumpRaw = rawData
-
-module.exports.init = () => { data = rawData, console.log("moved") }
 
 module.exports.setCurrentLayer = (z) => { data.layer.current = z }
 module.exports.setLayerHeights = (layerHeight, objectHeight, firstLayerHeight) => {

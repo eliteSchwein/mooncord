@@ -9,7 +9,6 @@ const discordClient = require('./clients/discordClient')
 const moonrakerClient = require('./clients/moonrakerClient')
 const pjson = require('./package.json')
 const loadUtil = require('./utils/loadUtil')
-const variableUtil = require('./utils/variablesUtil')
 const miscUtil = require('./utils/miscUtil')
 const timelapseUtil = require('./utils/timelapseUtil')
 
@@ -61,8 +60,6 @@ systemInfo.osInfo()
         'Current free Ram: '.error}`}${(ram.used / (1024 ** 2)).toFixed(2)}MB`)
       process.exit(5)
     }
-
-    variableUtil.init()
 
     await moonrakerClient.init(discordClient,
       config.connection.moonraker_socket_url)
