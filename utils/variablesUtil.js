@@ -31,7 +31,7 @@ let data = {}
 module.exports.dump = data
 module.exports.dumpRaw = rawData
 
-module.exports.init = () => { data = rawData }
+module.exports.init = () => { data = rawData, console.log("moved") }
 
 module.exports.setCurrentLayer = (z) => { data.layer.current = z }
 module.exports.setLayerHeights = (layerHeight, objectHeight, firstLayerHeight) => {
