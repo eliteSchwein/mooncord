@@ -10,7 +10,7 @@ const messageLocale = locale.commands.loadinfo
 const syntaxLocale = locale.syntaxlocale.commands.loadinfo
 
 module.exports = class LoadInfoCommand extends SlashCommand {
-    async constructor(creator) {
+    constructor(creator) {
         console.log('  Load Load Info Command'.commandload)
         super(creator, {
             name: syntaxLocale.command,
