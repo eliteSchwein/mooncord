@@ -20,6 +20,7 @@ const event = (message, connection, discordClient, database) => {
         diffVersions[software] = difference
       }
     }
+    console.log(variables.getVersions())
     variables.setVersions(result.version_info)
     postUpdate(diffVersions, discordClient, database)
   }
