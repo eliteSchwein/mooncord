@@ -26,7 +26,7 @@ const event = (message, connection, discordClient, database) => {
 }
 
 function getDifference(software, softwareinfo) {
-  console.log(variables.getVersions())
+  console.log(variables.dump)
   if (software === 'system') {
     if (softwareinfo.package_count !== 0 &&
       (typeof (variables.getVersions()) === 'undefined' ||
