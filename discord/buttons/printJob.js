@@ -31,7 +31,7 @@ module.exports = async (button, discordClient) => {
     }
 
     if (!buttonMeta.required_status.includes(currentStatus)) {
-        console.log(langButtonMeta)
+        console.log(messageLocale)
         button.reply.send(langButtonMeta.status_not_valid.replace(/(\${username})/g, user.username))
     }
 
