@@ -95,6 +95,12 @@
                 "emoji": "👀",
                 "id":"test",
                 "style":"green"
+            },
+            {
+                "label":"Test",
+                "emoji": "👀",
+                "id":"test2",
+                "style":"green"
             }
         ],
         "activity": {
