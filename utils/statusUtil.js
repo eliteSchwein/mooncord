@@ -86,6 +86,8 @@ function broadcastMessage(message, discordClient) {
   const guildDatabase = database.getDatabase().guilds
   const notifyList = database.getNotifyList()
 
+  console.log(message)
+
   broadcastSection(guildDatabase, 'guilds', discordClient, message)
   broadcastSection(notifyList, 'users', discordClient, message)
 }
