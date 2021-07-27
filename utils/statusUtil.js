@@ -120,7 +120,7 @@ module.exports.changeStatus = async (discordClient, newStatus) => {
 
 module.exports.getManualStatusEmbed = async () => {
   const parsedConfig = parseConfig(currentStatus)
-  return await generateEmbed(parsedConfig)
+  return await chatUtil.generateStatusEmbed(parsedConfig)
 }
 
 module.exports.postBroadcastMessage = async (message, discordClient) => {
