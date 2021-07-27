@@ -52,7 +52,7 @@ async function changeStatus(discordClient, newStatus) {
 
   console.log(buttons)
 
-  broadcastMessage({ embed, buttons }, discordClient)
+  broadcastMessage({ embed, components: buttons }, discordClient)
 
   statusWaitList.shift()
   return true
