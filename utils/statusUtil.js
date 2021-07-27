@@ -84,7 +84,7 @@ function broadcastMessage(message, discordClient) {
   const guildDatabase = database.getDatabase().guilds
   const notifyList = database.getNotifyList()
 
-  //broadcastSection(guildDatabase, 'guilds', discordClient, message)
+  broadcastSection(guildDatabase, 'guilds', discordClient, message)
   broadcastSection(notifyList, 'users', discordClient, message)
 }
 
@@ -110,6 +110,7 @@ function parseConfig(status) {
 async function broadcastSection(list, section, discordClient, message) {
   for (const index in list) {
     const id = list[index]
+    console.log(id)
     channel = await discordClient[section].fetch(id)
     channel.send(message).catch('console.error')
   }
