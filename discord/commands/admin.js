@@ -92,7 +92,7 @@ module.exports = class AdminCommand extends SlashCommand {
 }
 
 async function editAdmin(isRole, adminid, guildid) {
-    const guild = await discordClient.getClient().guilds.fetch(guildid)
+    const guild = await discordClient.getClient.guilds.fetch(guildid)
     const guilddatabase = database.getGuildDatabase(guild)
     let adminarray = 'adminusers'
 

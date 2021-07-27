@@ -51,7 +51,7 @@ module.exports = class PrintJobCommand extends SlashCommand {
     }
 
     async run(ctx) {
-        if (!await permission.hasAdmin(ctx.user, ctx.guildID, discordClient.getClient())) {
+        if (!await permission.hasAdmin(ctx.user, ctx.guildID, discordClient.getClient)) {
             return locale.getAdminOnlyError(ctx.user.username)
         }
         const subcommand = ctx.subcommands[0]
@@ -101,7 +101,7 @@ module.exports = class PrintJobCommand extends SlashCommand {
 }
 
 async function addEmotes(commandContext, commandMessage) {
-    const channel = await discordClient.getClient().channels.fetch(commandContext.channelID)
+    const channel = await discordClient.getClient.channels.fetch(commandContext.channelID)
     const message = await channel.messages.fetch(commandMessage.id)
     message.react('✅')
     message.react('❌')

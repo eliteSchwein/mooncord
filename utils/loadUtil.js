@@ -123,7 +123,7 @@ function getImage(component) {
 async function postThrottle(component, section) {
   if(typeof(section) === 'undefined') { section = '' }
 
-  await waitUntil(() => discordClient.getClient().user !== null, { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 1000 })
+  await waitUntil(() => discordClient.getClient.user !== null, { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 1000 })
   
   const sentence = locale.loadthrottle.sentence
     .replace(/(\${reason})/g, `\`${locale.loadthrottle[component].name}\``)
@@ -137,7 +137,7 @@ async function postThrottle(component, section) {
     `${sentence}
   ${suggestion}`)
   
-  status.postBroadcastMessage(throttleEmbed, discordClient.getClient(), database)
+  status.postBroadcastMessage(throttleEmbed, discordClient.getClient, database)
 }
 
 function getDefaultEmbed(img, title) {

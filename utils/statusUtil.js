@@ -29,7 +29,7 @@ function getDiscordClient(altdiscordClient){
   if (typeof (altdiscordClient) !== 'undefined') {
     return altdiscordClient
   }
-  return discordClient.getClient()
+  return discordClient.getClient
 }
 
 async function postStatusChange(altdiscordClient, status) {

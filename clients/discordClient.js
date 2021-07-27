@@ -88,7 +88,7 @@ module.exports.init = async (discordToken, discordApplicationID, discordApplicat
   enableCommands( true )
   enableServer()
   enableEvents()
-  
 }
-module.exports.isConnected = function() { return connected }
-module.exports.getClient = function () { return discordClient }
+module.exports.isConnected = connected 
+module.exports.getClient = discordClient
+module.exports.getButtonHandler = buttons
