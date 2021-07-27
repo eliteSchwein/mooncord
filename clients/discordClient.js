@@ -66,11 +66,6 @@ function enableServer() {
     )
 }
 
-function enableButtons() {
-  console.log('  Enable Message Buttons'.statusmessage)
-  buttons(discordClient)
-}
-
 module.exports = {}
 module.exports.init = async (discordToken, discordApplicationID, discordApplicationKey) => {
   token = discordToken
@@ -93,7 +88,6 @@ module.exports.init = async (discordToken, discordApplicationID, discordApplicat
   enableCommands( true )
   enableServer()
   enableEvents()
-  enableButtons()
 }
 module.exports.isConnected = connected 
 module.exports.getClient = discordClient
