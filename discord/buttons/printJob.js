@@ -30,7 +30,7 @@ module.exports = async (button, discordClient) => {
         button.reply.send(langCommandMeta.status_same.replace(/(\${username})/g, user.username))
     }
 
-    if (!buttonMeta.requiredStatus.includes(currentStatus)) {
+    if (!buttonMeta.required_status.includes(currentStatus)) {
         button.reply.send(langCommandMeta.status_not_valid.replace(/(\${username})/g, user.username))
     }
 
