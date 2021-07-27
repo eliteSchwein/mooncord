@@ -35,7 +35,8 @@ async function changeStatus(discordClient, newStatus) {
   await waitUntil(() => discordClient.user !== null, { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 1500 })
 
   console.log(logSymbols.info, `Printer Status: ${newStatus}`.printstatus)
-  const parsedConfig = parseConfig(status)
+  
+  const parsedConfig = parseConfig(currentStatus)
 
   if (typeof (parsedConfig.activity) !== 'undefined') {
     discordClient.user.setActivity(
