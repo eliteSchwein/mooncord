@@ -13,6 +13,8 @@ const chatUtil = require('./chatUtil')
 
 const statusWaitList = []
 
+let currentStatus = "startup"
+
 async function changeStatus(discordClient, newStatus) {
   const id = Math.floor(Math.random() * Number.parseInt('10_000')) + 1
   const currentStatusMeta = metadata[currentStatus].meta_data
