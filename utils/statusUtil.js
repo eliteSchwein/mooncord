@@ -65,6 +65,8 @@ async function changeStatus(altdiscordClient, newStatus) {
 
   await waitUntil(() => statusWaitList[0] === id, { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 2000 })
 
+  await waitUntil(() => client.user !== null, { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 1500 })
+
   console.log(logSymbols.info, `Printer Status: ${newStatus}`.printstatus)
 
   await postStatusChange(client, newStatus)
@@ -213,7 +215,11 @@ module.exports.getManualStatusEmbed = async function (user) {
   return await generateEmbed(parsedConfig, user)
 }
 
-module.exports.postBroadcastMessage = (message, altdiscordClient, altdatabase, altramdatabase) => {
+module.exports.postBroadcastMessage = async (message, altdiscordClient, altdatabase, altramdatabase) => {
+  const client = getDiscordClient(altdiscordClient)
+
+  await waitUntil(() => client.user !== null, { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 1500 })
+
   postStatus(message, altdiscordClient, altdatabase, altramdatabase)
   notifyStatus(message, altdiscordClient, altdatabase, altramdatabase)
 }
