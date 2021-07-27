@@ -45,7 +45,7 @@ async function changeStatus(discordClient, newStatus) {
     )
   }
 
-  if (onCooldown(config)) { return }
+  if (onCooldown(config, currentStatusMeta.allow_same)) { return }
   
   const buttons = getButtons(parsedConfig)
   const embed = await chatUtil.generateStatusEmbed(parsedConfig)
@@ -71,9 +71,9 @@ function getButtons(config) {
   return row
 }
 
-function onCooldown(config) {
+function onCooldown(config, isSame) {
   if (!config.status.use_percent) { return false }
-  if (message.title !== locale.status.printing.title) { return false }
+  if (!isSame) { return false }
   if (database.getRamDatabase().cooldown !== 0) { return false }
   return true
 }
