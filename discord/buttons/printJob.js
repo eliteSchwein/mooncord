@@ -24,14 +24,13 @@ module.exports = async (button, discordClient) => {
 
     const currentStatus = statusUtil.getStatus()
     const buttonMeta = metaData[button.id]
-    const langButtonMeta = messageLocale.answer[button.id]
+    const langButtonMeta = messageLocale.answer[button.id.replace('printjob_','')]
 
     if (button.id === `printjob_${currentStatus}`) {
         button.reply.send(langButtonMeta.status_same.replace(/(\${username})/g, user.username))
     }
 
     if (!buttonMeta.required_status.includes(currentStatus)) {
-        console.log(messageLocale.answer)
         button.reply.send(langButtonMeta.status_not_valid.replace(/(\${username})/g, user.username))
     }
 
