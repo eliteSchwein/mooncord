@@ -91,16 +91,10 @@
         "color": "#0099ff",
         "buttons": [
             {
-                "label":"Test",
+                "label":"Sneak Peek",
                 "emoji": "👀",
                 "id":"test",
-                "style":"green"
-            },
-            {
-                "label":"Test",
-                "emoji": "👀",
-                "id":"test2",
-                "style":"green"
+                "style":"grey"
             }
         ],
         "activity": {
