@@ -103,20 +103,7 @@
         },
         "title": "${locale.title}",
         "color": "#0099ff",
-        "buttons": [
-            {
-                "label":"Resume",
-                "emoji": "▶️",
-                "id":"printjob_resume",
-                "style":"blurple"
-            },
-            {
-                "label":"Stop",
-                "emoji": "⛔",
-                "id":"printjob_cancel",
-                "style":"red"
-            }
-        ],
+        "buttons": [],
         "activity": {
             "type": "LISTENING",
             "text": "${locale.activity}"
