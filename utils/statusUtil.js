@@ -63,7 +63,7 @@ function getButtons(config) {
     const button = new MessageButton()
       .setStyle(buttonMeta.style)
       .setID(buttonMeta.id)
-      //.setEmoji(buttonMeta.emoji)
+      .setEmoji(buttonMeta.emoji)
       .setLabel(buttonMeta.label)
 
     row.push(button)
@@ -81,8 +81,6 @@ function onCooldown(config, isSame) {
 function broadcastMessage(message, discordClient) {
   const guildDatabase = database.getDatabase().guilds
   const notifyList = database.getNotifyList()
-
-  console.log(message)
 
   broadcastSection(guildDatabase, 'guilds', discordClient, message)
   broadcastSection(notifyList, 'users', discordClient, message)
