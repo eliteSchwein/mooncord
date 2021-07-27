@@ -105,10 +105,16 @@
         "color": "#0099ff",
         "buttons": [
             {
-                "label":"Sneak Peek",
-                "emoji": "👀",
-                "id":"test",
-                "style":"grey"
+                "label":"Resume",
+                "emoji": "▶️",
+                "id":"printjob_resume",
+                "style":"blurple"
+            },
+            {
+                "label":"Stop",
+                "emoji": "⛔",
+                "id":"printjob_cancel",
+                "style":"red"
             }
         ],
         "activity": {
