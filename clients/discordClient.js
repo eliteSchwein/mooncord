@@ -2,7 +2,6 @@ const { waitUntil } = require('async-wait-until')
 const Discord = require('discord.js')
 const path = require('path')
 const { GatewayServer, SlashCreator } = require('slash-create')
-const buttons = require('discord-buttons');
 
 const events = require('../discord/events')
 const variables = require('../utils/variablesUtil')
@@ -56,11 +55,6 @@ function enableCreator() {
   })
 }
 
-function enableButtons() {
-  console.log('  Enable Message Buttons'.statusmessage)
-  buttons(discordClient)
-}
-
 function enableServer() {
   console.log('  Enable Slash Command Server'.statusmessage)
   
@@ -89,7 +83,6 @@ module.exports.init = async (discordToken, discordApplicationID, discordApplicat
   enableCreator()
   enableCommands( true )
   enableServer()
-  enableButtons()
   enableEvents()
 }
 module.exports.isConnected = connected 
