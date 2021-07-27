@@ -7,7 +7,14 @@
         },
         "title": "${locale.title}",
         "color": "#c90000",
-        "buttons": [],
+        "buttons": [
+            {
+                "label":"Klipper Restart",
+                "emoji": "🔄",
+                "id":"klipper_restart",
+                "style":"blurple"
+            }
+        ],
         "activity": {
             "type": "LISTENING",
             "text": "${locale.activity}"
@@ -21,7 +28,14 @@
         },
         "title": "${locale.title}",
         "color": "#c90000",
-        "buttons": [],
+        "buttons": [
+            {
+                "label":"Klipper Restart",
+                "emoji": "🔄",
+                "id":"klipper_restart",
+                "style":"blurple"
+            }
+        ],
         "activity": {
             "type": "LISTENING",
             "text": "${locale.activity}"
@@ -171,7 +185,20 @@
         "color": "#dbd400",
         "author": "${gcode_file}",
         "thumbnail": true,
-        "buttons": [],
+        "buttons": [
+            {
+                "label":"Resume",
+                "emoji": "▶️",
+                "id":"printjob_resume",
+                "style":"blurple"
+            },
+            {
+                "label":"Stop",
+                "emoji": "⛔",
+                "id":"printjob_cancel",
+                "style":"red"
+            }
+        ],
         "activity": {
             "type": "PLAYING",
             "text": "${locale.activity}"
@@ -205,7 +232,20 @@
         "color": "#0099ff",
         "author": "${gcode_file}",
         "thumbnail": true,
-        "buttons": [],
+        "buttons": [
+            {
+                "label":"Pause",
+                "emoji": "☕",
+                "id":"printjob_pause",
+                "style":"grey"
+            },
+            {
+                "label":"Stop",
+                "emoji": "⛔",
+                "id":"printjob_cancel",
+                "style":"red"
+            }
+        ],
         "fields": [
             {
                 "name": "${locale.print_time}",
