@@ -12,6 +12,7 @@ module.exports = async (button, discordClient) => {
     const user = button.clicker.user
 
     if (message.author.id !== discordClient.user.id) { return }
+    console.log(Object.keys(metaData).includes(button.id))
     if (!Object.keys(metaData).includes(button.id)) { return }
 
     let guildID
