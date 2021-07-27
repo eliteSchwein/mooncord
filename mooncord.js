@@ -30,7 +30,7 @@ colors.setTheme({
 systemInfo.osInfo()
   .then(async data => {
     console.log(`\n
-    __  __                     ${'____              _'.statustitle}
+     __  __                     ${'____              _'.statustitle}
     |  \\/  | ___   ___  _ __   ${'/ ___|___  _ __ __| |'.statustitle}
     | |\\/| |/ _ \\ / _ \\| '_ \\ ${'| |   / _ \\| \'__/ _\` |'.statustitle}
     | |  | | (_) | (_) | | | |${'| |__| (_) | | | (_| |'.statustitle}
