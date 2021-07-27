@@ -1,14 +1,13 @@
 const { waitUntil } = require('async-wait-until')
 const Discord = require('discord.js')
 const path = require('path')
-const buttons = require('discord-buttons')
 const { GatewayServer, SlashCreator } = require('slash-create')
 
 const events = require('../discord/events')
 const variables = require('../utils/variablesUtil')
 
-
 const discordClient = new Discord.Client()
+const buttons = require('discord-buttons')(discordClient)
 
 let creator
 let connected = false
