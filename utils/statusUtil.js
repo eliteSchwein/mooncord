@@ -1,4 +1,5 @@
 const { waitUntil } = require('async-wait-until')
+const { MessageActionRow, MessageButton } = require('discord-buttons')
 const Discord = require('discord.js')
 const logSymbols = require('log-symbols')
 
@@ -35,6 +36,18 @@ function getDiscordClient(altdiscordClient){
 async function postStatusChange(altdiscordClient, status) {
   const parsedConfig = parseConfig(status)
 
+  const row = new MessageActionRow()
+
+  for(const buttonMeta in parseConfig.buttons) {
+    const button = new MessageButton()
+      .setStyle(buttonMeta.style)
+      .setID(buttonMeta.id)
+      .setEmoji(buttonMeta.emoji)
+      .setLabel(buttonMeta.label)
+
+    row.addComponent(button)
+  }
+
   const embed = await generateEmbed(parsedConfig)
 
   if (typeof (parsedConfig.activity) !== 'undefined') {
@@ -43,8 +56,8 @@ async function postStatusChange(altdiscordClient, status) {
       { type: parsedConfig.activity.type }
     )
   }
-  postStatus(embed, altdiscordClient)
-  notifyStatus(embed, altdiscordClient)
+  postStatus(embed, row, altdiscordClient)
+  notifyStatus(embed, row, altdiscordClient)
 }
 
 async function changeStatus(altdiscordClient, newStatus) {
@@ -137,7 +150,7 @@ async function generateEmbed(config, user) {
   return embed
 }
 
-function postStatus(message, altdiscordClient, altdatabase) {
+function postStatus(message, buttons, altdiscordClient, altdatabase) {
   const client = getDiscordClient(altdiscordClient)
 
   const maindatabase = getCurrentDatabase(altdatabase)
@@ -154,11 +167,11 @@ function postStatus(message, altdiscordClient, altdatabase) {
             message.title === locale.status.printing.title) {
             if (ramdatabase.cooldown === 0) {
               await removeOldStatus(channel, client)
-              channel.send(message)
+              channel.send(message, buttons)
               maindatabase.updateRamDatabase("cooldown", config.status.min_interval)
             }
           } else {
-            channel.send(message)
+            channel.send(message, buttons)
           }
         }
       })
@@ -178,7 +191,7 @@ async function removeOldStatus(channel, discordClient) {
   await lastMessage.delete()
 }
 
-function notifyStatus(message, altdiscordClient, altdatabase) {
+function notifyStatus(message, buttons, altdiscordClient, altdatabase) {
   const client = getDiscordClient(altdiscordClient)
 
   const maindatabase = getCurrentDatabase(altdatabase)
@@ -195,11 +208,11 @@ function notifyStatus(message, altdiscordClient, altdatabase) {
               message.title === locale.status.printing.title) {
           if (ramdatabase.cooldown === 0) {
             await removeOldStatus(user.dmChannel, client)
-            user.send(message).catch('console.error')
+            user.send(message, buttons).catch('console.error')
             maindatabase.updateRamDatabase("cooldown", config.status.min_interval)
           }
         } else {
-          user.send(message).catch('console.error')
+          user.send(message, buttons).catch('console.error')
         }
       })
       .catch((error) => { console.log(logSymbols.error, `Status Util: ${error}`.error) })
