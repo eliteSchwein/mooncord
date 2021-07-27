@@ -23,8 +23,8 @@ module.exports = async (button, discordClient) => {
     }
 
     const currentStatus = statusUtil.getStatus()
-    const buttonMeta = metaData[key]
-    const langCommandMeta = messageLocale.answer[key]
+    const buttonMeta = metaData[button.id]
+    const langCommandMeta = messageLocale.answer[button.id]
 
     if (subcommand === currentStatus) {
         button.reply.send(langCommandMeta.status_same.replace(/(\${username})/g, user.username))
