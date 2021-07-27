@@ -68,7 +68,11 @@ function getButtons(config) {
 
     row.addComponent(button)
   }
-  return row
+  return new MessageButton()
+      .setStyle("grey")
+      .setID("as")
+      //.setEmoji(buttonMeta.emoji)
+      .setLabel("buttonMeta.label")
 }
 
 function onCooldown(config, isSame) {
