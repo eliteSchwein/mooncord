@@ -112,6 +112,7 @@ async function broadcastSection(list, section, discordClient, message) {
     let id = list[index]
 
     console.log(Array.isArray(list))
+    console.log(list)
     if (!Array.isArray(list)) {
       broadcastMessage(list[index].broadcastchannels, 'channels', discordClient, message)
       return
