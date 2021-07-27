@@ -1,4 +1,4 @@
 const test = require('./test')
-module.exports = (button) => {
-  test(button.message)
+module.exports = (button, discordClient) => {
+  test(button, discordClient)
 }

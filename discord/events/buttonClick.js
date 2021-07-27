@@ -1,11 +1,8 @@
 const handlers = require('../buttons')
 
-let discordClient
-
-const enableEvent = (dcClient) => {
-  discordClient = dcClient
+const enableEvent = (discordClient) => {
   discordClient.on('clickButton', (button) => {
-    handlers(button)
+    handlers(button, discordClient)
   })
 }
 module.exports = enableEvent
