@@ -79,8 +79,6 @@ function onCooldown(config, isSame) {
 }
 
 function broadcastMessage(message, discordClient) {
-  console.log(message)
-
   const guildDatabase = database.getDatabase().guilds
   const notifyList = database.getNotifyList()
 
@@ -114,7 +112,7 @@ async function broadcastSection(list, section, discordClient, message) {
     console.log(Array.isArray(list))
     console.log(list)
     if (!Array.isArray(list)) {
-      broadcastMessage(list[index].broadcastchannels, 'channels', discordClient, message)
+      broadcastSection(list[index].broadcastchannels, 'channels', discordClient, message)
       return
     }
     channel = await discordClient[section].fetch(id)
