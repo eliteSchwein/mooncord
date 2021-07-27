@@ -109,8 +109,10 @@ function parseConfig(status) {
 
 async function broadcastSection(list, section, discordClient, message) {
   for (const index in list) {
-    const id = list[index]
-    console.log(id)
+    let id = list[index]
+
+    if (!Array.isArray(list)) { id = index }
+    
     channel = await discordClient[section].fetch(id)
     channel.send(message).catch('console.error')
   }
