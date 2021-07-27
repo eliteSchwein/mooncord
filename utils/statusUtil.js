@@ -59,7 +59,8 @@ async function changeStatus(discordClient, newStatus) {
 function getButtons(config) {
   const row = new MessageActionRow()
 
-  for(const buttonMeta in config.buttons) {
+  for (const buttonMeta in config.buttons) {
+    console.log(buttonMeta)
     const button = new MessageButton()
       .setStyle(buttonMeta.style)
       .setID(buttonMeta.id)
