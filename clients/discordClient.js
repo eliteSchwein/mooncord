@@ -87,4 +87,3 @@ module.exports.init = async (discordToken, discordApplicationID, discordApplicat
 }
 module.exports.isConnected = connected 
 module.exports.getClient = discordClient
-module.exports.getButtonHandler = buttons
