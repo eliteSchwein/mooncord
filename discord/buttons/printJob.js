@@ -13,7 +13,12 @@ module.exports = async (button, discordClient) => {
 
     if (message.author.id !== discordClient.user.id) { return }
     if (!Object.keys(metaData).includes(button.id)) { return }
-    if (!await permission.hasAdmin(user, button.guild.id, discordClient)) {
+
+    let guildID
+
+    if(typeof(button.guild) !== 'undefined') { guildID = button.guild.id }
+
+    if (!await permission.hasAdmin(user, guildID, discordClient)) {
         button.reply.send(message.channel.send(locale.getAdminOnlyError(user.username)))
     }
 
