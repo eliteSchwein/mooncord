@@ -1,68 +1,20 @@
 const { waitUntil } = require('async-wait-until')
 const { MessageActionRow, MessageButton } = require('discord-buttons')
-const Discord = require('discord.js')
 const logSymbols = require('log-symbols')
 
 const args = process.argv.slice(2)
-
-const discordClient = require('../clients/discordClient')
  
 const config = require(`${args[0]}/mooncord.json`)
 const database = require('./databaseUtil')
 const locale = require('./localeUtil')
 const metadata = require('./status_meta_data.json')
-const thumbnail = require('./thumbnailUtil')
 const variables = require('./variablesUtil')
-const webcam = require('./webcamUtil')
+const chatUtil = require('./chatUtil')
 
 const statusWaitList = []
 
-let currentStatus = "startup"
-
-function getCurrentDatabase(altdatabase){
-  if(typeof(altdatabase) !== 'undefined'){
-    return altdatabase
-  }
-  return database
-}
-
-function getDiscordClient(altdiscordClient){
-  if (typeof (altdiscordClient) !== 'undefined') {
-    return altdiscordClient
-  }
-  return discordClient.getClient
-}
-
-async function postStatusChange(altdiscordClient, status) {
-  const parsedConfig = parseConfig(status)
-
-  const row = new MessageActionRow()
-
-  for(const buttonMeta in parseConfig.buttons) {
-    const button = new MessageButton()
-      .setStyle(buttonMeta.style)
-      .setID(buttonMeta.id)
-      .setEmoji(buttonMeta.emoji)
-      .setLabel(buttonMeta.label)
-
-    row.addComponent(button)
-  }
-
-  const embed = await generateEmbed(parsedConfig)
-
-  if (typeof (parsedConfig.activity) !== 'undefined') {
-    altdiscordClient.user.setActivity(
-      parsedConfig.activity.text,
-      { type: parsedConfig.activity.type }
-    )
-  }
-  postStatus(embed, row, altdiscordClient)
-  notifyStatus(embed, row, altdiscordClient)
-}
-
-async function changeStatus(altdiscordClient, newStatus) {
+async function changeStatus(discordClient, newStatus) {
   const id = Math.floor(Math.random() * Number.parseInt('10_000')) + 1
-  const client = getDiscordClient(altdiscordClient)
   const currentStatusMeta = metadata[currentStatus].meta_data
   const newStatusMeta = metadata[newStatus].meta_data
 
@@ -78,14 +30,57 @@ async function changeStatus(altdiscordClient, newStatus) {
 
   await waitUntil(() => statusWaitList[0] === id, { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 2000 })
 
-  await waitUntil(() => client.user !== null, { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 1500 })
+  await waitUntil(() => discordClient.user !== null, { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 1500 })
 
   console.log(logSymbols.info, `Printer Status: ${newStatus}`.printstatus)
+  const parsedConfig = parseConfig(status)
 
-  await postStatusChange(client, newStatus)
+  if (typeof (parsedConfig.activity) !== 'undefined') {
+    discordClient.user.setActivity(
+      parsedConfig.activity.text,
+      { type: parsedConfig.activity.type }
+    )
+  }
+
+  if (onCooldown(config)) { return }
+  
+  const buttons = getButtons(parsedConfig)
+  const embed = await chatUtil.generateStatusEmbed(parsedConfig)
+
+  broadcastMessage({ embed: embed, component: buttons }, discordClient)
 
   statusWaitList.shift()
   return true
+}
+
+function getButtons(config) {
+  const row = new MessageActionRow()
+
+  for(const buttonMeta in config.buttons) {
+    const button = new MessageButton()
+      .setStyle(buttonMeta.style)
+      .setID(buttonMeta.id)
+      .setEmoji(buttonMeta.emoji)
+      .setLabel(buttonMeta.label)
+
+    row.addComponent(button)
+  }
+  return row
+}
+
+function onCooldown(config) {
+  if (!config.status.use_percent) { return false }
+  if (message.title !== locale.status.printing.title) { return false }
+  if (database.getRamDatabase().cooldown !== 0) { return false }
+  return true
+}
+
+function broadcastMessage(message, discordClient) {
+  const guildDatabase = database.getGuildDatabase()
+  const notifyList = database.getNotifyList()
+
+  broadcastSection(guildDatabase, 'guilds', discordClient, message)
+  broadcastSection(notifyList, 'users', discordClient, message)
 }
 
 function parseConfig(status) {
@@ -107,133 +102,26 @@ function parseConfig(status) {
   return JSON.parse(parsedConfig)
 }
 
-async function generateEmbed(config, user) {
-  const snapshot = await webcam.retrieveWebcam()
-  const embed = new Discord.MessageEmbed()
-    .setColor(config.color)
-    .setTitle(config.title)
-    .attachFiles([snapshot])
-    .setImage(`attachment://${snapshot.name}`)
-  
-  if (typeof (config.author) !== 'undefined') {
-    embed.setAuthor(config.author)
-  }
-  
-  if (config.thumbnail) {
-    const thumbnailpic = await thumbnail.retrieveThumbnail()
-    embed
-      .attachFiles([thumbnailpic])
-      .setThumbnail(`attachment://${thumbnailpic.name}`)
-  }
-
-  if (typeof (config.fields) !== 'undefined') {
-    for (const index in config.fields) {
-      embed.addField(config.fields[index].name, config.fields[index].value, true)
-    }
-  }
-  if (config.versions) {
-    const currentVersions = variables.getVersions()
-    for (const component in currentVersions) {
-      if (component !== 'system') {
-        const componentdata = currentVersions[component]
-        let {version} = componentdata
-        if (version !== componentdata.remote_version) {
-          version = version.concat(` **(${componentdata.remote_version})**`)
-        }
-        embed.addField(component, version, true)
-      }
-    }
-  }
-  
-  embed.setTimestamp()
-  
-  return embed
-}
-
-function postStatus(message, buttons, altdiscordClient, altdatabase) {
-  const client = getDiscordClient(altdiscordClient)
-
-  const maindatabase = getCurrentDatabase(altdatabase)
-  const botdatabase = maindatabase.getDatabase()
-  const ramdatabase = maindatabase.getRamDatabase()
-  
-  for (const guildid in botdatabase.guilds) {
-    client.guilds.fetch(guildid)
-      .then(async (guild) => {
-        const guilddatabase = botdatabase.guilds[guild.id]
-        for (const index in guilddatabase.broadcastchannels) {
-          const channel = await client.channels.fetch(guilddatabase.broadcastchannels[index])
-          if (config.status.use_percent &&
-            message.title === locale.status.printing.title) {
-            if (ramdatabase.cooldown === 0) {
-              await removeOldStatus(channel, client)
-              channel.send(message, buttons)
-              maindatabase.updateRamDatabase("cooldown", config.status.min_interval)
-            }
-          } else {
-            channel.send(message, buttons)
-          }
-        }
-      })
-      .catch((error) => { console.log(logSymbols.error, `Status Util: ${error}`.error) })
+async function broadcastSection(list, section, discordClient, message) {
+  for (const index in list) {
+    const id = list[index]
+    channel = await discordClient[section].fetch(id)
+    channel.send(message).catch('console.error')
   }
 }
 
-async function removeOldStatus(channel, discordClient) {
-  if(channel === null) { return }
-  let lastMessage = await channel.messages.fetch({ limit: 1 })
-  lastMessage = lastMessage.first()
-
-  if (lastMessage.author.id !== discordClient.user.id) { return }
-  if (lastMessage.embeds.size === 0) { return }
-  if (lastMessage.embeds[0].title !== locale.status.printing.title) { return }
-
-  await lastMessage.delete()
+module.exports.changeStatus = async (discordClient, newStatus) => {
+  return await changeStatus(discordClient, newStatus)
 }
 
-function notifyStatus(message, buttons, altdiscordClient, altdatabase) {
-  const client = getDiscordClient(altdiscordClient)
-
-  const maindatabase = getCurrentDatabase(altdatabase)
-  const botdatabase = maindatabase.getDatabase()
-  const ramdatabase = maindatabase.getRamDatabase()
-
-  const notifylist = botdatabase.notify
-
-  for (const notifyindex in notifylist) {
-    const clientid = notifylist[notifyindex]
-    client.users.fetch(clientid)
-      .then(async (user) => {
-        if (config.status.use_percent &&
-              message.title === locale.status.printing.title) {
-          if (ramdatabase.cooldown === 0) {
-            await removeOldStatus(user.dmChannel, client)
-            user.send(message, buttons).catch('console.error')
-            maindatabase.updateRamDatabase("cooldown", config.status.min_interval)
-          }
-        } else {
-          user.send(message, buttons).catch('console.error')
-        }
-      })
-      .catch((error) => { console.log(logSymbols.error, `Status Util: ${error}`.error) })
-  }
-}
-
-module.exports.changeStatus = async function (altdiscordClient, newStatus) {
-  return await changeStatus(altdiscordClient, newStatus)
-}
-
-module.exports.getManualStatusEmbed = async function (user) {
+module.exports.getManualStatusEmbed = async () => {
   const parsedConfig = parseConfig(currentStatus)
-  return await generateEmbed(parsedConfig, user)
+  return await generateEmbed(parsedConfig)
 }
 
-module.exports.postBroadcastMessage = async (message, altdiscordClient, altdatabase, altramdatabase) => {
-  const client = getDiscordClient(altdiscordClient)
-
-  await waitUntil(() => client.user !== null, { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 1500 })
-
-  postStatus(message, altdiscordClient, altdatabase, altramdatabase)
-  notifyStatus(message, altdiscordClient, altdatabase, altramdatabase)
+module.exports.postBroadcastMessage = async (message, discordClient) => {
+  await waitUntil(() => discordClient.user !== null, { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 1500 })
+  broadcastMessage(message, discordClient)
 }
+
 module.exports.getStatus = () => { return currentStatus }
