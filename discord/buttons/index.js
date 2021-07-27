@@ -1,4 +1,4 @@
-const test = require('test')
+const test = require('./test')
 module.exports = (button) => {
   test(button)
 }
