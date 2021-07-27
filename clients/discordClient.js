@@ -89,8 +89,8 @@ module.exports.init = async (discordToken, discordApplicationID, discordApplicat
   enableCreator()
   enableCommands( true )
   enableServer()
-  enableEvents()
   enableButtons()
+  enableEvents()
 }
 module.exports.isConnected = connected 
 module.exports.getClient = discordClient
