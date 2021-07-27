@@ -57,8 +57,7 @@ async function changeStatus(discordClient, newStatus) {
 }
 
 function getButtons(config) {
-  const row = new MessageActionRow()
-
+  const row = []
   for (const index in config.buttons) {
     const buttonMeta = config.buttons[index]
     const button = new MessageButton()
@@ -67,7 +66,7 @@ function getButtons(config) {
       .setEmoji(buttonMeta.emoji)
       .setLabel(buttonMeta.label)
 
-    row.addComponent(button)
+    row.push(button)
   }
   return row
 }
