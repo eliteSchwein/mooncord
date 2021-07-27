@@ -50,7 +50,7 @@ async function changeStatus(discordClient, newStatus) {
   const buttons = getButtons(parsedConfig)
   const embed = await chatUtil.generateStatusEmbed(parsedConfig)
 
-  broadcastMessage( embed , discordClient)
+  broadcastMessage({ embed: embed, component: buttons }, discordClient)
 
   statusWaitList.shift()
   return true
@@ -84,7 +84,7 @@ function broadcastMessage(message, discordClient) {
   const guildDatabase = database.getDatabase().guilds
   const notifyList = database.getNotifyList()
 
-  broadcastSection(guildDatabase, 'guilds', discordClient, message)
+  //broadcastSection(guildDatabase, 'guilds', discordClient, message)
   broadcastSection(notifyList, 'users', discordClient, message)
 }
 
