@@ -12,7 +12,6 @@ module.exports = async (button, discordClient) => {
     const user = button.clicker.user
 
     if (message.author.id !== discordClient.user.id) { return }
-    console.log(metaData[button.id])
     if (!Object.keys(metaData).includes(button.id)) { return }
 
     let guildID
@@ -25,14 +24,15 @@ module.exports = async (button, discordClient) => {
 
     const currentStatus = statusUtil.getStatus()
     const buttonMeta = metaData[button.id]
-    const langCommandMeta = messageLocale.answer[button.id]
+    const langButtonMeta = messageLocale.answer[button.id]
 
     if (button.id === `printjob_${currentStatus}`) {
-        button.reply.send(langCommandMeta.status_same.replace(/(\${username})/g, user.username))
+        button.reply.send(langButtonMeta.status_same.replace(/(\${username})/g, user.username))
     }
 
     if (!buttonMeta.required_status.includes(currentStatus)) {
-        button.reply.send(langCommandMeta.status_not_valid.replace(/(\${username})/g, user.username))
+        console.log(langButtonMeta)
+        button.reply.send(langButtonMeta.status_not_valid.replace(/(\${username})/g, user.username))
     }
 
     const connection = moonrakerClient.getConnection()
