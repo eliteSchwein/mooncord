@@ -50,7 +50,7 @@ async function changeStatus(discordClient, newStatus) {
   const buttons = getButtons(parsedConfig)
   const embed = await chatUtil.generateStatusEmbed(parsedConfig)
 
-  broadcastMessage({ embed: embed, component: buttons }, discordClient)
+  broadcastMessage({ embed: embed, buttons: buttons }, discordClient)
 
   statusWaitList.shift()
   return true
