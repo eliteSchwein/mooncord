@@ -21,10 +21,7 @@ async function enableEvents(discordClient) {
     console.log('  Moonraker Client Connected'.success)
 
     WSconnection = connection
-
     
-    await waitUntil(() => discordClient.getClient().user !== null, { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 1500 })
-
     console.log('  Sent initial Moonraker commands'.statusmessage)
 
     connection.send(`{"jsonrpc": "2.0", "method": "machine.update.status", "params":{"refresh": "false"}, "id": ${id}}`)
@@ -48,7 +45,7 @@ async function enableEvents(discordClient) {
     connection.on('close', () => {
       console.log('  WebSocket Connection Closed'.error)
       console.log('  Reconnect in 5 sec'.error)
-      status.changeStatus(discordClient.getClient(), 'offline')
+      status.changeStatus(discordClient.getClient, 'offline')
       setTimeout(() => {
         client.connect(url)
       }, 5000)
@@ -78,7 +75,7 @@ function connect(discordClient) {
 
   client.on('connectFailed', (error) => {
     console.log(logSymbols.error, `Moonrakerclient: ${error}`.error)
-    status.changeStatus(discordClient.getClient(), 'offline')
+    status.changeStatus(discordClient.getClient, 'offline')
     console.log('  Please check your Config!'.error)
     setTimeout(() => {
       process.exit(5)

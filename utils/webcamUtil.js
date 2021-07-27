@@ -1,53 +1,90 @@
-const Discord = require('discord.js')
-const logSymbols = require('log-symbols')
-const fs = require('fs').promises
-const path = require('path')
-const jimp = require('jimp')
-const axios = require('axios')
+const Discord = require("discord.js")
+const logSymbols = require("log-symbols")
+const fs = require("fs").promises
+const fetch = require("node-fetch")
+const path = require("path")
+const jimp = require("jimp")
+const axios = require("axios")
 
 const args = process.argv.slice(2)
 
-const moonrakerClient = require('../clients/moonrakerClient')
+const moonrakerClient = require("../clients/moonrakerClient")
 
 const config = require(`${args[0]}/mooncord.json`)
 
 async function retrieveWebcam() {
+  const { webcam } = config
+  const {
+    brightness,
+    contrast,
+    greyscale,
+    horizontal_mirror,
+    quality,
+    rotation,
+    sepia,
+    vertical_mirror,
+  } = webcam
 
   const beforeStatus = config.status.before
   const afterStatus = config.status.after
 
   await executePostProcess(beforeStatus)
 
-  return jimp.read(config.webcam.url)
-    .then(
-      async image => {
-        image.quality(config.webcam.quality)
-        image.rotate(config.webcam.rotation)
-        image.mirror(config.webcam.horizontal_mirror, config.webcam.vertical_mirror)
-        image.contrast(config.webcam.contrast)
-        image.brightness(config.webcam.brightness)
-        if (config.webcam.greyscale) {
-          image.greyscale()
-        }
-        if (config.webcam.sepia) {
-          image.sepia()
-        }
-        const editbuffer = await image.getBufferAsync(jimp.MIME_PNG)
+  try {
+    // @ts-ignore
+    const res = await fetch(webcam.url)
+    const buffer = await res.buffer()
 
-        await executePostProcess(afterStatus)
+    // Only run Jimp if they want the image modifed
+    if (
+      brightness ||
+      contrast ||
+      greyscale ||
+      horizontal_mirror ||
+      rotation ||
+      sepia ||
+      vertical_mirror
+    ) {
+      const image = await jimp.read(buffer)
 
-        return new Discord.MessageAttachment(editbuffer, 'snapshot.png')
-    })
-    .catch(
-      async error => {
-        if (error) {
-          console.log(logSymbols.error, `Webcam Util: ${error}`.error)
-          return new Discord.MessageAttachment(await fs.readFile(path.resolve(__dirname, '../images/snapshot-error.png')), 'snapshot-error.png')
-        }
+      image
+        .quality(quality)
+        .rotate(rotation)
+        .mirror(horizontal_mirror, vertical_mirror)
+        .contrast(contrast)
+        .brightness(brightness)
+
+      if (greyscale) {
+        image.greyscale()
       }
-    )
-}
 
+      if (sepia) {
+        image.sepia()
+      }
+      const editbuffer = await image.getBufferAsync(jimp.MIME_PNG)
+
+      await executePostProcess(afterStatus)
+
+      return new Discord.MessageAttachment(editbuffer, "snapshot.png")
+    }
+
+    // Else just send the normal images
+    await executePostProcess(afterStatus)
+
+    return new Discord.MessageAttachment(buffer, "snapshot.png")
+  } catch (error) {
+    if (error) {
+      console.log(logSymbols.error, `Webcam Util: ${error}`)
+
+      return new Discord.MessageAttachment(
+        await fs.readFile(
+          path.resolve(__dirname, "../images/snapshot-error.png")
+        ),
+        "snapshot-error.png"
+      )
+    }
+  }
+}
 
 async function executePostProcess(config) {
   if (!config.enable || config.execute.length === 0) {
@@ -62,8 +99,12 @@ async function executePostProcess(config) {
     const execute = config.execute[index]
     if (execute.startsWith("gcode:")) {
       const gcode = execute.replace("gcode:", "")
-      const id = Math.floor(Math.random() * Number.parseInt('10_000')) + 1
-      moonrakerClient.getConnection().send(`{"jsonrpc": "2.0", "method": "printer.gcode.script", "params": {"script": "${gcode}"}, "id": ${id}}`)
+      const id = Math.floor(Math.random() * Number.parseInt("10_000")) + 1
+      moonrakerClient
+        .getConnection()
+        .send(
+          `{"jsonrpc": "2.0", "method": "printer.gcode.script", "params": {"script": "${gcode}"}, "id": ${id}}`
+        )
     }
     if (execute.startsWith("website_post:")) {
       const url = execute.replace("website_post:", "")
@@ -89,7 +130,7 @@ async function triggerWebsite(url, post) {
 }
 
 async function sleep(delay) {
-  return await new Promise(r => setTimeout(r, delay))
+  return await new Promise((r) => setTimeout(r, delay))
 }
 
 module.exports.retrieveWebcam = function () {

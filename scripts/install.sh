@@ -76,15 +76,19 @@ locate_config()
         echo "your config path is now $filepath"
 }
 
-generate_config()
-{
+generate_config() {
     echo "Generate Configs"
     cp $SCRIPTPATH/mooncord.json $MCCONFIGPATH/mooncord.json
     cp $SCRIPTPATH/database.json $MCPATH/database.json
 }
 
-start_MoonCord() {
+open_config() {
+    echo "Open Config"
+    sleep 1
+    nano $MCCONFIGPATH/mooncord.json
+}
 
+start_MoonCord() {
     echo "Start MoonCord, please make sure you configured the Bot correctly!"
     sudo systemctl start MoonCord
 }
@@ -92,5 +96,6 @@ start_MoonCord() {
 install_packages
 modify_user
 setup
+open_config
 install_systemd_service
 start_MoonCord

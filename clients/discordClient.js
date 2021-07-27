@@ -77,6 +77,10 @@ module.exports.init = async (discordToken, discordApplicationID, discordApplicat
   token = discordToken
   applicationID = discordApplicationID
   applicationKey = discordApplicationKey
+
+  await waitUntil(() => variables.dump !== variables.dumpRaw, { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 1500 })
+  await waitUntil(() => Object.keys(variables.getMCUList()).length > 0, { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 1500 })
+  
   console.log(`\n
   ${
   ` ___  _                   _
@@ -92,5 +96,6 @@ module.exports.init = async (discordToken, discordApplicationID, discordApplicat
   enableEvents()
   enableButtons()
 }
-module.exports.isConnected = function() { return connected }
-module.exports.getClient = function () { return discordClient }
+module.exports.isConnected = connected 
+module.exports.getClient = discordClient
+module.exports.getButtonHandler = buttons

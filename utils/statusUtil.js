@@ -29,7 +29,7 @@ function getDiscordClient(altdiscordClient){
   if (typeof (altdiscordClient) !== 'undefined') {
     return altdiscordClient
   }
-  return discordClient.getClient()
+  return discordClient.getClient
 }
 
 async function postStatusChange(altdiscordClient, status) {
@@ -64,6 +64,8 @@ async function changeStatus(altdiscordClient, newStatus) {
   currentStatus = newStatus
 
   await waitUntil(() => statusWaitList[0] === id, { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 2000 })
+
+  await waitUntil(() => client.user !== null, { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 1500 })
 
   console.log(logSymbols.info, `Printer Status: ${newStatus}`.printstatus)
 
@@ -213,7 +215,11 @@ module.exports.getManualStatusEmbed = async function (user) {
   return await generateEmbed(parsedConfig, user)
 }
 
-module.exports.postBroadcastMessage = (message, altdiscordClient, altdatabase, altramdatabase) => {
+module.exports.postBroadcastMessage = async (message, altdiscordClient, altdatabase, altramdatabase) => {
+  const client = getDiscordClient(altdiscordClient)
+
+  await waitUntil(() => client.user !== null, { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 1500 })
+
   postStatus(message, altdiscordClient, altdatabase, altramdatabase)
   notifyStatus(message, altdiscordClient, altdatabase, altramdatabase)
 }

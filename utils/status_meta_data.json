@@ -80,7 +80,7 @@
         "meta_data": {
             "order_id": 1,
             "allow_same": false,
-            "prevent": []
+            "prevent": ["done"]
         },
         "title": "${locale.title}",
         "color": "#0099ff",
