@@ -26,7 +26,7 @@ module.exports = async (button, discordClient) => {
     const buttonMeta = metaData[button.id]
     const langCommandMeta = messageLocale.answer[button.id]
 
-    if (subcommand === currentStatus) {
+    if (button.id === `printjob_${currentStatus}`) {
         button.reply.send(langCommandMeta.status_same.replace(/(\${username})/g, user.username))
     }
 
