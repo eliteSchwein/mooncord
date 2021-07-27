@@ -20,25 +20,36 @@ const event = (message, connection, discordClient, database) => {
         diffVersions[software] = difference
       }
     }
-    postUpdate(diffVersions, discordClient, database)
     variables.setVersions(result.version_info)
+    postUpdate(diffVersions, discordClient, database)
   }
 }
 
 function getDifference(software, softwareinfo) {
   if (software === 'system') {
-    if (softwareinfo.package_count !== 0 &&
-      (typeof (variables.getVersions()) === 'undefined' ||
-        softwareinfo.package_count !== variables.getVersions()[software].package_count)) {
+    if (softwareinfo.package_count === 0) { return }
+
+    let oldPackageAmount = 0
+
+    if (Object.keys(variables.getVersions()).length > 0) {
+      oldPackageAmount = variables.getVersions()[software].package_count
+    }
+
+    if (softwareinfo.package_count !== oldPackageAmount) {
       return {
         'packages': softwareinfo.package_count
       }
     }
   } else {
-    if (softwareinfo.version !== softwareinfo.remote_version &&
-      (typeof (variables.getVersions()) === 'undefined' ||
-        typeof(variables.getVersions()[software]) === 'undefined' ||
-        softwareinfo.remote_version !== variables.getVersions()[software].remote_version)) {
+    if (softwareinfo.version === softwareinfo.remote_version) { return }
+
+    let oldVersionData = ''
+
+    if (typeof (variables.getVersions()[software]) !== 'undefined') {
+      oldVersionData = variables.getVersions()[software].remote_version
+    }
+    
+    if (softwareinfo.remote_version !== oldVersionData) {
       return {
         'current': softwareinfo.version,
         'remote': softwareinfo.remote_version
