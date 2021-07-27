@@ -50,9 +50,7 @@ async function changeStatus(discordClient, newStatus) {
   const buttons = getButtons(parsedConfig)
   const embed = await chatUtil.generateStatusEmbed(parsedConfig)
 
-  console.log(buttons)
-
-  broadcastMessage({ embed, components: buttons }, discordClient)
+  broadcastMessage({ embed, buttons }, discordClient)
 
   statusWaitList.shift()
   return true
@@ -65,7 +63,7 @@ function getButtons(config) {
     const button = new MessageButton()
       .setStyle(buttonMeta.style)
       .setID(buttonMeta.id)
-      .setEmoji(buttonMeta.emoji)
+      //.setEmoji(buttonMeta.emoji)
       .setLabel(buttonMeta.label)
 
     row.addComponent(button)
