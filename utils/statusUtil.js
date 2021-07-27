@@ -80,6 +80,8 @@ function onCooldown(config, isSame) {
 }
 
 function broadcastMessage(message, discordClient) {
+  console.log(message)
+
   const guildDatabase = database.getDatabase().guilds
   const notifyList = database.getNotifyList()
 
