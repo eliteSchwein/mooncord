@@ -31,7 +31,7 @@ module.exports = class EditChannelCommand extends SlashCommand {
     }
 
     async run(ctx) {
-        if (!await permission.hasController(ctx.user, ctx.guildID, discordClient.getClient())) {
+        if (!await permission.hasController(ctx.user, ctx.guildID, discordClient.getClient)) {
             return locale.getControllerOnlyError(ctx.user.username)
         }
 

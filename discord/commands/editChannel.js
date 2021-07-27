@@ -30,7 +30,7 @@ module.exports = class EditChannelCommand extends SlashCommand {
             return locale.getGuildOnlyError(ctx.user.username)
         }
 
-        if (!await permission.hasAdmin(ctx.user, ctx.guildID, discordClient.getClient())) {
+        if (!await permission.hasAdmin(ctx.user, ctx.guildID, discordClient.getClient)) {
             return locale.getAdminOnlyError(ctx.user.username)
         }
 
@@ -71,8 +71,8 @@ module.exports = class EditChannelCommand extends SlashCommand {
     }
 }
 async function editChannel(channelid, guildid) {
-    const guild = await discordClient.getClient().guilds.fetch(guildid)
-    const channel = await discordClient.getClient().channels.fetch(channelid)
+    const guild = await discordClient.getClient.guilds.fetch(guildid)
+    const channel = await discordClient.getClient.channels.fetch(channelid)
     const guilddatabase = database.getGuildDatabase(guild)
 
     if (channel.type !== 'text') {

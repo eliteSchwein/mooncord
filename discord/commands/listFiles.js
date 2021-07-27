@@ -30,7 +30,7 @@ module.exports = class ListFilesCommand extends SlashCommand {
         if (typeof (commandFeedback) !== 'undefined') {
             return locale.getCommandNotReadyError(ctx.user.username)
         }
-        if (!await permission.hasAdmin(ctx.user, ctx.guildID, discordClient.getClient())) {
+        if (!await permission.hasAdmin(ctx.user, ctx.guildID, discordClient.getClient)) {
             return locale.getAdminOnlyError(ctx.user.username)
         }
         const id = Math.floor(Math.random() * Number.parseInt('10_000')) + 1
@@ -56,7 +56,7 @@ module.exports = class ListFilesCommand extends SlashCommand {
                     embeds: [commandFeedback.toJSON()]
                 })
                 commandFeedback = undefined
-                const channel = await discordClient.getClient().channels.fetch(ctx.channelID)
+                const channel = await discordClient.getClient.channels.fetch(ctx.channelID)
                 const message = await channel.messages.fetch(commandmessage.id)
                 message.react('◀️')
                 message.react('▶️')
