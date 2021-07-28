@@ -105,6 +105,7 @@ async function addButtons(commandContext, commandMessage, embed) {
     const channel = await discordClient.getClient.channels.fetch(commandContext.channelID)
     const message = await channel.messages.fetch(commandMessage.id)
     const buttons = chatUtil.getButtons(metaData)
+    console.log(embed)
     await message.edit({ embed: embed, buttons: buttons })
 }
 
