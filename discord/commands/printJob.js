@@ -162,7 +162,8 @@ function startPrintJob(commandContext) {
     }, 500)
 }
 
-async function handler (message) {
+async function handler(message) {
+    console.log(message)
     commandFeedback = await handlers.printFileHandler(message, messageLocale.embed.title, '#0099ff')
     connection.removeListener('message', handler)
 }
