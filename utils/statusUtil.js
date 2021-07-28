@@ -91,8 +91,6 @@ async function removeOldStatus(channel, discordClient) {
   let lastMessage = await channel.messages.fetch({ limit: 1 })
   lastMessage = lastMessage.first()
 
-  console.log(lastMessage)
-
   if (lastMessage.author.id !== discordClient.user.id) { return }
   if (lastMessage.embeds.size === 0) { return }
   if (lastMessage.embeds[0].title !== locale.status.printing.title) { return }
@@ -103,6 +101,8 @@ async function removeOldStatus(channel, discordClient) {
 async function broadcastSection(list, section, discordClient, message) {
   for (const index in list) {
     let id = list[index]
+
+    if(section === 'channels') { console.log(message) }
 
     if (section === 'guilds') {
       broadcastSection(list[index].broadcastchannels, 'channels', discordClient, message)
