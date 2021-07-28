@@ -87,6 +87,8 @@ async function removeOldStatus(channel, discordClient) {
   
   if (typeof(channel.username) === 'string') { channel = channel.dmChannel }
 
+  console.log(channel)
+
   if (channel === null) { return }
 
   let lastMessage = await channel.messages.fetch({ limit: 1 })
@@ -113,7 +115,7 @@ async function broadcastSection(list, section, discordClient, message) {
 
     await removeOldStatus(Object.assign({}, channel), discordClient)
     const feedback = await channel.send(message)
-    console.log(feedback.channel)
+    //console.log(feedback.channel)
   }
 }
 
