@@ -25,7 +25,7 @@ module.exports = async (button, discordClient) => {
         }
         case ("printjob_start_yes"): {
             await message.edit({ embed: getStartEmbed(message, user), components: null })
-            //startPrint(message)
+            startPrint(message)
             return
         }
     }
