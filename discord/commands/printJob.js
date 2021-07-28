@@ -102,8 +102,6 @@ module.exports = class PrintJobCommand extends SlashCommand {
 }
 
 async function postStart(message, commandContext) {
-    if (typeof (message.embeds) === 'undefined') { return }
-
     const commandMessage = await commandContext.send(message)
     const currentMessage = commandFeedback
     
