@@ -86,8 +86,7 @@ async function removeOldStatus(channel, discordClient) {
   if (typeof(channel) === 'undefined') { return }
   
   if (typeof(channel.username) === 'string') { 
-    const user = await discordClient.users.fetch(channel.id)
-    channel = user.dmChannel
+    channel.dmChannel
   }
 
   if (channel === null) { return }
@@ -114,7 +113,7 @@ async function broadcastSection(list, section, discordClient, message) {
 
     const channel = await discordClient[section].fetch(id)
     await removeOldStatus(channel, discordClient)
-    console.log(await channel.send(message))
+    await channel.send(message)
   }
 }
 
