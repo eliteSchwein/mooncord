@@ -26,7 +26,7 @@ module.exports = async (button, discordClient) => {
 }
 
 function getAbortEmbed(currentMessage, user) {
-    console.log(currentMessage.attachments)
+    console.log(currentMessage)
     const thumbnail = currentMessage.attachments[0]
     const currentEmbed = currentMessage.embeds[0]
     const abortMessage = commandlocale.answer.abort.replace(/(\${username})/g, user.username)
