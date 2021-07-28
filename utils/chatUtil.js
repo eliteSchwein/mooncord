@@ -16,6 +16,7 @@ module.exports.getButtons = (config) => {
   const buttonRow = []
   for (const index in config.buttons) {
     const buttonMeta = config.buttons[index]
+    console.log(typeof(buttonMeta.emoji))
     const button = new MessageButton()
       .setStyle(buttonMeta.style)
       .setID(buttonMeta.id)

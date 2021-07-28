@@ -1,12 +1,12 @@
 {
     "buttons": [
         {
-            "emoji": "",
+            "emoji": null,
             "id":"printjob_start_yes",
             "style":"green"
         },
         {
-            "emoji": "",
+            "emoji": null,
             "id":"printjob_start_no",
             "style":"red"
         }
