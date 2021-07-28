@@ -19,10 +19,14 @@ module.exports = async (button, discordClient) => {
     if (message.author.id !== discordClient.user.id) { return }
     if (!Object.keys(metaData).includes(button.id)) { return }
 
+    const embed = message.embeds[0]
+
+    if(!embed.title.includes('Page')) { return }
+
     connection = moonrakerClient.getConnection()
 
     const pageUp = metaData[button.id].page_up
-    const page = chatUtil.retrieveCurrentPage(message.embeds[0])
+    const page = chatUtil.retrieveCurrentPage(embed)
 
     console.log(page)
 
@@ -32,6 +36,8 @@ module.exports = async (button, discordClient) => {
 async function executeMessage(message, user, page, pageUp) {
     const id = Math.floor(Math.random() * Number.parseInt('10_000')) + 1
     const {channel} = message
+
+    let timeout = 0
 
     commandFeedback[message.channel.id] = undefined
     requester[channel.id] = user
