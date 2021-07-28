@@ -28,8 +28,6 @@ module.exports = async (button, discordClient) => {
     const pageUp = metaData[button.id].page_up
     const page = chatUtil.retrieveCurrentPage(embed)
 
-    console.log(page)
-
     await executeMessage(message, user, page, pageUp)
 }
 
