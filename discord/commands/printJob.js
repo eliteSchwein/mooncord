@@ -106,6 +106,7 @@ async function addButtons(commandContext, commandMessage) {
     const message = await channel.messages.fetch(commandMessage.id)
     const buttons = chatUtil.getButtons(metaData)
     await message.edit({ embed: message.embeds[0], buttons: buttons })
+    console.log(message)
 }
 
 async function postStart(message, commandContext) {
