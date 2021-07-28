@@ -113,7 +113,7 @@ async function broadcastSection(list, section, discordClient, message) {
     if(section === 'channels') { console.log(channel) }
     await removeOldStatus(channel, discordClient)
     console.log(channel)
-    channel.send(message).catch('console.error')
+    channel.send(message)
   }
 }
 
