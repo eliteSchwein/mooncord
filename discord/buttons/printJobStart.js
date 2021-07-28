@@ -30,8 +30,7 @@ function getAbortEmbed(currentMessage, user) {
     const abortMessage = commandlocale.answer.abort.replace(/(\${username})/g, user.username)
     const abortEmbed = new Discord.MessageEmbed()
         .setColor('#c90000')
-        .setTitle(abortMessage)
-        .setAuthor(currentEmbed.author)
-        .setThumbnail('attachment://thumbnail.png')
+        .setTitle(abortMessage.title)
+        .setAuthor(currentEmbed.author, 'attachment://thumbnail.png')
     return abortEmbed
 }
