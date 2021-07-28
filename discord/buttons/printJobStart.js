@@ -20,12 +20,12 @@ module.exports = async (button, discordClient) => {
     }
     switch (button.id) {
         case ("printjob_start_no"): {
-            await message.edit({ embed: getAbortEmbed(message), buttons: undefined })
+            await message.edit({ embed: getAbortEmbed(message, user), buttons: undefined })
         }
     }
 }
 
-function getAbortEmbed(currentMessage) {
+function getAbortEmbed(currentMessage, user) {
     const thumbnail = currentMessage.attachments[0]
     const currentEmbed = currentMessage.embeds[0]
     const abortMessage = commandlocale.answer.abort.replace(/(\${username})/g, user.username)
