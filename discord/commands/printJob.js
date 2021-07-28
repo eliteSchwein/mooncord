@@ -134,7 +134,10 @@ function startPrintJob(commandContext) {
 
         timeout++
 
-        if (typeof (commandFeedback) === 'undefined') { return }
+        if (typeof (commandFeedback) === 'undefined') {
+            console.log('asdsad')
+            return
+        }
 
         if (commandFeedback === 'Not Found!') {
             clearInterval(feedbackHandler)
@@ -169,9 +172,6 @@ async function handler(message) {
     const messageJson = JSON.parse(message.utf8Data)
 
     if (typeof (messageJson.result) === 'undefined') { return }
-
-    console.log(messageJson)
-
     if (typeof (messageJson.result.filename) === 'undefined') { return }
     
     commandFeedback = await handlers.printFileHandler(message, messageLocale.embed.title, '#0099ff')
