@@ -16,12 +16,14 @@ module.exports.getButtons = (config) => {
   const buttonRow = []
   for (const index in config.buttons) {
     const buttonMeta = config.buttons[index]
-    console.log(typeof(buttonMeta.emoji))
     const button = new MessageButton()
       .setStyle(buttonMeta.style)
       .setID(buttonMeta.id)
-      .setEmoji(buttonMeta.emoji)
       .setLabel(locale.buttons[buttonMeta.id])
+
+    if(buttonMeta.emoji !== '') { 
+      button.setEmoji(buttonMeta.emoji)
+    }
 
     buttonRow.push(button)
   }
