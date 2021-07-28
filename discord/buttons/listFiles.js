@@ -5,7 +5,9 @@ const chatUtil = require('../../utils/chatUtil')
 
 const metaData = require('../buttons-metadata/list_files.json')
 
-let commandFeedback
+const requester = {}
+const commandFeedback = {}
+
 let connection
 
 module.exports = async (button, discordClient) => {
