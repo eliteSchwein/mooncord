@@ -85,8 +85,7 @@ function onCooldown(config, isSame) {
 async function removeOldStatus(channel, discordClient) {
 
   if (typeof(channel) === 'undefined') { return }
-  console.log(typeof(channel.username))
-  if (typeof(channel.username) !== 'undefined') { channel = channel.dmChannel }
+  if (typeof(channel.username) === 'string') { channel = channel.dmChannel }
   if (channel === null) { return }
 
   let lastMessage = await channel.messages.fetch({ limit: 1 })
