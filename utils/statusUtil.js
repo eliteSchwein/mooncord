@@ -85,6 +85,7 @@ function onCooldown(config, isSame) {
 async function removeOldStatus(channel, discordClient) {
 
   if (typeof(channel) === 'undefined') { return }
+  console.log(typeof(channel.username))
   if (typeof(channel.username) !== 'undefined') { channel = channel.dmChannel }
   if (channel === null) { return }
 
@@ -111,7 +112,7 @@ async function broadcastSection(list, section, discordClient, message) {
     channel = await discordClient[section].fetch(id)
 
     await removeOldStatus(channel, discordClient)
-    console.log(await channel.send(message))
+    channel.send(message)
   }
 }
 
