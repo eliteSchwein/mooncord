@@ -56,12 +56,12 @@ module.exports = class ListFilesCommand extends SlashCommand {
                 }
                 const commandmessage = await ctx.send({
                     file: files,
-                    embeds: [commandFeedback.toJSON()],
-                    buttons: buttons
+                    embeds: [commandFeedback.toJSON()]
                 })
                 commandFeedback = undefined
                 const channel = await discordClient.getClient.channels.fetch(ctx.channelID)
                 const message = await channel.messages.fetch(commandmessage.id)
+                message.edit({ embed: commandFeedback, buttons: buttons })
                 
                 lastid = 0
                 clearInterval(feedbackInterval)
