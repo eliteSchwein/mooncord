@@ -79,7 +79,6 @@ async function postUpdate(updateData, discordClient, database) {
   const button = new MessageButton()
     .setStyle('grey')
     .setID('update_system')
-    .setEmoji('🔼')
     .setLabel('Update')
   buttonRow.push(button)
 
