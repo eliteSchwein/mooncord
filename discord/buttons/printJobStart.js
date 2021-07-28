@@ -2,6 +2,8 @@ const moonrakerClient = require('../../clients/moonrakerClient')
 const permission = require('../../utils/permissionUtil')
 const locale = require('../../utils/localeUtil')
 
+const commandlocale = locale.commands.printjob
+
 module.exports = async (button, discordClient) => {
     const message = button.message
     const user = button.clicker.user
