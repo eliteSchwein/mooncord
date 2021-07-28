@@ -1,5 +1,6 @@
 const moonrakerClient = require('../../clients/moonrakerClient')
 const permission = require('../../utils/permissionUtil')
+const Discord = require('discord.js')
 const locale = require('../../utils/localeUtil')
 
 const commandlocale = locale.commands.printjob
@@ -19,9 +20,19 @@ module.exports = async (button, discordClient) => {
     }
     switch (button.id) {
         case ("printjob_start_no"): {
-            const abortMessage = commandlocale.answer.abort.replace(/(\${username})/g, user.username)
-            await message.edit({ abortMessage, buttons: undefined })
-            await message.suppressEmbeds(true)
+            await message.edit({ embed: getAbortEmbed(message), buttons: undefined })
         }
     }
+}
+
+function getAbortEmbed(currentMessage) {
+    const thumbnail = currentMessage.attachments[0]
+    const currentEmbed = currentMessage.embeds[0]
+    const abortMessage = commandlocale.answer.abort.replace(/(\${username})/g, user.username)
+    const abortEmbed = new Discord.MessageEmbed()
+        .setColor('#c90000')
+        .setTitle(abortMessage)
+        .setAuthor(currentEmbed.author)
+        .setThumbnail(`attachment://${thumbnail.name}`)
+    return abortEmbed
 }
