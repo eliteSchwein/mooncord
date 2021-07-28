@@ -164,10 +164,12 @@ function startPrintJob(commandContext) {
 }
 
 async function handler(message) {
-    console.log(message)
-    console.log(typeof (message.result))
-    if (typeof (message.result) === 'undefined') { return }
-    if (typeof (message.result.filename) === 'undefined') { return }
+    if (message.type !== 'utf8') { return }
+    
+    const messageJson = JSON.parse(message.utf8Data)
+    
+    if (typeof (messageJson.result) === 'undefined') { return }
+    if (typeof (messageJson.result.filename) === 'undefined') { return }
     
     commandFeedback = await handlers.printFileHandler(message, messageLocale.embed.title, '#0099ff')
     connection.removeListener('message', handler)
