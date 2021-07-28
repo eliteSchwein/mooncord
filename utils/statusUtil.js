@@ -1,5 +1,5 @@
 const { waitUntil } = require('async-wait-until')
-const { MessageActionRow, MessageButton } = require('discord-buttons')
+const { MessageButton } = require('discord-buttons')
 const logSymbols = require('log-symbols')
 
 const args = process.argv.slice(2)
