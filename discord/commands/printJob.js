@@ -123,7 +123,7 @@ function startPrintJob(commandContext) {
     connection.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${gcodefile}"}, "id": ${id}}`)
 
     const feedbackHandler = setInterval(() => {
-        if (timeout === 4) {
+        if (timeout === 6) {
             clearInterval(feedbackHandler)
             connection.removeListener('message', handler)
             postStart({
