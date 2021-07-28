@@ -102,14 +102,14 @@ async function broadcastSection(list, section, discordClient, message) {
   for (const index in list) {
     let id = list[index]
 
-    if(section === 'channels') { console.log(message) }
-
     if (section === 'guilds') {
       broadcastSection(list[index].broadcastchannels, 'channels', discordClient, message)
       return
     }
 
     channel = await discordClient[section].fetch(id)
+
+    if(section === 'channels') { console.log(channel) }
     await removeOldStatus(channel, discordClient)
     channel.send(message).catch('console.error')
   }
