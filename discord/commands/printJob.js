@@ -101,12 +101,11 @@ module.exports = class PrintJobCommand extends SlashCommand {
     }
 }
 
-async function addButtons(commandContext, commandMessage, embed) {
+async function addButtons(commandContext, commandMessage) {
     const channel = await discordClient.getClient.channels.fetch(commandContext.channelID)
     const message = await channel.messages.fetch(commandMessage.id)
     const buttons = chatUtil.getButtons(metaData)
-    console.log(embed)
-    await message.edit({ embed: embed, buttons: buttons })
+    await message.edit({ embed: message.embeds[0], buttons: buttons })
 }
 
 async function postStart(message, commandContext) {
@@ -116,7 +115,7 @@ async function postStart(message, commandContext) {
 
     if (typeof (message.embeds) === 'undefined') { return }
 
-    addButtons(commandContext, commandmessage, message)
+    addButtons(commandContext, commandmessage)
 }
 
 function startPrintJob(commandContext) {
