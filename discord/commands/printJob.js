@@ -103,13 +103,13 @@ module.exports = class PrintJobCommand extends SlashCommand {
 
 async function postStart(message, commandContext) {
     if (typeof (message.embeds) === 'undefined') { return }
-    
+
     const commandMessage = await commandContext.send(message)
     const channel = await discordClient.getClient.channels.fetch(commandContext.channelID)
-    const message = await channel.messages.fetch(commandMessage.id)
+    const messageComponent = await channel.messages.fetch(commandMessage.id)
     const buttons = chatUtil.getButtons(metaData)
 
-    await message.edit({ embed: commandFeedback, buttons: buttons })
+    await messageComponent.edit({ embed: commandFeedback, buttons: buttons })
     
     commandFeedback = undefined
 }
