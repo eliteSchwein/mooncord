@@ -91,8 +91,6 @@ async function removeOldStatus(channel, discordClient) {
   let lastMessage = await channel.messages.fetch({ limit: 1 })
   lastMessage = lastMessage.first()
 
-  console.log(lastMessage)
-
   if (lastMessage.author.id !== discordClient.user.id) { return }
   if (lastMessage.embeds.size < 1) { return }
   if (typeof(lastMessage.embeds[0]) === 'undefined') { return }
@@ -114,6 +112,7 @@ async function broadcastSection(list, section, discordClient, message) {
 
     if(section === 'channels') { console.log(channel) }
     await removeOldStatus(channel, discordClient)
+    console.log(channel)
     channel.send(message).catch('console.error')
   }
 }
