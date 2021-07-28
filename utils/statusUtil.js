@@ -88,10 +88,10 @@ async function removeOldStatus(channel, discordClient) {
   if (typeof(channel.username) !== 'undefined') { channel = channel.dmChannel }
   if (channel === null) { return }
 
-  console.log(channel)
-
   let lastMessage = await channel.messages.fetch({ limit: 1 })
   lastMessage = lastMessage.first()
+
+  console.log(lastMessage)
 
   if (lastMessage.author.id !== discordClient.user.id) { return }
   if (lastMessage.embeds.size < 1) { return }
