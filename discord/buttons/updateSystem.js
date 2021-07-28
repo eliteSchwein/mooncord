@@ -9,6 +9,10 @@ module.exports = async (button, discordClient) => {
     if (message.author.id !== discordClient.user.id) { return }
     if (button.id !== 'update_system') { return }
 
+    let guildID
+
+    if(typeof(button.guild) !== 'undefined') { guildID = button.guild.id }
+
     if (!await permission.hasAdmin(user, guildID, discordClient)) {
         button.reply.send(message.channel.send(locale.getAdminOnlyError(user.username)))
     }
