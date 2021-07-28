@@ -121,8 +121,8 @@ function startPrintJob(commandContext) {
     connection.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${gcodefile}"}, "id": ${id}}`)
 
     const feedbackHandler = setInterval(() => {
-        console.log(timeout)
         if (timeout === 4) {
+            console.log(timeout)
             postStart({
                 content: locale.errors.command_timeout
             }, commandContext)
