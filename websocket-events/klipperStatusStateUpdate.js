@@ -79,7 +79,7 @@ async function postUpdate(updateData, discordClient, database) {
   const button = new MessageButton()
     .setStyle('grey')
     .setID('update_system')
-    .setLabel('Update')
+    .setLabel(locale.buttons.update_system)
   buttonRow.push(button)
 
   status.postBroadcastMessage({ embed: notifyEmbed, buttons: buttonRow }, discordClient, database)

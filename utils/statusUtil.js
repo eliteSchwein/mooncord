@@ -47,7 +47,7 @@ async function changeStatus(discordClient, newStatus) {
 
   if (onCooldown(config, currentStatusMeta.allow_same)) { return }
   
-  const buttons = getButtons(parsedConfig)
+  const buttons = chatUtil.getButtons(parsedConfig)
   const embed = await chatUtil.generateStatusEmbed(parsedConfig)
 
   if (buttons.length > 0) {
@@ -58,21 +58,6 @@ async function changeStatus(discordClient, newStatus) {
 
   statusWaitList.shift()
   return true
-}
-
-function getButtons(config) {
-  const buttonRow = []
-  for (const index in config.buttons) {
-    const buttonMeta = config.buttons[index]
-    const button = new MessageButton()
-      .setStyle(buttonMeta.style)
-      .setID(buttonMeta.id)
-      .setEmoji(buttonMeta.emoji)
-      .setLabel(buttonMeta.label)
-
-    buttonRow.push(button)
-  }
-  return buttonRow
 }
 
 function onCooldown(config, isSame) {

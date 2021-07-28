@@ -7,6 +7,8 @@ const chatUtil = require('../../utils/chatUtil')
 const locale = require('../../utils/localeUtil')
 const permission = require('../../utils/permissionUtil')
 
+const metaData = require('../commands-metadata/list_files.json')
+
 const messageLocale = locale.commands.listfiles
 const syntaxLocale = locale.syntaxlocale.commands.listfiles
 
@@ -47,19 +49,20 @@ module.exports = class ListFilesCommand extends SlashCommand {
                 if(lastid === id) { return }
                 lastid = id
                 const thumbnail = commandFeedback.files[0]
+                const buttons = chatUtil.getButtons(metaData)
                 const files = {
                     name: thumbnail.name,
                     file: thumbnail.attachment
                 }
                 const commandmessage = await ctx.send({
                     file: files,
-                    embeds: [commandFeedback.toJSON()]
+                    embeds: [commandFeedback.toJSON()],
+                    buttons: buttons
                 })
                 commandFeedback = undefined
                 const channel = await discordClient.getClient.channels.fetch(ctx.channelID)
                 const message = await channel.messages.fetch(commandmessage.id)
-                message.react('◀️')
-                message.react('▶️')
+                
                 lastid = 0
                 clearInterval(feedbackInterval)
             }

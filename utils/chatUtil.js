@@ -11,6 +11,20 @@ const maxEntries = 5
 
 module.exports = {}
 
+module.exports.getButtons = (config) => {
+  const buttonRow = []
+  for (const index in config.buttons) {
+    const buttonMeta = config.buttons[index]
+    const button = new MessageButton()
+      .setStyle(buttonMeta.style)
+      .setID(buttonMeta.id)
+      .setEmoji(buttonMeta.emoji)
+      .setLabel(locale.buttons[buttonMeta.id])
+
+    buttonRow.push(button)
+  }
+  return buttonRow
+}
 
 module.exports.generateStatusEmbed = async (config) => {
   const snapshot = await webcam.retrieveWebcam()

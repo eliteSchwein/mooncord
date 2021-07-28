@@ -1,4 +1,13 @@
 {
+    "buttons": {
+        "printjob_pause": "Pause",
+        "printjob_cancel": "Stop",
+        "printjob_resume": "Resume",
+        "klipper_restart": "Restart Firmware",
+        "update_system": "Update",
+        "next_page": "Next Page",
+        "last_page": "Last Page"
+    },
     "commands": {
         "admin": {
             "description": "Manage Admin Role or User.",

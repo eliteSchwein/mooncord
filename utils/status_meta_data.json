@@ -9,7 +9,6 @@
         "color": "#c90000",
         "buttons": [
             {
-                "label":"Klipper Restart",
                 "emoji": "🔄",
                 "id":"klipper_restart",
                 "style":"blurple"
@@ -30,7 +29,6 @@
         "color": "#c90000",
         "buttons": [
             {
-                "label":"Klipper Restart",
                 "emoji": "🔄",
                 "id":"klipper_restart",
                 "style":"blurple"
@@ -180,13 +178,11 @@
         "thumbnail": true,
         "buttons": [
             {
-                "label":"Resume",
                 "emoji": "▶️",
                 "id":"printjob_resume",
                 "style":"blurple"
             },
             {
-                "label":"Stop",
                 "emoji": "⛔",
                 "id":"printjob_cancel",
                 "style":"red"
@@ -227,13 +223,11 @@
         "thumbnail": true,
         "buttons": [
             {
-                "label":"Pause",
                 "emoji": "☕",
                 "id":"printjob_pause",
                 "style":"grey"
             },
             {
-                "label":"Stop",
                 "emoji": "⛔",
                 "id":"printjob_cancel",
                 "style":"red"
