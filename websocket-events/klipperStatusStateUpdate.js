@@ -61,7 +61,7 @@ function getDifference(software, softwareinfo) {
 async function postUpdate(updateData, discordClient, database) {
   if (Object.keys(updateData).length === 0) { return }
   console.log(logSymbols.info, `There are some Updates!`.printstatus)
-  const notifyembed = new Discord.MessageEmbed()
+  const notifyEmbed = new Discord.MessageEmbed()
     .setColor('#fcf803')
     .setTitle(locale.update.title)
     .attachFiles(path.resolve(__dirname, '../images/update.png'))
@@ -69,11 +69,19 @@ async function postUpdate(updateData, discordClient, database) {
     .setTimestamp()
   for (const software in updateData) {
     if (software === 'system') {
-      notifyembed.addField(locale.update.system, `${locale.update.packages}: ${updateData[software].packages}`, true)
+      notifyEmbed.addField(locale.update.system, `${locale.update.packages}: ${updateData[software].packages}`, true)
     } else {
-      notifyembed.addField(software, `${updateData[software].current} \n🆕 ${updateData[software].remote}`, true)
+      notifyEmbed.addField(software, `${updateData[software].current} \n🆕 ${updateData[software].remote}`, true)
     }
   }
-  status.postBroadcastMessage(notifyembed, discordClient, database)
+  const buttonRow = []
+  const button = new MessageButton()
+    .setStyle('grey')
+    .setID('update_system')
+    .setEmoji('🔼')
+    .setLabel('Update')
+  buttonRow.push(button)
+
+  status.postBroadcastMessage({ embed: notifyEmbed, buttons: buttonRow }, discordClient, database)
 }
 module.exports = event
