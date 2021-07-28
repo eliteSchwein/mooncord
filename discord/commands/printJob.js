@@ -125,6 +125,7 @@ function startPrintJob(commandContext) {
     const feedbackHandler = setInterval(() => {
         if (timeout === 4) {
             clearInterval(feedbackHandler)
+            connection.removeListener('message', handler)
             postStart({
                 content: locale.errors.command_timeout
             }, commandContext)
