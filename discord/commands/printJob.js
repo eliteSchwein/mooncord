@@ -105,13 +105,17 @@ async function postStart(message, commandContext) {
     if (typeof (message.embeds) === 'undefined') { return }
 
     const commandMessage = await commandContext.send(message)
+    const currentMessage = commandFeedback
+    
+    commandFeedback = undefined
+
+    if (typeof (message.embeds) === 'undefined') { return }
+    
     const channel = await discordClient.getClient.channels.fetch(commandContext.channelID)
     const messageComponent = await channel.messages.fetch(commandMessage.id)
     const buttons = chatUtil.getButtons(metaData)
 
-    await messageComponent.edit({ embed: commandFeedback, buttons: buttons })
-    
-    commandFeedback = undefined
+    await messageComponent.edit({ embed: currentMessage, buttons: buttons })
 }
 
 function startPrintJob(commandContext) {
@@ -122,11 +126,10 @@ function startPrintJob(commandContext) {
 
     const feedbackHandler = setInterval(() => {
         if (timeout === 4) {
-            console.log(timeout)
+            clearInterval(feedbackHandler)
             postStart({
                 content: locale.errors.command_timeout
             }, commandContext)
-            clearInterval(feedbackHandler)
             return
         }
 
