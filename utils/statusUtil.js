@@ -84,14 +84,12 @@ function onCooldown(config, isSame) {
 
 async function removeOldStatus(channel, discordClient) {
   if (typeof(channel) === 'undefined') { return }
-
-  let messageChannel = channel
   
-  if (typeof(channel.username) === 'string') { return }
+  if (typeof(channel.username) === 'string') { channel = channel.dmChannel }
 
-  if (messageChannel === null) { return }
+  if (channel === null) { return }
 
-  let lastMessage = await messageChannel.messages.fetch({ limit: 1 })
+  let lastMessage = await channel.messages.fetch({ limit: 1 })
   lastMessage = lastMessage.first()
 
   if (lastMessage.author.id !== discordClient.user.id) { return }
@@ -113,7 +111,7 @@ async function broadcastSection(list, section, discordClient, message) {
 
     channel = await discordClient[section].fetch(id)
 
-    await removeOldStatus(channel, discordClient)
+    await removeOldStatus(Object.assign({}, channel), discordClient)
     const feedback = await channel.send(message)
     console.log(feedback.channel)
   }
