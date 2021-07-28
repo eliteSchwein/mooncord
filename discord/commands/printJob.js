@@ -123,10 +123,10 @@ function startPrintJob(commandContext) {
     const feedbackHandler = setInterval(() => {
         console.log(timeout)
         if (timeout === 4) {
-            clearInterval(feedbackHandler)
             postStart({
                 content: locale.errors.command_timeout
             }, commandContext)
+            clearInterval(feedbackHandler)
             return
         }
 
