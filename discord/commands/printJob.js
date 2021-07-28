@@ -119,6 +119,7 @@ async function postStart(message, commandContext) {
 function startPrintJob(commandContext) {
     const id = Math.floor(Math.random() * Number.parseInt('10_000')) + 1
     const gcodefile = commandContext.options.start[syntaxLocale.options.start.options.file.name]
+    timeout = 0
     connection.on('message', handler)
     connection.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${gcodefile}"}, "id": ${id}}`)
 
@@ -135,7 +136,6 @@ function startPrintJob(commandContext) {
         timeout++
 
         if (typeof (commandFeedback) === 'undefined') {
-            console.log('asdsad')
             return
         }
 
