@@ -21,7 +21,7 @@ module.exports = async (button, discordClient) => {
 
     const embed = message.embeds[0]
 
-    if(!embed.title.includes('Page')) { return }
+    if(embed.title !== commandlocale.embed.title) { return }
 
     connection = moonrakerClient.getConnection()
 
