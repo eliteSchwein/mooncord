@@ -75,7 +75,9 @@
         "meta_data": {
             "order_id": 0,
             "allow_same": false,
-            "prevent": []
+            "prevent": [
+                "start"
+            ]
         },
         "title": "${locale.title}",
         "color": "#c90000",
