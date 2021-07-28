@@ -62,7 +62,7 @@ async function changeStatus(discordClient, newStatus) {
 function onCooldown(config, isSame) {
   if (!config.status.use_percent) { return false }
   if (!isSame) { return false }
-  if (database.getRamDatabase().cooldown !== 0) { return false }
+  if (database.getRamDatabase().cooldown === 0) { return false }
   return true
 }
 
