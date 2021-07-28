@@ -84,10 +84,11 @@ function onCooldown(config, isSame) {
 
 async function removeOldStatus(channel, discordClient) {
   if (typeof(channel) === 'undefined') { return }
-
-  console.log(channel)
   
-  if (typeof(channel.username) === 'string') { channel = channel.dmChannel }
+  if (typeof(channel.username) === 'string') { 
+    const user = await discordClient.users.fetch(channel.id)
+    channel = user.dmChannel
+  }
 
   if (channel === null) { return }
 
