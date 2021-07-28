@@ -163,9 +163,11 @@ function startPrintJob(commandContext) {
 }
 
 async function handler(message) {
-    console.log(message)
-    //commandFeedback = await handlers.printFileHandler(message, messageLocale.embed.title, '#0099ff')
-    //connection.removeListener('message', handler)
+    if (typeof (message.result) === 'undefined') { return }
+    if (typeof (message.result.filename) === 'undefined') { return }
+    
+    commandFeedback = await handlers.printFileHandler(message, messageLocale.embed.title, '#0099ff')
+    connection.removeListener('message', handler)
 }
 
 function getKeyByValue(object, value) {
