@@ -20,7 +20,7 @@ module.exports = async (button, discordClient) => {
     }
     switch (button.id) {
         case ("printjob_start_no"): {
-            await message.edit({ embed: getAbortEmbed(message, user), buttons: undefined })
+            await message.edit({ embed: getAbortEmbed(message, user), components: null })
         }
     }
 }
