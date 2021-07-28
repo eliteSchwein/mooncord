@@ -82,6 +82,33 @@ function onCooldown(config, isSame) {
   return true
 }
 
+async function removeOldStatus(channel, discordClient) {
+  if(channel === null) { return }
+  let lastMessage = await channel.messages.fetch({ limit: 1 })
+  lastMessage = lastMessage.first()
+
+  if (lastMessage.author.id !== discordClient.user.id) { return }
+  if (lastMessage.embeds.size === 0) { return }
+  if (lastMessage.embeds[0].title !== locale.status.printing.title) { return }
+
+  await lastMessage.delete()
+}
+
+async function broadcastSection(list, section, discordClient, message) {
+  for (const index in list) {
+    let id = list[index]
+
+    if (section === 'guilds') {
+      broadcastSection(list[index].broadcastchannels, 'channels', discordClient, message)
+      return
+    }
+
+    channel = await discordClient[section].fetch(id)
+    await removeOldStatus(channel, discordClient)
+    channel.send(message).catch('console.error')
+  }
+}
+
 function broadcastMessage(message, discordClient) {
   const guildDatabase = database.getDatabase().guilds
   const notifyList = database.getNotifyList()
@@ -107,20 +134,6 @@ function parseConfig(status) {
     .replace(/(\${value_current_layer})/g, variables.getCurrentLayer())
     .replace(/(\${value_max_layer})/g, variables.getMaxLayers())
   return JSON.parse(parsedConfig)
-}
-
-async function broadcastSection(list, section, discordClient, message) {
-  for (const index in list) {
-    let id = list[index]
-
-    if (section === 'guilds') {
-      broadcastSection(list[index].broadcastchannels, 'channels', discordClient, message)
-      return
-    }
-
-    channel = await discordClient[section].fetch(id)
-    channel.send(message).catch('console.error')
-  }
 }
 
 module.exports.changeStatus = async (discordClient, newStatus) => {
