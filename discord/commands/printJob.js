@@ -3,11 +3,12 @@ const { SlashCommand, CommandOptionType } = require('slash-create')
 
 const discordClient = require('../../clients/discordClient')
 const moonrakerClient = require('../../clients/moonrakerClient')
+const chatUtil = require('../../utils/chatUtil')
 const handlers = require('../../utils/handlerUtil')
 const locale = require('../../utils/localeUtil')
 const permission = require('../../utils/permissionUtil')
 const statusUtil = require('../../utils/statusUtil')
-const metadata = require('../commands-metadata/print_job.json')
+const metaData = require('../commands-metadata/print_job.json')
 
 const messageLocale = locale.commands.printjob
 const syntaxLocale = locale.syntaxlocale.commands.printjob
@@ -66,8 +67,8 @@ module.exports = class PrintJobCommand extends SlashCommand {
 
         const key = getKeyByValue(syntaxLocale.options, subcommand)
 
-        if (Object.keys(metadata).includes(key)) {
-            const subcommandmeta = metadata[key]
+        if (Object.keys(metaData).includes(key)) {
+            const subcommandmeta = metaData[key]
             const lang_command_meta = messageLocale.answer[key]
 
             if (subcommand === currentStatus) {
@@ -100,11 +101,11 @@ module.exports = class PrintJobCommand extends SlashCommand {
     }
 }
 
-async function addEmotes(commandContext, commandMessage) {
+async function addButtons(commandContext, commandMessage, embed) {
     const channel = await discordClient.getClient.channels.fetch(commandContext.channelID)
     const message = await channel.messages.fetch(commandMessage.id)
-    message.react('✅')
-    message.react('❌')
+    const buttons = chatUtil.getButtons(metaData)
+    await message.edit({ embed: embed, buttons: buttons })
 }
 
 async function postStart(message, commandContext) {
@@ -114,7 +115,7 @@ async function postStart(message, commandContext) {
 
     if (typeof (message.embeds) === 'undefined') { return }
 
-    addEmotes(commandContext, commandmessage)
+    addButtons(commandContext, commandmessage, message)
 }
 
 function startPrintJob(commandContext) {
