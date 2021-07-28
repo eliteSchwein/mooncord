@@ -26,14 +26,12 @@ module.exports = async (button, discordClient) => {
 }
 
 function getAbortEmbed(currentMessage, user) {
-    console.log(currentMessage)
-    const thumbnail = currentMessage.attachments[0]
     const currentEmbed = currentMessage.embeds[0]
     const abortMessage = commandlocale.answer.abort.replace(/(\${username})/g, user.username)
     const abortEmbed = new Discord.MessageEmbed()
         .setColor('#c90000')
         .setTitle(abortMessage)
         .setAuthor(currentEmbed.author)
-        .setThumbnail(`attachment://${thumbnail.name}`)
+        .setThumbnail('attachment://thumbnail.png')
     return abortEmbed
 }
