@@ -163,7 +163,7 @@ function startPrintJob(commandContext) {
 }
 
 async function handler(message) {
-
+    console.log(message)
     console.log(typeof (message.result))
     if (typeof (message.result) === 'undefined') { return }
     if (typeof (message.result.filename) === 'undefined') { return }
