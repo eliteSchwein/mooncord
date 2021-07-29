@@ -92,7 +92,7 @@ async function getToken() {
   console.log('  Get Oneshot Token'.statusmessage)
   
   const formData = new FormData()
-  formData.append('X-Api-Key', token)
+ // formData.append('X-Api-Key', token)
 
   //const oneshotToken = await axios
   //    .get(`${url}/access/oneshot_token`, formData, {
