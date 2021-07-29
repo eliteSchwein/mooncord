@@ -90,15 +90,12 @@ function connect(discordClient) {
 async function getToken() {
   if (token === '') { return '' }
   console.log('  Get Oneshot Token'.statusmessage)
-  
-  const formData = new FormData()
-  formData.append('X-Api-Key', token)
-
-  console.log(formData.getHeaders())
 
   const oneshotToken = await axios
-      .get(`${url}/access/oneshot_token`, formData, {
-        headers: formData.getHeaders()
+      .get(`${url}/access/oneshot_token`, {
+        headers: {
+          'X-Api-Key': token
+        }
       })
   
   console.log(oneshotToken)
