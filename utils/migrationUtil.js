@@ -2,7 +2,9 @@ const args = process.argv.slice(2)
 
 const logSymbols = require('log-symbols')
 const path = require('path')
+const util = require('util')
 const fs = require('fs')
+const writeFile = util.promisify(fs.writeFile)
 
 const config = require(`${args[0]}/mooncord.json`)
 
@@ -14,6 +16,6 @@ module.exports.migrate = async () => {
 }
 
 async function saveData() {
-    await fs.writeFileSync(path.resolve(`${args[0]}/mooncord.json`), JSON.stringify(config, null, 4), 'utf8')
+    await writeFile(path.resolve(`${args[0]}/mooncord.json`), JSON.stringify(config, null, 4), 'utf8')
     console.log(logSymbols.info, `The Config got updated!`.database)
 }
