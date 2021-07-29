@@ -14,6 +14,6 @@ module.exports.migrate = async () => {
 }
 
 async function saveData() {
-    await fs.writeFile(path.resolve(`${args[0]}/mooncord.json`), JSON.stringify(config, null, 4))
+    await fs.writeFile(path.resolve(`${args[0]}/mooncord.json`), JSON.stringify(config, null, 4), 'utf8')
     console.log(logSymbols.info, `The Config got updated!`.database)
 }
