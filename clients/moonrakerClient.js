@@ -88,12 +88,12 @@ function connect(discordClient) {
 }
 
 async function getToken() {
-  if (config.connection.moonraker_token === '') { return '' }
+  if (token === '') { return '' }
   
   const formData = new FormData()
   formData.append('X-Api-Key', token)
 
-  const token = await axios
+  const oneshotToken = await axios
       .get(`${config.connection.moonraker_url}/access/oneshot_token`, formData, {
         headers: formData.getHeaders()
       })
