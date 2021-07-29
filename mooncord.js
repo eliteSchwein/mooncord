@@ -62,7 +62,7 @@ systemInfo.osInfo()
       process.exit(5)
     }
 
-    await migrationUtil.migrate()
+    //await migrationUtil.migrate()
 
     await moonrakerClient.init(discordClient,
       config.connection.moonraker_socket_url,
