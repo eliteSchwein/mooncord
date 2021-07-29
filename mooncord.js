@@ -10,6 +10,7 @@ const moonrakerClient = require('./clients/moonrakerClient')
 const pjson = require('./package.json')
 const loadUtil = require('./utils/loadUtil')
 const miscUtil = require('./utils/miscUtil')
+const migrationUtil = require('./utils/migrationUtil')
 const timelapseUtil = require('./utils/timelapseUtil')
 
 colors.setTheme({
@@ -61,8 +62,12 @@ systemInfo.osInfo()
       process.exit(5)
     }
 
+    await migrationUtil.migrate()
+
     await moonrakerClient.init(discordClient,
-      config.connection.moonraker_socket_url)
+      config.connection.moonraker_socket_url,
+      config.connection.moonraker_url,
+      config.connection.moonraker_token)
     
     await loadUtil.init()
     

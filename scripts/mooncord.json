@@ -2,6 +2,7 @@
     "connection": {
         "moonraker_socket_url": "ws://127.0.0.1/websocket",
         "moonraker_url": "http://127.0.0.1",
+        "moonraker_token": "",
         "bot_token": "",
         "bot_application_key": "",
         "bot_application_id": ""

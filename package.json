@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "npm run migrate && node mooncord.js",
-    "migrate": "node ./utils/migrateUtil.js",
+    "migrate": "node ./utils/migrateLegacyConfigUtil.js",
     "ramdebugstart": "node --trace_gc mooncord.js",
     "checkcodestyle": "npx eslint ./**",
     "autofixcodestyle": "npx eslint ./** --fix"

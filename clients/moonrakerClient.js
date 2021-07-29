@@ -1,6 +1,8 @@
 const WebSocketClient = require('websocket').client
 const { waitUntil } = require('async-wait-until')
 const logSymbols = require('log-symbols')
+const axios = require('axios')
+const FormData = require('form-data')
 
 const database = require('../utils/databaseUtil')
 const status = require('../utils/statusUtil')
@@ -9,7 +11,9 @@ const events = require('../websocket-events')
 
 const client = new WebSocketClient()
 
+let wsUrl
 let url
+let token
 
 let WSconnection
 
@@ -47,7 +51,7 @@ async function enableEvents(discordClient) {
       console.log('  Reconnect in 5 sec'.error)
       status.changeStatus(discordClient.getClient, 'offline')
       setTimeout(() => {
-        client.connect(url)
+        client.connect(wsUrl)
       }, 5000)
     })
     connection.on('message', (message) => {
@@ -71,7 +75,7 @@ function getMCUList() {
 function connect(discordClient) {
   console.log('  Connect to Moonraker'.statusmessage)
   
-  client.connect(url)
+  client.connect(wsUrl)
 
   client.on('connectFailed', (error) => {
     console.log(logSymbols.error, `Moonrakerclient: ${error}`.error)
@@ -83,8 +87,24 @@ function connect(discordClient) {
   })
 }
 
+async function getToken() {
+  if (config.connection.moonraker_token === '') { return '' }
+  
+  const formData = new FormData()
+  formData.append('X-Api-Key', token)
+
+  const token = await axios
+      .get(`${config.connection.moonraker_url}/access/oneshot_token`, formData, {
+        headers: formData.getHeaders()
+      })
+  
+  console.log(token)
+}
+
 module.exports = {}
-module.exports.init = async (discordClient, moonrakerUrl) => {
+module.exports.init = async (discordClient, moonrakerWSUrl, moonrakerUrl, moonrakerToken) => {
+  token = moonrakerToken
+  wsUrl = moonrakerWSUrl
   url = moonrakerUrl
   console.log(`\n
   ${
@@ -93,6 +113,7 @@ module.exports.init = async (discordClient, moonrakerUrl) => {
   | |\\/| / _ \\/ _ \\ ' \\| '_/ _\` | / / -_) '_|
   |_|  |_\\___/\\___/_||_|_| \\__,_|_\\_\\___|_|`.statustitle}
                               `)
+  await getToken()
   connect(discordClient)
   enableEvents(discordClient)
   await waitUntil(() => typeof(WSconnection) !== 'undefined', { timeout: Number.POSITIVE_INFINITY })
@@ -100,3 +121,4 @@ module.exports.init = async (discordClient, moonrakerUrl) => {
 }
 module.exports.getConnection = () => { return WSconnection }
 module.exports.getClient = () => { return client }
+module.exports.getToken = () => { return await getToken() }
