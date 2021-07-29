@@ -121,4 +121,4 @@ module.exports.init = async (discordClient, moonrakerWSUrl, moonrakerUrl, moonra
 }
 module.exports.getConnection = () => { return WSconnection }
 module.exports.getClient = () => { return client }
-module.exports.getToken = () => { return await getToken() }
+module.exports.getToken = async () => { return await getToken() }
