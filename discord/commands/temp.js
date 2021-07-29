@@ -10,11 +10,6 @@ const locale = require('../../utils/localeUtil')
 const messageLocale = locale.commands.temp
 const syntaxLocale = locale.syntaxlocale.commands.temp
 
-let commandFeedback
-let connection
-
-let lastid = 0
-
 module.exports = class TempCommand extends SlashCommand {
     constructor(creator) {
         console.log('  Load Temp Command'.commandload)
@@ -26,23 +21,20 @@ module.exports = class TempCommand extends SlashCommand {
     }
 
     run(ctx) {
-        connection = moonrakerClient.getConnection()
+        const connection = moonrakerClient.getConnection()
         const id = Math.floor(Math.random() * Number.parseInt('10_000')) + 1
 
         let timeout = 0
-
-        commandFeedback = undefined
+        let commandFeedback
 
         ctx.defer(false)
 
-        connection.on('message', handler)
+        connection.on('message', handler(commandFeedback))
         connection.send(`{"jsonrpc": "2.0", "method": "server.temperature_store", "id": ${id}}`)
 
         const feedbackInterval = setInterval(() => {
             if (typeof (commandFeedback) !== 'undefined') {
                 {
-                    if( lastid === id ) { return }
-                    lastid = id
                     const thumbnail = commandFeedback.files[0]
                     const files = {
                         name: thumbnail.name,
@@ -52,7 +44,6 @@ module.exports = class TempCommand extends SlashCommand {
                         file: files,
                         embeds: [commandFeedback.toJSON()]
                     })
-                    lastid = 0
                 }
                 clearInterval(feedbackInterval)
             }
@@ -79,7 +70,7 @@ module.exports = class TempCommand extends SlashCommand {
     }
 }
 
-function handler (message) {
+function handler (message, commandFeedback) {
     const messageJson = JSON.parse(message.utf8Data)
     if (JSON.stringify(messageJson).includes('temperature')) {
         const temps = messageJson.result
