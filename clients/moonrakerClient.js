@@ -94,7 +94,7 @@ async function getToken() {
   formData.append('X-Api-Key', token)
 
   const oneshotToken = await axios
-      .get(`${config.connection.moonraker_url}/access/oneshot_token`, formData, {
+      .get(`${url}/access/oneshot_token`, formData, {
         headers: formData.getHeaders()
       })
   
