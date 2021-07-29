@@ -88,10 +88,12 @@ async function uploadFile(message) {
   tempFile.on('finish', () => {
     console.log(logSymbols.info, `upload ${file.name.replace(' ', '_')}`.upload)
     formData.append('file', fs.createReadStream(`temp/${file.name.replace(' ', '_')}`), file.name)
-    formData.append('X-Api-Key', config.connection.moonraker_token)
     axios
       .post(`${config.connection.moonraker_url}/server/files/upload`, formData, {
-        headers: formData.getHeaders()
+        headers: {
+          'X-Api-Key': config.connection.moonraker_token,
+          'Content-Type': 'multipart/form-data'
+        }
       })
       .then(async res => {
         console.log(logSymbols.success, `uploaded ${file.name.replace(' ', '_')}`.uploadsuccess)

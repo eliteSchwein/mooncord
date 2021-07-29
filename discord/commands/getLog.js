@@ -45,6 +45,7 @@ module.exports = class EditChannelCommand extends SlashCommand {
             method: 'get',
             headers: {
                 'Content-Type': 'text/plain',
+                'X-Api-Key': config.connection.moonraker_token,
             },
         }).then(async (result) => {
             await ctx.send({
