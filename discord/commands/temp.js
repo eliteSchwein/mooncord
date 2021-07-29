@@ -10,6 +10,11 @@ const locale = require('../../utils/localeUtil')
 const messageLocale = locale.commands.temp
 const syntaxLocale = locale.syntaxlocale.commands.temp
 
+let commandFeedback
+let connection
+
+let lastid = 0
+
 module.exports = class TempCommand extends SlashCommand {
     constructor(creator) {
         console.log('  Load Temp Command'.commandload)
@@ -21,20 +26,23 @@ module.exports = class TempCommand extends SlashCommand {
     }
 
     run(ctx) {
-        const connection = moonrakerClient.getConnection()
+        connection = moonrakerClient.getConnection()
         const id = Math.floor(Math.random() * Number.parseInt('10_000')) + 1
 
         let timeout = 0
-        let commandFeedback
+
+        commandFeedback = undefined
 
         ctx.defer(false)
 
-        connection.on('message', (message) => handler(message, commandFeedback, connection))
+        connection.on('message', handler)
         connection.send(`{"jsonrpc": "2.0", "method": "server.temperature_store", "id": ${id}}`)
 
         const feedbackInterval = setInterval(() => {
             if (typeof (commandFeedback) !== 'undefined') {
                 {
+                    if( lastid === id ) { return }
+                    lastid = id
                     const thumbnail = commandFeedback.files[0]
                     const files = {
                         name: thumbnail.name,
@@ -44,6 +52,7 @@ module.exports = class TempCommand extends SlashCommand {
                         file: files,
                         embeds: [commandFeedback.toJSON()]
                     })
+                    lastid = 0
                 }
                 clearInterval(feedbackInterval)
             }
@@ -70,15 +79,8 @@ module.exports = class TempCommand extends SlashCommand {
     }
 }
 
-function handler (message, commandFeedback, connection) {
-    if (message.type !== 'utf8') { return }
-
+function handler (message) {
     const messageJson = JSON.parse(message.utf8Data)
-    
-    if (typeof(messageJson.result) === 'undefined') { return }
-
-    console.log(messageJson)
-
     if (JSON.stringify(messageJson).includes('temperature')) {
         const temps = messageJson.result
 
