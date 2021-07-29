@@ -89,6 +89,7 @@ function connect(discordClient) {
 
 async function getToken() {
   if (token === '') { return '' }
+  console.log('  Get Oneshot Token'.statusmessage)
   
   const formData = new FormData()
   formData.append('X-Api-Key', token)
@@ -98,7 +99,7 @@ async function getToken() {
         headers: formData.getHeaders()
       })
   
-  console.log(token)
+  console.log(oneshotToken)
 }
 
 module.exports = {}
@@ -113,7 +114,7 @@ module.exports.init = async (discordClient, moonrakerWSUrl, moonrakerUrl, moonra
   | |\\/| / _ \\/ _ \\ ' \\| '_/ _\` | / / -_) '_|
   |_|  |_\\___/\\___/_||_|_| \\__,_|_\\_\\___|_|`.statustitle}
                               `)
-  //await getToken()
+  await getToken()
   connect(discordClient)
   enableEvents(discordClient)
   await waitUntil(() => typeof(WSconnection) !== 'undefined', { timeout: Number.POSITIVE_INFINITY })
