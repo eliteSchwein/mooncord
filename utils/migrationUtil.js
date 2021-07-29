@@ -5,6 +5,7 @@ const logSymbols = require('log-symbols')
 const config = require(`${args[0]}/mooncord.json`)
 
 module.exports.migrate = async () => {
+  console.log(typeof (config.connection.moonraker_token))
   if (typeof (config.connection.moonraker_token) === undefined) {
     config.connection.moonraker_token = ""
     await saveData()
