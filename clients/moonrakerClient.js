@@ -113,7 +113,7 @@ module.exports.init = async (discordClient, moonrakerWSUrl, moonrakerUrl, moonra
   | |\\/| / _ \\/ _ \\ ' \\| '_/ _\` | / / -_) '_|
   |_|  |_\\___/\\___/_||_|_| \\__,_|_\\_\\___|_|`.statustitle}
                               `)
-  await getToken()
+  //await getToken()
   connect(discordClient)
   enableEvents(discordClient)
   await waitUntil(() => typeof(WSconnection) !== 'undefined', { timeout: Number.POSITIVE_INFINITY })
