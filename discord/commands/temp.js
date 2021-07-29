@@ -29,7 +29,7 @@ module.exports = class TempCommand extends SlashCommand {
 
         ctx.defer(false)
 
-        connection.on('message', (message) => handler(message, commandFeedback))
+        connection.on('message', (message) => handler(message, commandFeedback, connection))
         connection.send(`{"jsonrpc": "2.0", "method": "server.temperature_store", "id": ${id}}`)
 
         const feedbackInterval = setInterval(() => {
@@ -70,7 +70,7 @@ module.exports = class TempCommand extends SlashCommand {
     }
 }
 
-function handler (message, commandFeedback) {
+function handler (message, commandFeedback, connection) {
     if (message.type !== 'utf8') { return }
     const messageJson = JSON.parse(message.utf8Data)
 
