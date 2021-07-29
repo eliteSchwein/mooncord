@@ -98,7 +98,7 @@ async function getToken() {
         }
       })
   
-  console.log(oneshotToken)
+  console.log(oneshotToken.data.result)
 }
 
 module.exports = {}
