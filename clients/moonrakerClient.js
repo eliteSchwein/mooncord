@@ -14,6 +14,7 @@ const client = new WebSocketClient()
 let wsUrl
 let url
 let token
+let oneShotToken
 
 let WSconnection
 
@@ -51,7 +52,7 @@ async function enableEvents(discordClient) {
       console.log('  Reconnect in 5 sec'.error)
       status.changeStatus(discordClient.getClient, 'offline')
       setTimeout(() => {
-        client.connect(wsUrl)
+        client.connect(`${wsUrl}?token=${oneShotToken}`)
       }, 5000)
     })
     connection.on('message', (message) => {
@@ -75,7 +76,7 @@ function getMCUList() {
 function connect(discordClient) {
   console.log('  Connect to Moonraker'.statusmessage)
   
-  client.connect(wsUrl)
+  client.connect(`${wsUrl}?token=${oneShotToken}`)
 
   client.on('connectFailed', (error) => {
     console.log(logSymbols.error, `Moonrakerclient: ${error}`.error)
@@ -87,18 +88,18 @@ function connect(discordClient) {
   })
 }
 
-async function getToken() {
+async function getOneShotToken() {
   if (token === '') { return '' }
   console.log('  Get Oneshot Token'.statusmessage)
 
-  const oneshotToken = await axios
+  const tempToken = await axios
       .get(`${url}/access/oneshot_token`, {
         headers: {
           'X-Api-Key': token
         }
       })
   
-  console.log(oneshotToken.data.result)
+  return tempToken.data.result
 }
 
 module.exports = {}
@@ -113,7 +114,7 @@ module.exports.init = async (discordClient, moonrakerWSUrl, moonrakerUrl, moonra
   | |\\/| / _ \\/ _ \\ ' \\| '_/ _\` | / / -_) '_|
   |_|  |_\\___/\\___/_||_|_| \\__,_|_\\_\\___|_|`.statustitle}
                               `)
-  await getToken()
+  oneShotToken = await getOneShotToken()
   connect(discordClient)
   enableEvents(discordClient)
   await waitUntil(() => typeof(WSconnection) !== 'undefined', { timeout: Number.POSITIVE_INFINITY })
@@ -121,4 +122,4 @@ module.exports.init = async (discordClient, moonrakerWSUrl, moonrakerUrl, moonra
 }
 module.exports.getConnection = () => { return WSconnection }
 module.exports.getClient = () => { return client }
-module.exports.getToken = async () => { return await getToken() }
+module.exports.getOneShotToken = async () => { return await getOneShotToken() }
