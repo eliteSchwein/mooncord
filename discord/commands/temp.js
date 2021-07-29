@@ -71,7 +71,9 @@ module.exports = class TempCommand extends SlashCommand {
 }
 
 function handler (message, commandFeedback) {
+    if (message.type !== 'utf8') { return }
     const messageJson = JSON.parse(message.utf8Data)
+    
     if (JSON.stringify(messageJson).includes('temperature')) {
         const temps = messageJson.result
 
