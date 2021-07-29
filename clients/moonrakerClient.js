@@ -94,12 +94,12 @@ async function getToken() {
   const formData = new FormData()
   formData.append('X-Api-Key', token)
 
-  const oneshotToken = await axios
-      .get(`${url}/access/oneshot_token`, formData, {
-        headers: formData.getHeaders()
-      })
+  //const oneshotToken = await axios
+  //    .get(`${url}/access/oneshot_token`, formData, {
+  //      headers: formData.getHeaders()
+   //   })
   
-  console.log(oneshotToken)
+ // console.log(oneshotToken)
 }
 
 module.exports = {}
