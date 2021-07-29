@@ -1,6 +1,7 @@
 const args = process.argv.slice(2)
 
 const logSymbols = require('log-symbols')
+const path = require('path')
 const fs = require('fs')
 
 const config = require(`${args[0]}/mooncord.json`)
