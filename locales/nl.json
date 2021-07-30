@@ -1,4 +1,15 @@
 {
+    "buttons": {
+        "printjob_pause": "Pauze",
+        "printjob_cancel": "Stop",
+        "printjob_resume": "Hervat",
+        "printjob_start_yes": "Ja",
+        "printjob_start_no": "Nee",
+        "klipper_restart": "Herstart Firmware",
+        "update_system": "Bijwerken",
+        "next_page": "Volgende pagina",
+        "last_page": "Vorige pagina"
+    },
     "commands": {
         "admin": {
             "description": "Beheer beheerder- en gebruikersrollen.",
