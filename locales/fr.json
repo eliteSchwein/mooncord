@@ -1,4 +1,14 @@
-{
+{   "buttons": {
+        "printjob_pause": "Pause",
+        "printjob_cancel": "Stop",
+        "printjob_resume": "Reprendre",
+        "printjob_start_yes": "Oui",
+        "printjob_start_no": "Non",
+        "klipper_restart": "Redémarrer le système",
+        "update_system": "Mise à jour",
+        "next_page": "Page suivante",
+        "last_page": "Page précédente"
+    },
     "commands": {
         "admin": {
             "description": "Gérer les rôles d'administrateur et d'utilisateur.",

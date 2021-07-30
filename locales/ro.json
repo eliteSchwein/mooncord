@@ -1,4 +1,15 @@
-{
+{   
+    "buttons": {
+        "printjob_pause": "Pauză",
+        "printjob_cancel": "Stop",
+        "printjob_resume": "Continuă",
+        "printjob_start_yes": "Da",
+        "printjob_start_no": "Nu",
+        "klipper_restart": "Repornește Firmware-ul",
+        "update_system": "Actualizează",
+        "next_page": "Pagina Urmatoare",
+        "last_page": "Pagina Precedentă"
+    },
     "commands": {
         "admin": {
             "description": "Gestionează rolul de Administrator sau Utilizator",

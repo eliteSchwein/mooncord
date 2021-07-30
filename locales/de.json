@@ -1,4 +1,15 @@
 {
+    "buttons": {
+        "printjob_pause": "Pause",
+        "printjob_cancel": "Stop",
+        "printjob_resume": "Fortsetzen",
+        "printjob_start_yes": "Ja",
+        "printjob_start_no": "Nein",
+        "klipper_restart": "Firmware neustarten",
+        "update_system": "Update",
+        "next_page": "Nächste Seite",
+        "last_page": "Letzte Seite"
+    },
     "commands": {
         "admin": {
             "description": "Konfiguriere einen Nutzer oder Rolle als Admin.",
