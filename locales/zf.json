@@ -1,4 +1,15 @@
 {
+    "buttons": {
+        "printjob_pause": "暫停",
+        "printjob_cancel": "停止",
+        "printjob_resume": "恢復",
+        "printjob_start_yes": "是",
+        "printjob_start_no": "否",
+        "klipper_restart": "重啟韌體",
+        "update_system": "更新",
+        "next_page": "下一頁",
+        "last_page": "上一頁"
+    },
     "commands": {
         "admin": {
             "description": "更改管理員或用戶。",
