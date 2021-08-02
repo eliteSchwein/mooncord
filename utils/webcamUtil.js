@@ -69,7 +69,7 @@ async function retrieveWebcam() {
         ])
       }
 
-      image.jpeg({
+      image.png({
         quality: quality
       })
 
