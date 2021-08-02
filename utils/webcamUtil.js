@@ -52,8 +52,14 @@ async function retrieveWebcam() {
         .flip(vertical_mirror)
         .flop(horizontal_mirror)
         .greyscale(greyscale)
-        .linear(brightness)
-        .linear(contrast, -(128 * contrast) + 128)
+        
+      if(brightness) {
+        image.linear(brightness)
+      }
+
+      if(contrast) {
+        image.linear(contrast, -(128 * contrast) + 128)
+      } 
 
       if (sepia) {
         image.recomb([
