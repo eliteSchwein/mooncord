@@ -54,7 +54,9 @@ async function retrieveWebcam() {
         .greyscale(greyscale)
 
       if(brightness) {
-        image.linear(brightness)
+        image.modulate({ 
+          brightness: brightness
+        })
       }
 
       if(contrast) {

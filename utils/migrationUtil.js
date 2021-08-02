@@ -9,10 +9,20 @@ const writeFile = util.promisify(fs.writeFile)
 const config = require(`${args[0]}/mooncord.json`)
 
 module.exports.migrate = async () => {
+  let modified = false
   if (typeof (config.connection.moonraker_token) === 'undefined') {
     config.connection.moonraker_token = ""
-    await saveData()
+    modified = true
   }
+  if (config.webcam.brightness === 0) {
+    config.webcam.brightness = 0.5
+    modified = true
+  }
+  if (config.webcam.contrast === 0) {
+    config.webcam.contrast = 0.5
+    modified = true
+  }
+  if (modified) { await saveData() }
 }
 
 async function saveData() {
