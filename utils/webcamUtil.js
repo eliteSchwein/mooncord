@@ -77,8 +77,6 @@ async function retrieveWebcam() {
 
       await executePostProcess(afterStatus)
 
-      console.log("output")
-
       return new Discord.MessageAttachment(image, "snapshot.png")
     }
 
