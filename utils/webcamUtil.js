@@ -60,7 +60,7 @@ async function retrieveWebcam() {
       }
 
       if(contrast) {
-        image.linear(contrast, -(128 * contrast) + 128)
+        //image.linear(contrast, -(128 * contrast) + 128)
       } 
 
       if (sepia) {
