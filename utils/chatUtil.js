@@ -32,7 +32,7 @@ module.exports.getButtons = (config) => {
 
 module.exports.generateStatusEmbed = async (config) => {
   const snapshot = await webcam.retrieveWebcam()
-  console.log(snapshot)
+  
   const embed = new Discord.MessageEmbed()
     .setColor(config.color)
     .setTitle(config.title)
