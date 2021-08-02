@@ -55,10 +55,7 @@ async function render() {
         .inputFPS(config.timelapse.framerate)
         .output(path.resolve(__dirname, '../temp/timelapse/timelapse.mp4'))
         .outputFPS(config.timelapse.framerate)
-        .outputOptions([
-            '-pix_fmt yuv420p',
-            '-preset faster',
-            '-crf 30'])
+        .outputOptions(config.timelapse.ffmpeg_arguments)
         .noAudio()
         .videoCodec('libx264')
         .on('end', async (stdout, stderr) => {

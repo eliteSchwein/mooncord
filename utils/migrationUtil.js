@@ -14,6 +14,14 @@ module.exports.migrate = async () => {
     config.connection.moonraker_token = ""
     modified = true
   }
+  if (typeof (config.timelapse.ffmpeg_arguments) === 'undefined') {
+    config.timelapse.ffmpeg_arguments = [
+      "-pix_fmt yuv420p",
+      "-preset slower",
+      "-crf 30"
+    ]
+    modified = true
+  }
   if (modified) { await saveData() }
 }
 

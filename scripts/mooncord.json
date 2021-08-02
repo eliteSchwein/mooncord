@@ -46,7 +46,12 @@
         "framerate": 10,
         "frame_every_layer": false,
         "frame_every_percent": false,
-        "post_at_print_end": false
+        "post_at_print_end": false,
+        "ffmpeg_arguments": [
+            "-pix_fmt yuv420p",
+            "-preset slower",
+            "-crf 30"
+        ]
     },
     "system_notifications": {
         "moonraker_throttle": true,
