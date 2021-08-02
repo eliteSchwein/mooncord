@@ -52,7 +52,7 @@ async function retrieveWebcam() {
         .flip(vertical_mirror)
         .flop(horizontal_mirror)
         .greyscale(greyscale)
-        
+
       if(brightness) {
         image.linear(brightness)
       }
@@ -76,6 +76,8 @@ async function retrieveWebcam() {
       image.toBuffer()
 
       await executePostProcess(afterStatus)
+
+      console.log("output")
 
       return new Discord.MessageAttachment(image, "snapshot.png")
     }
