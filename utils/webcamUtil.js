@@ -45,7 +45,7 @@ async function retrieveWebcam() {
       sepia ||
       vertical_mirror
     ) {
-      const image = await await sharp({
+      const image = await sharp({
         input: buffer
       })
 
