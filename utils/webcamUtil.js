@@ -73,11 +73,11 @@ async function retrieveWebcam() {
         quality: quality
       })
 
-      image.toBuffer()
+      const editBuffer = await image.toBuffer()
 
       await executePostProcess(afterStatus)
 
-      return new Discord.MessageAttachment(image, "snapshot.png")
+      return new Discord.MessageAttachment(editBuffer, "snapshot.png")
     }
 
     // Else just send the normal images
