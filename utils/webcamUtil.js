@@ -45,9 +45,7 @@ async function retrieveWebcam() {
       sepia ||
       vertical_mirror
     ) {
-      const image = await sharp({
-        input: buffer
-      })
+      const image = await sharp(buffer)
 
       image
         .rotate(rotation)
