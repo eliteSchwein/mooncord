@@ -14,14 +14,6 @@ module.exports.migrate = async () => {
     config.connection.moonraker_token = ""
     modified = true
   }
-  if (config.webcam.brightness === 0) {
-    config.webcam.brightness = 0.5
-    modified = true
-  }
-  if (config.webcam.contrast === 0) {
-    config.webcam.contrast = 0.5
-    modified = true
-  }
   if (modified) { await saveData() }
 }
 
