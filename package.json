@@ -33,6 +33,7 @@
     "jimp": "^0.16.1",
     "log-symbols": "^4.1.0",
     "node-fetch": "^2.6.1",
+    "sharp": "^0.28.3",
     "shelljs": "^0.8.4",
     "slash-create": "^3.4.0",
     "systeminformation": "^5.7.13",

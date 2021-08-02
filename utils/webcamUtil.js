@@ -3,8 +3,8 @@ const logSymbols = require("log-symbols")
 const fs = require("fs").promises
 const fetch = require("node-fetch")
 const path = require("path")
-const jimp = require("jimp")
 const axios = require("axios")
+const sharp = require("sharp")
 
 const args = process.argv.slice(2)
 
@@ -45,27 +45,37 @@ async function retrieveWebcam() {
       sepia ||
       vertical_mirror
     ) {
-      const image = await jimp.read(buffer)
+      const image = await await sharp({
+        input: buffer
+      })
 
       image
-        .quality(quality)
         .rotate(rotation)
-        .mirror(horizontal_mirror, vertical_mirror)
+        .flip(vertical_mirror)
+        .flop(horizontal_mirror)
         .contrast(contrast)
         .brightness(brightness)
-
-      if (greyscale) {
-        image.greyscale()
-      }
+        .greyscale(greyscale)
+        .linear(brightness)
+        .linear(contrast, -(128 * contrast) + 128)
 
       if (sepia) {
-        image.sepia()
+        image.recomb([
+         [0.3588, 0.7044, 0.1368],
+         [0.2990, 0.5870, 0.1140],
+         [0.2392, 0.4696, 0.0912],
+        ])
       }
-      const editbuffer = await image.getBufferAsync(jimp.MIME_PNG)
+
+      image.jpeg({
+        quality: quality
+      })
+
+      image.toBuffer()
 
       await executePostProcess(afterStatus)
 
-      return new Discord.MessageAttachment(editbuffer, "snapshot.png")
+      return new Discord.MessageAttachment(image, "snapshot.png")
     }
 
     // Else just send the normal images
