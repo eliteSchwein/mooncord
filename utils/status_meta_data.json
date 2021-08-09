@@ -3,7 +3,9 @@
         "meta_data": {
             "order_id": 0,
             "allow_same": false,
-            "prevent": []
+            "prevent": [
+                "pause"
+            ]
         },
         "title": "${locale.title}",
         "color": "#c90000",
@@ -65,7 +67,13 @@
         },
         "title": "${locale.title}",
         "color": "#c90000",
-        "buttons": [],
+        "buttons": [
+            {
+                "emoji": "🔄",
+                "id":"klipper_restart",
+                "style":"blurple"
+            }
+        ],
         "activity": {
             "type": "LISTENING",
             "text": "${locale.activity}"
