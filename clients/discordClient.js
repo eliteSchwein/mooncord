@@ -1,12 +1,21 @@
 const { waitUntil } = require('async-wait-until')
 const Discord = require('discord.js')
 const path = require('path')
-const { GatewayServer, SlashCreator } = require('slash-create')
 
 const events = require('../discord/events')
 const variables = require('../utils/variablesUtil')
 
-const discordClient = new Discord.Client()
+const discordClient = new Discord.Client({
+  intents: [
+    Discord.Intents.FLAGS.DIRECT_MESSAGES,
+    Discord.Intents.FLAGS.DIRECT_MESSAGE_REACTIONS,
+    Discord.Intents.FLAGS.GUILDS,
+    Discord.Intents.FLAGS.GUILD_MESSAGES,
+    Discord.Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
+    Discord.Intents.FLAGS.GUILD_PRESENCES,
+    Discord.Intents.FLAGS.GUILD_INTEGRATIONS
+  ]
+})
 const buttons = require('discord-buttons')(discordClient)
 
 let creator
@@ -40,19 +49,6 @@ function enableCommands(useconsole) {
     console.log('  Sync Slash Commands'.statusmessage)
   }
 
-  creator
-    .registerCommandsIn(path.join(__dirname, '../discord/commands'))
-    .registerCommandsIn(path.join(__dirname, '../discord/dynamicCommands'))
-    .syncCommands()
-}
-function enableCreator() {
-  console.log('  Enable Slash Command Creator'.statusmessage)
-
-  creator = new SlashCreator({
-    applicationID,
-    publicKey: applicationKey,
-    token,
-  })
 }
 
 function enableServer() {
@@ -84,8 +80,7 @@ module.exports.init = async (discordToken, discordApplicationID, discordApplicat
                               `)
   loginBot()
   await waitUntil(() => connected === true, { timeout: Number.POSITIVE_INFINITY })
-  enableCreator()
-  enableCommands( true )
+  //enableCommands( true )
   enableServer()
   enableEvents()
 }
