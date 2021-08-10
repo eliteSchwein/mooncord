@@ -18,7 +18,7 @@ let discordClient
 
 const enableEvent = function (dcClient) {
   discordClient = dcClient
-  discordClient.on('message', async (msg) => {
+  discordClient.on('messageCreate', async (msg) => {
     if (msg.channel.type !== 'text' && msg.channel.type !== 'dm') {
       return
     }
