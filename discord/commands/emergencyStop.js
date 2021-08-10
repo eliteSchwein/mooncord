@@ -16,3 +16,7 @@ module.exports.command = () => {
         description: messageLocale.description
     }
 }
+
+module.exports.reply = async (interaction) => {
+    await interaction.reply('YES')
+}
