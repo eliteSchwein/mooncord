@@ -1,5 +1,4 @@
 const Discord = require('discord.js')
-const { MessageButton } = require('discord-buttons')
 const logSymbols = require('log-symbols')
 const path = require('path')
 
@@ -76,11 +75,11 @@ async function postUpdate(updateData, discordClient, database) {
     }
   }
   const buttonRow = []
-  const button = new MessageButton()
-    .setStyle('grey')
-    .setID('update_system')
-    .setLabel(locale.buttons.update_system)
-  buttonRow.push(button)
+  //const button = new MessageButton()
+   // .setStyle('grey')
+    //.setID('update_system')
+   // .setLabel(locale.buttons.update_system)
+  //buttonRow.push(button)
 
   status.postBroadcastMessage({ embed: notifyEmbed, buttons: buttonRow }, discordClient, database)
 }
