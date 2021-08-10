@@ -17,7 +17,6 @@ const discordClient = new Discord.Client({
     Discord.Intents.FLAGS.GUILD_INTEGRATIONS
   ]
 })
-const buttons = require('discord-buttons')(discordClient)
 
 let creator
 let connected = false
@@ -87,4 +86,3 @@ module.exports.init = async (discordToken, discordApplicationID, discordApplicat
 }
 module.exports.isConnected = connected 
 module.exports.getClient = discordClient
-module.exports.getButtonHandler = buttons
