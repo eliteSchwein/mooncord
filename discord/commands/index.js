@@ -14,7 +14,7 @@ function commandEvent(discordClient) {
     discordClient.on('interactionCreate', async interaction => {
         if (!interaction.isCommand()) { return }
         for (let command in commands()) {
-            if (command.command === interaction.commandName) {
+            if (command.command().name === interaction.commandName) {
                 await command.reply(interaction)
                 return
             }
