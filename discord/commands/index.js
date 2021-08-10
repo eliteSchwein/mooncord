@@ -4,5 +4,7 @@ module.exports.addCommandEvents = async (discordClient) => { await loadSlashComm
 module.exports.loadSlashCommands = (discordClient) => {}
 
 async function loadSlashCommands(discordClient) {
-    console.log(await discordClient.application?.commands.create(emergencyStop.command))
+    const commands = []
+    commands.push(emergencyStop.command)
+    console.log(await discordClient.application?.commands.set(commands))
 }
