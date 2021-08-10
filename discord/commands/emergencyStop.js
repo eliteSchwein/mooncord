@@ -1,5 +1,4 @@
 const logSymbols = require('log-symbols')
-const { SlashCommand } = require('slash-create')
 
 const discordClient = require('../../clients/discordClient')
 const moonrakerClient = require('../../clients/moonrakerClient')
