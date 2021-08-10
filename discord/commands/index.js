@@ -2,11 +2,11 @@ module.exports.addCommandEvents = (discordClient) => { commandEvent(discordClien
 module.exports.loadSlashCommands = async (discordClient) => { await loadSlashCommands(discordClient) }
 
 async function loadSlashCommands(discordClient) {
-    const commands = []
+    const commandList = []
     for (let command in commands()) {
-        commands.push(command.command())
+        commandList.push(command.command())
     }
-    await discordClient.application?.commands.set(commands)
+    await discordClient.application?.commands.set(commandList)
 }
 
 function commandEvent(discordClient) {
