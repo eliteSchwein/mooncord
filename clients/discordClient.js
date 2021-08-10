@@ -17,7 +17,6 @@ const discordClient = new Discord.Client({
   ]
 })
 
-let creator
 let connected = false
 let token
 let applicationID
@@ -27,6 +26,7 @@ function enableEvents() {
   console.log('  Enable Discord Events'.statusmessage)
 
   events(discordClient)
+  commands.addCommandEvents(discordClient)
 }
 
 function loginBot() {
