@@ -1,7 +1,7 @@
 const upload = require('./upload')
 const buttonClick = require('./buttonClick')
 
-const enableEvent = function (discordClient) {
+const enableEvent = (discordClient) => {
   upload(discordClient)
   buttonClick(discordClient)
 }
