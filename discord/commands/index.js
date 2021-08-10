@@ -23,6 +23,6 @@ function commandEvent(discordClient) {
     })
 }
 
-const commands = {
-    emergencyStop: require('./emergencyStop')
+module.exports.commands = {
+    "emergencyStop": require('./emergencyStop')
 }
