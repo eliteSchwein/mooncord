@@ -4,6 +4,7 @@ const logSymbols = require('log-symbols')
 const path = require('path')
 const WebSocketClient = require('websocket').client
 const shell = require('shelljs')
+const semver = require('semver')
 
 const client = new WebSocketClient()
 
@@ -17,7 +18,16 @@ colors.setTheme({
 
 execute()
 
+async function migrateNode() {
+    const currentVersion = await shell.exec('node -v')
+    if (semver.ltr(currentVersion, '16.6.0')) {
+        await shell.exec(`bash ${path.resolve(__dirname, '../scripts/migrateNode.sh')}`)
+    }
+}
+
 async function execute() {
+    await migrateNode()
+
     if (!await hasLegacyConfig()) { return }
 
     config = require('../config.json')
