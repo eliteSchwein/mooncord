@@ -45,15 +45,10 @@ async function changeStatus(discordClient, newStatus) {
   }
 
   if (onCooldown(config, currentStatusMeta.allow_same)) { return }
-  
-  const buttons = chatUtil.getButtons(parsedConfig)
+
   const embed = await chatUtil.generateStatusEmbed(parsedConfig)
 
-  if (buttons.length > 0) {
-    broadcastMessage({ embed: embed, buttons: buttons }, discordClient)
-  } else {
-    broadcastMessage(embed, discordClient)
-  }
+  broadcastMessage(embed, discordClient)
 
   statusWaitList.shift()
   return true

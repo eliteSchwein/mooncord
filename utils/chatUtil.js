@@ -31,11 +31,14 @@ module.exports.getButtons = (config) => {
 
 module.exports.generateStatusEmbed = async (config) => {
   const snapshot = await webcam.retrieveWebcam()
+
+  const files = []
+
+  files.push(snapshot)
   
   const embed = new Discord.MessageEmbed()
     .setColor(config.color)
     .setTitle(config.title)
-    .attachFiles([snapshot])
     .setImage(`attachment://${snapshot.name}`)
   
   if (typeof (config.author) !== 'undefined') {
@@ -44,8 +47,8 @@ module.exports.generateStatusEmbed = async (config) => {
   
   if (config.thumbnail) {
     const thumbnailpic = await thumbnail.retrieveThumbnail()
+    files.push(thumbnailpic)
     embed
-      .attachFiles([thumbnailpic])
       .setThumbnail(`attachment://${thumbnailpic.name}`)
   }
 
@@ -70,7 +73,7 @@ module.exports.generateStatusEmbed = async (config) => {
   
   embed.setTimestamp()
   
-  return embed
+  return { embeds: [embed], files: files }
 }
 module.exports.getWaitEmbed = (user, relation, icon) => {
 
@@ -88,15 +91,11 @@ module.exports.getWaitEmbed = (user, relation, icon) => {
   }
 
   if (typeof (icon) !== 'undefined') {
-    const imgPath = path.resolve(__dirname, `../images/${icon}`)
-    const imgBuffer = fs.readFileSync(imgPath)
-    const thumbnail = new Discord.MessageAttachment(imgBuffer, icon)
     waitEmbed
       .setAuthor(title, `attachment://${icon}`)
-      .attachFiles(thumbnail)
   }
   
-  return waitEmbed
+  return { embeds: [waitEmbed] }
 }
 module.exports.hasMessageEmbed = (message) => {
   if (message.channel.type !== 'text' && message.channel.type !== 'dm') {
@@ -108,13 +107,16 @@ module.exports.hasMessageEmbed = (message) => {
   return true
 }
 module.exports.generateWarnEmbed = (title, description) => {
-  return new Discord.MessageEmbed()
+  const embed = new Discord.MessageEmbed()
     .setColor('#fcad03')
     .setTitle(title)
-    .attachFiles(path.resolve(__dirname, '../images/warning.png'))
     .setThumbnail('attachment://warning.png')
     .setTimestamp()
     .setDescription(description)
+  
+  const icon = new Discord.MessageAttachment(path.resolve(__dirname, '../images/warning.png'), 'warning.png')
+  
+  return { embeds: [embed], files: [icon] }
 }
 module.exports.retrieveCurrentPage = (embed) => {
   const pages = embed.author.name
@@ -149,7 +151,6 @@ module.exports.generatePageEmbed = (pageUp, currentPage, data, title, icon, user
     .setTitle(title)
     .setAuthor(`Page ${newpage + 1}/${maxpage}`)
     .setDescription(entries)
-    .attachFiles(thumbnail)
     .setThumbnail(`attachment://${icon}`)
   
   if (typeof (user) !== 'undefined') {
@@ -157,6 +158,6 @@ module.exports.generatePageEmbed = (pageUp, currentPage, data, title, icon, user
       .setTimestamp()
       .setFooter(user.tag, user.avatarURL())
   }
-  
-  return pageEmbed
+
+  return { embeds: [pageEmbed], files: [thumbnail] }
 }
