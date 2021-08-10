@@ -3,6 +3,7 @@ const Discord = require('discord.js')
 const path = require('path')
 
 const events = require('../discord/events')
+const commands = require('../discord/commands')
 const variables = require('../utils/variablesUtil')
 
 const discordClient = new Discord.Client({
@@ -48,7 +49,7 @@ function enableCommands(useconsole) {
   if (useconsole) {
     console.log('  Sync Slash Commands'.statusmessage)
   }
-
+  commands.loadSlashCommands(discordClient)
 }
 
 function enableServer() {
@@ -80,7 +81,7 @@ module.exports.init = async (discordToken, discordApplicationID, discordApplicat
                               `)
   loginBot()
   await waitUntil(() => connected === true, { timeout: Number.POSITIVE_INFINITY })
-  //enableCommands( true )
+  enableCommands( true )
   enableServer()
   enableEvents()
 }
