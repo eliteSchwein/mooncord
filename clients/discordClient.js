@@ -50,17 +50,6 @@ function enableCommands(useconsole) {
   commands.loadSlashCommands(discordClient)
 }
 
-function enableServer() {
-  console.log('  Enable Slash Command Server'.statusmessage)
-  
-  creator
-    .withServer(
-      new GatewayServer(
-        (handler) => discordClient.ws.on('INTERACTION_CREATE', handler)
-      )
-    )
-}
-
 module.exports = {}
 module.exports.init = async (discordToken, discordApplicationID, discordApplicationKey) => {
   token = discordToken
@@ -80,7 +69,6 @@ module.exports.init = async (discordToken, discordApplicationID, discordApplicat
   loginBot()
   await waitUntil(() => connected === true, { timeout: Number.POSITIVE_INFINITY })
   enableCommands( true )
-  enableServer()
   enableEvents()
 }
 module.exports.isConnected = connected 
