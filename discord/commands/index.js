@@ -3,7 +3,7 @@ module.exports.loadSlashCommands = async (discordClient) => { await loadSlashCom
 
 async function loadSlashCommands(discordClient) {
     const commandList = []
-    for (let command in commands) {
+    for (let command in this.commands) {
         console.log(command)
         commandList.push(command.command())
     }
@@ -24,5 +24,5 @@ function commandEvent(discordClient) {
 }
 
 module.exports.commands = {
-    "emergencyStop": require('./emergencyStop')
+    emergencyStop: require('./emergencyStop')
 }
