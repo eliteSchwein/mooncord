@@ -18,16 +18,7 @@ colors.setTheme({
 
 execute()
 
-async function migrateNode() {
-    const currentVersion = await shell.exec('node -v')
-    if (semver.ltr(currentVersion.substr(1), '16.6.0')) {
-        await shell.exec(`bash ${path.resolve(__dirname, '../scripts/migrateNode.sh')}`)
-    }
-}
-
 async function execute() {
-    await migrateNode()
-
     if (!await hasLegacyConfig()) { return }
 
     config = require('../config.json')
