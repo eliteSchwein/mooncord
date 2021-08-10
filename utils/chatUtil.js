@@ -1,5 +1,4 @@
 const Discord = require('discord.js')
-const { MessageButton } = require('discord-buttons')
 const fs = require('fs')
 const path = require('path')
 
@@ -16,16 +15,16 @@ module.exports.getButtons = (config) => {
   const buttonRow = []
   for (const index in config.buttons) {
     const buttonMeta = config.buttons[index]
-    const button = new MessageButton()
-      .setStyle(buttonMeta.style)
-      .setID(buttonMeta.id)
-      .setLabel(locale.buttons[buttonMeta.id])
+    //const button = new MessageButton()
+ //     .setStyle(buttonMeta.style)
+  //    .setID(buttonMeta.id)
+   //   .setLabel(locale.buttons[buttonMeta.id])
 
     if(buttonMeta.emoji !== '') { 
-      button.setEmoji(buttonMeta.emoji)
+   //   button.setEmoji(buttonMeta.emoji)
     }
 
-    buttonRow.push(button)
+   // buttonRow.push(button)
   }
   return buttonRow
 }
