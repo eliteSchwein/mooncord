@@ -4,7 +4,6 @@ const { waitUntil } = require('async-wait-until')
 const Discord = require('discord.js')
 const fs = require('fs')
 const path = require('path')
-const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path
 const ffmpeg = require('fluent-ffmpeg')
 const logSymbols = require('log-symbols')
 
@@ -24,8 +23,6 @@ let running = false
 let framecount = 1
 let lastLayer = 0
 let lastPercent = 0
-
-ffmpeg.setFfmpegPath(ffmpegPath)
 
 function checkForFrames() {
     const pattern = /^frame-+/
