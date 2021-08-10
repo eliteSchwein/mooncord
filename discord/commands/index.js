@@ -6,7 +6,5 @@ module.exports.loadSlashCommands = async (discordClient) => { await loadSlashCom
 async function loadSlashCommands(discordClient) {
     const commands = []
     commands.push(emergencyStop.command)
-    console.log(commands)
-    const status = await discordClient.application?.commands.set(commands)
-    console.log(status)
+    await discordClient.application?.commands.set(commands)
 }
