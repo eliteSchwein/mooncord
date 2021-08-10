@@ -10,7 +10,9 @@ const syntaxLocale = locale.syntaxlocale.commands.emergency_stop
 
 let connection
 
-module.exports.command = {
-    name: syntaxLocale.command,
-    description: messageLocale.description
+module.exports.command = () => {
+    return {
+        name: syntaxLocale.command,
+        description: messageLocale.description
+    }
 }
