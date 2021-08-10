@@ -3,8 +3,8 @@ module.exports.loadSlashCommands = async (discordClient) => { await loadSlashCom
 
 async function loadSlashCommands(discordClient) {
     const commandList = []
-    for (let command in commands) {
-        console.log(command)
+    for (let commandIndex in commands) {
+        const command = commands[commandIndex]
         commandList.push(command.command())
     }
     await discordClient.application?.commands.set(commandList)
@@ -13,7 +13,8 @@ async function loadSlashCommands(discordClient) {
 function commandEvent(discordClient) {
     discordClient.on('interactionCreate', async interaction => {
         if (!interaction.isCommand()) { return }
-        for (let command in commands) {
+        for (let commandIndex in commands) {
+            const command = commands[commandIndex]
             if (command.command().name === interaction.commandName) {
                 await command.reply(interaction)
                 return
