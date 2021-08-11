@@ -48,6 +48,8 @@ async function changeStatus(discordClient, newStatus) {
 
   const embed = await chatUtil.generateStatusEmbed(parsedConfig)
 
+  console.log(embed)
+
   broadcastMessage(embed, discordClient)
 
   statusWaitList.shift()
