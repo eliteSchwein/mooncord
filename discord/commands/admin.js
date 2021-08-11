@@ -1,7 +1,6 @@
 const logSymbols = require('log-symbols')
 const { SlashCommandBuilder } = require('@discordjs/builders')
 
-const discordClient = require('../../clients/discordClient')
 const database = require('../../utils/databaseUtil')
 const locale = require('../../utils/localeUtil')
 const permission = require('../../utils/permissionUtil')
@@ -55,7 +54,7 @@ module.exports.reply = async (interaction) => {
             adminid = interaction.options.getUser(syntaxLocale.options.user.options.user.name)
         }
 
-        const result = await editAdmin(isRole, adminid, interaction.guildId)
+        const result = await editAdmin(isRole, adminid, interaction.guildId, interaction.client)
 
         let answermention = `<@${adminid}>`
 
@@ -79,8 +78,8 @@ module.exports.reply = async (interaction) => {
     }
 }
 
-async function editAdmin(isRole, adminid, guildid) {
-    const guild = await discordClient.getClient.guilds.fetch(guildid)
+async function editAdmin(isRole, adminid, guildid, discordClient) {
+    const guild = await discordClient.guilds.fetch(guildid)
     const guilddatabase = database.getGuildDatabase(guild)
     let adminarray = 'adminusers'
 
