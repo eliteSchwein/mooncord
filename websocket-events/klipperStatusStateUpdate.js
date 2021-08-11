@@ -81,6 +81,6 @@ async function postUpdate(updateData, discordClient, database) {
    // .setLabel(locale.buttons.update_system)
   //buttonRow.push(button)
 
-  status.postBroadcastMessage({ embeds: [notifyEmbed], files:[icon], buttons: buttonRow }, discordClient, database)
+  //status.postBroadcastMessage({ embeds: [notifyEmbed], files:[icon], buttons: buttonRow }, discordClient, database)
 }
 module.exports = event
