@@ -19,12 +19,12 @@ module.exports.command = () => {
 
 module.exports.reply = async (interaction) => {
     try {
+
+        console.log(interaction)
         if (!await permission.hasAdmin(ctx.user, ctx.guildID, discordClient.getClient)) {
             await interaction.reply(locale.getAdminOnlyError(ctx.user.username))
             return
         }
-
-        console.log(interaction)
         
         connection = moonrakerClient.getConnection()
         const id = Math.floor(Math.random() * Number.parseInt('10_000')) + 1
