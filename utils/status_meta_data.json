@@ -62,6 +62,7 @@
             "prevent": [
                 "pause",
                 "start",
+                "done",
                 "printing"
             ]
         },
