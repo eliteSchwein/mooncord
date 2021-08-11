@@ -1,6 +1,7 @@
 const logSymbols = require('log-symbols')
 const { SlashCommandBuilder } = require('@discordjs/builders')
 
+const discordClient = require('../../clients/discordClient')
 const database = require('../../utils/databaseUtil')
 const locale = require('../../utils/localeUtil')
 const permission = require('../../utils/permissionUtil')
@@ -76,4 +77,28 @@ module.exports.reply = async (interaction) => {
         console.log(logSymbols.error, `Admin Command: ${error}`.error)
         await interaction.reply(locale.errors.command_failed)
     }
+}
+
+async function editAdmin(isRole, adminid, guildid) {
+    const guild = await discordClient.getClient.guilds.fetch(guildid)
+    const guilddatabase = database.getGuildDatabase(guild)
+    let adminarray = 'adminusers'
+
+    if (isRole) {
+        adminarray = 'adminroles'
+    }
+
+    if (guilddatabase[adminarray].includes(adminid)) {
+        const index = guilddatabase[adminarray].indexOf(adminid)
+        if (index > -1) {
+            guilddatabase[adminarray].splice(index, 1)
+        }
+        database.updateDatabase(guilddatabase, guild)
+        return false
+    }
+
+    guilddatabase[adminarray].push(adminid)
+    database.updateDatabase(guilddatabase, guild)
+
+    return true
 }
