@@ -37,6 +37,8 @@ async function changeStatus(discordClient, newStatus) {
   
   const parsedConfig = parseConfig(currentStatus)
 
+  console.log(parseConfig)
+
   if (typeof (parsedConfig.activity) !== 'undefined') {
     discordClient.user.setActivity(
       parsedConfig.activity.text,
@@ -93,7 +95,6 @@ async function broadcastSection(list, section, discordClient, message) {
 
     const channel = await discordClient[section].fetch(id)
     await removeOldStatus(channel, discordClient)
-    console.log(message)
     channel.send(message)
   }
 }
