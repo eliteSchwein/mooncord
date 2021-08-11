@@ -63,12 +63,12 @@ module.exports.reply = async (interaction) => {
         }
 
         if (result) {
-            await interact.reply(messageLocale.answer.added
+            await interaction.reply(messageLocale.answer.added
                 .replace(/(\${username})/g, interaction.user.username)
                 .replace(/(\${mention})/g, answermention))
         } 
 
-        await interact.reply(messageLocale.answer.removed
+        await interaction.reply(messageLocale.answer.removed
             .replace(/(\${username})/g, interaction.user.username)
             .replace(/(\${mention})/g, answermention))
         
