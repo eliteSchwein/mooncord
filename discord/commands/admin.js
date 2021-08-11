@@ -46,17 +46,17 @@ module.exports.reply = async (interaction) => {
 
         if (interaction.options.getSubcommand() === syntaxLocale.options.role.name) {
             isRole = true
-            adminid = interaction.options.getRole(syntaxLocale.options.role.options.role.name)
+            adminid = interaction.options.getRole(syntaxLocale.options.role.options.role.name).id
         }
 
         if (interaction.options.getSubcommand() === syntaxLocale.options.user.name) {
             isRole = false
-            adminid = interaction.options.getUser(syntaxLocale.options.user.options.user.name)
+            adminid = interaction.options.getUser(syntaxLocale.options.user.options.user.name).id
         }
 
         const result = await editAdmin(isRole, adminid, interaction.guildId, interaction.client)
 
-        let answermention = `${adminid}`
+        let answermention = `<@${adminid}>`
 
         if (isRole) {
             answermention = answermention.replace(/<@/g,'<@&')
