@@ -104,7 +104,7 @@ function broadcastMessage(message, discordClient) {
   const guildDatabase = database.getDatabase().guilds
   const notifyList = database.getNotifyList()
 
-  console.log(message)
+  if(typeof(message) === 'undefined') { return }
 
   broadcastSection(guildDatabase, 'guilds', discordClient, message)
   broadcastSection(notifyList, 'users', discordClient, message)
