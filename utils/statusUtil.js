@@ -37,6 +37,7 @@ async function changeStatus(discordClient, newStatus) {
   
   const parsedConfig = parseConfig(currentStatus)
 
+  console.log(currentStatus)
   console.log(parsedConfig)
 
   if (typeof (parsedConfig.activity) !== 'undefined') {
