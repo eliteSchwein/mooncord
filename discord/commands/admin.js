@@ -1,5 +1,5 @@
 const logSymbols = require('log-symbols')
-const { SlashCommandBuilder } = require('@discordjs/builders');
+const { SlashCommandBuilder } = require('@discordjs/builders')
 
 const database = require('../../utils/databaseUtil')
 const locale = require('../../utils/localeUtil')

@@ -1,3 +1,4 @@
+const { SlashCommandBuilder } = require('@discordjs/builders')
 const logSymbols = require('log-symbols')
 
 const moonrakerClient = require('../../clients/moonrakerClient')
@@ -10,10 +11,10 @@ const syntaxLocale = locale.syntaxlocale.commands.emergency_stop
 let connection
 
 module.exports.command = () => {
-    return {
-        name: syntaxLocale.command,
-        description: messageLocale.description
-    }
+    const command = new SlashCommandBuilder()
+        .setName(syntaxLocale.command)
+        .setDescription(messageLocale.description)
+    return command.toJSON()
 }
 
 module.exports.reply = async (interaction) => {
