@@ -26,7 +26,6 @@ module.exports.command = () => {
                     userOption.setName(syntaxLocale.options.user.options.user.name)
                         .setDescription(messageLocale.options.user.options.user.description)
                         .setRequired(true)))
-    console.log(command.toJSON())
     return command.toJSON()
 }
 
