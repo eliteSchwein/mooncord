@@ -35,10 +35,7 @@ async function changeStatus(discordClient, newStatus) {
 
   console.log(logSymbols.info, `Printer Status: ${newStatus}`.printstatus)
   
-  const parsedConfig = parseConfig(currentStatus)
-
-  console.log(currentStatus)
-  console.log(parsedConfig)
+  const parsedConfig = parseConfig(newStatus)
 
   if (typeof (parsedConfig.activity) !== 'undefined') {
     discordClient.user.setActivity(
