@@ -1,6 +1,5 @@
 const logSymbols = require('log-symbols')
 
-const discordClient = require('../../clients/discordClient')
 const moonrakerClient = require('../../clients/moonrakerClient')
 const locale = require('../../utils/localeUtil')
 const permission = require('../../utils/permissionUtil')
