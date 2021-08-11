@@ -37,7 +37,7 @@ async function changeStatus(discordClient, newStatus) {
   
   const parsedConfig = parseConfig(currentStatus)
 
-  console.log(parseConfig)
+  console.log(parsedConfig)
 
   if (typeof (parsedConfig.activity) !== 'undefined') {
     discordClient.user.setActivity(
