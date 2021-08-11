@@ -48,8 +48,6 @@ async function changeStatus(discordClient, newStatus) {
 
   const embed = await chatUtil.generateStatusEmbed(parsedConfig)
 
-  console.log(embed)
-
   broadcastMessage(embed, discordClient)
 
   statusWaitList.shift()
@@ -95,6 +93,7 @@ async function broadcastSection(list, section, discordClient, message) {
 
     const channel = await discordClient[section].fetch(id)
     await removeOldStatus(channel, discordClient)
+    console.log(message)
     channel.send(message)
   }
 }
