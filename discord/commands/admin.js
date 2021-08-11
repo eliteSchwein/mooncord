@@ -27,7 +27,7 @@ module.exports.command = () => {
                         .setDescription(messageLocale.options.user.options.user.description)
                         .setRequired(true)))
     console.log(command.toJSON())
-    return command
+    return command.toJSON()
 }
 
 module.exports.reply = async (interaction) => {
