@@ -15,14 +15,15 @@ const event = (message, connection, discordClient, database) => {
     const { params } = messageJson
     if(params[0].startsWith("mooncord.broadcast")) {
       const message = params[0].replace("mooncord.broadcast ", "")
-      const broadcastembed = new Discord.MessageEmbed()
+      const attachment = new Discord.MessageAttachment()
+      const broadcastembed = new Discord.MessageEmbed(path.resolve(__dirname, '../images/notification.png'))
         .setColor('#03f4fc')
         .setTitle('Message')
-        .attachFiles(path.resolve(__dirname, '../images/notification.png'))
         .setThumbnail('attachment://notification.png')
         .setTimestamp()
         .setDescription(message)
-      status.postBroadcastMessage(broadcastembed, discordClient, database)
+      status.postBroadcastMessage({embeds: [broadcastembed], files: [attachment]}
+        , discordClient, database)
     }
     if(params[0].startsWith("mooncord.invite")) {
       const id = Math.floor(Math.random() * Number.parseInt('10_000')) + 1

@@ -33,8 +33,7 @@ async function printFileHandler (message, title, color) {
       }
         const parsedThumbnail = await thumbnail.buildThumbnail(path)
         commandFeedback
-            .attachFiles(parsedThumbnail)
             .setThumbnail(`attachment://${parsedThumbnail.name}`)
-      return commandFeedback
+      return { embeds: [commandFeedback], files: [parsedThumbnail] }
   }
 }

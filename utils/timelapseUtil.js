@@ -121,9 +121,9 @@ module.exports.getEmbed = () => {
     const timelapse = getTimelapse()
     const description = locale.timelapse.for_gcode
         .replace(/(\${gcode_file})/g, variablesUtil.getLastPrintJob())
-    return new Discord.MessageEmbed()
+    const embed =  new Discord.MessageEmbed()
         .setDescription(description)
-        .attachFiles(timelapse)
+    return { embeds: [embed], files: [timelapse] }
 }
 module.exports.start = () => {
     fs.unlink(path.resolve(__dirname, '../temp/timelapse/timelapse.mp4'), (err) => {
