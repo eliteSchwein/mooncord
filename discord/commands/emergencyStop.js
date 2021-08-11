@@ -18,5 +18,23 @@ module.exports.command = () => {
 }
 
 module.exports.reply = async (interaction) => {
-    await interaction.reply('YES')
+    try {
+        if (!await permission.hasAdmin(ctx.user, ctx.guildID, discordClient.getClient)) {
+            await interaction.reply(locale.getAdminOnlyError(ctx.user.username))
+            return
+        }
+        
+        connection = moonrakerClient.getConnection()
+        const id = Math.floor(Math.random() * Number.parseInt('10_000')) + 1
+    
+        await interaction.deferReply()
+    
+        connection.send(`{"jsonrpc": "2.0", "method": "printer.emergency_stop", "id": ${id}}`)
+            
+        await interaction.reply(messageLocale.answer.executed
+            .replace(/(\${username})/g, ctx.user.username))
+    } catch (error) {
+        console.log(logSymbols.error, `Emergency Stop Command: ${error}`.error)
+        await interaction.reply(locale.errors.command_failed)
+    }
 }
