@@ -19,6 +19,7 @@ module.exports.command = () => {
 
 module.exports.reply = async (interaction) => {
     try {
+        console.log(interaction)
         if (!await permission.hasAdmin(interaction.user, interaction.guildId, discordClient.getClient)) {
             await interaction.reply(locale.getAdminOnlyError(interaction.user.username))
             return
