@@ -24,5 +24,6 @@ function commandEvent(discordClient) {
 }
 
 const commands = {
-    emergencyStop: require('./emergencyStop')
+    emergencyStop: require('./emergencyStop'),
+    admin: require('./admin')
 }
