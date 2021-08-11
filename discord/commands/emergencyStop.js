@@ -23,6 +23,8 @@ module.exports.reply = async (interaction) => {
             await interaction.reply(locale.getAdminOnlyError(ctx.user.username))
             return
         }
+
+        console.log(interaction)
         
         connection = moonrakerClient.getConnection()
         const id = Math.floor(Math.random() * Number.parseInt('10_000')) + 1
