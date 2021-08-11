@@ -56,7 +56,7 @@ module.exports.reply = async (interaction) => {
 
         const result = await editAdmin(isRole, adminid, interaction.guildId, interaction.client)
 
-        let answermention = `<@${adminid}>`
+        let answermention = `${adminid}`
 
         if (isRole) {
             answermention = answermention.replace(/<@/g,'<@&')
