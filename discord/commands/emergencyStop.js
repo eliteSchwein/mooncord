@@ -31,7 +31,7 @@ module.exports.reply = async (interaction) => {
     
         connection.send(`{"jsonrpc": "2.0", "method": "printer.emergency_stop", "id": ${id}}`)
             
-        await interaction.reply(messageLocale.answer.executed
+        await interaction.editReply(messageLocale.answer.executed
             .replace(/(\${username})/g, interaction.user.username))
     } catch (error) {
         console.log(logSymbols.error, `Emergency Stop Command: ${error}`.error)
