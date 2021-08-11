@@ -64,9 +64,9 @@ async function postUpdate(updateData, discordClient, database) {
   const notifyEmbed = new Discord.MessageEmbed()
     .setColor('#fcf803')
     .setTitle(locale.update.title)
-    .attachFiles(path.resolve(__dirname, '../images/update.png'))
     .setThumbnail('attachment://update.png')
     .setTimestamp()
+  const icon = new Discord.MessageAttachment(path.resolve(__dirname, '../images/update.png'))
   for (const software in updateData) {
     if (software === 'system') {
       notifyEmbed.addField(locale.update.system, `${locale.update.packages}: ${updateData[software].packages}`, true)
@@ -81,6 +81,6 @@ async function postUpdate(updateData, discordClient, database) {
    // .setLabel(locale.buttons.update_system)
   //buttonRow.push(button)
 
-  status.postBroadcastMessage({ embed: notifyEmbed, buttons: buttonRow }, discordClient, database)
+  status.postBroadcastMessage({ embed: [notifyEmbed], files:[icon], buttons: buttonRow }, discordClient, database)
 }
 module.exports = event
