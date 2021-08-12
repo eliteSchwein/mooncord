@@ -1,3 +1,4 @@
+const logSymbols = require('log-symbols')
 const { SlashCommandBuilder } = require('@discordjs/builders')
 
 const messageLocale = locale.commands.emergency_stop
