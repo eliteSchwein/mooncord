@@ -101,7 +101,7 @@ function handler (message) {
                 }
 
                 if(typeof(temps[temp].speeds) !== 'undefined') {
-                    const speed = calculatePercent(temps[temp].s[temps[temp].speeds.length - 1])
+                    const speed = temps[temp].speeds[temps[temp].speeds.length - 1]
                     data = `${data}
                     ${messageLocale.embed.fields.current_speed}:\`${speed}rpm\``
                 }
