@@ -177,6 +177,7 @@
                 "fields": {
                     "current_temp": "當前",
                     "target_temp": "目標",
+                    "current_speed": "速度",
                     "current_power": "功率"
                 }
             }

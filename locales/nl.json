@@ -198,6 +198,7 @@
                 "fields": {
                     "current_temp": "Huidig",
                     "target_temp": "Ingesteld",
+                    "current_speed": "Snelheid",
                     "current_power": "Vermogen"
                 }
             }

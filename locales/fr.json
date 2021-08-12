@@ -217,6 +217,7 @@
                 "fields": {
                     "current_temp": "Actuelle",
                     "target_temp": "Cible",
+                    "current_speed": "Vitesse",
                     "current_power": "Puissance"
                 }
             }

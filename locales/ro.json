@@ -218,6 +218,7 @@
                 "fields": {
                     "current_temp": "Curent",
                     "target_temp": "Țintă",
+                    "current_speed": "Viteză",
                     "current_power": "Putere"
                 }
             }

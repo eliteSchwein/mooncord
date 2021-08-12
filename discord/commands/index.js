@@ -27,4 +27,5 @@ const commands = {
     admin: require('./admin'),
     editChannel: require('./editChannel'),
     emergencyStop: require('./emergencyStop'),
+    temp: require('./temp'),
 }

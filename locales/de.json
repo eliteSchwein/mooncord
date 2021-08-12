@@ -198,6 +198,7 @@
                 "fields": {
                     "current_temp": "Aktuell",
                     "target_temp": "Ziel",
+                    "current_speed": "Geschwindigkeit",
                     "current_power": "Power"
                 }
             }
