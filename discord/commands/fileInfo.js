@@ -42,7 +42,7 @@ module.exports.reply = async (interaction) => {
 
         commandFeedback = undefined
 
-        interaction.replyDefer()
+        await interaction.deferReply()
 
         connection.on('message', handler)
         connection.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${gcodefile}"}, "id": ${id}}`)
