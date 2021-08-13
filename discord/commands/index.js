@@ -28,5 +28,6 @@ const commands = {
     editChannel: require('./editChannel'),
     emergencyStop: require('./emergencyStop'),
     execute: require('./execute'),
+    fileInfo: require('./fileInfo'),
     temp: require('./temp'),
 }
