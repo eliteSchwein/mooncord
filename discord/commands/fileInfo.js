@@ -46,7 +46,7 @@ module.exports.reply = async (interaction) => {
 
         connection.on('message', handler)
         connection.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${gcodefile}"}, "id": ${id}}`)
-        const feedbackInterval = setInterval(() => {
+        const feedbackInterval = setInterval(async () => {
             if (typeof (commandFeedback) !== 'undefined') {
                 if( lastid === id ) { return }
                 lastid = id

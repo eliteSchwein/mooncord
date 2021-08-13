@@ -35,7 +35,7 @@ module.exports.reply = async (interaction) => {
         connection.on('message', handler)
         connection.send(`{"jsonrpc": "2.0", "method": "server.temperature_store", "id": ${id}}`)
 
-        const feedbackInterval = setInterval(() => {
+        const feedbackInterval = setInterval(async () => {
             if (typeof (commandFeedback) !== 'undefined') {
                 {
                     if( lastid === id ) { return }

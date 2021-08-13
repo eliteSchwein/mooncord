@@ -48,7 +48,7 @@ module.exports.reply = async (interaction) => {
         connection.on('message', handler)
         connection.send(`{"jsonrpc": "2.0", "method": "printer.gcode.script", "params": {"script": "${gcode}"}, "id": ${id}}`)
 
-        const feedbackInterval = setInterval(() => {
+        const feedbackInterval = setInterval(async () => {
             if (typeof (commandFeedback) !== 'undefined') {
                 if( lastid === id ) { return }
                 lastid = id
