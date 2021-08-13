@@ -17,7 +17,7 @@ async function printFileHandler (message, title, color) {
   }
   if (typeof (messageJson.result.filename) !== 'undefined') {
       const description = ''
-          .concat(`${locale.fileinfo.print_time}: ${variables.formatTime(messageJson.result.estimated_time * 1000)}\n`)
+          .concat(`${locale.fileinfo.print_time}: ${variables.formatTime(messageJson.result.estimated_time)}\n`)
           .concat(`${locale.fileinfo.slicer}: ${messageJson.result.slicer}\n`)
           .concat(`${locale.fileinfo.slicer_version}: ${messageJson.result.slicer_version}\n`)
           .concat(`${locale.fileinfo.height}: ${messageJson.result.object_height}mm`)
