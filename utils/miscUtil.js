@@ -15,7 +15,7 @@ module.exports.init = () => {
   }
 }
 module.exports.convertChoices = (choices) => {
-  for (let index in Object.keys(metadata.choices)) {
+  for (let index in Object.keys(choices)) {
     let value = choices[index]
     console.log(index)
     console.log(value)
