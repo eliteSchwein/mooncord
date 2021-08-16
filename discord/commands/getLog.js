@@ -8,6 +8,7 @@ const { SlashCommandBuilder } = require('@discordjs/builders')
 const config = require(`${args[0]}/mooncord.json`)
 const locale = require('../../utils/localeUtil')
 const permission = require('../../utils/permissionUtil')
+const misc = require('../../utils/miscUtil')
 const metadata = require('../commands-metadata/get_log.json')
 
 const messageLocale = locale.commands.get_log
@@ -21,8 +22,9 @@ module.exports.command = () => {
         .addStringOption(service =>
             service.setName(syntaxLocale.options.log_file.name)
             .setDescription(messageLocale.options.log_file.description)
-            .setRequired(true)
-            .addChoices(Object.entries(metadata.choices)))
+            .setRequired(true),
+            misc.parseChoices(metadata.choices, service)
+    )
     return command.toJSON()
 }
 

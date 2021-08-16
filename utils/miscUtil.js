@@ -14,3 +14,8 @@ module.exports.init = () => {
     }, 1000)
   }
 }
+module.exports.parseChoices = (choices, option) => {
+  for (let index in choices) {
+    console.log(index)
+  }
+}
