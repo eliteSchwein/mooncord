@@ -30,5 +30,6 @@ const commands = {
     execute: require('./execute'),
     fileInfo: require('./fileInfo'),
     getLog: require('./getLog'),
+    info: require('./info'),
     temp: require('./temp'),
 }
