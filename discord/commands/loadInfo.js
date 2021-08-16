@@ -18,8 +18,9 @@ module.exports.command = () => {
         .addStringOption(component =>
             component.setName(syntaxLocale.options.component.name)
             .setDescription(messageLocale.options.component.description)
-            .setRequired(true)
-            .addChoices(choices))
+            .setRequired(true))
+    //        .addChoices(choices))
+    console.log(choices)
     return command.toJSON()
 }
 
@@ -73,7 +74,6 @@ async function retrieveMCUComponent(mcu) {
     return { embeds: [embed], files: template.files }
 }
 function generateChoices() {
-    console.log('generating choices')
     const componentlist = components.choices()
     const mculist = variablesUtil.getMCUList()
     Object.keys(mculist).forEach(key => {

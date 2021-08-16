@@ -11,7 +11,6 @@ module.exports = {
 }
 
 module.exports.choices = () => {
-    console.log('this?')
     return [
         {
             name: syntaxLocale.loadinfo.cpu.title,
