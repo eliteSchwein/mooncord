@@ -4,12 +4,14 @@ const { SlashCommandBuilder } = require('@discordjs/builders')
 const components = require('../../utils/hsComponents')
 const loadUtil = require('../../utils/loadUtil')
 const locale = require('../../utils/localeUtil')
+const misc = require('../../utils/miscUtil')
 const variablesUtil = require('../../utils/variablesUtil')
 
 const messageLocale = locale.commands.loadinfo
 const syntaxLocale = locale.syntaxlocale.commands.loadinfo
 
 module.exports.command = () => {
+    const choices = misc.convertChoices(generateChoices())
     const command = new SlashCommandBuilder()
         .setName(syntaxLocale.command)
         .setDescription(messageLocale.description)
@@ -17,7 +19,7 @@ module.exports.command = () => {
             component.setName(syntaxLocale.options.component.name)
             .setDescription(messageLocale.options.component.description)
             .setRequired(true)
-            .addChoices(Object.entries(generateChoices()[0])))
+            .addChoices(choices))
     return command.toJSON()
 }
 
