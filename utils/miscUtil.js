@@ -14,3 +14,10 @@ module.exports.init = () => {
     }, 1000)
   }
 }
+module.exports.convertChoices = (choices) => {
+  for (let index in Object.keys(metadata.choices)) {
+    let value = choices[index]
+    console.log(index)
+    console.log(value)
+  }
+}

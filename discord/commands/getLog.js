@@ -8,13 +8,14 @@ const { SlashCommandBuilder } = require('@discordjs/builders')
 const config = require(`${args[0]}/mooncord.json`)
 const locale = require('../../utils/localeUtil')
 const permission = require('../../utils/permissionUtil')
+const misc = require('../../utils/miscUtil')
 const metadata = require('../commands-metadata/get_log.json')
 
 const messageLocale = locale.commands.get_log
 const syntaxLocale = locale.syntaxlocale.commands.get_log
 
 module.exports.command = () => {
-    console.log(Object.values(metadata.choices))
+    const choices = misc.convertChoices(metadata.choices)
     const command = new SlashCommandBuilder()
         .setName(syntaxLocale.command)
         .setDescription(messageLocale.description)
