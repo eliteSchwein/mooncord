@@ -29,5 +29,6 @@ const commands = {
     emergencyStop: require('./emergencyStop'),
     execute: require('./execute'),
     fileInfo: require('./fileInfo'),
+    getLog: require('./getLog'),
     temp: require('./temp'),
 }
