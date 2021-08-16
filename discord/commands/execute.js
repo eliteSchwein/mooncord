@@ -52,7 +52,7 @@ module.exports.reply = async (interaction) => {
             if (typeof (commandFeedback) !== 'undefined') {
                 if( lastid === id ) { return }
                 lastid = id
-                connection.removeListener('message', gcodeHandler)
+                connection.removeListener('message', handler)
                 clearInterval(feedbackInterval)
                 await interaction.editReply(
                     commandFeedback)
@@ -62,7 +62,7 @@ module.exports.reply = async (interaction) => {
             if (timeout === 4) {
                 commandFeedback = undefined
                 clearInterval(feedbackInterval)
-                connection.removeListener('message', gcodeHandler)
+                connection.removeListener('message', handler)
                 await interaction.editReply(
                     locale.errors.command_timeout)
             }
