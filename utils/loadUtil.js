@@ -29,14 +29,14 @@ module.exports.getComponents = () => { return componentHandler.choices() }
 
 module.exports.getUsageData = () => { return usageData }
 
-module.exports.getDefaultEmbed = (img, title) => {
-  const image = getImage(img)
+module.exports.getDefaultEmbed = (image, title) => {
   const embed = getDefaultEmbed(image, title)
   return { embeds: [embed], files: [image] }
 }
 
 module.exports.getInformation = async function (component) {
   const image = getImage(component)
+  console.log(image)
   const componentData = componentHandler.components[component]
   console.log(componentData)
   const fields = await componentData.getFields()
