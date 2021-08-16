@@ -18,7 +18,7 @@ module.exports.command = () => {
             component.setName(syntaxLocale.options.component.name)
             .setDescription(messageLocale.options.component.description)
             .setRequired(true)
-            .addChoices(generateChoices()))
+            .addChoices(Object.entries(generateChoices()[0])))
     return command.toJSON()
 }
 
