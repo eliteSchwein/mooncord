@@ -25,6 +25,8 @@ const usageData = {
 
 let throttleCoolDown = 0
 
+module.exports.getComponents = () => { return componentHandler.choices() }
+
 module.exports.getUsageData = () => { return usageData }
 
 module.exports.getDefaultEmbed = (img, title) => {

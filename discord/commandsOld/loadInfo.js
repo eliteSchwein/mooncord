@@ -1,7 +1,6 @@
 const logSymbols = require('log-symbols')
 const { SlashCommand, CommandOptionType } = require('slash-create')
 
-const components = require('../../utils/hsComponents')
 const loadUtil = require('../../utils/loadUtil')
 const locale = require('../../utils/localeUtil')
 const variablesUtil = require('../../utils/variablesUtil')
@@ -87,7 +86,7 @@ async function retrieveMCUComponent(mcu) {
     return [template[0], embed]
 }
 function generateChoices() {
-    const componentlist = components.choices()
+    const componentlist = loadUtil.getComponents()
     const mculist = variablesUtil.getMCUList()
     Object.keys(mculist).forEach(key => {
         componentlist.push({name: key.toUpperCase(), value: key})
