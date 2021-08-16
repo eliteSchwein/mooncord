@@ -76,5 +76,6 @@ function generateChoices() {
     Object.keys(mculist).forEach(key => {
         componentlist.push({name: key.toUpperCase(), value: key})
     })
+    console.log(componentlist)
     return componentlist
 }
