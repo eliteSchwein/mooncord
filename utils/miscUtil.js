@@ -15,9 +15,10 @@ module.exports.init = () => {
   }
 }
 module.exports.convertChoices = (choices) => {
+  let answer = []
   for (let index in Object.keys(choices)) {
     let value = choices[index]
-    console.log(index)
-    console.log(value)
+    answer.push([value.name, value.value])
   }
+  console.log(answer)
 }
