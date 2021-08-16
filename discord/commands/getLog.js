@@ -34,7 +34,7 @@ module.exports.reply = async (interaction) => {
 
         const service = interaction.options.getString(syntaxLocale.options.log_file.name)
 
-        interaction.deferReply()
+        await interaction.deferReply()
 
         axios.request({
             responseType: 'arraybuffer',

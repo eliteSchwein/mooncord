@@ -42,7 +42,7 @@ module.exports.reply = async (interaction) => {
 
         commandFeedback = undefined
         
-        ctx.deferReply()
+        await interaction.deferReply()
 
         const feedbackInterval = setInterval(async () => {
             if (typeof (commandFeedback) !== 'undefined') {
