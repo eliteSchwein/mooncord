@@ -76,7 +76,7 @@ module.exports.reply = async (interaction) => {
         console.log(logSymbols.error, `Fileinfo Command: ${error}`.error)
         connection.removeListener('message', handler)
         commandFeedback = undefined
-        await interaction.reply(locale.errors.command_failed)
+        await interaction.editReply(locale.errors.command_failed)
     }
 }
 

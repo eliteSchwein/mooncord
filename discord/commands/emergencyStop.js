@@ -35,6 +35,6 @@ module.exports.reply = async (interaction) => {
             .replace(/(\${username})/g, interaction.user.username))
     } catch (error) {
         console.log(logSymbols.error, `Emergency Stop Command: ${error}`.error)
-        await interaction.reply(locale.errors.command_failed)
+        await interaction.editReply(locale.errors.command_failed)
     }
 }

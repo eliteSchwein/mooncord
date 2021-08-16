@@ -58,6 +58,6 @@ module.exports.reply = async (interaction) => {
         });
     } catch (error) {
         console.log(logSymbols.error, `Get Log Command: ${error}`.error)
-        await interaction.reply(locale.errors.command_failed)
+        await interaction.editReply(locale.errors.command_failed)
     }
 }
