@@ -22,7 +22,7 @@ module.exports.command = () => {
             service.setName(syntaxLocale.options.log_file.name)
             .setDescription(messageLocale.options.log_file.description)
             .setRequired(true)
-            .addChoices(metadata.choices))
+            .addChoices(Object.entries(metadata.choices[0])))
     return command.toJSON()
 }
 
