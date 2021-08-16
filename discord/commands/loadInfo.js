@@ -11,7 +11,6 @@ const syntaxLocale = locale.syntaxlocale.commands.loadinfo
 
 module.exports.command = () => {
     const choices = generateChoices()
-    console.log(choices)
     const command = new SlashCommandBuilder()
         .setName(syntaxLocale.command)
         .setDescription(messageLocale.description)
@@ -73,6 +72,7 @@ async function retrieveMCUComponent(mcu) {
     return { embeds: [embed], files: template.files }
 }
 function generateChoices() {
+    console.log('generating choices')
     const componentlist = components.choices()
     const mculist = variablesUtil.getMCUList()
     Object.keys(mculist).forEach(key => {
