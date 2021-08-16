@@ -9,7 +9,6 @@ const messageLocale = locale.commands.editchannel
 const syntaxLocale = locale.syntaxlocale.commands.editchannel
 
 module.exports.command = () => {
-    console.log('  Load Edit Channel Command'.commandload)
     const command = new SlashCommandBuilder()
         .setName(syntaxLocale.command)
         .setDescription(messageLocale.description)

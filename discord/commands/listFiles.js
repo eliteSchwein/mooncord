@@ -18,7 +18,6 @@ let lastid = 0
 let timeout = 0
 
 module.exports.command = () => {
-    console.log('  Load List Files Command'.commandload)
     const command = new SlashCommandBuilder()
         .setName(syntaxLocale.command)
         .setDescription(messageLocale.description)

@@ -14,7 +14,6 @@ let connection
 let lastid = 0
 
 module.exports.command = () => {
-    console.log('  Load Execute Command'.commandload)
     const command = new SlashCommandBuilder()
         .setName(syntaxLocale.command)
         .setDescription(messageLocale.description)

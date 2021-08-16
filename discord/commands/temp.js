@@ -15,7 +15,6 @@ let connection
 let lastid = 0
 
 module.exports.command = () => {
-    console.log('  Load Temp Command'.commandload)
     const command = new SlashCommandBuilder()
         .setName(syntaxLocale.command)
         .setDescription(messageLocale.description)
