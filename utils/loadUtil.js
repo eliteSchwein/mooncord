@@ -29,7 +29,8 @@ module.exports.getComponents = () => { return componentHandler.choices() }
 
 module.exports.getUsageData = () => { return usageData }
 
-module.exports.getDefaultEmbed = (image, title) => {
+module.exports.getDefaultEmbed = (img, title) => {
+  const image = getImage(img)
   const embed = getDefaultEmbed(image, title)
   return { embeds: [embed], files: [image] }
 }
@@ -37,7 +38,6 @@ module.exports.getDefaultEmbed = (image, title) => {
 module.exports.getInformation = async function (component) {
   const image = getImage(component)
   const componentData = componentHandler.components[component]
-  console.log(componentData)
   const fields = await componentData.getFields()
   const embed = getDefaultEmbed(image, componentData.getTitle())
   if (fields.length > 0) {
