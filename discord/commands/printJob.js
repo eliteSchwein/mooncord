@@ -51,7 +51,7 @@ module.exports.reply = async (interaction) => {
             return
         }
         
-        const subcommand = interaction.getSubcommand()
+        const subcommand = interaction.options.getSubcommand()
         const currentStatus = statusUtil.getStatus()
         const id = Math.floor(Math.random() * Number.parseInt('10_000')) + 1
 
@@ -113,7 +113,7 @@ async function postStart(message, commandContext, discordClient) {
 
 function startPrintJob(commandContext, discordClient) {
     const id = Math.floor(Math.random() * Number.parseInt('10_000')) + 1
-    const gcodefile = commandContext.getString(syntaxLocale.options.start.options.file.name)
+    const gcodefile = commandContext.options.getString(syntaxLocale.options.start.options.file.name)
     timeout = 0
     connection.on('message', handler)
     connection.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${gcodefile}"}, "id": ${id}}`)
