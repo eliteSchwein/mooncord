@@ -20,5 +20,5 @@ module.exports.convertChoices = (choices) => {
     let value = choices[index]
     answer.push([value.name, value.value])
   }
-  console.log(answer)
+  return answer
 }
