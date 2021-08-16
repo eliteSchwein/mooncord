@@ -11,6 +11,7 @@ const syntaxLocale = locale.syntaxlocale.commands.emergency_stop
 let connection
 
 module.exports.command = () => {
+    console.log('  Load Emergency Stop Command'.commandload)
     const command = new SlashCommandBuilder()
         .setName(syntaxLocale.command)
         .setDescription(messageLocale.description)

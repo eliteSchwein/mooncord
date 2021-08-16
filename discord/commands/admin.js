@@ -9,6 +9,7 @@ const messageLocale = locale.commands.admin
 const syntaxLocale = locale.syntaxlocale.commands.admin
 
 module.exports.command = () => {
+    console.log('  Load Admin Command'.commandload)
     const command = new SlashCommandBuilder()
         .setName(syntaxLocale.command)
         .setDescription(messageLocale.description)

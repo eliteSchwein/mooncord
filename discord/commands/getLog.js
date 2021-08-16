@@ -14,6 +14,7 @@ const messageLocale = locale.commands.get_log
 const syntaxLocale = locale.syntaxlocale.commands.get_log
 
 module.exports.command = () => {
+    console.log('  Load Get Log Command'.commandload)
     const command = new SlashCommandBuilder()
         .setName(syntaxLocale.command)
         .setDescription(messageLocale.description)
