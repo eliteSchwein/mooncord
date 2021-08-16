@@ -15,7 +15,6 @@ const syntaxLocale = locale.syntaxlocale.commands.get_log
 
 module.exports.command = () => {
     console.log('  Load Get Log Command'.commandload)
-    console.log(Object.values(metadata.choices))
     const command = new SlashCommandBuilder()
         .setName(syntaxLocale.command)
         .setDescription(messageLocale.description)
@@ -23,7 +22,7 @@ module.exports.command = () => {
             service.setName(syntaxLocale.options.log_file.name)
             .setDescription(messageLocale.options.log_file.description)
             .setRequired(true)
-            .addChoices(metadata.choices))
+            .addChoices(Object.entries(metadata.choices)))
     return command.toJSON()
 }
 
