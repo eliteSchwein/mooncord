@@ -36,7 +36,6 @@ module.exports.getDefaultEmbed = (image, title) => {
 
 module.exports.getInformation = async function (component) {
   const image = getImage(component)
-  console.log(image)
   const componentData = componentHandler.components[component]
   console.log(componentData)
   const fields = await componentData.getFields()
@@ -53,7 +52,7 @@ module.exports.getInformation = async function (component) {
     embed.setColor('#c90000')
     embed.setDescription(description)
   }
-  return { embeds: [embed], files: [img] }
+  return { embeds: [embed], files: [image] }
 }
 
 module.exports.init = () => {
