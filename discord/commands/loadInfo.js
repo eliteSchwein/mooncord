@@ -10,6 +10,7 @@ const messageLocale = locale.commands.loadinfo
 const syntaxLocale = locale.syntaxlocale.commands.loadinfo
 
 module.exports.command = () => {
+    const choices = generateChoices()
     const command = new SlashCommandBuilder()
         .setName(syntaxLocale.command)
         .setDescription(messageLocale.description)
@@ -17,7 +18,7 @@ module.exports.command = () => {
             component.setName(syntaxLocale.options.component.name)
             .setDescription(messageLocale.options.component.description)
             .setRequired(true)
-            .addChoices(generateChoices()))
+            .addChoices(choices))
     return command.toJSON()
 }
 
@@ -76,6 +77,5 @@ function generateChoices() {
     Object.keys(mculist).forEach(key => {
         componentlist.push({name: key.toUpperCase(), value: key})
     })
-    console.log(componentlist)
     return componentlist
 }
