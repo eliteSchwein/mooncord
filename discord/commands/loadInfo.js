@@ -11,6 +11,7 @@ const syntaxLocale = locale.syntaxlocale.commands.loadinfo
 
 module.exports.command = () => {
     const choices = generateChoices()
+    console.log(choices)
     const command = new SlashCommandBuilder()
         .setName(syntaxLocale.command)
         .setDescription(messageLocale.description)
