@@ -11,16 +11,14 @@ const syntaxLocale = locale.syntaxlocale.commands.loadinfo
 
 module.exports.command = () => {
     console.log('  Load Load Info Command'.commandload)
-    const choices = generateChoices()
     const command = new SlashCommandBuilder()
         .setName(syntaxLocale.command)
         .setDescription(messageLocale.description)
         .addStringOption(component =>
             component.setName(syntaxLocale.options.component.name)
             .setDescription(messageLocale.options.component.description)
-            .setRequired(true))
-    //        .addChoices(choices))
-    console.log(choices)
+            .setRequired(true)
+            .addChoices(generateChoices()))
     return command.toJSON()
 }
 
