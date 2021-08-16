@@ -69,16 +69,16 @@ module.exports.reply = async (interaction) => {
             const lang_command_meta = messageLocale.answer[key]
 
             if (subcommand === currentStatus) {
-                await message.reply(lang_command_meta.status_same.replace(/(\${username})/g, interaction.user.username))
+                await interaction.reply(lang_command_meta.status_same.replace(/(\${username})/g, interaction.user.username))
                 return
             }
 
             if (!subcommandmeta.requiredStatus.includes(currentStatus)) {
-                await message.reply(lang_command_meta.status_not_valid.replace(/(\${username})/g, interaction.user.username))
+                await interaction.reply(lang_command_meta.status_not_valid.replace(/(\${username})/g, interaction.user.username))
                 return
             }
             connection.send(`{"jsonrpc": "2.0", "method": "printer.gcode.script", "params": {"script": "${subcommandmeta.macro}"}, "id": ${id}}`)
-            await message.reply(lang_command_meta.status_valid.replace(/(\${username})/g, interaction.user.username))
+            await interaction.reply(lang_command_meta.status_valid.replace(/(\${username})/g, interaction.user.username))
             return
         }
         
