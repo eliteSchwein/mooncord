@@ -34,5 +34,6 @@ const commands = {
     listFiles: require('./listFiles'),
     loadInfo: require('./loadInfo'),
     notify: require('./notify'),
+    printJob: require('./printJob'),
     temp: require('./temp'),
 }
