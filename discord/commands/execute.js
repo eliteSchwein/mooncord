@@ -54,9 +54,8 @@ module.exports.reply = async (interaction) => {
                 lastid = id
                 connection.removeListener('message', gcodeHandler)
                 clearInterval(feedbackInterval)
-                await interaction.editReply({
-                    content: commandFeedback
-                })
+                await interaction.editReply(
+                    commandFeedback)
                 commandFeedback = undefined
                 lastid = 0
             }
@@ -64,9 +63,8 @@ module.exports.reply = async (interaction) => {
                 commandFeedback = undefined
                 clearInterval(feedbackInterval)
                 connection.removeListener('message', gcodeHandler)
-                await interaction.editReply({
-                    content: locale.errors.command_timeout
-                })
+                await interaction.editReply(
+                    locale.errors.command_timeout)
             }
             timeout++
         }, 500)
@@ -74,7 +72,7 @@ module.exports.reply = async (interaction) => {
         console.log(logSymbols.error, `Execute Command: ${error}`.error)
         connection.removeListener('message', handler)
         commandFeedback = undefined
-        await interaction.reply(locale.errors.command_failed)
+        await interaction.editReply(locale.errors.command_failed)
     }
 }
 
