@@ -8,6 +8,8 @@ const locale = require('../../utils/localeUtil')
 const messageLocale = locale.commands.info
 const syntaxLocale = locale.syntaxlocale.commands.info
 
+const pjson = require('../../package.json')
+
 module.exports.command = () => {
     console.log('  Load Info Command'.commandload)
     const command = new SlashCommandBuilder()
