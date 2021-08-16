@@ -2,7 +2,7 @@ const locale = require('../localeUtil')
 
 const syntaxLocale = locale.syntaxlocale
 
-module.exports = {
+module.exports.components = {
   cpu: require('./cpu'),
   ram: require('./ram'),
   disk: require('./disk'),

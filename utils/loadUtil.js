@@ -37,7 +37,7 @@ module.exports.getDefaultEmbed = (img, title) => {
 
 module.exports.getInformation = async function (component) {
   const image = getImage(component)
-  const componentData = componentHandler[component]
+  const componentData = componentHandler.components[component]
   console.log(componentData)
   const fields = await componentData.getFields()
   const embed = getDefaultEmbed(image, componentData.getTitle())
