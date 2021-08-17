@@ -7,19 +7,18 @@ const metaData = require('../buttons-metadata/print_job.json')
 
 const messageLocale = locale.commands.printjob
 
-module.exports = async (button, discordClient) => {
+module.exports = async (button) => {
     const message = button.message
-    const user = button.clicker.user
+    const user = button.user
 
-    if (message.author.id !== discordClient.user.id) { return }
+    if (message.author.id !== button.client.user.id) { return }
     if (!Object.keys(metaData).includes(button.id)) { return }
 
-    let guildID
+    let guildID = button.guildId
 
-    if(typeof(button.guild) !== 'undefined') { guildID = button.guild.id }
-
-    if (!await permission.hasAdmin(user, guildID, discordClient)) {
-        button.reply.send(message.channel.send(locale.getAdminOnlyError(user.username)))
+    if (!await permission.hasAdmin(user, guildID, button.client)) {
+        await button.reply(message.channel.send(locale.getAdminOnlyError(user.username)))
+        return
     }
 
     const currentStatus = statusUtil.getStatus()
@@ -27,12 +26,12 @@ module.exports = async (button, discordClient) => {
     const langButtonMeta = messageLocale.answer[button.id.replace('printjob_','')]
 
     if (button.id === `printjob_${currentStatus}`) {
-        button.reply.send(langButtonMeta.status_same.replace(/(\${username})/g, user.username))
+        await button.reply(langButtonMeta.status_same.replace(/(\${username})/g, user.username))
         return
     }
 
     if (!buttonMeta.required_status.includes(currentStatus)) {
-        button.reply.send(langButtonMeta.status_not_valid.replace(/(\${username})/g, user.username))
+        await button.reply(langButtonMeta.status_not_valid.replace(/(\${username})/g, user.username))
         return
     }
 
