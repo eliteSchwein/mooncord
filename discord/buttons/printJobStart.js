@@ -19,11 +19,11 @@ module.exports = async (button) => {
     }
     switch (button.customId) {
         case ("printjob_start_no"): {
-            await message.edit({ embeds: [getAbortEmbed(message, user)], components: null })
+            await message.edit({ embeds: [getAbortEmbed(message, user)], components: [] })
             return
         }
         case ("printjob_start_yes"): {
-            await message.edit({ embeds: [getStartEmbed(message, user)], components: null })
+            await message.edit({ embeds: [getStartEmbed(message, user)], components: [] })
             startPrint(message)
             return
         }
