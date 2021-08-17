@@ -23,7 +23,7 @@ module.exports = async (button) => {
 
     const currentStatus = statusUtil.getStatus()
     const buttonMeta = metaData[button.id]
-    const langButtonMeta = messageLocale.answer[button.id.replace('printjob_','')]
+    const langButtonMeta = messageLocale.answer[button.customId.replace('printjob_','')]
 
     if (button.id === `printjob_${currentStatus}`) {
         await button.reply(langButtonMeta.status_same.replace(/(\${username})/g, user.username))
