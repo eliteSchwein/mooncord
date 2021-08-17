@@ -83,6 +83,8 @@ module.exports.generateStatusEmbed = async (config, withButtons) => {
   if(withButtons) {
     components.push(getButtons(config))
   }
+
+  console.log(components)
   
   return { embeds: [embed], files: files, components: components }
 }
