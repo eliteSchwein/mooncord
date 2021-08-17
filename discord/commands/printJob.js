@@ -85,7 +85,7 @@ module.exports.reply = async (interaction) => {
         if (subcommand === 'start') {
             await interaction.deferReply()
 
-            startPrintJob(interaction, interaction.client)
+            startPrintJob(interaction)
         }
 
     } catch (error) {
@@ -96,22 +96,21 @@ module.exports.reply = async (interaction) => {
     }
 }
 
-async function postStart(message, commandContext, discordClient) {
-    const commandMessage = await commandContext.editReply(message)
-    const currentMessage = commandFeedback
-    
+async function postStart(message, commandContext) {
     commandFeedback = undefined
 
-    if (typeof (message.embeds) === 'undefined') { return }
-    
- //   const channel = await discordClient.getClient.channels.fetch(commandContext.channelID)
-  //  const messageComponent = await channel.messages.fetch(commandMessage.id)
- //   const buttons = chatUtil.getButtons(metaData)
+    if (typeof (message.embeds) === 'undefined') {
+        await commandContext.editReply(message)
+        return
+    }
+    const buttons = chatUtil.getButtons(metaData)
 
-   // await messageComponent.edit({ embed: currentMessage, buttons: buttons })
+    message.components = [buttons]
+
+    await commandContext.editReply(message)
 }
 
-function startPrintJob(commandContext, discordClient) {
+function startPrintJob(commandContext) {
     const id = Math.floor(Math.random() * Number.parseInt('10_000')) + 1
     const gcodefile = commandContext.options.getString(syntaxLocale.options.start.options.file.name)
     timeout = 0
@@ -124,8 +123,7 @@ function startPrintJob(commandContext, discordClient) {
             connection.removeListener('message', handler)
             postStart(
                 locale.errors.command_timeout,
-                commandContext,
-                discordClient)
+                commandContext)
             return
         }
 
@@ -139,8 +137,7 @@ function startPrintJob(commandContext, discordClient) {
             clearInterval(feedbackHandler)
             postStart(
                 locale.errors.file_not_found,
-                commandContext,
-                discordClient)
+                commandContext)
             return
         }
         if (commandFeedback.files.length === 0) {
@@ -149,8 +146,7 @@ function startPrintJob(commandContext, discordClient) {
         clearInterval(feedbackHandler)
         postStart(
             commandFeedback,
-            commandContext,
-            discordClient)
+            commandContext)
     }, 500)
 }
 
