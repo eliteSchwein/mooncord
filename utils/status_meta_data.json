@@ -73,7 +73,7 @@
             {
                 "emoji": "🔄",
                 "id":"klipper_restart",
-                "style":"blurple"
+                "style":"PRIMARY"
             }
         ],
         "activity": {
