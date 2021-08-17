@@ -11,7 +11,7 @@ const maxEntries = 5
 
 function getButtons(config) {
   if (Object.keys(config.buttons).length === 0) {
-    return null
+    return ''
   }
   const row = new Discord.MessageActionRow()
   
