@@ -3,12 +3,12 @@
         {
             "emoji": "",
             "id":"printjob_start_yes",
-            "style":"green"
+            "style":"SUCCESS"
         },
         {
             "emoji": "",
             "id":"printjob_start_no",
-            "style":"red"
+            "style":"DANGER"
         }
     ],
     "resume": {

@@ -13,7 +13,7 @@
             {
                 "emoji": "🔄",
                 "id":"klipper_restart",
-                "style":"blurple"
+                "style":"PRIMARY"
             }
         ],
         "activity": {
@@ -33,7 +33,7 @@
             {
                 "emoji": "🔄",
                 "id":"klipper_restart",
-                "style":"blurple"
+                "style":"PRIMARY"
             }
         ],
         "activity": {
@@ -192,12 +192,12 @@
             {
                 "emoji": "▶️",
                 "id":"printjob_resume",
-                "style":"blurple"
+                "style":"PRIMARY"
             },
             {
                 "emoji": "⛔",
                 "id":"printjob_cancel",
-                "style":"red"
+                "style":"DANGER"
             }
         ],
         "activity": {
@@ -237,12 +237,12 @@
             {
                 "emoji": "☕",
                 "id":"printjob_pause",
-                "style":"grey"
+                "style":"SECONDARY"
             },
             {
                 "emoji": "⛔",
                 "id":"printjob_cancel",
-                "style":"red"
+                "style":"DANGER"
             }
         ],
         "fields": [
