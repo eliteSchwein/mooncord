@@ -12,27 +12,29 @@ const maxEntries = 5
 module.exports = {}
 
 module.exports.getButtons = (config) => {
-  const buttonRow = []
+  const row = new Discord.MessageActionRow()
+  
   for (const index in config.buttons) {
     const buttonMeta = config.buttons[index]
-    //const button = new MessageButton()
- //     .setStyle(buttonMeta.style)
-  //    .setID(buttonMeta.id)
-   //   .setLabel(locale.buttons[buttonMeta.id])
+    const button = new Discord.MessageButton()
+      .setCustomId(buttonMeta.id)
+      .setLabel(locale.buttons[buttonMeta.id])
+      .setStyle(buttonMeta.style)
 
     if(buttonMeta.emoji !== '') { 
-   //   button.setEmoji(buttonMeta.emoji)
+      button.setEmoji(buttonMeta.emoji)
     }
-
-   // buttonRow.push(button)
+    row.addComponents(button)
   }
-  return buttonRow
+  return row
 }
 
-module.exports.generateStatusEmbed = async (config) => {
+module.exports.generateStatusEmbed = async (config, withButtons) => {
   const snapshot = await webcam.retrieveWebcam()
 
   const files = []
+
+  const components = []
 
   files.push(snapshot)
   
@@ -72,8 +74,12 @@ module.exports.generateStatusEmbed = async (config) => {
   }
   
   embed.setTimestamp()
+
+  if(withButtons) {
+    components.push(this.getButtons(config))
+  }
   
-  return { embeds: [embed], files: files }
+  return { embeds: [embed], files: files, components: [] }
 }
 module.exports.getWaitEmbed = (user, relation, icon) => {
 
