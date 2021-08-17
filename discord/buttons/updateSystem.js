@@ -20,4 +20,6 @@ module.exports = async (button) => {
     const id = Math.floor(Math.random() * Number.parseInt('10_000')) + 1
 
     connection.send(`{"jsonrpc": "2.0", "method": "machine.update.full", "id": ${id}}`)
+
+    await button.update({components: []})
 }

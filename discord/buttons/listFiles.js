@@ -28,31 +28,32 @@ module.exports = async (button) => {
     const pageUp = metaData[button.customId].page_up
     const page = chatUtil.retrieveCurrentPage(embed)
 
-    await executeMessage(message, user, page, pageUp)
+    await executeMessage(button, page, pageUp)
 }
 
-async function executeMessage(message, user, page, pageUp) {
+async function executeMessage(button, page, pageUp) {
     const id = Math.floor(Math.random() * Number.parseInt('10_000')) + 1
-    const {channel} = message
+    const {channel} = button
 
     let timeout = 0
 
-    commandFeedback[message.channel.id] = undefined
-    requester[channel.id] = user
+    commandFeedback[channel.id] = undefined
+    requester[channel.id] = button.user
     
-    await message.edit(chatUtil.getWaitEmbed(user, commandlocale.embed.title, 'printlist.png'))
+    await button.update(chatUtil.getWaitEmbed(button.user, commandlocale.embed.title, 'printlist.png'))
 
     connection.on('message', (message) => handler(message, channel, page, pageUp))
     connection.send(`{"jsonrpc": "2.0", "method": "server.files.list", "params": {"root": "gcodes"}, "id": ${id}}`)
 
     const feedbackInterval = setInterval(async () => {
-        if (typeof (commandFeedback[message.channel.id]) !== 'undefined') {
-            await message.edit(commandFeedback[message.channel.id])
+        if (typeof (commandFeedback[channel.id]) !== 'undefined') {
+            await button.update(commandFeedback[channel.id])
             clearInterval(feedbackInterval)
         }
         if (timeout === 10) {
-            await message.edit({
-                content: locale.errors.no_files_found
+            await button.update({
+                content: locale.errors.no_files_found,
+                components: []
             })
             commandFeedback = undefined
             connection.removeListener('message', handler)
