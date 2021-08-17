@@ -47,11 +47,11 @@ async function executeMessage(button, page, pageUp) {
 
     const feedbackInterval = setInterval(async () => {
         if (typeof (commandFeedback[channel.id]) !== 'undefined') {
-            await button.update(commandFeedback[channel.id])
+            await button.message.edit(commandFeedback[channel.id])
             clearInterval(feedbackInterval)
         }
         if (timeout === 10) {
-            await button.update({
+            await button.message.edit({
                 content: locale.errors.no_files_found,
                 components: []
             })
