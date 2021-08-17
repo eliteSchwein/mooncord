@@ -14,7 +14,7 @@ module.exports = async (button) => {
     let guildID = button.guildId
 
     if (!await permission.hasAdmin(user, guildID, button.client)) {
-        await button.reply.send(message.channel.send(locale.getAdminOnlyError(user.username)))
+        await button.reply(message.channel.send(locale.getAdminOnlyError(user.username)))
         return
     }
     switch (button.id) {
