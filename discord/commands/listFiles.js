@@ -76,7 +76,6 @@ module.exports.reply = async (interaction) => {
 
 async function handler (message) {
     const messageJson = JSON.parse(message.utf8Data)
-        console.log(messageJson)
     if(/(modified)/g.test(JSON.stringify(messageJson))) {
         connection.removeListener('message', handler)
         commandFeedback = await chatUtil.generatePageEmbed(
