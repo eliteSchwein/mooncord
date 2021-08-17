@@ -85,8 +85,6 @@ module.exports.generateStatusEmbed = async (config, withButtons) => {
   if(withButtons && typeof(buttons) !== 'undefined') {
     components.push(buttons)
   }
-
-  console.log(components)
   
   return { embeds: [embed], files: files, components: components }
 }
