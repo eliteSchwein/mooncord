@@ -5,26 +5,25 @@ const locale = require('../../utils/localeUtil')
 
 const commandlocale = locale.commands.printjob
 
-module.exports = async (button, discordClient) => {
+module.exports = async (button) => {
     const message = button.message
-    const user = button.clicker.user
+    const user = button.user
 
-    if (message.author.id !== discordClient.user.id) { return }
+    if (message.author.id !== button.client.user.id) { return }
 
-    let guildID
+    let guildID = button.guildId
 
-    if(typeof(button.guild) !== 'undefined') { guildID = button.guild.id }
-
-    if (!await permission.hasAdmin(user, guildID, discordClient)) {
-        button.reply.send(message.channel.send(locale.getAdminOnlyError(user.username)))
+    if (!await permission.hasAdmin(user, guildID, button.client)) {
+        await button.reply.send(message.channel.send(locale.getAdminOnlyError(user.username)))
+        return
     }
     switch (button.id) {
         case ("printjob_start_no"): {
-            await message.edit({ embed: getAbortEmbed(message, user), components: null })
+            await message.edit({ embeds: [getAbortEmbed(message, user)], components: null })
             return
         }
         case ("printjob_start_yes"): {
-            await message.edit({ embed: getStartEmbed(message, user), components: null })
+            await message.edit({ embeds: [getStartEmbed(message, user)], components: null })
             startPrint(message)
             return
         }
