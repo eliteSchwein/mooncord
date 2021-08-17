@@ -10,7 +10,7 @@ const variables = require('./variablesUtil')
 const maxEntries = 5
 
 function getButtons(config) {
-  console.log(Object.keys(config).length)
+  console.log(Object.keys(config))
   if (Object.keys(config).length === 0) {
     return
   }
