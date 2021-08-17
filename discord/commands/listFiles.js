@@ -84,5 +84,8 @@ async function handler (message) {
             messageJson.result,
             messageLocale.embed.title,
             'printlist.png')
+            
+        const buttons = chatUtil.getButtons(metaData)
+        commandFeedback.components = [buttons]
     }
 }
