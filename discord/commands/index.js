@@ -35,5 +35,6 @@ const commands = {
     loadInfo: require('./loadInfo'),
     notify: require('./notify'),
     printJob: require('./printJob'),
+    status: require('./status'),
     temp: require('./temp'),
 }
