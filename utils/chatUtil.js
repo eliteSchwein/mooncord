@@ -10,6 +10,9 @@ const variables = require('./variablesUtil')
 const maxEntries = 5
 
 function getButtons(config) {
+  if (Object.keys(config).length === 0) {
+    return
+  }
   const row = new Discord.MessageActionRow()
   
   for (const index in config.buttons) {
