@@ -9,9 +9,7 @@ const variables = require('./variablesUtil')
 
 const maxEntries = 5
 
-module.exports = {}
-
-module.exports.getButtons = (config) => {
+function getButtons(config) {
   const row = new Discord.MessageActionRow()
   
   for (const index in config.buttons) {
@@ -28,6 +26,10 @@ module.exports.getButtons = (config) => {
   }
   return row
 }
+
+module.exports = {}
+
+module.exports.getButtons = (config) => { return getButtons(config) }
 
 module.exports.generateStatusEmbed = async (config, withButtons) => {
   const snapshot = await webcam.retrieveWebcam()
@@ -76,7 +78,7 @@ module.exports.generateStatusEmbed = async (config, withButtons) => {
   embed.setTimestamp()
 
   if(withButtons) {
-    components.push(this.getButtons(config))
+    components.push(getButtons(config))
   }
   
   return { embeds: [embed], files: files, components: [] }
