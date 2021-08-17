@@ -74,13 +74,15 @@ async function postUpdate(updateData, discordClient, database) {
       notifyEmbed.addField(software, `${updateData[software].current} \n🆕 ${updateData[software].remote}`, true)
     }
   }
-  const buttonRow = []
-  //const button = new MessageButton()
-   // .setStyle('grey')
-    //.setID('update_system')
-   // .setLabel(locale.buttons.update_system)
-  //buttonRow.push(button)
+  const row = new Discord.MessageActionRow()
+  
+  const button = new Discord.MessageButton()
+    .setCustomId('update_system')
+    .setLabel(locale.buttons.update_system)
+    .setStyle('SECONDARY')
+  
+  row.addComponents(button)
 
-  status.postBroadcastMessage({ embeds: [notifyEmbed], files:[icon], buttons: buttonRow }, discordClient, database)
+  status.postBroadcastMessage({ embeds: [notifyEmbed], files:[icon], components:[row] }, discordClient, database)
 }
 module.exports = event
