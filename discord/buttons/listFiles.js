@@ -12,12 +12,12 @@ const commandFeedback = {}
 
 let connection
 
-module.exports = async (button, discordClient) => {
+module.exports = async (button) => {
     const message = button.message
-    const user = button.clicker.user
+    const user = button.user
 
-    if (message.author.id !== discordClient.user.id) { return }
-    if (!Object.keys(metaData).includes(button.id)) { return }
+    if (message.author.id !== button.client.user.id) { return }
+    if (!Object.keys(metaData).includes(button.customId)) { return }
 
     const embed = message.embeds[0]
 
@@ -25,7 +25,7 @@ module.exports = async (button, discordClient) => {
 
     connection = moonrakerClient.getConnection()
 
-    const pageUp = metaData[button.id].page_up
+    const pageUp = metaData[button.customId].page_up
     const page = chatUtil.retrieveCurrentPage(embed)
 
     await executeMessage(message, user, page, pageUp)

@@ -17,7 +17,7 @@ module.exports = async (button) => {
         await button.reply(message.channel.send(locale.getAdminOnlyError(user.username)))
         return
     }
-    switch (button.id) {
+    switch (button.customId) {
         case ("printjob_start_no"): {
             await message.edit({ embeds: [getAbortEmbed(message, user)], components: null })
             return

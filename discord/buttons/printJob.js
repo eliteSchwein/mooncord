@@ -12,7 +12,7 @@ module.exports = async (button) => {
     const user = button.user
 
     if (message.author.id !== button.client.user.id) { return }
-    if (!Object.keys(metaData).includes(button.id)) { return }
+    if (!Object.keys(metaData).includes(button.customId)) { return }
 
     let guildID = button.guildId
 

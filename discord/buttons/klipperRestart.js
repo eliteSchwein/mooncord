@@ -2,19 +2,18 @@ const moonrakerClient = require('../../clients/moonrakerClient')
 const permission = require('../../utils/permissionUtil')
 const locale = require('../../utils/localeUtil')
 
-module.exports = async (button, discordClient) => {
+module.exports = async (button) => {
     const message = button.message
-    const user = button.clicker.user
+    const user = button.user
 
-    if (message.author.id !== discordClient.user.id) { return }
-    if (button.id !== 'klipper_restart') { return }
+    if (message.author.id !== button.client.user.id) { return }
+    if (button.customId !== 'klipper_restart') { return }
 
-    let guildID
+    let guildID = button.guildId
 
-    if(typeof(button.guild) !== 'undefined') { guildID = button.guild.id }
-
-    if (!await permission.hasAdmin(user, guildID, discordClient)) {
-        button.reply.send(message.channel.send(locale.getAdminOnlyError(user.username)))
+    if (!await permission.hasAdmin(user, guildID, button.client)) {
+        await button.reply(message.channel.send(locale.getAdminOnlyError(user.username)))
+        return
     }
 
     const connection = moonrakerClient.getConnection()
