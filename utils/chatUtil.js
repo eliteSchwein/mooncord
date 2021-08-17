@@ -11,7 +11,7 @@ const maxEntries = 5
 
 function getButtons(config) {
   if (Object.keys(config.buttons).length === 0) {
-    return ''
+    return undefined
   }
   const row = new Discord.MessageActionRow()
   
@@ -80,8 +80,10 @@ module.exports.generateStatusEmbed = async (config, withButtons) => {
   
   embed.setTimestamp()
 
-  if(withButtons) {
-    components.push(getButtons(config))
+  const buttons = getButtons(config)
+
+  if(withButtons && typeof(buttons) !== 'undefined') {
+    components.push(buttons)
   }
 
   console.log(components)
