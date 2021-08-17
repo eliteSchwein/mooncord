@@ -65,6 +65,7 @@ async function executeMessage(button, page, pageUp) {
 
 async function handler (message, channel, page, pageUp) {
     const messageJson = JSON.parse(message.utf8Data)
+    console.log(messageJson)
     connection.removeListener('message', handler)
     if (/(modified)/g.test(JSON.stringify(messageJson))) {
         commandFeedback[channel.id] = await chatUtil.generatePageEmbed(
