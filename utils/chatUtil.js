@@ -81,7 +81,7 @@ module.exports.generateStatusEmbed = async (config, withButtons) => {
     components.push(getButtons(config))
   }
   
-  return { embeds: [embed], files: files, components: [] }
+  return { embeds: [embed], files: files, components: components }
 }
 module.exports.getWaitEmbed = (user, relation, icon) => {
 
