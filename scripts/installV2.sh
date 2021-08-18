@@ -84,7 +84,7 @@ open_config() {
 }
 
 get_automatic_path() {
-    if [[ "$MCCONFIGPATH" == "" ]]
+    if [[ "$MCCONFIGPATH" == "." ]]
     then
         AUTOMATIC_PATH=`node utils/installUtil.js` 
         echo `node utils/installUtil.js` 
