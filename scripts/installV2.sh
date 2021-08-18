@@ -76,6 +76,26 @@ locate_config()
                 *)   
         esac    
     done
+    
+    while [[ $# -gt 0 ]]; do
+    key="$1"
+
+        case $key in
+            --config_path)
+                MCCONFIGPATH="$2"
+                shift
+                shift
+            ;;
+            --service_suffix)
+                MCSERVICENAME="${MCSERVICENAME}_$2"
+                shift
+                shift
+            ;;
+            *)
+                shift
+            ;;
+        esac
+    done
     echo "${MCCONFIGPATH}"
     echo "${MCSERVICENAME}"
 }
