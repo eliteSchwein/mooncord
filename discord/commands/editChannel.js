@@ -43,7 +43,7 @@ module.exports.reply = async (interaction) => {
                 interaction.options.getChannel(syntaxLocale.options.channel.name).id,
                 interaction.guildId,
                 interaction.client)
-            channel = `<#${interaction.options.getChannel(syntaxLocale.options.channel.name)}>`
+            channel = `<#${interaction.options.getChannel(syntaxLocale.options.channel.name).id}>`
         }
 
         if (typeof (channelresult) === 'undefined') {
@@ -72,6 +72,8 @@ async function editChannel(channelid, guildid, discordClient) {
     const guild = await discordClient.guilds.fetch(guildid)
     const channel = await discordClient.channels.fetch(channelid)
     const guilddatabase = database.getGuildDatabase(guild)
+
+    console.log(channel)
 
     if (channel.type !== 'text') {
         return
