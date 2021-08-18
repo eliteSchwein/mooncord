@@ -49,8 +49,6 @@ module.exports.reply = async (interaction) => {
                 if(lastid === id) { return }
                 lastid = id
                 
-                //const buttons = chatUtil.getButtons(metaData)
-                
                 await interaction.editReply(commandFeedback)
                 
                 commandFeedback = undefined
