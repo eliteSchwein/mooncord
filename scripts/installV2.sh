@@ -111,10 +111,10 @@ do
     esac    
 done
 
-#install_packages
-#modify_user
+install_packages
+modify_user
 setup
 open_config
 get_automatic_path
-#install_systemd_service
-#start_MoonCord
+install_systemd_service
+start_MoonCord
