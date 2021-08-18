@@ -66,10 +66,10 @@ locate_config()
 { 
     while [ $# -gt 0 ]; do
         case "$1" in
-            -config_path=*)
+            --config_path=*)
             MCCONFIGPATH="${1#*=}"
             ;;
-            -service_suffix=*)
+            --service_suffix=*)
             MCSERVICENAME="${MCSERVICENAME}_${1#*=}"
             ;;
         esac
