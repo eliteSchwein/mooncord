@@ -66,6 +66,7 @@ locate_config()
 { 
     for ARGUMENT in "$@"
     do
+
         KEY=$(echo $ARGUMENT | cut -f1 -d=)
         VALUE=$(echo $ARGUMENT | cut -f2 -d=)   
 
@@ -102,15 +103,3 @@ setup
 #open_config
 #install_systemd_service
 #start_MoonCord
-
-    for ARGUMENT in "$@"
-    do
-        KEY=$(echo $ARGUMENT | cut -f1 -d=)
-        VALUE=$(echo $ARGUMENT | cut -f2 -d=)   
-
-        case "$KEY" in
-                --config_path) MCCONFIGPATH=${VALUE} ;;
-                --service_suffix) MCSERVICENAME="${MCSERVICENAME}_${VALUE}" ;;     
-                *)   
-        esac    
-    done
