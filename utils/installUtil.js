@@ -10,7 +10,7 @@ execute()
 function execute() {
     config = require('../mooncord.json')
 
-    client.connect(config.moonrakersocketurl)
+    client.connect(config.connection.moonraker_socket_url)
 
     client.on('connect', (connection) => {
         connection.on('message', (message) => {
