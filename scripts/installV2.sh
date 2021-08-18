@@ -111,8 +111,8 @@ do
     esac    
 done
 
-install_packages
-modify_user
+#install_packages
+#modify_user
 setup
 open_config
 get_automatic_path
