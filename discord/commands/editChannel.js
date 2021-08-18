@@ -28,7 +28,9 @@ module.exports.reply = async (interaction) => {
         if (!await permission.hasAdmin(interaction.user, interaction.guildId, interaction.client)) {
             await interaction.reply(locale.getAdminOnlyError(interaction.user.username))
             return
-        }
+    }
+    
+    console.log(interaction.channelId)
 
         let channel
         let channelresult
