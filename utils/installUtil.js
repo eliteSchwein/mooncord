@@ -5,11 +5,6 @@ const client = new WebSocketClient()
 let config
 let configPath
 
-colors.setTheme({
-  database: 'grey',
-  error: 'brightRed'
-})
-
 execute()
 
 function execute() {
