@@ -103,6 +103,7 @@ for var in "$@"
 do
     echo "$var"
 done
+echo "$@"
     echo "${MCCONFIGPATH}"
     echo "${MCSERVICENAME}"
 }
