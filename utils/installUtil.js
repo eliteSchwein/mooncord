@@ -1,9 +1,4 @@
-const colors = require('colors')
-const fs = require('fs')
-const logSymbols = require('log-symbols')
-const path = require('path')
 const WebSocketClient = require('websocket').client
-const shell = require('shelljs')
 
 const client = new WebSocketClient()
 
