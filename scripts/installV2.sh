@@ -79,7 +79,6 @@ locate_config()
                 printf "***************************\n"
                 exit 1
         esac
-        shift
     done
     echo "${MCCONFIGPATH}"
     echo "${MCSERVICENAME}"
