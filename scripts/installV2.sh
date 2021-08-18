@@ -75,6 +75,8 @@ locate_config()
         esac
         shift
     done
+    echo "${MCCONFIGPATH}"
+    echo "${MCSERVICENAME}"
 }
 
 generate_config() {
