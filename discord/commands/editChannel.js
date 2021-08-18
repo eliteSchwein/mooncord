@@ -73,9 +73,7 @@ async function editChannel(channelid, guildid, discordClient) {
     const channel = await discordClient.channels.fetch(channelid)
     const guilddatabase = database.getGuildDatabase(guild)
 
-    console.log(channel)
-
-    if (channel.type !== 'text') {
+    if (channel.type !== 'GUILD_TEXT') {
         return
     }
     if (guilddatabase.broadcastchannels.includes(channelid)) {
