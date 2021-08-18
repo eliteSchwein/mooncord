@@ -37,7 +37,7 @@ module.exports.reply = async (interaction) => {
 
         if (typeof (interaction.options.getChannel(syntaxLocale.options.channel.name)) === 'undefined') {
             channelresult = await editChannel(interaction.channelId,
-                interaction.guildID,
+                interaction.guildId,
                 interaction.client)
             channel = `<#${interaction.channelId}>`
         } else {
