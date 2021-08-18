@@ -4,7 +4,6 @@ const logSymbols = require('log-symbols')
 const path = require('path')
 const WebSocketClient = require('websocket').client
 const shell = require('shelljs')
-const semver = require('semver')
 
 const client = new WebSocketClient()
 
