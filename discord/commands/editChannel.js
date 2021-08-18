@@ -20,7 +20,7 @@ module.exports.command = () => {
 }
 
 module.exports.reply = async (interaction) => {
-    try {
+   // try {
         if (typeof(interaction.guildId) === 'undefined') {
             await interaction.reply(locale.getGuildOnlyError(interaction.user.username))
             return
@@ -63,10 +63,10 @@ module.exports.reply = async (interaction) => {
             .replace(/(\${username})/g, interaction.user.username)
             .replace(/(\${channel})/g, channel))
             return
-    } catch (error) {
-        console.log(logSymbols.error, `Edit Channel Command: ${error}`.error)
-        await interaction.reply(locale.errors.command_failed)
-    }
+    //} catch (error) {
+   //     console.log(logSymbols.error, `Edit Channel Command: ${error}`.error)
+   //     await interaction.reply(locale.errors.command_failed)
+   // }
 }
 async function editChannel(channelid, guildid, discordClient) {
     const guild = await discordClient.guilds.fetch(guildid)
