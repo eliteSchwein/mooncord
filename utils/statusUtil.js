@@ -131,7 +131,7 @@ module.exports.changeStatus = async (discordClient, newStatus) => {
 }
 
 module.exports.getManualStatusEmbed = async (channel, discordClient) => {
-  removeOldStatus(channel, discordClient)
+  await removeOldStatus(channel, discordClient)
   const parsedConfig = parseConfig(currentStatus)
   return await chatUtil.generateStatusEmbed(parsedConfig)
 }
