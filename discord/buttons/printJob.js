@@ -28,7 +28,7 @@ module.exports = async (button) => {
     if (button.customId === 'printjob_refresh') {
         await button.update({components: []})
 
-        const updateMessage = statusUtil.getManualStatusEmbed(button.channel, button.client)
+        const updateMessage = await statusUtil.getManualStatusEmbed(button.channel, button.client)
         button.channel.send(updateMessage)
         return
     }
