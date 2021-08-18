@@ -24,13 +24,13 @@ async function execute() {
 
     client.on('connect', async (connection) => {
         connection.on('message', (message) => {
-            moveConfig(message, connection)
+            getPath(message, connection)
         })
         connection.send('{"jsonrpc": "2.0","method": "server.config","id": 5616}')
     })
 }
 
-async function moveConfig(message, connection) {
+async function getPath(message, connection) {
     if (message.type !== 'utf8') { return }
 
     const messageJson = JSON.parse(message.utf8Data)
@@ -40,7 +40,7 @@ async function moveConfig(message, connection) {
 
     configPath = messageJson.result.config.server.config_path
 
-    connection.close()
-
     console.log(configPath)
+
+    connection.close()
 }
