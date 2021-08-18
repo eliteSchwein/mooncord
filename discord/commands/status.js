@@ -18,7 +18,7 @@ module.exports.reply = async (interaction) => {
     try {
         await interaction.deferReply()
 
-        const status = await statusUtil.getManualStatusEmbed(interaction.user)
+        const status = await statusUtil.getManualStatusEmbed(interaction.user, interaction.client)
 
         await interaction.editReply(status)
     } catch (error) {
