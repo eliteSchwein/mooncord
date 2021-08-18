@@ -64,41 +64,6 @@ setup(){
 
 locate_config()
 { 
-    echo "get Arguments"
-    for ARGUMENT in "$@"
-    do
-
-        KEY=$(echo $ARGUMENT | cut -f1 -d=)
-        VALUE=$(echo $ARGUMENT | cut -f2 -d=)   
-        echo $VALUE
-        case "$KEY" in
-                --config_path) MCCONFIGPATH=${VALUE} ;;
-                --service_suffix) MCSERVICENAME="${MCSERVICENAME}_${VALUE}" ;;     
-                *)   
-        esac    
-    done
-    
-    while [[ $# -gt 0 ]]; do
-    key="$1"
-    echo $key
-
-        case $key in
-            --config_path)
-                MCCONFIGPATH="$2"
-                shift
-                shift
-            ;;
-            --service_suffix)
-                MCSERVICENAME="${MCSERVICENAME}_$2"
-                shift
-                shift
-            ;;
-            *)
-                shift
-            ;;
-        esac
-    done
-echo "$1"
     echo "${MCCONFIGPATH}"
     echo "${MCSERVICENAME}"
 }
@@ -119,10 +84,19 @@ start_MoonCord() {
     echo "Start MoonCord, please make sure you configured the Bot correctly!"
     sudo systemctl start MoonCord
 }
-    
-for var in "$@"
+
+
+for ARGUMENT in "$@"
 do
-    echo "$var"
+
+    KEY=$(echo $ARGUMENT | cut -f1 -d=)
+    VALUE=$(echo $ARGUMENT | cut -f2 -d=)   
+    echo $VALUE
+    case "$KEY" in
+            --config_path) MCCONFIGPATH=${VALUE} ;;
+            --service_suffix) MCSERVICENAME="${MCSERVICENAME}_${VALUE}" ;;     
+            *)   
+    esac    
 done
 
 #install_packages
