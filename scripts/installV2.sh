@@ -67,6 +67,7 @@ locate_config()
     if [[ "$MCCONFIGPATH" == "" ]]
     then
         echo "no config argument found, use automatic methode!"
+        MCCONFIGPATH = "."
     fi
 }
 
@@ -83,7 +84,8 @@ open_config() {
 }
 
 get_automatic_path() {
-    if [[ "$MCCONFIGPATH" != "" ]]
+    echo $MCCONFIGPATH
+    if [[ "$MCCONFIGPATH" == "" ]]
     then
         AUTOMATIC_PATH = `node utils/installUtil.js` 
         echo $AUTOMATIC_PATH
