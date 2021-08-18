@@ -67,7 +67,7 @@ locate_config()
     if [[ "$MCCONFIGPATH" == "" ]]
     then
         echo "no config argument found, use automatic methode!"
-        MCCONFIGPATH = "."
+        $MCCONFIGPATH = "."
     fi
 }
 
