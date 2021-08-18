@@ -67,11 +67,16 @@ locate_config()
     while [ $# -gt 0 ]; do
         case "$1" in
             --config_path=*)
-            MCCONFIGPATH="${1#*=}"
+                MCCONFIGPATH="${1#*=}"
             ;;
             --service_suffix=*)
-            MCSERVICENAME="${MCSERVICENAME}_${1#*=}"
+                MCSERVICENAME="${MCSERVICENAME}_${1#*=}"
             ;;
+            *)
+                printf "***************************\n"
+                printf "* Error: Invalid argument.*\n"
+                printf "***************************\n"
+                exit 1
         esac
         shift
     done
