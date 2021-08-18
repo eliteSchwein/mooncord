@@ -16,14 +16,14 @@ module.exports.command = () => {
 
 module.exports.reply = async (interaction) => {
     try {
-        const notifyStatus = database.updateNotify(ctx.user)
+        const notifyStatus = database.updateNotify(interaction.user)
         if (notifyStatus) {
             await interaction.reply(messageLocale.answer.activated
-                .replace(/(\${username})/g, ctx.user.username))
+                .replace(/(\${username})/g, interaction.user.username))
             return
         }
         await interaction.reply(messageLocale.answer.deactivated
-            .replace(/(\${username})/g, ctx.user.username))
+            .replace(/(\${username})/g, interaction.user.username))
         return
     } catch (error) {
         console.log(logSymbols.error, `Notify Command: ${error}`.error)
