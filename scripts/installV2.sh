@@ -64,21 +64,16 @@ setup(){
 
 locate_config()
 { 
-    while [ $# -gt 0 ]; do
-        echo "$1"
-        case "$1" in
-            --config_path=*)
-                MCCONFIGPATH="${1#*=}"
-            ;;
-            --service_suffix=*)
-                MCSERVICENAME="${MCSERVICENAME}_${1#*=}"
-            ;;
-            *)
-                printf "***************************\n"
-                printf "* Error: Invalid argument.*\n"
-                printf "***************************\n"
-                exit 1
-        esac
+    for ARGUMENT in "$@"
+    do
+        KEY=$(echo $ARGUMENT | cut -f1 -d=)
+        VALUE=$(echo $ARGUMENT | cut -f2 -d=)   
+
+        case "$KEY" in
+                --config_path) MCCONFIGPATH=${VALUE} ;;
+                --service_suffix) MCSERVICENAME="${MCSERVICENAME}_${VALUE}" ;;     
+                *)   
+        esac    
     done
     echo "${MCCONFIGPATH}"
     echo "${MCSERVICENAME}"
