@@ -131,3 +131,5 @@ setup
 #open_config
 #install_systemd_service
 #start_MoonCord
+
+echo "$1"
