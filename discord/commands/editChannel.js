@@ -20,7 +20,7 @@ module.exports.command = () => {
 }
 
 module.exports.reply = async (interaction) => {
-   // try {
+    try {
         if (typeof(interaction.guildId) === 'undefined') {
             await interaction.reply(locale.getGuildOnlyError(interaction.user.username))
             return
@@ -29,8 +29,6 @@ module.exports.reply = async (interaction) => {
             await interaction.reply(locale.getAdminOnlyError(interaction.user.username))
             return
         }
-    
-        console.log(interaction.channelId)
 
         let channel
         let channelresult
@@ -41,9 +39,8 @@ module.exports.reply = async (interaction) => {
                 interaction.client)
             channel = `<#${interaction.channelId}>`
         } else {
-            console.log(interaction.options.getChannel(syntaxLocale.options.channel.name))
             channelresult = await editChannel(
-                interaction.options.getChannel(syntaxLocale.options.channel.name),
+                interaction.options.getChannel(syntaxLocale.options.channel.name).id,
                 interaction.guildId,
                 interaction.client)
             channel = `<#${interaction.options.getChannel(syntaxLocale.options.channel.name)}>`
@@ -66,13 +63,12 @@ module.exports.reply = async (interaction) => {
             .replace(/(\${username})/g, interaction.user.username)
             .replace(/(\${channel})/g, channel))
             return
-    //} catch (error) {
-   //     console.log(logSymbols.error, `Edit Channel Command: ${error}`.error)
-   //     await interaction.reply(locale.errors.command_failed)
-   // }
+    } catch (error) {
+        console.log(logSymbols.error, `Edit Channel Command: ${error}`.error)
+        await interaction.reply(locale.errors.command_failed)
+    }
 }
 async function editChannel(channelid, guildid, discordClient) {
-    console.log(channelid)
     const guild = await discordClient.guilds.fetch(guildid)
     const channel = await discordClient.channels.fetch(channelid)
     const guilddatabase = database.getGuildDatabase(guild)
