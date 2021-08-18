@@ -64,6 +64,7 @@ setup(){
 
 locate_config()
 { 
+    echo "get Arguments"
     for ARGUMENT in "$@"
     do
 
