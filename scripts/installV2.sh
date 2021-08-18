@@ -91,7 +91,7 @@ do
 
     KEY=$(echo $ARGUMENT | cut -f1 -d=)
     VALUE=$(echo $ARGUMENT | cut -f2 -d=)   
-    echo $VALUE
+    
     case "$KEY" in
             --config_path) MCCONFIGPATH=${VALUE} ;;
             --service_suffix) MCSERVICENAME="${MCSERVICENAME}_${VALUE}" ;;     
