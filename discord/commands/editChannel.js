@@ -33,16 +33,15 @@ module.exports.reply = async (interaction) => {
         console.log(interaction.channelId)
 
         let channel
-    let channelresult
-    
-    console.log(interaction.options.getChannel(syntaxLocale.options.channel.name) === null)
+        let channelresult
 
-        if (typeof (interaction.options.getChannel(syntaxLocale.options.channel.name)) === 'undefined') {
+        if (interaction.options.getChannel(syntaxLocale.options.channel.name) === null) {
             channelresult = await editChannel(interaction.channelId,
                 interaction.guildId,
                 interaction.client)
             channel = `<#${interaction.channelId}>`
         } else {
+            console.log(interaction.options.getChannel(syntaxLocale.options.channel.name))
             channelresult = await editChannel(
                 interaction.options.getChannel(syntaxLocale.options.channel.name),
                 interaction.guildId,
