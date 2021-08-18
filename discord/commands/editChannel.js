@@ -28,7 +28,7 @@ module.exports.reply = async (interaction) => {
         if (!await permission.hasAdmin(interaction.user, interaction.guildId, interaction.client)) {
             await interaction.reply(locale.getAdminOnlyError(interaction.user.username))
             return
-    }
+        }
     
     console.log(interaction.channelId)
 
@@ -71,6 +71,7 @@ module.exports.reply = async (interaction) => {
    // }
 }
 async function editChannel(channelid, guildid, discordClient) {
+    console.log(channelid)
     const guild = await discordClient.guilds.fetch(guildid)
     const channel = await discordClient.channels.fetch(channelid)
     const guilddatabase = database.getGuildDatabase(guild)
