@@ -98,11 +98,6 @@ locate_config()
             ;;
         esac
     done
-    
-for var in "$@"
-do
-    echo "$var"
-done
 echo "$1"
     echo "${MCCONFIGPATH}"
     echo "${MCSERVICENAME}"
@@ -124,6 +119,11 @@ start_MoonCord() {
     echo "Start MoonCord, please make sure you configured the Bot correctly!"
     sudo systemctl start MoonCord
 }
+    
+for var in "$@"
+do
+    echo "$var"
+done
 
 #install_packages
 #modify_user
@@ -131,5 +131,3 @@ setup
 #open_config
 #install_systemd_service
 #start_MoonCord
-
-echo "$1"
