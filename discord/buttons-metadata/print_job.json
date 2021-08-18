@@ -10,5 +10,9 @@
     "printjob_pause": {
         "required_status" : ["printing"],
         "macro": "PAUSE"
+    },
+    "printjob_refresh": {
+        "required_status" : [],
+        "macro": ""
     }
 }

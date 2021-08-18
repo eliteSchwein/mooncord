@@ -26,7 +26,6 @@ module.exports = async (button) => {
     const langButtonMeta = messageLocale.answer[button.customId.replace('printjob_','')]
 
     if (button.customId === 'printjob_refresh') {
-        console.log('refresh')
         await button.update({components: []})
 
         const updateMessage = statusUtil.getManualStatusEmbed(button.channel, button.client)
