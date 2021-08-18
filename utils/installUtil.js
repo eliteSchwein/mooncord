@@ -17,12 +17,12 @@ colors.setTheme({
 
 execute()
 
-async function execute() {
+function execute() {
     config = require('../mooncord.json')
 
     client.connect(config.moonrakersocketurl)
 
-    client.on('connect', async (connection) => {
+    client.on('connect', (connection) => {
         connection.on('message', (message) => {
             getPath(message, connection)
         })
@@ -30,7 +30,7 @@ async function execute() {
     })
 }
 
-async function getPath(message, connection) {
+function getPath(message, connection) {
     if (message.type !== 'utf8') { return }
 
     const messageJson = JSON.parse(message.utf8Data)
