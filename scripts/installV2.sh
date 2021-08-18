@@ -79,6 +79,7 @@ locate_config()
     
     while [[ $# -gt 0 ]]; do
     key="$1"
+    echo $key
 
         case $key in
             --config_path)
