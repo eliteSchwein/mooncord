@@ -30,10 +30,12 @@ module.exports.reply = async (interaction) => {
             return
         }
     
-    console.log(interaction.channelId)
+        console.log(interaction.channelId)
 
         let channel
-        let channelresult
+    let channelresult
+    
+    console.log(typeof (interaction.options.getChannel(syntaxLocale.options.channel.name)))
 
         if (typeof (interaction.options.getChannel(syntaxLocale.options.channel.name)) === 'undefined') {
             channelresult = await editChannel(interaction.channelId,
