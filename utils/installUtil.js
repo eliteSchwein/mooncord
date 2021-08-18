@@ -20,8 +20,6 @@ execute()
 async function execute() {
     config = require('../mooncord.json')
 
-    console.log(logSymbols.info, 'Connect to Moonraker'.database)
-
     client.connect(config.moonrakersocketurl)
 
     client.on('connect', async (connection) => {
@@ -44,18 +42,5 @@ async function moveConfig(message, connection) {
 
     connection.close()
 
-    saveData(config, `${configPath}/mooncord.json`)
-    await fs.unlinkSync(path.resolve(__dirname, '../mooncord.json'))
-}
-
-function saveData(datadata, datapath) {
-    if (!fs.existsSync(path.resolve(__dirname, datapath))) {
-        const newFileStream = fs.createWriteStream(path.resolve(__dirname, datapath))
-        newFileStream.once('open', () => {
-            newFileStream.write('{}')
-            newFileStream.end()
-        })
-    }
-    fs.writeFileSync(path.resolve(__dirname, datapath), JSON.stringify(datadata, null, 4))
-    console.log(logSymbols.info, `The Config got saved under ${datapath}!`.database)
+    console.log(configPath)
 }

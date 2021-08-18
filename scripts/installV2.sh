@@ -58,14 +58,16 @@ modify_user()
 
 setup(){
     locate_config
-    #generate_config
+    generate_config
 }
 
 
 locate_config()
-{ 
-    echo "${MCCONFIGPATH}"
-    echo "${MCSERVICENAME}"
+{
+    if [[ $MCCONFIGPATH == ""]]; then
+        echo "no config argument found, use automatic methode!"
+        $MCCONFIGPATH = "./"
+    fi
 }
 
 generate_config() {
@@ -78,6 +80,13 @@ open_config() {
     echo "Open Config"
     sleep 1
     nano $MCCONFIGPATH/mooncord.json
+}
+
+get_automatic_path() {
+    if [[ $MCCONFIGPATH != "./"]]; then
+        AUTOMATIC_PATH = `node utils/installUtil.js` 
+        echo $AUTOMATIC_PATH
+    fi
 }
 
 start_MoonCord() {
@@ -99,9 +108,10 @@ do
     esac    
 done
 
-#install_packages
-#modify_user
+install_packages
+modify_user
 setup
-#open_config
+open_config
+get_automatic_path
 #install_systemd_service
 #start_MoonCord
