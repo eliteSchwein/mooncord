@@ -99,10 +99,9 @@ locate_config()
         esac
     done
     
-i=1
-while [ $i -le 5 ]; do
-  echo i is $i
-  i=$(( i+1 ))
+for var in "$@"
+do
+    echo "$var"
 done
     echo "${MCCONFIGPATH}"
     echo "${MCSERVICENAME}"
