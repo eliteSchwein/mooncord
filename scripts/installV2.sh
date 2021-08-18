@@ -65,6 +65,7 @@ setup(){
 locate_config()
 { 
     while [ $# -gt 0 ]; do
+        echo "$1"
         case "$1" in
             --config_path=*)
                 MCCONFIGPATH="${1#*=}"
