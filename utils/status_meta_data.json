@@ -243,6 +243,11 @@
                 "emoji": "⛔",
                 "id":"printjob_cancel",
                 "style":"DANGER"
+            },
+            {
+                "emoji": "🔄",
+                "id":"printjob_refresh",
+                "style":"PRIMARY"
             }
         ],
         "fields": [

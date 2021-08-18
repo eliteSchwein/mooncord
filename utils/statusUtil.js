@@ -46,7 +46,7 @@ async function changeStatus(discordClient, newStatus) {
 
   if (onCooldown(config, currentStatusMeta.allow_same)) { return }
 
-  const embed = await chatUtil.generateStatusEmbed(parsedConfig, true)
+  const embed = await chatUtil.generateStatusEmbed(parsedConfig)
 
   broadcastMessage(embed, discordClient)
 
@@ -130,9 +130,10 @@ module.exports.changeStatus = async (discordClient, newStatus) => {
   return await changeStatus(discordClient, newStatus)
 }
 
-module.exports.getManualStatusEmbed = async () => {
+module.exports.getManualStatusEmbed = async (channel, discordClient) => {
+  removeOldStatus(channel, discordClient)
   const parsedConfig = parseConfig(currentStatus)
-  return await chatUtil.generateStatusEmbed(parsedConfig, false)
+  return await chatUtil.generateStatusEmbed(parsedConfig)
 }
 
 module.exports.postBroadcastMessage = async (message, discordClient) => {

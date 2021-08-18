@@ -3,6 +3,7 @@
         "printjob_pause": "Pauză",
         "printjob_cancel": "Stop",
         "printjob_resume": "Continuă",
+        "printjob_refresh": "Reîmprospătați",
         "printjob_start_yes": "Da",
         "printjob_start_no": "Nu",
         "klipper_restart": "Repornește Firmware-ul",

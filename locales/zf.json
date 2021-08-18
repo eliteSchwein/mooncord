@@ -3,6 +3,7 @@
         "printjob_pause": "暫停",
         "printjob_cancel": "停止",
         "printjob_resume": "恢復",
+        "printjob_refresh": "刷新",
         "printjob_start_yes": "是",
         "printjob_start_no": "否",
         "klipper_restart": "重啟韌體",

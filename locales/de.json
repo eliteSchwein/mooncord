@@ -3,6 +3,7 @@
         "printjob_pause": "Pause",
         "printjob_cancel": "Stop",
         "printjob_resume": "Fortsetzen",
+        "printjob_refresh": "Aktualisieren",
         "printjob_start_yes": "Ja",
         "printjob_start_no": "Nein",
         "klipper_restart": "Firmware neustarten",

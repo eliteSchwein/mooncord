@@ -3,6 +3,7 @@
         "printjob_pause": "Pauze",
         "printjob_cancel": "Stop",
         "printjob_resume": "Hervat",
+        "printjob_refresh": "Vernieuwen",
         "printjob_start_yes": "Ja",
         "printjob_start_no": "Nee",
         "klipper_restart": "Herstart Firmware",

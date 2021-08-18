@@ -34,7 +34,7 @@ module.exports = {}
 
 module.exports.getButtons = (config) => { return getButtons(config) }
 
-module.exports.generateStatusEmbed = async (config, withButtons) => {
+module.exports.generateStatusEmbed = async (config) => {
   const snapshot = await webcam.retrieveWebcam()
 
   const files = []
@@ -82,7 +82,7 @@ module.exports.generateStatusEmbed = async (config, withButtons) => {
 
   const buttons = getButtons(config)
 
-  if(withButtons && typeof(buttons) !== 'undefined') {
+  if(typeof(buttons) !== 'undefined') {
     components.push(buttons)
   }
   
