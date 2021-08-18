@@ -37,7 +37,7 @@ module.exports.reply = async (interaction) => {
             channelresult = await editChannel(interaction.channelId,
                 interaction.guildID,
                 interaction.client)
-            channel = `<#${ctx.channelID}>`
+            channel = `<#${interaction.channelId}>`
         } else {
             channelresult = await editChannel(
                 interaction.options.getChannel(syntaxLocale.options.channel.name),
