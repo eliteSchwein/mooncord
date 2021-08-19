@@ -138,7 +138,7 @@ module.exports.retrieveCurrentPage = (embed) => {
 }
 module.exports.generatePageEmbed = (pageUp, currentPage, data, title, icon, addFile) => {
   let newpage = currentPage
-  const maxpage = Math.ceil((data.length / maxEntries) - 0.1)
+  const maxpage = Math.floor(data.length / maxEntries)
   if (pageUp) {
     if (currentPage !== maxpage - 1) {
       newpage = currentPage + 1
