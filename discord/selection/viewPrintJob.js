@@ -2,6 +2,11 @@ const moonrakerClient = require('../../clients/moonrakerClient')
 const handlers = require('../../utils/handlerUtil')
 const locale = require('../../utils/localeUtil')
 
+let commandFeedback
+let connection
+
+let lastid = 0
+
 module.exports = async (selection) => {
     const message = selection.message
     const user = selection.user
