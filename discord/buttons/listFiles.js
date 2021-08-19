@@ -50,6 +50,7 @@ async function executeMessage(button) {
     const feedbackInterval = setInterval(async () => {
         if (typeof (commandFeedback) !== 'undefined') {
             await button.message.edit(commandFeedback)
+            connection.removeListener('message', handler)
             commandFeedback = undefined
             clearInterval(feedbackInterval)
         }
