@@ -25,7 +25,7 @@ async function printFileHandler (message, title, color) {
       commandFeedback = new Discord.MessageEmbed()
           .setColor(color)
           .setTitle(title)
-          .setAuthor(messageJson.result.filename)
+          .setAuthor(messageJson.result.filename, 'attachment://thumbnail.png')
           .setDescription(description)
       let path
       if (typeof (messageJson.result.thumbnails) !== 'undefined') {
