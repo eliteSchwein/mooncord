@@ -73,6 +73,7 @@ async function handler (message) {
             page,
             messageJson.result,
             commandlocale.embed.title,
-            'printlist.png')
+            'printlist.png',
+            false)
     }
 }

@@ -136,7 +136,7 @@ module.exports.retrieveCurrentPage = (embed) => {
   const currentPageString = pages.replace('Page ', '').split('/')[0]
   return Number.parseInt(currentPageString) - 1
 }
-module.exports.generatePageEmbed = (pageUp, currentPage, data, title, icon, user) => {
+module.exports.generatePageEmbed = (pageUp, currentPage, data, title, icon, addFile) => {
   let newpage = currentPage
   const maxpage = Math.ceil((data.length / maxEntries) - 0.1)
   if (pageUp) {
@@ -156,8 +156,11 @@ module.exports.generatePageEmbed = (pageUp, currentPage, data, title, icon, user
   }
 
   const imgPath = path.resolve(__dirname, `../images/${icon}`)
-  const imgBuffer = fs.readFileSync(imgPath)
-  const thumbnail = new Discord.MessageAttachment(imgBuffer, icon)
+  const thumbnail = new Discord.MessageAttachment(imgPath, icon)
+
+  const files = []
+
+  if(addFile) { files.push(thumbnail) }
 
   const pageEmbed = new Discord.MessageEmbed()
     .setColor('#0099ff')
@@ -165,12 +168,6 @@ module.exports.generatePageEmbed = (pageUp, currentPage, data, title, icon, user
     .setAuthor(`Page ${newpage + 1}/${maxpage}`)
     .setDescription(entries)
     .setThumbnail(`attachment://${icon}`)
-  
-  if (typeof (user) !== 'undefined') {
-    pageEmbed
-      .setTimestamp()
-      .setFooter(user.tag, user.avatarURL())
-  }
 
-  return { embeds: [pageEmbed], files: [thumbnail] }
+  return { embeds: [pageEmbed], files: files }
 }
