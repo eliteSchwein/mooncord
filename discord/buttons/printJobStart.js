@@ -27,7 +27,7 @@ module.exports = async (button) => {
     }
     switch (button.customId) {
         case ("printjob_start"): {
-            await button.update({ embeds: [], components: [] })
+            await button.update({ components: [] })
             startPrintJob(button)
             return
         }
@@ -100,8 +100,15 @@ function startPrintJob(button) {
         if (timeout === 6) {
             clearInterval(feedbackHandler)
             connection.removeListener('message', handler)
+
+            const timeoutEmbed = new Discord.MessageEmbed()
+                .setColor('#c90000')
+                .setAuthor(gcodefile, 'attachment://printlist.png')
+                .setThumbnail('attachment://thumbnail.png')
+                .setDescription(locale.errors.command_timeout)
+
             postStart(
-                locale.errors.command_timeout,
+                { embeds: [timeoutEmbed] },
                 button)
             return
         }
@@ -114,8 +121,15 @@ function startPrintJob(button) {
 
         if (commandFeedback === 'Not Found!') {
             clearInterval(feedbackHandler)
+
+            const notFoundEmbed = new Discord.MessageEmbed()
+                .setColor('#c90000')
+                .setAuthor(gcodefile, 'attachment://printlist.png')
+                .setThumbnail('attachment://thumbnail.png')
+                .setDescription(locale.errors.file_not_found)
+
             postStart(
-                locale.errors.file_not_found,
+                { embeds: [notFoundEmbed] },
                 button)
             return
         }
