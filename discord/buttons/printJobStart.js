@@ -71,7 +71,7 @@ function getAbortEmbed(currentMessage, user) {
     const abortMessage = commandlocale.answer.abort.replace(/(\${username})/g, user.username)
     const abortEmbed = new Discord.MessageEmbed()
         .setColor('#c90000')
-        .setAuthor(currentEmbed.author.name, 'attachment://printjob.png')
+        .setAuthor(currentEmbed.author.name, 'attachment://printlist.png')
         .setThumbnail('attachment://thumbnail.png')
         .setDescription(abortMessage)
     return abortEmbed
@@ -82,7 +82,7 @@ function getStartEmbed(currentMessage, user) {
     const startMessage = commandlocale.answer.executed.replace(/(\${username})/g, user.username)
     const startEmbed = new Discord.MessageEmbed()
         .setColor('#25db00')
-        .setAuthor(currentEmbed.author.name, 'attachment://printjob.png')
+        .setAuthor(currentEmbed.author.name, 'attachment://printlist.png')
         .setThumbnail('attachment://thumbnail.png')
         .setDescription(startMessage)
     return startEmbed
