@@ -1,5 +1,15 @@
 #!/bin/bash
 
+clear
+set -e
+
+### set color variables
+green=$(echo -en "\e[92m")
+yellow=$(echo -en "\e[93m")
+red=$(echo -en "\e[91m")
+cyan=$(echo -en "\e[96m")
+default=$(echo -en "\e[39m")
+
 SCRIPTPATH="$( cd "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 MCPATH="$( pwd -P )"
 MCCONFIGPATH=""
@@ -7,33 +17,33 @@ MCSERVICENAME="MoonCord"
 
 install_packages()
 {
-    echo "Update package data"
+    status_msg "Update package data"
     sudo apt update
 
-    echo "Install needed packages"
-    sudo apt-get -y install nano git ffmpeg
+    status_msg "Install needed packages"
+    sudo apt-get -y install nano git ffmpeg >/dev/null
 
     if ! command -v node -v >/dev/null 2>&1
     then
-        echo "Download Node 16.6.1"
+        status_msg "Download Node 16.6.1"
         wget https://nodejs.org/download/release/v16.6.1/node-v16.6.1-linux-armv7l.tar.gz
 
-        echo "Install Node 16.6.1"
+        status_msg "Install Node 16.6.1"
         tar -xvf node-v16.6.1-linux-armv7l.tar.gz >/dev/null 2>&1 
         sudo cp -R node-v16.6.1-linux-armv7l/* /usr/local/ >/dev/null 2>&1 
 
-        echo "Remove Node File and Folder"
+        status_msg "Remove Node File and Folder"
         rm -rf node-v16.6.1-linux-armv7l.tar.gz
         rm -rf node-v16.6.1-linux-armv7l
     fi
 
-    echo "Install Dependencies"
-    npm ci --only=prod
+    status_msg "Install Dependencies"
+    npm ci --only=prod >/dev/null
 }
 
 install_systemd_service()
 {
-    echo "Installing MoonCord unit file"
+    status_msg "Installing MoonCord unit file"
     MCNPM="$( command -v npm -v )"
 
     SERVICE=$(<$SCRIPTPATH/MoonCord.service)
@@ -66,19 +76,19 @@ locate_config()
 {
     if [[ "$MCCONFIGPATH" == "" ]]
     then
-        echo "no config argument found, use automatic methode!"
+        warn_msg "no config argument found, use automatic methode!"
         MCCONFIGPATH="."
     fi
 }
 
 generate_config() {
-    echo "Generate Configs"
+    status_msg "Generate Configs"
     cp $SCRIPTPATH/mooncord.json $MCCONFIGPATH/mooncord.json
     cp $SCRIPTPATH/database.json $MCPATH/database.json
 }
 
 open_config() {
-    echo "Open Config"
+    status_msg "Open Config"
     sleep 1
     nano $MCCONFIGPATH/mooncord.json
 }
@@ -93,10 +103,55 @@ get_automatic_path() {
 }
 
 start_MoonCord() {
-    echo "Start MoonCord, please make sure you configured the Bot correctly!"
+    ok_msg "Start MoonCord, please make sure you configured the Bot correctly!"
     sudo systemctl start MoonCord
 }
 
+warn_msg(){
+  echo -e "${red}<!!!!> $1${default}"
+}
+
+status_msg(){
+  echo; echo -e "${yellow}###### $1${default}"
+}
+
+ok_msg(){
+  echo -e "${green}>>>>>> $1${default}"
+}
+
+title_msg(){
+  echo -e "${cyan}$1${default}"
+}
+
+get_date(){
+  current_date=$(date +"%y%m%d-%H%M")
+}
+
+print_unkown_cmd(){
+  ERROR_MSG="Invalid command!"
+}
+
+print_msg(){
+  if [[ "$ERROR_MSG" != "" ]]; then
+    echo -e "${red}"
+    echo -e "#########################################################"
+    echo -e " $ERROR_MSG "
+    echo -e "#########################################################"
+    echo -e "${default}"
+  fi
+  if [ "$CONFIRM_MSG" != "" ]; then
+    echo -e "${green}"
+    echo -e "#########################################################"
+    echo -e " $CONFIRM_MSG "
+    echo -e "#########################################################"
+    echo -e "${default}"
+  fi
+}
+
+clear_msg(){
+  unset CONFIRM_MSG
+  unset ERROR_MSG
+}
 
 for ARGUMENT in "$@"
 do
