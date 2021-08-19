@@ -12,6 +12,12 @@
         "next_page": "Pagina Urmatoare",
         "last_page": "Pagina Precedentă"
     },
+    "selection": {
+        "printlist_more_details": {
+            "placeholder": "Click pentru Detalii",
+            "description": "Detalii mai multe despre ${gcode_file}"
+        }
+    },
     "commands": {
         "admin": {
             "description": "Gestionează rolul de Administrator sau Utilizator",
@@ -239,6 +245,7 @@
     "errors": {
         "admin_only": "Nu deții Permisiunile necesare, ${username}",
         "check_console": "Verifică Consola!",
+        "command_disabled": "Comanda este dezactivată!",
         "command_failed": "A apărut o eroare!",
         "command_timeout": "Executarea comenzii a eșuat!",
         "controller_only": "Nu deții Permisiunile necesare, ${username}",

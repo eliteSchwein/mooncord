@@ -225,6 +225,7 @@
     "errors": {
         "admin_only": "Du hast nicht das Recht dazu, ${username}",
         "check_console": "Bitte die Konsole prüfen!",
+        "command_disabled": "Der Kommand ist deaktiviert!",
         "command_failed": "Ein Fehler ist aufgetreten!",
         "command_timeout": "Befehl konnte nicht ausgeführt werden!",
         "controller_only": "Du hast nicht das Recht dazu,  ${username}",
