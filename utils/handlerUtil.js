@@ -32,8 +32,12 @@ async function printFileHandler (message, title, color) {
           path = messageJson.result.thumbnails[1].relative_path
       }
         const parsedThumbnail = await thumbnail.buildThumbnail(path)
+
+        const imgPath = path.resolve(__dirname, `../images/printlist.png`)
+        const icon = new Discord.MessageAttachment(imgPath, 'printlist.png')
+        
         commandFeedback
             .setThumbnail(`attachment://${parsedThumbnail.name}`)
-      return { embeds: [commandFeedback], files: [parsedThumbnail] }
+      return { embeds: [commandFeedback], files: [parsedThumbnail, icon] }
   }
 }
