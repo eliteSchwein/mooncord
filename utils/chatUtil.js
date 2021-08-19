@@ -149,7 +149,7 @@ module.exports.generatePageEmbed = (pageUp, currentPage, data, title, icon, addF
     }
   }
   let entries = '\n'
-  for (let i = (newpage * maxEntries) + newpage; i <= maxEntries + (newpage * maxEntries) + newpage - 1; i++) {
+  for (let i = (newpage * maxEntries) + newpage; i <= (maxEntries - 1) + (newpage * (maxEntries - 1)) + newpage; i++) {
     if (i < data.length) {
       entries = entries.concat(`${data[i].path}\n`)
     }
