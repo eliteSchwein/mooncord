@@ -27,7 +27,7 @@ module.exports = async (button) => {
     }
     switch (button.customId) {
         case ("printjob_start"): {
-            await button.update({ components: [] })
+            await button.update({ embeds: [], components: [] })
             startPrintJob(button)
             return
         }
