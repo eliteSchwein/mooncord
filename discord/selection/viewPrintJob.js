@@ -1,6 +1,7 @@
 const moonrakerClient = require('../../clients/moonrakerClient')
 const handlers = require('../../utils/handlerUtil')
 const locale = require('../../utils/localeUtil')
+const permission = require('../../utils/permissionUtil')
 
 let commandFeedback
 let connection
@@ -8,10 +9,15 @@ let connection
 let lastid = 0
 
 module.exports = async (selection) => {
-    const {message} = selection
+    const {message, user, guildId, client} = selection
 
     if (message.author.id !== selection.client.user.id) { return }
     if (selection.customId !== 'view_printjob') { return }
+
+    if (!await permission.hasAdmin(user, guildId, client)) {
+        await selection.reply(message.channel.send(locale.getAdminOnlyError(user.username)))
+        return
+    }
 
     if (typeof (commandFeedback) !== 'undefined') {
         await selection.reply(locale.getCommandNotReadyError(selection.user.username))
