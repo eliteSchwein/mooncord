@@ -4,6 +4,9 @@ const pathLib = require('path')
 const locale = require('./localeUtil')
 const thumbnail = require('./thumbnailUtil')
 const variables = require('./variablesUtil')
+const chatUtil = require('./chatUtil')
+
+const metaData = require('./handler_meta.json')
 
 module.exports = {}
 module.exports.printFileHandler = async (message, title, color) => {
@@ -17,28 +20,30 @@ async function printFileHandler (message, title, color) {
       return commandFeedback
   }
   if (typeof (messageJson.result.filename) !== 'undefined') {
-      const description = ''
-          .concat(`${locale.fileinfo.print_time}: ${variables.formatTime(messageJson.result.estimated_time)}\n`)
-          .concat(`${locale.fileinfo.slicer}: ${messageJson.result.slicer}\n`)
-          .concat(`${locale.fileinfo.slicer_version}: ${messageJson.result.slicer_version}\n`)
-          .concat(`${locale.fileinfo.height}: ${messageJson.result.object_height}mm`)
-      
-      commandFeedback = new Discord.MessageEmbed()
-          .setColor(color)
-          .setTitle(title)
-          .setAuthor(messageJson.result.filename, 'attachment://printlist.png')
-          .setDescription(description)
-      let path
-      if (typeof (messageJson.result.thumbnails) !== 'undefined') {
-          path = messageJson.result.thumbnails[1].relative_path
-      }
-        const parsedThumbnail = await thumbnail.buildThumbnail(path)
+    const description = ''
+        .concat(`${locale.fileinfo.print_time}: ${variables.formatTime(messageJson.result.estimated_time)}\n`)
+        .concat(`${locale.fileinfo.slicer}: ${messageJson.result.slicer}\n`)
+        .concat(`${locale.fileinfo.slicer_version}: ${messageJson.result.slicer_version}\n`)
+        .concat(`${locale.fileinfo.height}: ${messageJson.result.object_height}mm`)
+    
+    commandFeedback = new Discord.MessageEmbed()
+        .setColor(color)
+        .setTitle(title)
+        .setAuthor(messageJson.result.filename, 'attachment://printlist.png')
+        .setDescription(description)
+    let path
+    if (typeof (messageJson.result.thumbnails) !== 'undefined') {
+        path = messageJson.result.thumbnails[1].relative_path
+    }
+    const parsedThumbnail = await thumbnail.buildThumbnail(path)
 
-        const imgPath = pathLib.resolve(__dirname, `../images/printlist.png`)
-        const icon = new Discord.MessageAttachment(imgPath, 'printlist.png')
-        
-        commandFeedback
-            .setThumbnail(`attachment://${parsedThumbnail.name}`)
-      return { embeds: [commandFeedback], files: [parsedThumbnail, icon] }
+    const imgPath = pathLib.resolve(__dirname, `../images/printlist.png`)
+    const icon = new Discord.MessageAttachment(imgPath, 'printlist.png')
+
+    const buttons = chatUtil.getButtons(metaData.file_info)
+    
+    commandFeedback
+        .setThumbnail(`attachment://${parsedThumbnail.name}`)
+    return { embeds: [commandFeedback], files: [parsedThumbnail, icon], components: [buttons] }
   }
 }
