@@ -21,7 +21,7 @@ install_packages()
     sudo apt update
 
     status_msg "Install needed packages"
-    sudo apt-get -y install nano git ffmpeg >/dev/null
+    sudo apt-get -y install nano git ffmpeg
 
     if ! command -v node -v >/dev/null 2>&1
     then
@@ -38,7 +38,7 @@ install_packages()
     fi
 
     status_msg "Install Dependencies"
-    npm ci --only=prod >/dev/null
+    npm ci --only=prod
 }
 
 install_systemd_service()
