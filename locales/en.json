@@ -4,12 +4,14 @@
         "printjob_cancel": "Stop",
         "printjob_resume": "Resume",
         "printjob_refresh": "Refresh",
+        "printjob_start": "Print",
         "printjob_start_yes": "Yes",
         "printjob_start_no": "No",
         "klipper_restart": "Restart Firmware",
         "update_system": "Update",
         "next_page": "Next Page",
-        "last_page": "Last Page"
+        "last_page": "Last Page",
+        "to_list": "to List"
     },
     "selection": {
         "printlist_more_details": {
