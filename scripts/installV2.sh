@@ -1,5 +1,6 @@
 #!/bin/bash
 
+### credits to th33xitus for the script base
 clear
 set -e
 
