@@ -1,4 +1,5 @@
 const Discord = require('discord.js')
+const pathLib = require('path')
 
 const locale = require('./localeUtil')
 const thumbnail = require('./thumbnailUtil')
@@ -33,7 +34,7 @@ async function printFileHandler (message, title, color) {
       }
         const parsedThumbnail = await thumbnail.buildThumbnail(path)
 
-        const imgPath = path.resolve(__dirname, `../images/printlist.png`)
+        const imgPath = pathLib.resolve(__dirname, `../images/printlist.png`)
         const icon = new Discord.MessageAttachment(imgPath, 'printlist.png')
         
         commandFeedback
