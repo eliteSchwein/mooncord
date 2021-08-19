@@ -4,12 +4,19 @@
         "printjob_cancel": "Stop",
         "printjob_resume": "Fortsetzen",
         "printjob_refresh": "Aktualisieren",
+        "printjob_start": "Drucken",
         "printjob_start_yes": "Ja",
         "printjob_start_no": "Nein",
         "klipper_restart": "Firmware neustarten",
         "update_system": "Update",
         "next_page": "Nächste Seite",
         "last_page": "Letzte Seite"
+    },
+    "selection": {
+        "printlist_more_details": {
+            "placeholder": "Klicken für mehr Details",
+            "description": "Mehr Details für ${gcode_file}"
+        }
     },
     "commands": {
         "admin": {

@@ -1,8 +1,10 @@
-{   "buttons": {
+{   
+    "buttons": {
         "printjob_pause": "Pause",
         "printjob_cancel": "Stop",
         "printjob_resume": "Reprendre",
         "printjob_refresh": "Rafraîchir",
+        "printjob_start": "Imprimer",
         "printjob_start_yes": "Oui",
         "printjob_start_no": "Non",
         "klipper_restart": "Redémarrer le système",
