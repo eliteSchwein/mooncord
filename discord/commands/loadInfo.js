@@ -1,5 +1,5 @@
-const logSymbols = require('log-symbols')
 const { SlashCommandBuilder } = require('@discordjs/builders')
+const logSymbols = require('log-symbols')
 
 const components = require('../../utils/hsComponents')
 const loadUtil = require('../../utils/loadUtil')

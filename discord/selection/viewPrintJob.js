@@ -8,7 +8,7 @@ let connection
 let lastid = 0
 
 module.exports = async (selection) => {
-    const message = selection.message
+    const {message} = selection
 
     if (message.author.id !== selection.client.user.id) { return }
     if (selection.customId !== 'view_printjob') { return }

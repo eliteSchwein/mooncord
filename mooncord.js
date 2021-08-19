@@ -9,8 +9,8 @@ const discordClient = require('./clients/discordClient')
 const moonrakerClient = require('./clients/moonrakerClient')
 const pjson = require('./package.json')
 const loadUtil = require('./utils/loadUtil')
-const miscUtil = require('./utils/miscUtil')
 const migrationUtil = require('./utils/migrationUtil')
+const miscUtil = require('./utils/miscUtil')
 const timelapseUtil = require('./utils/timelapseUtil')
 
 colors.setTheme({

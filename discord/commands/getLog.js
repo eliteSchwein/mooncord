@@ -1,14 +1,14 @@
 const args = process.argv.slice(2)
 
-const axios = require('axios')
-const logSymbols = require('log-symbols')
-const Discord = require('discord.js')
 const { SlashCommandBuilder } = require('@discordjs/builders')
+const axios = require('axios')
+const Discord = require('discord.js')
+const logSymbols = require('log-symbols')
 
 const config = require(`${args[0]}/mooncord.json`)
 const locale = require('../../utils/localeUtil')
-const permission = require('../../utils/permissionUtil')
 const misc = require('../../utils/miscUtil')
+const permission = require('../../utils/permissionUtil')
 const metadata = require('../commands-metadata/get_log.json')
 
 const messageLocale = locale.commands.get_log
@@ -47,7 +47,7 @@ module.exports.reply = async (interaction) => {
                 'X-Api-Key': config.connection.moonraker_token,
             },
         }).then(async (result) => {
-            let file = new Discord.MessageAttachment(result.data, `${service}.log`)
+            const file = new Discord.MessageAttachment(result.data, `${service}.log`)
             await interaction.editReply({
                 content: messageLocale.answer.retrieved
                     .replace(/(\${service})/g, `\`${service}\``),

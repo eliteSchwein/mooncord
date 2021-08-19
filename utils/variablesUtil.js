@@ -26,7 +26,7 @@ const rawData = {
   }
 }
 
-let data = Object.assign({}, rawData)
+const data = { ...rawData}
 
 module.exports.dump = data
 module.exports.dumpRaw = rawData

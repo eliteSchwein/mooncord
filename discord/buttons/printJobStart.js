@@ -15,12 +15,11 @@ let timeout = 0
 const commandlocale = locale.commands.printjob
 
 module.exports = async (button) => {
-    const message = button.message
-    const user = button.user
+    const {message, user} = button
 
     if (message.author.id !== button.client.user.id) { return }
 
-    let guildID = button.guildId
+    const guildID = button.guildId
 
     if (!await permission.hasAdmin(user, guildID, button.client)) {
         await button.reply(message.channel.send(locale.getAdminOnlyError(user.username)))
@@ -39,7 +38,7 @@ module.exports = async (button) => {
         case ("printjob_start_yes"): {
             await message.edit({ embeds: [getStartEmbed(message, user)], components: [] })
             startPrint(message)
-            return
+            
         }
     }
 }
@@ -70,23 +69,21 @@ function startPrint(currentMessage) {
 function getAbortEmbed(currentMessage, user) {
     const currentEmbed = currentMessage.embeds[0]
     const abortMessage = commandlocale.answer.abort.replace(/(\${username})/g, user.username)
-    const abortEmbed = new Discord.MessageEmbed()
+    return new Discord.MessageEmbed()
         .setColor('#c90000')
         .setAuthor(currentEmbed.author.name, 'attachment://printlist.png')
         .setThumbnail('attachment://thumbnail.png')
         .setDescription(abortMessage)
-    return abortEmbed
 }
 
 function getStartEmbed(currentMessage, user) {
     const currentEmbed = currentMessage.embeds[0]
     const startMessage = commandlocale.answer.executed.replace(/(\${username})/g, user.username)
-    const startEmbed = new Discord.MessageEmbed()
+    return new Discord.MessageEmbed()
         .setColor('#25db00')
         .setAuthor(currentEmbed.author.name, 'attachment://printlist.png')
         .setThumbnail('attachment://thumbnail.png')
         .setDescription(startMessage)
-    return startEmbed
 }
 
 function startPrintJob(button) {

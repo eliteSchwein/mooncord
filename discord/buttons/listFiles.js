@@ -1,7 +1,6 @@
 const moonrakerClient = require('../../clients/moonrakerClient')
-const locale = require('../../utils/localeUtil')
 const chatUtil = require('../../utils/chatUtil')
-
+const locale = require('../../utils/localeUtil')
 const metaData = require('../buttons-metadata/list_files.json')
 
 const commandlocale = locale.commands.listfiles
@@ -12,7 +11,7 @@ let page
 let connection
 
 module.exports = async (button) => {
-    const message = button.message
+    const {message} = button
 
     if (message.author.id !== button.client.user.id) { return }
     if (!Object.keys(metaData).includes(button.customId)) { return }

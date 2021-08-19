@@ -66,13 +66,13 @@ async function retrieveWebcam() {
       if (sepia) {
         image.recomb([
          [0.3588, 0.7044, 0.1368],
-         [0.2990, 0.5870, 0.1140],
+         [0.299, 0.587, 0.114],
          [0.2392, 0.4696, 0.0912],
         ])
       }
 
       image.png({
-        quality: quality
+        quality
       })
 
       const editBuffer = await image.toBuffer()

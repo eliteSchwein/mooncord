@@ -1,9 +1,10 @@
 const args = process.argv.slice(2)
 
+const fs = require('fs')
 const logSymbols = require('log-symbols')
 const path = require('path')
 const util = require('util')
-const fs = require('fs')
+
 const writeFile = util.promisify(fs.writeFile)
 
 const config = require(`${args[0]}/mooncord.json`)

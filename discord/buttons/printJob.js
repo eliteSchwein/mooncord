@@ -1,20 +1,18 @@
-const permission = require('../../utils/permissionUtil')
-const locale = require('../../utils/localeUtil')
-const statusUtil = require('../../utils/statusUtil')
 const moonrakerClient = require('../../clients/moonrakerClient')
-
+const locale = require('../../utils/localeUtil')
+const permission = require('../../utils/permissionUtil')
+const statusUtil = require('../../utils/statusUtil')
 const metaData = require('../buttons-metadata/print_job.json')
 
 const messageLocale = locale.commands.printjob
 
 module.exports = async (button) => {
-    const message = button.message
-    const user = button.user
+    const {message, user} = button
 
     if (message.author.id !== button.client.user.id) { return }
     if (!Object.keys(metaData).includes(button.customId)) { return }
 
-    let guildID = button.guildId
+    const guildID = button.guildId
 
     if (!await permission.hasAdmin(user, guildID, button.client)) {
         await button.reply(message.channel.send(locale.getAdminOnlyError(user.username)))

@@ -2,17 +2,16 @@ const Discord = require('discord.js')
 const path = require('path')
 
 const locale = require('./localeUtil')
-const webcam = require('./webcamUtil')
+const pageMeta = require('./pages_meta.json')
 const thumbnail = require('./thumbnailUtil')
 const variables = require('./variablesUtil')
-
-const pageMeta = require('./pages_meta.json')
+const webcam = require('./webcamUtil')
 
 const maxEntries = 5
 
 function getButtons(config) {
   if (Object.keys(config.buttons).length === 0) {
-    return undefined
+    return
   }
   const row = new Discord.MessageActionRow()
   
@@ -87,7 +86,7 @@ module.exports.generateStatusEmbed = async (config) => {
     components.push(buttons)
   }
   
-  return { embeds: [embed], files: files, components: components }
+  return { embeds: [embed], files, components }
 }
 module.exports.getWaitEmbed = (user, relation, icon) => {
 
@@ -182,8 +181,7 @@ module.exports.generatePageEmbed = (pageUp, currentPage, data, title, icon, addF
 
   const buttons = getButtons(pageMeta)
 
-  components.push(selectRow)
-  components.push(buttons)
+  components.push(selectRow, buttons)
 
   const pageEmbed = new Discord.MessageEmbed()
     .setColor('#0099ff')
@@ -192,5 +190,5 @@ module.exports.generatePageEmbed = (pageUp, currentPage, data, title, icon, addF
     .setDescription(entries)
     .setThumbnail(`attachment://${icon}`)
 
-  return { embeds: [pageEmbed], files: files, components: components }
+  return { embeds: [pageEmbed], files, components }
 }

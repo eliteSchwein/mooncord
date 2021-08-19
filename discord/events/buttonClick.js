@@ -2,7 +2,7 @@ const handlers = require('../buttons')
 
 const enableEvent = (discordClient) => {
   discordClient.on('interactionCreate', (interaction) => {
-    if (!interaction.isButton()) return
+    if (!interaction.isButton()) {return}
     handlers(interaction)
   })
 }

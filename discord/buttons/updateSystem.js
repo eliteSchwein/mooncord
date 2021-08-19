@@ -1,15 +1,14 @@
 const moonrakerClient = require('../../clients/moonrakerClient')
-const permission = require('../../utils/permissionUtil')
 const locale = require('../../utils/localeUtil')
+const permission = require('../../utils/permissionUtil')
 
 module.exports = async (button) => {
-    const message = button.message
-    const user = button.user
+    const {message, user} = button
 
     if (message.author.id !== button.client.user.id) { return }
     if (button.customId !== 'update_system') { return }
 
-    let guildID = button.guildId
+    const guildID = button.guildId
 
     if (!await permission.hasAdmin(user, guildID, button.client)) {
         await button.reply(message.channel.send(locale.getAdminOnlyError(user.username)))

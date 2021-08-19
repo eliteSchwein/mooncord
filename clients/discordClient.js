@@ -2,8 +2,8 @@ const { waitUntil } = require('async-wait-until')
 const Discord = require('discord.js')
 const path = require('path')
 
-const events = require('../discord/events')
 const commands = require('../discord/commands')
+const events = require('../discord/events')
 const variables = require('../utils/variablesUtil')
 
 const discordClient = new Discord.Client({

@@ -1,7 +1,7 @@
-const logSymbols = require('log-symbols')
-const Discord = require('discord.js')
-const path = require('path')
 const { SlashCommandBuilder } = require('@discordjs/builders')
+const Discord = require('discord.js')
+const logSymbols = require('log-symbols')
+const path = require('path')
 
 const moonrakerClient = require('../../clients/moonrakerClient')
 const locale = require('../../utils/localeUtil')

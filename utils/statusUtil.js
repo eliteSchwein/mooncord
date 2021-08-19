@@ -4,11 +4,11 @@ const logSymbols = require('log-symbols')
 const args = process.argv.slice(2)
  
 const config = require(`${args[0]}/mooncord.json`)
+const chatUtil = require('./chatUtil')
 const database = require('./databaseUtil')
 const locale = require('./localeUtil')
 const metadata = require('./status_meta_data.json')
 const variables = require('./variablesUtil')
-const chatUtil = require('./chatUtil')
 
 const statusWaitList = []
 
@@ -75,7 +75,7 @@ async function removeOldStatus(channel, discordClient) {
   lastMessage = lastMessage.first()
 
   if (lastMessage.author.id !== discordClient.user.id) { return }
-  if (lastMessage.embeds.size < 1) { return }
+  if (lastMessage.embeds.size === 0) { return }
   if (typeof(lastMessage.embeds[0]) === 'undefined') { return }
   if (lastMessage.embeds[0].title !== locale.status.printing.title) { return }
 
@@ -84,7 +84,7 @@ async function removeOldStatus(channel, discordClient) {
 
 async function broadcastSection(list, section, discordClient, message) {
   for (const index in list) {
-    let id = list[index]
+    const id = list[index]
 
     if (section === 'guilds') {
       broadcastSection(list[index].broadcastchannels, 'channels', discordClient, message)

@@ -2,10 +2,10 @@ const args = process.argv.slice(2)
 
 const { waitUntil } = require('async-wait-until')
 const Discord = require('discord.js')
-const fs = require('fs')
-const path = require('path')
 const ffmpeg = require('fluent-ffmpeg')
+const fs = require('fs')
 const logSymbols = require('log-symbols')
+const path = require('path')
 
 const locale = require('./localeUtil')
 const statusUtil = require('./statusUtil')

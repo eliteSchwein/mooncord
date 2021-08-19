@@ -1,8 +1,8 @@
 const WebSocketClient = require('websocket').client
 const { waitUntil } = require('async-wait-until')
-const logSymbols = require('log-symbols')
 const axios = require('axios')
 const FormData = require('form-data')
+const logSymbols = require('log-symbols')
 
 const database = require('../utils/databaseUtil')
 const status = require('../utils/statusUtil')

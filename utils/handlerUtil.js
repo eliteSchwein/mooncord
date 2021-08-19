@@ -1,12 +1,12 @@
 const Discord = require('discord.js')
 const pathLib = require('path')
 
+const chatUtil = require('./chatUtil')
+const metaData = require('./handler_meta.json')
 const locale = require('./localeUtil')
 const thumbnail = require('./thumbnailUtil')
 const variables = require('./variablesUtil')
-const chatUtil = require('./chatUtil')
 
-const metaData = require('./handler_meta.json')
 
 module.exports = {}
 module.exports.printFileHandler = async (message, title, color) => {
