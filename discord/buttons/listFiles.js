@@ -6,7 +6,6 @@ const metaData = require('../buttons-metadata/list_files.json')
 
 const commandlocale = locale.commands.listfiles
 
-let requester
 let commandFeedback
 let pageUp
 let page
@@ -14,7 +13,6 @@ let connection
 
 module.exports = async (button) => {
     const message = button.message
-    const user = button.user
 
     if (message.author.id !== button.client.user.id) { return }
     if (!Object.keys(metaData).includes(button.customId)) { return }
@@ -40,7 +38,6 @@ async function executeMessage(button) {
     const id = Math.floor(Math.random() * Number.parseInt('10_000')) + 1
 
     let timeout = 0
-    requester = button.user
     
     await button.update(chatUtil.getWaitEmbed(button.user, commandlocale.embed.title, 'printlist.png'))
 
@@ -77,7 +74,6 @@ async function handler (message) {
             page,
             messageJson.result,
             commandlocale.embed.title,
-            'printlist.png',
-            requester)
+            'printlist.png')
     }
 }
