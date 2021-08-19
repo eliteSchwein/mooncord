@@ -1,7 +1,9 @@
+const handlers = require('../selection')
+
 const enableEvent = (discordClient) => {
   discordClient.on('interactionCreate', (interaction) => {
     if (!interaction.isSelectMenu()) return
-    console.log(interaction)
+    handlers(interaction)
   })
 }
 module.exports = enableEvent
