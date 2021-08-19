@@ -12,6 +12,12 @@
         "next_page": "Page suivante",
         "last_page": "Page précédente"
     },
+    "selection": {
+        "printlist_more_details": {
+            "placeholder": "Cliquez pour plus de détails",
+            "description": "Plus de détails pour ${gcode_file}"
+        }
+    },
     "commands": {
         "admin": {
             "description": "Gérer les rôles d'administrateur et d'utilisateur.",
@@ -239,6 +245,7 @@
     "errors": {
         "admin_only": "Vous n'avez pas les permissions, ${username}",
         "check_console": "Veuillez vérifier la console !",
+        "command_disabled": "La commande est désactivé !",
         "command_failed": "Une erreur s'est produite !",
         "command_timeout": "L'exécution de la commande a échoué !",
         "controller_only": "Vous n'avez pas les permissions, ${username}",
