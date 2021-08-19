@@ -39,6 +39,7 @@ install_packages()
     fi
 
     status_msg "Install Dependencies"
+    sudo npm i -g npm@latest
     npm ci --only=prod
 }
 
