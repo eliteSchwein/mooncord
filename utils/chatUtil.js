@@ -110,7 +110,7 @@ module.exports.getWaitEmbed = (user, relation, icon) => {
       .setAuthor(title, `attachment://${icon}`)
   }
   
-  return { embeds: [waitEmbed] }
+  return { embeds: [waitEmbed], components: [] }
 }
 module.exports.hasMessageEmbed = (message) => {
   if (message.channel.type !== 'text' && message.channel.type !== 'dm') {
