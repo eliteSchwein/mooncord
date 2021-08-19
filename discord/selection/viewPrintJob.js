@@ -9,7 +9,6 @@ let lastid = 0
 
 module.exports = async (selection) => {
     const message = selection.message
-    const user = selection.user
 
     if (message.author.id !== selection.client.user.id) { return }
     if (selection.customId !== 'view_printjob') { return }
@@ -21,6 +20,8 @@ module.exports = async (selection) => {
 
     const id = Math.floor(Math.random() * Number.parseInt('10_000')) + 1
     connection = moonrakerClient.getConnection()
+
+    let timeout = 0
 
     await selection.update({components: []})
 
