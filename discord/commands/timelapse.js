@@ -7,8 +7,8 @@ const locale = require('../../utils/localeUtil')
 const timelapseUtil = require('../../utils/timelapseUtil')
 const variablesUtil = require('../../utils/variablesUtil')
 
-const messageLocale = locale.commands.timelapse
-const syntaxLocale = locale.syntaxlocale.commands.timelapse
+const messageLocale = locale.dynamic_commands.timelapse
+const syntaxLocale = locale.syntaxlocale.dynamic_commands.timelapse
 
 const config = require(`${args[0]}/mooncord.json`)
 
