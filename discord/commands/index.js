@@ -37,4 +37,5 @@ const commands = {
     printJob: require('./printJob'),
     status: require('./status'),
     temp: require('./temp'),
+    timelapse: require('./timelapse')
 }
