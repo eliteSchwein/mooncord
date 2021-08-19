@@ -11,6 +11,12 @@
         "next_page": "Next Page",
         "last_page": "Last Page"
     },
+    "selection": {
+        "printlist_more_details": {
+            "placeholder": "Click for more Details",
+            "description": "More Details for ${gcode_file}"
+        }
+    },
     "commands": {
         "admin": {
             "description": "Manage Admin Role or User.",

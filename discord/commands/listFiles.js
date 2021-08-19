@@ -6,8 +6,6 @@ const chatUtil = require('../../utils/chatUtil')
 const locale = require('../../utils/localeUtil')
 const permission = require('../../utils/permissionUtil')
 
-const metaData = require('../commands-metadata/list_files.json')
-
 const messageLocale = locale.commands.listfiles
 const syntaxLocale = locale.syntaxlocale.commands.listfiles
 
@@ -83,8 +81,5 @@ async function handler (message) {
             messageLocale.embed.title,
             'printlist.png',
             true)
-            
-        const buttons = chatUtil.getButtons(metaData)
-        commandFeedback.components = [buttons]
     }
 }

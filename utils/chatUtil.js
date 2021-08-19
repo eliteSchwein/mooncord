@@ -7,6 +7,8 @@ const webcam = require('./webcamUtil')
 const thumbnail = require('./thumbnailUtil')
 const variables = require('./variablesUtil')
 
+const pageMeta = require('./pages_meta.json')
+
 const maxEntries = 5
 
 function getButtons(config) {
@@ -139,6 +141,11 @@ module.exports.retrieveCurrentPage = (embed) => {
 module.exports.generatePageEmbed = (pageUp, currentPage, data, title, icon, addFile) => {
   let newpage = currentPage
   const maxpage = Math.floor(data.length / maxEntries)
+  const selectRow = new Discord.MessageActionRow()
+  const selectList = new Discord.MessageSelectMenu()
+    .setCustomId('view_printjob')
+    .setPlaceholder(locale.selection.printlist_more_details.placeholder)
+
   if (pageUp) {
     if (currentPage !== maxpage - 1) {
       newpage = currentPage + 1
@@ -155,15 +162,29 @@ module.exports.generatePageEmbed = (pageUp, currentPage, data, title, icon, addF
     i++) {
     if (i < data.length) {
       entries = entries.concat(`${data[i].path}\n`)
+      selectList.addOptions([{
+							label: data[i].path,
+							description: locale.selection.printlist_more_details
+                .replace(/(\${gcode_file})/g, data[i].path),
+							value: data[i].path,
+      }])
     }
   }
+
+  selectRow.addComponents(selectList)
 
   const imgPath = path.resolve(__dirname, `../images/${icon}`)
   const thumbnail = new Discord.MessageAttachment(imgPath, icon)
 
+  const components = []
   const files = []
 
   if(addFile) { files.push(thumbnail) }
+
+  const buttons = getButtons(pageMeta)
+
+  components.push(selectRow)
+  components.push(buttons)
 
   const pageEmbed = new Discord.MessageEmbed()
     .setColor('#0099ff')
@@ -172,5 +193,5 @@ module.exports.generatePageEmbed = (pageUp, currentPage, data, title, icon, addF
     .setDescription(entries)
     .setThumbnail(`attachment://${icon}`)
 
-  return { embeds: [pageEmbed], files: files }
+  return { embeds: [pageEmbed], files: files, components: components }
 }
