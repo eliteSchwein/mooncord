@@ -41,7 +41,7 @@ async function executeMessage(button) {
     
     await button.update(chatUtil.getWaitEmbed(button.user, commandlocale.embed.title, 'printlist.png'))
 
-    connection.on('message', (message) => handler(message))
+    connection.on('message', handler)
     connection.send(`{"jsonrpc": "2.0", "method": "server.files.list", "params": {"root": "gcodes"}, "id": ${id}}`)
 
     const feedbackInterval = setInterval(async () => {
