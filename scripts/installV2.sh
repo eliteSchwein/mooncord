@@ -99,7 +99,7 @@ get_automatic_path() {
     then
         AUTOMATIC_PATH=`node utils/installUtil.js` 
         MCCONFIGPATH=$AUTOMATIC_PATH
-        echo "Use ${AUTOMATIC_PATH} as Config Path"
+        status_msg "Use ${AUTOMATIC_PATH} as Config Path"
     fi
 }
 
