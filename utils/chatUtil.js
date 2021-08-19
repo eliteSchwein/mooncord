@@ -164,7 +164,7 @@ module.exports.generatePageEmbed = (pageUp, currentPage, data, title, icon, addF
       entries = entries.concat(`${data[i].path}\n`)
       selectList.addOptions([{
 							label: data[i].path,
-							description: locale.selection.printlist_more_details
+							description: locale.selection.printlist_more_details.description
                 .replace(/(\${gcode_file})/g, data[i].path),
 							value: data[i].path,
       }])
