@@ -30,11 +30,6 @@ module.exports = async (button) => {
 
     pageUp = metaData[button.customId].page_up
     page = chatUtil.retrieveCurrentPage(embed)
-
-    await executeMessage(button)
-}
-
-async function executeMessage(button) {
     const id = Math.floor(Math.random() * Number.parseInt('10_000')) + 1
 
     let timeout = 0
