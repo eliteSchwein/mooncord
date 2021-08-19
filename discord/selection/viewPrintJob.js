@@ -34,8 +34,13 @@ module.exports = async (selection) => {
             if( lastid === id ) { return }
             lastid = id
             if (commandFeedback === 'Not Found!') {
+                const fileNotFoundEmbed = new Discord.MessageEmbed()
+                    .setColor('#c90000')
+                    .setAuthor(gcodeFile, 'attachment://printlist.png')
+                    .setThumbnail('attachment://thumbnail.png')
+                    .setDescription(locale.errors.file_not_found)
                 await selection.message.edit({
-                    content: locale.errors.file_not_found
+                    embeds: [fileNotFoundEmbed]
                 })
             } else {
                 await selection.message.edit(commandFeedback)
@@ -46,8 +51,13 @@ module.exports = async (selection) => {
             clearInterval(feedbackInterval)
         }
         if (timeout === 4) {
+            const timeoutEmbed = new Discord.MessageEmbed()
+                .setColor('#c90000')
+                .setAuthor(gcodeFile, 'attachment://printlist.png')
+                .setThumbnail('attachment://thumbnail.png')
+                .setDescription(locale.errors.command_timeout)
             await selection.message.edit({
-                content: locale.errors.command_timeout
+                embeds: [timeoutEmbed]
             })
             commandFeedback = undefined
             clearInterval(feedbackInterval)
