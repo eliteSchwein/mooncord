@@ -53,6 +53,7 @@ async function render() {
         .noAudio()
         .videoCodec('libx264')
         .on('end', async (stdout, stderr) => {
+            console.log(stdout)
             renderdone = true
         })
         .run()
