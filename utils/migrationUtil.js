@@ -17,10 +17,14 @@ module.exports.migrate = async () => {
   }
   if (typeof (config.timelapse.ffmpeg_arguments) === 'undefined') {
     config.timelapse.ffmpeg_arguments = [
-      "-pix_fmt yuv420p",
-      "-preset slower",
-      "-crf 30"
+      '-pix_fmt yuv420p',
+      '-preset slower',
+      '-crf 30'
     ]
+    modified = true
+  }
+  if (typeof (config.timelapse.ffmpeg_codec) === 'undefined') {
+    config.timelapse.ffmpeg_codec = 'libx264' 
     modified = true
   }
   if (modified) { await saveData() }

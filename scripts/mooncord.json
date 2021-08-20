@@ -47,6 +47,7 @@
         "frame_every_layer": false,
         "frame_every_percent": false,
         "post_at_print_end": false,
+        "ffmpeg_codec": "libx264",
         "ffmpeg_arguments": [
             "-pix_fmt yuv420p",
             "-preset slower",

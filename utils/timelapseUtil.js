@@ -51,7 +51,7 @@ async function render() {
         .outputFPS(config.timelapse.framerate)
         .outputOptions(config.timelapse.ffmpeg_arguments)
         .noAudio()
-        .videoCodec('libx264')
+        .videoCodec(config.timelapse.ffmpeg_codec)
         .on('end', async (stdout, stderr) => {
             console.log(stdout)
             renderdone = true
