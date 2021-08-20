@@ -75,7 +75,6 @@ async function removeOldStatus(channel, discordClient) {
   lastMessage = lastMessage.first()
 
   if (lastMessage.author.id !== discordClient.user.id) { return }
-  console.log(lastMessage.deletable)
   if (lastMessage.deleted) { return }
   if (lastMessage.embeds.size === 0) { return }
   if (typeof(lastMessage.embeds[0]) === 'undefined') { return }
