@@ -10,7 +10,8 @@
         "klipper_restart": "Firmware neustarten",
         "update_system": "Update",
         "next_page": "Nächste Seite",
-        "last_page": "Letzte Seite"
+        "last_page": "Letzte Seite",
+        "to_printlist": "zur Liste"
     },
     "selection": {
         "printlist_more_details": {

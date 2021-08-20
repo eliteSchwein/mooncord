@@ -10,7 +10,8 @@
         "klipper_restart": "Redémarrer le système",
         "update_system": "Mise à jour",
         "next_page": "Page suivante",
-        "last_page": "Page précédente"
+        "last_page": "Page précédente",
+        "to_printlist": "à la liste"
     },
     "selection": {
         "printlist_more_details": {

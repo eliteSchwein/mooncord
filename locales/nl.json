@@ -10,7 +10,8 @@
         "klipper_restart": "Herstart Firmware",
         "update_system": "Bijwerken",
         "next_page": "Volgende pagina",
-        "last_page": "Vorige pagina"
+        "last_page": "Vorige pagina",
+        "to_printlist": "naar lijst"
     },
     "commands": {
         "admin": {

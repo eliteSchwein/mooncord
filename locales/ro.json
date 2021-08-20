@@ -10,7 +10,8 @@
         "klipper_restart": "Repornește Firmware-ul",
         "update_system": "Actualizează",
         "next_page": "Pagina Urmatoare",
-        "last_page": "Pagina Precedentă"
+        "last_page": "Pagina Precedentă",
+        "to_printlist": "la lista"
     },
     "selection": {
         "printlist_more_details": {

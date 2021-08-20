@@ -10,7 +10,8 @@
         "klipper_restart": "重啟韌體",
         "update_system": "更新",
         "next_page": "下一頁",
-        "last_page": "上一頁"
+        "last_page": "上一頁",
+        "to_printlist": "列出"
     },
     "selection": {
         "printlist_more_details": {
