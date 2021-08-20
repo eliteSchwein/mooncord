@@ -29,7 +29,7 @@ async function printFileHandler (message, title, color) {
     commandFeedback = new Discord.MessageEmbed()
         .setColor(color)
         .setTitle(title)
-        .setAuthor(messageJson.result.filename, 'attachment://printlist.png')
+        .setAuthor(messageJson.result.filename)
         .setDescription(description)
     let path
     if (typeof (messageJson.result.thumbnails) !== 'undefined') {
@@ -37,13 +37,10 @@ async function printFileHandler (message, title, color) {
     }
     const parsedThumbnail = await thumbnail.buildThumbnail(path)
 
-    const imgPath = pathLib.resolve(__dirname, `../images/printlist.png`)
-    const icon = new Discord.MessageAttachment(imgPath, 'printlist.png')
-
     const buttons = chatUtil.getButtons(metaData.file_info)
     
     commandFeedback
         .setThumbnail(`attachment://${parsedThumbnail.name}`)
-    return { embeds: [commandFeedback], files: [parsedThumbnail, icon], components: [buttons] }
+    return { embeds: [commandFeedback], files: [parsedThumbnail], components: [buttons] }
   }
 }

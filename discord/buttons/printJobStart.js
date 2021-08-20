@@ -28,6 +28,7 @@ module.exports = async (button) => {
     switch (button.customId) {
         case ("printjob_start"): {
             await button.update({ components: [] })
+            await message.removeAttachments()
             startPrintJob(button)
             return
         }
@@ -71,7 +72,7 @@ function getAbortEmbed(currentMessage, user) {
     const abortMessage = commandlocale.answer.abort.replace(/(\${username})/g, user.username)
     return new Discord.MessageEmbed()
         .setColor('#c90000')
-        .setAuthor(currentEmbed.author.name, 'attachment://printlist.png')
+        .setAuthor(currentEmbed.author.name)
         .setThumbnail('attachment://thumbnail.png')
         .setDescription(abortMessage)
 }
@@ -81,7 +82,7 @@ function getStartEmbed(currentMessage, user) {
     const startMessage = commandlocale.answer.executed.replace(/(\${username})/g, user.username)
     return new Discord.MessageEmbed()
         .setColor('#25db00')
-        .setAuthor(currentEmbed.author.name, 'attachment://printlist.png')
+        .setAuthor(currentEmbed.author.name)
         .setThumbnail('attachment://thumbnail.png')
         .setDescription(startMessage)
 }
@@ -103,7 +104,7 @@ function startPrintJob(button) {
 
             const timeoutEmbed = new Discord.MessageEmbed()
                 .setColor('#c90000')
-                .setAuthor(gcodefile, 'attachment://printlist.png')
+                .setAuthor(gcodefile)
                 .setThumbnail('attachment://thumbnail.png')
                 .setDescription(locale.errors.command_timeout)
 
@@ -124,7 +125,7 @@ function startPrintJob(button) {
 
             const notFoundEmbed = new Discord.MessageEmbed()
                 .setColor('#c90000')
-                .setAuthor(gcodefile, 'attachment://printlist.png')
+                .setAuthor(gcodefile)
                 .setThumbnail('attachment://thumbnail.png')
                 .setDescription(locale.errors.file_not_found)
 
@@ -153,8 +154,4 @@ async function handler(message) {
     
     commandFeedback = await handlers.printFileHandler(message, commandlocale.embed.title, '#0099ff')
     connection.removeListener('message', handler)
-}
-
-function getKeyByValue(object, value) {
-    return Object.keys(object).find(key => object[key].name === value);
 }

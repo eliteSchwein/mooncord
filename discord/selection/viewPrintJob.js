@@ -31,6 +31,8 @@ module.exports = async (selection) => {
 
     await selection.update({components: []})
 
+    await message.removeAttachments()
+
     const gcodeFile = selection.values[0]
 
     connection.on('message', handler)
