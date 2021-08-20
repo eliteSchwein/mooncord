@@ -16,9 +16,6 @@ const config = require(`${args[0]}/mooncord.json`)
 
 const conv = ffmpeg()
 
-let discordClient
-let moonrakerClient
-
 let running = false
 let framecount = 1
 let lastLayer = 0
