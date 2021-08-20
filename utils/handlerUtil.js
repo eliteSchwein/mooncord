@@ -1,5 +1,4 @@
 const Discord = require('discord.js')
-const pathLib = require('path')
 
 const chatUtil = require('./chatUtil')
 const metaData = require('./handler_meta.json')
