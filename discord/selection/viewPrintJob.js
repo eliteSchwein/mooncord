@@ -1,3 +1,5 @@
+const Discord = require('discord.js')
+
 const moonrakerClient = require('../../clients/moonrakerClient')
 const handlers = require('../../utils/handlerUtil')
 const locale = require('../../utils/localeUtil')
