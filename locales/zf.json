@@ -12,6 +12,12 @@
         "next_page": "下一頁",
         "last_page": "上一頁"
     },
+    "selection": {
+        "printlist_more_details": {
+          "placeholder": "點擊了解更多詳情",
+          "description": "解更多${gcode_file}的詳情"
+        }
+    },
     "commands": {
         "admin": {
             "description": "更改管理員或用戶。",
@@ -198,6 +204,7 @@
     "errors": {
         "admin_only": "你沒有權限， ${username}",
         "check_console": "請查看控制台！",
+        "command_disabled": "命令被禁用！",
         "command_failed": "發生錯誤！",
         "command_timeout": "命令執行失敗！",
         "controller_only": "你沒有權限， ${username}",
