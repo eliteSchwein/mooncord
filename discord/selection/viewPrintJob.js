@@ -44,7 +44,7 @@ module.exports = async (selection) => {
             if (commandFeedback === 'Not Found!') {
                 const fileNotFoundEmbed = new Discord.MessageEmbed()
                     .setColor('#c90000')
-                    .setAuthor(gcodeFile, 'attachment://printlist.png')
+                    .setAuthor(gcodeFile)
                     .setThumbnail('attachment://thumbnail.png')
                     .setDescription(locale.errors.file_not_found)
                 await selection.message.edit({
@@ -61,7 +61,7 @@ module.exports = async (selection) => {
         if (timeout === 4) {
             const timeoutEmbed = new Discord.MessageEmbed()
                 .setColor('#c90000')
-                .setAuthor(gcodeFile, 'attachment://printlist.png')
+                .setAuthor(gcodeFile)
                 .setThumbnail('attachment://thumbnail.png')
                 .setDescription(locale.errors.command_timeout)
             await selection.message.edit({
