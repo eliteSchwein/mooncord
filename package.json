@@ -29,18 +29,16 @@
     "fluent-ffmpeg": "^2.1.2",
     "form-data": "^4.0.0",
     "log-symbols": "^4.1.0",
-    "node-fetch": "^2.6.1",
-    "semver": "^7.3.5",
-    "sharp": "^0.28.3",
+    "sharp": "^0.29.0",
     "shelljs": "^0.8.4",
     "systeminformation": "^5.8.0",
     "websocket": "^1.0.34"
   },
   "devDependencies": {
     "eslint": "^7.32.0",
-    "eslint-config-galex": "^2.16.7",
+    "eslint-config-galex": "^2.16.9",
     "eslint-config-standard": "^16.0.3",
-    "eslint-plugin-import": "^2.24.0",
+    "eslint-plugin-import": "^2.24.1",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^5.1.0"
   }
