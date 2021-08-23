@@ -37,6 +37,7 @@ async function render() {
     if (!running) {
         return
     }
+    console.log(logSymbols.info, 'Starting Timelapse Render'.printstatus)
     let renderdone = false
 
     const hasFrames = checkForFrames()
