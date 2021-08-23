@@ -22,7 +22,7 @@ install_packages()
     sudo apt update
 
     status_msg "Install needed packages"
-    sudo apt-get -y install nano git ffmpeg
+    sudo apt-get -y install nano git
 
     if ! command -v node -v >/dev/null 2>&1
     then

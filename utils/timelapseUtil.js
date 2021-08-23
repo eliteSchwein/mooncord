@@ -5,6 +5,7 @@ const Discord = require('discord.js')
 const ffmpeg = require('fluent-ffmpeg')
 const fs = require('fs')
 const logSymbols = require('log-symbols')
+const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path
 const path = require('path')
 
 const locale = require('./localeUtil')
@@ -20,6 +21,8 @@ let running = false
 let framecount = 1
 let lastLayer = 0
 let lastPercent = 0
+
+ffmpeg.setFfmpegPath(ffmpegPath)
 
 function checkForFrames() {
     const pattern = /^frame-+/
