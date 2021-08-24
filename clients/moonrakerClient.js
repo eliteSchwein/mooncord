@@ -117,7 +117,11 @@ function handleSubscription(message) {
   if (typeof (messageJson.result) === 'undefined') { return }
   if (typeof (messageJson.result.objects) === 'undefined') { return }
 
-  console.log(messageJson.result.objects)
+  const objects = {}
+
+  for (const object in messageJson.result.objects) {
+    console.log(object)
+  }
 
   WSconnection.send(`{"jsonrpc": "2.0", "method": "printer.objects.subscribe", "params": { "objects":${JSON.stringify(messageJson.result.objects)}}}, "id": ${id}}`)
   WSconnection.removeListener('message', handleSubscription)
