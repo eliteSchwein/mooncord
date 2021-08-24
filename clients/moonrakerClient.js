@@ -33,6 +33,7 @@ async function enableEvents(discordClient) {
     connection.send(`{"jsonrpc": "2.0", "method": "printer.info", "id": ${id}}`)
     connection.send(`{"jsonrpc": "2.0", "method": "server.info", "id": ${id}}`)
     connection.send(`{"jsonrpc": "2.0", "method": "printer.objects.query", "params": {"objects": {"configfile": null }}, "id": ${id}}`)
+    connection.send(`{"jsonrpc": "2.0", "method": "printer.objects.list", "id": ${id}}`)
 
     console.log('  Initial Automatic Moonraker commands'.statusmessage)
 
@@ -56,6 +57,7 @@ async function enableEvents(discordClient) {
       }, 5000)
     })
     connection.on('message', (message) => {
+      console.log(message)
       for (const event in events) {
         events[event](message, connection, discordClient.getClient, database)
       }
