@@ -119,9 +119,12 @@ function handleSubscription(message) {
 
   const objects = {}
 
-  for (const object in messageJson.result.objects) {
-    console.log(object)
+  for (const index in messageJson.result.objects) {
+    const object = messageJson.result.objects[index]
+    objects[object] = null
   }
+
+  console.log(objects)
 
   WSconnection.send(`{"jsonrpc": "2.0", "method": "printer.objects.subscribe", "params": { "objects":${JSON.stringify(messageJson.result.objects)}}}, "id": ${id}}`)
   WSconnection.removeListener('message', handleSubscription)
