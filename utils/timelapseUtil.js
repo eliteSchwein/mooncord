@@ -39,6 +39,8 @@ function checkForFrames() {
 async function render() {
     if (!running) { return }
     if (variablesUtil.getCurrentPrintJob() === '') { return }
+
+    console.log(variablesUtil.getCurrentPrintJob())
     
     console.log(logSymbols.info, 'Starting Timelapse Render'.printstatus)
     let renderdone = false
