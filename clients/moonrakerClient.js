@@ -38,7 +38,7 @@ async function enableEvents(discordClient) {
       const messageJson = JSON.parse(message.utf8Data)
       console.log(messageJson.result.objects)
       connection.send(`{"jsonrpc": "2.0", "method": "printer.objects.query", "params": {${JSON.stringify(messageJson.result.objects)}}, "id": ${id}}`)
-      connection.removeListener('message', this)
+      connection.removeAllListeners('message')
     })
 
     //connection.send(`{"jsonrpc": "2.0", "method": "machine.update.status", "params":{"refresh": "false"}, "id": ${id}}`)
