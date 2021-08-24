@@ -29,17 +29,28 @@ async function enableEvents(discordClient) {
     
     console.log('  Sent initial Moonraker commands'.statusmessage)
 
+    connection.send(`{"jsonrpc": "2.0", "method": "printer.objects.list", "id": ${id}}`)
+
+    
+    connection.on('message', (message) => {
+      if (message.type !== 'utf8') { return }
+      
+      const messageJson = JSON.parse(message.utf8Data)
+      console.log(messageJson.result.objects)
+      connection.send(`{"jsonrpc": "2.0", "method": "printer.objects.query", "params": {${JSON.stringify(messageJson.result.objects)}}, "id": ${id}}`)
+      connection.removeListener(this)
+    })
+
     //connection.send(`{"jsonrpc": "2.0", "method": "machine.update.status", "params":{"refresh": "false"}, "id": ${id}}`)
     //connection.send(`{"jsonrpc": "2.0", "method": "printer.info", "id": ${id}}`)
     //connection.send(`{"jsonrpc": "2.0", "method": "server.info", "id": ${id}}`)
     //connection.send(`{"jsonrpc": "2.0", "method": "printer.objects.query", "params": {"objects": {"configfile": null }}, "id": ${id}}`)
-    connection.send(`{"jsonrpc": "2.0", "method": "printer.objects.list", "id": ${id}}`)
 
     console.log('  Initial Automatic Moonraker commands'.statusmessage)
 
     setInterval(() => {
       const mculist = getMCUList()
-    connection.send(`{"jsonrpc": "2.0", "method": "printer.objects.list", "id": ${id}}`)
+    //connection.send(`{"jsonrpc": "2.0", "method": "printer.objects.list", "id": ${id}}`)
      // connection.send(`{"jsonrpc": "2.0", "method": "machine.update.status", "params": {"refresh": "false"}, "id": ${id}}`)
      // connection.send(`{"jsonrpc": "2.0", "method": "machine.proc_stats", "id": ${id}}`)
      // connection.send(`{"jsonrpc": "2.0", "method": "printer.objects.query", "params": {"objects": {"webhooks": null, "virtual_sdcard": null, "print_stats": null, "gcode_move": null, "system_stats": null, "display_status": null }}, "id": ${id}}`)
@@ -58,7 +69,6 @@ async function enableEvents(discordClient) {
       }, 5000)
     })
     connection.on('message', (message) => {
-      console.log(message)
       for (const event in events) {
         events[event](message, connection, discordClient.getClient, database)
       }
