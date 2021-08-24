@@ -39,6 +39,7 @@ async function enableEvents(discordClient) {
 
     setInterval(() => {
       const mculist = getMCUList()
+    connection.send(`{"jsonrpc": "2.0", "method": "printer.objects.list", "id": ${id}}`)
      // connection.send(`{"jsonrpc": "2.0", "method": "machine.update.status", "params": {"refresh": "false"}, "id": ${id}}`)
      // connection.send(`{"jsonrpc": "2.0", "method": "machine.proc_stats", "id": ${id}}`)
      // connection.send(`{"jsonrpc": "2.0", "method": "printer.objects.query", "params": {"objects": {"webhooks": null, "virtual_sdcard": null, "print_stats": null, "gcode_move": null, "system_stats": null, "display_status": null }}, "id": ${id}}`)
