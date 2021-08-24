@@ -30,16 +30,8 @@ async function enableEvents(discordClient) {
     console.log('  Sent initial Moonraker commands'.statusmessage)
 
     connection.send(`{"jsonrpc": "2.0", "method": "printer.objects.list", "id": ${id}}`)
-
     
-    connection.on('message', (message) => {
-      if (message.type !== 'utf8') { return }
-      
-      const messageJson = JSON.parse(message.utf8Data)
-      console.log(messageJson.result.objects)
-      connection.send(`{"jsonrpc": "2.0", "method": "printer.objects.query", "params": {${JSON.stringify(messageJson.result.objects)}}, "id": ${id}}`)
-      connection.removeAllListeners('message')
-    })
+    connection.on('message', handleSubscription)
 
     //connection.send(`{"jsonrpc": "2.0", "method": "machine.update.status", "params":{"refresh": "false"}, "id": ${id}}`)
     //connection.send(`{"jsonrpc": "2.0", "method": "printer.info", "id": ${id}}`)
@@ -113,6 +105,20 @@ async function getOneShotToken() {
       })
   
   return tempToken.data.result
+}
+
+function handleSubscription(message) {
+  if (message.type !== 'utf8') { return }
+  
+  const id = Math.floor(Math.random() * Number.parseInt('10_000')) + 1
+  
+  const messageJson = JSON.parse(message.utf8Data)
+
+  if (typeof (messageJson.result) === 'undefined') { return }
+  if (typeof (messageJson.result.objects) === 'undefined') { return }
+
+  WSconnection.send(`{"jsonrpc": "2.0", "method": "printer.objects.query", "params": {${JSON.stringify(messageJson.result.objects)}}, "id": ${id}}`)
+  WSconnection.removeListener('message', handleSubscription)
 }
 
 module.exports = {}
