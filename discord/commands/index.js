@@ -1,5 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders')
 
+const locale = require('../../utils/localeUtil')
+
 const commandOptions = require('../commands-metadata/commands_options.json')
 
 module.exports.addCommandEvents = (discordClient) => { commandEvent(discordClient) }
