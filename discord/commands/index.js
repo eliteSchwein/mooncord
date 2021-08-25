@@ -18,6 +18,7 @@ async function loadSlashCommands(discordClient) {
 }
 
 function buildSlashCommand(command) {
+    console.log(command)
     const messageLocale = locale.commands[command]
     const syntaxLocale = locale.syntaxlocale.commands[command]
 
