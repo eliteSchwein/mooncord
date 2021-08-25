@@ -35,6 +35,9 @@ function buildCommandOption(builder, meta, option) {
     const optionMeta = meta[option]
     if (typeof(optionMeta) === 'undefined') { return }
     if (Object.keys(optionMeta).length == 0) { return }
+
+    console.log(option)
+    console.log(optionMeta)
 }
 
 function convertChoices(choices) {
