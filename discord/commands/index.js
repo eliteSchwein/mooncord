@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, SlashCommandOptionBase } = require('@discordjs/builders')
+const { SlashCommandBuilder } = require('@discordjs/builders')
 
 const locale = require('../../utils/localeUtil')
 
@@ -12,13 +12,13 @@ async function loadSlashCommands(discordClient) {
     for (const commandIndex in commands) {
         buildSlashCommand(commandIndex)
         const command = commands[commandIndex]
+        console.log(command.command())
         commandList.push(command.command())
     }
     await discordClient.application?.commands.set(commandList)
 }
 
 function buildSlashCommand(command) {
-    console.log('command: '+command)
     const messageLocale = locale.commands[command]
     const syntaxLocale = locale.syntaxlocale.commands[command]
 
@@ -34,7 +34,6 @@ function buildSlashCommand(command) {
             syntaxLocale,
             messageLocale)
     }
-    console.log(builder.toJSON())
 }
 
 function buildCommandOption(builder, meta, option, syntaxMeta, messageMeta) {
@@ -42,18 +41,9 @@ function buildCommandOption(builder, meta, option, syntaxMeta, messageMeta) {
     if (typeof(optionMeta) === 'undefined') { return }
     if (Object.keys(optionMeta).length == 0) { return }
 
-    let optionBuilder = new SlashCommandOptionBase()
-    if (optionMeta.type === 'subcommand') {
-        //optionBuilder = new SlashCommandSubcommandBuilder()
+    if (meta.type === 'subcommand') {
+
     }
-
-    optionBuilder.setName(syntaxMeta.options[option].name)
-    optionBuilder.setDescription(syntaxMeta.options[option].description)
-
-    console.log(optionBuilder.toJSON())
-
-    console.log(option)
-    console.log(optionMeta)
 }
 
 function convertChoices(choices) {
