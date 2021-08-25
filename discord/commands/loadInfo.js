@@ -74,9 +74,5 @@ async function retrieveMCUComponent(mcu) {
 }
 function generateChoices() {
     const componentlist = components.choices()
-    const mculist = variablesUtil.getMCUList()
-    Object.keys(mculist).forEach(key => {
-        componentlist.push({name: key.toUpperCase(), value: key})
-    })
     return componentlist
 }
