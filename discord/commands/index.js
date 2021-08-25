@@ -63,7 +63,7 @@ function buildCommandOption(builder, meta, option, syntaxMeta, messageMeta) {
         }
     }
 
-    console.log(meta.options)
+    console.log(meta)
     
     for(const index in meta.options) {
         buildCommandOption(
