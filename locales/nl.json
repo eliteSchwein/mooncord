@@ -13,6 +13,12 @@
         "last_page": "Vorige pagina",
         "to_printlist": "naar lijst"
     },
+    "selection": {
+        "printlist_more_details": {
+            "placeholder": "Klik voor meer details",
+            "description": "Meer details voor ${gcode_file}"
+        }
+    },
     "commands": {
         "admin": {
             "description": "Beheer beheerder- en gebruikersrollen.",
@@ -220,6 +226,7 @@
     "errors": {
         "admin_only": "Je hebt onvoldoende rechten, ${username}",
         "check_console": "Controleer de console alsjeblieft!",
+        "command_disabled": "Het command is uitgeschakeld!",
         "command_failed": "Er ging iets mis!",
         "command_timeout": "Commando-uitvoer mislukt!",
         "controller_only": "Je hebt onvoldoende rechten, ${username}",
