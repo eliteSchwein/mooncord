@@ -1,0 +1,91 @@
+{
+    
+    "admin": {
+        "role": {
+            "type": "subcommand",
+            "options": {
+                "role": {
+                    "type": "role",
+                    "required": true 
+                }
+            }
+        },
+        "user": {
+            "type": "subcommand",
+            "options": {
+                "user": {
+                    "type": "user",
+                    "required": true 
+                }
+            }
+        }
+    },
+    "editchannel": {
+        "channel": {
+            "type": "channel",
+            "required": false
+        } 
+    },
+    "emergency_stop": {},
+    "execute": {
+        "gcode": {
+            "type": "string",
+            "required": true
+        }
+    },
+    "fileinfo": {
+        "file": {
+            "type": "string",
+            "required": true
+        }
+    },
+    "get_log": {
+        "log_file": {
+            "type": "string",
+            "required": true,
+            "choices" : [
+                {
+                    "name": "Klipper",
+                    "value": "klipper"
+                },
+                {
+                    "name": "Moonraker",
+                    "value": "moonraker"
+                }
+            ]
+        }
+    },
+    "info": {},
+    "listfiles": {},
+    "loadinfo": {
+        "component": {
+            "type": "string",
+            "required": true,
+            "choices": "${loadInfoChoices}"
+        }
+    },
+    "notify": {},
+    "printjob": {
+        "pause": {
+            "type": "subcommand"
+        },
+        "cancel": {
+            "type": "subcommand"
+        },
+        "resume": {
+            "type": "subcommand"
+        },
+        "start": {
+            "type": "subcommand",
+            "options": {
+                "file": {
+                    "type":"string",
+                    "required":true
+                }
+            }
+        }
+    },
+    "status": {},
+    "temp": {},
+    "timelapse": {}
+}

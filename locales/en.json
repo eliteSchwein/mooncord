@@ -211,6 +211,10 @@
                     "current_power": "Power"
                 }
             }
+        },
+        "timelapse": {
+            "description": "Get the latest Timelapse.",
+            "command": "timelapse"
         }
     },
     "dynamic_commands": {

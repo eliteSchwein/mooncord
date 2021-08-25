@@ -1,3 +1,5 @@
+const { SlashCommandBuilder } = require('@discordjs/builders')
+
 module.exports.addCommandEvents = (discordClient) => { commandEvent(discordClient) }
 module.exports.loadSlashCommands = async (discordClient) => { await loadSlashCommands(discordClient) }
 
@@ -9,6 +11,19 @@ async function loadSlashCommands(discordClient) {
         commandList.push(command.command())
     }
     await discordClient.application?.commands.set(commandList)
+}
+
+function buildSlashCommand(command) {
+
+}
+
+function convertChoices(choices) {
+    const answer = []
+    for (const index in Object.keys(choices)) {
+        const value = choices[index]
+        answer.push([value.name, value.value])
+    }
+    return answer
 }
 
 function commandEvent(discordClient) {
