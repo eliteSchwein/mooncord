@@ -62,6 +62,8 @@ function buildCommandOption(builder, meta, option, syntaxMeta, messageMeta) {
             optionBuilder.choices = convertChoices(optionMeta.choices)
         }
     }
+
+    console.log(optionBuilder)
     
     for(const index in meta) {
         buildCommandOption(
