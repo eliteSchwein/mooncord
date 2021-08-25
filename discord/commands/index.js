@@ -13,6 +13,8 @@ async function loadSlashCommands(discordClient) {
         
         const command = buildSlashCommand(commandIndex)
         commandList.push(command)
+
+        console.log(command)
     }
     await discordClient.application?.commands.set(commandList)
 }
