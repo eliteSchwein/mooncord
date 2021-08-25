@@ -59,16 +59,16 @@ function commandEvent(discordClient) {
 
 const commands = {
     admin: require('./admin'),
-    editChannel: require('./editChannel'),
-    emergencyStop: require('./emergencyStop'),
+    editchannel: require('./editChannel'),
+    emergency_stop: require('./emergencyStop'),
     execute: require('./execute'),
-    fileInfo: require('./fileInfo'),
-    getLog: require('./getLog'),
+    fileinfo: require('./fileInfo'),
+    get_log: require('./getLog'),
     info: require('./info'),
-    listFiles: require('./listFiles'),
-    loadInfo: require('./loadInfo'),
+    listfiles: require('./listFiles'),
+    loadinfo: require('./loadInfo'),
     notify: require('./notify'),
-    printJob: require('./printJob'),
+    printjob: require('./printJob'),
     status: require('./status'),
     temp: require('./temp'),
     timelapse: require('./timelapse')
