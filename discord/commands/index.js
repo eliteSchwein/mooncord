@@ -70,8 +70,8 @@ function buildCommandOption(builder, meta, option, syntaxMeta, messageMeta) {
             optionBuilder,
             meta.options,
             index,
-            syntaxLocale.options[option],
-            messageLocale.options[option])
+            syntaxMeta.options[option],
+            messageMeta.options[option])
     }
 
     builder.options.push(optionBuilder)
