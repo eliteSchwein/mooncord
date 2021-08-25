@@ -1,12 +1,14 @@
 const { SlashCommandBuilder } = require('@discordjs/builders')
 
+const commandOptions = require('../commands-metadata/commands_options.json')
+
 module.exports.addCommandEvents = (discordClient) => { commandEvent(discordClient) }
 module.exports.loadSlashCommands = async (discordClient) => { await loadSlashCommands(discordClient) }
 
 async function loadSlashCommands(discordClient) {
     const commandList = []
     for (const commandIndex in commands) {
-        console.log(commandIndex)
+        buildSlashCommand(commandIndex)
         const command = commands[commandIndex]
         commandList.push(command.command())
     }
@@ -14,6 +16,19 @@ async function loadSlashCommands(discordClient) {
 }
 
 function buildSlashCommand(command) {
+    const messageLocale = locale.commands[command]
+    const syntaxLocale = locale.syntaxlocale.commands[command]
+
+    const builder = new SlashCommandBuilder()
+        .setName(syntaxLocale.command)
+        .setDescription(messageLocale.description)
+    
+    for(const index in commandOptions[command]) {
+        console.log(index)
+    }
+}
+
+function buildCommandOption(builder, command, option) {
 
 }
 
