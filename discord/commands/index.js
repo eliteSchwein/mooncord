@@ -76,15 +76,6 @@ function buildCommandOption(builder, meta, option, syntaxMeta, messageMeta) {
     builder.options.push(optionBuilder)
 }
 
-function convertChoices(choices) {
-    const answer = []
-    for (const index in Object.keys(choices)) {
-        const value = choices[index]
-        answer.push([value.name, value.value])
-    }
-    return answer
-}
-
 function commandEvent(discordClient) {
     discordClient.on('interactionCreate', async interaction => {
         if (!interaction.isCommand()) { return }
