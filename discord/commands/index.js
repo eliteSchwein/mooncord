@@ -43,7 +43,7 @@ function buildCommandOption(builder, meta, option, syntaxMeta, messageMeta) {
     if (typeof(meta) === 'undefined') { return }
 
     const optionMeta = meta[option]
-    
+
     if (typeof(optionMeta) === 'undefined') { return }
     if (Object.keys(optionMeta).length == 0) { return }
 
@@ -54,9 +54,7 @@ function buildCommandOption(builder, meta, option, syntaxMeta, messageMeta) {
         options: []
     }
 
-    if (typeof (optionMeta.required) !== 'undefined') {
-        optionBuilder.required = optionMeta.required
-    }
+    optionBuilder.required = optionMeta.required
 
     if (typeof (optionMeta.choices) !== 'undefined') {
         if (optionMeta.choices === '${loadInfoChoices}') {
