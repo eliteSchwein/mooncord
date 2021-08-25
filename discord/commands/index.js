@@ -27,14 +27,30 @@ function buildSlashCommand(command) {
         .setDescription(messageLocale.description)
     
     for(const index in commandOptions[command]) {
-        buildCommandOption(builder, commandOptions[command], index)
+        buildCommandOption(
+            builder,
+            commandOptions[command],
+            index,
+            syntaxLocale,
+            messageLocale)
     }
+    console.log(builder.toJSON())
 }
 
-function buildCommandOption(builder, meta, option) {
+function buildCommandOption(builder, meta, option, syntaxMeta, messageMeta) {
     const optionMeta = meta[option]
     if (typeof(optionMeta) === 'undefined') { return }
     if (Object.keys(optionMeta).length == 0) { return }
+
+    let optionBuilder
+    if (optionMeta.type === 'subcommand') {
+        optionBuilder = new SlashCommandSubcommandBuilder()
+    }
+
+    optionBuilder.setName(syntaxMeta.options[option].name)
+    optionBuilder.setDescription(syntaxMeta.options[option].description)
+
+    console.log(optionBuilder.toJSON())
 
     console.log(option)
     console.log(optionMeta)
