@@ -10,9 +10,9 @@ module.exports.loadSlashCommands = async (discordClient) => { await loadSlashCom
 async function loadSlashCommands(discordClient) {
     const commandList = []
     for (const commandIndex in commands) {
-        buildSlashCommand(commandIndex)
-        const command = commands[commandIndex]
-        commandList.push(command.command())
+        
+        const command = buildSlashCommand(commandIndex)
+        commandList.push(command)
     }
     await discordClient.application?.commands.set(commandList)
 }
@@ -35,8 +35,8 @@ function buildSlashCommand(command) {
             syntaxLocale,
             messageLocale)
     }
-
-    console.log(builder)
+    
+    return builder
 }
 
 function buildCommandOption(builder, meta, option, syntaxMeta, messageMeta) {
