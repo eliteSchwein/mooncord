@@ -27,12 +27,13 @@ function buildSlashCommand(command) {
         .setDescription(messageLocale.description)
     
     for(const index in commandOptions[command]) {
-        console.log(index)
+        buildCommandOption(builder, command, index)
     }
 }
 
 function buildCommandOption(builder, command, option) {
-
+    const option = commandOptions[command][option]
+    console.log(option)
 }
 
 function convertChoices(choices) {
