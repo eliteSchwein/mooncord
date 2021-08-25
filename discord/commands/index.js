@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, SlashCommandSubcommandBuilder } = require('@discordjs/builders')
+const { SlashCommandBuilder, SlashCommandOptionBase } = require('@discordjs/builders')
 
 const locale = require('../../utils/localeUtil')
 
@@ -42,9 +42,9 @@ function buildCommandOption(builder, meta, option, syntaxMeta, messageMeta) {
     if (typeof(optionMeta) === 'undefined') { return }
     if (Object.keys(optionMeta).length == 0) { return }
 
-    let optionBuilder
+    let optionBuilder = new SlashCommandOptionBase()
     if (optionMeta.type === 'subcommand') {
-        optionBuilder = new SlashCommandSubcommandBuilder()
+        //optionBuilder = new SlashCommandSubcommandBuilder()
     }
 
     optionBuilder.setName(syntaxMeta.options[option].name)
