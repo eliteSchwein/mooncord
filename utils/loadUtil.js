@@ -8,6 +8,7 @@ const path = require('path')
 const si = require('systeminformation')
 
 const discordClient = require('../clients/discordClient')
+const variablesUtil = require('./variablesUtil')
 const chatUtil = require('./chatUtil')
 const database = require('./databaseUtil')
 const componentHandler = require('./hsComponents')
@@ -25,9 +26,10 @@ const usageData = {
 
 let throttleCoolDown = 0
 
-module.exports.getComponents = (mculist) => { 
+module.exports.getComponents = () => { 
   const components = componentHandler.choices() 
   
+  const mculist = variablesUtil.getMCUList()
   Object.keys(mculist).forEach(key => {
       components.push({name: key.toUpperCase(), value: key})
   })

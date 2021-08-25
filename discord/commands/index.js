@@ -1,6 +1,5 @@
 const locale = require('../../utils/localeUtil')
 const loadUtil = require('../../utils/loadUtil')
-//const variablesUtil = require('../../utils/variablesUtil')
 
 const commandOptions = require('../commands-metadata/commands_options.json')
 const optionTypes = require('../commands-metadata/option_types.json')
@@ -59,7 +58,7 @@ function buildCommandOption(builder, meta, option, syntaxMeta, messageMeta) {
 
     if (typeof (optionMeta.choices) !== 'undefined') {
         if (optionMeta.choices === '${loadInfoChoices}') {
-            //optionBuilder.choices = loadUtil.getComponents(variablesUtil.getMCUList())
+            optionBuilder.choices = loadUtil.getComponents()
         } else {
             optionBuilder.choices = optionMeta.choices
         }
