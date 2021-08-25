@@ -21,13 +21,17 @@ const event = (message, connection, discordClient, database) => {
   if (message.type !== 'utf8') { return }
   
   const messageJson = JSON.parse(message.utf8Data)
-  if (typeof (messageJson.result) === 'undefined') { return }
-  if (typeof (messageJson.result.moonraker_stats) !== 'undefined') {
-    retrieveStats(messageJson.result.moonraker_stats)
+  
+  if (typeof (messageJson.method) === 'undefined') { return }
+  if (messageJson.method !== 'notify_cpu_throttled') { return }
+
+  if (typeof (messageJson.params) === 'undefined') { return }
+  if (typeof (messageJson.params[0].throttled_state) !== 'undefined') {
+    retrieveStats(messageJson.params[0].throttled_state)
   }
   if (!config.system_notifications.moonraker_throttle) { return }
-  if (typeof (messageJson.result.throttled_state) !== 'undefined') {
-    retrieveThrottle(messageJson.result.throttled_state, discordClient, database)
+  if (typeof (messageJson.params[0].throttled_state) !== 'undefined') {
+    retrieveThrottle(messageJson.params[0].throttled_state, discordClient, database)
   }
 }
 function retrieveStats(result) {
