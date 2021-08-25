@@ -1,8 +1,8 @@
-const { SlashCommandBuilder } = require('@discordjs/builders')
-
 const locale = require('../../utils/localeUtil')
+const loadUtil = require('../../utils/loadUtil')
 
 const commandOptions = require('../commands-metadata/commands_options.json')
+const optionTypes = require('../commands-metadata/option_types.json')
 
 module.exports.addCommandEvents = (discordClient) => { commandEvent(discordClient) }
 module.exports.loadSlashCommands = async (discordClient) => { await loadSlashCommands(discordClient) }
@@ -22,9 +22,11 @@ function buildSlashCommand(command) {
     const messageLocale = locale.commands[command]
     const syntaxLocale = locale.syntaxlocale.commands[command]
 
-    const builder = new SlashCommandBuilder()
-        .setName(syntaxLocale.command)
-        .setDescription(messageLocale.description)
+    const builder = {
+        name: syntaxLocale.command,
+        description: messageLocale.description,
+        options: []
+    }
     
     for(const index in commandOptions[command]) {
         buildCommandOption(
@@ -34,6 +36,8 @@ function buildSlashCommand(command) {
             syntaxLocale,
             messageLocale)
     }
+
+    console.log(builder)
 }
 
 function buildCommandOption(builder, meta, option, syntaxMeta, messageMeta) {
@@ -41,9 +45,35 @@ function buildCommandOption(builder, meta, option, syntaxMeta, messageMeta) {
     if (typeof(optionMeta) === 'undefined') { return }
     if (Object.keys(optionMeta).length == 0) { return }
 
-    if (meta.type === 'subcommand') {
-
+    const optionBuilder = {
+        type: optionTypes[option],
+        name: syntaxMeta.options[option].name,
+        description: messageMeta.options[option].description,
+        options: []
     }
+
+    if (typeof (optionMeta.required) !== 'undefined') {
+        optionBuilder.required = optionMeta.required
+    }
+
+    if (typeof (optionMeta.choices) !== 'undefined') {
+        if (optionMeta.choices === '${loadInfoChoices}') {
+            optionBuilder.choices = convertChoices(loadUtil.getComponents())
+        } else {
+            optionBuilder.choices = convertChoices(optionMeta.choices)
+        }
+    }
+    
+    for(const index in meta.options) {
+        buildCommandOption(
+            optionBuilder,
+            meta.options,
+            index,
+            syntaxLocale.options[option],
+            messageLocale.options[option])
+    }
+
+    builder.options.push(optionBuilder)
 }
 
 function convertChoices(choices) {
