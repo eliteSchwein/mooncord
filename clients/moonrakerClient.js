@@ -44,7 +44,7 @@ async function enableEvents(discordClient) {
       
       if(variables.getCurrentPrintJob() !== '')
         {connection.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${variables.getCurrentPrintJob()}"}, "id": ${id}}`)}
-    }, 10 * 1000)
+    }, 1000)
 
     connection.on('close', () => {
       console.log('  WebSocket Connection Closed'.error)
