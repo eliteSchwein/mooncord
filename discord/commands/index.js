@@ -13,8 +13,6 @@ async function loadSlashCommands(discordClient) {
         
         const command = buildSlashCommand(commandIndex)
         commandList.push(command)
-
-        console.log(command)
     }
     await discordClient.application?.commands.set(commandList)
 }
@@ -60,9 +58,9 @@ function buildCommandOption(builder, meta, option, syntaxMeta, messageMeta) {
 
     if (typeof (optionMeta.choices) !== 'undefined') {
         if (optionMeta.choices === '${loadInfoChoices}') {
-            optionBuilder.choices = convertChoices(loadUtil.getComponents())
+            optionBuilder.choices = loadUtil.getComponents()
         } else {
-            optionBuilder.choices = convertChoices(optionMeta.choices)
+            optionBuilder.choices = optionMeta.choices
         }
     }
     
