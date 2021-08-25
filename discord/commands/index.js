@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('@discordjs/builders')
+const { SlashCommandBuilder, SlashCommandSubcommandBuilder } = require('@discordjs/builders')
 
 const locale = require('../../utils/localeUtil')
 
