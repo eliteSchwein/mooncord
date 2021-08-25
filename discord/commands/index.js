@@ -40,10 +40,11 @@ function buildSlashCommand(command) {
 }
 
 function buildCommandOption(builder, meta, option, syntaxMeta, messageMeta) {
-    console.log(meta)
-    const optionMeta = meta[option]
+    if (typeof(meta) === 'undefined') { return }
     if (typeof(optionMeta) === 'undefined') { return }
     if (Object.keys(optionMeta).length == 0) { return }
+
+    const optionMeta = meta[option]
 
     const optionBuilder = {
         type: optionTypes[optionMeta.type],
