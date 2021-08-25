@@ -32,8 +32,8 @@ function buildSlashCommand(command) {
 }
 
 function buildCommandOption(builder, command, option) {
-    const option = commandOptions[command][option]
-    console.log(option)
+    const optionMeta = commandOptions[command][option]
+    console.log(optionMeta)
 }
 
 function convertChoices(choices) {
