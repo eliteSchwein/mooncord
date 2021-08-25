@@ -66,10 +66,10 @@ function buildCommandOption(builder, meta, option, syntaxMeta, messageMeta) {
 
     console.log(optionBuilder)
     
-    for(const index in meta) {
+    for(const index in meta[option].options) {
         buildCommandOption(
             optionBuilder,
-            meta.options,
+            meta[option].options,
             index,
             syntaxMeta.options[option],
             messageMeta.options[option])
