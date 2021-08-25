@@ -62,16 +62,6 @@ async function enableEvents(discordClient) {
   })
 }
 
-
-function getMCUList() {
-  const rawmculist = variables.getMCUList()
-  const mculist = {}
-  Object.keys(rawmculist).forEach(key => {
-    mculist[key] = null
-  })
-  return mculist
-}
-
 function connect(discordClient) {
   console.log('  Connect to Moonraker'.statusmessage)
   
