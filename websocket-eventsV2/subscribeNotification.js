@@ -12,6 +12,8 @@ const event = (message, connection, discordClient, database) => {
 
   const status = messageJson.params[0]
 
+  console.log(status)
+
   for (const object in objects) {
     objects[object](status, connection, discordClient, database)
   }
