@@ -14,5 +14,5 @@ function retrieveSpeedFactor(gcodeMoveData) {
 
 function retrieveCurrentLayer(gcodeMoveData) {
     if (typeof (gcodeMoveData.gcode_position) === 'undefined') { return }
-    variables.setCurrentLayer(gCodeMoveData.gcode_position[2])
+    variables.setCurrentLayer(gcodeMoveData.gcode_position[2])
 }
