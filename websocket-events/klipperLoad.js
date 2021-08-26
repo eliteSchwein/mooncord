@@ -16,8 +16,9 @@ const event = (message) => {
 }
 
 function retrieveMCUStatus(message) {
-  Object.keys(message).forEach(key => {
-    console.log(key)
+  
+  Object.keys(message).forEach(index => {
+    const key = message[index]
     if (!/(temp)/g.test(key) && 
         /(mcu)/g.test(key)) {
       variables.updateMCUStatus(key, message[key])
