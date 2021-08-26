@@ -1,6 +1,7 @@
 const variables = require('../../utils/variablesUtil')
 
 module.exports = (data, connection, discordClient, database) => {
+    if(!/(mcu)/g.test(JSON.stringify(data))) { return }
     loopMCUs(data)
 }
 

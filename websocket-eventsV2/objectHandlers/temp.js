@@ -1,7 +1,8 @@
 const variables = require('../../utils/variablesUtil')
 
 module.exports = (data, connection, discordClient, database) => {
-    loopTempSensors(data)
+  if(!/(temp)/g.test(JSON.stringify(data))) { return }
+  loopTempSensors(data)
 }
 
 function loopTempSensors(data) {
