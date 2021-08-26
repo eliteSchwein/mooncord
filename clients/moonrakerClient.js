@@ -36,12 +36,15 @@ async function enableEvents(discordClient) {
     connection.send(`{"jsonrpc": "2.0", "method": "machine.update.status", "params":{"refresh": "false"}, "id": ${id}}`)
     connection.send(`{"jsonrpc": "2.0", "method": "printer.info", "id": ${id}}`)
     connection.send(`{"jsonrpc": "2.0", "method": "server.info", "id": ${id}}`)
-    connection.send(`{"jsonrpc": "2.0", "method": "machine.proc_stats", "id": ${id}}`)
+    
+    const mculist = getMCUList()
+    
+    connection.send(`{"jsonrpc": "2.0", "method": "printer.objects.query", "params": {"objects": {"webhooks": null, "virtual_sdcard": null, "print_stats": null, "gcode_move": null, "system_stats": null, "display_status": null }}, "id": ${id}}`)
+    connection.send(`{"jsonrpc": "2.0", "method": "printer.objects.query", "params": {"objects": ${JSON.stringify(mculist)}}, "id": ${id}}`)
 
     console.log('  Initial Automatic Moonraker commands'.statusmessage)
 
     setInterval(() => {
-      connection.send(`{"jsonrpc": "2.0", "method": "machine.proc_stats", "id": ${id}}`)
       if(variables.getCurrentPrintJob() !== '')
         {connection.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${variables.getCurrentPrintJob()}"}, "id": ${id}}`)}
     }, 10 * 1000)
