@@ -211,9 +211,7 @@
                     "current_power": "Vermogen"
                 }
             }
-        }
-    },
-    "dynamic_commands": {
+        },
         "timelapse": {
             "description": "Haal de laatste timelapse op.",
             "command": "timelapse"

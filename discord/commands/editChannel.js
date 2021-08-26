@@ -1,4 +1,3 @@
-const { SlashCommandBuilder } = require('@discordjs/builders')
 const logSymbols = require('log-symbols')
 
 const database = require('../../utils/databaseUtil')
@@ -7,17 +6,6 @@ const permission = require('../../utils/permissionUtil')
 
 const messageLocale = locale.commands.editchannel
 const syntaxLocale = locale.syntaxlocale.commands.editchannel
-
-module.exports.command = () => {
-    const command = new SlashCommandBuilder()
-        .setName(syntaxLocale.command)
-        .setDescription(messageLocale.description)
-        .addChannelOption(channelOption =>
-            channelOption.setName(syntaxLocale.options.channel.name)
-                .setDescription(messageLocale.options.channel.description)
-                .setRequired(false))
-    return command.toJSON()
-}
 
 module.exports.reply = async (interaction) => {
     try {

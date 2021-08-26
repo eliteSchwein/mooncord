@@ -1,4 +1,3 @@
-const { SlashCommandBuilder } = require('@discordjs/builders')
 const logSymbols = require('log-symbols')
 
 const database = require('../../utils/databaseUtil')
@@ -7,27 +6,6 @@ const permission = require('../../utils/permissionUtil')
 
 const messageLocale = locale.commands.admin
 const syntaxLocale = locale.syntaxlocale.commands.admin
-
-module.exports.command = () => {
-    const command = new SlashCommandBuilder()
-        .setName(syntaxLocale.command)
-        .setDescription(messageLocale.description)
-        .addSubcommand(subcommand =>
-            subcommand.setName(syntaxLocale.options.role.name)
-                .setDescription(messageLocale.options.role.description)
-                .addRoleOption(roleOption =>
-                    roleOption.setName(syntaxLocale.options.role.options.role.name)
-                        .setDescription(messageLocale.options.role.options.role.description)
-                        .setRequired(true)))
-        .addSubcommand(subcommand =>
-            subcommand.setName(syntaxLocale.options.user.name)
-                .setDescription(messageLocale.options.user.description)
-                .addUserOption(userOption =>
-                    userOption.setName(syntaxLocale.options.user.options.user.name)
-                        .setDescription(messageLocale.options.user.options.user.description)
-                        .setRequired(true)))
-    return command.toJSON()
-}
 
 module.exports.reply = async (interaction) => {
     try {

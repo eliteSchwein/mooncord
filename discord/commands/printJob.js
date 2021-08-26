@@ -1,4 +1,3 @@
-const { SlashCommandBuilder } = require('@discordjs/builders')
 const logSymbols = require('log-symbols')
 
 const moonrakerClient = require('../../clients/moonrakerClient')
@@ -16,33 +15,6 @@ let commandFeedback
 let connection
 
 let timeout = 0
-
-module.exports.command = () => {
-    const command = new SlashCommandBuilder()
-        .setName(syntaxLocale.command)
-        .setDescription(messageLocale.description)
-        .addSubcommand(subCommand => 
-            subCommand.setName(syntaxLocale.options.pause.name)
-                .setDescription(messageLocale.options.pause.description)
-        )
-        .addSubcommand(subCommand => 
-            subCommand.setName(syntaxLocale.options.cancel.name)
-                .setDescription(messageLocale.options.cancel.description)
-        )
-        .addSubcommand(subCommand => 
-            subCommand.setName(syntaxLocale.options.resume.name)
-                .setDescription(messageLocale.options.resume.description)
-        )
-        .addSubcommand(subCommand => 
-            subCommand.setName(syntaxLocale.options.start.name)
-                .setDescription(messageLocale.options.start.description)
-                .addStringOption(file =>
-                    file.setName(syntaxLocale.options.start.options.file.name)
-                        .setDescription(messageLocale.options.start.options.file.description)
-                        .setRequired(true))
-        )
-    return command.toJSON()
-}
 
 module.exports.reply = async (interaction) => {
     try {

@@ -217,12 +217,6 @@
             "command": "timelapse"
         }
     },
-    "dynamic_commands": {
-        "timelapse": {
-            "description": "Get the latest Timelapse.",
-            "command": "timelapse"
-        }
-    },
     "misc": {
         "please_wait": "Please Wait!",
         "wait_related": "Related to ${relation}"

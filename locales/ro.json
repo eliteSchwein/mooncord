@@ -231,9 +231,7 @@
                     "current_power": "Putere"
                 }
             }
-        }
-    },
-    "dynamic_commands": {
+        },
         "timelapse": {
             "description": "Obține cel mai recent Timelapse.",
             "command": "timelapse"

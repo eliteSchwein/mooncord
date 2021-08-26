@@ -1,18 +1,7 @@
-const { SlashCommandBuilder } = require('@discordjs/builders')
 const logSymbols = require('log-symbols')
 
 const locale = require('../../utils/localeUtil')
 const statusUtil = require('../../utils/statusUtil')
-
-const messageLocale = locale.commands.status
-const syntaxLocale = locale.syntaxlocale.commands.status
-
-module.exports.command = () => {
-    const command = new SlashCommandBuilder()
-        .setName(syntaxLocale.command)
-        .setDescription(messageLocale.description)
-    return command.toJSON()
-}
 
 module.exports.reply = async (interaction) => {
     try {

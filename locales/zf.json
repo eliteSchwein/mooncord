@@ -190,9 +190,7 @@
                     "current_power": "功率"
                 }
             }
-        }
-    },
-    "dynamic_commands": {
+        },
         "timelapse": {
             "description": "取得最新縮時攝影",
             "command": "縮時攝影"

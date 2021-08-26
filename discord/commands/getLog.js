@@ -1,31 +1,16 @@
 const args = process.argv.slice(2)
 
-const { SlashCommandBuilder } = require('@discordjs/builders')
 const axios = require('axios')
 const Discord = require('discord.js')
 const logSymbols = require('log-symbols')
 
 const config = require(`${args[0]}/mooncord.json`)
 const locale = require('../../utils/localeUtil')
-const misc = require('../../utils/miscUtil')
 const permission = require('../../utils/permissionUtil')
 const metadata = require('../commands-metadata/get_log.json')
 
 const messageLocale = locale.commands.get_log
 const syntaxLocale = locale.syntaxlocale.commands.get_log
-
-module.exports.command = () => {
-    const choices = misc.convertChoices(metadata.choices)
-    const command = new SlashCommandBuilder()
-        .setName(syntaxLocale.command)
-        .setDescription(messageLocale.description)
-        .addStringOption(service =>
-            service.setName(syntaxLocale.options.log_file.name)
-            .setDescription(messageLocale.options.log_file.description)
-            .setRequired(true)
-            .addChoices(choices))
-    return command.toJSON()
-}
 
 module.exports.reply = async (interaction) => {
     try {

@@ -231,9 +231,7 @@
                     "current_power": "Puissance"
                 }
             }
-        }
-    },
-    "dynamic_commands": {
+        },
         "timelapse": {
             "description": "Obtenir le dernier Time Lapse.",
             "command": "timelapse"

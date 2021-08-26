@@ -14,11 +14,3 @@ module.exports.init = () => {
     }, 1000)
   }
 }
-module.exports.convertChoices = (choices) => {
-  const answer = []
-  for (const index in Object.keys(choices)) {
-    const value = choices[index]
-    answer.push([value.name, value.value])
-  }
-  return answer
-}

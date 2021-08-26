@@ -211,9 +211,7 @@
                     "current_power": "Power"
                 }
             }
-        }
-    },
-    "dynamic_commands": {
+        },
         "timelapse": {
             "description": "Bekomme die aktuellste Zeitraffer.",
             "command": "zeitraffer"
