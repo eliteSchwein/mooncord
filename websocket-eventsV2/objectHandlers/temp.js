@@ -7,8 +7,6 @@ module.exports = (data, connection, discordClient, database) => {
 
 function loopTempSensors(data) {
     Object.keys(data).forEach(tempSensor => {
-      console.log(tempSensor)
-      console.log(data[tempSensor])
       if (typeof(data[tempSensor].temperature) !== 'undefined') {
             variables.setTemperature(tempSensor, data[tempSensor].temperature)
       }
