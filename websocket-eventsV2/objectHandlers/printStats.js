@@ -29,7 +29,7 @@ module.exports = async (data, connection, discordClient, database) => {
       if (status.getStatus() === 'printing' ||
         status.getStatus() === 'start') { return }
         
-      connection.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${printfile}"}, "id": ${id}}`)
+      connection.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${variables.getCurrentPrintJob()}"}, "id": ${id}}`)
       
       timelapseUtil.start()
       
