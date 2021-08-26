@@ -36,10 +36,12 @@ async function enableEvents(discordClient) {
     connection.send(`{"jsonrpc": "2.0", "method": "machine.update.status", "params":{"refresh": "false"}, "id": ${id}}`)
     connection.send(`{"jsonrpc": "2.0", "method": "printer.info", "id": ${id}}`)
     connection.send(`{"jsonrpc": "2.0", "method": "server.info", "id": ${id}}`)
+    connection.send(`{"jsonrpc": "2.0", "method": "machine.proc_stats", "id": ${id}}`)
 
     console.log('  Initial Automatic Moonraker commands'.statusmessage)
 
     setInterval(() => {
+      connection.send(`{"jsonrpc": "2.0", "method": "machine.proc_stats", "id": ${id}}`)
       if(variables.getCurrentPrintJob() !== '')
         {connection.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${variables.getCurrentPrintJob()}"}, "id": ${id}}`)}
     }, 10 * 1000)
