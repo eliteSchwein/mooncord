@@ -18,7 +18,8 @@ module.exports = (data, connection, discordClient, database) => {
 }
 
 function postProgress(discordClient, progress) {
-  console.log(discordClient)
+  if (statusUtil.getStatus() !== 'printing') { return }
+  
   discordClient.user.setActivity(
     locale.status.printing.activity.replace(/(\${value_print_progress})/g, progress)
     , { type: 'WATCHING' })
