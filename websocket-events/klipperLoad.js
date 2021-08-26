@@ -1,30 +1,18 @@
 const variables = require('../utils/variablesUtil')
 
-const event = (message, connection, discordClient) => {
+const event = (message) => {
   if (message.type !== 'utf8') { return }
   
   const messageJson = JSON.parse(message.utf8Data)
 
-  if (typeof (messageJson.result) === 'undefined') { return }
-  if (typeof (messageJson.result.status) === 'undefined') { return }
+  if (typeof (messageJson.method) === 'undefined') { return }
+  if (messageJson.method !== 'notify_status_update') { return }
 
-  const statusmessage = messageJson.result.status
+  if (typeof (messageJson.params) === 'undefined') { return }
 
-  if (typeof (statusmessage.configfile) !== 'undefined') {
-    loadMCUList(statusmessage.configfile.config)
-    return
-  }
+  const statusmessage = messageJson.params
+
   if(/(mcu)/g.test(JSON.stringify(statusmessage))) { retrieveMCUStatus(statusmessage) }
-}
-
-function loadMCUList(config) {
-  variables.clearMCUList()
-  Object.keys(config).forEach(key => {
-    if (!/(temp)/g.test(key) && 
-        /(mcu)/g.test(key)) {
-      variables.addToMCUList(key)
-    }
-  })
 }
 
 function retrieveMCUStatus(message) {
