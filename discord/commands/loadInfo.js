@@ -1,6 +1,5 @@
 const logSymbols = require('log-symbols')
 
-const components = require('../../utils/hsComponents')
 const loadUtil = require('../../utils/loadUtil')
 const locale = require('../../utils/localeUtil')
 const variablesUtil = require('../../utils/variablesUtil')
@@ -50,15 +49,9 @@ async function retrieveMCUComponent(mcu) {
     const mcuawake = mcudata.last_stats.mcu_awake / 5
     const mcufreq = mcudata.last_stats.freq / Number.parseInt('1000000')
 
-    embed.addField(locale.loadinfo.mcu.chipset, mcudata.mcu_constants.MCU, true)
-    embed.addField(locale.loadinfo.mcu.version, mcudata.mcu_version, true)
     embed.addField(locale.loadinfo.mcu.load, mcuload.toFixed(1), true)
     embed.addField(locale.loadinfo.mcu.awake, mcuawake.toFixed(1), true)
     embed.addField(locale.loadinfo.mcu.frequency, `${mcufreq.toFixed(1)} MHz`, true)
 
     return { embeds: [embed], files: template.files }
-}
-function generateChoices() {
-    const componentlist = components.choices()
-    return componentlist
 }
