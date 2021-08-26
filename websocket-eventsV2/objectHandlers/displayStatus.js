@@ -10,8 +10,6 @@ module.exports = (data, connection, discordClient, database) => {
 
     const {progress} = data.display_status
 
-    console.log(progress)
-
     variables.updateTimeData('file_total_duration', variables.getTimes().duration / progress)
   
     postProgress(discordClient, (progress * 100).toFixed(0))
