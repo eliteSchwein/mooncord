@@ -98,6 +98,8 @@ function handleSubscription(message) {
   
   const messageJson = JSON.parse(message.utf8Data)
 
+  console.log(messageJson)
+
   if (typeof (messageJson.result) === 'undefined') { return }
   if (typeof (messageJson.result.objects) === 'undefined') { return }
 
