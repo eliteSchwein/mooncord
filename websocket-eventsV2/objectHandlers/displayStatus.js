@@ -1,4 +1,9 @@
+const args = process.argv.slice(2)
+
+const config = require(`${args[0]}/mooncord.json`)
 const variables = require('../../utils/variablesUtil')
+const statusUtil = require('../../utils/statusUtil')
+const locale = require('../../utils/localeUtil')
 
 module.exports = (data, connection, discordClient, database) => {
     if(typeof(data.display_status) === 'undefined') { return }
