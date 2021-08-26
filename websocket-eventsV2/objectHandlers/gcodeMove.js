@@ -1,4 +1,4 @@
-const variables = require('../utils/variablesUtil')
+const variables = require('../../utils/variablesUtil')
 
 module.exports = (data, connection, discordClient, database) => {
     if (typeof (data.gcode_move) === 'undefined') { return }
