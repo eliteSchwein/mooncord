@@ -9,6 +9,7 @@ const syntaxLocale = locale.syntaxlocale.commands.admin
 
 module.exports.reply = async (interaction) => {
     try {
+        console.log(interaction.guildId)
         if (typeof (interaction.guildId) === 'undefined') {
             await interaction.reply(locale.getGuildOnlyError(interaction.user.username))
             return
