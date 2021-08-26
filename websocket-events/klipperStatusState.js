@@ -38,6 +38,8 @@ const event = async (message, connection, discordClient) => {
         isNaN(times.left) ||
         !isFinite(times.total) ||
         !isFinite(times.left)) { return }
+
+        console.log('pass check')
       
       if (variables.getMaxLayers === 0) { return }
       
