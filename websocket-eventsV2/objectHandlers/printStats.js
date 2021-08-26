@@ -13,7 +13,6 @@ module.exports = async (data, connection, discordClient, database) => {
 
     retrieveFilename(stats)
     retrieveDuration(stats)
-
     
     if (typeof (stats.state) === 'undefined') { return }
     
