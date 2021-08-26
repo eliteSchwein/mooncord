@@ -1,3 +1,4 @@
 module.exports = {
-    mcu: require('./mcu')
+    mcu: require('./mcu'),
+    temp: require('./temp')
 }
