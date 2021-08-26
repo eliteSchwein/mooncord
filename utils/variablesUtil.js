@@ -23,7 +23,8 @@ const rawData = {
       "file_total_duration": 0,
       "slicer_total_duration": 0
     }
-  }
+  },
+  "temperatures": {}
 }
 
 const data = { ...rawData}
@@ -58,6 +59,8 @@ module.exports.updateLastPrintJob = () => {
   data.print_job.last_file = data.print_job.current_file
   data.print_job.current_file = ''
 }
+
+module.exports.setTemperature = (key, temperature) => { rawData.temperatures[key] = temperature }
 
 module.exports.getMaxLayers = () => {
   const max = Math.ceil((data.layer.object_height - data.layer.first_layer_height) / data.layer.layer_height + 1)
@@ -113,6 +116,8 @@ module.exports.getTimes = () => {
     end
   }
 }
+
+module.exports.getTemperatures = () => { return rawData.temperatures }
 
 module.exports.formatTime = (time) => { return formatTime(time) }
 
