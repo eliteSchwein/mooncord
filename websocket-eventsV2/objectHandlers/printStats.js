@@ -8,6 +8,7 @@ const variables = require('../../utils/variablesUtil')
 module.exports = async (data, connection, discordClient, database) => {
     if (typeof (data.print_stats) === 'undefined') { return }
 
+    const id = Math.floor(Math.random() * Number.parseInt('10_000')) + 1
     const stats = data.print_stats
 
     retrieveFilename(stats)
