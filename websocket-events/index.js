@@ -4,7 +4,7 @@ module.exports = {
   gcodeResponse: require('./gcodeResponse'),
   klipperState: require('./klipperState'),
   klipperStates: require('./klipperStates'),
-  klipperDisplayStatus: require('./klipperDisplayStatus'),
+ // klipperDisplayStatus: require('./klipperDisplayStatus'),
  // klipperMCULoader: require('./klipperMCULoader'),
   klipperStatusStateUpdate: require('./klipperStatusStateUpdate'),
   klipperStatusState: require('./klipperStatusState'),
