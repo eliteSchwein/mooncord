@@ -26,6 +26,12 @@ async function enableEvents(discordClient) {
     console.log('  Moonraker Client Connected'.success)
 
     WSconnection = connection
+
+    connection.on('message', (message) => {
+      for (const event in events) {
+        events[event](message, connection, discordClient.getClient, database)
+      }
+    })
     
     console.log('  Sent initial Moonraker commands'.statusmessage)
 
@@ -52,11 +58,6 @@ async function enableEvents(discordClient) {
       setTimeout(() => {
         client.connect(`${wsUrl}?token=${oneShotToken}`)
       }, 5000)
-    })
-    connection.on('message', (message) => {
-      for (const event in events) {
-        events[event](message, connection, discordClient.getClient, database)
-      }
     })
   })
 }
