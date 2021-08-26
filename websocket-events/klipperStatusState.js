@@ -45,6 +45,8 @@ const event = async (message, connection, discordClient) => {
       
       timelapseUtil.start()
       
+      console.log('printing?')
+
       await status.changeStatus(discordClient, 'start')
       await status.changeStatus(discordClient, 'printing')
 
