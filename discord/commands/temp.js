@@ -31,7 +31,7 @@ function buildEmbed() {
         .setThumbnail('attachment://temps.png')
     
     for (const temp in temps) {
-        const currentTemp = temps[temp].temperature
+        const currentTemp = temps[temp].temperature.toFixed(2)
 
         if (temp.includes('temperature_sensor')) {
             tempEmbed.addField(`🌡${temp.replace('temperature_sensor ', '')}`,`\`${currentTemp}°C\``, true)
