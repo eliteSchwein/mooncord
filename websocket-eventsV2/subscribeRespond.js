@@ -10,6 +10,8 @@ const event = (message, connection, discordClient, database) => {
 
   const status = messageJson.result.status
 
+  console.log(status)
+
   if (typeof(status.configfile) === 'undefined') { return }
 
   for (const object in objects) {
