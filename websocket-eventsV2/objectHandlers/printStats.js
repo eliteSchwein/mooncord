@@ -5,7 +5,7 @@ const status = require('../../utils/statusUtil')
 const timelapseUtil = require('../../utils/timelapseUtil')
 const variables = require('../../utils/variablesUtil')
 
-module.exports = (data, connection, discordClient, database) => {
+module.exports = async (data, connection, discordClient, database) => {
     if (typeof (data.print_stats) === 'undefined') { return }
 
     const stats = data.print_stats
