@@ -1,3 +1,5 @@
+const objects = require('./objectHandlers')
+
 const event = (message, connection, discordClient, database) => {
     if (message.type !== 'utf8') { return }
   
@@ -10,6 +12,8 @@ const event = (message, connection, discordClient, database) => {
 
     if (typeof(status.configfile) === 'undefined') { return }
 
-    console.log(status)
+    for (const object in objects) {
+      objects[object](status, connection, discordClient.getClient, database)
+    }
 }
 module.exports = event
