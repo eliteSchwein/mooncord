@@ -108,6 +108,8 @@ function handleSubscription(message) {
     objects[object] = null
   }
 
+  console.log(objects)
+
   WSconnection.send(`{"jsonrpc": "2.0", "method": "printer.objects.subscribe", "params": { "objects":${JSON.stringify(objects)}}, "id": ${id}}`)
   WSconnection.removeListener('message', handleSubscription)
 }
