@@ -1,3 +1,4 @@
 module.exports = {
-  subscribeRespond: require('./subscribeRespond')
+  subscribeRespond: require('./subscribeRespond'),
+  subscribeNotification: require('./subscribeNotification')
 }
