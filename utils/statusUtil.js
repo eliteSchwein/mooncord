@@ -11,6 +11,7 @@ const metadata = require('./status_meta_data.json')
 const thumbnail = require('./thumbnailUtil')
 const variables = require('./variablesUtil')
 const webcam = require('./webcamUtil')
+const chatUtil = require('./chatUtil')
 
 const statusWaitList = []
 
@@ -175,7 +176,7 @@ async function generateStatusEmbed(config) {
   
   embed.setTimestamp()
 
-  const buttons = getButtons(config)
+  const buttons = chatUtil.getButtons(config)
 
   if(typeof(buttons) !== 'undefined') {
     components.push(buttons)
