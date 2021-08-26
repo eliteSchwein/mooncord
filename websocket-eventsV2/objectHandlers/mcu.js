@@ -1,4 +1,4 @@
-const variables = require('../utils/variablesUtil')
+const variables = require('../../utils/variablesUtil')
 
 module.exports = (data, connection, discordClient, database) => {
     loopMCUs(data)
@@ -24,6 +24,6 @@ function updateMCU(mcu, data) {
     oldMcuData.last_stats.mcu_task_avg = data.last_stats.mcu_task_avg
     oldMcuData.last_stats.mcu_awake = data.last_stats.mcu_awake
     oldMcuData.last_stats.freq = data.last_stats.freq
-    
+
     variables.updateMCU(mcu, data)
 }
