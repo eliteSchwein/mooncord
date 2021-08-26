@@ -9,7 +9,7 @@ module.exports = (data, connection, discordClient, database) => {
 
 function retrieveSpeedFactor(gcodeMoveData) {
     if (typeof (gcodeMoveData.speed_factor) === 'undefined') { return }
-    variables.updateTimeData('multiplier', codeMoveData.speed_factor || 1)
+    variables.updateTimeData('multiplier', gcodeMoveData.speed_factor || 1)
 }
 
 function retrieveCurrentLayer(gcodeMoveData) {
