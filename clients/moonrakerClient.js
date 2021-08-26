@@ -38,7 +38,7 @@ async function enableEvents(discordClient) {
     connection.send(`{"jsonrpc": "2.0", "method": "server.info", "id": ${id}}`)
     
     const mculist = getMCUList()
-    
+
     connection.send(`{"jsonrpc": "2.0", "method": "printer.objects.query", "params": {"objects": {"webhooks": null, "virtual_sdcard": null, "print_stats": null, "gcode_move": null, "system_stats": null, "display_status": null }}, "id": ${id}}`)
     connection.send(`{"jsonrpc": "2.0", "method": "printer.objects.query", "params": {"objects": ${JSON.stringify(mculist)}}, "id": ${id}}`)
 
@@ -113,6 +113,15 @@ function handleSubscription(message) {
 
   WSconnection.send(`{"jsonrpc": "2.0", "method": "printer.objects.subscribe", "params": { "objects":${JSON.stringify(objects)}}, "id": ${id}}`)
   WSconnection.removeListener('message', handleSubscription)
+}
+
+function getMCUList() {
+  const rawmculist = variables.getMCUList()
+  const mculist = {}
+  Object.keys(rawmculist).forEach(key => {
+    mculist[key] = null
+  })
+  return mculist
 }
 
 module.exports = {}
