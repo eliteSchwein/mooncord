@@ -16,6 +16,7 @@ function loopTempSensors(data) {
 function updateTempSensor(tempSensor, data) {
     if(typeof(variables.getTemperatures[tempSensor]) === 'undefined') {
         variables.setTemperature(tempSensor, data)
+        console.log(tempSensor)
         console.log(data)
         return
     }
