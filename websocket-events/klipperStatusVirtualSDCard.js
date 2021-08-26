@@ -3,19 +3,23 @@ const variables = require('../utils/variablesUtil')
 const event = async (message) => {
   if (message.type !== 'utf8') { return }
   const messageJson = JSON.parse(message.utf8Data)
-  const { result } = messageJson
 
-  retrieveSoftwareVersion(result)
+  if (typeof (messageJson.method) === 'undefined') { return }
+  if (messageJson.method !== 'notify_status_update') { return }
 
-  retrieveGGodeMove(result)
+  if (typeof (messageJson.params) === 'undefined') { return }
+
+  retrieveSoftwareVersion(messageJson.params[0])
+
+  retrieveGGodeMove(messageJson.params[0])
 }
 
 function retrieveGGodeMove(result) {
   if (typeof (result) === 'undefined') { return }
-  if (typeof (result.status) === 'undefined') { return }
-  if (typeof (result.status.gcode_move) === 'undefined') { return }
+  if (typeof (result) === 'undefined') { return }
+  if (typeof (result.gcode_move) === 'undefined') { return }
 
-  const gCodeMoveData = result.status.gcode_move
+  const gCodeMoveData = result.gcode_move
   variables.updateTimeData('multiplier', gCodeMoveData.speed_factor || 1)
   variables.setCurrentLayer(gCodeMoveData.gcode_position[2])
 }
