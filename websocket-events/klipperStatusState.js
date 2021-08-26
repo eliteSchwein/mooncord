@@ -16,6 +16,7 @@ const event = async (message, connection, discordClient) => {
 
   const klipperstatus = result.status
   if (typeof (klipperstatus.print_stats) !== 'undefined') {
+    console.log(klipperstatus)
     const printfile = klipperstatus.print_stats.filename
     variables.setCurrentPrintJob(printfile)
     variables.updateTimeData('duration', klipperstatus.print_stats.print_duration)
