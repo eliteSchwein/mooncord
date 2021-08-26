@@ -19,9 +19,11 @@ function updateTempSensor(tempSensor, data) {
         return
     }
 
-    const oldMcuData = variables.getTemperatures()[tempSensor]
+    const oldTempData = variables.getTemperatures()[tempSensor]
 
     for(const index in data) {
-      console.log(index)
+      oldTempData[index] = data[index]
     }
+
+    variables.setTemperature(tempSensor, oldTempData)
 }
