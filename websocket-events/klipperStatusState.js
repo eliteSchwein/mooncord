@@ -31,21 +31,6 @@ const event = async (message, connection, discordClient) => {
       
       if (status.getStatus() === 'printing' ||
         status.getStatus() === 'start') { return }
-      
-     // const times = variables.getTimes()
-
-      //if (times.duration === 0 ||
-        //times.total === 0 ||
-        //isNaN(times.total) ||
-        //isNaN(times.left) ||
-        //!isFinite(times.total) ||
-        //!isFinite(times.left)) { return }
-      
-      //if (variables.getMaxLayers === 0) { return }
-      
-      //if (variables.getProgress() === 100 ||
-        //variables.getProgress() === 0) { return }
-
         
       connection.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${printfile}"}, "id": ${id}}`)
       
