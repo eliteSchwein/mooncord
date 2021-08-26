@@ -19,10 +19,6 @@ function retrieveMCUStatus(message) {
   
   Object.keys(message).forEach(key => {
     const data = message[key]
-    if (!/(temp)/g.test(key) && 
-        /(mcu)/g.test(key)) {
-      variables.updateMCUStatus(key, data)
-    }
     if (typeof(data.temperature) !== 'undefined') {
       variables.setTemperature(key, data.temperature)
     }
