@@ -12,7 +12,7 @@ const event = (message) => {
 
   const statusmessage = messageJson.params
 
-  if(/(mcu)/g.test(JSON.stringify(statusmessage))) { retrieveMCUStatus(statusmessage[0]) }
+  retrieveMCUStatus(statusmessage[0])
 }
 
 function retrieveMCUStatus(message) {
