@@ -3,9 +3,6 @@ const path = require('path')
 
 const locale = require('./localeUtil')
 const pageMeta = require('./pages_meta.json')
-const thumbnail = require('./thumbnailUtil')
-const variables = require('./variablesUtil')
-const webcam = require('./webcamUtil')
 
 const maxEntries = 5
 

@@ -1,5 +1,6 @@
 const { waitUntil } = require('async-wait-until')
 const logSymbols = require('log-symbols')
+const Discord = require('discord.js')
 
 const args = process.argv.slice(2)
  
@@ -7,6 +8,7 @@ const config = require(`${args[0]}/mooncord.json`)
 const database = require('./databaseUtil')
 const locale = require('./localeUtil')
 const metadata = require('./status_meta_data.json')
+const thumbnail = require('./thumbnailUtil')
 const variables = require('./variablesUtil')
 const webcam = require('./webcamUtil')
 
