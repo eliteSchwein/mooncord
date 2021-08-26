@@ -16,6 +16,7 @@ function loopMCUs(data) {
 function updateMCU(mcu, data) {
     if(typeof(variables.getMCUList()[mcu]) === 'undefined') {
         variables.updateMCUStatus(mcu, data)
+        console.log('no data found')
         return
     }
 
