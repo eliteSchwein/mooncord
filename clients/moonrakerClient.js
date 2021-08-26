@@ -111,7 +111,7 @@ function handleSubscription(message) {
   }
 
   WSconnection.send(`{"jsonrpc": "2.0", "method": "printer.objects.subscribe", "params": { "objects":${JSON.stringify(objects)}}, "id": ${id}}`)
-  WSconnection.removeListener('message', handleSubscription)
+  //WSconnection.removeListener('message', handleSubscription)
 }
 
 module.exports = {}
