@@ -2,8 +2,6 @@ const variables = require('../utils/variablesUtil')
 
 module.exports = (data, connection, discordClient, database) => {
     if (typeof (data.gcode_move) === 'undefined') { return }
-
-    console.log(data)
     
     retrieveSpeedFactor(data.gcode_move)
     retrieveCurrentLayer(data.gcode_move)
