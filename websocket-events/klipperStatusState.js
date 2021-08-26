@@ -27,6 +27,9 @@ const event = async (message, connection, discordClient) => {
     }
     if (klipperstatus.print_stats.state === 'printing' && (typeof (printfile) !== 'undefined' || printfile !== '')) {
       
+      
+      console.log('printing?')
+
       if (status.getStatus() === 'printing') { return }
       
       const times = variables.getTimes()
@@ -44,8 +47,6 @@ const event = async (message, connection, discordClient) => {
         variables.getProgress() === 0) { return }
       
       timelapseUtil.start()
-      
-      console.log('printing?')
 
       await status.changeStatus(discordClient, 'start')
       await status.changeStatus(discordClient, 'printing')
