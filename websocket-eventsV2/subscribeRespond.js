@@ -13,7 +13,7 @@ const event = (message, connection, discordClient, database) => {
   if (typeof(status.configfile) === 'undefined') { return }
 
   for (const object in objects) {
-    objects[object](status, connection, discordClient.getClient, database)
+    objects[object](status, connection, discordClient, database)
   }
 }
 module.exports = event
