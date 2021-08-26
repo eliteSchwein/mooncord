@@ -5,7 +5,7 @@ module.exports = {
   klipperState: require('./klipperState'),
   klipperStates: require('./klipperStates'),
   klipperDisplayStatus: require('./klipperDisplayStatus'),
-  klipperMCULoader: require('./klipperMCULoader'),
+ // klipperMCULoader: require('./klipperMCULoader'),
   klipperStatusStateUpdate: require('./klipperStatusStateUpdate'),
   klipperStatusState: require('./klipperStatusState'),
   klipperStatusVirtualSDCard: require('./klipperStatusVirtualSDCard'),
