@@ -16,7 +16,6 @@ function loopMCUs(data) {
 function updateMCU(mcu, data) {
     if(typeof(variables.getMCUList()[mcu]) === 'undefined') {
         variables.updateMCUStatus(mcu, data)
-        console.log(data)
         return
     }
 
@@ -25,6 +24,8 @@ function updateMCU(mcu, data) {
     oldMcuData.last_stats.mcu_task_avg = data.last_stats.mcu_task_avg
     oldMcuData.last_stats.mcu_awake = data.last_stats.mcu_awake
     oldMcuData.last_stats.freq = data.last_stats.freq
+
+    console.log(oldMcuData)
 
     variables.updateMCUStatus(mcu, oldMcuData)
 }
