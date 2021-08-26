@@ -10,6 +10,10 @@ const event = (message) => {
 
   if (typeof (messageJson.params) === 'undefined') { return }
 
+  
+
+  console.log(messageJson.params[0].print_stats)
+
   const statusmessage = messageJson.params
 
   retrieveMCUStatus(statusmessage[0])

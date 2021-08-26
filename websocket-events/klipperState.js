@@ -4,8 +4,6 @@ const event = (message, connection, discordClient) => {
   if (message.type !== 'utf8') { return }
   
   const messageJson = JSON.parse(message.utf8Data)
-
-  console.log(messageJson.params[0].print_stats)
   const { result } = messageJson
 
   if(typeof (result) === 'undefined') { return }
