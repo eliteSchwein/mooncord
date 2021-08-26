@@ -51,7 +51,8 @@
         "ffmpeg_arguments": [
             "-pix_fmt yuv420p",
             "-preset slower",
-            "-crf 30"
+            "-crf 30",
+            "-g 5"
         ]
     },
     "system_notifications": {
