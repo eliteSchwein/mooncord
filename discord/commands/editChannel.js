@@ -9,7 +9,7 @@ const syntaxLocale = locale.syntaxlocale.commands.editchannel
 
 module.exports.reply = async (interaction) => {
     try {
-        if (typeof(interaction.guildId) === 'undefined') {
+        if (interaction.guildId === null) {
             await interaction.reply(locale.getGuildOnlyError(interaction.user.username))
             return
         }
