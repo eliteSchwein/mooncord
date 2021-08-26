@@ -21,7 +21,7 @@ function retrieveMCUStatus(message) {
     const key = message[index]
     if (!/(temp)/g.test(key) && 
         /(mcu)/g.test(key)) {
-      variables.updateMCUStatus(key, message[key])
+      variables.updateMCUStatus(key, message[index])
     }
   })
 }
