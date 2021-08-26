@@ -26,7 +26,7 @@ async function enableEvents(discordClient) {
     console.log('  Moonraker Client Connected'.success)
 
     WSconnection = connection
-    
+
     connection.on('message', handleSubscription)
 
     connection.on('message', (message) => {
@@ -37,8 +37,8 @@ async function enableEvents(discordClient) {
     
     console.log('  Sent initial Moonraker commands'.statusmessage)
 
-    connection.send(`{"jsonrpc": "2.0", "method": "printer.objects.list", "id": ${id}}`)
     connection.send(`{"jsonrpc": "2.0", "method": "printer.objects.query", "params": {"objects": {"print_stats": null }}, "id": ${id}}`)
+    connection.send(`{"jsonrpc": "2.0", "method": "printer.objects.list", "id": ${id}}`)
     
 
     connection.send(`{"jsonrpc": "2.0", "method": "machine.update.status", "params":{"refresh": "false"}, "id": ${id}}`)
