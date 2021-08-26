@@ -7,7 +7,6 @@ const database = require('../utils/databaseUtil')
 const status = require('../utils/statusUtil')
 const variables = require('../utils/variablesUtil')
 const events = require('../websocket-events')
-const eventsV2 = require('../websocket-eventsV2')
 
 const client = new WebSocketClient()
 
@@ -32,12 +31,6 @@ async function enableEvents(discordClient) {
     connection.on('message', (message) => {
       for (const event in events) {
         events[event](message, connection, discordClient.getClient, database)
-      }
-    })
-
-    connection.on('message', (message) => {
-      for (const event in eventsV2) {
-        eventsV2[event](message, connection, discordClient.getClient, database)
       }
     })
     

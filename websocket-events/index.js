@@ -6,5 +6,7 @@ module.exports = {
   klipperStates: require('./klipperStates'),
   moonrakerThrottle: require('./moonrakerThrottle'),
   moonrakerUpdate: require('./moonrakerUpdate'),
-  versions: require('./versions')
+  versions: require('./versions'),
+  subscribeRespond: require('./subscribeRespond'),
+  subscribeNotification: require('./subscribeNotification')
 }

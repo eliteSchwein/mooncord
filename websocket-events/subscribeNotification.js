@@ -1,6 +1,6 @@
 const objects = require('./objectHandlers')
 
-const event = (message, connection, discordClient, database) => {
+module.exports = (message, connection, discordClient, database) => {
   if (message.type !== 'utf8') { return }
   
   const messageJson = JSON.parse(message.utf8Data)
@@ -16,4 +16,3 @@ const event = (message, connection, discordClient, database) => {
     objects[object](status, connection, discordClient, database)
   }
 }
-module.exports = event
