@@ -4,7 +4,6 @@ const logSymbols = require('log-symbols')
 const args = process.argv.slice(2)
  
 const config = require(`${args[0]}/mooncord.json`)
-const chatUtil = require('./chatUtil')
 const database = require('./databaseUtil')
 const locale = require('./localeUtil')
 const metadata = require('./status_meta_data.json')
@@ -46,7 +45,7 @@ async function changeStatus(discordClient, newStatus) {
 
   if (onCooldown(config, currentStatusMeta.allow_same)) { return }
 
-  const embed = await chatUtil.generateStatusEmbed(parsedConfig)
+  const embed = await generateStatusEmbed(parsedConfig)
 
   broadcastMessage(embed, discordClient)
 
@@ -127,6 +126,61 @@ function parseConfig(status) {
   return JSON.parse(parsedConfig)
 }
 
+async function generateStatusEmbed(config) {
+  const snapshot = await webcam.retrieveWebcam()
+
+  const files = []
+
+  const components = []
+
+  files.push(snapshot)
+  
+  const embed = new Discord.MessageEmbed()
+    .setColor(config.color)
+    .setTitle(config.title)
+    .setImage(`attachment://${snapshot.name}`)
+  
+  if (typeof (config.author) !== 'undefined') {
+    embed.setAuthor(config.author)
+  }
+  
+  if (config.thumbnail) {
+    const thumbnailpic = await thumbnail.retrieveThumbnail()
+    files.push(thumbnailpic)
+    embed
+      .setThumbnail(`attachment://${thumbnailpic.name}`)
+  }
+
+  if (typeof (config.fields) !== 'undefined') {
+    for (const index in config.fields) {
+      embed.addField(config.fields[index].name, config.fields[index].value, true)
+    }
+  }
+  if (config.versions) {
+    const currentVersions = variables.getVersions()
+    for (const component in currentVersions) {
+      if (component !== 'system') {
+        const componentdata = currentVersions[component]
+        let {version} = componentdata
+        if (version !== componentdata.remote_version) {
+          version = version.concat(` **(${componentdata.remote_version})**`)
+        }
+        embed.addField(component, version, true)
+      }
+    }
+  }
+  
+  embed.setTimestamp()
+
+  const buttons = getButtons(config)
+
+  if(typeof(buttons) !== 'undefined') {
+    components.push(buttons)
+  }
+  
+  return { embeds: [embed], files, components }
+}
+
 module.exports.changeStatus = async (discordClient, newStatus) => {
   return await changeStatus(discordClient, newStatus)
 }
@@ -134,7 +188,7 @@ module.exports.changeStatus = async (discordClient, newStatus) => {
 module.exports.getManualStatusEmbed = async (channel, discordClient) => {
   await removeOldStatus(channel, discordClient)
   const parsedConfig = parseConfig(currentStatus)
-  return await chatUtil.generateStatusEmbed(parsedConfig)
+  return await generateStatusEmbed(parsedConfig)
 }
 
 module.exports.postBroadcastMessage = async (message, discordClient) => {

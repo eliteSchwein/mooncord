@@ -34,60 +34,6 @@ module.exports = {}
 
 module.exports.getButtons = (config) => { return getButtons(config) }
 
-module.exports.generateStatusEmbed = async (config) => {
-  const snapshot = await webcam.retrieveWebcam()
-
-  const files = []
-
-  const components = []
-
-  files.push(snapshot)
-  
-  const embed = new Discord.MessageEmbed()
-    .setColor(config.color)
-    .setTitle(config.title)
-    .setImage(`attachment://${snapshot.name}`)
-  
-  if (typeof (config.author) !== 'undefined') {
-    embed.setAuthor(config.author)
-  }
-  
-  if (config.thumbnail) {
-    const thumbnailpic = await thumbnail.retrieveThumbnail()
-    files.push(thumbnailpic)
-    embed
-      .setThumbnail(`attachment://${thumbnailpic.name}`)
-  }
-
-  if (typeof (config.fields) !== 'undefined') {
-    for (const index in config.fields) {
-      embed.addField(config.fields[index].name, config.fields[index].value, true)
-    }
-  }
-  if (config.versions) {
-    const currentVersions = variables.getVersions()
-    for (const component in currentVersions) {
-      if (component !== 'system') {
-        const componentdata = currentVersions[component]
-        let {version} = componentdata
-        if (version !== componentdata.remote_version) {
-          version = version.concat(` **(${componentdata.remote_version})**`)
-        }
-        embed.addField(component, version, true)
-      }
-    }
-  }
-  
-  embed.setTimestamp()
-
-  const buttons = getButtons(config)
-
-  if(typeof(buttons) !== 'undefined') {
-    components.push(buttons)
-  }
-  
-  return { embeds: [embed], files, components }
-}
 module.exports.getWaitEmbed = (user, relation, icon) => {
 
   const title = locale.misc.wait_related
