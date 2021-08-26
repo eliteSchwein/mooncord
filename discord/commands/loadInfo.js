@@ -47,8 +47,6 @@ async function retrieveMCUComponent(mcu) {
     const mcuawake = mcudata.last_stats.mcu_awake / 5
     const mcufreq = mcudata.last_stats.freq / Number.parseInt('1000000')
 
-    console.log(mcudata)
-
     embed.addField(locale.loadinfo.mcu.chipset, mcudata.mcu_constants.MCU, true)
     embed.addField(locale.loadinfo.mcu.version, mcudata.mcu_version, true)
     embed.addField(locale.loadinfo.mcu.load, mcuload.toFixed(1), true)
