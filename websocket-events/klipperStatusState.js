@@ -13,6 +13,8 @@ const event = async (message, connection, discordClient) => {
 
   if (typeof (result) === 'undefined') { return }
   if (typeof (result.status) === 'undefined') { return }
+  
+  const id = Math.floor(Math.random() * Number.parseInt('10_000')) + 1
 
   const klipperstatus = result.status
   if (typeof (klipperstatus.print_stats) !== 'undefined') {
@@ -43,6 +45,9 @@ const event = async (message, connection, discordClient) => {
       
       //if (variables.getProgress() === 100 ||
         //variables.getProgress() === 0) { return }
+
+        
+      connection.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${printfile}"}, "id": ${id}}`)
       
       timelapseUtil.start()
       
