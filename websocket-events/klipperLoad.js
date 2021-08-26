@@ -12,8 +12,6 @@ const event = (message) => {
 
   const statusmessage = messageJson.params
 
-  console.log(statusmessage)
-
   if(/(mcu)/g.test(JSON.stringify(statusmessage))) { retrieveMCUStatus(statusmessage) }
 }
 
@@ -21,6 +19,7 @@ function retrieveMCUStatus(message) {
   Object.keys(message).forEach(key => {
     if (!/(temp)/g.test(key) && 
         /(mcu)/g.test(key)) {
+          console.log(message)
       variables.updateMCUStatus(key, message[key])
     }
   })
