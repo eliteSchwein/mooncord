@@ -8,6 +8,7 @@ const database = require('./databaseUtil')
 const locale = require('./localeUtil')
 const metadata = require('./status_meta_data.json')
 const variables = require('./variablesUtil')
+const webcam = require('./webcamUtil')
 
 const statusWaitList = []
 
