@@ -8,7 +8,20 @@ module.exports = (data, connection, discordClient, database) => {
 function loopTempSensors(data) {
     Object.keys(data).forEach(tempSensor => {
       if (typeof(data[tempSensor].temperature) !== 'undefined') {
-            variables.setTemperature(tempSensor, data[tempSensor].temperature)
+            updateTempSensor(tempSensor, data[tempSensor])
       }
     })
+}
+
+function updateTempSensor(tempSensor, data) {
+    if(typeof(variables.getTemperatures[tempSensor]) === 'undefined') {
+        variables.setTemperature(tempSensor, data)
+        return
+    }
+
+    const oldMcuData = variables.getTemperatures()[tempSensor]
+
+    for(const index in data) {
+      console.log(index)
+    }
 }
