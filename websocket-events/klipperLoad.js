@@ -12,7 +12,7 @@ const event = (message) => {
 
   
 
-  console.log(messageJson.params[0])
+  //console.log(messageJson.params[0])
 
   const statusmessage = messageJson.params
 
