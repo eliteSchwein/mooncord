@@ -81,7 +81,8 @@ function commandEvent(discordClient) {
         if (!interaction.isCommand()) { return }
         for (const commandIndex in commands) {
             const command = commands[commandIndex]
-            if (command.command().name === interaction.commandName) {
+            const syntaxLocale = locale.syntaxlocale.commands[command]
+            if (syntaxLocale.command === interaction.commandName) {
                 await command.reply(interaction)
                 return
             }
