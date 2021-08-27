@@ -13,16 +13,16 @@ const messageLocale = locale.commands.get_log
 const syntaxLocale = locale.syntaxlocale.commands.get_log
 
 module.exports.reply = async (interaction) => {
+    if (!permission.hasController(interaction.user)) {
+        await interaction.reply(locale.getControllerOnlyError(interaction.user.username))
+        return
+    }
+
+    const service = interaction.options.getString(syntaxLocale.options.log_file.name)
+
+    await interaction.deferReply()
+
     try {
-        if (!permission.hasController(interaction.user)) {
-            await interaction.reply(locale.getControllerOnlyError(interaction.user.username))
-            return
-        }
-
-        const service = interaction.options.getString(syntaxLocale.options.log_file.name)
-
-        await interaction.deferReply()
-
         const result = await axios.request({
             responseType: 'arraybuffer',
             url: `${config.connection.moonraker_url}${metadata.files[service]}`,
@@ -32,7 +32,7 @@ module.exports.reply = async (interaction) => {
                 'X-Api-Key': config.connection.moonraker_token,
             },
         })
-        console.log(result.data)
+        console.log(Buffer.byteLength(result.data))
         const file = new Discord.MessageAttachment(result.data, `${service}.log`)
         await interaction.editReply({
             content: messageLocale.answer.retrieved
