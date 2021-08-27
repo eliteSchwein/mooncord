@@ -23,7 +23,7 @@ module.exports.reply = async (interaction) => {
 
         await interaction.deferReply()
 
-        axios.request({
+        const result = await axios.request({
             responseType: 'arraybuffer',
             url: `${config.connection.moonraker_url}${metadata.files[service]}`,
             method: 'get',
@@ -31,20 +31,17 @@ module.exports.reply = async (interaction) => {
                 'Content-Type': 'text/plain',
                 'X-Api-Key': config.connection.moonraker_token,
             },
-        }).then(async (result) => {
-            const file = new Discord.MessageAttachment(result.data, `${service}.log`)
-            await interaction.editReply({
-                content: messageLocale.answer.retrieved
-                    .replace(/(\${service})/g, `\`${service}\``),
-                files: [file]
-            })
-        }).catch(async (error) => {
-            await interaction.editReply(
+        })
+        console.log(result.data)
+        const file = new Discord.MessageAttachment(result.data, `${service}.log`)
+        await interaction.editReply({
+            content: messageLocale.answer.retrieved
+                .replace(/(\${service})/g, `\`${service}\``),
+            files: [file]
+        })
+    } catch {
+        await interaction.editReply(
                 messageLocale.answer.not_found
-                    .replace(/(\${service})/g, `\`${service}\``)) 
-        });
-    } catch (error) {
-        console.log(logSymbols.error, `Get Log Command: ${error}`.error)
-        await interaction.editReply(locale.errors.command_failed)
+            .replace(/(\${service})/g, `\`${service}\``))
     }
 }
