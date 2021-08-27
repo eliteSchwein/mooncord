@@ -14,5 +14,6 @@
     "plugins": [
     ],
     "rules": {
+        "require-unicode-regexp": "off"
     }
 }
