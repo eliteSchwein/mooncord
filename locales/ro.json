@@ -108,6 +108,7 @@
             },
             "answer": {
                 "retrieved": "Acesta este Fișierul Jurnal curent pentru ${service}",
+                "too_large": "Fișierul Jurnal pentru ${service} este prea mare!",
                 "not_found": "Momentan nu există niciun Fișier Jurnal pentru ${service}"
             }
         },
