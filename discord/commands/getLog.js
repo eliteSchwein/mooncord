@@ -32,7 +32,17 @@ module.exports.reply = async (interaction) => {
                 'X-Api-Key': config.connection.moonraker_token,
             },
         })
-        console.log(Buffer.byteLength(result.data))
+
+        const bufferSize = Buffer.byteLength(result.data)
+
+        if (bufferSize > Number.parseInt('8000000')) {
+            await interaction.editReply({
+                content: messageLocale.answer.too_large
+                    .replace(/(\${service})/g, `\`${service}\``)
+            })
+            return
+        }
+
         const file = new Discord.MessageAttachment(result.data, `${service}.log`)
         await interaction.editReply({
             content: messageLocale.answer.retrieved

@@ -108,6 +108,7 @@
             },
             "answer": {
                 "retrieved": "Hier ist der aktuelle Log für ${service}",
+                "too_large": "Der Log für ${service} ist zu groß!",
                 "not_found": "Derzeit gibt es keinen Log für ${service}"
             }
         },
