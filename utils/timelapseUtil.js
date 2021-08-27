@@ -56,10 +56,10 @@ async function render() {
         .noAudio()
         .videoCodec(config.timelapse.ffmpeg_codec)
         .on('end', async (stdout, stderr) => {
-            console.log(stdout)
             renderdone = true
         })
-        .run()
+    console.log(conv)
+    conv.run()
     await waitUntil(() => renderdone === true, { timeout: Number.POSITIVE_INFINITY })
 }
 
