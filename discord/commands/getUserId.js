@@ -6,7 +6,7 @@ const messageLocale = locale.commands.get_user_id
 const syntaxLocale = locale.syntaxlocale.commands.get_user_id
 
 module.exports.reply = async (interaction) => {
-    if (interaction.options.getChannel(syntaxLocale.options.user.name) === null) {
+    if (interaction.options.getUser(syntaxLocale.options.user.name) === null) {
         await interaction.reply(messageLocale.answer.own_id
             .replace(/(\${id})/g, interaction.user.id))
         return
