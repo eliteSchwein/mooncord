@@ -26,17 +26,18 @@ module.exports = async (button) => {
             await button.update({ components: [] })
             await message.removeAttachments()
             startPrintJob(button)
-            return
+            break
         }
         case ("printjob_start_no"): {
             await message.edit({ embeds: [getAbortEmbed(message, user)], components: [] })
-            return
+            break
         }
         case ("printjob_start_yes"): {
             await message.edit({ embeds: [getStartEmbed(message, user)], components: [] })
             startPrint(message)
-            
+            break
         }
+        default: break
     }
 }
 
