@@ -97,6 +97,7 @@ const commands = {
     execute: require('./execute'),
     fileinfo: require('./fileInfo'),
     get_log: require('./getLog'),
+    get_user_id: require('./getUserId'),
     info: require('./info'),
     listfiles: require('./listFiles'),
     loadinfo: require('./loadInfo'),
