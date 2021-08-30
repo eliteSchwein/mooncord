@@ -112,6 +112,20 @@
                 "not_found": "Derzeit gibt es keinen Log für ${service}"
             }
         },
+        "get_user_id": {
+            "description": "Erhalte von einen User die ID.",
+            "command": "nutzerid",
+            "options": {
+                "user": {
+                    "name": "nutzer",
+                    "description": "Spezifiziere ein Nutzer."
+                }
+            },
+            "answer": {
+                "own_id": "Deine ID ist ${id}",
+                "other_id": "${username} ID ist ${id}"
+            }
+        },
         "info": {
             "description": "Schickt dir eine Beschreibung über mich.",
             "command": "info",
