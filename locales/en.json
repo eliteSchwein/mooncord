@@ -122,8 +122,8 @@
                 }
             },
             "answer": {
-                "own_id": "Your ID is ${id}",
-                "other_id": "${username} ID is ${id}"
+                "own_id": "Your id is ${id}",
+                "other_id": "${username}`s id is ${id}"
             }
         },
         "info": {
