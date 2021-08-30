@@ -112,6 +112,20 @@
                 "not_found": "Momentan nu există niciun Fișier Jurnal pentru ${service}"
             }
         },
+        "get_user_id": {
+            "description": "Preia ID-ul utilizatorului.",
+            "command": "preia-id",
+            "options": {
+                "user": {
+                    "name": "utilizator",
+                    "description": "Specifică un utilizator."
+                }
+            },
+            "answer": {
+                "own_id": "ID-ul tău este ${id}",
+                "other_id": "ID-ul utilizatorului ${username} este ${id}"
+            }
+        },
         "info": {
             "description": "Trimite o Descriere despre mine.",
             "command": "info",
