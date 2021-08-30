@@ -7,31 +7,28 @@ const metaData = require('../buttons-metadata/print_job.json')
 const messageLocale = locale.commands.printjob
 
 module.exports = async (button) => {
-    const {message, user} = button
+    const {message, user, customId, guildId, client, channel} = button
 
-    if (message.author.id !== button.client.user.id) { return }
-    if (!Object.keys(metaData).includes(button.customId)) { return }
+    if (!Object.keys(metaData).includes(customId)) { return }
 
-    const guildID = button.guildId
-
-    if (!await permission.hasAdmin(user, guildID, button.client)) {
+    if (!await permission.hasAdmin(user, guildId, client)) {
         await button.reply(message.channel.send(locale.getAdminOnlyError(user.username)))
         return
     }
 
     const currentStatus = statusUtil.getStatus()
-    const buttonMeta = metaData[button.customId]
-    const langButtonMeta = messageLocale.answer[button.customId.replace('printjob_','')]
+    const buttonMeta = metaData[customId]
+    const langButtonMeta = messageLocale.answer[customId.replace('printjob_','')]
 
-    if (button.customId === 'printjob_refresh') {
+    if (customId === 'printjob_refresh') {
         await button.update({components: []})
 
-        const updateMessage = await statusUtil.getManualStatusEmbed(button.channel, button.client)
-        button.channel.send(updateMessage)
+        const updateMessage = await statusUtil.getManualStatusEmbed(channel, client)
+        channel.send(updateMessage)
         return
     }
 
-    if (button.id === `printjob_${currentStatus}`) {
+    if (customId === `printjob_${currentStatus}`) {
         await button.reply(langButtonMeta.status_same.replace(/(\${username})/g, user.username))
         return
     }

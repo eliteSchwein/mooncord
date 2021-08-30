@@ -15,17 +15,13 @@ let timeout = 0
 const commandlocale = locale.commands.printjob
 
 module.exports = async (button) => {
-    const {message, user} = button
+    const {message, user, guildId, client, customId} = button
 
-    if (message.author.id !== button.client.user.id) { return }
-
-    const guildID = button.guildId
-
-    if (!await permission.hasAdmin(user, guildID, button.client)) {
+    if (!await permission.hasAdmin(user, guildId, client)) {
         await button.reply(message.channel.send(locale.getAdminOnlyError(user.username)))
         return
     }
-    switch (button.customId) {
+    switch (customId) {
         case ("printjob_start"): {
             await button.update({ components: [] })
             await message.removeAttachments()

@@ -11,13 +11,12 @@ let page
 let connection
 
 module.exports = async (button) => {
-    const {message} = button
+    const {message, customId, client, user} = button
 
-    if (message.author.id !== button.client.user.id) { return }
-    if (!Object.keys(metaData).includes(button.customId)) { return }
+    if (!Object.keys(metaData).includes(customId)) { return }
 
     if (typeof (commandFeedback) !== 'undefined') {
-        await button.reply(locale.getCommandNotReadyError(interaction.user.username))
+        await button.reply(locale.getCommandNotReadyError(user.username))
         return
     }
 
@@ -27,7 +26,7 @@ module.exports = async (button) => {
 
     connection = moonrakerClient.getConnection()
 
-    pageUp = metaData[button.customId].page_up
+    pageUp = metaData[customId].page_up
     page = chatUtil.retrieveCurrentPage(embed)
 
     await executeMessage(button)

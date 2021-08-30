@@ -1,3 +1,5 @@
+const Discord = require('discord.js')
+
 const moonrakerClient = require('../../clients/moonrakerClient')
 const chatUtil = require('../../utils/chatUtil')
 const locale = require('../../utils/localeUtil')
@@ -12,10 +14,9 @@ let lastid = 0
 let timeout = 0
 
 module.exports = async (button) => {
-    const {message, user, guildId, client} = button
+    const {message, user, guildId, client, customId} = button
 
-    if (message.author.id !== button.client.user.id) { return }
-    if (button.customId !== 'to_printlist') { return }
+    if (customId !== 'to_printlist') { return }
 
     if (!await permission.hasAdmin(user, guildId, client)) {
         await button.reply(locale.getAdminOnlyError(user.username))
