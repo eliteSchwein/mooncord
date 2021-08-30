@@ -1,7 +1,7 @@
 const locale = require('../../utils/localeUtil')
 const loadUtil = require('../../utils/loadUtil')
 
-const commandOptions = require('../commands-metadata/commands_options.json')
+const commandOptions = require('../commands-metadata/commands_structure.json')
 const optionTypes = require('../commands-metadata/option_types.json')
 
 module.exports.addCommandEvents = (discordClient) => { commandEvent(discordClient) }
