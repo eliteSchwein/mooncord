@@ -15,5 +15,5 @@ module.exports.reply = async (interaction) => {
     const user = interaction.options.getUser(syntaxLocale.options.user.name)
     await interaction.reply(messageLocale.answer.other_id
         .replace(/(\${id})/g, user.id)
-        .replace(/(\${idname})/g, user.name))
+        .replace(/(\${username})/g, user.name))
 }
