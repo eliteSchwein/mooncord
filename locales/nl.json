@@ -108,7 +108,22 @@
             },
             "answer": {
                 "retrieved": "Hier is het logbestand voor ${service}",
+                "too_large": "Het logbestand voor ${service} is te groot!",
                 "not_found": "Er is momenteel geen logbestand voor ${service}"
+            }
+        },
+        "get_user_id": {
+            "description": "Laat de gebruikers-ID zien.",
+            "command": "getuserid",
+            "options": {
+                "user": {
+                    "name": "user",
+                    "description": "Specificeer een gebruiker."
+                }
+            },
+            "answer": {
+                "own_id": "Jouw ID is ${id}",
+                "other_id": "${username}'s ID is ${id}"
             }
         },
         "info": {
