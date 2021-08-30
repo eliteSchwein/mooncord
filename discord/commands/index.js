@@ -77,13 +77,13 @@ function buildCommandOption(builder, meta, option, syntaxMeta, messageMeta) {
 }
 
 function commandEvent(discordClient) {
-    discordClient.on('interactionCreate', async interaction => {
+    discordClient.on('interactionCreate', interaction => {
         if (!interaction.isCommand()) { return }
         for (const commandIndex in commands) {
             const command = commands[commandIndex]
             const syntaxLocale = locale.syntaxlocale.commands[commandIndex]
             if (syntaxLocale.command === interaction.commandName) {
-                await command.reply(interaction)
+                command.reply(interaction)
                 return
             }
         }

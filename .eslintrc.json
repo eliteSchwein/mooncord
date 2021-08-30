@@ -14,6 +14,8 @@
     "plugins": [
     ],
     "rules": {
-        "require-unicode-regexp": "off"
+        "require-unicode-regexp": "off",
+        "no-console": "off",
+        "unicorn/no-process-exit": "off"
     }
 }

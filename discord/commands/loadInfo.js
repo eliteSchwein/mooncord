@@ -34,9 +34,9 @@ function generateMCUNoData(mcu, embed) {
     return embed
 
 }
-async function retrieveMCUComponent(mcu) {
+function retrieveMCUComponent(mcu) {
     const template = loadUtil.getDefaultEmbed('mcu', mcu)
-    const embed = template.embeds[0]
+    const [embed] = template.embeds
 
     const mcudata = variablesUtil.getMCUList()[mcu]
 

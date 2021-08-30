@@ -80,7 +80,7 @@ function uploadNext() {
 }
 
 async function uploadFile(message) {
-  const file = message.attachments.array()[0]
+  const [file] = message.attachments.array()
   const formData = new FormData()
   const tempFile = fs.createWriteStream(`temp/${file.name.replace(' ', '_')}`)
   const loadingReaction = await message.react('🔄')

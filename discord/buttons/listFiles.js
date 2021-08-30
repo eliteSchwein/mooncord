@@ -11,7 +11,7 @@ let page
 let connection
 
 module.exports = async (button) => {
-    const {message, customId, client, user} = button
+    const {message, customId, user} = button
 
     if (!Object.keys(metaData).includes(customId)) { return }
 
@@ -19,8 +19,7 @@ module.exports = async (button) => {
         await button.reply(locale.getCommandNotReadyError(user.username))
         return
     }
-
-    const embed = message.embeds[0]
+    const [embed] = message.embeds
 
     if(embed.title !== commandlocale.embed.title) { return }
 
@@ -62,11 +61,11 @@ async function executeMessage(button) {
     }, 500)
 }
 
-async function handler (message) {
+function handler (message) {
     const messageJson = JSON.parse(message.utf8Data)
     if (/(modified)/g.test(JSON.stringify(messageJson))) {
         connection.removeListener('message', handler)
-        commandFeedback = await chatUtil.generatePageEmbed(
+        commandFeedback = chatUtil.generatePageEmbed(
             pageUp,
             page,
             messageJson.result,

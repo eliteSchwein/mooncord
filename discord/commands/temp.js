@@ -55,7 +55,7 @@ function buildEmbed() {
             }
 
             if(typeof(temps[temp].speed) !== 'undefined') {
-                const speed = temps[temp].speed
+                const {speed} = temps[temp]
                 data = `${data}
                 ${messageLocale.embed.fields.current_speed}:\`${speed}rpm\``
             }

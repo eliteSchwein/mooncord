@@ -64,11 +64,11 @@ module.exports = async (button) => {
     }, 500)
 }
 
-async function handler (message) {
+function handler (message) {
     const messageJson = JSON.parse(message.utf8Data)
     if(/(modified)/g.test(JSON.stringify(messageJson))) {
         connection.removeListener('message', handler)
-        commandFeedback = await chatUtil.generatePageEmbed(
+        commandFeedback = chatUtil.generatePageEmbed(
             false,
             1,
             messageJson.result,

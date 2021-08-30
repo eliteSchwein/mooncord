@@ -56,7 +56,7 @@ async function postStart(message, button) {
 }
 
 function startPrint(currentMessage) {
-    const currentEmbed = currentMessage.embeds[0]
+    const [currentEmbed] = currentMessage.embeds
     const gcodeFile = currentEmbed.author.name
     const connection = moonrakerClient.getConnection()
     const id = Math.floor(Math.random() * Number.parseInt('10_000')) + 1
@@ -65,7 +65,7 @@ function startPrint(currentMessage) {
 }
 
 function getAbortEmbed(currentMessage, user) {
-    const currentEmbed = currentMessage.embeds[0]
+    const [currentEmbed] = currentMessage.embeds
     const abortMessage = commandlocale.answer.abort.replace(/(\${username})/g, user.username)
     return new Discord.MessageEmbed()
         .setColor('#c90000')
@@ -75,7 +75,7 @@ function getAbortEmbed(currentMessage, user) {
 }
 
 function getStartEmbed(currentMessage, user) {
-    const currentEmbed = currentMessage.embeds[0]
+    const [currentEmbed] = currentMessage.embeds
     const startMessage = commandlocale.answer.executed.replace(/(\${username})/g, user.username)
     return new Discord.MessageEmbed()
         .setColor('#25db00')

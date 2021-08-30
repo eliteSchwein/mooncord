@@ -1,6 +1,5 @@
 const { waitUntil } = require('async-wait-until')
 const Discord = require('discord.js')
-const path = require('path')
 
 const commands = require('../discord/commands')
 const events = require('../discord/events')
@@ -19,8 +18,6 @@ const discordClient = new Discord.Client({
 
 let connected = false
 let token
-let applicationID
-let applicationKey
 
 function enableEvents() {
   console.log('  Enable Discord Events'.statusmessage)
@@ -51,10 +48,8 @@ function enableCommands(useconsole) {
 }
 
 module.exports = {}
-module.exports.init = async (discordToken, discordApplicationID, discordApplicationKey) => {
+module.exports.init = async (discordToken) => {
   token = discordToken
-  applicationID = discordApplicationID
-  applicationKey = discordApplicationKey
 
   await waitUntil(() => variables.dump !== variables.dumpRaw, { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 1500 })
   await waitUntil(() => Object.keys(variables.getMCUList()).length > 0, { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 1500 })

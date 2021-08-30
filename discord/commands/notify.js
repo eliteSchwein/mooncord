@@ -15,7 +15,6 @@ module.exports.reply = async (interaction) => {
         }
         await interaction.reply(messageLocale.answer.deactivated
             .replace(/(\${username})/g, interaction.user.username))
-        return
     } catch (error) {
         console.log(logSymbols.error, `Notify Command: ${error}`.error)
         await interaction.reply(locale.errors.command_failed)

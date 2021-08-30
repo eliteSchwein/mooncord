@@ -17,10 +17,10 @@ let oneShotToken
 
 let WSconnection
 
-async function enableEvents(discordClient) {
+function enableEvents(discordClient) {
   console.log('  Enable Moonraker Events'.statusmessage)
 
-  client.on('connect', async (connection) => {
+  client.on('connect', (connection) => {
     const id = Math.floor(Math.random() * Number.parseInt('10_000')) + 1
     console.log('  Moonraker Client Connected'.success)
 
