@@ -27,8 +27,9 @@ module.exports = async (button) => {
         return
     }
 
-    await button.update({components: []})
     await message.removeAttachments()
+    
+    await button.update(chatUtil.getWaitEmbed(user, messageLocale.embed.title, 'printlist.png'))
 
     const id = Math.floor(Math.random() * Number.parseInt('10_000')) + 1
     connection = moonrakerClient.getConnection()

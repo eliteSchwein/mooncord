@@ -35,6 +35,8 @@ async function executeMessage(button) {
     const id = Math.floor(Math.random() * Number.parseInt('10_000')) + 1
 
     let timeout = 0
+
+    await button.message.removeAttachments()
     
     await button.update(chatUtil.getWaitEmbed(button.user, commandlocale.embed.title, 'printlist.png'))
 

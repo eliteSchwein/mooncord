@@ -1,9 +1,12 @@
 const Discord = require('discord.js')
 
 const moonrakerClient = require('../../clients/moonrakerClient')
+const chatUtil = require('../../utils/chatUtil')
 const handlers = require('../../utils/handlerUtil')
 const locale = require('../../utils/localeUtil')
 const permission = require('../../utils/permissionUtil')
+
+const messageLocale = locale.commands.fileinfo
 
 let commandFeedback
 let connection
@@ -11,10 +14,10 @@ let connection
 let lastid = 0
 
 module.exports = async (selection) => {
-    const {message, user, guildId, client} = selection
+    const {message, user, guildId, client, customId, values} = selection
 
-    if (message.author.id !== selection.client.user.id) { return }
-    if (selection.customId !== 'view_printjob') { return }
+    if (message.author.id !== client.user.id) { return }
+    if (customId !== 'view_printjob') { return }
 
     if (!await permission.hasAdmin(user, guildId, client)) {
         await selection.reply(message.channel.send(locale.getAdminOnlyError(user.username)))
@@ -22,7 +25,7 @@ module.exports = async (selection) => {
     }
 
     if (typeof (commandFeedback) !== 'undefined') {
-        await selection.reply(locale.getCommandNotReadyError(selection.user.username))
+        await selection.reply(locale.getCommandNotReadyError(user.username))
         return
     }
 
@@ -31,11 +34,11 @@ module.exports = async (selection) => {
 
     let timeout = 0
 
-    await selection.update({components: []})
-
     await message.removeAttachments()
 
-    const gcodeFile = selection.values[0]
+    await selection.update(chatUtil.getWaitEmbed(user, messageLocale.embed.title, 'thumbnail_not_found.png'))
+
+    const [gcodeFile] = values
 
     connection.on('message', handler)
     connection.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${gcodeFile}"}, "id": ${id}}`)
@@ -49,11 +52,11 @@ module.exports = async (selection) => {
                     .setAuthor(gcodeFile)
                     .setThumbnail('attachment://thumbnail.png')
                     .setDescription(locale.errors.file_not_found)
-                await selection.message.edit({
+                await message.edit({
                     embeds: [fileNotFoundEmbed]
                 })
             } else {
-                await selection.message.edit(commandFeedback)
+                await message.edit(commandFeedback)
             }
             lastid = 0
             commandFeedback = undefined

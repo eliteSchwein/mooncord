@@ -36,6 +36,11 @@ module.exports.getWaitEmbed = (user, relation, icon) => {
   const title = locale.misc.wait_related
     .replace(/(\${relation})/g, relation)
 
+
+
+  const imgPath = path.resolve(__dirname, `../images/${icon}`)
+  const thumbnail = new Discord.MessageAttachment(imgPath, icon)
+
   const waitEmbed = new Discord.MessageEmbed()
     .setColor('#c90000')
     .setDescription(`🕐 ${locale.misc.please_wait}`)
@@ -51,7 +56,7 @@ module.exports.getWaitEmbed = (user, relation, icon) => {
       .setAuthor(title, `attachment://${icon}`)
   }
   
-  return { embeds: [waitEmbed], components: [] }
+  return { embeds: [waitEmbed], components: [], files: [thumbnail] }
 }
 module.exports.hasMessageEmbed = (message) => {
   if (message.channel.type !== 'text' && message.channel.type !== 'dm') {
