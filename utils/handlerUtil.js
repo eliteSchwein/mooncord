@@ -14,17 +14,19 @@ module.exports.printFileHandler = async (message, title, color) => {
 async function printFileHandler (message, title, color) {
     const messageJson = JSON.parse(message.utf8Data)
   let commandFeedback
+
   if (typeof (messageJson.error) !== 'undefined') {
       commandFeedback = `Not Found!`
       return commandFeedback
   }
-  if (typeof (messageJson.result.filename) !== 'undefined') {
+  if (typeof (messageJson.result) === 'undefined') { return }
+  if (typeof (messageJson.result.filename) === 'undefined') { return }
     const description = ''
         .concat(`${locale.fileinfo.print_time}: ${variables.formatTime(messageJson.result.estimated_time)}\n`)
         .concat(`${locale.fileinfo.slicer}: ${messageJson.result.slicer}\n`)
         .concat(`${locale.fileinfo.slicer_version}: ${messageJson.result.slicer_version}\n`)
         .concat(`${locale.fileinfo.height}: ${messageJson.result.object_height}mm`)
-    
+
     commandFeedback = new Discord.MessageEmbed()
         .setColor(color)
         .setTitle(title)
@@ -37,9 +39,8 @@ async function printFileHandler (message, title, color) {
     const parsedThumbnail = await thumbnail.buildThumbnail(path)
 
     const buttons = chatUtil.getButtons(metaData.file_info)
-    
+
     commandFeedback
         .setThumbnail(`attachment://${parsedThumbnail.name}`)
     return { embeds: [commandFeedback], files: [parsedThumbnail], components: [buttons] }
-  }
 }

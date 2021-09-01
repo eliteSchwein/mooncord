@@ -1,3 +1,4 @@
+const { waitUntil } = require('async-wait-until')
 const Discord = require('discord.js')
 
 const moonrakerClient = require('../../clients/moonrakerClient')
@@ -40,6 +41,7 @@ module.exports = async (selection) => {
 
     connection.on('message', handler)
     connection.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${gcodeFile}"}, "id": ${id}}`)
+
     const feedbackInterval = setInterval(async () => {
         if (typeof (commandFeedback) !== 'undefined') {
             if( lastid === id ) { return }
@@ -83,5 +85,6 @@ module.exports = async (selection) => {
 
 async function handler (message) {
     commandFeedback = await handlers.printFileHandler(message, locale.fileinfo.title, '#0099ff')
+    await waitUntil(() => typeof(commandFeedback) !== 'undefined', { timeout: Number.POSITIVE_INFINITY })
     connection.removeListener('message', handler)
 }

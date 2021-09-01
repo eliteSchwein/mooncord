@@ -1,3 +1,4 @@
+const { waitUntil } = require("async-wait-until");
 const logSymbols = require('log-symbols')
 
 const moonrakerClient = require('../../clients/moonrakerClient')
@@ -69,5 +70,6 @@ module.exports.reply = async (interaction) => {
 
 async function handler (message) {
     commandFeedback = await handlers.printFileHandler(message, locale.fileinfo.title, '#0099ff')
+    await waitUntil(() => typeof(commandFeedback) !== 'undefined', { timeout: Number.POSITIVE_INFINITY })
     connection.removeListener('message', handler)
 }
