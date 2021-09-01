@@ -6,8 +6,6 @@ const handlers = require('../../utils/handlerUtil')
 const locale = require('../../utils/localeUtil')
 const permission = require('../../utils/permissionUtil')
 
-const messageLocale = locale.commands.fileinfo
-
 let commandFeedback
 let connection
 
@@ -36,7 +34,7 @@ module.exports = async (selection) => {
 
     await message.removeAttachments()
 
-    await selection.update(chatUtil.getWaitEmbed(user, messageLocale.fileinfo.title, 'thumbnail_not_found.png'))
+    await selection.update(chatUtil.getWaitEmbed(user, locale.fileinfo.title, 'thumbnail_not_found.png'))
 
     const [gcodeFile] = values
 
