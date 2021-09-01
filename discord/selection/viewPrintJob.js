@@ -36,7 +36,7 @@ module.exports = async (selection) => {
 
     await message.removeAttachments()
 
-    await selection.update(chatUtil.getWaitEmbed(user, messageLocale.embed.title, 'thumbnail_not_found.png'))
+    await selection.update(chatUtil.getWaitEmbed(user, messageLocale.fileinfo.title, 'thumbnail_not_found.png'))
 
     const [gcodeFile] = values
 
