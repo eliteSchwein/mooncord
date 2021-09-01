@@ -44,11 +44,13 @@ module.exports = async (selection) => {
         if (typeof (commandFeedback) !== 'undefined') {
             if( lastid === id ) { return }
             lastid = id
+
+            await message.removeAttachments()
+
             if (commandFeedback === 'Not Found!') {
                 const fileNotFoundEmbed = new Discord.MessageEmbed()
                     .setColor('#c90000')
                     .setAuthor(gcodeFile)
-                    .setThumbnail('attachment://thumbnail.png')
                     .setDescription(locale.errors.file_not_found)
                 await message.edit({
                     embeds: [fileNotFoundEmbed]
@@ -62,10 +64,11 @@ module.exports = async (selection) => {
             clearInterval(feedbackInterval)
         }
         if (timeout === 4) {
+            await message.removeAttachments()
+
             const timeoutEmbed = new Discord.MessageEmbed()
                 .setColor('#c90000')
                 .setAuthor(gcodeFile)
-                .setThumbnail('attachment://thumbnail.png')
                 .setDescription(locale.errors.command_timeout)
             await selection.message.edit({
                 embeds: [timeoutEmbed]
