@@ -115,6 +115,28 @@
                 }
             }
         },
+        "emergencyStop": {
+            "description": "緊急停止列印機？",
+            "command": "緊急停止",
+            "answer": {
+                "activated": "執行緊急停止，${username}！"
+            }
+        },
+        "get_log": {
+            "description": "檢索紀錄檔案。",
+            "command": "檢索紀錄",
+            "options": {
+                "log_file": {
+                    "name": "紀錄檔案",
+                    "description": "指定紀錄檔案。"
+                }
+            },
+            "answer": {
+                "too_large": "${service}的日誌檔案太大了！ ",
+                "retrieved": "這是當前${service}的紀錄檔案",
+                "not_found": "當前沒有${service}的紀錄檔案"
+            }
+        },
         "notify": {
             "description": "需要我私訊你當前的列印狀態？",
             "command": "通知我",
@@ -194,6 +216,20 @@
         "timelapse": {
             "description": "取得最新縮時攝影",
             "command": "縮時攝影"
+        },
+        "get_user_id": {
+            "description": "檢索使用者ID。",
+            "command": "獲取使用者ID",
+            "options": {
+                "user": {
+                    "name": "使用者",
+                    "description": "指定使用者。 "
+                }
+            },
+            "answer": {
+                "own_id": "您的ID是${id}",
+                "other_id": "${username}的ID是${id}"
+            }
         }
     },
     "misc": {
