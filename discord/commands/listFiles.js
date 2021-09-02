@@ -1,14 +1,11 @@
 const logSymbols = require('log-symbols')
-const { SlashCommand } = require('slash-create')
 
-const discordClient = require('../../clients/discordClient')
 const moonrakerClient = require('../../clients/moonrakerClient')
 const chatUtil = require('../../utils/chatUtil')
 const locale = require('../../utils/localeUtil')
 const permission = require('../../utils/permissionUtil')
 
 const messageLocale = locale.commands.listfiles
-const syntaxLocale = locale.syntaxlocale.commands.listfiles
 
 let commandFeedback
 let connection
@@ -16,22 +13,15 @@ let connection
 let lastid = 0
 let timeout = 0
 
-module.exports = class ListFilesCommand extends SlashCommand {
-    constructor(creator) {
-        console.log('  Load List Files Command'.commandload)
-        super(creator, {
-            name: syntaxLocale.command,
-            description: messageLocale.description
-        })
-        this.filePath = __filename
-    }
-
-    async run(ctx) {
-        if (typeof (commandFeedback) !== 'undefined') {
-            return locale.getCommandNotReadyError(ctx.user.username)
+module.exports.reply = async (interaction) => {
+    try {
+        if (!await permission.hasAdmin(interaction.user, interaction.guildId, interaction.client)) {
+            await interaction.reply(locale.getAdminOnlyError(interaction.user.username))
+            return
         }
-        if (!await permission.hasAdmin(ctx.user, ctx.guildID, discordClient.getClient)) {
-            return locale.getAdminOnlyError(ctx.user.username)
+        if (typeof (commandFeedback) !== 'undefined') {
+            await interaction.reply(locale.getCommandNotReadyError(interaction.user.username))
+            return
         }
         const id = Math.floor(Math.random() * Number.parseInt('10_000')) + 1
         connection = moonrakerClient.getConnection()
@@ -40,62 +30,47 @@ module.exports = class ListFilesCommand extends SlashCommand {
         connection.send(`{"jsonrpc": "2.0", "method": "server.files.list", "params": {"root": "gcodes"}, "id": ${id}}`)
 
         commandFeedback = undefined
-        ctx.defer(false)
+        
+        await interaction.deferReply()
 
         const feedbackInterval = setInterval(async () => {
             if (typeof (commandFeedback) !== 'undefined') {
                 if(lastid === id) { return }
                 lastid = id
-                const thumbnail = commandFeedback.files[0]
-                const files = {
-                    name: thumbnail.name,
-                    file: thumbnail.attachment
-                }
-                const commandmessage = await ctx.send({
-                    file: files,
-                    embeds: [commandFeedback.toJSON()]
-                })
+                
+                await interaction.editReply(commandFeedback)
+                
                 commandFeedback = undefined
-                const channel = await discordClient.getClient.channels.fetch(ctx.channelID)
-                const message = await channel.messages.fetch(commandmessage.id)
-                message.react('◀️')
-                message.react('▶️')
                 lastid = 0
                 clearInterval(feedbackInterval)
             }
             if (timeout === 10) {
-                ctx.send({
-                    content: locale.errors.no_files_found
-                })
+                await interaction.editReply(locale.errors.no_files_found)
+
                 commandFeedback = undefined
                 connection.removeListener('message', handler)
                 clearInterval(feedbackInterval)
             }
             timeout++
         }, 500)
-    }
-
-    onError(error, ctx) {
-        console.log(logSymbols.error, `Listfiles Command: ${error}`.error)
-        ctx.send(locale.errors.command_failed)
+    } catch (error) {
+        console.log(logSymbols.error, `List Files Command: ${error}`.error)
         connection.removeListener('message', handler)
         commandFeedback = undefined
-    }
-
-    onUnload() {
-        return 'okay'
+        await interaction.editReply(locale.errors.command_failed)
     }
 }
 
-async function handler (message) {
+function handler (message) {
     const messageJson = JSON.parse(message.utf8Data)
     if(/(modified)/g.test(JSON.stringify(messageJson))) {
         connection.removeListener('message', handler)
-        commandFeedback = await chatUtil.generatePageEmbed(
+        commandFeedback = chatUtil.generatePageEmbed(
             false,
             1,
             messageJson.result,
             messageLocale.embed.title,
-            'printlist.png')
+            'printlist.png',
+            true)
     }
 }

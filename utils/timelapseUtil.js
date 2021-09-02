@@ -2,11 +2,11 @@ const args = process.argv.slice(2)
 
 const { waitUntil } = require('async-wait-until')
 const Discord = require('discord.js')
-const fs = require('fs')
-const path = require('path')
-const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path
 const ffmpeg = require('fluent-ffmpeg')
+const fs = require('fs')
 const logSymbols = require('log-symbols')
+const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path
+const path = require('path')
 
 const locale = require('./localeUtil')
 const statusUtil = require('./statusUtil')
@@ -16,9 +16,6 @@ const webcamUtil = require('./webcamUtil')
 const config = require(`${args[0]}/mooncord.json`)
 
 const conv = ffmpeg()
-
-let discordClient
-let moonrakerClient
 
 let running = false
 let framecount = 1
@@ -40,9 +37,9 @@ function checkForFrames() {
     });
 }
 async function render() {
-    if (!running) {
-        return
-    }
+    if (!running) { return }
+    
+    console.log(logSymbols.info, 'Starting Timelapse Render'.printstatus)
     let renderdone = false
 
     const hasFrames = checkForFrames()
@@ -55,16 +52,14 @@ async function render() {
         .inputFPS(config.timelapse.framerate)
         .output(path.resolve(__dirname, '../temp/timelapse/timelapse.mp4'))
         .outputFPS(config.timelapse.framerate)
-        .outputOptions([
-            '-pix_fmt yuv420p',
-            '-preset faster',
-            '-crf 30'])
+        .outputOptions(config.timelapse.ffmpeg_arguments)
         .noAudio()
-        .videoCodec('libx264')
+        .videoCodec(config.timelapse.ffmpeg_codec)
         .on('end', async (stdout, stderr) => {
             renderdone = true
         })
-        .run()
+    console.log(conv)
+    conv.run()
     await waitUntil(() => renderdone === true, { timeout: Number.POSITIVE_INFINITY })
 }
 
@@ -127,9 +122,9 @@ module.exports.getEmbed = () => {
     const timelapse = getTimelapse()
     const description = locale.timelapse.for_gcode
         .replace(/(\${gcode_file})/g, variablesUtil.getLastPrintJob())
-    return new Discord.MessageEmbed()
+    const embed =  new Discord.MessageEmbed()
         .setDescription(description)
-        .attachFiles(timelapse)
+    return { embeds: [embed], files: [timelapse] }
 }
 module.exports.start = () => {
     fs.unlink(path.resolve(__dirname, '../temp/timelapse/timelapse.mp4'), (err) => {

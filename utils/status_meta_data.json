@@ -3,10 +3,19 @@
         "meta_data": {
             "order_id": 0,
             "allow_same": false,
-            "prevent": []
+            "prevent": [
+                "pause"
+            ]
         },
         "title": "${locale.title}",
         "color": "#c90000",
+        "buttons": [
+            {
+                "emoji": "🔄",
+                "id":"klipper_restart",
+                "style":"PRIMARY"
+            }
+        ],
         "activity": {
             "type": "LISTENING",
             "text": "${locale.activity}"
@@ -20,6 +29,13 @@
         },
         "title": "${locale.title}",
         "color": "#c90000",
+        "buttons": [
+            {
+                "emoji": "🔄",
+                "id":"klipper_restart",
+                "style":"PRIMARY"
+            }
+        ],
         "activity": {
             "type": "LISTENING",
             "text": "${locale.activity}"
@@ -33,6 +49,7 @@
         },
         "title": "${locale.title}",
         "color": "#c90000",
+        "buttons": [],
         "activity": {
             "type": "LISTENING",
             "text": "${locale.activity}"
@@ -45,11 +62,20 @@
             "prevent": [
                 "pause",
                 "start",
+                "done",
+                "ready",
                 "printing"
             ]
         },
         "title": "${locale.title}",
         "color": "#c90000",
+        "buttons": [
+            {
+                "emoji": "🔄",
+                "id":"klipper_restart",
+                "style":"PRIMARY"
+            }
+        ],
         "activity": {
             "type": "LISTENING",
             "text": "${locale.activity}"
@@ -59,7 +85,9 @@
         "meta_data": {
             "order_id": 0,
             "allow_same": false,
-            "prevent": []
+            "prevent": [
+                "start"
+            ]
         },
         "title": "${locale.title}",
         "color": "#c90000",
@@ -69,6 +97,7 @@
             "type": "LISTENING",
             "text": "${locale.activity}"
         },
+        "buttons": [],
         "fields": [
             {
                 "name": "${locale.print_time}",
@@ -80,10 +109,11 @@
         "meta_data": {
             "order_id": 1,
             "allow_same": false,
-            "prevent": []
+            "prevent": ["done"]
         },
         "title": "${locale.title}",
         "color": "#0099ff",
+        "buttons": [],
         "activity": {
             "type": "LISTENING",
             "text": "${locale.activity}"
@@ -98,6 +128,7 @@
         },
         "title": "${locale.title}",
         "color": "#0099ff",
+        "buttons": [],
         "activity": {
             "type": "WATCHING",
             "text": "${locale.activity}"
@@ -113,6 +144,7 @@
         "color": "#25db00",
         "author": "${gcode_file}",
         "thumbnail": true,
+        "buttons": [],
         "activity": {
             "type": "LISTENING",
             "text": "${locale.activity}"
@@ -134,6 +166,7 @@
         "color": "#25db00",
         "author": "${gcode_file}",
         "thumbnail": true,
+        "buttons": [],
         "activity": {
             "type": "WATCHING",
             "text": "${locale.activity}"
@@ -155,6 +188,18 @@
         "color": "#dbd400",
         "author": "${gcode_file}",
         "thumbnail": true,
+        "buttons": [
+            {
+                "emoji": "▶️",
+                "id":"printjob_resume",
+                "style":"PRIMARY"
+            },
+            {
+                "emoji": "⛔",
+                "id":"printjob_cancel",
+                "style":"DANGER"
+            }
+        ],
         "activity": {
             "type": "PLAYING",
             "text": "${locale.activity}"
@@ -188,6 +233,23 @@
         "color": "#0099ff",
         "author": "${gcode_file}",
         "thumbnail": true,
+        "buttons": [
+            {
+                "emoji": "☕",
+                "id":"printjob_pause",
+                "style":"SECONDARY"
+            },
+            {
+                "emoji": "⛔",
+                "id":"printjob_cancel",
+                "style":"DANGER"
+            },
+            {
+                "emoji": "🔄",
+                "id":"printjob_refresh",
+                "style":"PRIMARY"
+            }
+        ],
         "fields": [
             {
                 "name": "${locale.print_time}",

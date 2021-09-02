@@ -1,18 +1,21 @@
 {
     "env": {
-        "commonjs": true,
         "es2021": true,
         "node": true
     },
     "extends": [
-        "standard",
+        "eslint:recommended",
         "galex"
     ],
     "parserOptions": {
-        "ecmaVersion": 12
+        "ecmaVersion": 12,
+        "sourceType": "module"
     },
-    "ignorePatterns": ["*.json","*.png","*.jpg","*.pdn","*.svg","LICENSE","README.md","PLACEHOLDER"],
+    "plugins": [
+    ],
     "rules": {
-        "inclusive-language/use-inclusive-words": "off"
+        "require-unicode-regexp": "off",
+        "no-console": "off",
+        "unicorn/no-process-exit": "off"
     }
 }

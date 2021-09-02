@@ -9,6 +9,7 @@ const discordClient = require('./clients/discordClient')
 const moonrakerClient = require('./clients/moonrakerClient')
 const pjson = require('./package.json')
 const loadUtil = require('./utils/loadUtil')
+const migrationUtil = require('./utils/migrationUtil')
 const miscUtil = require('./utils/miscUtil')
 const timelapseUtil = require('./utils/timelapseUtil')
 
@@ -30,7 +31,7 @@ colors.setTheme({
 systemInfo.osInfo()
   .then(async data => {
     console.log(`\n
-    __  __                     ${'____              _'.statustitle}
+     __  __                     ${'____              _'.statustitle}
     |  \\/  | ___   ___  _ __   ${'/ ___|___  _ __ __| |'.statustitle}
     | |\\/| |/ _ \\ / _ \\| '_ \\ ${'| |   / _ \\| \'__/ _\` |'.statustitle}
     | |  | | (_) | (_) | | | |${'| |__| (_) | | | (_| |'.statustitle}
@@ -61,8 +62,12 @@ systemInfo.osInfo()
       process.exit(5)
     }
 
+    await migrationUtil.migrate()
+
     await moonrakerClient.init(discordClient,
-      config.connection.moonraker_socket_url)
+      config.connection.moonraker_socket_url,
+      config.connection.moonraker_url,
+      config.connection.moonraker_token)
     
     await loadUtil.init()
     

@@ -1,0 +1,14 @@
+{
+    "buttons": [
+        {
+            "emoji": "⬅️",
+            "id":"last_page",
+            "style":"SECONDARY"
+        },
+        {
+            "emoji": "➡️",
+            "id":"next_page",
+            "style":"SECONDARY"
+        }
+    ]
+}

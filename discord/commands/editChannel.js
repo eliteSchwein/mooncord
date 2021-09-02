@@ -1,7 +1,5 @@
 const logSymbols = require('log-symbols')
-const { SlashCommand, CommandOptionType } = require('slash-create')
 
-const discordClient = require('../../clients/discordClient')
 const database = require('../../utils/databaseUtil')
 const locale = require('../../utils/localeUtil')
 const permission = require('../../utils/permissionUtil')
@@ -9,73 +7,60 @@ const permission = require('../../utils/permissionUtil')
 const messageLocale = locale.commands.editchannel
 const syntaxLocale = locale.syntaxlocale.commands.editchannel
 
-module.exports = class EditChannelCommand extends SlashCommand {
-    constructor(creator) {
-        console.log('  Load Edit Channel Command'.commandload)
-        super(creator, {
-            name: syntaxLocale.command,
-            description: messageLocale.description,
-            options: [{
-                type: CommandOptionType.CHANNEL,
-                name: syntaxLocale.options.channel.name,
-                description: messageLocale.options.channel.description,
-                required: false
-            }]
-        })
-        this.filePath = __filename
-    }
-
-    async run(ctx) {
-        if (typeof (ctx.guildID) === 'undefined') {
-            return locale.getGuildOnlyError(ctx.user.username)
+module.exports.reply = async (interaction) => {
+    try {
+        if (interaction.guildId === null) {
+            await interaction.reply(locale.getGuildOnlyError(interaction.user.username))
+            return
         }
-
-        if (!await permission.hasAdmin(ctx.user, ctx.guildID, discordClient.getClient)) {
-            return locale.getAdminOnlyError(ctx.user.username)
+        if (!await permission.hasAdmin(interaction.user, interaction.guildId, interaction.client)) {
+            await interaction.reply(locale.getAdminOnlyError(interaction.user.username))
+            return
         }
 
         let channel
         let channelresult
 
-        if (typeof (ctx.options[syntaxLocale.options.channel.name]) === 'undefined') {
-            channelresult = await editChannel(ctx.channelID, ctx.guildID)
-            channel = `<#${ctx.channelID}>`
+        if (interaction.options.getChannel(syntaxLocale.options.channel.name) === null) {
+            channelresult = await editChannel(interaction.channelId,
+                interaction.guildId,
+                interaction.client)
+            channel = `<#${interaction.channelId}>`
         } else {
-            channelresult = await editChannel(ctx.options.channel, ctx.guildID)
-            channel = `<#${ctx.options[syntaxLocale.options.channel.name]}>`
+            channelresult = await editChannel(
+                interaction.options.getChannel(syntaxLocale.options.channel.name).id,
+                interaction.guildId,
+                interaction.client)
+            channel = `<#${interaction.options.getChannel(syntaxLocale.options.channel.name).id}>`
         }
 
         if (typeof (channelresult) === 'undefined') {
-            return messageLocale.answer.not_textchannel
-                .replace(/(\${username})/g, ctx.user.username)
-                .replace(/(\${channel})/g, channel)
+            await interaction.reply(messageLocale.answer.not_textchannel
+                .replace(/(\${username})/g, interaction.user.username)
+                .replace(/(\${channel})/g, channel))
+                return
         }
 
         if (channelresult) {
-            return messageLocale.answer.activated
-                .replace(/(\${username})/g, ctx.user.username)
-                .replace(/(\${channel})/g, channel)
+            await interaction.reply(messageLocale.answer.activated
+                .replace(/(\${username})/g, interaction.user.username)
+                .replace(/(\${channel})/g, channel))
+                return
         } 
-        return messageLocale.answer.deactivated
-            .replace(/(\${username})/g, ctx.user.username)
-            .replace(/(\${channel})/g, channel)
-    }
-
-    onError(error, ctx) {
-        console.log(logSymbols.error, `Channel Command: ${error}`.error)
-        ctx.send(locale.errors.command_failed)
-    }
-
-    onUnload() {
-        return 'okay'
+        await interaction.reply(messageLocale.answer.deactivated
+            .replace(/(\${username})/g, interaction.user.username)
+            .replace(/(\${channel})/g, channel))
+    } catch (error) {
+        console.log(logSymbols.error, `Edit Channel Command: ${error}`.error)
+        await interaction.reply(locale.errors.command_failed)
     }
 }
-async function editChannel(channelid, guildid) {
-    const guild = await discordClient.getClient.guilds.fetch(guildid)
-    const channel = await discordClient.getClient.channels.fetch(channelid)
+async function editChannel(channelid, guildid, discordClient) {
+    const guild = await discordClient.guilds.fetch(guildid)
+    const channel = await discordClient.channels.fetch(channelid)
     const guilddatabase = database.getGuildDatabase(guild)
 
-    if (channel.type !== 'text') {
+    if (channel.type !== 'GUILD_TEXT') {
         return
     }
     if (guilddatabase.broadcastchannels.includes(channelid)) {

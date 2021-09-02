@@ -1,4 +1,24 @@
 {
+    "buttons": {
+        "printjob_pause": "Pause",
+        "printjob_cancel": "Stop",
+        "printjob_resume": "Resume",
+        "printjob_refresh": "Refresh",
+        "printjob_start": "Print",
+        "printjob_start_yes": "Yes",
+        "printjob_start_no": "No",
+        "klipper_restart": "Restart Firmware",
+        "update_system": "Update",
+        "next_page": "Next Page",
+        "last_page": "Last Page",
+        "to_printlist": "to List"
+    },
+    "selection": {
+        "printlist_more_details": {
+            "placeholder": "Click for more Details",
+            "description": "More Details for ${gcode_file}"
+        }
+    },
     "commands": {
         "admin": {
             "description": "Manage Admin Role or User.",
@@ -88,7 +108,22 @@
             },
             "answer": {
                 "retrieved": "Here is the current Log for ${service}",
+                "too_large": "The Log for ${service} is too big!",
                 "not_found": "There is currently no Log for ${service}"
+            }
+        },
+        "get_user_id": {
+            "description": "Retrieve the User ID.",
+            "command": "getuserid",
+            "options": {
+                "user": {
+                    "name": "user",
+                    "description": "Specifies a User."
+                }
+            },
+            "answer": {
+                "own_id": "Your id is ${id}",
+                "other_id": "${username}`s id is ${id}"
             }
         },
         "info": {
@@ -187,12 +222,11 @@
                 "fields": {
                     "current_temp": "Current",
                     "target_temp": "Target",
+                    "current_speed": "Speed",
                     "current_power": "Power"
                 }
             }
-        }
-    },
-    "dynamic_commands": {
+        },
         "timelapse": {
             "description": "Get the latest Timelapse.",
             "command": "timelapse"
@@ -205,6 +239,7 @@
     "errors": {
         "admin_only": "You dont have the Permissions, ${username}",
         "check_console": "Please Check the Console!",
+        "command_disabled": "The Command is disabled!",
         "command_failed": "An Error occured!",
         "command_timeout": "Command execution failed!",
         "controller_only": "You dont have the Permissions, ${username}",

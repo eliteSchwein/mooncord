@@ -1,7 +1,5 @@
 const logSymbols = require('log-symbols')
-const { SlashCommand, CommandOptionType } = require('slash-create')
 
-const discordClient = require('../../clients/discordClient')
 const moonrakerClient = require('../../clients/moonrakerClient')
 const locale = require('../../utils/localeUtil')
 const permission = require('../../utils/permissionUtil')
@@ -14,31 +12,18 @@ let connection
 
 let lastid = 0
 
-module.exports = class ExecuteCommand extends SlashCommand {
-    constructor(creator) {
-        console.log('  Load Execute Command'.commandload)
-        super(creator, {
-            name: syntaxLocale.command,
-            description: messageLocale.description,
-            options: [{
-                type: CommandOptionType.STRING,
-                name: syntaxLocale.options.gcode.name,
-                description: messageLocale.options.gcode.description,
-                required: true
-            }]
-        })
-        this.filePath = __filename
-    }
-
-    async run(ctx) {
-        if (!await permission.hasAdmin(ctx.user, ctx.guildID, discordClient.getClient)) {
-            return locale.getAdminOnlyError(ctx.user.username)
+module.exports.reply = async (interaction) => {
+    try {
+        if (!await permission.hasAdmin(interaction.user, interaction.guildId, interaction.client)) {
+            await interaction.reply(locale.getAdminOnlyError(interaction.user.username))
+            return
         }
         if (typeof (commandFeedback) !== 'undefined') {
-            return locale.getCommandNotReadyError(ctx.user.username)
+            await interaction.reply(locale.getCommandNotReadyError(interaction.user.username))
+            return
         }
-    
-        const gcode = ctx.options[syntaxLocale.options.gcode.name]
+
+        const gcode = interaction.options.getString(syntaxLocale.options.gcode.name)
         const id = Math.floor(Math.random() * Number.parseInt('10_000')) + 1
         connection = moonrakerClient.getConnection()
 
@@ -46,45 +31,36 @@ module.exports = class ExecuteCommand extends SlashCommand {
 
         commandFeedback = undefined
 
-        ctx.defer(false)
+        await interaction.deferReply()
 
-        const gcodeHandler = handler
-
-        connection.on('message', gcodeHandler)
+        connection.on('message', handler)
         connection.send(`{"jsonrpc": "2.0", "method": "printer.gcode.script", "params": {"script": "${gcode}"}, "id": ${id}}`)
-        const feedbackInterval = setInterval(() => {
+
+        const feedbackInterval = setInterval(async () => {
             if (typeof (commandFeedback) !== 'undefined') {
                 if( lastid === id ) { return }
                 lastid = id
-                connection.removeListener('message', gcodeHandler)
-                ctx.send({
-                    content: commandFeedback
-                })
+                connection.removeListener('message', handler)
+                clearInterval(feedbackInterval)
+                await interaction.editReply(
+                    commandFeedback)
                 commandFeedback = undefined
                 lastid = 0
-                clearInterval(feedbackInterval)
             }
             if (timeout === 4) {
                 commandFeedback = undefined
-                ctx.send({
-                    content: locale.errors.command_timeout
-                })
                 clearInterval(feedbackInterval)
-                connection.removeListener('message', gcodeHandler)
+                connection.removeListener('message', handler)
+                await interaction.editReply(
+                    locale.errors.command_timeout)
             }
             timeout++
         }, 500)
-    }
-
-    onError(error, ctx) {
+    } catch (error) {
         console.log(logSymbols.error, `Execute Command: ${error}`.error)
-        ctx.send(locale.errors.command_failed)
         connection.removeListener('message', handler)
         commandFeedback = undefined
-    }
-
-    onUnload() {
-        return 'okay'
+        await interaction.editReply(locale.errors.command_failed)
     }
 }
 

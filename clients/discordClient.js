@@ -1,24 +1,29 @@
 const { waitUntil } = require('async-wait-until')
 const Discord = require('discord.js')
-const path = require('path')
-const { GatewayServer, SlashCreator } = require('slash-create')
 
+const commands = require('../discord/commands')
 const events = require('../discord/events')
 const variables = require('../utils/variablesUtil')
 
+const discordClient = new Discord.Client({
+  intents: [
+    Discord.Intents.FLAGS.DIRECT_MESSAGES,
+    Discord.Intents.FLAGS.DIRECT_MESSAGE_REACTIONS,
+    Discord.Intents.FLAGS.GUILDS,
+    Discord.Intents.FLAGS.GUILD_MESSAGES,
+    Discord.Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
+    Discord.Intents.FLAGS.GUILD_INTEGRATIONS
+  ]
+})
 
-const discordClient = new Discord.Client()
-
-let creator
 let connected = false
 let token
-let applicationID
-let applicationKey
 
 function enableEvents() {
   console.log('  Enable Discord Events'.statusmessage)
 
   events(discordClient)
+  commands.addCommandEvents(discordClient)
 }
 
 function loginBot() {
@@ -39,38 +44,16 @@ function enableCommands(useconsole) {
   if (useconsole) {
     console.log('  Sync Slash Commands'.statusmessage)
   }
-
-  creator
-    .registerCommandsIn(path.join(__dirname, '../discord/commands'))
-    .registerCommandsIn(path.join(__dirname, '../discord/dynamicCommands'))
-    .syncCommands()
-}
-function enableCreator() {
-  console.log('  Enable Slash Command Creator'.statusmessage)
-
-  creator = new SlashCreator({
-    applicationID,
-    publicKey: applicationKey,
-    token,
-  })
-}
-
-function enableServer() {
-  console.log('  Enable Slash Command Server'.statusmessage)
-  
-  creator
-    .withServer(
-      new GatewayServer(
-        (handler) => discordClient.ws.on('INTERACTION_CREATE', handler)
-      )
-    )
+  commands.loadSlashCommands(discordClient)
 }
 
 module.exports = {}
-module.exports.init = async (discordToken, discordApplicationID, discordApplicationKey) => {
+module.exports.init = async (discordToken) => {
   token = discordToken
-  applicationID = discordApplicationID
-  applicationKey = discordApplicationKey
+
+  await waitUntil(() => variables.dump !== variables.dumpRaw, { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 1500 })
+  await waitUntil(() => Object.keys(variables.getMCUList()).length > 0, { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 1500 })
+  
   console.log(`\n
   ${
   ` ___  _                   _
@@ -80,9 +63,7 @@ module.exports.init = async (discordToken, discordApplicationID, discordApplicat
                               `)
   loginBot()
   await waitUntil(() => connected === true, { timeout: Number.POSITIVE_INFINITY })
-  enableCreator()
   enableCommands( true )
-  enableServer()
   enableEvents()
 }
 module.exports.isConnected = connected 

@@ -1,11 +1,10 @@
+const { waitUntil } = require("async-wait-until");
 const logSymbols = require('log-symbols')
-const { SlashCommand, CommandOptionType } = require('slash-create')
 
 const moonrakerClient = require('../../clients/moonrakerClient')
 const handlers = require('../../utils/handlerUtil')
 const locale = require('../../utils/localeUtil')
 
-const messageLocale = locale.commands.fileinfo
 const syntaxLocale = locale.syntaxlocale.commands.fileinfo
 
 let commandFeedback
@@ -13,27 +12,13 @@ let connection
 
 let lastid = 0
 
-module.exports = class FileInfoCommand extends SlashCommand {
-    constructor(creator) {
-        console.log('  Load File Info Command'.commandload)
-        super(creator, {
-            name: syntaxLocale.command,
-            description: messageLocale.description,
-            options: [{
-                type: CommandOptionType.STRING,
-                name: syntaxLocale.options.file.name,
-                description: messageLocale.options.file.description,
-                required: true
-            }]
-        })
-        this.filePath = __filename
-    }
-
-    run(ctx) {
+module.exports.reply = async (interaction) => {
+    try {
         if (typeof (commandFeedback) !== 'undefined') {
-            return locale.getCommandNotReadyError(ctx.user.username)
+            await interaction.reply(locale.getCommandNotReadyError(interaction.user.username))
+            return
         }
-        let gcodefile = ctx.options[syntaxLocale.options.file.name]
+        let gcodefile = interaction.options.getString(syntaxLocale.options.file.name)
         if (!gcodefile.endsWith('.gcode')) {
             gcodefile += '.gcode'
         }
@@ -45,42 +30,28 @@ module.exports = class FileInfoCommand extends SlashCommand {
 
         commandFeedback = undefined
 
-        ctx.defer(false)
+        await interaction.deferReply()
 
         connection.on('message', handler)
         connection.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${gcodefile}"}, "id": ${id}}`)
-        const feedbackInterval = setInterval(() => {
+        const feedbackInterval = setInterval(async () => {
             if (typeof (commandFeedback) !== 'undefined') {
                 if( lastid === id ) { return }
                 lastid = id
                 if (commandFeedback === 'Not Found!') {
-                    commandFeedback = undefined
-                    ctx.send({
+                    await interaction.editReply({
                         content: locale.errors.file_not_found
                     })
                 } else {
-                    if (commandFeedback.files.length > 0) {
-                        const thumbnail = commandFeedback.files[0]
-                        const files = {
-                            name: thumbnail.name,
-                            file: thumbnail.attachment
-                        }
-                        ctx.send({
-                            file: files,
-                            embeds: [commandFeedback.toJSON()]
-                        })
-                    } else {
-                        ctx.send({
-                            embeds: [commandFeedback.toJSON()]
-                        })
-                    }
-                    commandFeedback = undefined
+                    await interaction.editReply(commandFeedback)
                 }
                 lastid = 0
+                commandFeedback = undefined
+                connection.removeListener('message', handler)
                 clearInterval(feedbackInterval)
             }
             if (timeout === 4) {
-                ctx.send({
+                await interaction.editReply({
                     content: locale.errors.command_timeout
                 })
                 commandFeedback = undefined
@@ -89,21 +60,16 @@ module.exports = class FileInfoCommand extends SlashCommand {
             }
             timeout++
         }, 500)
-    }
-
-    onError(error, ctx) {
+    } catch (error) {
         console.log(logSymbols.error, `Fileinfo Command: ${error}`.error)
-        ctx.send(locale.errors.command_failed)
         connection.removeListener('message', handler)
         commandFeedback = undefined
-    }
-
-    onUnload() {
-        return 'okay'
+        await interaction.editReply(locale.errors.command_failed)
     }
 }
 
 async function handler (message) {
     commandFeedback = await handlers.printFileHandler(message, locale.fileinfo.title, '#0099ff')
+    await waitUntil(() => typeof(commandFeedback) !== 'undefined', { timeout: Number.POSITIVE_INFINITY })
     connection.removeListener('message', handler)
 }

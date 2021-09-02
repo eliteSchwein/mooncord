@@ -18,7 +18,7 @@ let discordClient
 
 const enableEvent = function (dcClient) {
   discordClient = dcClient
-  discordClient.on('message', async (msg) => {
+  discordClient.on('messageCreate', async (msg) => {
     if (msg.channel.type !== 'text' && msg.channel.type !== 'dm') {
       return
     }
@@ -80,7 +80,7 @@ function uploadNext() {
 }
 
 async function uploadFile(message) {
-  const file = message.attachments.array()[0]
+  const [file] = message.attachments.array()
   const formData = new FormData()
   const tempFile = fs.createWriteStream(`temp/${file.name.replace(' ', '_')}`)
   const loadingReaction = await message.react('🔄')
@@ -90,7 +90,10 @@ async function uploadFile(message) {
     formData.append('file', fs.createReadStream(`temp/${file.name.replace(' ', '_')}`), file.name)
     axios
       .post(`${config.connection.moonraker_url}/server/files/upload`, formData, {
-        headers: formData.getHeaders()
+        headers: {
+          'X-Api-Key': config.connection.moonraker_token,
+          'Content-Type': 'multipart/form-data'
+        }
       })
       .then(async res => {
         console.log(logSymbols.success, `uploaded ${file.name.replace(' ', '_')}`.uploadsuccess)

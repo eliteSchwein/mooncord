@@ -1,11 +1,10 @@
 {
   "name": "mooncord",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Moonraker Discord Bot based on Discord.js",
   "main": "index.js",
   "scripts": {
-    "start": "npm run migrate && node mooncord.js",
-    "migrate": "node ./utils/migrateUtil.js",
+    "start": "node mooncord.js",
     "ramdebugstart": "node --trace_gc mooncord.js",
     "checkcodestyle": "npx eslint ./**",
     "autofixcodestyle": "npx eslint ./** --fix"
@@ -26,21 +25,20 @@
     "async-wait-until": "^2.0.7",
     "axios": "^0.21.1",
     "colors": "^1.4.0",
-    "discord.js": "^12.5.3",
+    "discord.js": "^13.1.0",
     "fluent-ffmpeg": "^2.1.2",
     "form-data": "^4.0.0",
-    "jimp": "^0.16.1",
     "log-symbols": "^4.1.0",
+    "sharp": "^0.29.0",
     "shelljs": "^0.8.4",
-    "slash-create": "^3.3.0",
-    "systeminformation": "^5.7.8",
+    "systeminformation": "^5.8.0",
     "websocket": "^1.0.34"
   },
   "devDependencies": {
-    "eslint": "^7.31.0",
-    "eslint-plugin-import": "^2.23.4",
-    "eslint-config-galex": "^2.16.7",
+    "eslint": "^7.32.0",
+    "eslint-config-galex": "^2.16.9",
     "eslint-config-standard": "^16.0.3",
+    "eslint-plugin-import": "^2.24.1",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^5.1.0"
   }

@@ -21,7 +21,7 @@ async function retrieveThumbnail (url) {
     })
 
   if (typeof (thumbnail) === 'undefined' || thumbnail === '') {
-    return new Discord.MessageAttachment(await fs.readFile(path.resolve(__dirname, '../images/thumbnail_not_found.png')), 'thumbnail_not_found.png')
+    return new Discord.MessageAttachment(await fs.readFile(path.resolve(__dirname, '../images/thumbnail_not_found.png')), 'thumbnail.png')
   }
   
   const buffer = Buffer.from(thumbnail, 'base64')

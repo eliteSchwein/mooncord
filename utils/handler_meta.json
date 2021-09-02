@@ -1,0 +1,16 @@
+{
+    "file_info": {
+        "buttons": [
+            {
+                "emoji": "🖨️",
+                "id":"printjob_start",
+                "style":"SECONDARY"
+            },
+            {
+                "emoji": "📘",
+                "id":"to_printlist",
+                "style":"SECONDARY"
+            }
+        ]
+    }
+}

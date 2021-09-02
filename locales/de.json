@@ -1,4 +1,24 @@
 {
+    "buttons": {
+        "printjob_pause": "Pause",
+        "printjob_cancel": "Stop",
+        "printjob_resume": "Fortsetzen",
+        "printjob_refresh": "Aktualisieren",
+        "printjob_start": "Drucken",
+        "printjob_start_yes": "Ja",
+        "printjob_start_no": "Nein",
+        "klipper_restart": "Firmware neustarten",
+        "update_system": "Update",
+        "next_page": "Nächste Seite",
+        "last_page": "Letzte Seite",
+        "to_printlist": "zur Liste"
+    },
+    "selection": {
+        "printlist_more_details": {
+            "placeholder": "Klicken für mehr Details",
+            "description": "Mehr Details für ${gcode_file}"
+        }
+    },
     "commands": {
         "admin": {
             "description": "Konfiguriere einen Nutzer oder Rolle als Admin.",
@@ -88,7 +108,22 @@
             },
             "answer": {
                 "retrieved": "Hier ist der aktuelle Log für ${service}",
+                "too_large": "Der Log für ${service} ist zu groß!",
                 "not_found": "Derzeit gibt es keinen Log für ${service}"
+            }
+        },
+        "get_user_id": {
+            "description": "Erhalte von einen User die ID.",
+            "command": "nutzerid",
+            "options": {
+                "user": {
+                    "name": "nutzer",
+                    "description": "Spezifiziere ein Nutzer."
+                }
+            },
+            "answer": {
+                "own_id": "Deine ID ist ${id}",
+                "other_id": "${username} ID ist ${id}"
             }
         },
         "info": {
@@ -187,12 +222,11 @@
                 "fields": {
                     "current_temp": "Aktuell",
                     "target_temp": "Ziel",
+                    "current_speed": "Geschwindigkeit",
                     "current_power": "Power"
                 }
             }
-        }
-    },
-    "dynamic_commands": {
+        },
         "timelapse": {
             "description": "Bekomme die aktuellste Zeitraffer.",
             "command": "zeitraffer"
@@ -205,6 +239,7 @@
     "errors": {
         "admin_only": "Du hast nicht das Recht dazu, ${username}",
         "check_console": "Bitte die Konsole prüfen!",
+        "command_disabled": "Der Kommand ist deaktiviert!",
         "command_failed": "Ein Fehler ist aufgetreten!",
         "command_timeout": "Befehl konnte nicht ausgeführt werden!",
         "controller_only": "Du hast nicht das Recht dazu,  ${username}",

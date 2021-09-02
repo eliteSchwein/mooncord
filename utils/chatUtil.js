@@ -1,16 +1,45 @@
 const Discord = require('discord.js')
-const fs = require('fs')
 const path = require('path')
 
 const locale = require('./localeUtil')
+const pageMeta = require('./pages_meta.json')
 
 const maxEntries = 5
 
+function getButtons(config) {
+  if (Object.keys(config.buttons).length === 0) {
+    return
+  }
+  const row = new Discord.MessageActionRow()
+  
+  for (const index in config.buttons) {
+    const buttonMeta = config.buttons[index]
+    const button = new Discord.MessageButton()
+      .setCustomId(buttonMeta.id)
+      .setLabel(locale.buttons[buttonMeta.id])
+      .setStyle(buttonMeta.style)
+
+    if(buttonMeta.emoji !== '') { 
+      button.setEmoji(buttonMeta.emoji)
+    }
+    row.addComponents(button)
+  }
+  return row
+}
+
 module.exports = {}
+
+module.exports.getButtons = (config) => { return getButtons(config) }
+
 module.exports.getWaitEmbed = (user, relation, icon) => {
 
   const title = locale.misc.wait_related
     .replace(/(\${relation})/g, relation)
+
+
+
+  const imgPath = path.resolve(__dirname, `../images/${icon}`)
+  const thumbnail = new Discord.MessageAttachment(imgPath, icon)
 
   const waitEmbed = new Discord.MessageEmbed()
     .setColor('#c90000')
@@ -23,15 +52,11 @@ module.exports.getWaitEmbed = (user, relation, icon) => {
   }
 
   if (typeof (icon) !== 'undefined') {
-    const imgPath = path.resolve(__dirname, `../images/${icon}`)
-    const imgBuffer = fs.readFileSync(imgPath)
-    const thumbnail = new Discord.MessageAttachment(imgBuffer, icon)
     waitEmbed
       .setAuthor(title, `attachment://${icon}`)
-      .attachFiles(thumbnail)
   }
   
-  return waitEmbed
+  return { embeds: [waitEmbed], components: [], files: [thumbnail] }
 }
 module.exports.hasMessageEmbed = (message) => {
   if (message.channel.type !== 'text' && message.channel.type !== 'dm') {
@@ -43,22 +68,30 @@ module.exports.hasMessageEmbed = (message) => {
   return true
 }
 module.exports.generateWarnEmbed = (title, description) => {
-  return new Discord.MessageEmbed()
+  const embed = new Discord.MessageEmbed()
     .setColor('#fcad03')
     .setTitle(title)
-    .attachFiles(path.resolve(__dirname, '../images/warning.png'))
     .setThumbnail('attachment://warning.png')
     .setTimestamp()
     .setDescription(description)
+  
+  const icon = new Discord.MessageAttachment(path.resolve(__dirname, '../images/warning.png'), 'warning.png')
+  
+  return { embeds: [embed], files: [icon] }
 }
 module.exports.retrieveCurrentPage = (embed) => {
   const pages = embed.author.name
   const currentPageString = pages.replace('Page ', '').split('/')[0]
   return Number.parseInt(currentPageString) - 1
 }
-module.exports.generatePageEmbed = (pageUp, currentPage, data, title, icon, user) => {
+module.exports.generatePageEmbed = (pageUp, currentPage, data, title, icon, addFile) => {
   let newpage = currentPage
-  const maxpage = Math.ceil((data.length / maxEntries) - 0.1)
+  const maxpage = Math.floor(data.length / maxEntries)
+  const selectRow = new Discord.MessageActionRow()
+  const selectList = new Discord.MessageSelectMenu()
+    .setCustomId('view_printjob')
+    .setPlaceholder(locale.selection.printlist_more_details.placeholder)
+
   if (pageUp) {
     if (currentPage !== maxpage - 1) {
       newpage = currentPage + 1
@@ -69,29 +102,41 @@ module.exports.generatePageEmbed = (pageUp, currentPage, data, title, icon, user
     }
   }
   let entries = '\n'
-  for (let i = (newpage * maxEntries) + newpage; i <= maxEntries + (newpage * maxEntries) + newpage; i++) {
+  const convertedMaxEntries = maxEntries - 1
+  for (let i = (newpage * convertedMaxEntries) + newpage;
+    i <= convertedMaxEntries + (newpage * convertedMaxEntries) + newpage;
+    i++) {
     if (i < data.length) {
       entries = entries.concat(`${data[i].path}\n`)
+      selectList.addOptions([{
+							label: data[i].path,
+							description: locale.selection.printlist_more_details.description
+                .replace(/(\${gcode_file})/g, data[i].path),
+							value: data[i].path,
+      }])
     }
   }
 
+  selectRow.addComponents(selectList)
+
   const imgPath = path.resolve(__dirname, `../images/${icon}`)
-  const imgBuffer = fs.readFileSync(imgPath)
-  const thumbnail = new Discord.MessageAttachment(imgBuffer, icon)
+  const thumbnail = new Discord.MessageAttachment(imgPath, icon)
+
+  const components = []
+  const files = []
+
+  if(addFile) { files.push(thumbnail) }
+
+  const buttons = getButtons(pageMeta)
+
+  components.push(selectRow, buttons)
 
   const pageEmbed = new Discord.MessageEmbed()
     .setColor('#0099ff')
     .setTitle(title)
     .setAuthor(`Page ${newpage + 1}/${maxpage}`)
     .setDescription(entries)
-    .attachFiles(thumbnail)
     .setThumbnail(`attachment://${icon}`)
-  
-  if (typeof (user) !== 'undefined') {
-    pageEmbed
-      .setTimestamp()
-      .setFooter(user.tag, user.avatarURL())
-  }
-  
-  return pageEmbed
+
+  return { embeds: [pageEmbed], files, components }
 }

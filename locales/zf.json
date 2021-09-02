@@ -1,4 +1,24 @@
 {
+    "buttons": {
+        "printjob_pause": "暫停",
+        "printjob_cancel": "停止",
+        "printjob_resume": "恢復",
+        "printjob_refresh": "刷新",
+        "printjob_start": "推压",
+        "printjob_start_yes": "是",
+        "printjob_start_no": "否",
+        "klipper_restart": "重啟韌體",
+        "update_system": "更新",
+        "next_page": "下一頁",
+        "last_page": "上一頁",
+        "to_printlist": "列出"
+    },
+    "selection": {
+        "printlist_more_details": {
+          "placeholder": "點擊了解更多詳情",
+          "description": "解更多${gcode_file}的詳情"
+        }
+    },
     "commands": {
         "admin": {
             "description": "更改管理員或用戶。",
@@ -95,6 +115,28 @@
                 }
             }
         },
+        "emergencyStop": {
+            "description": "緊急停止列印機？",
+            "command": "緊急停止",
+            "answer": {
+                "activated": "執行緊急停止，${username}！"
+            }
+        },
+        "get_log": {
+            "description": "檢索紀錄檔案。",
+            "command": "檢索紀錄",
+            "options": {
+                "log_file": {
+                    "name": "紀錄檔案",
+                    "description": "指定紀錄檔案。"
+                }
+            },
+            "answer": {
+                "too_large": "${service}的日誌檔案太大了！ ",
+                "retrieved": "這是當前${service}的紀錄檔案",
+                "not_found": "當前沒有${service}的紀錄檔案"
+            }
+        },
         "notify": {
             "description": "需要我私訊你當前的列印狀態？",
             "command": "通知我",
@@ -166,15 +208,28 @@
                 "fields": {
                     "current_temp": "當前",
                     "target_temp": "目標",
+                    "current_speed": "速度",
                     "current_power": "功率"
                 }
             }
-        }
-    },
-    "dynamic_commands": {
+        },
         "timelapse": {
             "description": "取得最新縮時攝影",
             "command": "縮時攝影"
+        },
+        "get_user_id": {
+            "description": "檢索使用者ID。",
+            "command": "獲取使用者ID",
+            "options": {
+                "user": {
+                    "name": "使用者",
+                    "description": "指定使用者。 "
+                }
+            },
+            "answer": {
+                "own_id": "您的ID是${id}",
+                "other_id": "${username}的ID是${id}"
+            }
         }
     },
     "misc": {
@@ -184,6 +239,7 @@
     "errors": {
         "admin_only": "你沒有權限， ${username}",
         "check_console": "請查看控制台！",
+        "command_disabled": "命令被禁用！",
         "command_failed": "發生錯誤！",
         "command_timeout": "命令執行失敗！",
         "controller_only": "你沒有權限， ${username}",

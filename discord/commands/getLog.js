@@ -1,11 +1,10 @@
 const args = process.argv.slice(2)
 
 const axios = require('axios')
+const Discord = require('discord.js')
 const logSymbols = require('log-symbols')
-const { SlashCommand, CommandOptionType } = require('slash-create')
 
 const config = require(`${args[0]}/mooncord.json`)
-const discordClient = require('../../clients/discordClient')
 const locale = require('../../utils/localeUtil')
 const permission = require('../../utils/permissionUtil')
 const metadata = require('../commands-metadata/get_log.json')
@@ -13,61 +12,46 @@ const metadata = require('../commands-metadata/get_log.json')
 const messageLocale = locale.commands.get_log
 const syntaxLocale = locale.syntaxlocale.commands.get_log
 
-module.exports = class EditChannelCommand extends SlashCommand {
-    constructor(creator) {
-        console.log('  Load Get Log Command'.commandload)
-        super(creator, {
-            name: syntaxLocale.command,
-            description: messageLocale.description,
-            options: [{
-                choices: metadata.choices,
-                type: CommandOptionType.STRING,
-                name: syntaxLocale.options.log_file.name,
-                description: messageLocale.options.log_file.description,
-                required: true
-            }]
-        })
-        this.filePath = __filename
+module.exports.reply = async (interaction) => {
+    if (!permission.hasController(interaction.user)) {
+        await interaction.reply(locale.getControllerOnlyError(interaction.user.username))
+        return
     }
 
-    async run(ctx) {
-        if (!await permission.hasController(ctx.user, ctx.guildID, discordClient.getClient)) {
-            return locale.getControllerOnlyError(ctx.user.username)
-        }
+    const service = interaction.options.getString(syntaxLocale.options.log_file.name)
 
-        const service = ctx.options[syntaxLocale.options.log_file.name]
+    await interaction.deferReply()
 
-        ctx.defer(false)
-
-        axios.request({
+    try {
+        const result = await axios.request({
             responseType: 'arraybuffer',
             url: `${config.connection.moonraker_url}${metadata.files[service]}`,
             method: 'get',
             headers: {
                 'Content-Type': 'text/plain',
+                'X-Api-Key': config.connection.moonraker_token,
             },
-        }).then(async (result) => {
-            await ctx.send({
-                content: messageLocale.answer.retrieved
-                    .replace(/(\${service})/g, `\`${service}\``),
-                file: {
-                    name: `${service}.log`,
-                    file: result.data
-                }
+        })
+
+        const bufferSize = Buffer.byteLength(result.data)
+
+        if (bufferSize > Number.parseInt('8000000')) {
+            await interaction.editReply({
+                content: messageLocale.answer.too_large
+                    .replace(/(\${service})/g, `\`${service}\``)
             })
-        }).catch(async (error) => {
-            await ctx.send(
+            return
+        }
+
+        const file = new Discord.MessageAttachment(result.data, `${service}.log`)
+        await interaction.editReply({
+            content: messageLocale.answer.retrieved
+                .replace(/(\${service})/g, `\`${service}\``),
+            files: [file]
+        })
+    } catch {
+        await interaction.editReply(
                 messageLocale.answer.not_found
-                    .replace(/(\${service})/g, `\`${service}\``)) 
-        });
-    }
-
-    onError(error, ctx) {
-        console.log(logSymbols.error, `Get Log  Command: ${error}`.error)
-        ctx.send(locale.errors.command_failed)
-    }
-
-    onUnload() {
-        return 'okay'
+            .replace(/(\${service})/g, `\`${service}\``))
     }
 }

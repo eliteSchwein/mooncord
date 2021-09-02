@@ -2,6 +2,7 @@
     "connection": {
         "moonraker_socket_url": "ws://127.0.0.1/websocket",
         "moonraker_url": "http://127.0.0.1",
+        "moonraker_token": "",
         "bot_token": "",
         "bot_application_key": "",
         "bot_application_id": ""
@@ -45,7 +46,13 @@
         "framerate": 10,
         "frame_every_layer": false,
         "frame_every_percent": false,
-        "post_at_print_end": false
+        "post_at_print_end": false,
+        "ffmpeg_codec": "libx264",
+        "ffmpeg_arguments": [
+            "-pix_fmt yuv420p",
+            "-preset slower",
+            "-crf 30"
+        ]
     },
     "system_notifications": {
         "moonraker_throttle": true,

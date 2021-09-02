@@ -1,125 +1,69 @@
 const Discord = require('discord.js')
-const fs = require('fs')
 const logSymbols = require('log-symbols')
 const path = require('path')
-const { SlashCommand } = require('slash-create')
 
-const moonrakerClient = require('../../clients/moonrakerClient')
 const locale = require('../../utils/localeUtil')
+const variablesUtil = require('../../utils/variablesUtil')
 
 const messageLocale = locale.commands.temp
-const syntaxLocale = locale.syntaxlocale.commands.temp
 
-let commandFeedback
-let connection
+module.exports.reply = async (interaction) => {
+    try {
+        await interaction.deferReply()
 
-let lastid = 0
+        const message = buildEmbed()
 
-module.exports = class TempCommand extends SlashCommand {
-    constructor(creator) {
-        console.log('  Load Temp Command'.commandload)
-        super(creator, {
-            name: syntaxLocale.command,
-            description: messageLocale.description
-        })
-        this.filePath = __filename
-    }
-
-    run(ctx) {
-        connection = moonrakerClient.getConnection()
-        const id = Math.floor(Math.random() * Number.parseInt('10_000')) + 1
-
-        let timeout = 0
-
-        commandFeedback = undefined
-
-        ctx.defer(false)
-
-        connection.on('message', handler)
-        connection.send(`{"jsonrpc": "2.0", "method": "server.temperature_store", "id": ${id}}`)
-
-        const feedbackInterval = setInterval(() => {
-            if (typeof (commandFeedback) !== 'undefined') {
-                {
-                    if( lastid === id ) { return }
-                    lastid = id
-                    const thumbnail = commandFeedback.files[0]
-                    const files = {
-                        name: thumbnail.name,
-                        file: thumbnail.attachment
-                    }
-                    ctx.send({
-                        file: files,
-                        embeds: [commandFeedback.toJSON()]
-                    })
-                    lastid = 0
-                }
-                clearInterval(feedbackInterval)
-            }
-            if (timeout === 4) {
-                ctx.send({
-                    content: locale.errors.command_timeout
-                })
-                connection.removeListener('message', handler)
-                clearInterval(feedbackInterval)
-            }
-            timeout++
-        }, 500)
-    }
-
-    onError(error, ctx) {
+        await interaction.editReply(message)
+    } catch (error) {
         console.log(logSymbols.error, `Temp Command: ${error}`.error)
-        ctx.send(locale.errors.command_failed)
-        connection.removeListener('message', handler)
-        commandFeedback = undefined
-    }
-
-    onUnload() {
-        return 'okay'
+        await interaction.reply(locale.errors.command_failed)
     }
 }
 
-function handler (message) {
-    const messageJson = JSON.parse(message.utf8Data)
-    if (JSON.stringify(messageJson).includes('temperature')) {
-        const temps = messageJson.result
+function buildEmbed() {
+    const temps = variablesUtil.getTemperatures()
 
-        const iconpath = path.resolve(__dirname, '../../images/temps.png')
+    const iconAttachment = new Discord.MessageAttachment(path.resolve(__dirname, '../../images/temps.png'))
 
-        const iconbuffer = fs.readFileSync(iconpath)
+    const tempEmbed = new Discord.MessageEmbed()
+        .setColor('#0099ff')
+        .setTitle(messageLocale.embed.title)
+        .setThumbnail('attachment://temps.png')
+    
+    for (const temp in temps) {
+        const currentTemp = temps[temp].temperature.toFixed(2)
 
-        const iconattachment = new Discord.MessageAttachment(iconbuffer, 'temps.png')
+        if (temp.includes('temperature_sensor')) {
+            tempEmbed.addField(`🌡${temp.replace('temperature_sensor ', '')}`,`\`${currentTemp}°C\``, true)
+        } else if (temp.includes('extruder') || temp.includes('heater_bed') || temp.includes('heater_generic')) {
+            const targetTemp = temps[temp].target
+            const power = calculatePercent(temps[temp].power)
 
-        commandFeedback = new Discord.MessageEmbed()
-            .setColor('#0099ff')
-            .setTitle(messageLocale.embed.title)
-            .setThumbnail('attachment://temps.png')
-            .attachFiles(iconattachment)
-        
-        for (const temp in temps) {
+            tempEmbed.addField(`♨${temp.replace('heater_generic ', '')}`, `${messageLocale.embed.fields.current_temp}: \`${currentTemp}°C\`
+             ${messageLocale.embed.fields.target_temp}:\`${targetTemp}°C\`
+             ${messageLocale.embed.fields.current_power}:\`${power}%\``, true)
+        } else if (temp.includes('temperature_fan')) {
+            const targetTemp = temps[temp].target
 
-            const currentTemp = temps[temp].temperatures[temps[temp].temperatures.length - 1]
+            let data = `${messageLocale.embed.fields.current_temp}: \`${currentTemp}°C\`
+                ${messageLocale.embed.fields.target_temp}:\`${targetTemp}°C\``
 
-            if (temp.includes('temperature_sensor')) {
-                commandFeedback.addField(`🌡${temp.replace('temperature_sensor ', '')}`,`\`${currentTemp}°C\``, true)
-            } else if (temp.includes('extruder') || temp.includes('heater_bed') || temp.includes('heater_generic')) {
-                const targetTemp = temps[temp].targets[temps[temp].targets.length - 1]
-                const power = calculatePercent(temps[temp].powers[temps[temp].powers.length - 1])
-
-                commandFeedback.addField(`♨${temp.replace('heater_generic ', '')}`, `${messageLocale.embed.fields.current_temp}: \`${currentTemp}°C\`
-                 ${messageLocale.embed.fields.target_temp}:\`${targetTemp}°C\`
-                 ${messageLocale.embed.fields.current_power}:\`${power}%\``, true)
-            } else if (temp.includes('temperature_fan')) {
-                const targetTemp = temps[temp].targets[temps[temp].targets.length - 1]
-                const power = calculatePercent(temps[temp].powers[temps[temp].powers.length - 1])
-
-                commandFeedback.addField(`❄${temp}`, `${messageLocale.embed.fields.current_temp}: \`${currentTemp}°C\`
-                 ${messageLocale.embed.fields.target_temp}:\`${targetTemp}°C\`
-                 ${messageLocale.embed.fields.current_power}:\`${power}%\``, true)
+            if(typeof(temps[temp].power) !== 'undefined') {
+                const power = calculatePercent(temps[temp].power)
+                data = `${data}
+                ${messageLocale.embed.fields.current_power}:\`${power}%\``
             }
+
+            if(typeof(temps[temp].speed) !== 'undefined') {
+                const {speed} = temps[temp]
+                data = `${data}
+                ${messageLocale.embed.fields.current_speed}:\`${speed}rpm\``
+            }
+
+            tempEmbed.addField(`❄${temp}`, data)
         }
-        connection.removeListener('message', handler)
     }
+    return {embeds: [tempEmbed], files: [iconAttachment]}
 }
 
 function calculatePercent (input) {

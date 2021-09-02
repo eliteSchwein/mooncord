@@ -1,7 +1,5 @@
 const logSymbols = require('log-symbols')
-const { SlashCommand, CommandOptionType } = require('slash-create')
 
-const discordClient = require('../../clients/discordClient')
 const database = require('../../utils/databaseUtil')
 const locale = require('../../utils/localeUtil')
 const permission = require('../../utils/permissionUtil')
@@ -9,60 +7,32 @@ const permission = require('../../utils/permissionUtil')
 const messageLocale = locale.commands.admin
 const syntaxLocale = locale.syntaxlocale.commands.admin
 
-module.exports = class AdminCommand extends SlashCommand {
-    constructor(creator) {
-        console.log('  Load Admin Command'.commandload)
-        super(creator, {
-            name: syntaxLocale.command,
-            description: messageLocale.description,
-            options: [{
-                type: CommandOptionType.SUB_COMMAND,
-                name: syntaxLocale.options.role.name,
-                description: messageLocale.options.role.description,
-                options: [{
-                    type: CommandOptionType.ROLE,
-                    name: syntaxLocale.options.role.options.role.name,
-                    description: messageLocale.options.role.options.role.description,
-                    required: true
-                }]
-            },{
-                type: CommandOptionType.SUB_COMMAND,
-                name: syntaxLocale.options.user.name,
-                description: messageLocale.options.user.description,
-                options: [{
-                    type: CommandOptionType.USER,
-                    name: syntaxLocale.options.user.options.user.name,
-                    description: messageLocale.options.user.options.user.description,
-                    required: true
-                }]
-            }]
-        })
-        this.filePath = __filename
-    }
-
-    async run(ctx) {
-        if (typeof (ctx.guildID) === 'undefined') {
-            return locale.getGuildOnlyError(ctx.user.username)
+module.exports.reply = async (interaction) => {
+    try {
+        if (interaction.guildId === null) {
+            await interaction.reply(locale.getGuildOnlyError(interaction.user.username))
+            return
         }
         
-        if (!permission.hasController(ctx.user)) {
-            return locale.getControllerOnlyError(ctx.user.username)
+        if (!permission.hasController(interaction.user)) {
+            await interaction.reply(locale.getControllerOnlyError(interaction.user.username))
+            return
         }
 
         let isRole
         let adminid
 
-        if (ctx.subcommands[0] === syntaxLocale.options.role.name) {
+        if (interaction.options.getSubcommand() === syntaxLocale.options.role.name) {
             isRole = true
-            adminid = ctx.options[syntaxLocale.options.role.name][syntaxLocale.options.role.options.role.name]
+            adminid = interaction.options.getRole(syntaxLocale.options.role.options.role.name).id
         }
 
-        if (ctx.subcommands[0] === syntaxLocale.options.user.name) {
+        if (interaction.options.getSubcommand() === syntaxLocale.options.user.name) {
             isRole = false
-            adminid = ctx.options[syntaxLocale.options.user.name][syntaxLocale.options.user.options.user.name]
+            adminid = interaction.options.getUser(syntaxLocale.options.user.options.user.name).id
         }
 
-        const result = await editAdmin(isRole, adminid, ctx.guildID)
+        const result = await editAdmin(isRole, adminid, interaction.guildId, interaction.client)
 
         let answermention = `<@${adminid}>`
 
@@ -71,28 +41,24 @@ module.exports = class AdminCommand extends SlashCommand {
         }
 
         if (result) {
-            return messageLocale.answer.added
-                .replace(/(\${username})/g, ctx.user.username)
-                .replace(/(\${mention})/g, answermention)
+            await interaction.reply(messageLocale.answer.added
+                .replace(/(\${username})/g, interaction.user.username)
+                .replace(/(\${mention})/g, answermention))
+            return
         } 
 
-        return messageLocale.answer.removed
-            .replace(/(\${username})/g, ctx.user.username)
-            .replace(/(\${mention})/g, answermention)
-    }
-
-    onError(error, ctx) {
+        await interaction.reply(messageLocale.answer.removed
+            .replace(/(\${username})/g, interaction.user.username)
+            .replace(/(\${mention})/g, answermention))
+        
+    } catch (error) {
         console.log(logSymbols.error, `Admin Command: ${error}`.error)
-        ctx.send(locale.errors.command_failed)
-    }
-
-    onUnload() {
-        return 'okay'
+        await interaction.reply(locale.errors.command_failed)
     }
 }
 
-async function editAdmin(isRole, adminid, guildid) {
-    const guild = await discordClient.getClient.guilds.fetch(guildid)
+async function editAdmin(isRole, adminid, guildid, discordClient) {
+    const guild = await discordClient.guilds.fetch(guildid)
     const guilddatabase = database.getGuildDatabase(guild)
     let adminarray = 'adminusers'
 

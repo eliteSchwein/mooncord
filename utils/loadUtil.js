@@ -8,6 +8,7 @@ const path = require('path')
 const si = require('systeminformation')
 
 const discordClient = require('../clients/discordClient')
+const variablesUtil = require('./variablesUtil')
 const chatUtil = require('./chatUtil')
 const database = require('./databaseUtil')
 const componentHandler = require('./hsComponents')
@@ -25,19 +26,30 @@ const usageData = {
 
 let throttleCoolDown = 0
 
+module.exports.getComponents = () => { 
+  const components = componentHandler.choices() 
+  
+  const mculist = variablesUtil.getMCUList()
+  Object.keys(mculist).forEach(key => {
+      components.push({name: key.toUpperCase(), value: key})
+  })
+
+  return components
+}
+
 module.exports.getUsageData = () => { return usageData }
 
 module.exports.getDefaultEmbed = (img, title) => {
   const image = getImage(img)
-  const embed = getDefaultEmbed(image[0], title)
-  return [image, embed]
+  const embed = getDefaultEmbed(image, title)
+  return { embeds: [embed], files: [image] }
 }
 
 module.exports.getInformation = async function (component) {
-  const img = getImage(component)
-  const componentData = componentHandler[component]
+  const image = getImage(component)
+  const componentData = componentHandler.components[component]
   const fields = await componentData.getFields()
-  const embed = getDefaultEmbed(img[0], componentData.getTitle())
+  const embed = getDefaultEmbed(image, componentData.getTitle())
   if (fields.length > 0) {
     for (const fieldindex in fields) {
       const field = fields[fieldindex]
@@ -50,7 +62,7 @@ module.exports.getInformation = async function (component) {
     embed.setColor('#c90000')
     embed.setDescription(description)
   }
-  return [img, embed]
+  return { embeds: [embed], files: [image] }
 }
 
 module.exports.init = () => {
@@ -113,11 +125,10 @@ function isPartitionsFull(partitions) {
 }
 
 function getImage(component) {
-        
   const imgPath = path.resolve(__dirname, `../images/${component}.png`)
   const imgBuffer = fs.readFileSync(imgPath)
 
-  return [`${component}.png`, imgBuffer]
+  return new Discord.MessageAttachment(imgBuffer, `${component}.png`)
 }
 
 async function postThrottle(component, section) {
@@ -140,9 +151,9 @@ async function postThrottle(component, section) {
   status.postBroadcastMessage(throttleEmbed, discordClient.getClient, database)
 }
 
-function getDefaultEmbed(img, title) {
+function getDefaultEmbed(image, title) {
   return new Discord.MessageEmbed()
     .setColor('#0099ff')
     .setTitle(title)
-    .setThumbnail(`attachment://${img}`)
+    .setThumbnail(`attachment://${image.name}`)
 }

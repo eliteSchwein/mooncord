@@ -1,4 +1,24 @@
-{
+{   
+    "buttons": {
+        "printjob_pause": "Pause",
+        "printjob_cancel": "Stop",
+        "printjob_resume": "Reprendre",
+        "printjob_refresh": "Rafraîchir",
+        "printjob_start": "Imprimer",
+        "printjob_start_yes": "Oui",
+        "printjob_start_no": "Non",
+        "klipper_restart": "Redémarrer le système",
+        "update_system": "Mise à jour",
+        "next_page": "Page suivante",
+        "last_page": "Page précédente",
+        "to_printlist": "à la liste"
+    },
+    "selection": {
+        "printlist_more_details": {
+            "placeholder": "Cliquez pour plus de détails",
+            "description": "Plus de détails pour ${gcode_file}"
+        }
+    },
     "commands": {
         "admin": {
             "description": "Gérer les rôles d'administrateur et d'utilisateur.",
@@ -89,6 +109,20 @@
             "answer": {
                 "retrieved": "Voici le log pour ${service}",
                 "not_found": "Il n'y a aucun log pour ${service}"
+            }
+        },
+        "get_user_id": {
+            "description": "Récupérer l'ID utilisateur.",
+            "command": "getuserid",
+            "options": {
+                "user": {
+                    "name": "utilisateur",
+                    "description": "Spécifier un utilisateur."
+                }
+            },
+            "answer": {
+                "own_id": "Votre ID est ${id}",
+                "other_id": "L'ID de ${username} est ${id}"
             }
         },
         "info": {
@@ -207,12 +241,11 @@
                 "fields": {
                     "current_temp": "Actuelle",
                     "target_temp": "Cible",
+                    "current_speed": "Vitesse",
                     "current_power": "Puissance"
                 }
             }
-        }
-    },
-    "dynamic_commands": {
+        },
         "timelapse": {
             "description": "Obtenir le dernier Time Lapse.",
             "command": "timelapse"
@@ -225,6 +258,7 @@
     "errors": {
         "admin_only": "Vous n'avez pas les permissions, ${username}",
         "check_console": "Veuillez vérifier la console !",
+        "command_disabled": "La commande est désactivé !",
         "command_failed": "Une erreur s'est produite !",
         "command_timeout": "L'exécution de la commande a échoué !",
         "controller_only": "Vous n'avez pas les permissions, ${username}",

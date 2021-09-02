@@ -1,0 +1,18 @@
+{
+    "printjob_resume": {
+        "required_status" : ["pause"],
+        "macro": "RESUME"
+    },
+    "printjob_cancel": {
+        "required_status" : ["pause", "printing"],
+        "macro": "CANCEL_PRINT"
+    },
+    "printjob_pause": {
+        "required_status" : ["printing"],
+        "macro": "PAUSE"
+    },
+    "printjob_refresh": {
+        "required_status" : [],
+        "macro": ""
+    }
+}

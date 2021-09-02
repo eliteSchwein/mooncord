@@ -1,10 +1,8 @@
 const { waitUntil } = require('async-wait-until')
-const Discord = require('discord.js')
 const logSymbols = require('log-symbols')
+const Discord = require('discord.js')
 
 const args = process.argv.slice(2)
-
-const discordClient = require('../clients/discordClient')
  
 const config = require(`${args[0]}/mooncord.json`)
 const database = require('./databaseUtil')
@@ -13,43 +11,14 @@ const metadata = require('./status_meta_data.json')
 const thumbnail = require('./thumbnailUtil')
 const variables = require('./variablesUtil')
 const webcam = require('./webcamUtil')
+const chatUtil = require('./chatUtil')
 
 const statusWaitList = []
 
 let currentStatus = "startup"
 
-function getCurrentDatabase(altdatabase){
-  if(typeof(altdatabase) !== 'undefined'){
-    return altdatabase
-  }
-  return database
-}
-
-function getDiscordClient(altdiscordClient){
-  if (typeof (altdiscordClient) !== 'undefined') {
-    return altdiscordClient
-  }
-  return discordClient.getClient
-}
-
-async function postStatusChange(altdiscordClient, status) {
-  const parsedConfig = parseConfig(status)
-
-  const embed = await generateEmbed(parsedConfig)
-
-  if (typeof (parsedConfig.activity) !== 'undefined') {
-    altdiscordClient.user.setActivity(
-      parsedConfig.activity.text,
-      { type: parsedConfig.activity.type }
-    )
-  }
-  postStatus(embed, altdiscordClient)
-  notifyStatus(embed, altdiscordClient)
-}
-
-async function changeStatus(altdiscordClient, newStatus) {
+async function changeStatus(discordClient, newStatus) {
   const id = Math.floor(Math.random() * Number.parseInt('10_000')) + 1
-  const client = getDiscordClient(altdiscordClient)
   const currentStatusMeta = metadata[currentStatus].meta_data
   const newStatusMeta = metadata[newStatus].meta_data
 
@@ -65,12 +34,81 @@ async function changeStatus(altdiscordClient, newStatus) {
 
   await waitUntil(() => statusWaitList[0] === id, { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 2000 })
 
-  console.log(logSymbols.info, `Printer Status: ${newStatus}`.printstatus)
+  await waitUntil(() => discordClient.user !== null, { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 1500 })
 
-  await postStatusChange(client, newStatus)
+  console.log(logSymbols.info, `Printer Status: ${newStatus}`.printstatus)
+  
+  const parsedConfig = parseConfig(newStatus)
+
+  if (typeof (parsedConfig.activity) !== 'undefined') {
+    discordClient.user.setActivity(
+      parsedConfig.activity.text,
+      { type: parsedConfig.activity.type }
+    )
+  }
+
+  if (onCooldown(config, currentStatusMeta.allow_same)) { return }
+
+  const embed = await generateStatusEmbed(parsedConfig)
+
+  broadcastMessage(embed, discordClient)
 
   statusWaitList.shift()
   return true
+}
+
+function onCooldown(config, isSame) {
+  if (!config.status.use_percent) { return false }
+  if (!isSame) { return false }
+  if (database.getRamDatabase().cooldown === 0) { return false }
+  return true
+}
+
+async function removeOldStatus(channel, discordClient) {
+  if (typeof(channel) === 'undefined') { return }
+  
+  if (typeof(channel.username) === 'string') { 
+    const user = await discordClient.users.fetch(channel.id)
+    channel = user.dmChannel
+  }
+
+  if (channel === null) { return }
+
+  let lastMessage = await channel.messages.fetch({ limit: 1 })
+  lastMessage = lastMessage.first()
+
+  if (lastMessage.author.id !== discordClient.user.id) { return }
+  if (lastMessage.deleted) { return }
+  if (lastMessage.embeds.size === 0) { return }
+  if (typeof(lastMessage.embeds[0]) === 'undefined') { return }
+  if (lastMessage.embeds[0].title !== locale.status.printing.title) { return }
+
+  await lastMessage.delete()
+}
+
+async function broadcastSection(list, section, discordClient, message) {
+  for (const index in list) {
+    const id = list[index]
+
+    if (section === 'guilds') {
+      broadcastSection(list[index].broadcastchannels, 'channels', discordClient, message)
+      return
+    }
+
+    const channel = await discordClient[section].fetch(id)
+    await removeOldStatus(channel, discordClient)
+    channel.send(message)
+  }
+}
+
+function broadcastMessage(message, discordClient) {
+  const guildDatabase = database.getDatabase().guilds
+  const notifyList = database.getNotifyList()
+
+  if(typeof(message) === 'undefined') { return }
+
+  broadcastSection(guildDatabase, 'guilds', discordClient, message)
+  broadcastSection(notifyList, 'users', discordClient, message)
 }
 
 function parseConfig(status) {
@@ -92,12 +130,18 @@ function parseConfig(status) {
   return JSON.parse(parsedConfig)
 }
 
-async function generateEmbed(config, user) {
+async function generateStatusEmbed(config) {
   const snapshot = await webcam.retrieveWebcam()
+
+  const files = []
+
+  const components = []
+
+  files.push(snapshot)
+  
   const embed = new Discord.MessageEmbed()
     .setColor(config.color)
     .setTitle(config.title)
-    .attachFiles([snapshot])
     .setImage(`attachment://${snapshot.name}`)
   
   if (typeof (config.author) !== 'undefined') {
@@ -106,8 +150,8 @@ async function generateEmbed(config, user) {
   
   if (config.thumbnail) {
     const thumbnailpic = await thumbnail.retrieveThumbnail()
+    files.push(thumbnailpic)
     embed
-      .attachFiles([thumbnailpic])
       .setThumbnail(`attachment://${thumbnailpic.name}`)
   }
 
@@ -131,90 +175,29 @@ async function generateEmbed(config, user) {
   }
   
   embed.setTimestamp()
-  
-  return embed
-}
 
-function postStatus(message, altdiscordClient, altdatabase) {
-  const client = getDiscordClient(altdiscordClient)
+  const buttons = chatUtil.getButtons(config)
 
-  const maindatabase = getCurrentDatabase(altdatabase)
-  const botdatabase = maindatabase.getDatabase()
-  const ramdatabase = maindatabase.getRamDatabase()
-  
-  for (const guildid in botdatabase.guilds) {
-    client.guilds.fetch(guildid)
-      .then(async (guild) => {
-        const guilddatabase = botdatabase.guilds[guild.id]
-        for (const index in guilddatabase.broadcastchannels) {
-          const channel = await client.channels.fetch(guilddatabase.broadcastchannels[index])
-          if (config.status.use_percent &&
-            message.title === locale.status.printing.title) {
-            if (ramdatabase.cooldown === 0) {
-              await removeOldStatus(channel, client)
-              channel.send(message)
-              maindatabase.updateRamDatabase("cooldown", config.status.min_interval)
-            }
-          } else {
-            channel.send(message)
-          }
-        }
-      })
-      .catch((error) => { console.log(logSymbols.error, `Status Util: ${error}`.error) })
+  if(typeof(buttons) !== 'undefined') {
+    components.push(buttons)
   }
+  
+  return { embeds: [embed], files, components }
 }
 
-async function removeOldStatus(channel, discordClient) {
-  if(channel === null) { return }
-  let lastMessage = await channel.messages.fetch({ limit: 1 })
-  lastMessage = lastMessage.first()
-
-  if (lastMessage.author.id !== discordClient.user.id) { return }
-  if (lastMessage.embeds.size === 0) { return }
-  if (lastMessage.embeds[0].title !== locale.status.printing.title) { return }
-
-  await lastMessage.delete()
+module.exports.changeStatus = async (discordClient, newStatus) => {
+  return await changeStatus(discordClient, newStatus)
 }
 
-function notifyStatus(message, altdiscordClient, altdatabase) {
-  const client = getDiscordClient(altdiscordClient)
-
-  const maindatabase = getCurrentDatabase(altdatabase)
-  const botdatabase = maindatabase.getDatabase()
-  const ramdatabase = maindatabase.getRamDatabase()
-
-  const notifylist = botdatabase.notify
-
-  for (const notifyindex in notifylist) {
-    const clientid = notifylist[notifyindex]
-    client.users.fetch(clientid)
-      .then(async (user) => {
-        if (config.status.use_percent &&
-              message.title === locale.status.printing.title) {
-          if (ramdatabase.cooldown === 0) {
-            await removeOldStatus(user.dmChannel, client)
-            user.send(message).catch('console.error')
-            maindatabase.updateRamDatabase("cooldown", config.status.min_interval)
-          }
-        } else {
-          user.send(message).catch('console.error')
-        }
-      })
-      .catch((error) => { console.log(logSymbols.error, `Status Util: ${error}`.error) })
-  }
-}
-
-module.exports.changeStatus = async function (altdiscordClient, newStatus) {
-  return await changeStatus(altdiscordClient, newStatus)
-}
-
-module.exports.getManualStatusEmbed = async function (user) {
+module.exports.getManualStatusEmbed = async (channel, discordClient) => {
+  await removeOldStatus(channel, discordClient)
   const parsedConfig = parseConfig(currentStatus)
-  return await generateEmbed(parsedConfig, user)
+  return await generateStatusEmbed(parsedConfig)
 }
 
-module.exports.postBroadcastMessage = (message, altdiscordClient, altdatabase, altramdatabase) => {
-  postStatus(message, altdiscordClient, altdatabase, altramdatabase)
-  notifyStatus(message, altdiscordClient, altdatabase, altramdatabase)
+module.exports.postBroadcastMessage = async (message, discordClient) => {
+  await waitUntil(() => discordClient.user !== null, { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 1500 })
+  broadcastMessage(message, discordClient)
 }
+
 module.exports.getStatus = () => { return currentStatus }
