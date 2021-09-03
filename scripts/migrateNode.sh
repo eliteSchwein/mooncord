@@ -1,3 +1,6 @@
+echo "Remove old Node Modules"
+sudo rm -rf /usr/local/lib/node_modules
+
 echo "Download Node 16.6.1"
 wget https://nodejs.org/download/release/v16.6.1/node-v16.6.1-linux-armv7l.tar.gz
 
