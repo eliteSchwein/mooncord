@@ -12,7 +12,7 @@ module.exports = (data, connection, discordClient, database) => {
 
     variables.updateTimeData('file_total_duration', variables.getTimes().duration / progress)
 
-    if(variables.getProgress() === progress) { return }
+    if(variables.getProgress() === (progress * 100).toFixed(0)) { return }
   
     postProgress(discordClient, (progress * 100).toFixed(0))
     
