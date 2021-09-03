@@ -14,5 +14,8 @@ npm rebuild
 sudo npm rebuild
 sudo npm rebuild -g
 
+echo "Update NPM"
+sudo npm install -g npm@latest node-gyp@latest
+
 echo "Install Dependencies"
 npm ci
