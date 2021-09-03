@@ -24,6 +24,8 @@ function postProgress(discordClient, progress) {
     locale.status.printing.activity.replace(/(\${value_print_progress})/g, progress)
     , { type: 'WATCHING' })
 
+  if(variables.getProgress() === progress) { return }
+
   if (config.status.update_interval &&
     progress % config.status.update_interval === 0 &&
     progress !== 0) {
