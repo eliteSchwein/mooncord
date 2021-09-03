@@ -83,7 +83,11 @@ async function removeOldStatus(channel, discordClient) {
   if (typeof(lastMessage.embeds[0]) === 'undefined') { return }
   if (lastMessage.embeds[0].title !== locale.status.printing.title) { return }
 
-  await lastMessage.delete()
+  try {
+    await lastMessage.delete()
+  } catch (error) {
+    console.log(logSymbols.error, `Status Auto Remove throwed a error: ${error}`.error)
+  }
 }
 
 async function broadcastSection(list, section, discordClient, message) {

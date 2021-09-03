@@ -17,7 +17,7 @@ const event = (message) => {
     result.object_height, result.first_layer_height)
   
   if (typeof (result.thumbnails) !== 'undefined') {
-    const thumbnail = result.thumbnails[result.thumbnails.length -1];
+    const thumbnail = result.thumbnails[result.thumbnails.length - 1];
     variables.setThumbnailPath(thumbnail.relative_path)
   }
 }
