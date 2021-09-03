@@ -8,3 +8,10 @@ sudo cp -R node-v16.6.1-linux-armv7l/* /usr/local/ >/dev/null 2>&1
 echo "Remove Node File and Folder"
 rm -rf node-v16.6.1-linux-armv7l.tar.gz
 rm -rf node-v16.6.1-linux-armv7l
+
+echo "Rebuild NPM"
+npm rebuild
+sudo npm rebuild
+
+echo "Install Dependencies"
+npm ci
