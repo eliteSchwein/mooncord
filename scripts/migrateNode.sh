@@ -12,6 +12,7 @@ rm -rf node-v16.6.1-linux-armv7l
 echo "Rebuild NPM"
 npm rebuild
 sudo npm rebuild
+sudo npm rebuild -g
 
 echo "Install Dependencies"
 npm ci
