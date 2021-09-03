@@ -85,9 +85,7 @@ async function removeOldStatus(channel, discordClient) {
 
   try {
     await lastMessage.delete()
-  } catch (error) {
-    console.log(logSymbols.error, `Status Auto Remove throwed a error: ${error}`.error)
-  }
+  } catch { }
 }
 
 async function broadcastSection(list, section, discordClient, message) {
