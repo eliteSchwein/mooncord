@@ -11,6 +11,8 @@ module.exports = (data, connection, discordClient, database) => {
     const {progress} = data.display_status
 
     variables.updateTimeData('file_total_duration', variables.getTimes().duration / progress)
+
+    if(variables.getProgress() === progress) { return }
   
     postProgress(discordClient, (progress * 100).toFixed(0))
     
@@ -23,8 +25,6 @@ function postProgress(discordClient, progress) {
   discordClient.user.setActivity(
     locale.status.printing.activity.replace(/(\${value_print_progress})/g, progress)
     , { type: 'WATCHING' })
-
-  if(variables.getProgress() === progress) { return }
 
   if (config.status.update_interval &&
     progress % config.status.update_interval === 0 &&
