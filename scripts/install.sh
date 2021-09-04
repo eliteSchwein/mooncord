@@ -13,7 +13,7 @@ default=$(echo -en "\e[39m")
 
 SCRIPTPATH="$( cd "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 MCPATH="$( pwd -P )"
-MCCONFIGPATH=""
+MCCONFIGPATH="/home/pi/klipper_config"
 MCSERVICENAME="MoonCord"
 
 install_packages()
@@ -95,15 +95,6 @@ open_config() {
     nano $MCCONFIGPATH/mooncord.json
 }
 
-get_automatic_path() {
-    if [[ "$MCCONFIGPATH" == "." ]]
-    then
-        AUTOMATIC_PATH=`node utils/installUtil.js` 
-        MCCONFIGPATH=$AUTOMATIC_PATH
-        status_msg "Use ${AUTOMATIC_PATH} as Config Path"
-    fi
-}
-
 start_MoonCord() {
     ok_msg "Start MoonCord, please make sure you configured the Bot correctly!"
     sudo systemctl start MoonCord
@@ -172,6 +163,5 @@ install_packages
 modify_user
 setup
 open_config
-get_automatic_path
 install_systemd_service
 start_MoonCord
