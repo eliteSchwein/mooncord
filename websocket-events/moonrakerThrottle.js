@@ -78,6 +78,6 @@ async function postThrottle(throttle, discordClient, database) {
     `${sentence}
   ${suggestion}`)
   
-  status.postBroadcastMessage(throttleEmbed, discordClient, database)
+  await status.postBroadcastMessage(throttleEmbed, discordClient, database)
 }
 module.exports = event

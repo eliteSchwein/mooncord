@@ -7,7 +7,6 @@ const logSymbols = require('log-symbols')
 const path = require('path')
 const si = require('systeminformation')
 
-const discordClient = require('../clients/discordClient')
 const variablesUtil = require('./variablesUtil')
 const chatUtil = require('./chatUtil')
 const database = require('./databaseUtil')
@@ -25,6 +24,8 @@ const usageData = {
 }
 
 let throttleCoolDown = 0
+
+let dcClient
 
 module.exports.getComponents = () => { 
   const components = componentHandler.choices() 
@@ -65,7 +66,10 @@ module.exports.getInformation = async function (component) {
   return { embeds: [embed], files: [image] }
 }
 
-module.exports.init = () => {
+module.exports.init = (discordClient) => {
+
+  dcClient = discordClient
+
   setInterval(async () => {
     const ram = await si.mem()
     const partitions = await si.fsSize()
@@ -134,7 +138,7 @@ function getImage(component) {
 async function postThrottle(component, section) {
   if(typeof(section) === 'undefined') { section = '' }
 
-  await waitUntil(() => discordClient.getClient.user !== null, { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 1000 })
+  await waitUntil(() => dcClient.user !== null, { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 1000 })
   
   const sentence = locale.loadthrottle.sentence
     .replace(/(\${reason})/g, `\`${locale.loadthrottle[component].name}\``)
@@ -148,7 +152,7 @@ async function postThrottle(component, section) {
     `${sentence}
   ${suggestion}`)
   
-  status.postBroadcastMessage(throttleEmbed, discordClient.getClient, database)
+  status.postBroadcastMessage(throttleEmbed, dcClient, database)
 }
 
 function getDefaultEmbed(image, title) {

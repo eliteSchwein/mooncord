@@ -69,7 +69,7 @@ systemInfo.osInfo()
       config.connection.moonraker_url,
       config.connection.moonraker_token)
     
-    await loadUtil.init()
+    await loadUtil.init(discordClient.getClient)
     
     miscUtil.init()
     
