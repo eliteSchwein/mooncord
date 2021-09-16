@@ -77649,7 +77649,7 @@ const args = process.argv.slice(2)
 const variables = __webpack_require__(/*! ./variablesUtil */ "./utils/variablesUtil.js")
 
 const Discord = __webpack_require__(/*! discord.js */ "./node_modules/discord.js/src/index.js")
-const fs = __webpack_require__(/*! fs */ "fs").promises
+const fs = __webpack_require__(/*! fs */ "fs")
 const axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js")
 const path = __webpack_require__(/*! path */ "path")
 
@@ -77668,7 +77668,7 @@ async function retrieveThumbnail (url) {
     })
 
   if (typeof (thumbnail) === 'undefined' || thumbnail === '') {
-    return new Discord.MessageAttachment(await fs.readFile(path.resolve(__dirname, '../assets/images/thumbnail_not_found.png')), 'thumbnail.png')
+    return new Discord.MessageAttachment(await fs.readFileSync(path.resolve(__dirname, '../assets/images/thumbnail_not_found.png')), 'thumbnail.png')
   }
   
   const buffer = Buffer.from(thumbnail, 'base64')

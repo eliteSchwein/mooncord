@@ -3,7 +3,7 @@ const args = process.argv.slice(2)
 const variables = require('./variablesUtil')
 
 const Discord = require('discord.js')
-const fs = require('fs').promises
+const fs = require('fs')
 const axios = require('axios')
 const path = require('path')
 
@@ -22,7 +22,7 @@ async function retrieveThumbnail (url) {
     })
 
   if (typeof (thumbnail) === 'undefined' || thumbnail === '') {
-    return new Discord.MessageAttachment(await fs.readFile(path.resolve(__dirname, '../assets/images/thumbnail_not_found.png')), 'thumbnail.png')
+    return new Discord.MessageAttachment(await fs.readFileSync(path.resolve(__dirname, '../assets/images/thumbnail_not_found.png')), 'thumbnail.png')
   }
   
   const buffer = Buffer.from(thumbnail, 'base64')
