@@ -3,9 +3,12 @@ const args = process.argv.slice(2)
 
 console.log(`${args[0]}/mooncord.json`)
 
-const config = import(`${args[0]}/mooncord.json`)
+let config
 
-//const config = require(/* webpackIgnore: true */ `${args[0]}/mooncord.json`)
+// eslint-disable-next-line no-return-assign,promise/catch-or-return,import/dynamic-import-chunkname
+import(`${args[0]}/mooncord.json`).then(data => config = data)
+
+//const config = require(/* webpackMode: "weak" */ `${args[0]}/mooncord.json`)
 
 console.log(config);
 
