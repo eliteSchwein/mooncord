@@ -2,10 +2,10 @@ const args = process.argv.slice(2)
 
 const { waitUntil } = require('async-wait-until')
 const Discord = require('discord.js')
-const ffmpeg = require('fluent-ffmpeg')
+//const ffmpeg = require('fluent-ffmpeg')
 const fs = require('fs')
 const logSymbols = require('log-symbols')
-const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path
+//const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path
 const path = require('path')
 
 const locale = require('./localeUtil')
@@ -15,14 +15,14 @@ const webcamUtil = require('./webcamUtil')
 
 const config = require(`${args[0]}/mooncord.json`)
 
-const conv = ffmpeg()
+//const conv = ffmpeg()
 
 let running = false
 let framecount = 1
 let lastLayer = 0
 let lastPercent = 0
 
-ffmpeg.setFfmpegPath(ffmpegPath)
+//ffmpeg.setFfmpegPath(ffmpegPath)
 
 function checkForFrames() {
     const pattern = /^frame-+/
@@ -46,21 +46,21 @@ async function render() {
 
     if (!hasFrames) { return }
     
-    conv
-        .addInput(path.resolve(__dirname,
-            '../temp/timelapse/frame-%d.png'))
-        .inputFPS(config.timelapse.framerate)
-        .output(path.resolve(__dirname, '../temp/timelapse/timelapse.mp4'))
-        .outputFPS(config.timelapse.framerate)
-        .outputOptions(config.timelapse.ffmpeg_arguments)
-        .noAudio()
-        .videoCodec(config.timelapse.ffmpeg_codec)
-        .on('end', async (stdout, stderr) => {
-            renderdone = true
-        })
-    console.log(conv)
-    conv.run()
-    await waitUntil(() => renderdone === true, { timeout: Number.POSITIVE_INFINITY })
+ //   conv
+ //       .addInput(path.resolve(__dirname,
+ //           '../temp/timelapse/frame-%d.png'))
+ //       .inputFPS(config.timelapse.framerate)
+ //       .output(path.resolve(__dirname, '../temp/timelapse/timelapse.mp4'))
+ //       .outputFPS(config.timelapse.framerate)
+ //       .outputOptions(config.timelapse.ffmpeg_arguments)
+ //       .noAudio()
+ //       .videoCodec(config.timelapse.ffmpeg_codec)
+ //       .on('end', async (stdout, stderr) => {
+ //          renderdone = true
+ //       })
+ //   console.log(conv)
+ //   conv.run()
+ //   await waitUntil(() => renderdone === true, { timeout: Number.POSITIVE_INFINITY })
 }
 
 async function makeFrame() {
