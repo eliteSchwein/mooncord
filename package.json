@@ -10,7 +10,7 @@
     "autofixcodestyle": "npx eslint ./** --fix",
     "build-dev": "webpack  --mode=development",
     "build": "webpack  --mode=production",
-    "watch": "webpack --watch  --mode=development"
+    "watch": "webpack --watch --progress --mode=development"
   },
   "repository": {
     "type": "git",
