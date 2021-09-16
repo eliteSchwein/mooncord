@@ -78012,7 +78012,7 @@ function formatTime(seconds) {
 
 const Discord = __webpack_require__(/*! discord.js */ "./node_modules/discord.js/src/index.js")
 const logSymbols = __webpack_require__(/*! log-symbols */ "./node_modules/log-symbols/index.js")
-const fs = __webpack_require__(/*! fs */ "fs").promises
+const fs = __webpack_require__(/*! fs */ "fs")
 const fetch = __webpack_require__(/*! node-fetch */ "./node_modules/node-fetch/lib/index.mjs")
 const path = __webpack_require__(/*! path */ "path")
 const axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js")
@@ -78106,7 +78106,7 @@ async function retrieveWebcam() {
       console.log(logSymbols.error, `Webcam Util: ${error}`)
 
       return new Discord.MessageAttachment(
-        await fs.readFile(
+        fs.readFileSync(
           path.resolve(__dirname, "../assets/images/snapshot-error.png")
         ),
         "snapshot-error.png"
