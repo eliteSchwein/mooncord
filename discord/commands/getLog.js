@@ -11,6 +11,7 @@ const config = JSON.parse(configData)
 const locale = require('../../utils/localeUtil')
 const permission = require('../../utils/permissionUtil')
 const metadata = require('../commands-metadata/get_log.json')
+const fs = require("fs");
 
 const messageLocale = locale.commands.get_log
 const syntaxLocale = locale.syntaxlocale.commands.get_log

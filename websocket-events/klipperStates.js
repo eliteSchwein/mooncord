@@ -4,6 +4,7 @@ const status = require('../utils/statusUtil')
 const timelapseUtil = require('../utils/timelapseUtil')
 const variables = require('../utils/variablesUtil')
 const states = require('./klipper_states.json')
+const fs = require("fs");
 
 
 

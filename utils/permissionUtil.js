@@ -2,6 +2,7 @@ const args = process.argv.slice(2)
 
 const discordClient = require('../clients/discordClient')
 
+const fs = require("fs");
 
 
 const configData = fs.readFileSync(`${args[0]}/mooncord.json`, {encoding: 'utf8'})

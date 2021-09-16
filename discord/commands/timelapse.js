@@ -5,6 +5,7 @@ const logSymbols = require('log-symbols')
 const locale = require('../../utils/localeUtil')
 const timelapseUtil = require('../../utils/timelapseUtil')
 const variablesUtil = require('../../utils/variablesUtil')
+const fs = require("fs");
 
 
 

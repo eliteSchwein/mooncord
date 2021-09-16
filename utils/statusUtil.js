@@ -3,8 +3,9 @@ const logSymbols = require('log-symbols')
 const Discord = require('discord.js')
 
 const args = process.argv.slice(2)
- 
 
+
+const fs = require("fs");
 
 const configData = fs.readFileSync(`${args[0]}/mooncord.json`, {encoding: 'utf8'})
 const config = JSON.parse(configData)

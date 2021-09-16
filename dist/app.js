@@ -1114,6 +1114,7 @@ const config = JSON.parse(configData)
 const locale = __webpack_require__(/*! ../../utils/localeUtil */ "./utils/localeUtil.js")
 const permission = __webpack_require__(/*! ../../utils/permissionUtil */ "./utils/permissionUtil.js")
 const metadata = __webpack_require__(/*! ../commands-metadata/get_log.json */ "./discord/commands-metadata/get_log.json")
+const fs = __webpack_require__(/*! fs */ "fs");
 
 const messageLocale = locale.commands.get_log
 const syntaxLocale = locale.syntaxlocale.commands.get_log
@@ -1806,6 +1807,7 @@ const logSymbols = __webpack_require__(/*! log-symbols */ "./node_modules/log-sy
 const locale = __webpack_require__(/*! ../../utils/localeUtil */ "./utils/localeUtil.js")
 const timelapseUtil = __webpack_require__(/*! ../../utils/timelapseUtil */ "./utils/timelapseUtil.js")
 const variablesUtil = __webpack_require__(/*! ../../utils/variablesUtil */ "./utils/variablesUtil.js")
+const fs = __webpack_require__(/*! fs */ "fs");
 
 
 
@@ -77266,6 +77268,7 @@ function getDefaultEmbed(image, title) {
 
 const args = process.argv.slice(2)
 
+const fs = __webpack_require__(/*! fs */ "fs");
 
 const configData = fs.readFileSync(`${args[0]}/mooncord.json`, {encoding: 'utf8'})
 const config = JSON.parse(configData)
@@ -77372,6 +77375,7 @@ const args = process.argv.slice(2)
 
 const discordClient = __webpack_require__(/*! ../clients/discordClient */ "./clients/discordClient.js")
 
+const fs = __webpack_require__(/*! fs */ "fs");
 
 
 const configData = fs.readFileSync(`${args[0]}/mooncord.json`, {encoding: 'utf8'})
@@ -77425,8 +77429,9 @@ const logSymbols = __webpack_require__(/*! log-symbols */ "./node_modules/log-sy
 const Discord = __webpack_require__(/*! discord.js */ "./node_modules/discord.js/src/index.js")
 
 const args = process.argv.slice(2)
- 
 
+
+const fs = __webpack_require__(/*! fs */ "fs");
 
 const configData = fs.readFileSync(`${args[0]}/mooncord.json`, {encoding: 'utf8'})
 const config = JSON.parse(configData)
@@ -78373,6 +78378,7 @@ const status = __webpack_require__(/*! ../utils/statusUtil */ "./utils/statusUti
 const timelapseUtil = __webpack_require__(/*! ../utils/timelapseUtil */ "./utils/timelapseUtil.js")
 const variables = __webpack_require__(/*! ../utils/variablesUtil */ "./utils/variablesUtil.js")
 const states = __webpack_require__(/*! ./klipper_states.json */ "./websocket-events/klipper_states.json")
+const fs = __webpack_require__(/*! fs */ "fs");
 
 
 
@@ -78433,6 +78439,7 @@ const logSymbols = __webpack_require__(/*! log-symbols */ "./node_modules/log-sy
 const chatUtil = __webpack_require__(/*! ../utils/chatUtil */ "./utils/chatUtil.js")
 const locale = __webpack_require__(/*! ../utils/localeUtil */ "./utils/localeUtil.js")
 const status = __webpack_require__(/*! ../utils/statusUtil */ "./utils/statusUtil.js")
+const fs = __webpack_require__(/*! fs */ "fs");
 
 
 
@@ -78594,6 +78601,7 @@ async function postUpdate(updateData, discordClient, database) {
 const args = process.argv.slice(2)
 
 
+const fs = __webpack_require__(/*! fs */ "fs");
 
 const configData = fs.readFileSync(`${args[0]}/mooncord.json`, {encoding: 'utf8'})
 const config = JSON.parse(configData)
@@ -78722,6 +78730,7 @@ function updateMCU(mcu, data) {
 const args = process.argv.slice(2)
 
 
+const fs = __webpack_require__(/*! fs */ "fs");
 
 const configData = fs.readFileSync(`${args[0]}/mooncord.json`, {encoding: 'utf8'})
 const config = JSON.parse(configData)
