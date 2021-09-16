@@ -3,15 +3,13 @@ const args = process.argv.slice(2)
 const axios = require('axios')
 const Discord = require('discord.js')
 const logSymbols = require('log-symbols')
-
-
+const fs = require("fs")
 
 const configData = fs.readFileSync(`${args[0]}/mooncord.json`, {encoding: 'utf8'})
 const config = JSON.parse(configData)
 const locale = require('../../utils/localeUtil')
 const permission = require('../../utils/permissionUtil')
 const metadata = require('../commands-metadata/get_log.json')
-const fs = require("fs");
 
 const messageLocale = locale.commands.get_log
 const syntaxLocale = locale.syntaxlocale.commands.get_log
