@@ -15,7 +15,7 @@ module.exports.reply = async (interaction) => {
             .replace(/(\${author})/g, pjson.author)
             .replace(/(\${homepage})/g, pjson.homepage)
     
-        const logopath = path.resolve(__dirname, '../../images/logo.png')
+        const logopath = path.resolve(__dirname, '../../assets/images/logo.png')
         
         const icon = new Discord.MessageAttachment(logopath, 'logo.png')
 

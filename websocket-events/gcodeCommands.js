@@ -16,7 +16,7 @@ const event = (message, connection, discordClient, database) => {
     if(params[0].startsWith("mooncord.broadcast")) {
       const message = params[0].replace("mooncord.broadcast ", "")
       const attachment = new Discord.MessageAttachment()
-      const broadcastembed = new Discord.MessageEmbed(path.resolve(__dirname, '../images/notification.png'))
+      const broadcastembed = new Discord.MessageEmbed(path.resolve(__dirname, '../assets/images/notification.png'))
         .setColor('#03f4fc')
         .setTitle('Message')
         .setThumbnail('attachment://notification.png')

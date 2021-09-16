@@ -23,7 +23,7 @@ module.exports.reply = async (interaction) => {
 function buildEmbed() {
     const temps = variablesUtil.getTemperatures()
 
-    const iconAttachment = new Discord.MessageAttachment(path.resolve(__dirname, '../../images/temps.png'))
+    const iconAttachment = new Discord.MessageAttachment(path.resolve(__dirname, '../../assets/images/temps.png'))
 
     const tempEmbed = new Discord.MessageEmbed()
         .setColor('#0099ff')

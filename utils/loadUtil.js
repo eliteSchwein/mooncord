@@ -129,7 +129,7 @@ function isPartitionsFull(partitions) {
 }
 
 function getImage(component) {
-  const imgPath = path.resolve(__dirname, `../images/${component}.png`)
+  const imgPath = path.resolve(__dirname, `../assets/images/${component}.png`)
   const imgBuffer = fs.readFileSync(imgPath)
 
   return new Discord.MessageAttachment(imgBuffer, `${component}.png`)

@@ -92,7 +92,7 @@ async function retrieveWebcam() {
 
       return new Discord.MessageAttachment(
         await fs.readFile(
-          path.resolve(__dirname, "../images/snapshot-error.png")
+          path.resolve(__dirname, "../assets/images/snapshot-error.png")
         ),
         "snapshot-error.png"
       )

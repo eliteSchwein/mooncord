@@ -38,7 +38,7 @@ module.exports.getWaitEmbed = (user, relation, icon) => {
 
 
 
-  const imgPath = path.resolve(__dirname, `../images/${icon}`)
+  const imgPath = path.resolve(__dirname, `../assets/images/${icon}`)
   const thumbnail = new Discord.MessageAttachment(imgPath, icon)
 
   const waitEmbed = new Discord.MessageEmbed()
@@ -75,7 +75,7 @@ module.exports.generateWarnEmbed = (title, description) => {
     .setTimestamp()
     .setDescription(description)
   
-  const icon = new Discord.MessageAttachment(path.resolve(__dirname, '../images/warning.png'), 'warning.png')
+  const icon = new Discord.MessageAttachment(path.resolve(__dirname, '../assets/images/warning.png'), 'warning.png')
   
   return { embeds: [embed], files: [icon] }
 }
@@ -119,7 +119,7 @@ module.exports.generatePageEmbed = (pageUp, currentPage, data, title, icon, addF
 
   selectRow.addComponents(selectList)
 
-  const imgPath = path.resolve(__dirname, `../images/${icon}`)
+  const imgPath = path.resolve(__dirname, `../assets/images/${icon}`)
   const thumbnail = new Discord.MessageAttachment(imgPath, icon)
 
   const components = []

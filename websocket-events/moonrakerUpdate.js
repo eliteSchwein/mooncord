@@ -37,7 +37,7 @@ async function postUpdate(updateData, discordClient, database) {
     .setThumbnail('attachment://update.png')
     .setTimestamp()
   
-  const icon = new Discord.MessageAttachment(path.resolve(__dirname, '../images/update.png'))
+  const icon = new Discord.MessageAttachment(path.resolve(__dirname, '../assets/images/update.png'))
 
   for (const software in updateData) {
     if (software === 'system') {
