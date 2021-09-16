@@ -77348,7 +77348,9 @@ async function saveData() {
 
 const args = process.argv.slice(2)
 
-const statusconfig = __webpack_require__("./utils sync recursive ^.*\\/mooncord\\.json$")(`${args[0]}/mooncord.json`)
+const fs = __webpack_require__(/*! fs */ "fs");
+const configData = fs.readFileSync(`${args[0]}/mooncord.json`, {encoding: 'utf8'})
+const statusconfig = JSON.parse(configData)
 const database = __webpack_require__(/*! ./databaseUtil */ "./utils/databaseUtil.js")
 
 module.exports.init = () => {

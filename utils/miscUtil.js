@@ -1,6 +1,8 @@
 const args = process.argv.slice(2)
 
-const statusconfig = require(`${args[0]}/mooncord.json`)
+const fs = require("fs");
+const configData = fs.readFileSync(`${args[0]}/mooncord.json`, {encoding: 'utf8'})
+const statusconfig = JSON.parse(configData)
 const database = require('./databaseUtil')
 
 module.exports.init = () => {
