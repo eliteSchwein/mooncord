@@ -81139,7 +81139,7 @@ console.log(`${args[0]}/mooncord.json`)
 let config
 
 // eslint-disable-next-line promise/prefer-await-to-callbacks
-console.log(fs.readFile(`${args[0]}/mooncord.json`), (err, jsonString) => {
+console.log(fs.readFile(`${args[0]}/mooncord.json`), 'utf8', (err, jsonString) => {
     console.log('test')
 })
 console.log(fs.readFile(`${args[0]}/mooncord.json`, 'utf8', (err, jsonString) => {
