@@ -4,9 +4,8 @@ const fs = require('fs')
 
 console.log(`${args[0]}/mooncord.json`)
 
-const config = fs.readFileSync(`${args[0]}/mooncord.json`, {encoding: 'utf8'})
-
-//const config = require(/* webpackMode: "weak" */ `${args[0]}/mooncord.json`)
+const configData = fs.readFileSync(`${args[0]}/mooncord.json`, {encoding: 'utf8'})
+const config = JSON.parse(configData)
 
 console.log(config)
 
