@@ -78942,38 +78942,6 @@ module.exports = webpackEmptyContext;
 
 /***/ }),
 
-/***/ "./. lazy recursive ^.*\\/mooncord\\.json$":
-/*!*******************************************************!*\
-  !*** ././ lazy ^.*\/mooncord\.json$ namespace object ***!
-  \*******************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-var map = {
-	"./scripts/mooncord.json": [
-		"./scripts/mooncord.json",
-		"scripts_mooncord_json"
-	]
-};
-function webpackAsyncContext(req) {
-	if(!__webpack_require__.o(map, req)) {
-		return Promise.resolve().then(() => {
-			var e = new Error("Cannot find module '" + req + "'");
-			e.code = 'MODULE_NOT_FOUND';
-			throw e;
-		});
-	}
-
-	var ids = map[req], id = ids[0];
-	return __webpack_require__.e(ids[1]).then(() => {
-		return __webpack_require__.t(id, 3 | 16);
-	});
-}
-webpackAsyncContext.keys = () => (Object.keys(map));
-webpackAsyncContext.id = "./. lazy recursive ^.*\\/mooncord\\.json$";
-module.exports = webpackAsyncContext;
-
-/***/ }),
-
 /***/ "sharp":
 /*!************************!*\
   !*** external "sharp" ***!
@@ -81039,7 +81007,7 @@ module.exports = JSON.parse('{"name":"websocket","description":"Websocket Client
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"name":"mooncord","version":"0.0.4","description":"Moonraker Discord Bot based on Discord.js","main":"index.js","scripts":{"start":"node mooncord.js","ramdebugstart":"node --trace_gc mooncord.js","checkcodestyle":"npx eslint ./**","autofixcodestyle":"npx eslint ./** --fix","build-dev":"webpack  --mode=development","build":"webpack  --mode=production"},"repository":{"type":"git","url":"git+https://github.com/eliteSchwein/mooncord.git"},"keywords":[],"author":"eliteSCHW31N","license":"ISC","bugs":{"url":"https://github.com/eliteSchwein/mooncord/issues"},"homepage":"https://github.com/eliteSchwein/mooncord#readme","devDependencies":{"async-wait-until":"^2.0.7","axios":"^0.21.1","colors":"^1.4.0","discord.js":"^13.1.0","eslint":"^7.32.0","eslint-config-galex":"^2.16.9","eslint-config-standard":"^16.0.3","eslint-plugin-import":"^2.24.1","eslint-plugin-node":"^11.1.0","eslint-plugin-promise":"^5.1.0","fluent-ffmpeg":"^2.1.2","form-data":"^4.0.0","log-symbols":"^4.1.0","sharp":"^0.29.0","shelljs":"^0.8.4","systeminformation":"^5.8.0","typescript":"^4.4.3","webpack":"^5.52.1","webpack-cli":"^4.8.0","websocket":"^1.0.34"}}');
+module.exports = JSON.parse('{"name":"mooncord","version":"0.0.4","description":"Moonraker Discord Bot based on Discord.js","main":"index.js","scripts":{"start":"node mooncord.js","ramdebugstart":"node --trace_gc mooncord.js","checkcodestyle":"npx eslint ./**","autofixcodestyle":"npx eslint ./** --fix","build-dev":"webpack  --mode=development","build":"webpack  --mode=production","watch":"webpack --watch  --mode=development"},"repository":{"type":"git","url":"git+https://github.com/eliteSchwein/mooncord.git"},"keywords":[],"author":"eliteSCHW31N","license":"ISC","bugs":{"url":"https://github.com/eliteSchwein/mooncord/issues"},"homepage":"https://github.com/eliteSchwein/mooncord#readme","devDependencies":{"async-wait-until":"^2.0.7","axios":"^0.21.1","colors":"^1.4.0","discord.js":"^13.1.0","eslint":"^7.32.0","eslint-config-galex":"^2.16.9","eslint-config-standard":"^16.0.3","eslint-plugin-import":"^2.24.1","eslint-plugin-node":"^11.1.0","eslint-plugin-promise":"^5.1.0","fluent-ffmpeg":"^2.1.2","form-data":"^4.0.0","log-symbols":"^4.1.0","sharp":"^0.29.0","shelljs":"^0.8.4","systeminformation":"^5.8.0","typescript":"^4.4.3","webpack":"^5.52.1","webpack-cli":"^4.8.0","websocket":"^1.0.34"}}');
 
 /***/ }),
 
@@ -81116,40 +81084,7 @@ module.exports = JSON.parse('{"notify_klippy_disconnected":{"status":"disconnect
 /******/ 		return module.exports;
 /******/ 	}
 /******/ 	
-/******/ 	// expose the modules object (__webpack_modules__)
-/******/ 	__webpack_require__.m = __webpack_modules__;
-/******/ 	
 /************************************************************************/
-/******/ 	/* webpack/runtime/create fake namespace object */
-/******/ 	(() => {
-/******/ 		var getProto = Object.getPrototypeOf ? (obj) => (Object.getPrototypeOf(obj)) : (obj) => (obj.__proto__);
-/******/ 		var leafPrototypes;
-/******/ 		// create a fake namespace object
-/******/ 		// mode & 1: value is a module id, require it
-/******/ 		// mode & 2: merge all properties of value into the ns
-/******/ 		// mode & 4: return value when already ns object
-/******/ 		// mode & 16: return value when it's Promise-like
-/******/ 		// mode & 8|1: behave like require
-/******/ 		__webpack_require__.t = function(value, mode) {
-/******/ 			if(mode & 1) value = this(value);
-/******/ 			if(mode & 8) return value;
-/******/ 			if(typeof value === 'object' && value) {
-/******/ 				if((mode & 4) && value.__esModule) return value;
-/******/ 				if((mode & 16) && typeof value.then === 'function') return value;
-/******/ 			}
-/******/ 			var ns = Object.create(null);
-/******/ 			__webpack_require__.r(ns);
-/******/ 			var def = {};
-/******/ 			leafPrototypes = leafPrototypes || [null, getProto({}), getProto([]), getProto(getProto)];
-/******/ 			for(var current = mode & 2 && value; typeof current == 'object' && !~leafPrototypes.indexOf(current); current = getProto(current)) {
-/******/ 				Object.getOwnPropertyNames(current).forEach((key) => (def[key] = () => (value[key])));
-/******/ 			}
-/******/ 			def['default'] = () => (value);
-/******/ 			__webpack_require__.d(ns, def);
-/******/ 			return ns;
-/******/ 		};
-/******/ 	})();
-/******/ 	
 /******/ 	/* webpack/runtime/define property getters */
 /******/ 	(() => {
 /******/ 		// define getter functions for harmony exports
@@ -81159,28 +81094,6 @@ module.exports = JSON.parse('{"notify_klippy_disconnected":{"status":"disconnect
 /******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
 /******/ 				}
 /******/ 			}
-/******/ 		};
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/ensure chunk */
-/******/ 	(() => {
-/******/ 		__webpack_require__.f = {};
-/******/ 		// This file contains only the entry chunk.
-/******/ 		// The chunk loading function for additional chunks
-/******/ 		__webpack_require__.e = (chunkId) => {
-/******/ 			return Promise.all(Object.keys(__webpack_require__.f).reduce((promises, key) => {
-/******/ 				__webpack_require__.f[key](chunkId, promises);
-/******/ 				return promises;
-/******/ 			}, []));
-/******/ 		};
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/get javascript chunk filename */
-/******/ 	(() => {
-/******/ 		// This function allow to reference async chunks
-/******/ 		__webpack_require__.u = (chunkId) => {
-/******/ 			// return url for filenames based on template
-/******/ 			return "" + chunkId + ".app.js";
 /******/ 		};
 /******/ 	})();
 /******/ 	
@@ -81209,48 +81122,6 @@ module.exports = JSON.parse('{"notify_klippy_disconnected":{"status":"disconnect
 /******/ 		};
 /******/ 	})();
 /******/ 	
-/******/ 	/* webpack/runtime/require chunk loading */
-/******/ 	(() => {
-/******/ 		// no baseURI
-/******/ 		
-/******/ 		// object to store loaded chunks
-/******/ 		// "1" means "loaded", otherwise not loaded yet
-/******/ 		var installedChunks = {
-/******/ 			"main": 1
-/******/ 		};
-/******/ 		
-/******/ 		// no on chunks loaded
-/******/ 		
-/******/ 		var installChunk = (chunk) => {
-/******/ 			var moreModules = chunk.modules, chunkIds = chunk.ids, runtime = chunk.runtime;
-/******/ 			for(var moduleId in moreModules) {
-/******/ 				if(__webpack_require__.o(moreModules, moduleId)) {
-/******/ 					__webpack_require__.m[moduleId] = moreModules[moduleId];
-/******/ 				}
-/******/ 			}
-/******/ 			if(runtime) runtime(__webpack_require__);
-/******/ 			for(var i = 0; i < chunkIds.length; i++)
-/******/ 				installedChunks[chunkIds[i]] = 1;
-/******/ 		
-/******/ 		};
-/******/ 		
-/******/ 		// require() chunk loading for javascript
-/******/ 		__webpack_require__.f.require = (chunkId, promises) => {
-/******/ 			// "1" is the signal for "already loaded"
-/******/ 			if(!installedChunks[chunkId]) {
-/******/ 				if(true) { // all chunks have JS
-/******/ 					installChunk(require("./" + __webpack_require__.u(chunkId)));
-/******/ 				} else installedChunks[chunkId] = 1;
-/******/ 			}
-/******/ 		};
-/******/ 		
-/******/ 		// no external install chunk
-/******/ 		
-/******/ 		// no HMR
-/******/ 		
-/******/ 		// no HMR manifest
-/******/ 	})();
-/******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be in strict mode.
@@ -81261,17 +81132,23 @@ var __webpack_exports__ = {};
   \*********************/
 
 const args = process.argv.slice(2)
+const fs = __webpack_require__(/*! fs */ "fs")
 
 console.log(`${args[0]}/mooncord.json`)
 
 let config
 
-// eslint-disable-next-line no-return-assign,promise/catch-or-return,import/dynamic-import-chunkname
-__webpack_require__("./. lazy recursive ^.*\\/mooncord\\.json$")(`${args[0]}/mooncord.json`).then(data => config = data)
+fs.readFile(`${args[0]}/mooncord.json`, 'utf8', (err, jsonString) => {
+    if (err) {
+        console.log("File read failed:", err)
+        return
+    }
+    config = JSON.parse(jsonString)
+})
 
 //const config = require(/* webpackMode: "weak" */ `${args[0]}/mooncord.json`)
 
-console.log(config);
+console.log(config)
 
 process.exit()
 

@@ -1,16 +1,22 @@
 'use strict'
 const args = process.argv.slice(2)
+const fs = require('fs')
 
 console.log(`${args[0]}/mooncord.json`)
 
 let config
 
-// eslint-disable-next-line no-return-assign,promise/catch-or-return,import/dynamic-import-chunkname
-import(`${args[0]}/mooncord.json`).then(data => config = data)
+fs.readFile(`${args[0]}/mooncord.json`, 'utf8', (err, jsonString) => {
+    if (err) {
+        console.log("File read failed:", err)
+        return
+    }
+    config = JSON.parse(jsonString)
+})
 
 //const config = require(/* webpackMode: "weak" */ `${args[0]}/mooncord.json`)
 
-console.log(config);
+console.log(config)
 
 process.exit()
 
