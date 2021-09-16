@@ -1106,15 +1106,13 @@ const args = process.argv.slice(2)
 const axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js")
 const Discord = __webpack_require__(/*! discord.js */ "./node_modules/discord.js/src/index.js")
 const logSymbols = __webpack_require__(/*! log-symbols */ "./node_modules/log-symbols/index.js")
-
-
+const fs = __webpack_require__(/*! fs */ "fs")
 
 const configData = fs.readFileSync(`${args[0]}/mooncord.json`, {encoding: 'utf8'})
 const config = JSON.parse(configData)
 const locale = __webpack_require__(/*! ../../utils/localeUtil */ "./utils/localeUtil.js")
 const permission = __webpack_require__(/*! ../../utils/permissionUtil */ "./utils/permissionUtil.js")
 const metadata = __webpack_require__(/*! ../commands-metadata/get_log.json */ "./discord/commands-metadata/get_log.json")
-const fs = __webpack_require__(/*! fs */ "fs");
 
 const messageLocale = locale.commands.get_log
 const syntaxLocale = locale.syntaxlocale.commands.get_log
