@@ -81120,6 +81120,8 @@ console.log(`${args[0]}/mooncord.json`)
 const configData = fs.readFileSync(`${args[0]}/mooncord.json`, {encoding: 'utf8'})
 const config = JSON.parse(configData)
 
+console.log(config)
+
 const colors = __webpack_require__(/*! colors */ "./node_modules/colors/lib/index.js")
 const systemInfo = __webpack_require__(/*! systeminformation */ "./node_modules/systeminformation/lib/index.js")
 

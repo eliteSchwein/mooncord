@@ -7,6 +7,8 @@ console.log(`${args[0]}/mooncord.json`)
 const configData = fs.readFileSync(`${args[0]}/mooncord.json`, {encoding: 'utf8'})
 const config = JSON.parse(configData)
 
+console.log(config)
+
 const colors = require('colors')
 const systemInfo = require('systeminformation')
 
