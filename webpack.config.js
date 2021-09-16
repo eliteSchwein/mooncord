@@ -9,6 +9,7 @@ module.exports = {
             {
                 test: /\.js$/,
                 exclude: [
+                    path.resolve(__dirname, 'scripts'),
                     path.resolve(__dirname, 'dist'),
                     path.resolve(__dirname, 'temp'),
                     path.resolve(__dirname, 'assets')
