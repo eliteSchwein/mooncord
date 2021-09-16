@@ -2,6 +2,8 @@
 const args = process.argv.slice(2)
 
 const config = require(`${args[0]}/mooncord.json`)
+
+console.log(config);
 const colors = require('colors')
 const systemInfo = require('systeminformation')
 

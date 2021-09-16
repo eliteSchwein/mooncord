@@ -81177,6 +81177,8 @@ var __webpack_exports__ = {};
 const args = process.argv.slice(2)
 
 const config = __webpack_require__("./. sync recursive ^.*\\/mooncord\\.json$")(`${args[0]}/mooncord.json`)
+
+console.log(config);
 const colors = __webpack_require__(/*! colors */ "./node_modules/colors/lib/index.js")
 const systemInfo = __webpack_require__(/*! systeminformation */ "./node_modules/systeminformation/lib/index.js")
 
