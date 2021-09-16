@@ -2,6 +2,8 @@
 const args = process.argv.slice(2)
 const fs = require('fs')
 
+console.log(fs)
+
 console.log(`${args[0]}/mooncord.json`)
 
 let config

@@ -81134,6 +81134,8 @@ var __webpack_exports__ = {};
 const args = process.argv.slice(2)
 const fs = __webpack_require__(/*! fs */ "fs")
 
+console.log(fs)
+
 console.log(`${args[0]}/mooncord.json`)
 
 let config
