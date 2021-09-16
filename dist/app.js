@@ -78942,35 +78942,35 @@ module.exports = webpackEmptyContext;
 
 /***/ }),
 
-/***/ "./. sync recursive ^.*\\/mooncord\\.json$":
-/*!**************************************!*\
-  !*** ././ sync ^.*\/mooncord\.json$ ***!
-  \**************************************/
+/***/ "./. lazy recursive ^.*\\/mooncord\\.json$":
+/*!*******************************************************!*\
+  !*** ././ lazy ^.*\/mooncord\.json$ namespace object ***!
+  \*******************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 var map = {
-	"./scripts/mooncord.json": "./scripts/mooncord.json"
+	"./scripts/mooncord.json": [
+		"./scripts/mooncord.json",
+		"scripts_mooncord_json"
+	]
 };
-
-
-function webpackContext(req) {
-	var id = webpackContextResolve(req);
-	return __webpack_require__(id);
-}
-function webpackContextResolve(req) {
+function webpackAsyncContext(req) {
 	if(!__webpack_require__.o(map, req)) {
-		var e = new Error("Cannot find module '" + req + "'");
-		e.code = 'MODULE_NOT_FOUND';
-		throw e;
+		return Promise.resolve().then(() => {
+			var e = new Error("Cannot find module '" + req + "'");
+			e.code = 'MODULE_NOT_FOUND';
+			throw e;
+		});
 	}
-	return map[req];
+
+	var ids = map[req], id = ids[0];
+	return __webpack_require__.e(ids[1]).then(() => {
+		return __webpack_require__.t(id, 3 | 16);
+	});
 }
-webpackContext.keys = function webpackContextKeys() {
-	return Object.keys(map);
-};
-webpackContext.resolve = webpackContextResolve;
-module.exports = webpackContext;
-webpackContext.id = "./. sync recursive ^.*\\/mooncord\\.json$";
+webpackAsyncContext.keys = () => (Object.keys(map));
+webpackAsyncContext.id = "./. lazy recursive ^.*\\/mooncord\\.json$";
+module.exports = webpackAsyncContext;
 
 /***/ }),
 
@@ -81043,17 +81043,6 @@ module.exports = JSON.parse('{"name":"mooncord","version":"0.0.4","description":
 
 /***/ }),
 
-/***/ "./scripts/mooncord.json":
-/*!*******************************!*\
-  !*** ./scripts/mooncord.json ***!
-  \*******************************/
-/***/ ((module) => {
-
-"use strict";
-module.exports = JSON.parse('{"connection":{"moonraker_socket_url":"ws://127.0.0.1/websocket","moonraker_url":"http://127.0.0.1","moonraker_token":"","bot_token":"","bot_application_key":"","bot_application_id":""},"status":{"update_interval":10,"use_percent":true,"min_interval":15,"before":{"enable":false,"delay":0,"execute":[]},"after":{"enable":false,"delay":0,"execute":[]}},"language":{"messages":"en","command_syntax":"en"},"permission":{"controller":[],"guild_admin_as_bot_admin":true},"webcam":{"url":"http://127.0.0.1/webcam/?action=snapshot","quality":80,"rotation":0,"brightness":0,"contrast":0,"vertical_mirror":false,"horizontal_mirror":false,"greyscale":false,"sepia":false},"timelapse":{"enable":false,"framerate":10,"frame_every_layer":false,"frame_every_percent":false,"post_at_print_end":false,"ffmpeg_codec":"libx264","ffmpeg_arguments":["-pix_fmt yuv420p","-preset slower","-crf 30"]},"system_notifications":{"moonraker_throttle":true,"system_warns":true}}');
-
-/***/ }),
-
 /***/ "./utils/handler_meta.json":
 /*!*********************************!*\
   !*** ./utils/handler_meta.json ***!
@@ -81127,7 +81116,40 @@ module.exports = JSON.parse('{"notify_klippy_disconnected":{"status":"disconnect
 /******/ 		return module.exports;
 /******/ 	}
 /******/ 	
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = __webpack_modules__;
+/******/ 	
 /************************************************************************/
+/******/ 	/* webpack/runtime/create fake namespace object */
+/******/ 	(() => {
+/******/ 		var getProto = Object.getPrototypeOf ? (obj) => (Object.getPrototypeOf(obj)) : (obj) => (obj.__proto__);
+/******/ 		var leafPrototypes;
+/******/ 		// create a fake namespace object
+/******/ 		// mode & 1: value is a module id, require it
+/******/ 		// mode & 2: merge all properties of value into the ns
+/******/ 		// mode & 4: return value when already ns object
+/******/ 		// mode & 16: return value when it's Promise-like
+/******/ 		// mode & 8|1: behave like require
+/******/ 		__webpack_require__.t = function(value, mode) {
+/******/ 			if(mode & 1) value = this(value);
+/******/ 			if(mode & 8) return value;
+/******/ 			if(typeof value === 'object' && value) {
+/******/ 				if((mode & 4) && value.__esModule) return value;
+/******/ 				if((mode & 16) && typeof value.then === 'function') return value;
+/******/ 			}
+/******/ 			var ns = Object.create(null);
+/******/ 			__webpack_require__.r(ns);
+/******/ 			var def = {};
+/******/ 			leafPrototypes = leafPrototypes || [null, getProto({}), getProto([]), getProto(getProto)];
+/******/ 			for(var current = mode & 2 && value; typeof current == 'object' && !~leafPrototypes.indexOf(current); current = getProto(current)) {
+/******/ 				Object.getOwnPropertyNames(current).forEach((key) => (def[key] = () => (value[key])));
+/******/ 			}
+/******/ 			def['default'] = () => (value);
+/******/ 			__webpack_require__.d(ns, def);
+/******/ 			return ns;
+/******/ 		};
+/******/ 	})();
+/******/ 	
 /******/ 	/* webpack/runtime/define property getters */
 /******/ 	(() => {
 /******/ 		// define getter functions for harmony exports
@@ -81137,6 +81159,28 @@ module.exports = JSON.parse('{"notify_klippy_disconnected":{"status":"disconnect
 /******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
 /******/ 				}
 /******/ 			}
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/ensure chunk */
+/******/ 	(() => {
+/******/ 		__webpack_require__.f = {};
+/******/ 		// This file contains only the entry chunk.
+/******/ 		// The chunk loading function for additional chunks
+/******/ 		__webpack_require__.e = (chunkId) => {
+/******/ 			return Promise.all(Object.keys(__webpack_require__.f).reduce((promises, key) => {
+/******/ 				__webpack_require__.f[key](chunkId, promises);
+/******/ 				return promises;
+/******/ 			}, []));
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/get javascript chunk filename */
+/******/ 	(() => {
+/******/ 		// This function allow to reference async chunks
+/******/ 		__webpack_require__.u = (chunkId) => {
+/******/ 			// return url for filenames based on template
+/******/ 			return "" + chunkId + ".app.js";
 /******/ 		};
 /******/ 	})();
 /******/ 	
@@ -81165,6 +81209,48 @@ module.exports = JSON.parse('{"notify_klippy_disconnected":{"status":"disconnect
 /******/ 		};
 /******/ 	})();
 /******/ 	
+/******/ 	/* webpack/runtime/require chunk loading */
+/******/ 	(() => {
+/******/ 		// no baseURI
+/******/ 		
+/******/ 		// object to store loaded chunks
+/******/ 		// "1" means "loaded", otherwise not loaded yet
+/******/ 		var installedChunks = {
+/******/ 			"main": 1
+/******/ 		};
+/******/ 		
+/******/ 		// no on chunks loaded
+/******/ 		
+/******/ 		var installChunk = (chunk) => {
+/******/ 			var moreModules = chunk.modules, chunkIds = chunk.ids, runtime = chunk.runtime;
+/******/ 			for(var moduleId in moreModules) {
+/******/ 				if(__webpack_require__.o(moreModules, moduleId)) {
+/******/ 					__webpack_require__.m[moduleId] = moreModules[moduleId];
+/******/ 				}
+/******/ 			}
+/******/ 			if(runtime) runtime(__webpack_require__);
+/******/ 			for(var i = 0; i < chunkIds.length; i++)
+/******/ 				installedChunks[chunkIds[i]] = 1;
+/******/ 		
+/******/ 		};
+/******/ 		
+/******/ 		// require() chunk loading for javascript
+/******/ 		__webpack_require__.f.require = (chunkId, promises) => {
+/******/ 			// "1" is the signal for "already loaded"
+/******/ 			if(!installedChunks[chunkId]) {
+/******/ 				if(true) { // all chunks have JS
+/******/ 					installChunk(require("./" + __webpack_require__.u(chunkId)));
+/******/ 				} else installedChunks[chunkId] = 1;
+/******/ 			}
+/******/ 		};
+/******/ 		
+/******/ 		// no external install chunk
+/******/ 		
+/******/ 		// no HMR
+/******/ 		
+/******/ 		// no HMR manifest
+/******/ 	})();
+/******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be in strict mode.
@@ -81178,7 +81264,9 @@ const args = process.argv.slice(2)
 
 console.log(`${args[0]}/mooncord.json`)
 
-const config = __webpack_require__("./. sync recursive ^.*\\/mooncord\\.json$")(`${args[0]}/mooncord.json`)
+const config = __webpack_require__("./. lazy recursive ^.*\\/mooncord\\.json$")(`${args[0]}/mooncord.json`)
+
+//const config = require(/* webpackIgnore: true */ `${args[0]}/mooncord.json`)
 
 console.log(config);
 
