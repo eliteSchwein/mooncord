@@ -1,6 +1,9 @@
 const args = process.argv.slice(2)
 
-const config = require(`${args[0]}/mooncord.json`)
+
+
+const configData = fs.readFileSync(`${args[0]}/mooncord.json`, {encoding: 'utf8'})
+const config = JSON.parse(configData)
 const status = require('../../utils/statusUtil')
 const timelapseUtil = require('../../utils/timelapseUtil')
 const variables = require('../../utils/variablesUtil')

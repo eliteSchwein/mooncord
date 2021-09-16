@@ -4,7 +4,10 @@ const Discord = require('discord.js')
 
 const args = process.argv.slice(2)
  
-const config = require(`${args[0]}/mooncord.json`)
+
+
+const configData = fs.readFileSync(`${args[0]}/mooncord.json`, {encoding: 'utf8'})
+const config = JSON.parse(configData)
 const database = require('./databaseUtil')
 const locale = require('./localeUtil')
 const metadata = require('./status_meta_data.json')

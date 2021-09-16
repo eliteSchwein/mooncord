@@ -1,5 +1,8 @@
 const args = process.argv.slice(2)
-const config = require(`${args[0]}/mooncord.json`)
+
+
+const configData = fs.readFileSync(`${args[0]}/mooncord.json`, {encoding: 'utf8'})
+const config = JSON.parse(configData)
 const locale = require(`../locales/${config.language.messages}.json`)
 const syntaxlocale = require(`../locales/${config.language.command_syntax}.json`)
 

@@ -6,7 +6,10 @@ const fs = require('fs')
 const https = require('https')
 const logSymbols = require('log-symbols')
 
-const config = require(`${args[0]}/mooncord.json`)
+
+
+const configData = fs.readFileSync(`${args[0]}/mooncord.json`, {encoding: 'utf8'})
+const config = JSON.parse(configData)
 const database = require('../../utils/databaseUtil')
 const locale = require('../../utils/localeUtil')
 const permission = require('../../utils/permissionUtil')

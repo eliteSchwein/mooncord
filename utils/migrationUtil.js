@@ -7,7 +7,10 @@ const util = require('util')
 
 const writeFile = util.promisify(fs.writeFile)
 
-const config = require(`${args[0]}/mooncord.json`)
+
+
+const configData = fs.readFileSync(`${args[0]}/mooncord.json`, {encoding: 'utf8'})
+const config = JSON.parse(configData)
 
 module.exports.migrate = async () => {
   let modified = false

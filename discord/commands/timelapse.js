@@ -6,7 +6,10 @@ const locale = require('../../utils/localeUtil')
 const timelapseUtil = require('../../utils/timelapseUtil')
 const variablesUtil = require('../../utils/variablesUtil')
 
-const config = require(`${args[0]}/mooncord.json`)
+
+
+const configData = fs.readFileSync(`${args[0]}/mooncord.json`, {encoding: 'utf8'})
+const config = JSON.parse(configData)
 
 module.exports.reply = async (interaction) => {
     try {

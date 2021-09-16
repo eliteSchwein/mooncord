@@ -5,7 +5,10 @@ const timelapseUtil = require('../utils/timelapseUtil')
 const variables = require('../utils/variablesUtil')
 const states = require('./klipper_states.json')
 
-const config = require(`${args[0]}/mooncord.json`)
+
+
+const configData = fs.readFileSync(`${args[0]}/mooncord.json`, {encoding: 'utf8'})
+const config = JSON.parse(configData)
 
 const event = async (message, connection, discordClient) => {
   if (message.type !== 'utf8') { return }

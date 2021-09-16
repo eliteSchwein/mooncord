@@ -1107,7 +1107,10 @@ const axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js")
 const Discord = __webpack_require__(/*! discord.js */ "./node_modules/discord.js/src/index.js")
 const logSymbols = __webpack_require__(/*! log-symbols */ "./node_modules/log-symbols/index.js")
 
-const config = __webpack_require__("./discord/commands sync recursive ^.*\\/mooncord\\.json$")(`${args[0]}/mooncord.json`)
+
+
+const configData = fs.readFileSync(`${args[0]}/mooncord.json`, {encoding: 'utf8'})
+const config = JSON.parse(configData)
 const locale = __webpack_require__(/*! ../../utils/localeUtil */ "./utils/localeUtil.js")
 const permission = __webpack_require__(/*! ../../utils/permissionUtil */ "./utils/permissionUtil.js")
 const metadata = __webpack_require__(/*! ../commands-metadata/get_log.json */ "./discord/commands-metadata/get_log.json")
@@ -1804,7 +1807,10 @@ const locale = __webpack_require__(/*! ../../utils/localeUtil */ "./utils/locale
 const timelapseUtil = __webpack_require__(/*! ../../utils/timelapseUtil */ "./utils/timelapseUtil.js")
 const variablesUtil = __webpack_require__(/*! ../../utils/variablesUtil */ "./utils/variablesUtil.js")
 
-const config = __webpack_require__("./discord/commands sync recursive ^.*\\/mooncord\\.json$")(`${args[0]}/mooncord.json`)
+
+
+const configData = fs.readFileSync(`${args[0]}/mooncord.json`, {encoding: 'utf8'})
+const config = JSON.parse(configData)
 
 module.exports.reply = async (interaction) => {
     try {
@@ -1829,24 +1835,6 @@ module.exports.reply = async (interaction) => {
         await interaction.reply(locale.errors.command_failed)
     }
 }
-
-/***/ }),
-
-/***/ "./discord/commands sync recursive ^.*\\/mooncord\\.json$":
-/*!*****************************************************!*\
-  !*** ./discord/commands/ sync ^.*\/mooncord\.json$ ***!
-  \*****************************************************/
-/***/ ((module) => {
-
-function webpackEmptyContext(req) {
-	var e = new Error("Cannot find module '" + req + "'");
-	e.code = 'MODULE_NOT_FOUND';
-	throw e;
-}
-webpackEmptyContext.keys = () => ([]);
-webpackEmptyContext.resolve = webpackEmptyContext;
-webpackEmptyContext.id = "./discord/commands sync recursive ^.*\\/mooncord\\.json$";
-module.exports = webpackEmptyContext;
 
 /***/ }),
 
@@ -1924,7 +1912,10 @@ const fs = __webpack_require__(/*! fs */ "fs")
 const https = __webpack_require__(/*! https */ "https")
 const logSymbols = __webpack_require__(/*! log-symbols */ "./node_modules/log-symbols/index.js")
 
-const config = __webpack_require__("./discord/events sync recursive ^.*\\/mooncord\\.json$")(`${args[0]}/mooncord.json`)
+
+
+const configData = fs.readFileSync(`${args[0]}/mooncord.json`, {encoding: 'utf8'})
+const config = JSON.parse(configData)
 const database = __webpack_require__(/*! ../../utils/databaseUtil */ "./utils/databaseUtil.js")
 const locale = __webpack_require__(/*! ../../utils/localeUtil */ "./utils/localeUtil.js")
 const permission = __webpack_require__(/*! ../../utils/permissionUtil */ "./utils/permissionUtil.js")
@@ -2045,24 +2036,6 @@ async function uploadFile(message) {
   })
 }
 
-
-/***/ }),
-
-/***/ "./discord/events sync recursive ^.*\\/mooncord\\.json$":
-/*!***************************************************!*\
-  !*** ./discord/events/ sync ^.*\/mooncord\.json$ ***!
-  \***************************************************/
-/***/ ((module) => {
-
-function webpackEmptyContext(req) {
-	var e = new Error("Cannot find module '" + req + "'");
-	e.code = 'MODULE_NOT_FOUND';
-	throw e;
-}
-webpackEmptyContext.keys = () => ([]);
-webpackEmptyContext.resolve = webpackEmptyContext;
-webpackEmptyContext.id = "./discord/events sync recursive ^.*\\/mooncord\\.json$";
-module.exports = webpackEmptyContext;
 
 /***/ }),
 
@@ -77131,7 +77104,10 @@ const componentHandler = __webpack_require__(/*! ./hsComponents */ "./utils/hsCo
 const locale = __webpack_require__(/*! ./localeUtil */ "./utils/localeUtil.js")
 const status = __webpack_require__(/*! ./statusUtil */ "./utils/statusUtil.js")
 
-const config = __webpack_require__("./utils sync recursive ^.*\\/mooncord\\.json$")(`${args[0]}/mooncord.json`)
+
+
+const configData = fs.readFileSync(`${args[0]}/mooncord.json`, {encoding: 'utf8'})
+const config = JSON.parse(configData)
 
 const usageData = {
   'cpu': {
@@ -77289,7 +77265,10 @@ function getDefaultEmbed(image, title) {
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 const args = process.argv.slice(2)
-const config = __webpack_require__("./utils sync recursive ^.*\\/mooncord\\.json$")(`${args[0]}/mooncord.json`)
+
+
+const configData = fs.readFileSync(`${args[0]}/mooncord.json`, {encoding: 'utf8'})
+const config = JSON.parse(configData)
 const locale = __webpack_require__("./locales sync recursive ^\\.\\/.*\\.json$")(`./${config.language.messages}.json`)
 const syntaxlocale = __webpack_require__("./locales sync recursive ^\\.\\/.*\\.json$")(`./${config.language.command_syntax}.json`)
 
@@ -77325,7 +77304,10 @@ const util = __webpack_require__(/*! util */ "util")
 
 const writeFile = util.promisify(fs.writeFile)
 
-const config = __webpack_require__("./utils sync recursive ^.*\\/mooncord\\.json$")(`${args[0]}/mooncord.json`)
+
+
+const configData = fs.readFileSync(`${args[0]}/mooncord.json`, {encoding: 'utf8'})
+const config = JSON.parse(configData)
 
 module.exports.migrate = async () => {
   let modified = false
@@ -77390,7 +77372,10 @@ const args = process.argv.slice(2)
 
 const discordClient = __webpack_require__(/*! ../clients/discordClient */ "./clients/discordClient.js")
 
-const config = __webpack_require__("./utils sync recursive ^.*\\/mooncord\\.json$")(`${args[0]}/mooncord.json`)
+
+
+const configData = fs.readFileSync(`${args[0]}/mooncord.json`, {encoding: 'utf8'})
+const config = JSON.parse(configData)
 const database = __webpack_require__(/*! ./databaseUtil */ "./utils/databaseUtil.js")
 
 module.exports.hasAdmin = async function (user, guildid, altdiscordClient) {
@@ -77441,7 +77426,10 @@ const Discord = __webpack_require__(/*! discord.js */ "./node_modules/discord.js
 
 const args = process.argv.slice(2)
  
-const config = __webpack_require__("./utils sync recursive ^.*\\/mooncord\\.json$")(`${args[0]}/mooncord.json`)
+
+
+const configData = fs.readFileSync(`${args[0]}/mooncord.json`, {encoding: 'utf8'})
+const config = JSON.parse(configData)
 const database = __webpack_require__(/*! ./databaseUtil */ "./utils/databaseUtil.js")
 const locale = __webpack_require__(/*! ./localeUtil */ "./utils/localeUtil.js")
 const metadata = __webpack_require__(/*! ./status_meta_data.json */ "./utils/status_meta_data.json")
@@ -77718,7 +77706,10 @@ const statusUtil = __webpack_require__(/*! ./statusUtil */ "./utils/statusUtil.j
 const variablesUtil = __webpack_require__(/*! ./variablesUtil */ "./utils/variablesUtil.js")
 const webcamUtil = __webpack_require__(/*! ./webcamUtil */ "./utils/webcamUtil.js")
 
-const config = __webpack_require__("./utils sync recursive ^.*\\/mooncord\\.json$")(`${args[0]}/mooncord.json`)
+
+
+const configData = fs.readFileSync(`${args[0]}/mooncord.json`, {encoding: 'utf8'})
+const config = JSON.parse(configData)
 
 //const conv = ffmpeg()
 
@@ -78023,7 +78014,10 @@ const args = process.argv.slice(2)
 
 const moonrakerClient = __webpack_require__(/*! ../clients/moonrakerClient */ "./clients/moonrakerClient.js")
 
-const config = __webpack_require__("./utils sync recursive ^.*\\/mooncord\\.json$")(`${args[0]}/mooncord.json`)
+
+
+const configData = fs.readFileSync(`${args[0]}/mooncord.json`, {encoding: 'utf8'})
+const config = JSON.parse(configData)
 
 async function retrieveWebcam() {
   const { webcam } = config
@@ -78380,7 +78374,10 @@ const timelapseUtil = __webpack_require__(/*! ../utils/timelapseUtil */ "./utils
 const variables = __webpack_require__(/*! ../utils/variablesUtil */ "./utils/variablesUtil.js")
 const states = __webpack_require__(/*! ./klipper_states.json */ "./websocket-events/klipper_states.json")
 
-const config = __webpack_require__("./websocket-events sync recursive ^.*\\/mooncord\\.json$")(`${args[0]}/mooncord.json`)
+
+
+const configData = fs.readFileSync(`${args[0]}/mooncord.json`, {encoding: 'utf8'})
+const config = JSON.parse(configData)
 
 const event = async (message, connection, discordClient) => {
   if (message.type !== 'utf8') { return }
@@ -78437,7 +78434,10 @@ const chatUtil = __webpack_require__(/*! ../utils/chatUtil */ "./utils/chatUtil.
 const locale = __webpack_require__(/*! ../utils/localeUtil */ "./utils/localeUtil.js")
 const status = __webpack_require__(/*! ../utils/statusUtil */ "./utils/statusUtil.js")
 
-const config = __webpack_require__("./websocket-events sync recursive ^.*\\/mooncord\\.json$")(`${args[0]}/mooncord.json`)
+
+
+const configData = fs.readFileSync(`${args[0]}/mooncord.json`, {encoding: 'utf8'})
+const config = JSON.parse(configData)
 
 let posted = []
 let notThrottledCounter = 30
@@ -78593,7 +78593,10 @@ async function postUpdate(updateData, discordClient, database) {
 
 const args = process.argv.slice(2)
 
-const config = __webpack_require__("./websocket-events/objectHandlers sync recursive ^.*\\/mooncord\\.json$")(`${args[0]}/mooncord.json`)
+
+
+const configData = fs.readFileSync(`${args[0]}/mooncord.json`, {encoding: 'utf8'})
+const config = JSON.parse(configData)
 const variables = __webpack_require__(/*! ../../utils/variablesUtil */ "./utils/variablesUtil.js")
 const statusUtil = __webpack_require__(/*! ../../utils/statusUtil */ "./utils/statusUtil.js")
 const locale = __webpack_require__(/*! ../../utils/localeUtil */ "./utils/localeUtil.js")
@@ -78718,7 +78721,10 @@ function updateMCU(mcu, data) {
 
 const args = process.argv.slice(2)
 
-const config = __webpack_require__("./websocket-events/objectHandlers sync recursive ^.*\\/mooncord\\.json$")(`${args[0]}/mooncord.json`)
+
+
+const configData = fs.readFileSync(`${args[0]}/mooncord.json`, {encoding: 'utf8'})
+const config = JSON.parse(configData)
 const status = __webpack_require__(/*! ../../utils/statusUtil */ "./utils/statusUtil.js")
 const timelapseUtil = __webpack_require__(/*! ../../utils/timelapseUtil */ "./utils/timelapseUtil.js")
 const variables = __webpack_require__(/*! ../../utils/variablesUtil */ "./utils/variablesUtil.js")
@@ -78830,24 +78836,6 @@ function updateTempSensor(tempSensor, data) {
 
 /***/ }),
 
-/***/ "./websocket-events/objectHandlers sync recursive ^.*\\/mooncord\\.json$":
-/*!********************************************************************!*\
-  !*** ./websocket-events/objectHandlers/ sync ^.*\/mooncord\.json$ ***!
-  \********************************************************************/
-/***/ ((module) => {
-
-function webpackEmptyContext(req) {
-	var e = new Error("Cannot find module '" + req + "'");
-	e.code = 'MODULE_NOT_FOUND';
-	throw e;
-}
-webpackEmptyContext.keys = () => ([]);
-webpackEmptyContext.resolve = webpackEmptyContext;
-webpackEmptyContext.id = "./websocket-events/objectHandlers sync recursive ^.*\\/mooncord\\.json$";
-module.exports = webpackEmptyContext;
-
-/***/ }),
-
 /***/ "./websocket-events/subscribeNotification.js":
 /*!***************************************************!*\
   !*** ./websocket-events/subscribeNotification.js ***!
@@ -78921,24 +78909,6 @@ const event = (message) => {
 }
 module.exports = event
 
-
-/***/ }),
-
-/***/ "./websocket-events sync recursive ^.*\\/mooncord\\.json$":
-/*!*****************************************************!*\
-  !*** ./websocket-events/ sync ^.*\/mooncord\.json$ ***!
-  \*****************************************************/
-/***/ ((module) => {
-
-function webpackEmptyContext(req) {
-	var e = new Error("Cannot find module '" + req + "'");
-	e.code = 'MODULE_NOT_FOUND';
-	throw e;
-}
-webpackEmptyContext.keys = () => ([]);
-webpackEmptyContext.resolve = webpackEmptyContext;
-webpackEmptyContext.id = "./websocket-events sync recursive ^.*\\/mooncord\\.json$";
-module.exports = webpackEmptyContext;
 
 /***/ }),
 
@@ -81136,13 +81106,8 @@ const fs = __webpack_require__(/*! fs */ "fs")
 
 console.log(`${args[0]}/mooncord.json`)
 
-const config = fs.readFileSync(`${args[0]}/mooncord.json`, {encoding: 'utf8'})
-
-//const config = require(/* webpackMode: "weak" */ `${args[0]}/mooncord.json`)
-
-console.log(config)
-
-process.exit()
+const configData = fs.readFileSync(`${args[0]}/mooncord.json`, {encoding: 'utf8'})
+const config = JSON.parse(configData)
 
 const colors = __webpack_require__(/*! colors */ "./node_modules/colors/lib/index.js")
 const systemInfo = __webpack_require__(/*! systeminformation */ "./node_modules/systeminformation/lib/index.js")

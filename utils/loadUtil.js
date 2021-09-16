@@ -14,7 +14,10 @@ const componentHandler = require('./hsComponents')
 const locale = require('./localeUtil')
 const status = require('./statusUtil')
 
-const config = require(`${args[0]}/mooncord.json`)
+
+
+const configData = fs.readFileSync(`${args[0]}/mooncord.json`, {encoding: 'utf8'})
+const config = JSON.parse(configData)
 
 const usageData = {
   'cpu': {

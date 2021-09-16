@@ -6,7 +6,10 @@ const chatUtil = require('../utils/chatUtil')
 const locale = require('../utils/localeUtil')
 const status = require('../utils/statusUtil')
 
-const config = require(`${args[0]}/mooncord.json`)
+
+
+const configData = fs.readFileSync(`${args[0]}/mooncord.json`, {encoding: 'utf8'})
+const config = JSON.parse(configData)
 
 let posted = []
 let notThrottledCounter = 30
