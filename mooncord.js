@@ -4,23 +4,11 @@ const fs = require('fs')
 
 console.log(`${args[0]}/mooncord.json`)
 
-let config
-
-// eslint-disable-next-line promise/prefer-await-to-callbacks
-fs.readFile(`${args[0]}/mooncord.json`, (err, jsonString) => {
-    console.log('test')
-})
-fs.readFile(`${args[0]}/mooncord.json`, 'utf8', (err, jsonString) => {
-    console.log('read config')
-    if (err) {
-        console.log("File read failed:", err)
-        return
-    }
-    console.log(jsonString)
-    config = JSON.parse(jsonString)
-})
+const config = fs.readFileSync(`${args[0]}/mooncord.json`, {encoding: 'utf8'})
 
 //const config = require(/* webpackMode: "weak" */ `${args[0]}/mooncord.json`)
+
+console.log(config)
 
 process.exit()
 
