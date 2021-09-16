@@ -1,13 +1,14 @@
 const args = process.argv.slice(2)
 
-const statusconfig = require(`${args[0]}/mooncord.json`)
-
 const variables = require('./variablesUtil')
 
 const Discord = require('discord.js')
 const fs = require('fs').promises
 const axios = require('axios')
 const path = require('path')
+
+const configData = fs.readFileSync(`${args[0]}/mooncord.json`, {encoding: 'utf8'})
+const statusconfig = JSON.parse(configData)
 
 async function retrieveThumbnail (url) {
   let thumbnail

@@ -77646,14 +77646,15 @@ module.exports.getStatus = () => { return currentStatus }
 
 const args = process.argv.slice(2)
 
-const statusconfig = __webpack_require__("./utils sync recursive ^.*\\/mooncord\\.json$")(`${args[0]}/mooncord.json`)
-
 const variables = __webpack_require__(/*! ./variablesUtil */ "./utils/variablesUtil.js")
 
 const Discord = __webpack_require__(/*! discord.js */ "./node_modules/discord.js/src/index.js")
 const fs = __webpack_require__(/*! fs */ "fs").promises
 const axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js")
 const path = __webpack_require__(/*! path */ "path")
+
+const configData = fs.readFileSync(`${args[0]}/mooncord.json`, {encoding: 'utf8'})
+const statusconfig = JSON.parse(configData)
 
 async function retrieveThumbnail (url) {
   let thumbnail
@@ -78182,24 +78183,6 @@ function webpackEmptyContext(req) {
 webpackEmptyContext.keys = () => ([]);
 webpackEmptyContext.resolve = webpackEmptyContext;
 webpackEmptyContext.id = "./utils sync recursive";
-module.exports = webpackEmptyContext;
-
-/***/ }),
-
-/***/ "./utils sync recursive ^.*\\/mooncord\\.json$":
-/*!******************************************!*\
-  !*** ./utils/ sync ^.*\/mooncord\.json$ ***!
-  \******************************************/
-/***/ ((module) => {
-
-function webpackEmptyContext(req) {
-	var e = new Error("Cannot find module '" + req + "'");
-	e.code = 'MODULE_NOT_FOUND';
-	throw e;
-}
-webpackEmptyContext.keys = () => ([]);
-webpackEmptyContext.resolve = webpackEmptyContext;
-webpackEmptyContext.id = "./utils sync recursive ^.*\\/mooncord\\.json$";
 module.exports = webpackEmptyContext;
 
 /***/ }),
