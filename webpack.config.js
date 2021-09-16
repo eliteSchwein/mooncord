@@ -24,5 +24,8 @@ module.exports = {
         modules: ['src', 'node_modules'],
         extensions: ['.tsx', '.ts', '.js', '.json']
     },
+    externals: {
+        'sharp': 'commonjs sharp'
+    },
     target: 'node'
 };

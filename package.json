@@ -8,7 +8,8 @@
     "ramdebugstart": "node --trace_gc mooncord.js",
     "checkcodestyle": "npx eslint ./**",
     "autofixcodestyle": "npx eslint ./** --fix",
-    "build": "webpack"
+    "build-dev": "webpack  --mode=development",
+    "build": "webpack  --mode=production"
   },
   "repository": {
     "type": "git",
