@@ -81007,7 +81007,7 @@ module.exports = JSON.parse('{"name":"websocket","description":"Websocket Client
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"name":"mooncord","version":"0.0.4","description":"Moonraker Discord Bot based on Discord.js","main":"index.js","scripts":{"start":"node mooncord.js","ramdebugstart":"node --trace_gc mooncord.js","checkcodestyle":"npx eslint ./**","autofixcodestyle":"npx eslint ./** --fix","build-dev":"webpack  --mode=development","build":"webpack  --mode=production","watch":"webpack --watch  --mode=development"},"repository":{"type":"git","url":"git+https://github.com/eliteSchwein/mooncord.git"},"keywords":[],"author":"eliteSCHW31N","license":"ISC","bugs":{"url":"https://github.com/eliteSchwein/mooncord/issues"},"homepage":"https://github.com/eliteSchwein/mooncord#readme","devDependencies":{"async-wait-until":"^2.0.7","axios":"^0.21.1","colors":"^1.4.0","discord.js":"^13.1.0","eslint":"^7.32.0","eslint-config-galex":"^2.16.9","eslint-config-standard":"^16.0.3","eslint-plugin-import":"^2.24.1","eslint-plugin-node":"^11.1.0","eslint-plugin-promise":"^5.1.0","fluent-ffmpeg":"^2.1.2","form-data":"^4.0.0","log-symbols":"^4.1.0","sharp":"^0.29.0","shelljs":"^0.8.4","systeminformation":"^5.8.0","typescript":"^4.4.3","webpack":"^5.52.1","webpack-cli":"^4.8.0","websocket":"^1.0.34"}}');
+module.exports = JSON.parse('{"name":"mooncord","version":"0.0.4","description":"Moonraker Discord Bot based on Discord.js","main":"index.js","scripts":{"start":"node mooncord.js","ramdebugstart":"node --trace_gc mooncord.js","checkcodestyle":"npx eslint ./**","autofixcodestyle":"npx eslint ./** --fix","build-dev":"webpack  --mode=development","build":"webpack  --mode=production","watch":"webpack --watch --progress --mode=development"},"repository":{"type":"git","url":"git+https://github.com/eliteSchwein/mooncord.git"},"keywords":[],"author":"eliteSCHW31N","license":"ISC","bugs":{"url":"https://github.com/eliteSchwein/mooncord/issues"},"homepage":"https://github.com/eliteSchwein/mooncord#readme","devDependencies":{"async-wait-until":"^2.0.7","axios":"^0.21.1","colors":"^1.4.0","discord.js":"^13.1.0","eslint":"^7.32.0","eslint-config-galex":"^2.16.9","eslint-config-standard":"^16.0.3","eslint-plugin-import":"^2.24.1","eslint-plugin-node":"^11.1.0","eslint-plugin-promise":"^5.1.0","fluent-ffmpeg":"^2.1.2","form-data":"^4.0.0","log-symbols":"^4.1.0","sharp":"^0.29.0","shelljs":"^0.8.4","systeminformation":"^5.8.0","typescript":"^4.4.3","webpack":"^5.52.1","webpack-cli":"^4.8.0","websocket":"^1.0.34"}}');
 
 /***/ }),
 
@@ -81138,7 +81138,9 @@ console.log(`${args[0]}/mooncord.json`)
 
 let config
 
+// eslint-disable-next-line promise/prefer-await-to-callbacks
 fs.readFile(`${args[0]}/mooncord.json`, 'utf8', (err, jsonString) => {
+    console.log('read config')
     if (err) {
         console.log("File read failed:", err)
         return
@@ -81149,9 +81151,7 @@ fs.readFile(`${args[0]}/mooncord.json`, 'utf8', (err, jsonString) => {
 
 //const config = require(/* webpackMode: "weak" */ `${args[0]}/mooncord.json`)
 
-console.log(config)
-
-//process.exit()
+process.exit()
 
 const colors = __webpack_require__(/*! colors */ "./node_modules/colors/lib/index.js")
 const systemInfo = __webpack_require__(/*! systeminformation */ "./node_modules/systeminformation/lib/index.js")

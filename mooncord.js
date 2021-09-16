@@ -6,7 +6,9 @@ console.log(`${args[0]}/mooncord.json`)
 
 let config
 
+// eslint-disable-next-line promise/prefer-await-to-callbacks
 fs.readFile(`${args[0]}/mooncord.json`, 'utf8', (err, jsonString) => {
+    console.log('read config')
     if (err) {
         console.log("File read failed:", err)
         return
@@ -17,9 +19,7 @@ fs.readFile(`${args[0]}/mooncord.json`, 'utf8', (err, jsonString) => {
 
 //const config = require(/* webpackMode: "weak" */ `${args[0]}/mooncord.json`)
 
-console.log(config)
-
-//process.exit()
+process.exit()
 
 const colors = require('colors')
 const systemInfo = require('systeminformation')
