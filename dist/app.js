@@ -81151,7 +81151,7 @@ fs.readFile(`${args[0]}/mooncord.json`, 'utf8', (err, jsonString) => {
 
 console.log(config)
 
-process.exit()
+//process.exit()
 
 const colors = __webpack_require__(/*! colors */ "./node_modules/colors/lib/index.js")
 const systemInfo = __webpack_require__(/*! systeminformation */ "./node_modules/systeminformation/lib/index.js")

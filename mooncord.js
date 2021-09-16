@@ -19,7 +19,7 @@ fs.readFile(`${args[0]}/mooncord.json`, 'utf8', (err, jsonString) => {
 
 console.log(config)
 
-process.exit()
+//process.exit()
 
 const colors = require('colors')
 const systemInfo = require('systeminformation')
