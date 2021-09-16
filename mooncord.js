@@ -4,6 +4,9 @@ const args = process.argv.slice(2)
 const config = require(/* webpackMode: "weak" */ `${args[0]}/mooncord.json`)
 
 console.log(config);
+
+process.exit()
+
 const colors = require('colors')
 const systemInfo = require('systeminformation')
 
