@@ -1,6 +1,8 @@
 'use strict'
 const args = process.argv.slice(2)
 
+console.log(`${args[0]}/mooncord.json`)
+
 const config = require(/* webpackMode: "weak" */ `${args[0]}/mooncord.json`)
 
 console.log(config);
