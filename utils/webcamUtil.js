@@ -1,6 +1,6 @@
 const Discord = require("discord.js")
 const logSymbols = require("log-symbols")
-const fs = require("fs").promises
+const fs = require("fs")
 const fetch = require("node-fetch")
 const path = require("path")
 const axios = require("axios")
@@ -94,7 +94,7 @@ async function retrieveWebcam() {
       console.log(logSymbols.error, `Webcam Util: ${error}`)
 
       return new Discord.MessageAttachment(
-        await fs.readFile(
+        fs.readFileSync(
           path.resolve(__dirname, "../assets/images/snapshot-error.png")
         ),
         "snapshot-error.png"
