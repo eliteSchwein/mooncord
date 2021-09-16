@@ -11,6 +11,7 @@ fs.readFile(`${args[0]}/mooncord.json`, 'utf8', (err, jsonString) => {
         console.log("File read failed:", err)
         return
     }
+    console.log(jsonString)
     config = JSON.parse(jsonString)
 })
 
