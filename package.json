@@ -9,7 +9,8 @@
     "checkcodestyle": "npx eslint ./**",
     "autofixcodestyle": "npx eslint ./** --fix",
     "build-dev": "webpack  --mode=development",
-    "build": "webpack  --mode=production"
+    "build": "webpack  --mode=production",
+    "watch": "webpack --watch  --mode=development"
   },
   "repository": {
     "type": "git",
