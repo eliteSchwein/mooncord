@@ -1,13 +1,13 @@
-const path = require('path');
-const webpack = require('webpack');
+const path = require('path')
 
 module.exports = {
-    entry: './mooncord.js',
+    entry: './src/Application.ts',
     devtool: 'source-map',
     module: {
         rules: [
             {
-                test: /\.js$/,
+                test: /\.tsx?$/,
+                use: 'ts-loader',
                 exclude: [
                     path.resolve(__dirname, 'scripts'),
                     path.resolve(__dirname, 'dist'),
@@ -18,7 +18,7 @@ module.exports = {
         ]
     },
     output: {
-        filename: 'app.js',
+        filename: 'mooncord.js',
         path: path.resolve(__dirname, 'dist'),
     },
     resolve: {
