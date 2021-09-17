@@ -1,0 +1,1 @@
+{"version":3,"file":"mooncord.js","mappings":";;;;;AAAA","sources":["webpack://mooncord/./src/Application.ts"],"sourcesContent":["console.log('test');\r\n"],"names":[],"sourceRoot":""}
