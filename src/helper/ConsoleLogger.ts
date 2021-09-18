@@ -11,8 +11,10 @@ export class ConsoleLogger {
     };
     // eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
     logRegular = (message:string) => {
-        console.log(this.getTimeStamp(), message.grey)
+        console.log(this.getTimeStamp(), message.white)
     };
+
+    logEmpty = () => { console.log('') }
 
     private getTimeStamp() {
         const date = new Date()
