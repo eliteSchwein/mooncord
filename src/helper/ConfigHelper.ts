@@ -7,10 +7,6 @@ export class ConfigHelper {
     protected configRaw = readFileSync(this.configPath, {encoding: 'utf8'})
     protected config = JSON.parse(this.configRaw)
 
-    public constructor() {
-        console.log(this.config)
-    }
-
     public getMoonrakerSocketUrl() {
         return this.config.connection.moonraker_socket_url
     }

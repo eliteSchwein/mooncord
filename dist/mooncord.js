@@ -329,10 +329,130 @@ exports.System = System;
 
 /***/ }),
 
-/***/ "./src/utils/ConsoleLogger.ts":
+/***/ "./src/clients/MoonrakerClient.ts":
+/*!****************************************!*\
+  !*** ./src/clients/MoonrakerClient.ts ***!
+  \****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "MoonrakerClient": () => (/* binding */ MoonrakerClient)
+/* harmony export */ });
+/* harmony import */ var _helper_ConsoleLogger__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../helper/ConsoleLogger */ "./src/helper/ConsoleLogger.ts");
+/* harmony import */ var _helper_ConfigHelper__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../helper/ConfigHelper */ "./src/helper/ConfigHelper.ts");
+
+
+var logger = new _helper_ConsoleLogger__WEBPACK_IMPORTED_MODULE_0__.ConsoleLogger();
+var MoonrakerClient = /** @class */ (function () {
+    function MoonrakerClient() {
+        this.config = new _helper_ConfigHelper__WEBPACK_IMPORTED_MODULE_1__.ConfigHelper();
+        logger.logSuccess('connect to MoonRaker...');
+    }
+    return MoonrakerClient;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/helper/ConfigHelper.ts":
 /*!************************************!*\
-  !*** ./src/utils/ConsoleLogger.ts ***!
+  !*** ./src/helper/ConfigHelper.ts ***!
   \************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "ConfigHelper": () => (/* binding */ ConfigHelper)
+/* harmony export */ });
+/* harmony import */ var fs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! fs */ "fs");
+/* harmony import */ var fs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(fs__WEBPACK_IMPORTED_MODULE_0__);
+
+var args = process.argv.slice(2);
+var ConfigHelper = /** @class */ (function () {
+    function ConfigHelper() {
+        this.configPath = args[0] + "/mooncord.json";
+        this.configRaw = (0,fs__WEBPACK_IMPORTED_MODULE_0__.readFileSync)(this.configPath, { encoding: 'utf8' });
+        this.config = JSON.parse(this.configRaw);
+    }
+    ConfigHelper.prototype.getMoonrakerSocketUrl = function () {
+        return this.config.connection.moonraker_socket_url;
+    };
+    ConfigHelper.prototype.getMoonrakerUrl = function () {
+        return this.config.connection.moonraker_url;
+    };
+    ConfigHelper.prototype.getMoonrakerApiKey = function () {
+        return this.config.connection.moonraker_token;
+    };
+    ConfigHelper.prototype.getDiscordToken = function () {
+        return this.config.connection.bot_token;
+    };
+    ConfigHelper.prototype.getStatusInterval = function () {
+        return this.config.status.update_interval;
+    };
+    ConfigHelper.prototype.getStatusMinInterval = function () {
+        return this.config.status.min_interval;
+    };
+    ConfigHelper.prototype.isStatusPerPercent = function () {
+        return this.config.status.use_percent;
+    };
+    ConfigHelper.prototype.getStatusBeforeTasks = function () {
+        return this.config.status.before;
+    };
+    ConfigHelper.prototype.getStatusAfterTasks = function () {
+        return this.config.status.before;
+    };
+    ConfigHelper.prototype.getLanguage = function () {
+        return this.config.language.messages;
+    };
+    ConfigHelper.prototype.getSyntaxLanguage = function () {
+        return this.config.language.command_syntax;
+    };
+    ConfigHelper.prototype.getController = function () {
+        return this.config.permission.controller;
+    };
+    ConfigHelper.prototype.isGuildAdminAsBotAdmin = function () {
+        return this.config.permission.guild_admin_as_bot_admin;
+    };
+    ConfigHelper.prototype.getWebcamUrl = function () {
+        return this.config.webcam.url;
+    };
+    ConfigHelper.prototype.getWebcamQuality = function () {
+        return this.config.webcam.quality;
+    };
+    ConfigHelper.prototype.getWebcamBrightness = function () {
+        return this.config.webcam.brightness;
+    };
+    ConfigHelper.prototype.getWebcamContrast = function () {
+        return this.config.webcam.contrast;
+    };
+    ConfigHelper.prototype.isWebcamVerticalMirrored = function () {
+        return this.config.webcam.vertical_mirror;
+    };
+    ConfigHelper.prototype.isWebcamHorizontalMirrored = function () {
+        return this.config.webcam.horizontal_mirror;
+    };
+    ConfigHelper.prototype.isWebcamGreyscale = function () {
+        return this.config.webcam.greyscale;
+    };
+    ConfigHelper.prototype.isWebcamSepia = function () {
+        return this.config.webcam.sepia;
+    };
+    ConfigHelper.prototype.notifyOnMoonrakerThrottle = function () {
+        return this.config.system_notifications.moonraker_throttle;
+    };
+    return ConfigHelper;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/helper/ConsoleLogger.ts":
+/*!*************************************!*\
+  !*** ./src/helper/ConsoleLogger.ts ***!
+  \*************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -354,8 +474,9 @@ var ConsoleLogger = /** @class */ (function () {
         };
         // eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
         this.logRegular = function (message) {
-            console.log(_this.getTimeStamp(), message.grey);
+            console.log(_this.getTimeStamp(), message.white);
         };
+        this.logEmpty = function () { console.log(''); };
     }
     ConsoleLogger.prototype.getTimeStamp = function () {
         var date = new Date();
@@ -365,6 +486,16 @@ var ConsoleLogger = /** @class */ (function () {
 }());
 
 
+
+/***/ }),
+
+/***/ "fs":
+/*!*********************!*\
+  !*** external "fs" ***!
+  \*********************/
+/***/ ((module) => {
+
+module.exports = require("fs");
 
 /***/ }),
 
@@ -415,6 +546,18 @@ module.exports = JSON.parse('{"name":"mooncord","version":"0.0.5","description":
 /******/ 	}
 /******/ 	
 /************************************************************************/
+/******/ 	/* webpack/runtime/compat get default export */
+/******/ 	(() => {
+/******/ 		// getDefaultExport function for compatibility with non-harmony modules
+/******/ 		__webpack_require__.n = (module) => {
+/******/ 			var getter = module && module.__esModule ?
+/******/ 				() => (module['default']) :
+/******/ 				() => (module);
+/******/ 			__webpack_require__.d(getter, { a: getter });
+/******/ 			return getter;
+/******/ 		};
+/******/ 	})();
+/******/ 	
 /******/ 	/* webpack/runtime/define property getters */
 /******/ 	(() => {
 /******/ 		// define getter functions for harmony exports
@@ -452,11 +595,15 @@ var __webpack_exports__ = {};
   \****************************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _package_json__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../package.json */ "./package.json");
-/* harmony import */ var _utils_ConsoleLogger__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./utils/ConsoleLogger */ "./src/utils/ConsoleLogger.ts");
+/* harmony import */ var _helper_ConsoleLogger__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./helper/ConsoleLogger */ "./src/helper/ConsoleLogger.ts");
+/* harmony import */ var _clients_MoonrakerClient__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./clients/MoonrakerClient */ "./src/clients/MoonrakerClient.ts");
 
 
-var logger = new _utils_ConsoleLogger__WEBPACK_IMPORTED_MODULE_1__.ConsoleLogger();
+
+var logger = new _helper_ConsoleLogger__WEBPACK_IMPORTED_MODULE_1__.ConsoleLogger();
 logger.logSuccess("starting " + _package_json__WEBPACK_IMPORTED_MODULE_0__.name + " " + _package_json__WEBPACK_IMPORTED_MODULE_0__.version + "...");
+logger.logEmpty();
+var moonrakerClient = new _clients_MoonrakerClient__WEBPACK_IMPORTED_MODULE_2__.MoonrakerClient();
 
 })();
 
