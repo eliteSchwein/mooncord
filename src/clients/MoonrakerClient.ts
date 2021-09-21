@@ -44,7 +44,16 @@ export class MoonrakerClient {
         const printerInfo = await this.send(`{"jsonrpc": "2.0", "method": "printer.info"}`)
         const serverInfo = await this.send(`{"jsonrpc": "2.0", "method": "server.info"}`)
         const objects = await this.send(`{"jsonrpc": "2.0", "method": "printer.objects.list"}`)
-        const data = await this.send(`{"jsonrpc": "2.0", "method": "printer.objects.subscribe", "params": { "objects":${JSON.stringify(objects)}}}`)
+
+        const subscriptionObjects: any = {}
+
+        for (const index in objects.result.objects) {
+            const object = objects.result.objects[index]
+            subscriptionObjects[object] = null
+        }
+
+        const data = await this.send(`{"jsonrpc": "2.0", "method": "printer.objects.subscribe", "params": { "objects":${JSON.stringify(subscriptionObjects)}}}`)
+
     }
 
     public async send(message: string) {
@@ -58,6 +67,9 @@ export class MoonrakerClient {
 
         function handler(instance: Websocket, ev: any) {
             const responseData = JSON.parse(ev.data)
+
+            if(typeof(responseData.id) === 'undefined') { return }
+
             if(responseData.id === id) {
                 response = responseData
 
@@ -69,7 +81,7 @@ export class MoonrakerClient {
 
         websocket.send(JSON.stringify(messageData))
 
-        await waitUntil(() => typeof response !== 'undefined')
+        await waitUntil(() => typeof response !== 'undefined', { timeout: 10_000 })
 
         return response
     }
