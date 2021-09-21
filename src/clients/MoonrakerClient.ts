@@ -1,8 +1,10 @@
 import {ConfigHelper} from '../helper/ConfigHelper'
 import {Websocket, WebsocketBuilder, WebsocketEvents} from 'websocket-ts'
 import {APIKeyHelper} from '../helper/APIKeyHelper'
-import { waitUntil } from 'async-wait-until'
-import {logError, logRegular, logSuccess} from "../helper/ConsoleLogger";
+import {waitUntil} from 'async-wait-until'
+import {logError, logRegular, logSuccess} from '../helper/ConsoleLogger'
+
+const requests: any = {}
 
 let websocket: Websocket
 
@@ -31,14 +33,16 @@ export class MoonrakerClient {
         websocket.addEventListener(WebsocketEvents.open, (((instance, ev) => {
             logSuccess('Connected to MoonRaker')
 
+            this.registerEvents()
+
             this.sendInitCommands()
         })))
     }
 
     private async sendInitCommands() {
-        logRegular('Send Initial MoonRaker Commands...')
+        logRegular('Send Initial Commands...')
 
-        const updates = await this.send(`{"jsonrpc": "2.0", "method": "machine.update.status", "params":{"refresh": "true"}}`)
+        const updates = await this.send(`{"jsonrpc": "2.0", "method": "machine.update.status", "params":{"refresh": "true"}}`, 300_000)
         const printerInfo = await this.send(`{"jsonrpc": "2.0", "method": "printer.info"}`)
         const serverInfo = await this.send(`{"jsonrpc": "2.0", "method": "server.info"}`)
         const objects = await this.send(`{"jsonrpc": "2.0", "method": "printer.objects.list"}`)
@@ -52,42 +56,33 @@ export class MoonrakerClient {
 
         const data = await this.send(`{"jsonrpc": "2.0", "method": "printer.objects.subscribe", "params": { "objects":${JSON.stringify(subscriptionObjects)}}}`)
 
+        logSuccess('MoonRaker Client is ready')
     }
 
-    public async send(message: string) {
+    private registerEvents() {
+        logRegular('Register Events...')
+        websocket.addEventListener(WebsocketEvents.message, ((instance, ev) => {
+            const messageData = JSON.parse(ev.data)
+
+            if(typeof(messageData) === 'undefined') { return }
+            if(typeof(messageData.id) === 'undefined') { return }
+
+            requests[messageData.id] = messageData
+        }))
+    }
+
+    public async send(message: string, timeout = 10_000) {
         const id = Math.floor(Math.random() * 10_000) + 1
 
         const messageData = JSON.parse(message)
 
-        let response: any
-
         messageData.id = id
-
-        function handler(instance: Websocket, ev: any) {
-            const responseData = JSON.parse(ev.data)
-
-            if(typeof(responseData.id) === 'undefined') {
-                console.log(messageData)
-                console.log(responseData)
-                return
-            }
-
-            console.log(responseData.id + ' ' + id)
-
-            if(responseData.id === id) {
-                response = responseData
-
-                websocket.removeEventListener(WebsocketEvents.message, handler)
-            }
-        }
-
-        websocket.addEventListener(WebsocketEvents.message, handler)
 
         websocket.send(JSON.stringify(messageData))
 
-        await waitUntil(() => typeof response !== 'undefined', { timeout: 10_000 })
+        await waitUntil(() => typeof requests[id] !== 'undefined', { timeout, intervalBetweenAttempts: 500 })
 
-        return response
+        return requests[id]
     }
 
     public getWebsocket() {

@@ -4845,6 +4845,7 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
 
 
 
+var requests = {};
 var websocket;
 var MoonrakerClient = /** @class */ (function () {
     function MoonrakerClient() {
@@ -4871,6 +4872,7 @@ var MoonrakerClient = /** @class */ (function () {
                         }));
                         websocket.addEventListener(websocket_ts__WEBPACK_IMPORTED_MODULE_1__.WebsocketEvents.open, ((function (instance, ev) {
                             (0,_helper_ConsoleLogger__WEBPACK_IMPORTED_MODULE_4__.logSuccess)('Connected to MoonRaker');
+                            _this.registerEvents();
                             _this.sendInitCommands();
                         })));
                         return [2 /*return*/];
@@ -4884,8 +4886,8 @@ var MoonrakerClient = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        (0,_helper_ConsoleLogger__WEBPACK_IMPORTED_MODULE_4__.logRegular)('Send Initial MoonRaker Commands...');
-                        return [4 /*yield*/, this.send("{\"jsonrpc\": \"2.0\", \"method\": \"machine.update.status\", \"params\":{\"refresh\": \"true\"}}")];
+                        (0,_helper_ConsoleLogger__WEBPACK_IMPORTED_MODULE_4__.logRegular)('Send Initial Commands...');
+                        return [4 /*yield*/, this.send("{\"jsonrpc\": \"2.0\", \"method\": \"machine.update.status\", \"params\":{\"refresh\": \"true\"}}", 300000)];
                     case 1:
                         updates = _a.sent();
                         return [4 /*yield*/, this.send("{\"jsonrpc\": \"2.0\", \"method\": \"printer.info\"}")];
@@ -4905,39 +4907,40 @@ var MoonrakerClient = /** @class */ (function () {
                         return [4 /*yield*/, this.send("{\"jsonrpc\": \"2.0\", \"method\": \"printer.objects.subscribe\", \"params\": { \"objects\":" + JSON.stringify(subscriptionObjects) + "}}")];
                     case 5:
                         data = _a.sent();
+                        (0,_helper_ConsoleLogger__WEBPACK_IMPORTED_MODULE_4__.logSuccess)('MoonRaker Client is ready');
                         return [2 /*return*/];
                 }
             });
         });
     };
-    MoonrakerClient.prototype.send = function (message) {
-        return __awaiter(this, void 0, void 0, function () {
-            function handler(instance, ev) {
-                var responseData = JSON.parse(ev.data);
-                if (typeof (responseData.id) === 'undefined') {
-                    console.log(messageData);
-                    console.log(responseData);
-                    return;
-                }
-                console.log(responseData.id + ' ' + id);
-                if (responseData.id === id) {
-                    response = responseData;
-                    websocket.removeEventListener(websocket_ts__WEBPACK_IMPORTED_MODULE_1__.WebsocketEvents.message, handler);
-                }
+    MoonrakerClient.prototype.registerEvents = function () {
+        (0,_helper_ConsoleLogger__WEBPACK_IMPORTED_MODULE_4__.logRegular)('Register Events...');
+        websocket.addEventListener(websocket_ts__WEBPACK_IMPORTED_MODULE_1__.WebsocketEvents.message, (function (instance, ev) {
+            var messageData = JSON.parse(ev.data);
+            if (typeof (messageData) === 'undefined') {
+                return;
             }
-            var id, messageData, response;
+            if (typeof (messageData.id) === 'undefined') {
+                return;
+            }
+            requests[messageData.id] = messageData;
+        }));
+    };
+    MoonrakerClient.prototype.send = function (message, timeout) {
+        if (timeout === void 0) { timeout = 10000; }
+        return __awaiter(this, void 0, void 0, function () {
+            var id, messageData;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         id = Math.floor(Math.random() * 10000) + 1;
                         messageData = JSON.parse(message);
                         messageData.id = id;
-                        websocket.addEventListener(websocket_ts__WEBPACK_IMPORTED_MODULE_1__.WebsocketEvents.message, handler);
                         websocket.send(JSON.stringify(messageData));
-                        return [4 /*yield*/, (0,async_wait_until__WEBPACK_IMPORTED_MODULE_3__.waitUntil)(function () { return typeof response !== 'undefined'; }, { timeout: 10000 })];
+                        return [4 /*yield*/, (0,async_wait_until__WEBPACK_IMPORTED_MODULE_3__.waitUntil)(function () { return typeof requests[id] !== 'undefined'; }, { timeout: timeout, intervalBetweenAttempts: 500 })];
                     case 1:
                         _a.sent();
-                        return [2 /*return*/, response];
+                        return [2 /*return*/, requests[id]];
                 }
             });
         });
