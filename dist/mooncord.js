@@ -1,6 +1,27 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./node_modules/async-wait-until/dist/index.esm.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/async-wait-until/dist/index.esm.js ***!
+  \*********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
+/* harmony export */   "DEFAULT_INTERVAL_BETWEEN_ATTEMPTS_IN_MS": () => (/* binding */ r),
+/* harmony export */   "DEFAULT_TIMEOUT_IN_MS": () => (/* binding */ n),
+/* harmony export */   "TimeoutError": () => (/* binding */ e),
+/* harmony export */   "WAIT_FOREVER": () => (/* binding */ c),
+/* harmony export */   "waitUntil": () => (/* binding */ l)
+/* harmony export */ });
+class e extends Error{constructor(t){super(null!=t?`Timed out after waiting for ${t} ms`:"Timed out"),Object.setPrototypeOf(this,e.prototype)}}const t=(e,t)=>new Promise(((o,r)=>{try{e.schedule(o,t)}catch(e){r(e)}})),o={schedule:(e,t)=>{let o;const r=e=>{null!=e&&clearTimeout(e),o=void 0};return o=setTimeout((()=>{r(o),e()}),t),{cancel:()=>r(o)}}},r=50,n=5e3,c=Number.POSITIVE_INFINITY,l=(r,n,l)=>{var u,s;const i=null!==(u="number"==typeof n?n:null==n?void 0:n.timeout)&&void 0!==u?u:5e3,m=null!==(s="number"==typeof n?l:null==n?void 0:n.intervalBetweenAttempts)&&void 0!==s?s:50;let a=!1;const d=()=>new Promise(((e,n)=>{const c=()=>{a||new Promise(((e,t)=>{try{e(r())}catch(e){t(e)}})).then((r=>{r?e(r):t(o,m).then(c).catch(n)})).catch(n)};c()})),h=i!==c?()=>t(o,i).then((()=>{throw a=!0,new e(i)})):void 0;return null!=h?Promise.race([d(),h()]):d()};/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (l);//# sourceMappingURL=index.esm.js.map
+
+
+/***/ }),
+
 /***/ "./node_modules/axios/index.js":
 /*!*************************************!*\
   !*** ./node_modules/axios/index.js ***!
@@ -4782,57 +4803,133 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var websocket_ts__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! websocket-ts */ "./node_modules/websocket-ts/lib/index.js");
 /* harmony import */ var websocket_ts__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(websocket_ts__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _helper_APIKeyHelper__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../helper/APIKeyHelper */ "./src/helper/APIKeyHelper.ts");
+/* harmony import */ var async_wait_until__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! async-wait-until */ "./node_modules/async-wait-until/dist/index.esm.js");
+var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (undefined && undefined.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+
 
 
 
 
 var logger = new _helper_ConsoleLogger__WEBPACK_IMPORTED_MODULE_0__.ConsoleLogger();
+var startUpId = 1;
 var websocket;
 var MoonrakerClient = /** @class */ (function () {
     function MoonrakerClient() {
         this.config = new _helper_ConfigHelper__WEBPACK_IMPORTED_MODULE_1__.ConfigHelper();
         this.apiKeyHelper = new _helper_APIKeyHelper__WEBPACK_IMPORTED_MODULE_3__.APIKeyHelper();
-        logger.logSuccess('connect to MoonRaker...');
+        logger.logSuccess('Connect to MoonRaker...');
         this.connect();
-        this.sendInitCommands();
-        this.subscribeToCommands();
     }
     MoonrakerClient.prototype.connect = function () {
-        var oneShotToken = this.apiKeyHelper.getOneShotToken();
-        websocket = new websocket_ts__WEBPACK_IMPORTED_MODULE_2__.WebsocketBuilder(this.config.getMoonrakerSocketUrl() + "?token=" + oneShotToken).build();
-        websocket.addEventListener(websocket_ts__WEBPACK_IMPORTED_MODULE_2__.WebsocketEvents.error, (function (instance, ev) {
-            logger.logError('Websocket Error:');
-            console.log(ev);
-            process.exit(5);
-        }));
+        return __awaiter(this, void 0, void 0, function () {
+            var oneShotToken, socketUrl;
+            var _this = this;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.apiKeyHelper.getOneShotToken()];
+                    case 1:
+                        oneShotToken = _a.sent();
+                        socketUrl = this.config.getMoonrakerSocketUrl();
+                        websocket = new websocket_ts__WEBPACK_IMPORTED_MODULE_2__.WebsocketBuilder(socketUrl + "?token=" + oneShotToken).build();
+                        websocket.addEventListener(websocket_ts__WEBPACK_IMPORTED_MODULE_2__.WebsocketEvents.error, (function (instance, ev) {
+                            logger.logError('Websocket Error:');
+                            console.log(ev);
+                            process.exit(5);
+                        }));
+                        websocket.addEventListener(websocket_ts__WEBPACK_IMPORTED_MODULE_2__.WebsocketEvents.open, ((function (instance, ev) {
+                            logger.logSuccess('Connected to MoonRaker');
+                            _this.sendInitCommands();
+                            _this.subscribeToCommands();
+                        })));
+                        return [2 /*return*/];
+                }
+            });
+        });
     };
     MoonrakerClient.prototype.subscribeToCommands = function () {
-        logger.logRegular('Subscribe to MoonRaker Events...');
-        var objects = this.send("{\"jsonrpc\": \"2.0\", \"method\": \"printer.objects.list\"}");
-        console.log(objects);
+        return __awaiter(this, void 0, void 0, function () {
+            var objects, data;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        logger.logRegular('Subscribe to MoonRaker Events...');
+                        return [4 /*yield*/, this.send("{\"jsonrpc\": \"2.0\", \"method\": \"printer.objects.list\"}")];
+                    case 1:
+                        objects = _a.sent();
+                        return [4 /*yield*/, this.send("{\"jsonrpc\": \"2.0\", \"method\": \"printer.objects.subscribe\", \"params\": { \"objects\":" + JSON.stringify(objects) + "}}")];
+                    case 2:
+                        data = _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
     };
     MoonrakerClient.prototype.sendInitCommands = function () {
         logger.logRegular('Send Initial MoonRaker Commands...');
-        var id = 1;
-        websocket.send("{\"jsonrpc\": \"2.0\", \"method\": \"machine.update.status\", \"params\":{\"refresh\": \"true\"}, \"id\": " + id + "}");
-        websocket.send("{\"jsonrpc\": \"2.0\", \"method\": \"printer.info\", \"id\": " + id + "}");
-        websocket.send("{\"jsonrpc\": \"2.0\", \"method\": \"server.info\", \"id\": " + id + "}");
+        websocket.send("{\"jsonrpc\": \"2.0\", \"method\": \"machine.update.status\", \"params\":{\"refresh\": \"true\"}, \"id\": " + startUpId + "}");
+        websocket.send("{\"jsonrpc\": \"2.0\", \"method\": \"printer.info\", \"id\": " + startUpId + "}");
+        websocket.send("{\"jsonrpc\": \"2.0\", \"method\": \"server.info\", \"id\": " + startUpId + "}");
     };
     MoonrakerClient.prototype.send = function (message) {
-        var id = Math.floor(Math.random() * Number.parseInt('10_000')) + 1;
-        var messageData = JSON.parse(message);
-        var response;
-        messageData.id = id;
-        function handler(instance, ev) {
-            var responseData = JSON.parse(ev.data);
-            if (responseData.id === id) {
-                response = responseData;
-                websocket.removeEventListener(websocket_ts__WEBPACK_IMPORTED_MODULE_2__.WebsocketEvents.message, handler);
+        return __awaiter(this, void 0, void 0, function () {
+            function handler(instance, ev) {
+                var responseData = JSON.parse(ev.data);
+                if (responseData.id === id) {
+                    response = responseData;
+                    websocket.removeEventListener(websocket_ts__WEBPACK_IMPORTED_MODULE_2__.WebsocketEvents.message, handler);
+                }
             }
-        }
-        websocket.addEventListener(websocket_ts__WEBPACK_IMPORTED_MODULE_2__.WebsocketEvents.message, handler);
-        websocket.send(JSON.stringify(messageData));
-        return response;
+            var id, messageData, response;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        id = Math.floor(Math.random() * 10000) + 1;
+                        messageData = JSON.parse(message);
+                        messageData.id = id;
+                        websocket.addEventListener(websocket_ts__WEBPACK_IMPORTED_MODULE_2__.WebsocketEvents.message, handler);
+                        websocket.send(JSON.stringify(messageData));
+                        return [4 /*yield*/, (0,async_wait_until__WEBPACK_IMPORTED_MODULE_4__.waitUntil)(function () { return typeof response !== 'undefined'; })];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/, response];
+                }
+            });
+        });
     };
     MoonrakerClient.prototype.getWebsocket = function () {
         return websocket;
@@ -4858,25 +4955,73 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _ConfigHelper__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ConfigHelper */ "./src/helper/ConfigHelper.ts");
+/* harmony import */ var _ConsoleLogger__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ConsoleLogger */ "./src/helper/ConsoleLogger.ts");
+var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (undefined && undefined.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
 
 
+
+var logger = new _ConsoleLogger__WEBPACK_IMPORTED_MODULE_2__.ConsoleLogger();
 var APIKeyHelper = /** @class */ (function () {
     function APIKeyHelper() {
         this.config = new _ConfigHelper__WEBPACK_IMPORTED_MODULE_1__.ConfigHelper();
     }
     APIKeyHelper.prototype.getOneShotToken = function () {
-        var apiKey = this.config.getMoonrakerApiKey();
-        var url = this.config.getMoonrakerUrl();
-        if (apiKey === '') {
-            return '';
-        }
-        return axios__WEBPACK_IMPORTED_MODULE_0___default().get(url + "/access/oneshot_token", {
-            headers: {
-                'X-Api-Key': apiKey
-            }
-        })
-            .then(function (response) {
-            return response.data.result;
+        return __awaiter(this, void 0, void 0, function () {
+            var apiKey, url, response;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        apiKey = this.config.getMoonrakerApiKey();
+                        url = this.config.getMoonrakerUrl();
+                        if (apiKey === '') {
+                            return [2 /*return*/, ''];
+                        }
+                        logger.logRegular('Retrieve Oneshot Token...');
+                        return [4 /*yield*/, axios__WEBPACK_IMPORTED_MODULE_0___default().get(url + "/access/oneshot_token", {
+                                headers: {
+                                    'X-Api-Key': apiKey
+                                }
+                            })];
+                    case 1:
+                        response = _a.sent();
+                        return [2 /*return*/, response.data.result];
+                }
+            });
         });
     };
     return APIKeyHelper;
@@ -10332,7 +10477,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var logger = new _helper_ConsoleLogger__WEBPACK_IMPORTED_MODULE_1__.ConsoleLogger();
-logger.logSuccess("starting " + _package_json__WEBPACK_IMPORTED_MODULE_0__.name + " " + _package_json__WEBPACK_IMPORTED_MODULE_0__.version + "...");
+logger.logSuccess("Starting " + _package_json__WEBPACK_IMPORTED_MODULE_0__.name + " " + _package_json__WEBPACK_IMPORTED_MODULE_0__.version + "...");
 logger.logEmpty();
 Object.assign(global, { WebSocket: __webpack_require__(/*! ws */ "./node_modules/ws/index.js") });
 var moonrakerClient = new _clients_MoonrakerClient__WEBPACK_IMPORTED_MODULE_2__.MoonrakerClient();

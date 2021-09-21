@@ -1,23 +1,27 @@
-import axios from 'axios';
-import {ConfigHelper} from './ConfigHelper';
+import axios from 'axios'
+import {ConfigHelper} from './ConfigHelper'
+import {ConsoleLogger} from './ConsoleLogger'
+
+const logger = new ConsoleLogger()
 
 export class APIKeyHelper {
     protected config = new ConfigHelper()
 
-    public getOneShotToken() {
+    public async getOneShotToken() {
         const apiKey = this.config.getMoonrakerApiKey()
         const url = this.config.getMoonrakerUrl()
 
         if (apiKey === '') { return '' }
 
-        return axios
+        logger.logRegular('Retrieve Oneshot Token...')
+
+        const response = await axios
             .get(`${url}/access/oneshot_token`, {
                 headers: {
                     'X-Api-Key': apiKey
                 }
             })
-            .then((response) => {
-                return response.data.result
-            });
+
+        return response.data.result
     }
 }
