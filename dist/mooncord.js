@@ -5074,6 +5074,9 @@ var ConfigHelper = /** @class */ (function () {
     ConfigHelper.prototype.getMoonrakerApiKey = function () {
         return this.config.connection.moonraker_token;
     };
+    ConfigHelper.prototype.getMoonrakerDatabaseNamespace = function () {
+        return this.config.connection.moonraker_database;
+    };
     ConfigHelper.prototype.getDiscordToken = function () {
         return this.config.connection.bot_token;
     };

@@ -84,9 +84,9 @@ locate_config()
 }
 
 generate_config() {
-    status_msg "Generate Configs"
+    status_msg "Generate Config"
     cp $SCRIPTPATH/mooncord.json $MCCONFIGPATH/mooncord.json
-    cp $SCRIPTPATH/database.json $MCPATH/database.json
+    sed "s/MC_SERVICE/$MCSERVICENAME/g" $MCCONFIGPATH/mooncord.json
 }
 
 open_config() {
