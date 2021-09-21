@@ -4846,7 +4846,6 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
 
 
 var logger = new _helper_ConsoleLogger__WEBPACK_IMPORTED_MODULE_0__.ConsoleLogger();
-var startUpId = 1;
 var websocket;
 var MoonrakerClient = /** @class */ (function () {
     function MoonrakerClient() {
@@ -4874,36 +4873,38 @@ var MoonrakerClient = /** @class */ (function () {
                         websocket.addEventListener(websocket_ts__WEBPACK_IMPORTED_MODULE_2__.WebsocketEvents.open, ((function (instance, ev) {
                             logger.logSuccess('Connected to MoonRaker');
                             _this.sendInitCommands();
-                            _this.subscribeToCommands();
                         })));
                         return [2 /*return*/];
                 }
             });
         });
     };
-    MoonrakerClient.prototype.subscribeToCommands = function () {
+    MoonrakerClient.prototype.sendInitCommands = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var objects, data;
+            var updates, printerInfo, serverInfo, objects, data;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        logger.logRegular('Subscribe to MoonRaker Events...');
-                        return [4 /*yield*/, this.send("{\"jsonrpc\": \"2.0\", \"method\": \"printer.objects.list\"}")];
+                        logger.logRegular('Send Initial MoonRaker Commands...');
+                        return [4 /*yield*/, this.send("{\"jsonrpc\": \"2.0\", \"method\": \"machine.update.status\", \"params\":{\"refresh\": \"true\"}}")];
                     case 1:
+                        updates = _a.sent();
+                        return [4 /*yield*/, this.send("{\"jsonrpc\": \"2.0\", \"method\": \"printer.info\"}")];
+                    case 2:
+                        printerInfo = _a.sent();
+                        return [4 /*yield*/, this.send("{\"jsonrpc\": \"2.0\", \"method\": \"server.info\"}")];
+                    case 3:
+                        serverInfo = _a.sent();
+                        return [4 /*yield*/, this.send("{\"jsonrpc\": \"2.0\", \"method\": \"printer.objects.list\"}")];
+                    case 4:
                         objects = _a.sent();
                         return [4 /*yield*/, this.send("{\"jsonrpc\": \"2.0\", \"method\": \"printer.objects.subscribe\", \"params\": { \"objects\":" + JSON.stringify(objects) + "}}")];
-                    case 2:
+                    case 5:
                         data = _a.sent();
                         return [2 /*return*/];
                 }
             });
         });
-    };
-    MoonrakerClient.prototype.sendInitCommands = function () {
-        logger.logRegular('Send Initial MoonRaker Commands...');
-        websocket.send("{\"jsonrpc\": \"2.0\", \"method\": \"machine.update.status\", \"params\":{\"refresh\": \"true\"}, \"id\": " + startUpId + "}");
-        websocket.send("{\"jsonrpc\": \"2.0\", \"method\": \"printer.info\", \"id\": " + startUpId + "}");
-        websocket.send("{\"jsonrpc\": \"2.0\", \"method\": \"server.info\", \"id\": " + startUpId + "}");
     };
     MoonrakerClient.prototype.send = function (message) {
         return __awaiter(this, void 0, void 0, function () {
