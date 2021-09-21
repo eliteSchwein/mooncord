@@ -66,7 +66,13 @@ export class MoonrakerClient {
         function handler(instance: Websocket, ev: any) {
             const responseData = JSON.parse(ev.data)
 
-            if(typeof(responseData.id) === 'undefined') { return }
+            if(typeof(responseData.id) === 'undefined') {
+                console.log(messageData)
+                console.log(responseData)
+                return
+            }
+
+            console.log(responseData.id + ' ' + id)
 
             if(responseData.id === id) {
                 response = responseData

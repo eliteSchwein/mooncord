@@ -4915,8 +4915,11 @@ var MoonrakerClient = /** @class */ (function () {
             function handler(instance, ev) {
                 var responseData = JSON.parse(ev.data);
                 if (typeof (responseData.id) === 'undefined') {
+                    console.log(messageData);
+                    console.log(responseData);
                     return;
                 }
+                console.log(responseData.id + ' ' + id);
                 if (responseData.id === id) {
                     response = responseData;
                     websocket.removeEventListener(websocket_ts__WEBPACK_IMPORTED_MODULE_1__.WebsocketEvents.message, handler);
