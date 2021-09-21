@@ -4555,6 +4555,8 @@ var MoonrakerClient = /** @class */ (function () {
         this.apiKeyHelper = new _helper_APIKeyHelper__WEBPACK_IMPORTED_MODULE_3__.APIKeyHelper();
         logger.logSuccess('connect to MoonRaker...');
         this.connect();
+        this.sendInitCommands();
+        this.subscribeToCommands();
     }
     MoonrakerClient.prototype.connect = function () {
         return __awaiter(this, void 0, void 0, function () {
@@ -4569,6 +4571,33 @@ var MoonrakerClient = /** @class */ (function () {
                 }
             });
         });
+    };
+    MoonrakerClient.prototype.subscribeToCommands = function () {
+        var objects = this.send("{\"jsonrpc\": \"2.0\", \"method\": \"printer.objects.list\"}");
+        console.log(objects);
+    };
+    MoonrakerClient.prototype.sendInitCommands = function () {
+        var id = Math.floor(Math.random() * Number.parseInt('10_000')) + 1;
+        logger.logRegular('Send Initial MoonRaker Commands...');
+        websocket.send("{\"jsonrpc\": \"2.0\", \"method\": \"machine.update.status\", \"params\":{\"refresh\": \"true\"}, \"id\": " + id + "}");
+        websocket.send("{\"jsonrpc\": \"2.0\", \"method\": \"printer.info\", \"id\": " + id + "}");
+        websocket.send("{\"jsonrpc\": \"2.0\", \"method\": \"server.info\", \"id\": " + id + "}");
+    };
+    MoonrakerClient.prototype.send = function (message) {
+        var id = Math.floor(Math.random() * Number.parseInt('10_000')) + 1;
+        var messageData = JSON.parse(message);
+        var response;
+        messageData.id = id;
+        function handler(instance, ev) {
+            var responseData = JSON.parse(ev.data);
+            if (responseData.id === id) {
+                response = responseData;
+                websocket.removeEventListener(websocket_ts__WEBPACK_IMPORTED_MODULE_2__.WebsocketEvents.message, handler);
+            }
+        }
+        websocket.addEventListener(websocket_ts__WEBPACK_IMPORTED_MODULE_2__.WebsocketEvents.message, handler);
+        websocket.send(JSON.stringify(messageData));
+        return response;
     };
     MoonrakerClient.prototype.getWebsocket = function () {
         return websocket;
