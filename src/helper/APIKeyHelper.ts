@@ -1,8 +1,6 @@
 import axios from 'axios'
 import {ConfigHelper} from './ConfigHelper'
-import {ConsoleLogger} from './ConsoleLogger'
-
-const logger = new ConsoleLogger()
+import {logRegular} from "./ConsoleLogger"
 
 export class APIKeyHelper {
     protected config = new ConfigHelper()
@@ -13,7 +11,7 @@ export class APIKeyHelper {
 
         if (apiKey === '') { return '' }
 
-        logger.logRegular('Retrieve Oneshot Token...')
+        logRegular('Retrieve Oneshot Token...')
 
         const response = await axios
             .get(`${url}/access/oneshot_token`, {

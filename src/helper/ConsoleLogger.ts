@@ -1,23 +1,20 @@
 import 'colorts/lib/string';
 
-export class ConsoleLogger {
-    // eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
-    logError = (message:string) => {
-        console.log(this.getTimeStamp(), message.red)
-    };
-    // eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
-    logSuccess = (message:string) => {
-        console.log(this.getTimeStamp(), message.green)
-    };
-    // eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
-    logRegular = (message:string) => {
-        console.log(this.getTimeStamp(), message.white)
-    };
+export function logError (message:string) {
+    console.log(getTimeStamp(), message.red)
+};
 
-    logEmpty = () => { console.log('') }
+export function logSuccess(message:string) {
+    console.log(getTimeStamp(), message.green)
+};
 
-    private getTimeStamp() {
-        const date = new Date()
-        return `[${date.toISOString()}]`.grey
-    }
+export function logRegular(message:string) {
+    console.log(getTimeStamp(), message.white)
+};
+
+export function logEmpty() { console.log('') }
+
+function getTimeStamp() {
+    const date = new Date()
+    return `[${date.toISOString()}]`.grey
 }

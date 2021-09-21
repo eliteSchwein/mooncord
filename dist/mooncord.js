@@ -4798,12 +4798,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "MoonrakerClient": () => (/* binding */ MoonrakerClient)
 /* harmony export */ });
-/* harmony import */ var _helper_ConsoleLogger__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../helper/ConsoleLogger */ "./src/helper/ConsoleLogger.ts");
-/* harmony import */ var _helper_ConfigHelper__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../helper/ConfigHelper */ "./src/helper/ConfigHelper.ts");
-/* harmony import */ var websocket_ts__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! websocket-ts */ "./node_modules/websocket-ts/lib/index.js");
-/* harmony import */ var websocket_ts__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(websocket_ts__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _helper_APIKeyHelper__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../helper/APIKeyHelper */ "./src/helper/APIKeyHelper.ts");
-/* harmony import */ var async_wait_until__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! async-wait-until */ "./node_modules/async-wait-until/dist/index.esm.js");
+/* harmony import */ var _helper_ConfigHelper__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../helper/ConfigHelper */ "./src/helper/ConfigHelper.ts");
+/* harmony import */ var websocket_ts__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! websocket-ts */ "./node_modules/websocket-ts/lib/index.js");
+/* harmony import */ var websocket_ts__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(websocket_ts__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _helper_APIKeyHelper__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../helper/APIKeyHelper */ "./src/helper/APIKeyHelper.ts");
+/* harmony import */ var async_wait_until__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! async-wait-until */ "./node_modules/async-wait-until/dist/index.esm.js");
+/* harmony import */ var _helper_ConsoleLogger__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../helper/ConsoleLogger */ "./src/helper/ConsoleLogger.ts");
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -4845,13 +4845,12 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
 
 
 
-var logger = new _helper_ConsoleLogger__WEBPACK_IMPORTED_MODULE_0__.ConsoleLogger();
 var websocket;
 var MoonrakerClient = /** @class */ (function () {
     function MoonrakerClient() {
-        this.config = new _helper_ConfigHelper__WEBPACK_IMPORTED_MODULE_1__.ConfigHelper();
-        this.apiKeyHelper = new _helper_APIKeyHelper__WEBPACK_IMPORTED_MODULE_3__.APIKeyHelper();
-        logger.logSuccess('Connect to MoonRaker...');
+        this.config = new _helper_ConfigHelper__WEBPACK_IMPORTED_MODULE_0__.ConfigHelper();
+        this.apiKeyHelper = new _helper_APIKeyHelper__WEBPACK_IMPORTED_MODULE_2__.APIKeyHelper();
+        (0,_helper_ConsoleLogger__WEBPACK_IMPORTED_MODULE_4__.logSuccess)('Connect to MoonRaker...');
         this.connect();
     }
     MoonrakerClient.prototype.connect = function () {
@@ -4864,14 +4863,14 @@ var MoonrakerClient = /** @class */ (function () {
                     case 1:
                         oneShotToken = _a.sent();
                         socketUrl = this.config.getMoonrakerSocketUrl();
-                        websocket = new websocket_ts__WEBPACK_IMPORTED_MODULE_2__.WebsocketBuilder(socketUrl + "?token=" + oneShotToken).build();
-                        websocket.addEventListener(websocket_ts__WEBPACK_IMPORTED_MODULE_2__.WebsocketEvents.error, (function (instance, ev) {
-                            logger.logError('Websocket Error:');
+                        websocket = new websocket_ts__WEBPACK_IMPORTED_MODULE_1__.WebsocketBuilder(socketUrl + "?token=" + oneShotToken).build();
+                        websocket.addEventListener(websocket_ts__WEBPACK_IMPORTED_MODULE_1__.WebsocketEvents.error, (function (instance, ev) {
+                            (0,_helper_ConsoleLogger__WEBPACK_IMPORTED_MODULE_4__.logError)('Websocket Error:');
                             console.log(ev);
                             process.exit(5);
                         }));
-                        websocket.addEventListener(websocket_ts__WEBPACK_IMPORTED_MODULE_2__.WebsocketEvents.open, ((function (instance, ev) {
-                            logger.logSuccess('Connected to MoonRaker');
+                        websocket.addEventListener(websocket_ts__WEBPACK_IMPORTED_MODULE_1__.WebsocketEvents.open, ((function (instance, ev) {
+                            (0,_helper_ConsoleLogger__WEBPACK_IMPORTED_MODULE_4__.logSuccess)('Connected to MoonRaker');
                             _this.sendInitCommands();
                         })));
                         return [2 /*return*/];
@@ -4885,7 +4884,7 @@ var MoonrakerClient = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        logger.logRegular('Send Initial MoonRaker Commands...');
+                        (0,_helper_ConsoleLogger__WEBPACK_IMPORTED_MODULE_4__.logRegular)('Send Initial MoonRaker Commands...');
                         return [4 /*yield*/, this.send("{\"jsonrpc\": \"2.0\", \"method\": \"machine.update.status\", \"params\":{\"refresh\": \"true\"}}")];
                     case 1:
                         updates = _a.sent();
@@ -4920,7 +4919,7 @@ var MoonrakerClient = /** @class */ (function () {
                 }
                 if (responseData.id === id) {
                     response = responseData;
-                    websocket.removeEventListener(websocket_ts__WEBPACK_IMPORTED_MODULE_2__.WebsocketEvents.message, handler);
+                    websocket.removeEventListener(websocket_ts__WEBPACK_IMPORTED_MODULE_1__.WebsocketEvents.message, handler);
                 }
             }
             var id, messageData, response;
@@ -4930,9 +4929,9 @@ var MoonrakerClient = /** @class */ (function () {
                         id = Math.floor(Math.random() * 10000) + 1;
                         messageData = JSON.parse(message);
                         messageData.id = id;
-                        websocket.addEventListener(websocket_ts__WEBPACK_IMPORTED_MODULE_2__.WebsocketEvents.message, handler);
+                        websocket.addEventListener(websocket_ts__WEBPACK_IMPORTED_MODULE_1__.WebsocketEvents.message, handler);
                         websocket.send(JSON.stringify(messageData));
-                        return [4 /*yield*/, (0,async_wait_until__WEBPACK_IMPORTED_MODULE_4__.waitUntil)(function () { return typeof response !== 'undefined'; }, { timeout: 10000 })];
+                        return [4 /*yield*/, (0,async_wait_until__WEBPACK_IMPORTED_MODULE_3__.waitUntil)(function () { return typeof response !== 'undefined'; }, { timeout: 10000 })];
                     case 1:
                         _a.sent();
                         return [2 /*return*/, response];
@@ -5004,7 +5003,6 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
 
 
 
-var logger = new _ConsoleLogger__WEBPACK_IMPORTED_MODULE_2__.ConsoleLogger();
 var APIKeyHelper = /** @class */ (function () {
     function APIKeyHelper() {
         this.config = new _ConfigHelper__WEBPACK_IMPORTED_MODULE_1__.ConfigHelper();
@@ -5020,7 +5018,7 @@ var APIKeyHelper = /** @class */ (function () {
                         if (apiKey === '') {
                             return [2 /*return*/, ''];
                         }
-                        logger.logRegular('Retrieve Oneshot Token...');
+                        (0,_ConsoleLogger__WEBPACK_IMPORTED_MODULE_2__.logRegular)('Retrieve Oneshot Token...');
                         return [4 /*yield*/, axios__WEBPACK_IMPORTED_MODULE_0___default().get(url + "/access/oneshot_token", {
                                 headers: {
                                     'X-Api-Key': apiKey
@@ -5143,34 +5141,30 @@ var ConfigHelper = /** @class */ (function () {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "ConsoleLogger": () => (/* binding */ ConsoleLogger)
+/* harmony export */   "logError": () => (/* binding */ logError),
+/* harmony export */   "logSuccess": () => (/* binding */ logSuccess),
+/* harmony export */   "logRegular": () => (/* binding */ logRegular),
+/* harmony export */   "logEmpty": () => (/* binding */ logEmpty)
 /* harmony export */ });
 /* harmony import */ var colorts_lib_string__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! colorts/lib/string */ "./node_modules/colorts/lib/string.js");
 
-var ConsoleLogger = /** @class */ (function () {
-    function ConsoleLogger() {
-        var _this = this;
-        // eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
-        this.logError = function (message) {
-            console.log(_this.getTimeStamp(), message.red);
-        };
-        // eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
-        this.logSuccess = function (message) {
-            console.log(_this.getTimeStamp(), message.green);
-        };
-        // eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
-        this.logRegular = function (message) {
-            console.log(_this.getTimeStamp(), message.white);
-        };
-        this.logEmpty = function () { console.log(''); };
-    }
-    ConsoleLogger.prototype.getTimeStamp = function () {
-        var date = new Date();
-        return ("[" + date.toISOString() + "]").grey;
-    };
-    return ConsoleLogger;
-}());
-
+function logError(message) {
+    console.log(getTimeStamp(), message.red);
+}
+;
+function logSuccess(message) {
+    console.log(getTimeStamp(), message.green);
+}
+;
+function logRegular(message) {
+    console.log(getTimeStamp(), message.white);
+}
+;
+function logEmpty() { console.log(''); }
+function getTimeStamp() {
+    var date = new Date();
+    return ("[" + date.toISOString() + "]").grey;
+}
 
 
 /***/ }),
@@ -10479,17 +10473,20 @@ var __webpack_exports__ = {};
   !*** ./src/Application.ts ***!
   \****************************/
 __webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "getMoonrakerClient": () => (/* binding */ getMoonrakerClient)
+/* harmony export */ });
 /* harmony import */ var _package_json__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../package.json */ "./package.json");
-/* harmony import */ var _helper_ConsoleLogger__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./helper/ConsoleLogger */ "./src/helper/ConsoleLogger.ts");
-/* harmony import */ var _clients_MoonrakerClient__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./clients/MoonrakerClient */ "./src/clients/MoonrakerClient.ts");
+/* harmony import */ var _clients_MoonrakerClient__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./clients/MoonrakerClient */ "./src/clients/MoonrakerClient.ts");
+/* harmony import */ var _helper_ConsoleLogger__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./helper/ConsoleLogger */ "./src/helper/ConsoleLogger.ts");
 
 
 
-var logger = new _helper_ConsoleLogger__WEBPACK_IMPORTED_MODULE_1__.ConsoleLogger();
-logger.logSuccess("Starting " + _package_json__WEBPACK_IMPORTED_MODULE_0__.name + " " + _package_json__WEBPACK_IMPORTED_MODULE_0__.version + "...");
-logger.logEmpty();
+(0,_helper_ConsoleLogger__WEBPACK_IMPORTED_MODULE_2__.logSuccess)("Starting " + _package_json__WEBPACK_IMPORTED_MODULE_0__.name + " " + _package_json__WEBPACK_IMPORTED_MODULE_0__.version + "...");
+(0,_helper_ConsoleLogger__WEBPACK_IMPORTED_MODULE_2__.logEmpty)();
 Object.assign(global, { WebSocket: __webpack_require__(/*! ws */ "./node_modules/ws/index.js") });
-var moonrakerClient = new _clients_MoonrakerClient__WEBPACK_IMPORTED_MODULE_2__.MoonrakerClient();
+var moonrakerClient = new _clients_MoonrakerClient__WEBPACK_IMPORTED_MODULE_1__.MoonrakerClient();
+var getMoonrakerClient = moonrakerClient;
 
 })();
 

@@ -1,10 +1,8 @@
-import {ConsoleLogger} from '../helper/ConsoleLogger'
 import {ConfigHelper} from '../helper/ConfigHelper'
 import {Websocket, WebsocketBuilder, WebsocketEvents} from 'websocket-ts'
 import {APIKeyHelper} from '../helper/APIKeyHelper'
 import { waitUntil } from 'async-wait-until'
-
-const logger = new ConsoleLogger()
+import {logError, logRegular, logSuccess} from "../helper/ConsoleLogger";
 
 let websocket: Websocket
 
@@ -13,7 +11,7 @@ export class MoonrakerClient {
     protected apiKeyHelper = new APIKeyHelper()
 
     public constructor() {
-        logger.logSuccess('Connect to MoonRaker...')
+        logSuccess('Connect to MoonRaker...')
 
         this.connect()
     }
@@ -25,20 +23,20 @@ export class MoonrakerClient {
         websocket = new WebsocketBuilder(`${socketUrl}?token=${oneShotToken}`).build()
 
         websocket.addEventListener(WebsocketEvents.error, ((instance, ev) => {
-            logger.logError('Websocket Error:')
+            logError('Websocket Error:')
             console.log(ev)
             process.exit(5)
         }))
 
         websocket.addEventListener(WebsocketEvents.open, (((instance, ev) => {
-            logger.logSuccess('Connected to MoonRaker')
+            logSuccess('Connected to MoonRaker')
 
             this.sendInitCommands()
         })))
     }
 
     private async sendInitCommands() {
-        logger.logRegular('Send Initial MoonRaker Commands...')
+        logRegular('Send Initial MoonRaker Commands...')
 
         const updates = await this.send(`{"jsonrpc": "2.0", "method": "machine.update.status", "params":{"refresh": "true"}}`)
         const printerInfo = await this.send(`{"jsonrpc": "2.0", "method": "printer.info"}`)
