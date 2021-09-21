@@ -4,19 +4,20 @@ import {ConfigHelper} from "./ConfigHelper";
 export class APIKeyHelper {
     protected config = new ConfigHelper()
 
-    public async getOneShotToken() {
+    public getOneShotToken() {
         const apiKey = this.config.getMoonrakerApiKey()
         const url = this.config.getMoonrakerUrl()
 
         if (apiKey === '') { return '' }
 
-        const tokenData = await axios
+        return axios
             .get(`${url}/access/oneshot_token`, {
                 headers: {
                     'X-Api-Key': apiKey
                 }
             })
-
-        return tokenData.data.result
+            .then((response) => {
+                return response.data.result
+            });
     }
 }
