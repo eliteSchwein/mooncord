@@ -4573,12 +4573,13 @@ var MoonrakerClient = /** @class */ (function () {
         });
     };
     MoonrakerClient.prototype.subscribeToCommands = function () {
+        logger.logRegular('Subscribe to MoonRaker Events...');
         var objects = this.send("{\"jsonrpc\": \"2.0\", \"method\": \"printer.objects.list\"}");
         console.log(objects);
     };
     MoonrakerClient.prototype.sendInitCommands = function () {
-        var id = Math.floor(Math.random() * Number.parseInt('10_000')) + 1;
         logger.logRegular('Send Initial MoonRaker Commands...');
+        var id = 1;
         websocket.send("{\"jsonrpc\": \"2.0\", \"method\": \"machine.update.status\", \"params\":{\"refresh\": \"true\"}, \"id\": " + id + "}");
         websocket.send("{\"jsonrpc\": \"2.0\", \"method\": \"printer.info\", \"id\": " + id + "}");
         websocket.send("{\"jsonrpc\": \"2.0\", \"method\": \"server.info\", \"id\": " + id + "}");

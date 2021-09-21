@@ -27,15 +27,17 @@ export class MoonrakerClient {
     }
 
     private subscribeToCommands() {
+        logger.logRegular('Subscribe to MoonRaker Events...')
+
         const objects = this.send(`{"jsonrpc": "2.0", "method": "printer.objects.list"}`)
 
         console.log(objects)
     }
 
     private sendInitCommands() {
-        const id = Math.floor(Math.random() * Number.parseInt('10_000')) + 1
-
         logger.logRegular('Send Initial MoonRaker Commands...')
+
+        const id = 1
 
         websocket.send(`{"jsonrpc": "2.0", "method": "machine.update.status", "params":{"refresh": "true"}, "id": ${id}}`)
         websocket.send(`{"jsonrpc": "2.0", "method": "printer.info", "id": ${id}}`)
