@@ -1,7 +1,7 @@
-import {ConsoleLogger} from "../helper/ConsoleLogger"
-import {ConfigHelper} from "../helper/ConfigHelper"
+import {ConsoleLogger} from '../helper/ConsoleLogger'
+import {ConfigHelper} from '../helper/ConfigHelper'
 import {Websocket, WebsocketBuilder, WebsocketEvents} from 'websocket-ts'
-import {APIKeyHelper} from "../helper/APIKeyHelper";
+import {APIKeyHelper} from '../helper/APIKeyHelper';
 
 const logger = new ConsoleLogger()
 
@@ -21,9 +21,15 @@ export class MoonrakerClient {
         this.subscribeToCommands()
     }
 
-    private async connect() {
-        const oneShotToken = await this.apiKeyHelper.getOneShotToken()
-        websocket = new WebsocketBuilder(`${this.config.getMoonrakerUrl()}?token=${oneShotToken}`).build()
+    private connect() {
+        const oneShotToken = this.apiKeyHelper.getOneShotToken()
+        websocket = new WebsocketBuilder(`${this.config.getMoonrakerSocketUrl()}?token=${oneShotToken}`).build()
+
+        websocket.addEventListener(WebsocketEvents.error, ((instance, ev) => {
+            logger.logError('Websocket Error:')
+            console.log(ev)
+            process.exit(5)
+        }))
     }
 
     private subscribeToCommands() {

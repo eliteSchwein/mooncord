@@ -1,5 +1,5 @@
-import axios from "axios";
-import {ConfigHelper} from "./ConfigHelper";
+import axios from 'axios';
+import {ConfigHelper} from './ConfigHelper';
 
 export class APIKeyHelper {
     protected config = new ConfigHelper()

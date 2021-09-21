@@ -26,7 +26,8 @@ module.exports = {
         extensions: ['.tsx', '.ts', '.js', '.json']
     },
     externals: {
-        'sharp': 'commonjs sharp'
+        'sharp': 'commonjs sharp',
+        'websocket': 'commonjs websocket'
     },
     target: 'node'
 };
