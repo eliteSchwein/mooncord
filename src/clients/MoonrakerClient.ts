@@ -6,8 +6,6 @@ import { waitUntil } from 'async-wait-until'
 
 const logger = new ConsoleLogger()
 
-const startUpId = 1
-
 let websocket: Websocket
 
 export class MoonrakerClient {
@@ -36,25 +34,17 @@ export class MoonrakerClient {
             logger.logSuccess('Connected to MoonRaker')
 
             this.sendInitCommands()
-
-            this.subscribeToCommands()
         })))
     }
 
-    private async subscribeToCommands() {
-        logger.logRegular('Subscribe to MoonRaker Events...')
-
-        const objects = await this.send(`{"jsonrpc": "2.0", "method": "printer.objects.list"}`)
-
-        const data = await this.send(`{"jsonrpc": "2.0", "method": "printer.objects.subscribe", "params": { "objects":${JSON.stringify(objects)}}}`)
-    }
-
-    private sendInitCommands() {
+    private async sendInitCommands() {
         logger.logRegular('Send Initial MoonRaker Commands...')
 
-        websocket.send(`{"jsonrpc": "2.0", "method": "machine.update.status", "params":{"refresh": "true"}, "id": ${startUpId}}`)
-        websocket.send(`{"jsonrpc": "2.0", "method": "printer.info", "id": ${startUpId}}`)
-        websocket.send(`{"jsonrpc": "2.0", "method": "server.info", "id": ${startUpId}}`)
+        const updates = await this.send(`{"jsonrpc": "2.0", "method": "machine.update.status", "params":{"refresh": "true"}}`)
+        const printerInfo = await this.send(`{"jsonrpc": "2.0", "method": "printer.info"}`)
+        const serverInfo = await this.send(`{"jsonrpc": "2.0", "method": "server.info"}`)
+        const objects = await this.send(`{"jsonrpc": "2.0", "method": "printer.objects.list"}`)
+        const data = await this.send(`{"jsonrpc": "2.0", "method": "printer.objects.subscribe", "params": { "objects":${JSON.stringify(objects)}}}`)
     }
 
     public async send(message: string) {
