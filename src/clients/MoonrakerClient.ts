@@ -11,6 +11,7 @@ let websocket: Websocket
 export class MoonrakerClient {
     protected config = new ConfigHelper()
     protected apiKeyHelper = new APIKeyHelper()
+    protected ready = false
 
     public constructor() {
         logSuccess('Connect to MoonRaker...')
@@ -56,6 +57,8 @@ export class MoonrakerClient {
 
         const data = await this.send(`{"jsonrpc": "2.0", "method": "printer.objects.subscribe", "params": { "objects":${JSON.stringify(subscriptionObjects)}}}`)
 
+        this.ready = true
+
         logSuccess('MoonRaker Client is ready')
     }
 
@@ -83,6 +86,18 @@ export class MoonrakerClient {
         await waitUntil(() => typeof requests[id] !== 'undefined', { timeout, intervalBetweenAttempts: 500 })
 
         return requests[id]
+    }
+
+    public isReady() {
+        if(!this.isConnected()) { return false }
+
+        return this.ready
+    }
+
+    public isConnected() {
+        if(typeof websocket === 'undefined') { return false }
+
+        return Boolean(websocket.underlyingWebsocket.OPEN)
     }
 
     public getWebsocket() {
