@@ -3,7 +3,7 @@ import {Websocket, WebsocketBuilder, WebsocketEvents} from 'websocket-ts'
 import {APIKeyHelper} from '../helper/APIKeyHelper'
 import {waitUntil} from 'async-wait-until'
 import {logError, logRegular, logSuccess} from '../helper/ConsoleLogger'
-import {setData} from "../utils/CacheUtil";
+import {setData} from '../utils/CacheUtil'
 
 const requests: any = {}
 

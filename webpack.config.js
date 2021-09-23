@@ -23,11 +23,12 @@ module.exports = {
     },
     resolve: {
         modules: ['src', 'node_modules'],
-        extensions: ['.tsx', '.ts', '.js', '.json']
+        extensions: ['*', '.tsx', '.ts', '.js', '.json']
     },
     externals: {
         'sharp': 'commonjs sharp',
-        'websocket': 'commonjs websocket'
+        'websocket': 'commonjs websocket',
+        'discordjs': 'commonjs discordjs'
     },
     target: 'node'
 };
