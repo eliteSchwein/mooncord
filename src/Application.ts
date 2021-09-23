@@ -1,9 +1,8 @@
 import * as packageConfig from '../package.json'
+import {DiscordClient} from './clients/DiscordClient'
 import {MoonrakerClient} from './clients/MoonrakerClient'
-import {logEmpty, logSuccess} from "./helper/ConsoleLogger";
-import {DatabaseUtil} from "./utils/DatabaseUtil";
-import {DiscordClient} from "./clients/DiscordClient";
-
+import {logEmpty, logSuccess} from './helper/ConsoleLogger'
+import {DatabaseUtil} from './utils/DatabaseUtil'
 
 logSuccess(`Starting ${packageConfig.name} ${packageConfig.version}...`)
 logEmpty()

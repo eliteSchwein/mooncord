@@ -1,19 +1,9 @@
 {
   "compilerOptions": {
     "outDir": "./dist/",
-    "noImplicitAny": true,
-    "module": "es6",
-    "target": "es5",
-    "jsx": "react",
+    "target": "es2020",
     "allowJs": true,
     "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "esModuleInterop": true,
-    "lib": [
-      "dom",
-      "es5",
-      "scripthost",
-      "webworker"
-    ]
+    "resolveJsonModule": true
   }
 }

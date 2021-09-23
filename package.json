@@ -4,14 +4,12 @@
   "description": "Moonraker Discord Bot based on Discord.js",
   "main": "index.js",
   "scripts": {
-    "start": "node dist/mooncord.js",
+    "start": "node dist/index.js",
     "ramdebugstart": "node --trace_gc dist/mooncord.js",
     "checkcodestyle": "npx eslint ./**",
     "autofixcodestyle": "npx eslint ./** --fix",
-    "build-dev": "webpack  --mode=development",
-    "build": "webpack  --mode=production",
-    "watch": "webpack --watch --progress --mode=development",
-    "tsc": "tsc"
+    "build": "ncc build -m -e discord.js src/Application.ts -o dist",
+    "watch": "ncc build -w -e discord.js src/Application.ts -o dist"
   },
   "repository": {
     "type": "git",
@@ -25,10 +23,11 @@
   },
   "homepage": "https://github.com/eliteSchwein/mooncord#readme",
   "devDependencies": {
+    "@types/node": "^16.9.6",
+    "@vercel/ncc": "^0.31.1",
     "async-wait-until": "^2.0.7",
     "axios": "^0.21.1",
     "colorts": "^0.1.63",
-    "discord.js": "^13.1.0",
     "eslint": "^7.32.0",
     "eslint-config-galex": "^2.16.9",
     "eslint-config-standard": "^16.0.3",
@@ -38,11 +37,11 @@
     "form-data": "^4.0.0",
     "sharp": "^0.29.0",
     "shelljs": "^0.8.4",
-    "ts-loader": "^9.2.5",
     "typescript": "^4.4.3",
-    "webpack": "^5.52.1",
-    "webpack-cli": "^4.8.0",
     "websocket-ts": "^1.1.1",
     "ws": "^8.2.2"
+  },
+  "dependencies": {
+    "discord.js": "^13.1.0"
   }
 }
