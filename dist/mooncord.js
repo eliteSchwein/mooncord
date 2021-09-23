@@ -5212,12 +5212,14 @@ function getTimeStamp() {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "setData": () => (/* binding */ setData)
+/* harmony export */   "setData": () => (/* binding */ setData),
+/* harmony export */   "dump": () => (/* binding */ dump)
 /* harmony export */ });
 var cacheData = {};
 function setData(key, value) {
     cacheData[key] = value;
 }
+var dump = cacheData;
 
 
 /***/ }),
