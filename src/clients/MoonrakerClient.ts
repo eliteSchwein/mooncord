@@ -3,6 +3,7 @@ import {Websocket, WebsocketBuilder, WebsocketEvents} from 'websocket-ts'
 import {APIKeyHelper} from '../helper/APIKeyHelper'
 import {waitUntil} from 'async-wait-until'
 import {logError, logRegular, logSuccess} from '../helper/ConsoleLogger'
+import {setData} from "../utils/CacheUtil";
 
 const requests: any = {}
 
@@ -43,9 +44,16 @@ export class MoonrakerClient {
     private async sendInitCommands() {
         logRegular('Send Initial Commands...')
 
+        logRegular('Retrieve MoonRaker Update Manager Data...')
         const updates = await this.send(`{"jsonrpc": "2.0", "method": "machine.update.status", "params":{"refresh": "true"}}`, 300_000)
+
+        logRegular('Retrieve Printer Info...')
         const printerInfo = await this.send(`{"jsonrpc": "2.0", "method": "printer.info"}`)
+
+        logRegular('Retrieve Server Info...')
         const serverInfo = await this.send(`{"jsonrpc": "2.0", "method": "server.info"}`)
+
+        logRegular('Retrieve Subscribable MoonRaker Objects...')
         const objects = await this.send(`{"jsonrpc": "2.0", "method": "printer.objects.list"}`)
 
         const subscriptionObjects: any = {}
@@ -55,9 +63,15 @@ export class MoonrakerClient {
             subscriptionObjects[object] = null
         }
 
+        logRegular('Subscribe to MoonRaker Objects...')
         const data = await this.send(`{"jsonrpc": "2.0", "method": "printer.objects.subscribe", "params": { "objects":${JSON.stringify(subscriptionObjects)}}}`)
 
         this.ready = true
+
+        setData('updates', updates.result)
+        setData('printer_info', printerInfo.result)
+        setData('server_info', serverInfo.result)
+        setData('state', data.result.status)
 
         logSuccess('MoonRaker Client is ready')
     }

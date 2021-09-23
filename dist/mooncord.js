@@ -4804,6 +4804,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _helper_APIKeyHelper__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../helper/APIKeyHelper */ "./src/helper/APIKeyHelper.ts");
 /* harmony import */ var async_wait_until__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! async-wait-until */ "./node_modules/async-wait-until/dist/index.esm.js");
 /* harmony import */ var _helper_ConsoleLogger__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../helper/ConsoleLogger */ "./src/helper/ConsoleLogger.ts");
+/* harmony import */ var _utils_CacheUtil__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../utils/CacheUtil */ "./src/utils/CacheUtil.ts");
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -4840,6 +4841,7 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+
 
 
 
@@ -4888,15 +4890,19 @@ var MoonrakerClient = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         (0,_helper_ConsoleLogger__WEBPACK_IMPORTED_MODULE_4__.logRegular)('Send Initial Commands...');
+                        (0,_helper_ConsoleLogger__WEBPACK_IMPORTED_MODULE_4__.logRegular)('Retrieve MoonRaker Update Manager Data...');
                         return [4 /*yield*/, this.send("{\"jsonrpc\": \"2.0\", \"method\": \"machine.update.status\", \"params\":{\"refresh\": \"true\"}}", 300000)];
                     case 1:
                         updates = _a.sent();
+                        (0,_helper_ConsoleLogger__WEBPACK_IMPORTED_MODULE_4__.logRegular)('Retrieve Printer Info...');
                         return [4 /*yield*/, this.send("{\"jsonrpc\": \"2.0\", \"method\": \"printer.info\"}")];
                     case 2:
                         printerInfo = _a.sent();
+                        (0,_helper_ConsoleLogger__WEBPACK_IMPORTED_MODULE_4__.logRegular)('Retrieve Server Info...');
                         return [4 /*yield*/, this.send("{\"jsonrpc\": \"2.0\", \"method\": \"server.info\"}")];
                     case 3:
                         serverInfo = _a.sent();
+                        (0,_helper_ConsoleLogger__WEBPACK_IMPORTED_MODULE_4__.logRegular)('Retrieve Subscribable MoonRaker Objects...');
                         return [4 /*yield*/, this.send("{\"jsonrpc\": \"2.0\", \"method\": \"printer.objects.list\"}")];
                     case 4:
                         objects = _a.sent();
@@ -4905,10 +4911,15 @@ var MoonrakerClient = /** @class */ (function () {
                             object = objects.result.objects[index];
                             subscriptionObjects[object] = null;
                         }
+                        (0,_helper_ConsoleLogger__WEBPACK_IMPORTED_MODULE_4__.logRegular)('Subscribe to MoonRaker Objects...');
                         return [4 /*yield*/, this.send("{\"jsonrpc\": \"2.0\", \"method\": \"printer.objects.subscribe\", \"params\": { \"objects\":" + JSON.stringify(subscriptionObjects) + "}}")];
                     case 5:
                         data = _a.sent();
                         this.ready = true;
+                        (0,_utils_CacheUtil__WEBPACK_IMPORTED_MODULE_5__.setData)('updates', updates.result);
+                        (0,_utils_CacheUtil__WEBPACK_IMPORTED_MODULE_5__.setData)('printer_info', printerInfo.result);
+                        (0,_utils_CacheUtil__WEBPACK_IMPORTED_MODULE_5__.setData)('server_info', serverInfo.result);
+                        (0,_utils_CacheUtil__WEBPACK_IMPORTED_MODULE_5__.setData)('state', data.result.status);
                         (0,_helper_ConsoleLogger__WEBPACK_IMPORTED_MODULE_4__.logSuccess)('MoonRaker Client is ready');
                         return [2 /*return*/];
                 }
@@ -5187,6 +5198,25 @@ function logEmpty() { console.log(''); }
 function getTimeStamp() {
     var date = new Date();
     return ("[" + date.toISOString() + "]").grey;
+}
+
+
+/***/ }),
+
+/***/ "./src/utils/CacheUtil.ts":
+/*!********************************!*\
+  !*** ./src/utils/CacheUtil.ts ***!
+  \********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "setData": () => (/* binding */ setData)
+/* harmony export */ });
+var cacheData = {};
+function setData(key, value) {
+    cacheData[key] = value;
 }
 
 
