@@ -2365,7 +2365,7 @@ module.exports = { mask, unmask };
 
 
 try {
-  module.exports = require(__nccwpck_require__.ab + "prebuilds/win32-x64/node.napi1.node");
+  module.exports = require(__nccwpck_require__.ab + "prebuilds/win32-x64/node.napi.node");
 } catch (e) {
   module.exports = __nccwpck_require__(7218);
 }
@@ -4511,7 +4511,7 @@ module.exports = isValidUTF8;
 
 
 try {
-  module.exports = require(__nccwpck_require__.ab + "prebuilds/win32-x64/node.napi.node");
+  module.exports = require(__nccwpck_require__.ab + "prebuilds/win32-x64/node.napi1.node");
 } catch (e) {
   module.exports = __nccwpck_require__(2534);
 }
@@ -9510,7 +9510,18 @@ function getTimeStamp() {
     return `[${date.toISOString()}]`.grey;
 }
 
+;// CONCATENATED MODULE: ./src/utils/CacheUtil.ts
+const cacheData = {};
+function setData(key, value) {
+    cacheData[key] = value;
+}
+function getEntry(key) {
+    return cacheData[key];
+}
+const dump = (/* unused pure expression or super */ null && (cacheData));
+
 ;// CONCATENATED MODULE: ./src/clients/DiscordClient.ts
+
 
 
 
@@ -9527,20 +9538,26 @@ class DiscordClient {
         await (0,dist.waitUntil)(() => this.database.isReady(), { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 500 });
         logEmpty();
         logSuccess('Load Discord Client...');
-        console.log(new external_discord_js_namespaceObject.Client({ intents: [external_discord_js_namespaceObject.Intents.FLAGS.GUILDS] }));
-        //const discordClient = new Discord.Client({intents: []})
+        this.discordClient = new external_discord_js_namespaceObject.Client({ intents: [
+                external_discord_js_namespaceObject.Intents.FLAGS.DIRECT_MESSAGES,
+                external_discord_js_namespaceObject.Intents.FLAGS.DIRECT_MESSAGE_REACTIONS,
+                external_discord_js_namespaceObject.Intents.FLAGS.GUILDS,
+                external_discord_js_namespaceObject.Intents.FLAGS.GUILD_MESSAGES,
+                external_discord_js_namespaceObject.Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
+                external_discord_js_namespaceObject.Intents.FLAGS.GUILD_INTEGRATIONS
+            ] });
         logRegular('Connect to Discord...');
-        //await discordClient.login(this.config.getDiscordToken())
-        // setData('invite_url', `https://discord.com/oauth2/authorize?client_id=${discordClient.user.id}&permissions=3422944320&scope=bot%20applications.commands`)
-        //logSuccess(`  ${'Discordbot Connected'}
-        //${'Name:'.gray} ${(discordClient.user.tag).green}
-        //${'Invite:'.gray} ${getEntry('invite_url')}`.green)
+        await this.discordClient.login(this.config.getDiscordToken());
+        setData('invite_url', `https://discord.com/oauth2/authorize?client_id=${this.discordClient.user.id}&permissions=3422944320&scope=bot%20applications.commands`);
+        logSuccess(`  ${'Discordbot Connected'}
+            ${'Name:'.gray} ${(this.discordClient.user.tag).green}
+            ${'Invite:'.gray} ${getEntry('invite_url')}`.green);
     }
     isConnected() {
-        //   return discordClient.isReady()
+        return this.discordClient.isReady();
     }
     getClient() {
-        //    return discordClient
+        return this.discordClient;
     }
 }
 
@@ -9572,16 +9589,6 @@ class APIKeyHelper {
         return response.data.result;
     }
 }
-
-;// CONCATENATED MODULE: ./src/utils/CacheUtil.ts
-const cacheData = {};
-function setData(key, value) {
-    cacheData[key] = value;
-}
-function getEntry(key) {
-    return cacheData[key];
-}
-const dump = (/* unused pure expression or super */ null && (cacheData));
 
 ;// CONCATENATED MODULE: ./src/clients/MoonrakerClient.ts
 

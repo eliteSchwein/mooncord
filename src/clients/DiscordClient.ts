@@ -11,6 +11,7 @@ export class DiscordClient {
     protected config = new ConfigHelper()
     protected moonrakerClient = getMoonrakerClient()
     protected database = getDatabase()
+    protected discordClient: Client
 
     public constructor() {
         this.connect()
@@ -22,27 +23,32 @@ export class DiscordClient {
         logEmpty()
         logSuccess('Load Discord Client...')
 
-        console.log(new Client({intents: [Intents.FLAGS.GUILDS]}))
-
-        //const discordClient = new Discord.Client({intents: []})
+        this.discordClient = new Client({intents: [
+                Intents.FLAGS.DIRECT_MESSAGES,
+                Intents.FLAGS.DIRECT_MESSAGE_REACTIONS,
+                Intents.FLAGS.GUILDS,
+                Intents.FLAGS.GUILD_MESSAGES,
+                Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
+                Intents.FLAGS.GUILD_INTEGRATIONS
+            ]})
 
         logRegular('Connect to Discord...')
 
-        //await discordClient.login(this.config.getDiscordToken())
+        await this.discordClient.login(this.config.getDiscordToken())
 
-       // setData('invite_url', `https://discord.com/oauth2/authorize?client_id=${discordClient.user.id}&permissions=3422944320&scope=bot%20applications.commands`)
+       setData('invite_url', `https://discord.com/oauth2/authorize?client_id=${this.discordClient.user.id}&permissions=3422944320&scope=bot%20applications.commands`)
 
-        //logSuccess(`  ${'Discordbot Connected'}
-    //${'Name:'.gray} ${(discordClient.user.tag).green}
-    //${'Invite:'.gray} ${getEntry('invite_url')}`.green)
+        logSuccess(`  ${'Discordbot Connected'}
+            ${'Name:'.gray} ${(this.discordClient.user.tag).green}
+            ${'Invite:'.gray} ${getEntry('invite_url')}`.green)
 
     }
 
     public isConnected() {
-     //   return discordClient.isReady()
+        return this.discordClient.isReady()
     }
 
     public getClient() {
-    //    return discordClient
+        return this.discordClient
     }
 }
