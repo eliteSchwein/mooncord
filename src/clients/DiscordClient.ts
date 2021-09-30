@@ -43,8 +43,9 @@ export class DiscordClient {
         setData('invite_url', `https://discord.com/oauth2/authorize?client_id=${this.discordClient.user.id}&permissions=3422944320&scope=bot%20applications.commands`)
         
         logSuccess('Discordbot Connected')
-        logSuccess(`${'Name:'.gray  } ${  (this.discordClient.user.tag).green}`)
-        logSuccess(`${'Invite:'.gray  } ${  (getEntry('invite_url')).green}`)
+        logSuccess(`${'Name:'.green  } ${  (this.discordClient.user.tag).white}`)
+        logSuccess('Invite:'.green)
+        console.log(getEntry('invite_url').cyan)
     }
 
     private async registerCommands() {
