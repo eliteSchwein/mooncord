@@ -50,6 +50,10 @@
                 "removed": "${mention} n'est plus administrateur, ${username}!"
             }
         },
+        "dump": {
+            "description": "vidage du cache.",
+            "command": "dump"
+        },
         "editchannel": {
             "description": "Ajouter ou supprimer la diffusion d'un canal.",
             "command": "editcanal",

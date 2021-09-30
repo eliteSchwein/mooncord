@@ -50,6 +50,10 @@
                 "removed": "${mention} is not longer a Admin, ${username}!"
             }
         },
+        "dump": {
+            "description": "dump cache.",
+            "command": "dump"
+        },
         "editchannel": {
             "description": "Add or Remove broadcast channel.",
             "command": "editchannel",

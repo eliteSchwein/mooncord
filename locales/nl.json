@@ -50,6 +50,10 @@
                 "removed": "${mention} is niet langer een beheerder, ${username}!"
             }
         },
+        "dump": {
+            "description": "dump cache.",
+            "command": "dump"
+        },
         "editchannel": {
             "description": "Beheer aankondigingskanalen.",
             "command": "kanaal",

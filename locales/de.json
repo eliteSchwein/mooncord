@@ -50,6 +50,10 @@
                 "removed": "${mention} ist kein Admin mehr, ${username}!"
             }
         },
+        "dump": {
+            "description": "Schickt eine Kopie vom Cache.",
+            "command": "dump"
+        },
         "editchannel": {
             "description": "Addiere oder Entferne einen Nachrichten Kanal.",
             "command": "nachrichtenkanal",

@@ -50,6 +50,10 @@
                 "removed": "${mention} nu mai este Administrator, ${username}!"
             }
         },
+        "dump": {
+            "description": "cache de vidare.",
+            "command": "dump"
+        },
         "editchannel": {
             "description": "Adăugă sau elimină canalul de difuzare.",
             "command": "editeaza-canal",

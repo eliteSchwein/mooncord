@@ -50,6 +50,10 @@
                 "removed": "${mention} 不在是管理員， ${username}!"
             }
         },
+        "dump": {
+            "description": "转储缓存。",
+            "command": "dump"
+        },
         "editchannel": {
             "description": "添加或刪除廣播頻道。",
             "command": "更改頻道",
