@@ -47,11 +47,11 @@ export class ConfigHelper {
         return this.config.status.before
     }
 
-    public getLanguage() {
+    public getLocale() {
         return this.config.language.messages
     }
 
-    public getSyntaxLanguage() {
+    public getSyntaxLocale() {
         return this.config.language.command_syntax
     }
 

@@ -3,16 +3,18 @@ import {DiscordClient} from './clients/DiscordClient'
 import {MoonrakerClient} from './clients/MoonrakerClient'
 import {logEmpty, logSuccess} from './helper/ConsoleLogger'
 import {DatabaseUtil} from './utils/DatabaseUtil'
+import {LocaleHelper} from "./helper/LocaleHelper";
+import {ConfigHelper} from "./helper/ConfigHelper";
 
 logSuccess(`Starting ${packageConfig.name} ${packageConfig.version}...`)
 logEmpty()
 
 Object.assign(global, { WebSocket: require('ws') })
 
+const localeHelper = new LocaleHelper()
+
 const moonrakerClient = new MoonrakerClient()
-
 const database = new DatabaseUtil()
-
 const discordClient = new DiscordClient()
 
 export function getMoonrakerClient() {
@@ -25,4 +27,8 @@ export function getDiscordClient() {
 
 export function getDatabase() {
     return database
+}
+
+export function getLocaleHelper() {
+    return localeHelper
 }

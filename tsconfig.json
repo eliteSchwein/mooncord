@@ -4,6 +4,7 @@
     "target": "es2020",
     "allowJs": true,
     "moduleResolution": "node",
+    "esModuleInterop": true,
     "resolveJsonModule": true
   }
 }
