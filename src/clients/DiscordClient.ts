@@ -41,10 +41,10 @@ export class DiscordClient {
         await this.registerCommands()
 
         setData('invite_url', `https://discord.com/oauth2/authorize?client_id=${this.discordClient.user.id}&permissions=3422944320&scope=bot%20applications.commands`)
-
-        logSuccess(`  ${'Discordbot Connected'}
-            ${'Name:'.gray} ${(this.discordClient.user.tag).green}
-            ${'Invite:'.gray} ${getEntry('invite_url')}`.green)
+        
+        logSuccess('Discordbot Connected')
+        logSuccess(`${'Name:'.gray  } ${  (this.discordClient.user.tag).green}`)
+        logSuccess(`${'Invite:'.gray  } ${  (getEntry('invite_url')).green}`)
     }
 
     private async registerCommands() {
