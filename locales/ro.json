@@ -145,9 +145,9 @@
                 "title": "Fișiere de Printat"
             }
         },
-        "loadinfo": {
-            "description": "Obțineți informațiile curente despre hardware și software.",
-            "command": "info-sistem",
+        "systeminfo": {
+            "description": "Obține informațiile curente ale sistemului.",
+            "command": "systeminfo",
             "options": {
                 "component": {
                     "name": "component",

@@ -3,22 +3,20 @@ import {ConfigHelper} from "../helper/ConfigHelper";
 import commandStructure from '../meta/command_structure.json'
 import commandOptionsTypes from '../meta/command_option_types.json'
 import {getLocaleHelper} from "../Application";
+import {dump} from "../utils/CacheUtil";
 
 export class DiscordCommandGenerator {
     protected config = new ConfigHelper()
     protected localeHelper = getLocaleHelper()
-    protected commandList = []
 
-    public constructor() {
+    public getCommands() {
+        const commandList = []
         for (const commandIndex in commandStructure) {
 
             const command = this.buildCommand(commandIndex)
-            this.commandList.push(command)
+            commandList.push(command)
         }
-    }
-
-    public getCommands() {
-        return this.commandList
+        return commandList
     }
 
     protected buildCommand(command:string) {
@@ -63,7 +61,7 @@ export class DiscordCommandGenerator {
         optionBuilder.required = optionMeta.required
 
         if (typeof (optionMeta.choices) !== 'undefined') {
-            if (optionMeta.choices === '${loadInfoChoices}') {
+            if (optionMeta.choices === '${systemInfoChoices}') {
                // optionBuilder.choices = loadUtil.getComponents()
             } else {
                 optionBuilder.choices = optionMeta.choices

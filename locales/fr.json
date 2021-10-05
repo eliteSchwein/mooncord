@@ -144,9 +144,9 @@
                 "title": "Fichier d'impression"
             }
         },
-        "loadinfo": {
-            "description": "Obtenir les informations actuelles sur le matériel et les logiciels.",
-            "command": "chargerinfo",
+        "systeminfo": {
+            "description": "Obtenir les informations actuelles du système.",
+            "command": "systeminfo",
             "options": {
                 "component": {
                     "name": "composant",

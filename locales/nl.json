@@ -145,8 +145,8 @@
                 "title": "Printbestanden"
             }
         },
-        "loadinfo": {
-            "description": "Haal informatie op over de huidige hard- en software.",
+        "systeminfo": {
+            "description": "Verkrijg de huidige systeeminformatie.",
             "command": "systeeminfo",
             "options": {
                 "component": {

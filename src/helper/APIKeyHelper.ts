@@ -20,6 +20,6 @@ export class APIKeyHelper {
                 }
             })
 
-        return response.data.result
+        return response.data['result']
     }
 }

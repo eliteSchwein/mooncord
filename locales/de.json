@@ -145,9 +145,9 @@
                 "title": "Druck Dateien"
             }
         },
-        "loadinfo": {
-            "description": "Erhalte aktuelle Hardware und Software Informationen.",
-            "command": "lastinfo",
+        "systeminfo": {
+            "description": "Erhalte aktuelle System Informationen.",
+            "command": "systeminfo",
             "options": {
                 "component": {
                     "name": "komponente",

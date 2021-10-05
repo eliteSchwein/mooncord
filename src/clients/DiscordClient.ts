@@ -5,7 +5,7 @@ import { Client, Intents } from 'discord.js'
 import {getDatabase, getMoonrakerClient} from '../Application'
 import {ConfigHelper} from '../helper/ConfigHelper'
 import {logEmpty, logRegular, logSuccess} from '../helper/ConsoleLogger'
-import {getEntry, setData} from '../utils/CacheUtil'
+import {dump, getEntry, setData} from '../utils/CacheUtil'
 import {DiscordCommandGenerator} from "../generator/DiscordCommandGenerator";
 
 export class DiscordClient {
@@ -46,6 +46,7 @@ export class DiscordClient {
         logSuccess(`${'Name:'.green  } ${  (this.discordClient.user.tag).white}`)
         logSuccess('Invite:'.green)
         console.log(getEntry('invite_url').cyan)
+        dump()
     }
 
     private async registerCommands() {

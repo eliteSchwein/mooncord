@@ -145,9 +145,9 @@
                 "title": "Print Files"
             }
         },
-        "loadinfo": {
-            "description": "Get the current Hardware and Software Informations.",
-            "command": "loadinfo",
+        "systeminfo": {
+            "description": "Get the current System Informations.",
+            "command": "systeminfo",
             "options": {
                 "component": {
                     "name": "component",

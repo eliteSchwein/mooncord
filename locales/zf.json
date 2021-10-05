@@ -109,9 +109,9 @@
                 "title": "列印檔案"
             }
         },
-        "loadinfo": {
-            "description": "取得當前的硬體和軟體資訊。",
-            "command": "加載資訊",
+        "systeminfo": {
+            "description": "获取当前的系统信息。",
+            "command": "系统信息",
             "options": {
                 "component": {
                     "name": "零件",

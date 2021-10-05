@@ -64,13 +64,6 @@
   },
   "info": {},
   "listfiles": {},
-  "loadinfo": {
-    "component": {
-      "type": "string",
-      "required": true,
-      "choices": "${loadInfoChoices}"
-    }
-  },
   "notify": {},
   "printjob": {
     "pause": {
@@ -93,6 +86,13 @@
     }
   },
   "status": {},
+  "systeminfo": {
+    "component": {
+      "type": "string",
+      "required": true,
+      "choices": "${systemInfoChoices}"
+    }
+  },
   "temp": {},
   "timelapse": {}
 }
