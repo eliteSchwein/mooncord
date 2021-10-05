@@ -36,7 +36,7 @@
   },
   "devDependencies": {
     "eslint": "^7.32.0",
-    "eslint-config-galex": "^2.16.9",
+    "eslint-config-galex": "^2.16.13",
     "eslint-config-standard": "^16.0.3",
     "eslint-plugin-import": "^2.24.1",
     "eslint-plugin-node": "^11.1.0",
