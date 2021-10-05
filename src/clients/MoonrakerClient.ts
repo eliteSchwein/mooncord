@@ -56,9 +56,6 @@ export class MoonrakerClient {
         logRegular('Retrieve Machine System Info...')
         const machineInfo = await this.send(`{"jsonrpc": "2.0", "method": "machine.system_info"}`)
 
-        logRegular('Retrieve Process Stats...')
-        const procStats = await this.send(`{"jsonrpc": "2.0", "method": "machine.proc_stat"}`)
-
         logRegular('Retrieve Subscribable MoonRaker Objects...')
         const objects = await this.send(`{"jsonrpc": "2.0", "method": "printer.objects.list"}`)
 
@@ -77,7 +74,6 @@ export class MoonrakerClient {
         setData('updates', updates.result)
         setData('printer_info', printerInfo.result)
         setData('server_info', serverInfo.result)
-        setData('proc_stats', procStats.result)
         setData('machine_info', machineInfo.result)
         setData('state', data.result.status)
 
