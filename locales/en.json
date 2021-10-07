@@ -269,7 +269,7 @@
             }
         }
     },
-    "loadinfo": {
+    "systeminfo": {
         "cpu": {
             "title": "CPU",
             "model": "Model",
@@ -280,6 +280,15 @@
             "temperature": "Temp",
             "frequency": "Freq",
             "max_frequency": "Max Freq"
+        },
+        "memory": {
+            "title": "Memory"
+        },
+        "system": {
+            "title": "System"
+        },
+        "updates": {
+            "title": "Updates"
         },
         "disk": {
             "title": "Disks",

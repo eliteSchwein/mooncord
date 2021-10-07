@@ -9504,13 +9504,77 @@ const external_path_namespaceObject = require("path");
 var external_path_default = /*#__PURE__*/__nccwpck_require__.n(external_path_namespaceObject);
 // EXTERNAL MODULE: external "util"
 var external_util_ = __nccwpck_require__(1669);
+;// CONCATENATED MODULE: ./src/helper/LocaleHelper.ts
+
+
+
+
+class LocaleHelper {
+    constructor() {
+        this.config = new ConfigHelper();
+        this.localePath = external_path_default().resolve(__dirname, `../locales/${this.config.getLocale()}.json`);
+        this.syntaxLocalePath = external_path_default().resolve(__dirname, `../locales/${this.config.getSyntaxLocale()}.json`);
+        const localeRaw = (0,external_fs_namespaceObject.readFileSync)(this.localePath, { encoding: 'utf8' });
+        const syntaxLocaleRaw = (0,external_fs_namespaceObject.readFileSync)(this.syntaxLocalePath, { encoding: 'utf8' });
+        this.locale = JSON.parse(localeRaw);
+        this.syntaxLocale = JSON.parse(syntaxLocaleRaw);
+    }
+    getLocale() {
+        return this.locale;
+    }
+    getSyntaxLocale() {
+        return this.syntaxLocale;
+    }
+    getAdminOnlyError(username) {
+        return this.locale.errors.admin_only.replace(/(\${username})/g, username);
+    }
+    getControllerOnlyError(username) {
+        return this.locale.errors.controller_only.replace(/(\${username})/g, username);
+    }
+    getGuildOnlyError(username) {
+        return this.locale.errors.guild_only.replace(/(\${username})/g, username);
+    }
+    getCommandNotReadyError(username) {
+        return this.locale.errors.not_ready.replace(/(\${username})/g, username);
+    }
+    getSystemComponents() {
+        const components = [
+            {
+                "name": this.locale.systeminfo.cpu.title,
+                "value": "cpu"
+            }, {
+                "name": this.locale.systeminfo.system.title,
+                "value": "system"
+            }, {
+                "name": this.locale.systeminfo.memory.title,
+                "value": "memory"
+            }, {
+                "name": this.locale.systeminfo.updates.title,
+                "value": "updates"
+            }
+        ];
+        for (const stateComponent in getEntry('state')) {
+            if (/(mcu)/g.test(stateComponent) && !/(temperature_sensor)/g.test(stateComponent)) {
+                components.push({
+                    name: stateComponent.toUpperCase(),
+                    value: stateComponent
+                });
+            }
+        }
+        return components;
+    }
+}
+
 ;// CONCATENATED MODULE: ./src/utils/CacheUtil.ts
+
 
 
 
 
 const cacheData = {};
 const writeFile = external_util_.promisify(external_fs_namespaceObject.writeFile);
+const localeHelper = new LocaleHelper();
+const locale = localeHelper.getLocale();
 function setData(key, value) {
     cacheData[key] = value;
 }
@@ -9583,7 +9647,7 @@ class DiscordCommandGenerator {
         optionBuilder.required = optionMeta.required;
         if (typeof (optionMeta.choices) !== 'undefined') {
             if (optionMeta.choices === '${systemInfoChoices}') {
-                // optionBuilder.choices = loadUtil.getComponents()
+                optionBuilder.choices = this.localeHelper.getSystemComponents();
             }
             else {
                 optionBuilder.choices = optionMeta.choices;
@@ -9825,40 +9889,6 @@ class DatabaseUtil {
     }
 }
 
-;// CONCATENATED MODULE: ./src/helper/LocaleHelper.ts
-
-
-
-class LocaleHelper {
-    constructor() {
-        this.config = new ConfigHelper();
-        this.localePath = external_path_default().resolve(__dirname, `../locales/${this.config.getLocale()}.json`);
-        this.syntaxLocalePath = external_path_default().resolve(__dirname, `../locales/${this.config.getSyntaxLocale()}.json`);
-        const localeRaw = (0,external_fs_namespaceObject.readFileSync)(this.localePath, { encoding: 'utf8' });
-        const syntaxLocaleRaw = (0,external_fs_namespaceObject.readFileSync)(this.syntaxLocalePath, { encoding: 'utf8' });
-        this.locale = JSON.parse(localeRaw);
-        this.syntaxLocale = JSON.parse(syntaxLocaleRaw);
-    }
-    getLocale() {
-        return this.locale;
-    }
-    getSyntaxLocale() {
-        return this.syntaxLocale;
-    }
-    getAdminOnlyError(username) {
-        return this.locale.errors.admin_only.replace(/(\${username})/g, username);
-    }
-    getControllerOnlyError(username) {
-        return this.locale.errors.controller_only.replace(/(\${username})/g, username);
-    }
-    getGuildOnlyError(username) {
-        return this.locale.errors.guild_only.replace(/(\${username})/g, username);
-    }
-    getCommandNotReadyError(username) {
-        return this.locale.errors.not_ready.replace(/(\${username})/g, username);
-    }
-}
-
 ;// CONCATENATED MODULE: ./src/Application.ts
 
 
@@ -9869,7 +9899,7 @@ class LocaleHelper {
 logSuccess(`Starting ${package_namespaceObject.u2} ${package_namespaceObject.i8}...`);
 logEmpty();
 Object.assign(global, { WebSocket: __nccwpck_require__(8867) });
-const localeHelper = new LocaleHelper();
+const Application_localeHelper = new LocaleHelper();
 const moonrakerClient = new MoonrakerClient();
 const Application_database = new DatabaseUtil();
 const discordClient = new DiscordClient();
@@ -9883,7 +9913,7 @@ function getDatabase() {
     return Application_database;
 }
 function getLocaleHelper() {
-    return localeHelper;
+    return Application_localeHelper;
 }
 
 

@@ -2,6 +2,7 @@ import {readFileSync} from 'fs'
 
 import {ConfigHelper} from "./ConfigHelper";
 import path from "path";
+import {getEntry} from "../utils/CacheUtil";
 
 export class LocaleHelper {
     protected config = new ConfigHelper()
@@ -40,5 +41,34 @@ export class LocaleHelper {
 
     public getCommandNotReadyError(username:string) {
         return this.locale.errors.not_ready.replace(/(\${username})/g, username)
+    }
+
+    public getSystemComponents() {
+        const components = [
+            {
+                "name": this.locale.systeminfo.cpu.title,
+                "value": "cpu"
+            }, {
+                "name": this.locale.systeminfo.system.title,
+                "value": "system"
+            }, {
+                "name": this.locale.systeminfo.memory.title,
+                "value": "memory"
+            }, {
+                "name": this.locale.systeminfo.updates.title,
+                "value": "updates"
+            }
+        ]
+
+        for(const stateComponent in getEntry('state')) {
+            if(/(mcu)/g.test(stateComponent) && !/(temperature_sensor)/g.test(stateComponent)) {
+                components.push({
+                    name: stateComponent.toUpperCase(),
+                    value: stateComponent
+                })
+            }
+        }
+
+        return components
     }
 }

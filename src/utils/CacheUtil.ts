@@ -2,9 +2,12 @@ import * as fs from "fs";
 import * as path from "path";
 import {logSuccess} from "../helper/ConsoleLogger";
 import * as util from "util";
+import {LocaleHelper} from "../helper/LocaleHelper";
 
 const cacheData:any = {}
 const writeFile = util.promisify(fs.writeFile)
+const localeHelper = new LocaleHelper()
+const locale = localeHelper.getLocale()
 
 export function setData(key:string, value:any) {
     cacheData[key] = value

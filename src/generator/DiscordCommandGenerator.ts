@@ -3,7 +3,6 @@ import {ConfigHelper} from "../helper/ConfigHelper";
 import commandStructure from '../meta/command_structure.json'
 import commandOptionsTypes from '../meta/command_option_types.json'
 import {getLocaleHelper} from "../Application";
-import {dump} from "../utils/CacheUtil";
 
 export class DiscordCommandGenerator {
     protected config = new ConfigHelper()
@@ -62,7 +61,7 @@ export class DiscordCommandGenerator {
 
         if (typeof (optionMeta.choices) !== 'undefined') {
             if (optionMeta.choices === '${systemInfoChoices}') {
-               // optionBuilder.choices = loadUtil.getComponents()
+                optionBuilder.choices = this.localeHelper.getSystemComponents()
             } else {
                 optionBuilder.choices = optionMeta.choices
             }
