@@ -9374,7 +9374,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 110:
+/***/ 232:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -9702,9 +9702,9 @@ class APIKeyHelper {
     }
 }
 
-;// CONCATENATED MODULE: ./src/events/moonraker/messages/ProcStatsUpdate.ts
+;// CONCATENATED MODULE: ./src/events/moonraker/messages/ProcStatsNotification.ts
 
-class ProcStatsUpdate {
+class ProcStatsNotification {
     parse(message) {
         if (typeof (message.method) === 'undefined') {
             return;
@@ -9720,9 +9720,9 @@ class ProcStatsUpdate {
     }
 }
 
-;// CONCATENATED MODULE: ./src/events/moonraker/messages/SubscriptionUpdate.ts
+;// CONCATENATED MODULE: ./src/events/moonraker/messages/SubscriptionNotification.ts
 
-class SubscriptionUpdate {
+class SubscriptionNotification {
     parse(message) {
         if (typeof (message.method) === 'undefined') {
             return;
@@ -9733,7 +9733,25 @@ class SubscriptionUpdate {
         if (message.method !== 'notify_status_update') {
             return;
         }
-        updateData('state', message.params[0]);
+        updateData('updates', message.params[0]);
+        return true;
+    }
+}
+
+;// CONCATENATED MODULE: ./src/events/moonraker/messages/UpdateNotification.ts
+
+class UpdateNotification {
+    parse(message) {
+        if (typeof (message.method) === 'undefined') {
+            return;
+        }
+        if (typeof (message.params) === 'undefined') {
+            return;
+        }
+        if (message.method !== 'notify_update_manager') {
+            return;
+        }
+        updateData('', message.params[0]);
         return true;
     }
 }
@@ -9742,20 +9760,25 @@ class SubscriptionUpdate {
 
 
 
+
 class MessageHandler {
     constructor(websocket) {
-        this.procStatsUpdate = new ProcStatsUpdate();
-        this.subscriptionUpdate = new SubscriptionUpdate();
+        this.procStatsNotification = new ProcStatsNotification();
+        this.subscriptionNotification = new SubscriptionNotification();
+        this.updateNotification = new UpdateNotification();
         this.websocket = websocket;
         websocket.addEventListener(lib.WebsocketEvents.message, ((instance, ev) => {
             const messageData = JSON.parse(ev.data);
             if (typeof (messageData) === 'undefined') {
                 return;
             }
-            if (this.procStatsUpdate.parse(messageData)) {
+            if (this.procStatsNotification.parse(messageData)) {
                 return;
             }
-            if (this.subscriptionUpdate.parse(messageData)) {
+            if (this.subscriptionNotification.parse(messageData)) {
+                return;
+            }
+            if (this.updateNotification.parse(messageData)) {
                 return;
             }
             console.log(messageData);
@@ -10220,7 +10243,7 @@ module.exports = require("zlib");
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(110);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(232);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()

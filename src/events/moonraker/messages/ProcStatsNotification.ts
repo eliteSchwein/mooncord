@@ -1,6 +1,6 @@
 import {setData} from "../../../utils/CacheUtil";
 
-export class ProcStatsUpdate {
+export class ProcStatsNotification {
     public parse(message) {
         if(typeof(message.method) === 'undefined') { return }
         if(typeof(message.params) === 'undefined') { return }
