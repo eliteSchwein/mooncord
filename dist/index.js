@@ -9374,7 +9374,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 1313:
+/***/ 110:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -9504,65 +9504,27 @@ const external_path_namespaceObject = require("path");
 var external_path_default = /*#__PURE__*/__nccwpck_require__.n(external_path_namespaceObject);
 // EXTERNAL MODULE: external "util"
 var external_util_ = __nccwpck_require__(1669);
-;// CONCATENATED MODULE: ./src/helper/LocaleHelper.ts
-
-
-
-
-class LocaleHelper {
-    constructor() {
-        this.config = new ConfigHelper();
-        this.localePath = external_path_default().resolve(__dirname, `../locales/${this.config.getLocale()}.json`);
-        this.syntaxLocalePath = external_path_default().resolve(__dirname, `../locales/${this.config.getSyntaxLocale()}.json`);
-        const localeRaw = (0,external_fs_namespaceObject.readFileSync)(this.localePath, { encoding: 'utf8' });
-        const syntaxLocaleRaw = (0,external_fs_namespaceObject.readFileSync)(this.syntaxLocalePath, { encoding: 'utf8' });
-        this.locale = JSON.parse(localeRaw);
-        this.syntaxLocale = JSON.parse(syntaxLocaleRaw);
-    }
-    getLocale() {
-        return this.locale;
-    }
-    getSyntaxLocale() {
-        return this.syntaxLocale;
-    }
-    getAdminOnlyError(username) {
-        return this.locale.errors.admin_only.replace(/(\${username})/g, username);
-    }
-    getControllerOnlyError(username) {
-        return this.locale.errors.controller_only.replace(/(\${username})/g, username);
-    }
-    getGuildOnlyError(username) {
-        return this.locale.errors.guild_only.replace(/(\${username})/g, username);
-    }
-    getCommandNotReadyError(username) {
-        return this.locale.errors.not_ready.replace(/(\${username})/g, username);
-    }
-    getSystemComponents() {
-        const components = [
-            {
-                "name": this.locale.systeminfo.cpu.title,
-                "value": "cpu"
-            }, {
-                "name": this.locale.systeminfo.system.title,
-                "value": "system"
-            }, {
-                "name": this.locale.systeminfo.memory.title,
-                "value": "memory"
-            }, {
-                "name": this.locale.systeminfo.updates.title,
-                "value": "updates"
+;// CONCATENATED MODULE: ./src/helper/ObjectMergeHelper.ts
+function isObject(item) {
+    return (item && typeof item === 'object' && !Array.isArray(item));
+}
+function mergeDeep(target, ...sources) {
+    if (!sources.length)
+        return target;
+    const source = sources.shift();
+    if (isObject(target) && isObject(source)) {
+        for (const key in source) {
+            if (isObject(source[key])) {
+                if (!target[key])
+                    Object.assign(target, { [key]: {} });
+                mergeDeep(target[key], source[key]);
             }
-        ];
-        for (const stateComponent in getEntry('state')) {
-            if (/(mcu)/g.test(stateComponent) && !/(temperature_sensor)/g.test(stateComponent)) {
-                components.push({
-                    name: stateComponent.toUpperCase(),
-                    value: stateComponent
-                });
+            else {
+                Object.assign(target, { [key]: source[key] });
             }
         }
-        return components;
     }
+    return mergeDeep(target, ...sources);
 }
 
 ;// CONCATENATED MODULE: ./src/utils/CacheUtil.ts
@@ -9573,10 +9535,11 @@ class LocaleHelper {
 
 const cacheData = {};
 const writeFile = external_util_.promisify(external_fs_namespaceObject.writeFile);
-const localeHelper = new LocaleHelper();
-const locale = localeHelper.getLocale();
 function setData(key, value) {
     cacheData[key] = value;
+}
+function updateData(key, value) {
+    cacheData[key] = mergeDeep(cacheData[key], value);
 }
 function getEntry(key) {
     return cacheData[key];
@@ -9739,7 +9702,69 @@ class APIKeyHelper {
     }
 }
 
+;// CONCATENATED MODULE: ./src/events/moonraker/messages/ProcStatsUpdate.ts
+
+class ProcStatsUpdate {
+    parse(message) {
+        if (typeof (message.method) === 'undefined') {
+            return;
+        }
+        if (typeof (message.params) === 'undefined') {
+            return;
+        }
+        if (message.method !== 'notify_proc_stat_update') {
+            return;
+        }
+        setData('proc_stats', message.params[0]);
+        return true;
+    }
+}
+
+;// CONCATENATED MODULE: ./src/events/moonraker/messages/SubscriptionUpdate.ts
+
+class SubscriptionUpdate {
+    parse(message) {
+        if (typeof (message.method) === 'undefined') {
+            return;
+        }
+        if (typeof (message.params) === 'undefined') {
+            return;
+        }
+        if (message.method !== 'notify_status_update') {
+            return;
+        }
+        updateData('state', message.params[0]);
+        return true;
+    }
+}
+
+;// CONCATENATED MODULE: ./src/events/moonraker/MessageHandler.ts
+
+
+
+class MessageHandler {
+    constructor(websocket) {
+        this.procStatsUpdate = new ProcStatsUpdate();
+        this.subscriptionUpdate = new SubscriptionUpdate();
+        this.websocket = websocket;
+        websocket.addEventListener(lib.WebsocketEvents.message, ((instance, ev) => {
+            const messageData = JSON.parse(ev.data);
+            if (typeof (messageData) === 'undefined') {
+                return;
+            }
+            if (this.procStatsUpdate.parse(messageData)) {
+                return;
+            }
+            if (this.subscriptionUpdate.parse(messageData)) {
+                return;
+            }
+            console.log(messageData);
+        }));
+    }
+}
+
 ;// CONCATENATED MODULE: ./src/clients/MoonrakerClient.ts
+
 
 
 
@@ -9748,6 +9773,7 @@ class APIKeyHelper {
 
 const requests = {};
 let websocket;
+let messageHandler;
 class MoonrakerClient {
     constructor() {
         this.config = new ConfigHelper();
@@ -9781,6 +9807,8 @@ class MoonrakerClient {
         const serverInfo = await this.send(`{"jsonrpc": "2.0", "method": "server.info"}`);
         logRegular('Retrieve Machine System Info...');
         const machineInfo = await this.send(`{"jsonrpc": "2.0", "method": "machine.system_info"}`);
+        logRegular('Retrieve Proc Stats Info...');
+        const procStats = await this.send(`{"jsonrpc": "2.0", "method": "machine.proc_stats"}`);
         logRegular('Retrieve Subscribable MoonRaker Objects...');
         const objects = await this.send(`{"jsonrpc": "2.0", "method": "printer.objects.list"}`);
         const subscriptionObjects = {};
@@ -9795,6 +9823,7 @@ class MoonrakerClient {
         setData('printer_info', printerInfo.result);
         setData('server_info', serverInfo.result);
         setData('machine_info', machineInfo.result);
+        setData('proc_stats', procStats.result);
         setData('state', data.result.status);
         logSuccess('MoonRaker Client is ready');
     }
@@ -9810,6 +9839,7 @@ class MoonrakerClient {
             }
             requests[messageData.id] = messageData;
         }));
+        messageHandler = new MessageHandler(websocket);
     }
     async send(message, timeout = 10000) {
         const id = Math.floor(Math.random() * 10000) + 1;
@@ -9889,6 +9919,67 @@ class DatabaseUtil {
     }
 }
 
+;// CONCATENATED MODULE: ./src/helper/LocaleHelper.ts
+
+
+
+
+class LocaleHelper {
+    constructor() {
+        this.config = new ConfigHelper();
+        this.localePath = external_path_default().resolve(__dirname, `../locales/${this.config.getLocale()}.json`);
+        this.syntaxLocalePath = external_path_default().resolve(__dirname, `../locales/${this.config.getSyntaxLocale()}.json`);
+        const localeRaw = (0,external_fs_namespaceObject.readFileSync)(this.localePath, { encoding: 'utf8' });
+        const syntaxLocaleRaw = (0,external_fs_namespaceObject.readFileSync)(this.syntaxLocalePath, { encoding: 'utf8' });
+        this.locale = JSON.parse(localeRaw);
+        this.syntaxLocale = JSON.parse(syntaxLocaleRaw);
+    }
+    getLocale() {
+        return this.locale;
+    }
+    getSyntaxLocale() {
+        return this.syntaxLocale;
+    }
+    getAdminOnlyError(username) {
+        return this.locale.errors.admin_only.replace(/(\${username})/g, username);
+    }
+    getControllerOnlyError(username) {
+        return this.locale.errors.controller_only.replace(/(\${username})/g, username);
+    }
+    getGuildOnlyError(username) {
+        return this.locale.errors.guild_only.replace(/(\${username})/g, username);
+    }
+    getCommandNotReadyError(username) {
+        return this.locale.errors.not_ready.replace(/(\${username})/g, username);
+    }
+    getSystemComponents() {
+        const components = [
+            {
+                "name": this.locale.systeminfo.cpu.title,
+                "value": "cpu"
+            }, {
+                "name": this.locale.systeminfo.system.title,
+                "value": "system"
+            }, {
+                "name": this.locale.systeminfo.memory.title,
+                "value": "memory"
+            }, {
+                "name": this.locale.systeminfo.updates.title,
+                "value": "updates"
+            }
+        ];
+        for (const stateComponent in getEntry('state')) {
+            if (/(mcu)/g.test(stateComponent) && !/(temperature_sensor)/g.test(stateComponent)) {
+                components.push({
+                    name: stateComponent.toUpperCase(),
+                    value: stateComponent
+                });
+            }
+        }
+        return components;
+    }
+}
+
 ;// CONCATENATED MODULE: ./src/Application.ts
 
 
@@ -9899,7 +9990,7 @@ class DatabaseUtil {
 logSuccess(`Starting ${package_namespaceObject.u2} ${package_namespaceObject.i8}...`);
 logEmpty();
 Object.assign(global, { WebSocket: __nccwpck_require__(8867) });
-const Application_localeHelper = new LocaleHelper();
+const localeHelper = new LocaleHelper();
 const moonrakerClient = new MoonrakerClient();
 const Application_database = new DatabaseUtil();
 const discordClient = new DiscordClient();
@@ -9913,7 +10004,7 @@ function getDatabase() {
     return Application_database;
 }
 function getLocaleHelper() {
-    return Application_localeHelper;
+    return localeHelper;
 }
 
 
@@ -10129,7 +10220,7 @@ module.exports = require("zlib");
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(1313);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(110);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()

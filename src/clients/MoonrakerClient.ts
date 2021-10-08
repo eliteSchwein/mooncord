@@ -4,10 +4,12 @@ import {APIKeyHelper} from '../helper/APIKeyHelper'
 import {waitUntil} from 'async-wait-until'
 import {logError, logRegular, logSuccess} from '../helper/ConsoleLogger'
 import {setData} from '../utils/CacheUtil'
+import {MessageHandler} from "../events/moonraker/MessageHandler";
 
 const requests: any = {}
 
 let websocket: Websocket
+let messageHandler: MessageHandler
 
 export class MoonrakerClient {
     protected config = new ConfigHelper()
@@ -56,6 +58,9 @@ export class MoonrakerClient {
         logRegular('Retrieve Machine System Info...')
         const machineInfo = await this.send(`{"jsonrpc": "2.0", "method": "machine.system_info"}`)
 
+        logRegular('Retrieve Proc Stats Info...')
+        const procStats = await this.send(`{"jsonrpc": "2.0", "method": "machine.proc_stats"}`)
+
         logRegular('Retrieve Subscribable MoonRaker Objects...')
         const objects = await this.send(`{"jsonrpc": "2.0", "method": "printer.objects.list"}`)
 
@@ -75,6 +80,7 @@ export class MoonrakerClient {
         setData('printer_info', printerInfo.result)
         setData('server_info', serverInfo.result)
         setData('machine_info', machineInfo.result)
+        setData('proc_stats', procStats.result)
         setData('state', data.result.status)
 
         logSuccess('MoonRaker Client is ready')
@@ -90,6 +96,8 @@ export class MoonrakerClient {
 
             requests[messageData.id] = messageData
         }))
+
+        messageHandler = new MessageHandler(websocket)
     }
 
     public async send(message: string, timeout = 10_000) {
