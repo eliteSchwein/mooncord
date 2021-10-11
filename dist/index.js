@@ -9374,7 +9374,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 2232:
+/***/ 9749:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -9442,11 +9442,8 @@ class ConfigHelper {
     getSyntaxLocale() {
         return this.config.language.command_syntax;
     }
-    getController() {
-        return this.config.permission.controller;
-    }
-    isGuildAdminAsBotAdmin() {
-        return this.config.permission.guild_admin_as_bot_admin;
+    isButtonSyntaxLocale() {
+        return this.config.language.buttons_use_syntax_locale;
     }
     getWebcamUrl() {
         return this.config.webcam.url;
@@ -9627,7 +9624,65 @@ class DiscordCommandGenerator {
     }
 }
 
+;// CONCATENATED MODULE: ./src/meta/button_mapping.json
+const button_mapping_namespaceObject = JSON.parse('{"next_page":{"emoji":"➡️","style":"SECONDARY","function_mapping":{"page_up":true}},"last_page":{"emoji":"⬅️","style":"SECONDARY","function_mapping":{"page_up":false}},"printjob_resume":{"emoji":"▶️","style":"PRIMARY","function_mapping":{"refresh_status":false,"required_status":["pause"],"macro":"RESUME"}},"printjob_cancel":{"emoji":"⛔","style":"DANGER","function_mapping":{"refresh_status":false,"required_status":["pause","printing"],"macro":"CANCEL_PRINT"}},"printjob_pause":{"emoji":"☕","style":"SECONDARY","function_mapping":{"refresh_status":false,"required_status":["printing"],"macro":"PAUSE"}},"printjob_refresh":{"emoji":"🔄","style":"PRIMARY","function_mapping":{"refresh_status":true}},"to_printlist":{"emoji":"📘","style":"SECONDARY"},"printjob_start":{"emoji":"🖨️","style":"SECONDARY"},"klipper_restart":{"emoji":"🔄","style":"PRIMARY"},"update_system":{"style":"SECONDARY"},"printjob_start_yes":{"style":"SUCCESS"},"printjob_start_no":{"style":"DANGER"}}');
+;// CONCATENATED MODULE: ./src/meta/button_assign.json
+const button_assign_namespaceObject = JSON.parse('{"list_files":["next_page","last_page"],"print_job":["printjob_resume","printjob_cancel","printjob_pause","printjob_refresh"],"file_info":["printjob_start","to_printlist"]}');
+;// CONCATENATED MODULE: ./src/generator/DiscordButtonGenerator.ts
+
+
+
+
+
+
+
+class DiscordButtonGenerator {
+    constructor() {
+        this.config = new ConfigHelper();
+        this.localeHelper = getLocaleHelper();
+    }
+    generateButtonCache() {
+        const buttonCache = {};
+        let buttonConfig = this.localeHelper.getLocale()['buttons'];
+        if (this.config.isButtonSyntaxLocale()) {
+            buttonConfig = this.localeHelper.getSyntaxLocale()['buttons'];
+        }
+        for (const buttonID in buttonConfig) {
+            buttonCache[buttonID] = {};
+            const text = { label: buttonConfig[buttonID] };
+            let mapping = button_mapping_namespaceObject[buttonID];
+            if (typeof (mapping) === 'undefined') {
+                mapping = {};
+            }
+            mergeDeep(buttonCache[buttonID], text, mapping);
+        }
+        setData('buttons', buttonCache);
+    }
+    generateButtons(section) {
+        const assignButtons = button_assign_namespaceObject[section];
+        const cache = getEntry("buttons");
+        const row = new external_discord_js_namespaceObject.MessageActionRow();
+        if (typeof (assignButtons) === 'undefined') {
+            return;
+        }
+        for (const index in assignButtons) {
+            const buttonId = assignButtons[index];
+            const buttonMeta = cache[buttonId];
+            const button = new external_discord_js_namespaceObject.MessageButton()
+                .setCustomId(buttonId)
+                .setLabel(buttonMeta.label)
+                .setStyle(buttonMeta.style);
+            if (typeof (buttonMeta.emoji) !== 'undefined') {
+                button.setEmoji(buttonMeta.emoji);
+            }
+            row.addComponents(button);
+        }
+        return row;
+    }
+}
+
 ;// CONCATENATED MODULE: ./src/clients/DiscordClient.ts
+
 
 
 
@@ -9641,6 +9696,7 @@ class DiscordClient {
         this.moonrakerClient = getMoonrakerClient();
         this.database = getDatabase();
         this.commandGenerator = new DiscordCommandGenerator();
+        this.buttonGenerator = new DiscordButtonGenerator();
         this.connect();
     }
     async connect() {
@@ -9658,6 +9714,7 @@ class DiscordClient {
         logRegular('Connect to Discord...');
         await this.discordClient.login(this.config.getDiscordToken());
         await this.registerCommands();
+        this.cacheButtons();
         setData('invite_url', `https://discord.com/oauth2/authorize?client_id=${this.discordClient.user.id}&permissions=3422944320&scope=bot%20applications.commands`);
         logSuccess('Discordbot Connected');
         logSuccess(`${'Name:'.green} ${(this.discordClient.user.tag).white}`);
@@ -9668,6 +9725,10 @@ class DiscordClient {
     async registerCommands() {
         logRegular('Register Commands...');
         await this.discordClient.application?.commands.set(this.commandGenerator.getCommands());
+    }
+    cacheButtons() {
+        logRegular('Generate Buttons Cache...');
+        this.buttonGenerator.generateButtonCache();
     }
     isConnected() {
         return this.discordClient.isReady();
@@ -10247,7 +10308,7 @@ module.exports = require("zlib");
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(2232);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(9749);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()

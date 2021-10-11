@@ -21,6 +21,8 @@ export class DiscordButtonGenerator {
         }
 
         for (const buttonID in buttonConfig) {
+            buttonCache[buttonID] = {}
+
             const text = {label: buttonConfig[buttonID]}
 
             let mapping = buttonMapping[buttonID]
