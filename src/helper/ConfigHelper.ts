@@ -55,12 +55,8 @@ export class ConfigHelper {
         return this.config.language.command_syntax
     }
 
-    public getController() {
-        return this.config.permission.controller
-    }
-
-    public isGuildAdminAsBotAdmin() {
-        return this.config.permission.guild_admin_as_bot_admin
+    public isButtonSyntaxLocale() {
+        return this.config.language.buttons_use_syntax_locale
     }
 
     public getWebcamUrl() {

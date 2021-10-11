@@ -7,12 +7,14 @@ import {ConfigHelper} from '../helper/ConfigHelper'
 import {logEmpty, logRegular, logSuccess} from '../helper/ConsoleLogger'
 import {dump, getEntry, setData} from '../utils/CacheUtil'
 import {DiscordCommandGenerator} from "../generator/DiscordCommandGenerator";
+import { DiscordButtonGenerator } from '../generator/DiscordButtonGenerator'
 
 export class DiscordClient {
     protected config = new ConfigHelper()
     protected moonrakerClient = getMoonrakerClient()
     protected database = getDatabase()
     protected commandGenerator = new DiscordCommandGenerator()
+    protected buttonGenerator = new DiscordButtonGenerator()
     protected discordClient: Client
 
     public constructor() {
@@ -40,6 +42,8 @@ export class DiscordClient {
 
         await this.registerCommands()
 
+        this.cacheButtons()
+
         setData('invite_url', `https://discord.com/oauth2/authorize?client_id=${this.discordClient.user.id}&permissions=3422944320&scope=bot%20applications.commands`)
         
         logSuccess('Discordbot Connected')
@@ -52,6 +56,11 @@ export class DiscordClient {
     private async registerCommands() {
         logRegular('Register Commands...')
         await this.discordClient.application?.commands.set(this.commandGenerator.getCommands())
+    }
+
+    private cacheButtons() {
+        logRegular('Generate Buttons Cache...')
+        this.buttonGenerator.generateButtonCache()
     }
 
     public isConnected() {

@@ -23,7 +23,8 @@
     },
     "language": {
         "messages": "en",
-        "command_syntax": "en"
+        "command_syntax": "en",
+        "buttons_use_syntax_locale": false
     },
     "permission": {
         "controllers": {

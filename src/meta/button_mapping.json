@@ -1,0 +1,71 @@
+{
+    "next_page": {
+        "emoji": "➡️",
+        "style":"SECONDARY",
+        "function_mapping": {
+            "page_up": true
+        }
+    },
+    "last_page": {
+        "emoji": "⬅️",
+        "style":"SECONDARY",
+        "function_mapping": {
+            "page_up": false
+        }
+    },
+    "printjob_resume": {
+        "emoji": "▶️",
+        "style":"PRIMARY",
+        "function_mapping": {
+            "refresh_status": false,
+            "required_status" : ["pause"],
+            "macro": "RESUME"
+        }
+    },
+    "printjob_cancel": {
+        "emoji": "⛔",
+        "style":"DANGER",
+        "function_mapping": {
+            "refresh_status": false,
+            "required_status" : ["pause", "printing"],
+            "macro": "CANCEL_PRINT"
+        }
+    },
+    "printjob_pause": {
+        "emoji": "☕",
+        "style":"SECONDARY",
+        "function_mapping": {
+            "refresh_status": false,
+            "required_status" : ["printing"],
+            "macro": "PAUSE"
+        }
+    },
+    "printjob_refresh": {
+        "emoji": "🔄",
+        "style":"PRIMARY",
+        "function_mapping": {
+            "refresh_status": true
+        }
+    },
+    "to_printlist": {
+        "emoji": "📘",
+        "style":"SECONDARY"
+    },
+    "printjob_start": {
+        "emoji": "🖨️",
+        "style":"SECONDARY"
+    },
+    "klipper_restart": {
+        "emoji": "🔄",
+        "style":"PRIMARY"
+    },
+    "update_system": {
+        "style":"SECONDARY"
+    },
+    "printjob_start_yes": {
+        "style":"SUCCESS"
+    },
+    "printjob_start_no": {
+        "style":"DANGER"
+    }
+}
