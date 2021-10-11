@@ -9374,7 +9374,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 232:
+/***/ 2232:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -9562,6 +9562,7 @@ const command_option_types_namespaceObject = JSON.parse('{"subcommand":1,"subcom
 
 
 
+
 class DiscordCommandGenerator {
     constructor() {
         this.config = new ConfigHelper();
@@ -9569,10 +9570,13 @@ class DiscordCommandGenerator {
     }
     getCommands() {
         const commandList = [];
+        const commandCache = {};
         for (const commandIndex in command_structure_namespaceObject) {
             const command = this.buildCommand(commandIndex);
             commandList.push(command);
+            commandCache[commandIndex] = command;
         }
+        setData('commands', commandCache);
         return commandList;
     }
     buildCommand(command) {
@@ -10243,7 +10247,7 @@ module.exports = require("zlib");
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(232);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(2232);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()

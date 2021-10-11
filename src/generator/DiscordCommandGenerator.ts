@@ -3,6 +3,7 @@ import {ConfigHelper} from "../helper/ConfigHelper";
 import commandStructure from '../meta/command_structure.json'
 import commandOptionsTypes from '../meta/command_option_types.json'
 import {getLocaleHelper} from "../Application";
+import {setData} from "../utils/CacheUtil";
 
 export class DiscordCommandGenerator {
     protected config = new ConfigHelper()
@@ -10,11 +11,15 @@ export class DiscordCommandGenerator {
 
     public getCommands() {
         const commandList = []
-        for (const commandIndex in commandStructure) {
+        const commandCache = {}
 
+        for (const commandIndex in commandStructure) {
             const command = this.buildCommand(commandIndex)
             commandList.push(command)
+            commandCache[commandIndex] = command
         }
+
+        setData('commands', commandCache)
         return commandList
     }
 
