@@ -109,6 +109,12 @@
                 "users": [],
                 "roles": []
             },
+            "service_restart": {
+                "botadmin": true,
+                "guildadmin": true,
+                "users": [],
+                "roles": []
+            },
             "status": {
                 "botadmin": true,
                 "guildadmin": true,
@@ -132,8 +138,14 @@
                 "guildadmin": false,
                 "users": [],
                 "roles": []
+            },
+            "update_system": {
+                "botadmin": true,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
             }
-        },
+        }
     },
     "webcam": {
         "url": "http://127.0.0.1/webcam/?action=snapshot",

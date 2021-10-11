@@ -2,6 +2,7 @@
     "next_page": {
         "emoji": "➡️",
         "style":"SECONDARY",
+        "permission_mapping": "listfiles",
         "function_mapping": {
             "page_up": true
         }
@@ -9,6 +10,7 @@
     "last_page": {
         "emoji": "⬅️",
         "style":"SECONDARY",
+        "permission_mapping": "listfiles",
         "function_mapping": {
             "page_up": false
         }
@@ -16,6 +18,7 @@
     "printjob_resume": {
         "emoji": "▶️",
         "style":"PRIMARY",
+        "permission_mapping": "printjob",
         "function_mapping": {
             "refresh_status": false,
             "required_status" : ["pause"],
@@ -25,6 +28,7 @@
     "printjob_cancel": {
         "emoji": "⛔",
         "style":"DANGER",
+        "permission_mapping": "printjob",
         "function_mapping": {
             "refresh_status": false,
             "required_status" : ["pause", "printing"],
@@ -34,6 +38,7 @@
     "printjob_pause": {
         "emoji": "☕",
         "style":"SECONDARY",
+        "permission_mapping": "printjob",
         "function_mapping": {
             "refresh_status": false,
             "required_status" : ["printing"],
@@ -43,29 +48,36 @@
     "printjob_refresh": {
         "emoji": "🔄",
         "style":"PRIMARY",
+        "permission_mapping": "status",
         "function_mapping": {
             "refresh_status": true
         }
     },
     "to_printlist": {
         "emoji": "📘",
+        "permission_mapping": "listfiles",
         "style":"SECONDARY"
     },
     "printjob_start": {
         "emoji": "🖨️",
+        "permission_mapping": "printjob_start",
         "style":"SECONDARY"
     },
     "klipper_restart": {
         "emoji": "🔄",
+        "permission_mapping": "service_restart",
         "style":"PRIMARY"
     },
     "update_system": {
+        "permission_mapping": "update_system",
         "style":"SECONDARY"
     },
     "printjob_start_yes": {
+        "permission_mapping": "printjob_start",
         "style":"SUCCESS"
     },
     "printjob_start_no": {
+        "permission_mapping": "printjob_start",
         "style":"DANGER"
     }
 }
