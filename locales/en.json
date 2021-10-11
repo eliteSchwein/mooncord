@@ -13,7 +13,7 @@
         "last_page": "Last Page",
         "to_printlist": "to List"
     },
-    "selection": {
+    "selections": {
         "printlist_more_details": {
             "placeholder": "Click for more Details",
             "description": "More Details for ${gcode_file}"

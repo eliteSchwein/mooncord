@@ -9625,7 +9625,7 @@ class DiscordCommandGenerator {
 }
 
 ;// CONCATENATED MODULE: ./src/meta/button_mapping.json
-const button_mapping_namespaceObject = JSON.parse('{"next_page":{"emoji":"➡️","style":"SECONDARY","function_mapping":{"page_up":true}},"last_page":{"emoji":"⬅️","style":"SECONDARY","function_mapping":{"page_up":false}},"printjob_resume":{"emoji":"▶️","style":"PRIMARY","function_mapping":{"refresh_status":false,"required_status":["pause"],"macro":"RESUME"}},"printjob_cancel":{"emoji":"⛔","style":"DANGER","function_mapping":{"refresh_status":false,"required_status":["pause","printing"],"macro":"CANCEL_PRINT"}},"printjob_pause":{"emoji":"☕","style":"SECONDARY","function_mapping":{"refresh_status":false,"required_status":["printing"],"macro":"PAUSE"}},"printjob_refresh":{"emoji":"🔄","style":"PRIMARY","function_mapping":{"refresh_status":true}},"to_printlist":{"emoji":"📘","style":"SECONDARY"},"printjob_start":{"emoji":"🖨️","style":"SECONDARY"},"klipper_restart":{"emoji":"🔄","style":"PRIMARY"},"update_system":{"style":"SECONDARY"},"printjob_start_yes":{"style":"SUCCESS"},"printjob_start_no":{"style":"DANGER"}}');
+const button_mapping_namespaceObject = JSON.parse('{"next_page":{"emoji":"➡️","style":"SECONDARY","permission_mapping":"listfiles","function_mapping":{"page_up":true}},"last_page":{"emoji":"⬅️","style":"SECONDARY","permission_mapping":"listfiles","function_mapping":{"page_up":false}},"printjob_resume":{"emoji":"▶️","style":"PRIMARY","permission_mapping":"printjob","function_mapping":{"refresh_status":false,"required_status":["pause"],"macro":"RESUME"}},"printjob_cancel":{"emoji":"⛔","style":"DANGER","permission_mapping":"printjob","function_mapping":{"refresh_status":false,"required_status":["pause","printing"],"macro":"CANCEL_PRINT"}},"printjob_pause":{"emoji":"☕","style":"SECONDARY","permission_mapping":"printjob","function_mapping":{"refresh_status":false,"required_status":["printing"],"macro":"PAUSE"}},"printjob_refresh":{"emoji":"🔄","style":"PRIMARY","permission_mapping":"status","function_mapping":{"refresh_status":true}},"to_printlist":{"emoji":"📘","permission_mapping":"listfiles","style":"SECONDARY"},"printjob_start":{"emoji":"🖨️","permission_mapping":"printjob_start","style":"SECONDARY"},"klipper_restart":{"emoji":"🔄","permission_mapping":"service_restart","style":"PRIMARY"},"update_system":{"permission_mapping":"update_system","style":"SECONDARY"},"printjob_start_yes":{"permission_mapping":"printjob_start","style":"SUCCESS"},"printjob_start_no":{"permission_mapping":"printjob_start","style":"DANGER"}}');
 ;// CONCATENATED MODULE: ./src/meta/button_assign.json
 const button_assign_namespaceObject = JSON.parse('{"list_files":["next_page","last_page"],"print_job":["printjob_resume","printjob_cancel","printjob_pause","printjob_refresh"],"file_info":["printjob_start","to_printlist"]}');
 ;// CONCATENATED MODULE: ./src/generator/DiscordButtonGenerator.ts
@@ -9667,17 +9667,21 @@ class DiscordButtonGenerator {
         }
         for (const index in assignButtons) {
             const buttonId = assignButtons[index];
-            const buttonMeta = cache[buttonId];
-            const button = new external_discord_js_namespaceObject.MessageButton()
-                .setCustomId(buttonId)
-                .setLabel(buttonMeta.label)
-                .setStyle(buttonMeta.style);
-            if (typeof (buttonMeta.emoji) !== 'undefined') {
-                button.setEmoji(buttonMeta.emoji);
-            }
-            row.addComponents(button);
+            row.addComponents(this.generateButton(buttonId));
         }
         return row;
+    }
+    generateButton(buttonId) {
+        const cache = getEntry("buttons");
+        const buttonMeta = cache[buttonId];
+        const button = new external_discord_js_namespaceObject.MessageButton()
+            .setCustomId(buttonId)
+            .setLabel(buttonMeta.label)
+            .setStyle(buttonMeta.style);
+        if (typeof (buttonMeta.emoji) !== 'undefined') {
+            button.setEmoji(buttonMeta.emoji);
+        }
+        return button;
     }
 }
 
