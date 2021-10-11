@@ -45,20 +45,25 @@ export class DiscordButtonGenerator {
 
         for(const index in assignButtons) {
             const buttonId = assignButtons[index]
-            const buttonMeta = cache[buttonId]
             
-            const button = new MessageButton()
-                .setCustomId(buttonId)
-                .setLabel(buttonMeta.label)
-                .setStyle(buttonMeta.style)
-
-            if(typeof(buttonMeta.emoji) !== 'undefined') { 
-                button.setEmoji(buttonMeta.emoji)
-            }
-            
-            row.addComponents(button)
+            row.addComponents(this.generateButton(buttonId))
         }
 
         return row
+    }
+
+    public generateButton(buttonId: string) {
+        const cache = getEntry("buttons")
+        const buttonMeta = cache[buttonId]
+
+        const button = new MessageButton()
+            .setCustomId(buttonId)
+            .setLabel(buttonMeta.label)
+            .setStyle(buttonMeta.style)
+
+        if(typeof(buttonMeta.emoji) !== 'undefined') {
+            button.setEmoji(buttonMeta.emoji)
+        }
+        return button
     }
 }
