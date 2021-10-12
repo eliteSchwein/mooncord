@@ -1,6 +1,0 @@
-{
-  "printlist_more_details": {
-    "placeholder": "Click for more Details",
-    "description": "More Details for ${gcode_file}"
-  }
-}

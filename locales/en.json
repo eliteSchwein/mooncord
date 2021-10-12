@@ -14,9 +14,9 @@
         "to_printlist": "to List"
     },
     "selections": {
-        "printlist_more_details": {
-            "placeholder": "Click for more Details",
-            "description": "More Details for ${gcode_file}"
+        "printlist_view_printjob": {
+            "label": "Click for more Details",
+            "description": "More Details for ${entry}"
         }
     },
     "commands": {

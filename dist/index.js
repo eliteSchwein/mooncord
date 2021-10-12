@@ -9374,7 +9374,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 9749:
+/***/ 2970:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -9624,11 +9624,11 @@ class DiscordCommandGenerator {
     }
 }
 
-;// CONCATENATED MODULE: ./src/meta/button_mapping.json
-const button_mapping_namespaceObject = JSON.parse('{"next_page":{"emoji":"➡️","style":"SECONDARY","permission_mapping":"listfiles","function_mapping":{"page_up":true}},"last_page":{"emoji":"⬅️","style":"SECONDARY","permission_mapping":"listfiles","function_mapping":{"page_up":false}},"printjob_resume":{"emoji":"▶️","style":"PRIMARY","permission_mapping":"printjob","function_mapping":{"refresh_status":false,"required_status":["pause"],"macro":"RESUME"}},"printjob_cancel":{"emoji":"⛔","style":"DANGER","permission_mapping":"printjob","function_mapping":{"refresh_status":false,"required_status":["pause","printing"],"macro":"CANCEL_PRINT"}},"printjob_pause":{"emoji":"☕","style":"SECONDARY","permission_mapping":"printjob","function_mapping":{"refresh_status":false,"required_status":["printing"],"macro":"PAUSE"}},"printjob_refresh":{"emoji":"🔄","style":"PRIMARY","permission_mapping":"status","function_mapping":{"refresh_status":true}},"to_printlist":{"emoji":"📘","permission_mapping":"listfiles","style":"SECONDARY"},"printjob_start":{"emoji":"🖨️","permission_mapping":"printjob_start","style":"SECONDARY"},"klipper_restart":{"emoji":"🔄","permission_mapping":"service_restart","style":"PRIMARY"},"update_system":{"permission_mapping":"update_system","style":"SECONDARY"},"printjob_start_yes":{"permission_mapping":"printjob_start","style":"SUCCESS"},"printjob_start_no":{"permission_mapping":"printjob_start","style":"DANGER"}}');
+;// CONCATENATED MODULE: ./src/meta/input_mapping.json
+const input_mapping_namespaceObject = JSON.parse('{"buttons":{"next_page":{"emoji":"➡️","style":"SECONDARY","permission_mapping":"listfiles","function_mapping":{"page_up":true}},"last_page":{"emoji":"⬅️","style":"SECONDARY","permission_mapping":"listfiles","function_mapping":{"page_up":false}},"printjob_resume":{"emoji":"▶️","style":"PRIMARY","permission_mapping":"printjob","function_mapping":{"refresh_status":false,"required_status":["pause"],"macro":"RESUME"}},"printjob_cancel":{"emoji":"⛔","style":"DANGER","permission_mapping":"printjob","function_mapping":{"refresh_status":false,"required_status":["pause","printing"],"macro":"CANCEL_PRINT"}},"printjob_pause":{"emoji":"☕","style":"SECONDARY","permission_mapping":"printjob","function_mapping":{"refresh_status":false,"required_status":["printing"],"macro":"PAUSE"}},"printjob_refresh":{"emoji":"🔄","style":"PRIMARY","permission_mapping":"status","function_mapping":{"refresh_status":true}},"to_printlist":{"emoji":"📘","permission_mapping":"listfiles","style":"SECONDARY"},"printjob_start":{"emoji":"🖨️","permission_mapping":"printjob_start","style":"SECONDARY"},"klipper_restart":{"emoji":"🔄","permission_mapping":"service_restart","style":"PRIMARY"},"update_system":{"permission_mapping":"update_system","style":"SECONDARY"},"printjob_start_yes":{"permission_mapping":"printjob_start","style":"SUCCESS"},"printjob_start_no":{"permission_mapping":"printjob_start","style":"DANGER"}},"selections":{"printlist_view_printjob":{"permission_mapping":"fileinfo"}}}');
 ;// CONCATENATED MODULE: ./src/meta/button_assign.json
 const button_assign_namespaceObject = JSON.parse('{"list_files":["next_page","last_page"],"print_job":["printjob_resume","printjob_cancel","printjob_pause","printjob_refresh"],"file_info":["printjob_start","to_printlist"]}');
-;// CONCATENATED MODULE: ./src/generator/DiscordButtonGenerator.ts
+;// CONCATENATED MODULE: ./src/generator/DiscordInputGenerator.ts
 
 
 
@@ -9636,31 +9636,37 @@ const button_assign_namespaceObject = JSON.parse('{"list_files":["next_page","la
 
 
 
-class DiscordButtonGenerator {
+class DiscordInputGenerator {
     constructor() {
         this.config = new ConfigHelper();
         this.localeHelper = getLocaleHelper();
     }
-    generateButtonCache() {
-        const buttonCache = {};
-        let buttonConfig = this.localeHelper.getLocale()['buttons'];
+    generateInputCache() {
+        this.generateCacheForSection('buttons');
+        this.generateCacheForSection('selections');
+    }
+    generateCacheForSection(section) {
+        const sectionCache = {};
+        let sectionConfig = this.localeHelper.getLocale()[section];
         if (this.config.isButtonSyntaxLocale()) {
-            buttonConfig = this.localeHelper.getSyntaxLocale()['buttons'];
+            sectionConfig = this.localeHelper.getSyntaxLocale()[section];
         }
-        for (const buttonID in buttonConfig) {
-            buttonCache[buttonID] = {};
-            const text = { label: buttonConfig[buttonID] };
-            let mapping = button_mapping_namespaceObject[buttonID];
+        for (const selectionID in sectionConfig) {
+            sectionCache[selectionID] = {};
+            let text = { label: sectionConfig[selectionID] };
+            let mapping = input_mapping_namespaceObject[section][selectionID];
+            if (text.label.label !== 'undefined') {
+                text = sectionConfig[selectionID];
+            }
             if (typeof (mapping) === 'undefined') {
                 mapping = {};
             }
-            mergeDeep(buttonCache[buttonID], text, mapping);
+            mergeDeep(sectionCache[selectionID], text, mapping);
         }
-        setData('buttons', buttonCache);
+        setData(section, sectionCache);
     }
     generateButtons(section) {
         const assignButtons = button_assign_namespaceObject[section];
-        const cache = getEntry("buttons");
         const row = new external_discord_js_namespaceObject.MessageActionRow();
         if (typeof (assignButtons) === 'undefined') {
             return;
@@ -9670,6 +9676,21 @@ class DiscordButtonGenerator {
             row.addComponents(this.generateButton(buttonId));
         }
         return row;
+    }
+    generateSelection(selectionId, entries) {
+        const cache = getEntry('selections');
+        const selectionMeta = cache[selectionId];
+        const selection = new external_discord_js_namespaceObject.MessageSelectMenu()
+            .setCustomId(selectionId)
+            .setPlaceholder(selectionMeta.label);
+        for (const entry of entries) {
+            selection.addOptions([{
+                    label: entry,
+                    description: selectionMeta.description.replace(/(\${entry})/g, entry),
+                    value: entry
+                }]);
+        }
+        return selection;
     }
     generateButton(buttonId) {
         const cache = getEntry("buttons");
@@ -9700,7 +9721,7 @@ class DiscordClient {
         this.moonrakerClient = getMoonrakerClient();
         this.database = getDatabase();
         this.commandGenerator = new DiscordCommandGenerator();
-        this.buttonGenerator = new DiscordButtonGenerator();
+        this.buttonGenerator = new DiscordInputGenerator();
         this.connect();
     }
     async connect() {
@@ -9732,7 +9753,7 @@ class DiscordClient {
     }
     cacheButtons() {
         logRegular('Generate Buttons Cache...');
-        this.buttonGenerator.generateButtonCache();
+        this.buttonGenerator.generateInputCache();
     }
     isConnected() {
         return this.discordClient.isReady();
@@ -10312,7 +10333,7 @@ module.exports = require("zlib");
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(9749);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(2970);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()

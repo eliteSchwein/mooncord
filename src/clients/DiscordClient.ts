@@ -7,14 +7,14 @@ import {ConfigHelper} from '../helper/ConfigHelper'
 import {logEmpty, logRegular, logSuccess} from '../helper/ConsoleLogger'
 import {dump, getEntry, setData} from '../utils/CacheUtil'
 import {DiscordCommandGenerator} from "../generator/DiscordCommandGenerator";
-import { DiscordButtonGenerator } from '../generator/DiscordButtonGenerator'
+import { DiscordInputGenerator } from '../generator/DiscordInputGenerator'
 
 export class DiscordClient {
     protected config = new ConfigHelper()
     protected moonrakerClient = getMoonrakerClient()
     protected database = getDatabase()
     protected commandGenerator = new DiscordCommandGenerator()
-    protected buttonGenerator = new DiscordButtonGenerator()
+    protected buttonGenerator = new DiscordInputGenerator()
     protected discordClient: Client
 
     public constructor() {
@@ -60,7 +60,7 @@ export class DiscordClient {
 
     private cacheButtons() {
         logRegular('Generate Buttons Cache...')
-        this.buttonGenerator.generateButtonCache()
+        this.buttonGenerator.generateInputCache()
     }
 
     public isConnected() {
