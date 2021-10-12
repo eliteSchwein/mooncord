@@ -14,7 +14,7 @@ export class DiscordClient {
     protected moonrakerClient = getMoonrakerClient()
     protected database = getDatabase()
     protected commandGenerator = new DiscordCommandGenerator()
-    protected buttonGenerator = new DiscordInputGenerator()
+    protected inputGenerator = new DiscordInputGenerator()
     protected discordClient: Client
 
     public constructor() {
@@ -42,7 +42,7 @@ export class DiscordClient {
 
         await this.registerCommands()
 
-        this.cacheButtons()
+        this.cacheInputs()
 
         setData('invite_url', `https://discord.com/oauth2/authorize?client_id=${this.discordClient.user.id}&permissions=3422944320&scope=bot%20applications.commands`)
         
@@ -58,9 +58,9 @@ export class DiscordClient {
         await this.discordClient.application?.commands.set(this.commandGenerator.getCommands())
     }
 
-    private cacheButtons() {
-        logRegular('Generate Buttons Cache...')
-        this.buttonGenerator.generateInputCache()
+    private cacheInputs() {
+        logRegular('Generate Inputs Cache...')
+        this.inputGenerator.generateInputCache()
     }
 
     public isConnected() {

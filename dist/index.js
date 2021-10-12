@@ -9721,7 +9721,7 @@ class DiscordClient {
         this.moonrakerClient = getMoonrakerClient();
         this.database = getDatabase();
         this.commandGenerator = new DiscordCommandGenerator();
-        this.buttonGenerator = new DiscordInputGenerator();
+        this.inputGenerator = new DiscordInputGenerator();
         this.connect();
     }
     async connect() {
@@ -9739,7 +9739,7 @@ class DiscordClient {
         logRegular('Connect to Discord...');
         await this.discordClient.login(this.config.getDiscordToken());
         await this.registerCommands();
-        this.cacheButtons();
+        this.cacheInputs();
         setData('invite_url', `https://discord.com/oauth2/authorize?client_id=${this.discordClient.user.id}&permissions=3422944320&scope=bot%20applications.commands`);
         logSuccess('Discordbot Connected');
         logSuccess(`${'Name:'.green} ${(this.discordClient.user.tag).white}`);
@@ -9751,9 +9751,9 @@ class DiscordClient {
         logRegular('Register Commands...');
         await this.discordClient.application?.commands.set(this.commandGenerator.getCommands());
     }
-    cacheButtons() {
-        logRegular('Generate Buttons Cache...');
-        this.buttonGenerator.generateInputCache();
+    cacheInputs() {
+        logRegular('Generate Inputs Cache...');
+        this.inputGenerator.generateInputCache();
     }
     isConnected() {
         return this.discordClient.isReady();
