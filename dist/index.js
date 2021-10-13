@@ -9730,7 +9730,6 @@ class DiscordInputGenerator {
 class DiscordClient {
     constructor() {
         this.config = new ConfigHelper();
-        this.moonrakerClient = getMoonrakerClient();
         this.database = getDatabase();
         this.commandGenerator = new DiscordCommandGenerator();
         this.inputGenerator = new DiscordInputGenerator();
