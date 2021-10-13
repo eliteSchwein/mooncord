@@ -9,17 +9,7 @@
     "status": {
         "update_interval": 10,
         "use_percent": true,
-        "min_interval": 15,
-        "before": {
-            "enable": false,
-            "delay": 0,
-            "execute": {}
-        },
-        "after": {
-            "enable": false,
-            "delay": 0,
-            "execute": {}
-        }
+        "min_interval": 15
     },
     "language": {
         "messages": "en",
@@ -30,121 +20,6 @@
         "controllers": {
             "roles": [],
             "users": ""
-        },
-        "botadmins": {
-            "_comment": "this Section is managed by the /admin command",
-            "users": [],
-            "guilds": {}
-        },
-        "commands": {
-            "dump": {
-                "botadmin": true,
-                "guildadmin": false,
-                "users": [],
-                "roles": []
-            },
-            "editchannel": {
-                "botadmin": true,
-                "guildadmin": true,
-                "users": [],
-                "roles": []
-            },
-            "emergency_stop": {
-                "botadmin": true,
-                "guildadmin": false,
-                "users": [],
-                "roles": []
-            },
-            "execute": {
-                "botadmin": false,
-                "guildadmin": false,
-                "users": [],
-                "roles": []
-            },
-            "fileinfo": {
-                "botadmin": true,
-                "guildadmin": false,
-                "users": [],
-                "roles": []
-            },
-            "get_user_id": {
-                "botadmin": true,
-                "guildadmin": true,
-                "users": "*",
-                "roles": []
-            },
-            "get_log": {
-                "botadmin": true,
-                "guildadmin": false,
-                "users": [],
-                "roles": []
-            },
-            "info": {
-                "botadmin": true,
-                "guildadmin": true,
-                "users": "*",
-                "roles": []
-            },
-            "listfiles": {
-                "botadmin": true,
-                "guildadmin": false,
-                "users": [],
-                "roles": []
-            },
-            "notify": {
-                "botadmin": true,
-                "guildadmin": true,
-                "users": [],
-                "roles": []
-            },
-            "printjob": {
-                "botadmin": true,
-                "guildadmin": false,
-                "users": [],
-                "roles": []
-            },
-            "printjob_start": {
-                "botadmin": false,
-                "guildadmin": false,
-                "users": [],
-                "roles": []
-            },
-            "service_restart": {
-                "botadmin": true,
-                "guildadmin": true,
-                "users": [],
-                "roles": []
-            },
-            "status": {
-                "botadmin": true,
-                "guildadmin": true,
-                "users": "*",
-                "roles": []
-            },
-            "systeminfo": {
-                "botadmin": true,
-                "guildadmin": false,
-                "users": [],
-                "roles": []
-            },
-            "temp": {
-                "botadmin": true,
-                "guildadmin": false,
-                "users": [],
-                "roles": []
-            },
-            "timelapse": {
-                "botadmin": true,
-                "guildadmin": false,
-                "users": [],
-                "roles": []
-            },
-            "update_system": {
-                "botadmin": true,
-                "guildadmin": false,
-                "users": [],
-                "roles": []
-            }
         }
     },
     "webcam": {
@@ -164,8 +39,5 @@
         "post_at_print_end": false,
         "ffmpeg_codec": "libx264",
         "ffmpeg_arguments": "-pix_fmt yuv420p -preset slower -crf 30"
-    },
-    "system_notifications": {
-        "moonraker_throttle": true
     }
 }

@@ -9397,81 +9397,30 @@ var dist = __nccwpck_require__(1299);
 const external_discord_js_namespaceObject = require("discord.js");
 ;// CONCATENATED MODULE: external "fs"
 const external_fs_namespaceObject = require("fs");
-;// CONCATENATED MODULE: ./src/helper/ConfigHelper.ts
-
-const args = process.argv.slice(2);
-class ConfigHelper {
-    constructor() {
-        this.configPath = `${args[0]}/mooncord.json`;
-        this.configRaw = (0,external_fs_namespaceObject.readFileSync)(this.configPath, { encoding: 'utf8' });
-        this.config = JSON.parse(this.configRaw);
+;// CONCATENATED MODULE: external "path"
+const external_path_namespaceObject = require("path");
+var external_path_default = /*#__PURE__*/__nccwpck_require__.n(external_path_namespaceObject);
+;// CONCATENATED MODULE: ./src/helper/ObjectMergeHelper.ts
+function isObject(item) {
+    return (item && typeof item === 'object' && !Array.isArray(item));
+}
+function mergeDeep(target, ...sources) {
+    if (!sources.length)
+        return target;
+    const source = sources.shift();
+    if (isObject(target) && isObject(source)) {
+        for (const key in source) {
+            if (isObject(source[key])) {
+                if (!target[key])
+                    Object.assign(target, { [key]: {} });
+                mergeDeep(target[key], source[key]);
+            }
+            else {
+                Object.assign(target, { [key]: source[key] });
+            }
+        }
     }
-    getMoonrakerSocketUrl() {
-        return this.config.connection.moonraker_socket_url;
-    }
-    getMoonrakerUrl() {
-        return this.config.connection.moonraker_url;
-    }
-    getMoonrakerApiKey() {
-        return this.config.connection.moonraker_token;
-    }
-    getMoonrakerDatabaseNamespace() {
-        return this.config.connection.moonraker_database;
-    }
-    getDiscordToken() {
-        return this.config.connection.bot_token;
-    }
-    getStatusInterval() {
-        return this.config.status.update_interval;
-    }
-    getStatusMinInterval() {
-        return this.config.status.min_interval;
-    }
-    isStatusPerPercent() {
-        return this.config.status.use_percent;
-    }
-    getStatusBeforeTasks() {
-        return this.config.status.before;
-    }
-    getStatusAfterTasks() {
-        return this.config.status.before;
-    }
-    getLocale() {
-        return this.config.language.messages;
-    }
-    getSyntaxLocale() {
-        return this.config.language.command_syntax;
-    }
-    isButtonSyntaxLocale() {
-        return this.config.language.buttons_use_syntax_locale;
-    }
-    getWebcamUrl() {
-        return this.config.webcam.url;
-    }
-    getWebcamQuality() {
-        return this.config.webcam.quality;
-    }
-    getWebcamBrightness() {
-        return this.config.webcam.brightness;
-    }
-    getWebcamContrast() {
-        return this.config.webcam.contrast;
-    }
-    isWebcamVerticalMirrored() {
-        return this.config.webcam.vertical_mirror;
-    }
-    isWebcamHorizontalMirrored() {
-        return this.config.webcam.horizontal_mirror;
-    }
-    isWebcamGreyscale() {
-        return this.config.webcam.greyscale;
-    }
-    isWebcamSepia() {
-        return this.config.webcam.sepia;
-    }
-    notifyOnMoonrakerThrottle() {
-        return this.config.system_notifications.moonraker_throttle;
-    }
+    return mergeDeep(target, ...sources);
 }
 
 // EXTERNAL MODULE: ./node_modules/colorts/lib/string.js
@@ -9496,34 +9445,8 @@ function getTimeStamp() {
     return `[${date.toISOString()}]`.grey;
 }
 
-;// CONCATENATED MODULE: external "path"
-const external_path_namespaceObject = require("path");
-var external_path_default = /*#__PURE__*/__nccwpck_require__.n(external_path_namespaceObject);
 // EXTERNAL MODULE: external "util"
 var external_util_ = __nccwpck_require__(1669);
-;// CONCATENATED MODULE: ./src/helper/ObjectMergeHelper.ts
-function isObject(item) {
-    return (item && typeof item === 'object' && !Array.isArray(item));
-}
-function mergeDeep(target, ...sources) {
-    if (!sources.length)
-        return target;
-    const source = sources.shift();
-    if (isObject(target) && isObject(source)) {
-        for (const key in source) {
-            if (isObject(source[key])) {
-                if (!target[key])
-                    Object.assign(target, { [key]: {} });
-                mergeDeep(target[key], source[key]);
-            }
-            else {
-                Object.assign(target, { [key]: source[key] });
-            }
-        }
-    }
-    return mergeDeep(target, ...sources);
-}
-
 ;// CONCATENATED MODULE: ./src/utils/CacheUtil.ts
 
 
@@ -9548,6 +9471,95 @@ function dump() {
 async function writeDump() {
     await writeFile(external_path_namespaceObject.resolve(__dirname, '../temp/dump.json'), JSON.stringify(cacheData, null, 4), { encoding: 'utf8', flag: 'w+' });
     logSuccess('Dumped Cache!');
+}
+
+;// CONCATENATED MODULE: ./src/helper/ConfigHelper.ts
+
+
+
+
+const args = process.argv.slice(2);
+class ConfigHelper {
+    constructor() {
+        this.configPath = `${args[0]}/mooncord.json`;
+        this.configRaw = (0,external_fs_namespaceObject.readFileSync)(this.configPath, { encoding: 'utf8' });
+        this.defaultConfig = (0,external_fs_namespaceObject.readFileSync)(__nccwpck_require__.ab + "mooncord_full.json", { encoding: 'utf8' });
+        const config = JSON.parse(this.defaultConfig);
+        mergeDeep(config, JSON.parse(this.configRaw));
+        setData('config', config);
+    }
+    getConfig() {
+        return getEntry('config');
+    }
+    getMoonrakerSocketUrl() {
+        return this.getConfig().connection.moonraker_socket_url;
+    }
+    getMoonrakerUrl() {
+        return this.getConfig().connection.moonraker_url;
+    }
+    getMoonrakerApiKey() {
+        return this.getConfig().connection.moonraker_token;
+    }
+    getMoonrakerDatabaseNamespace() {
+        return this.getConfig().connection.moonraker_database;
+    }
+    getDiscordToken() {
+        return this.getConfig().connection.bot_token;
+    }
+    getStatusInterval() {
+        return this.getConfig().status.update_interval;
+    }
+    getStatusMinInterval() {
+        return this.getConfig().status.min_interval;
+    }
+    isStatusPerPercent() {
+        return this.getConfig().status.use_percent;
+    }
+    getStatusBeforeTasks() {
+        return this.getConfig().status.before;
+    }
+    getStatusAfterTasks() {
+        return this.getConfig().status.before;
+    }
+    getLocale() {
+        return this.getConfig().language.messages;
+    }
+    getSyntaxLocale() {
+        return this.getConfig().language.command_syntax;
+    }
+    isButtonSyntaxLocale() {
+        return this.getConfig().language.buttons_use_syntax_locale;
+    }
+    getWebcamUrl() {
+        return this.getConfig().webcam.url;
+    }
+    getWebcamQuality() {
+        return this.getConfig().webcam.quality;
+    }
+    getWebcamBrightness() {
+        return this.getConfig().webcam.brightness;
+    }
+    getWebcamContrast() {
+        return this.getConfig().webcam.contrast;
+    }
+    isWebcamVerticalMirrored() {
+        return this.getConfig().webcam.vertical_mirror;
+    }
+    isWebcamHorizontalMirrored() {
+        return this.getConfig().webcam.horizontal_mirror;
+    }
+    isWebcamGreyscale() {
+        return this.getConfig().webcam.greyscale;
+    }
+    isWebcamSepia() {
+        return this.getConfig().webcam.sepia;
+    }
+    notifyOnMoonrakerThrottle() {
+        return this.getConfig().system_notifications.moonraker_throttle;
+    }
+    dumpCacheOnStart() {
+        return this.getConfig().development.dump_cache_on_start;
+    }
 }
 
 ;// CONCATENATED MODULE: ./src/meta/command_structure.json
@@ -9745,7 +9757,9 @@ class DiscordClient {
         logSuccess(`${'Name:'.green} ${(this.discordClient.user.tag).white}`);
         logSuccess('Invite:'.green);
         console.log(getEntry('invite_url').cyan);
-        dump();
+        if (this.config.dumpCacheOnStart()) {
+            dump();
+        }
     }
     async registerCommands() {
         logRegular('Register Commands...');

@@ -50,7 +50,10 @@ export class DiscordClient {
         logSuccess(`${'Name:'.green  } ${  (this.discordClient.user.tag).white}`)
         logSuccess('Invite:'.green)
         console.log(getEntry('invite_url').cyan)
-        dump()
+
+        if(this.config.dumpCacheOnStart()) {
+            dump()
+        }
     }
 
     private async registerCommands() {
