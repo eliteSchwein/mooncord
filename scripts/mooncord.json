@@ -6,11 +6,6 @@
         "moonraker_database": "MC_SERVICE",
         "bot_token": ""
     },
-    "status": {
-        "update_interval": 10,
-        "use_percent": true,
-        "min_interval": 15
-    },
     "language": {
         "messages": "en",
         "command_syntax": "en",
@@ -23,21 +18,6 @@
         }
     },
     "webcam": {
-        "url": "http://127.0.0.1/webcam/?action=snapshot",
-        "quality": 80,
-        "rotation": 0,
-        "brightness": 0,
-        "contrast": 0,
-        "vertical_mirror": false,
-        "horizontal_mirror": false,
-        "greyscale": false,
-        "sepia": false
-    },
-    "timelapse": {
-        "enable": false,
-        "framerate": 10,
-        "post_at_print_end": false,
-        "ffmpeg_codec": "libx264",
-        "ffmpeg_arguments": "-pix_fmt yuv420p -preset slower -crf 30"
+        "url": "http://127.0.0.1/webcam/?action=snapshot"
     }
 }
