@@ -9374,7 +9374,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 2970:
+/***/ 808:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -9718,6 +9718,12 @@ class DiscordInputGenerator {
     }
 }
 
+;// CONCATENATED MODULE: ./src/events/discord/InteractionHandler.ts
+class InteractionHandler {
+    constructor(discordClient) {
+    }
+}
+
 ;// CONCATENATED MODULE: ./src/clients/DiscordClient.ts
 
 
@@ -9727,6 +9733,8 @@ class DiscordInputGenerator {
 
 
 
+
+let interactionHandler;
 class DiscordClient {
     constructor() {
         this.config = new ConfigHelper();
@@ -9750,6 +9758,7 @@ class DiscordClient {
         logRegular('Connect to Discord...');
         await this.discordClient.login(this.config.getDiscordToken());
         await this.registerCommands();
+        await this.registerEvents();
         this.cacheInputs();
         setData('invite_url', `https://discord.com/oauth2/authorize?client_id=${this.discordClient.user.id}&permissions=3422944320&scope=bot%20applications.commands`);
         logSuccess('Discordbot Connected');
@@ -9763,6 +9772,10 @@ class DiscordClient {
     async registerCommands() {
         logRegular('Register Commands...');
         await this.discordClient.application?.commands.set(this.commandGenerator.getCommands());
+    }
+    async registerEvents() {
+        logRegular('Register Events...');
+        interactionHandler = new InteractionHandler(this.discordClient);
     }
     cacheInputs() {
         logRegular('Generate Inputs Cache...');
@@ -10346,7 +10359,7 @@ module.exports = require("zlib");
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(2970);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(808);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()

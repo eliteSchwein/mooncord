@@ -8,6 +8,9 @@ import {logEmpty, logRegular, logSuccess} from '../helper/ConsoleLogger'
 import {dump, getEntry, setData} from '../utils/CacheUtil'
 import {DiscordCommandGenerator} from "../generator/DiscordCommandGenerator";
 import { DiscordInputGenerator } from '../generator/DiscordInputGenerator'
+import {InteractionHandler} from "../events/discord/InteractionHandler";
+
+let interactionHandler: InteractionHandler
 
 export class DiscordClient {
     protected config = new ConfigHelper()
@@ -41,6 +44,8 @@ export class DiscordClient {
 
         await this.registerCommands()
 
+        await this.registerEvents()
+
         this.cacheInputs()
 
         setData('invite_url', `https://discord.com/oauth2/authorize?client_id=${this.discordClient.user.id}&permissions=3422944320&scope=bot%20applications.commands`)
@@ -58,6 +63,11 @@ export class DiscordClient {
     private async registerCommands() {
         logRegular('Register Commands...')
         await this.discordClient.application?.commands.set(this.commandGenerator.getCommands())
+    }
+
+    private async registerEvents() {
+        logRegular('Register Events...')
+        interactionHandler = new InteractionHandler(this.discordClient)
     }
 
     private cacheInputs() {
