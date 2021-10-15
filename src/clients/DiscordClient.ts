@@ -9,8 +9,10 @@ import {dump, getEntry, setData} from '../utils/CacheUtil'
 import {DiscordCommandGenerator} from "../generator/DiscordCommandGenerator";
 import { DiscordInputGenerator } from '../generator/DiscordInputGenerator'
 import {InteractionHandler} from "../events/discord/InteractionHandler";
+import {DebugHandler} from "../events/discord/DebugHandler";
 
 let interactionHandler: InteractionHandler
+let debugHandler: DebugHandler
 
 export class DiscordClient {
     protected config = new ConfigHelper()
@@ -49,6 +51,13 @@ export class DiscordClient {
         this.cacheInputs()
 
         setData('invite_url', `https://discord.com/oauth2/authorize?client_id=${this.discordClient.user.id}&permissions=3422944320&scope=bot%20applications.commands`)
+        setData('discord_client', {
+            'readySince': new Date(),
+            'applicationId': this.discordClient.application.id,
+            'clientId': this.discordClient.user.id,
+            'ping': this.discordClient.ws.ping,
+            'event_count': this.discordClient['_eventsCount']
+        })
         
         logSuccess('Discordbot Connected')
         logSuccess(`${'Name:'.green  } ${  (this.discordClient.user.tag).white}`)
@@ -68,6 +77,7 @@ export class DiscordClient {
     private async registerEvents() {
         logRegular('Register Events...')
         interactionHandler = new InteractionHandler(this.discordClient)
+        debugHandler = new DebugHandler(this.discordClient)
     }
 
     private cacheInputs() {

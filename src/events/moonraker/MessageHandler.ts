@@ -2,6 +2,7 @@ import {Websocket, WebsocketEvents} from "websocket-ts";
 import {ProcStatsNotification} from "./messages/ProcStatsNotification";
 import {SubscriptionNotification} from "./messages/SubscriptionNotification";
 import {UpdateNotification} from "./messages/UpdateNotification";
+import {updateData} from "../../utils/CacheUtil";
 
 export class MessageHandler {
     protected websocket: Websocket
@@ -18,11 +19,13 @@ export class MessageHandler {
 
             if(typeof(messageData) === 'undefined') { return }
 
+            updateData('moonraker_client', {
+                'event_count': websocket.underlyingWebsocket['_eventsCount']
+            })
+
             if(this.procStatsNotification.parse(messageData)) { return }
             if(this.subscriptionNotification.parse(messageData)) { return }
             if(this.updateNotification.parse(messageData)) { return }
-
-            console.log(messageData)
         }))
     }
 }

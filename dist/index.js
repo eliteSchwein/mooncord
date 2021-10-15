@@ -9374,7 +9374,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 808:
+/***/ 972:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -9721,6 +9721,28 @@ class DiscordInputGenerator {
 ;// CONCATENATED MODULE: ./src/events/discord/InteractionHandler.ts
 class InteractionHandler {
     constructor(discordClient) {
+        discordClient.on('interactionCreate', async (interaction) => {
+            if (interaction.applicationId !== discordClient.application.id) {
+                return;
+            }
+            console.log(discordClient);
+        });
+    }
+}
+
+;// CONCATENATED MODULE: ./src/events/discord/DebugHandler.ts
+
+
+class DebugHandler {
+    constructor(discordClient) {
+        discordClient.on("debug", info => {
+            if (info.includes('Heartbeat acknowledged, latency of')) {
+                updateData('discord_client', {
+                    'ping': getDiscordClient().getClient().ws.ping,
+                    'event_count': getDiscordClient().getClient()['_eventsCount']
+                });
+            }
+        });
     }
 }
 
@@ -9734,7 +9756,9 @@ class InteractionHandler {
 
 
 
+
 let interactionHandler;
+let debugHandler;
 class DiscordClient {
     constructor() {
         this.config = new ConfigHelper();
@@ -9761,6 +9785,13 @@ class DiscordClient {
         await this.registerEvents();
         this.cacheInputs();
         setData('invite_url', `https://discord.com/oauth2/authorize?client_id=${this.discordClient.user.id}&permissions=3422944320&scope=bot%20applications.commands`);
+        setData('discord_client', {
+            'readySince': new Date(),
+            'applicationId': this.discordClient.application.id,
+            'clientId': this.discordClient.user.id,
+            'ping': this.discordClient.ws.ping,
+            'event_count': this.discordClient['_eventsCount']
+        });
         logSuccess('Discordbot Connected');
         logSuccess(`${'Name:'.green} ${(this.discordClient.user.tag).white}`);
         logSuccess('Invite:'.green);
@@ -9776,6 +9807,7 @@ class DiscordClient {
     async registerEvents() {
         logRegular('Register Events...');
         interactionHandler = new InteractionHandler(this.discordClient);
+        debugHandler = new DebugHandler(this.discordClient);
     }
     cacheInputs() {
         logRegular('Generate Inputs Cache...');
@@ -9877,6 +9909,7 @@ class UpdateNotification {
 
 
 
+
 class MessageHandler {
     constructor(websocket) {
         this.procStatsNotification = new ProcStatsNotification();
@@ -9888,6 +9921,9 @@ class MessageHandler {
             if (typeof (messageData) === 'undefined') {
                 return;
             }
+            updateData('moonraker_client', {
+                'event_count': websocket.underlyingWebsocket['_eventsCount']
+            });
             if (this.procStatsNotification.parse(messageData)) {
                 return;
             }
@@ -9897,7 +9933,6 @@ class MessageHandler {
             if (this.updateNotification.parse(messageData)) {
                 return;
             }
-            console.log(messageData);
         }));
     }
 }
@@ -9911,7 +9946,6 @@ class MessageHandler {
 
 
 const requests = {};
-let websocket;
 let messageHandler;
 class MoonrakerClient {
     constructor() {
@@ -9924,13 +9958,13 @@ class MoonrakerClient {
     async connect() {
         const oneShotToken = await this.apiKeyHelper.getOneShotToken();
         const socketUrl = this.config.getMoonrakerSocketUrl();
-        websocket = new lib.WebsocketBuilder(`${socketUrl}?token=${oneShotToken}`).build();
-        websocket.addEventListener(lib.WebsocketEvents.error, ((instance, ev) => {
+        this.websocket = new lib.WebsocketBuilder(`${socketUrl}?token=${oneShotToken}`).build();
+        this.websocket.addEventListener(lib.WebsocketEvents.error, ((instance, ev) => {
             logError('Websocket Error:');
             console.log(ev);
             process.exit(5);
         }));
-        websocket.addEventListener(lib.WebsocketEvents.open, (((instance, ev) => {
+        this.websocket.addEventListener(lib.WebsocketEvents.open, (((instance, ev) => {
             logSuccess('Connected to MoonRaker');
             this.registerEvents();
             this.sendInitCommands();
@@ -9964,11 +9998,16 @@ class MoonrakerClient {
         setData('machine_info', machineInfo.result);
         setData('proc_stats', procStats.result);
         setData('state', data.result.status);
+        setData('moonraker_client', {
+            'url': this.websocket.underlyingWebsocket.url,
+            'readySince': new Date(),
+            'event_count': this.websocket.underlyingWebsocket['_eventsCount']
+        });
         logSuccess('MoonRaker Client is ready');
     }
     registerEvents() {
         logRegular('Register Events...');
-        websocket.addEventListener(lib.WebsocketEvents.message, ((instance, ev) => {
+        this.websocket.addEventListener(lib.WebsocketEvents.message, ((instance, ev) => {
             const messageData = JSON.parse(ev.data);
             if (typeof (messageData) === 'undefined') {
                 return;
@@ -9978,13 +10017,13 @@ class MoonrakerClient {
             }
             requests[messageData.id] = messageData;
         }));
-        messageHandler = new MessageHandler(websocket);
+        messageHandler = new MessageHandler(this.websocket);
     }
     async send(message, timeout = 10000) {
         const id = Math.floor(Math.random() * 10000) + 1;
         const messageData = JSON.parse(message);
         messageData.id = id;
-        websocket.send(JSON.stringify(messageData));
+        this.websocket.send(JSON.stringify(messageData));
         await (0,dist.waitUntil)(() => typeof requests[id] !== 'undefined', { timeout, intervalBetweenAttempts: 500 });
         return requests[id];
     }
@@ -9995,13 +10034,13 @@ class MoonrakerClient {
         return this.ready;
     }
     isConnected() {
-        if (typeof websocket === 'undefined') {
+        if (typeof (this.websocket) === 'undefined') {
             return false;
         }
-        return Boolean(websocket.underlyingWebsocket.OPEN);
+        return Boolean(this.websocket.underlyingWebsocket.OPEN);
     }
     getWebsocket() {
-        return websocket;
+        return this.websocket;
     }
 }
 
@@ -10359,7 +10398,7 @@ module.exports = require("zlib");
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(808);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(972);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()

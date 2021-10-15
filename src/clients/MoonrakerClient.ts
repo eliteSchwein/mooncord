@@ -7,14 +7,13 @@ import {setData} from '../utils/CacheUtil'
 import {MessageHandler} from "../events/moonraker/MessageHandler";
 
 const requests: any = {}
-
-let websocket: Websocket
 let messageHandler: MessageHandler
 
 export class MoonrakerClient {
     protected config = new ConfigHelper()
     protected apiKeyHelper = new APIKeyHelper()
     protected ready = false
+    protected websocket:Websocket
 
     public constructor() {
         logSuccess('Connect to MoonRaker...')
@@ -26,15 +25,15 @@ export class MoonrakerClient {
         const oneShotToken = await this.apiKeyHelper.getOneShotToken()
         const socketUrl = this.config.getMoonrakerSocketUrl()
 
-        websocket = new WebsocketBuilder(`${socketUrl}?token=${oneShotToken}`).build()
+        this.websocket = new WebsocketBuilder(`${socketUrl}?token=${oneShotToken}`).build()
 
-        websocket.addEventListener(WebsocketEvents.error, ((instance, ev) => {
+        this.websocket.addEventListener(WebsocketEvents.error, ((instance, ev) => {
             logError('Websocket Error:')
             console.log(ev)
             process.exit(5)
         }))
 
-        websocket.addEventListener(WebsocketEvents.open, (((instance, ev) => {
+        this.websocket.addEventListener(WebsocketEvents.open, (((instance, ev) => {
             logSuccess('Connected to MoonRaker')
 
             this.registerEvents()
@@ -83,12 +82,18 @@ export class MoonrakerClient {
         setData('proc_stats', procStats.result)
         setData('state', data.result.status)
 
+        setData('moonraker_client', {
+            'url': this.websocket.underlyingWebsocket.url,
+            'readySince': new Date(),
+            'event_count': this.websocket.underlyingWebsocket['_eventsCount']
+        })
+
         logSuccess('MoonRaker Client is ready')
     }
 
     private registerEvents() {
         logRegular('Register Events...')
-        websocket.addEventListener(WebsocketEvents.message, ((instance, ev) => {
+        this.websocket.addEventListener(WebsocketEvents.message, ((instance, ev) => {
             const messageData = JSON.parse(ev.data)
 
             if(typeof(messageData) === 'undefined') { return }
@@ -97,7 +102,7 @@ export class MoonrakerClient {
             requests[messageData.id] = messageData
         }))
 
-        messageHandler = new MessageHandler(websocket)
+        messageHandler = new MessageHandler(this.websocket)
     }
 
     public async send(message: string, timeout = 10_000) {
@@ -107,7 +112,7 @@ export class MoonrakerClient {
 
         messageData.id = id
 
-        websocket.send(JSON.stringify(messageData))
+        this.websocket.send(JSON.stringify(messageData))
 
         await waitUntil(() => typeof requests[id] !== 'undefined', { timeout, intervalBetweenAttempts: 500 })
 
@@ -121,12 +126,12 @@ export class MoonrakerClient {
     }
 
     public isConnected() {
-        if(typeof websocket === 'undefined') { return false }
+        if(typeof(this.websocket) === 'undefined') { return false }
 
-        return Boolean(websocket.underlyingWebsocket.OPEN)
+        return Boolean(this.websocket.underlyingWebsocket.OPEN)
     }
 
     public getWebsocket() {
-        return websocket
+        return this.websocket
     }
 }
