@@ -3,20 +3,33 @@ import {readFileSync} from 'fs'
 import {ConfigHelper} from "./ConfigHelper";
 import path from "path";
 import {getEntry} from "../utils/CacheUtil";
+import {mergeDeep} from "./ObjectMergeHelper";
 
 export class LocaleHelper {
     protected config = new ConfigHelper()
+    protected fallbackLocalePath = path.resolve(__dirname, '../locales/en.json')
     protected localePath = path.resolve(__dirname, `../locales/${this.config.getLocale()}.json`)
     protected syntaxLocalePath = path.resolve(__dirname, `../locales/${this.config.getSyntaxLocale()}.json`)
     protected locale: any
     protected syntaxLocale: any
 
     public constructor() {
+        this.loadFallback()
+        this.loadLocales()
+    }
+
+    protected loadLocales() {
         const localeRaw = readFileSync(this.localePath, {encoding: 'utf8'})
         const syntaxLocaleRaw  = readFileSync(this.syntaxLocalePath, {encoding: 'utf8'})
 
-        this.locale = JSON.parse(localeRaw)
-        this.syntaxLocale = JSON.parse(syntaxLocaleRaw)
+        mergeDeep(this.locale, JSON.parse(localeRaw))
+        mergeDeep(this.syntaxLocale, JSON.parse(syntaxLocaleRaw))
+    }
+
+    protected loadFallback() {
+        const fallbackLocaleRaw = readFileSync(this.fallbackLocalePath, {encoding: 'utf8'})
+        this.locale = JSON.parse(fallbackLocaleRaw)
+        this.syntaxLocale = JSON.parse(fallbackLocaleRaw)
     }
 
     public getLocale() {

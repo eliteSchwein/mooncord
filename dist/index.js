@@ -10102,15 +10102,26 @@ class DatabaseUtil {
 
 
 
+
 class LocaleHelper {
     constructor() {
         this.config = new ConfigHelper();
+        this.fallbackLocalePath = external_path_default().resolve(__dirname, '../locales/en.json');
         this.localePath = external_path_default().resolve(__dirname, `../locales/${this.config.getLocale()}.json`);
         this.syntaxLocalePath = external_path_default().resolve(__dirname, `../locales/${this.config.getSyntaxLocale()}.json`);
+        this.loadFallback();
+        this.loadLocales();
+    }
+    loadLocales() {
         const localeRaw = (0,external_fs_namespaceObject.readFileSync)(this.localePath, { encoding: 'utf8' });
         const syntaxLocaleRaw = (0,external_fs_namespaceObject.readFileSync)(this.syntaxLocalePath, { encoding: 'utf8' });
-        this.locale = JSON.parse(localeRaw);
-        this.syntaxLocale = JSON.parse(syntaxLocaleRaw);
+        mergeDeep(this.locale, JSON.parse(localeRaw));
+        mergeDeep(this.syntaxLocale, JSON.parse(syntaxLocaleRaw));
+    }
+    loadFallback() {
+        const fallbackLocaleRaw = (0,external_fs_namespaceObject.readFileSync)(this.fallbackLocalePath, { encoding: 'utf8' });
+        this.locale = JSON.parse(fallbackLocaleRaw);
+        this.syntaxLocale = JSON.parse(fallbackLocaleRaw);
     }
     getLocale() {
         return this.locale;
