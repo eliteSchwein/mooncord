@@ -9374,7 +9374,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 972:
+/***/ 8972:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -10102,7 +10102,6 @@ class DatabaseUtil {
 
 
 
-
 class LocaleHelper {
     constructor() {
         this.config = new ConfigHelper();
@@ -10115,45 +10114,45 @@ class LocaleHelper {
     loadLocales() {
         const localeRaw = (0,external_fs_namespaceObject.readFileSync)(this.localePath, { encoding: 'utf8' });
         const syntaxLocaleRaw = (0,external_fs_namespaceObject.readFileSync)(this.syntaxLocalePath, { encoding: 'utf8' });
-        mergeDeep(this.locale, JSON.parse(localeRaw));
-        mergeDeep(this.syntaxLocale, JSON.parse(syntaxLocaleRaw));
+        updateData('locale', JSON.parse(localeRaw));
+        updateData('syntax_locale', JSON.parse(syntaxLocaleRaw));
     }
     loadFallback() {
         const fallbackLocaleRaw = (0,external_fs_namespaceObject.readFileSync)(this.fallbackLocalePath, { encoding: 'utf8' });
-        this.locale = JSON.parse(fallbackLocaleRaw);
-        this.syntaxLocale = JSON.parse(fallbackLocaleRaw);
+        setData('locale', JSON.parse(fallbackLocaleRaw));
+        setData('syntax_locale', JSON.parse(fallbackLocaleRaw));
     }
     getLocale() {
-        return this.locale;
+        return getEntry('locale');
     }
     getSyntaxLocale() {
-        return this.syntaxLocale;
+        return getEntry('syntax_locale');
     }
     getAdminOnlyError(username) {
-        return this.locale.errors.admin_only.replace(/(\${username})/g, username);
+        return this.getLocale().errors.admin_only.replace(/(\${username})/g, username);
     }
     getControllerOnlyError(username) {
-        return this.locale.errors.controller_only.replace(/(\${username})/g, username);
+        return this.getLocale().errors.controller_only.replace(/(\${username})/g, username);
     }
     getGuildOnlyError(username) {
-        return this.locale.errors.guild_only.replace(/(\${username})/g, username);
+        return this.getLocale().errors.guild_only.replace(/(\${username})/g, username);
     }
     getCommandNotReadyError(username) {
-        return this.locale.errors.not_ready.replace(/(\${username})/g, username);
+        return this.getLocale().errors.not_ready.replace(/(\${username})/g, username);
     }
     getSystemComponents() {
         const components = [
             {
-                "name": this.locale.systeminfo.cpu.title,
+                "name": this.getLocale().systeminfo.cpu.title,
                 "value": "cpu"
             }, {
-                "name": this.locale.systeminfo.system.title,
+                "name": this.getLocale().systeminfo.system.title,
                 "value": "system"
             }, {
-                "name": this.locale.systeminfo.memory.title,
+                "name": this.getLocale().systeminfo.memory.title,
                 "value": "memory"
             }, {
-                "name": this.locale.systeminfo.updates.title,
+                "name": this.getLocale().systeminfo.updates.title,
                 "value": "updates"
             }
         ];
@@ -10409,7 +10408,7 @@ module.exports = require("zlib");
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(972);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(8972);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()
