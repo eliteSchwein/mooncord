@@ -11,6 +11,7 @@ import {DiscordInputGenerator} from '../generator/DiscordInputGenerator'
 import {InteractionHandler} from "../events/discord/InteractionHandler";
 import {DebugHandler} from "../events/discord/DebugHandler";
 import {ActivityTypes} from "discord.js/typings/enums";
+import {DiscordStatusGenerator} from "../generator/DiscordStatusGenerator";
 
 let interactionHandler: InteractionHandler
 let debugHandler: DebugHandler
@@ -20,6 +21,7 @@ export class DiscordClient {
     protected database = getDatabase()
     protected commandGenerator = new DiscordCommandGenerator()
     protected inputGenerator = new DiscordInputGenerator()
+    protected statusGenerator = new DiscordStatusGenerator()
     protected localeHelper = getLocaleHelper()
     protected discordClient: Client
 
@@ -50,7 +52,7 @@ export class DiscordClient {
 
         await this.registerEvents()
 
-        this.cacheInputs()
+        this.generateCaches()
 
         setData('invite_url', `https://discord.com/oauth2/authorize?client_id=${this.discordClient.user.id}&permissions=3422944320&scope=bot%20applications.commands`)
         setData('discord_client', {
@@ -89,9 +91,10 @@ export class DiscordClient {
         debugHandler = new DebugHandler(this.discordClient)
     }
 
-    private cacheInputs() {
-        logRegular('Generate Inputs Cache...')
+    private generateCaches() {
+        logRegular('Generate Caches...')
         this.inputGenerator.generateInputCache()
+        this.statusGenerator.generateStatusCache()
     }
 
     public isConnected() {

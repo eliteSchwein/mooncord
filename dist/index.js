@@ -9374,7 +9374,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 2810:
+/***/ 9016:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -9778,7 +9778,38 @@ class DebugHandler {
     }
 }
 
+;// CONCATENATED MODULE: ./src/meta/status_mapping.json
+const status_mapping_namespaceObject = JSON.parse('{"disconnected":{"meta_data":{"order_id":0,"allow_same":false,"prevent":["pause"]},"color":"#c90000","buttons":["klipper_restart"],"activity":{"status":"dnd","type":"LISTENING"}},"error":{"meta_data":{"order_id":0,"allow_same":false,"prevent":[]},"color":"#c90000","buttons":["klipper_restart"],"activity":{"status":"dnd","type":"LISTENING"}},"offline":{"meta_data":{"order_id":0,"allow_same":false,"prevent":[]},"color":"#c90000","buttons":[],"activity":{"status":"dnd","type":"LISTENING"}},"shutdown":{"meta_data":{"order_id":0,"allow_same":false,"prevent":["pause","start","done","ready","printing"]},"color":"#c90000","buttons":["klipper_restart"],"activity":{"status":"dnd","type":"LISTENING"}},"stop":{"meta_data":{"order_id":0,"allow_same":false,"prevent":["start"]},"color":"#c90000","author":"${gcode_file}","thumbnail":true,"activity":{"status":"idle","type":"LISTENING"},"buttons":[],"fields":[{"name":"${locale.print_time}","value":"${value_print_time}"}]},"ready":{"meta_data":{"order_id":1,"allow_same":false,"prevent":["done"]},"color":"#0099ff","buttons":[],"activity":{"status":"idle","type":"LISTENING"},"versions":true},"startup":{"meta_data":{"order_id":0,"allow_same":false,"prevent":[]},"color":"#0099ff","buttons":[],"activity":{"status":"idle","type":"WATCHING"}},"start":{"meta_data":{"order_id":2,"allow_same":false,"prevent":[]},"color":"#25db00","author":"${gcode_file}","thumbnail":true,"buttons":[],"activity":{"status":"online","type":"LISTENING"},"fields":[{"name":"${locale.print_time}","value":"${value_eta_print_time}"}]},"done":{"meta_data":{"order_id":0,"allow_same":false,"prevent":[]},"color":"#25db00","author":"${gcode_file}","thumbnail":true,"buttons":[],"activity":{"status":"idle","type":"WATCHING"},"fields":[{"name":"${locale.print_time}","value":"${value_print_time}"}]},"pause":{"meta_data":{"order_id":0,"allow_same":false,"prevent":[]},"color":"#dbd400","author":"${gcode_file}","thumbnail":true,"buttons":["printjob_resume","printjob_cancel"],"activity":{"status":"idle","type":"PLAYING"},"fields":[{"name":"${locale.print_time}","value":"${value_print_time}"},{"name":"${locale.eta_print_time}","value":"${value_eta_print_time}"},{"name":"${locale.print_progress}","value":"${value_print_progress}%"},{"name":"${locale.print_layers}","value":"${value_current_layer}/${value_max_layer}"}]},"printing":{"meta_data":{"order_id":3,"allow_same":true,"prevent":[]},"color":"#0099ff","author":"${gcode_file}","thumbnail":true,"activity":{"status":"online","type":"WATCHING"},"buttons":["printjob_pause","printjob_cancel","printjob_refresh"],"fields":[{"name":"${locale.print_time}","value":"${value_print_time}"},{"name":"${locale.eta_print_time}","value":"${value_eta_print_time}"},{"name":"${locale.print_progress}","value":"${value_print_progress}%"},{"name":"${locale.print_layers}","value":"${value_current_layer}/${value_max_layer}"}]}}');
+;// CONCATENATED MODULE: ./src/generator/DiscordStatusGenerator.ts
+
+
+
+
+
+class DiscordStatusGenerator {
+    constructor() {
+        this.config = new ConfigHelper();
+        this.localeHelper = getLocaleHelper();
+    }
+    generateStatusCache() {
+        const tempCache = {};
+        const locale = this.localeHelper.getLocale();
+        for (const statusId in status_mapping_namespaceObject) {
+            const statusLocale = locale.status[statusId];
+            tempCache[statusId] = status_mapping_namespaceObject[statusId];
+            mergeDeep(tempCache[statusId], {
+                title: statusLocale.title,
+                activity: {
+                    title: statusLocale.activity
+                }
+            });
+        }
+        setData('status_messages', tempCache);
+    }
+}
+
 ;// CONCATENATED MODULE: ./src/clients/DiscordClient.ts
+
 
 
 
@@ -9797,6 +9828,7 @@ class DiscordClient {
         this.database = getDatabase();
         this.commandGenerator = new DiscordCommandGenerator();
         this.inputGenerator = new DiscordInputGenerator();
+        this.statusGenerator = new DiscordStatusGenerator();
         this.localeHelper = getLocaleHelper();
         this.connect();
     }
@@ -9816,7 +9848,7 @@ class DiscordClient {
         await this.discordClient.login(this.config.getDiscordToken());
         await this.registerCommands();
         await this.registerEvents();
-        this.cacheInputs();
+        this.generateCaches();
         setData('invite_url', `https://discord.com/oauth2/authorize?client_id=${this.discordClient.user.id}&permissions=3422944320&scope=bot%20applications.commands`);
         setData('discord_client', {
             'readySince': new Date(),
@@ -9844,9 +9876,10 @@ class DiscordClient {
         interactionHandler = new InteractionHandler(this.discordClient);
         debugHandler = new DebugHandler(this.discordClient);
     }
-    cacheInputs() {
-        logRegular('Generate Inputs Cache...');
+    generateCaches() {
+        logRegular('Generate Caches...');
         this.inputGenerator.generateInputCache();
+        this.statusGenerator.generateStatusCache();
     }
     isConnected() {
         return this.discordClient.isReady();
@@ -10443,7 +10476,7 @@ module.exports = require("zlib");
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(2810);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(9016);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()
