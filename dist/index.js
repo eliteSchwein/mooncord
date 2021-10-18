@@ -9374,7 +9374,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 810:
+/***/ 2810:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -9797,6 +9797,7 @@ class DiscordClient {
         this.database = getDatabase();
         this.commandGenerator = new DiscordCommandGenerator();
         this.inputGenerator = new DiscordInputGenerator();
+        this.localeHelper = getLocaleHelper();
         this.connect();
     }
     async connect() {
@@ -9831,6 +9832,8 @@ class DiscordClient {
         if (this.config.dumpCacheOnStart()) {
             dump();
         }
+        this.discordClient.user.setPresence({ status: "idle" });
+        this.discordClient.user.setActivity(this.localeHelper.getLocale().status.ready.activity, { type: 2 /* LISTENING */ });
     }
     async registerCommands() {
         logRegular('Register Commands...');
@@ -10440,7 +10443,7 @@ module.exports = require("zlib");
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(810);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(2810);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()
