@@ -9374,7 +9374,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 8972:
+/***/ 810:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -9718,14 +9718,46 @@ class DiscordInputGenerator {
     }
 }
 
+;// CONCATENATED MODULE: ./src/events/discord/interactions/buttonInteraction.ts
+class ButtonInteraction {
+    constructor(interaction) {
+        if (!interaction.isButton()) {
+            return;
+        }
+    }
+}
+
+;// CONCATENATED MODULE: ./src/events/discord/interactions/commandInteraction.ts
+class CommandInteraction {
+    constructor(interaction) {
+        if (!interaction.isCommand()) {
+            return;
+        }
+    }
+}
+
+;// CONCATENATED MODULE: ./src/events/discord/interactions/selectInteraction.ts
+class SelectInteraction {
+    constructor(interaction) {
+        if (!interaction.isSelectMenu()) {
+            return;
+        }
+    }
+}
+
 ;// CONCATENATED MODULE: ./src/events/discord/InteractionHandler.ts
+
+
+
 class InteractionHandler {
     constructor(discordClient) {
         discordClient.on('interactionCreate', async (interaction) => {
             if (interaction.applicationId !== discordClient.application.id) {
                 return;
             }
-            console.log(discordClient);
+            new ButtonInteraction(interaction);
+            new CommandInteraction(interaction);
+            new SelectInteraction(interaction);
         });
     }
 }
@@ -10408,7 +10440,7 @@ module.exports = require("zlib");
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(8972);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(810);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()
