@@ -351,6 +351,12 @@
             "suggestion": "Remove some Files from ${component_section}."
         }
     },
+    "fields": {
+        "print_time": "Print Time",
+        "eta_print_time": "ETA Print Time",
+        "print_progress": "Progress",
+        "print_layers": "Layer"
+    },
     "status": {
         "disconnected":{
             "title": "Printer Disconnected!",
@@ -395,12 +401,6 @@
         "printing":{
             "title": "Printing",
             "activity": "Printing: ${value_print_progress}%"
-        },
-        "fields": {
-            "print_time": "Print Time",
-            "eta_print_time": "ETA Print Time",
-            "print_progress": "Progress",
-            "print_layers": "Layer"
         }
     },
     "timelapse": {
