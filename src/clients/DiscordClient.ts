@@ -75,7 +75,7 @@ export class DiscordClient {
         this.discordClient.user.setPresence({status: "idle"})
 
         this.discordClient.user.setActivity(
-            this.localeHelper.getLocale().status.ready.activity,
+            this.localeHelper.getLocale().embeds.ready.activity,
             {type: ActivityTypes.LISTENING}
         )
     }

@@ -64,7 +64,7 @@
     }
   },
   "stop":{
-    "embed_id": "print_job",
+    "embed_id": "printjob_stop",
     "meta_data": {
       "order_id": 0,
       "allow_same": false,
@@ -117,7 +117,7 @@
     }
   },
   "start":{
-    "embed_id": "print_job",
+    "embed_id": "printjob_start",
     "meta_data": {
       "order_id": 2,
       "allow_same": false,

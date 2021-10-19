@@ -21,6 +21,7 @@
             "execute": {}
         }
     },
+    "custom_info": "",
     "language": {
         "messages": "en",
         "command_syntax": "en",

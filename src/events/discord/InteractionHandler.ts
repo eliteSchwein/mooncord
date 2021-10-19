@@ -1,9 +1,9 @@
 import {Client} from "discord.js";
 import {updateData} from "../../utils/CacheUtil";
 import {getDiscordClient} from "../../Application";
-import {ButtonInteraction} from "./interactions/buttonInteraction";
-import {CommandInteraction} from "./interactions/commandInteraction";
-import {SelectInteraction} from "./interactions/selectInteraction";
+import {ButtonInteraction} from "./interactions/ButtonInteraction";
+import {CommandInteraction} from "./interactions/CommandInteraction";
+import {SelectInteraction} from "./interactions/SelectInteraction";
 
 export class InteractionHandler {
     public constructor(discordClient: Client) {

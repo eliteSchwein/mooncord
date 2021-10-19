@@ -9374,7 +9374,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 9016:
+/***/ 492:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -9588,6 +9588,15 @@ class DiscordCommandGenerator {
         setData('commands', commandCache);
         return commandList;
     }
+    getCommandId(command) {
+        const commandCache = getEntry('commands');
+        for (const commandId in commandCache) {
+            const commandData = commandCache[commandId];
+            if (commandData.name === command) {
+                return commandId;
+            }
+        }
+    }
     buildCommand(command) {
         const messageLocale = this.localeHelper.getLocale().commands[command];
         const syntaxLocale = this.localeHelper.getSyntaxLocale().commands[command];
@@ -9718,7 +9727,7 @@ class DiscordInputGenerator {
     }
 }
 
-;// CONCATENATED MODULE: ./src/events/discord/interactions/buttonInteraction.ts
+;// CONCATENATED MODULE: ./src/events/discord/interactions/ButtonInteraction.ts
 class ButtonInteraction {
     constructor(interaction) {
         if (!interaction.isButton()) {
@@ -9727,16 +9736,33 @@ class ButtonInteraction {
     }
 }
 
-;// CONCATENATED MODULE: ./src/events/discord/interactions/commandInteraction.ts
-class CommandInteraction {
-    constructor(interaction) {
-        if (!interaction.isCommand()) {
+;// CONCATENATED MODULE: ./src/events/discord/interactions/commands/InfoCommand.ts
+class InfoCommand {
+    constructor(interaction, commandId) {
+        if (commandId !== 'status') {
             return;
         }
     }
 }
 
-;// CONCATENATED MODULE: ./src/events/discord/interactions/selectInteraction.ts
+;// CONCATENATED MODULE: ./src/events/discord/interactions/CommandInteraction.ts
+
+
+class CommandInteraction {
+    constructor(interaction) {
+        this.commandGenerator = new DiscordCommandGenerator();
+        if (!interaction.isCommand()) {
+            return;
+        }
+        const commandId = this.commandGenerator.getCommandId(interaction.commandName);
+        if (typeof commandId === 'undefined') {
+            return;
+        }
+        new InfoCommand(interaction, commandId);
+    }
+}
+
+;// CONCATENATED MODULE: ./src/events/discord/interactions/SelectInteraction.ts
 class SelectInteraction {
     constructor(interaction) {
         if (!interaction.isSelectMenu()) {
@@ -9779,7 +9805,7 @@ class DebugHandler {
 }
 
 ;// CONCATENATED MODULE: ./src/meta/status_mapping.json
-const status_mapping_namespaceObject = JSON.parse('{"disconnected":{"meta_data":{"order_id":0,"allow_same":false,"prevent":["pause"]},"color":"#c90000","buttons":["klipper_restart"],"activity":{"status":"dnd","type":"LISTENING"}},"error":{"meta_data":{"order_id":0,"allow_same":false,"prevent":[]},"color":"#c90000","buttons":["klipper_restart"],"activity":{"status":"dnd","type":"LISTENING"}},"offline":{"meta_data":{"order_id":0,"allow_same":false,"prevent":[]},"color":"#c90000","buttons":[],"activity":{"status":"dnd","type":"LISTENING"}},"shutdown":{"meta_data":{"order_id":0,"allow_same":false,"prevent":["pause","start","done","ready","printing"]},"color":"#c90000","buttons":["klipper_restart"],"activity":{"status":"dnd","type":"LISTENING"}},"stop":{"meta_data":{"order_id":0,"allow_same":false,"prevent":["start"]},"color":"#c90000","author":"${gcode_file}","thumbnail":true,"activity":{"status":"idle","type":"LISTENING"},"buttons":[],"fields":[{"name":"${locale.print_time}","value":"${value_print_time}"}]},"ready":{"meta_data":{"order_id":1,"allow_same":false,"prevent":["done"]},"color":"#0099ff","buttons":[],"activity":{"status":"idle","type":"LISTENING"},"versions":true},"startup":{"meta_data":{"order_id":0,"allow_same":false,"prevent":[]},"color":"#0099ff","buttons":[],"activity":{"status":"idle","type":"WATCHING"}},"start":{"meta_data":{"order_id":2,"allow_same":false,"prevent":[]},"color":"#25db00","author":"${gcode_file}","thumbnail":true,"buttons":[],"activity":{"status":"online","type":"LISTENING"},"fields":[{"name":"${locale.print_time}","value":"${value_eta_print_time}"}]},"done":{"meta_data":{"order_id":0,"allow_same":false,"prevent":[]},"color":"#25db00","author":"${gcode_file}","thumbnail":true,"buttons":[],"activity":{"status":"idle","type":"WATCHING"},"fields":[{"name":"${locale.print_time}","value":"${value_print_time}"}]},"pause":{"meta_data":{"order_id":0,"allow_same":false,"prevent":[]},"color":"#dbd400","author":"${gcode_file}","thumbnail":true,"buttons":["printjob_resume","printjob_cancel"],"activity":{"status":"idle","type":"PLAYING"},"fields":[{"name":"${locale.print_time}","value":"${value_print_time}"},{"name":"${locale.eta_print_time}","value":"${value_eta_print_time}"},{"name":"${locale.print_progress}","value":"${value_print_progress}%"},{"name":"${locale.print_layers}","value":"${value_current_layer}/${value_max_layer}"}]},"printing":{"meta_data":{"order_id":3,"allow_same":true,"prevent":[]},"color":"#0099ff","author":"${gcode_file}","thumbnail":true,"activity":{"status":"online","type":"WATCHING"},"buttons":["printjob_pause","printjob_cancel","printjob_refresh"],"fields":[{"name":"${locale.print_time}","value":"${value_print_time}"},{"name":"${locale.eta_print_time}","value":"${value_eta_print_time}"},{"name":"${locale.print_progress}","value":"${value_print_progress}%"},{"name":"${locale.print_layers}","value":"${value_current_layer}/${value_max_layer}"}]}}');
+const status_mapping_namespaceObject = JSON.parse('{"disconnected":{"embed_id":"disconnected","meta_data":{"order_id":0,"allow_same":false,"prevent":["pause"]},"color":"#c90000","buttons":["klipper_restart"],"activity":{"status":"dnd","type":"LISTENING"}},"error":{"embed_id":"error","meta_data":{"order_id":0,"allow_same":false,"prevent":[]},"color":"#c90000","buttons":["klipper_restart"],"activity":{"status":"dnd","type":"LISTENING"}},"offline":{"embed_id":"offline","meta_data":{"order_id":0,"allow_same":false,"prevent":[]},"color":"#c90000","buttons":[],"activity":{"status":"dnd","type":"LISTENING"}},"shutdown":{"embed_id":"shutdown","meta_data":{"order_id":0,"allow_same":false,"prevent":["pause","start","done","ready","printing"]},"color":"#c90000","buttons":["klipper_restart"],"activity":{"status":"dnd","type":"LISTENING"}},"stop":{"embed_id":"printjob_stop","meta_data":{"order_id":0,"allow_same":false,"prevent":["start"]},"color":"#c90000","author":"${gcode_file}","thumbnail":true,"activity":{"status":"idle","type":"LISTENING"},"buttons":[],"fields":[{"name":"${locale.print_time}","value":"${value_print_time}"}]},"ready":{"embed_id":"ready","meta_data":{"order_id":1,"allow_same":false,"prevent":["done"]},"color":"#0099ff","buttons":[],"activity":{"status":"idle","type":"LISTENING"},"versions":true},"startup":{"embed_id":"startup","meta_data":{"order_id":0,"allow_same":false,"prevent":[]},"color":"#0099ff","buttons":[],"activity":{"status":"idle","type":"WATCHING"}},"start":{"embed_id":"printjob_start","meta_data":{"order_id":2,"allow_same":false,"prevent":[]},"color":"#25db00","author":"${gcode_file}","thumbnail":true,"buttons":[],"activity":{"status":"online","type":"LISTENING"},"fields":[{"name":"${locale.print_time}","value":"${value_eta_print_time}"}]},"done":{"embed_id":"printjob_done","meta_data":{"order_id":0,"allow_same":false,"prevent":[]},"color":"#25db00","author":"${gcode_file}","thumbnail":true,"buttons":[],"activity":{"status":"idle","type":"WATCHING"},"fields":[{"name":"${locale.print_time}","value":"${value_print_time}"}]},"pause":{"embed_id":"printjob_pause","meta_data":{"order_id":0,"allow_same":false,"prevent":[]},"color":"#dbd400","author":"${gcode_file}","thumbnail":true,"buttons":["printjob_resume","printjob_cancel"],"activity":{"status":"idle","type":"PLAYING"},"fields":[{"name":"${locale.print_time}","value":"${value_print_time}"},{"name":"${locale.eta_print_time}","value":"${value_eta_print_time}"},{"name":"${locale.print_progress}","value":"${value_print_progress}%"},{"name":"${locale.print_layers}","value":"${value_current_layer}/${value_max_layer}"}]},"printing":{"embed_id":"printjob_printing","meta_data":{"order_id":3,"allow_same":true,"prevent":[]},"color":"#0099ff","author":"${gcode_file}","thumbnail":true,"activity":{"status":"online","type":"WATCHING"},"buttons":["printjob_pause","printjob_cancel","printjob_refresh"],"fields":[{"name":"${locale.print_time}","value":"${value_print_time}"},{"name":"${locale.eta_print_time}","value":"${value_eta_print_time}"},{"name":"${locale.print_progress}","value":"${value_print_progress}%"},{"name":"${locale.print_layers}","value":"${value_current_layer}/${value_max_layer}"}]}}');
 ;// CONCATENATED MODULE: ./src/generator/DiscordStatusGenerator.ts
 
 
@@ -9795,8 +9821,9 @@ class DiscordStatusGenerator {
         const tempCache = {};
         const locale = this.localeHelper.getLocale();
         for (const statusId in status_mapping_namespaceObject) {
-            const statusLocale = locale.status[statusId];
-            tempCache[statusId] = status_mapping_namespaceObject[statusId];
+            const statusData = status_mapping_namespaceObject[statusId];
+            const statusLocale = locale.embeds[statusData.embed_id];
+            tempCache[statusId] = statusData;
             mergeDeep(tempCache[statusId], {
                 title: statusLocale.title,
                 activity: {
@@ -9805,10 +9832,10 @@ class DiscordStatusGenerator {
             });
         }
         const fieldAssign = JSON.stringify(tempCache)
-            .replace(/(\${locale.print_time})/g, locale.fields.print_time)
-            .replace(/(\${locale.print_layers})/g, locale.fields.print_layers)
-            .replace(/(\${locale.eta_print_time})/g, locale.fields.eta_print_time)
-            .replace(/(\${locale.print_progress})/g, locale.fields.print_progress);
+            .replace(/(\${locale.print_time})/g, locale.embeds.fields.print_time)
+            .replace(/(\${locale.print_layers})/g, locale.embeds.fields.print_layers)
+            .replace(/(\${locale.eta_print_time})/g, locale.embeds.fields.eta_print_time)
+            .replace(/(\${locale.print_progress})/g, locale.embeds.fields.print_progress);
         mergeDeep(tempCache, JSON.parse(fieldAssign));
         setData('status_messages', tempCache);
     }
@@ -9871,7 +9898,7 @@ class DiscordClient {
             dump();
         }
         this.discordClient.user.setPresence({ status: "idle" });
-        this.discordClient.user.setActivity(this.localeHelper.getLocale().status.ready.activity, { type: 2 /* LISTENING */ });
+        this.discordClient.user.setActivity(this.localeHelper.getLocale().embeds.ready.activity, { type: 2 /* LISTENING */ });
     }
     async registerCommands() {
         logRegular('Register Commands...');
@@ -10217,16 +10244,7 @@ class LocaleHelper {
     getSystemComponents() {
         const components = [
             {
-                "name": this.getLocale().systeminfo.cpu.title,
-                "value": "cpu"
-            }, {
-                "name": this.getLocale().systeminfo.system.title,
-                "value": "system"
-            }, {
-                "name": this.getLocale().systeminfo.memory.title,
-                "value": "memory"
-            }, {
-                "name": this.getLocale().systeminfo.updates.title,
+                "name": this.getLocale().embeds.system_update.title,
                 "value": "updates"
             }
         ];
@@ -10482,7 +10500,7 @@ module.exports = require("zlib");
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(9016);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(492);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()
