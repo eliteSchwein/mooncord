@@ -14,8 +14,9 @@ export class DiscordStatusGenerator {
         const locale = this.localeHelper.getLocale()
 
         for(const statusId in statusMapping) {
-            const statusLocale = locale.status[statusId]
-            tempCache[statusId] = statusMapping[statusId]
+            const statusData = statusMapping[statusId]
+            const statusLocale = locale.embeds[statusData.embed_id]
+            tempCache[statusId] = statusData
 
             mergeDeep(tempCache[statusId], {
                 title: statusLocale.title,
@@ -26,10 +27,10 @@ export class DiscordStatusGenerator {
         }
 
         const fieldAssign = JSON.stringify(tempCache)
-            .replace(/(\${locale.print_time})/g, locale.fields.print_time)
-            .replace(/(\${locale.print_layers})/g, locale.fields.print_layers)
-            .replace(/(\${locale.eta_print_time})/g, locale.fields.eta_print_time)
-            .replace(/(\${locale.print_progress})/g, locale.fields.print_progress)
+            .replace(/(\${locale.print_time})/g, locale.embeds.fields.print_time)
+            .replace(/(\${locale.print_layers})/g, locale.embeds.fields.print_layers)
+            .replace(/(\${locale.eta_print_time})/g, locale.embeds.fields.eta_print_time)
+            .replace(/(\${locale.print_progress})/g, locale.embeds.fields.print_progress)
 
         mergeDeep(tempCache, JSON.parse(fieldAssign))
 

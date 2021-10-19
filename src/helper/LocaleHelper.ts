@@ -57,16 +57,7 @@ export class LocaleHelper {
     public getSystemComponents() {
         const components = [
             {
-                "name": this.getLocale().systeminfo.cpu.title,
-                "value": "cpu"
-            }, {
-                "name": this.getLocale().systeminfo.system.title,
-                "value": "system"
-            }, {
-                "name": this.getLocale().systeminfo.memory.title,
-                "value": "memory"
-            }, {
-                "name": this.getLocale().systeminfo.updates.title,
+                "name": this.getLocale().embeds.system_update.title,
                 "value": "updates"
             }
         ]
