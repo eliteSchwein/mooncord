@@ -26657,6 +26657,10 @@ function logRegular(message) {
     console.log(getTimeStamp(), message.white);
 }
 ;
+function logNotice(message) {
+    console.log(getTimeStamp(), message.yellow);
+}
+;
 function logEmpty() { console.log(''); }
 function getTimeStamp() {
     const date = new Date();
@@ -26991,6 +26995,7 @@ class DumpCommand {
 
 
 
+
 class CommandInteraction {
     constructor(interaction) {
         this.commandGenerator = new DiscordCommandGenerator();
@@ -27001,6 +27006,7 @@ class CommandInteraction {
         if (typeof commandId === 'undefined') {
             return;
         }
+        logNotice(`${interaction.user.tag} executed command: ${commandId}`);
         new InfoCommand(interaction, commandId);
         new DumpCommand(interaction, commandId);
     }

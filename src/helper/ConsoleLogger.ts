@@ -12,6 +12,10 @@ export function logRegular(message:string) {
     console.log(getTimeStamp(), message.white)
 };
 
+export function logNotice(message:string) {
+    console.log(getTimeStamp(), message.yellow)
+};
+
 export function logEmpty() { console.log('') }
 
 function getTimeStamp() {
