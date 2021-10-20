@@ -4,10 +4,12 @@ import {MoonrakerClient} from './clients/MoonrakerClient'
 import {logEmpty, logSuccess} from './helper/ConsoleLogger'
 import {DatabaseUtil} from './utils/DatabaseUtil'
 import {LocaleHelper} from "./helper/LocaleHelper";
-import {ConfigHelper} from "./helper/ConfigHelper";
+import { findValue, setData } from './utils/CacheUtil'
 
 logSuccess(`Starting ${packageConfig.name} ${packageConfig.version}...`)
 logEmpty()
+
+setData('package_config', packageConfig)
 
 Object.assign(global, { WebSocket: require('ws') })
 

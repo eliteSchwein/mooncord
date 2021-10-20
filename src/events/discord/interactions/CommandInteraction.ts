@@ -1,6 +1,7 @@
 import {Interaction} from "discord.js";
 import {InfoCommand} from "./commands/InfoCommand";
 import {DiscordCommandGenerator} from "../../../generator/DiscordCommandGenerator";
+import { DumpCommand } from "./commands/DumpCommand";
 
 export class CommandInteraction {
     protected commandGenerator = new DiscordCommandGenerator()
@@ -12,5 +13,6 @@ export class CommandInteraction {
         if(typeof commandId === 'undefined') { return }
 
         new InfoCommand(interaction, commandId)
+        new DumpCommand(interaction, commandId)
     }
 }

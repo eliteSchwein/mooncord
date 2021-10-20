@@ -1,7 +1,7 @@
-import {Interaction} from "discord.js";
+import {CommandInteraction, Interaction} from "discord.js";
 
 export class InfoCommand {
-    public constructor(interaction: Interaction, commandId: string) {
-        if(commandId !== 'status') { return }
+    public constructor(interaction: CommandInteraction, commandId: string) {
+        if(commandId !== 'info') { return }
     }
 }

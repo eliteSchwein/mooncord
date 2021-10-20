@@ -8,14 +8,14 @@
         },
         "info": {
             "title": "Informations",
-            "description": "Version: ${version}\nAuthor: ${author}\nHomepage: ${homepage}\n${custom_info}"
+            "description": "Version: ${package_config.version}\nAuthor: ${package_config.author}\nHomepage: ${package_config.homepage}\n${config.custom_info}"
         },
         "printjob_start_request": {
             "title": "Start Print Job?"
         },
         "printjob_start":{
             "title": "Print started",
-            "activity": "start ${gcode_file}"
+            "activity": "start ${state.print_stats.filename}"
         },
         "printjob_done":{
             "title": "Print Done",
@@ -98,7 +98,7 @@
     },
     "messages": {
         "answers": {
-            "for_gcode": "Timelapse for ${gcode_file}",
+            "for_gcode": "Timelapse for ${state.print_stats.filename}",
             "admin_added": "${mention} is now a Admin, ${username}!",
             "admin_removed": "${mention} is not longer a Admin, ${username}!",
             "broadcast_channel_activated": "${channel} is now a Broadcast Channel, ${username}!",

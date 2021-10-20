@@ -46,7 +46,7 @@ export class MoonrakerClient {
         logRegular('Send Initial Commands...')
 
         logRegular('Retrieve MoonRaker Update Manager Data...')
-        const updates = await this.send(`{"jsonrpc": "2.0", "method": "machine.update.status", "params":{"refresh": "true"}}`, 300_000)
+        const updates = await this.send(`{"jsonrpc": "2.0", "method": "machine.update.status", "params":{"refresh": "false"}}`, 300_000)
 
         logRegular('Retrieve Printer Info...')
         const printerInfo = await this.send(`{"jsonrpc": "2.0", "method": "printer.info"}`)

@@ -3,6 +3,7 @@ import * as path from "path";
 import {logSuccess} from "../helper/ConsoleLogger";
 import * as util from "util";
 import {mergeDeep} from "../helper/ObjectMergeHelper";
+import {get} from 'lodash'
 
 const cacheData:any = {}
 const writeFile = util.promisify(fs.writeFile)
@@ -19,8 +20,12 @@ export function getEntry(key:string) {
     return cacheData[key]
 }
 
-export function dump() {
-    void writeDump()
+export function findValue(key:string) {
+    return get(cacheData, key)
+}
+
+export async function dump() {
+    void await writeDump()
     return cacheData
 }
 
