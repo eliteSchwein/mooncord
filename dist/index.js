@@ -26591,7 +26591,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 897:
+/***/ 1797:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -26693,7 +26693,7 @@ function getEntry(key) {
     return cacheData[key];
 }
 function findValue(key) {
-    return get(cacheData, key);
+    return (0,lodash.get)(cacheData, key);
 }
 async function dump() {
     void await writeDump();
@@ -26846,6 +26846,9 @@ class LocaleHelper {
     }
     getCommandNotReadyError(username) {
         return this.getLocale().errors.not_ready.replace(/(\${username})/g, username);
+    }
+    getEmbeds() {
+        return this.getLocale().embeds;
     }
     getSystemComponents() {
         const components = [
@@ -27034,12 +27037,54 @@ class ButtonInteraction {
     }
 }
 
+;// CONCATENATED MODULE: ./src/helper/EmbedHelper.ts
+
+
+
+class EmbedHelper {
+    constructor() {
+        this.localeHelper = new LocaleHelper();
+        this.configHelper = new ConfigHelper();
+        this.embeds = this.localeHelper.getEmbeds();
+        this.fields = this.embeds.fields;
+    }
+    generateEmbed(embedID, providedPlaceholders = null) {
+        console.log(this.embeds[embedID]);
+        let embedRaw = JSON.stringify(this.embeds[embedID]);
+        const placeholders = embedRaw.match(/(\${).*?}/g);
+        for (const placeholder of placeholders) {
+            embedRaw = embedRaw.replace(placeholder, this.parsePlaceholder(placeholder, providedPlaceholders));
+        }
+        const embedData = JSON.parse(embedRaw);
+        console.log(placeholders);
+    }
+    parsePlaceholder(placeholder, providedPlaceholders = null) {
+        const placeholderId = placeholder
+            .replace(/(\${)/g, '')
+            .replace(/}/g, '');
+        if (providedPlaceholders !== null) {
+            const providedParser = providedPlaceholders[placeholderId];
+            if (typeof providedParser !== 'undefined') {
+                return providedParser;
+            }
+        }
+        const cacheParser = findValue(placeholderId);
+        if (typeof cacheParser !== 'undefined') {
+            return cacheParser;
+        }
+        return "";
+    }
+}
+
 ;// CONCATENATED MODULE: ./src/events/discord/interactions/commands/InfoCommand.ts
+
 class InfoCommand {
     constructor(interaction, commandId) {
+        this.embedHelper = new EmbedHelper();
         if (commandId !== 'info') {
             return;
         }
+        this.embedHelper.generateEmbed('info');
     }
 }
 
@@ -27907,7 +27952,7 @@ module.exports = require("zlib");
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(897);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(1797);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()

@@ -54,6 +54,10 @@ export class LocaleHelper {
         return this.getLocale().errors.not_ready.replace(/(\${username})/g, username)
     }
 
+    public getEmbeds() {
+        return this.getLocale().embeds
+    }
+
     public getSystemComponents() {
         const components = [
             {
