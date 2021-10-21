@@ -3,13 +3,13 @@ import {mergeDeep} from "../helper/ObjectMergeHelper";
 
 import sectionMapping from '../meta/input_mapping.json'
 import buttonAssign from '../meta/button_assign.json'
-import {getLocaleHelper} from "../Application";
 import {setData, getEntry} from "../utils/CacheUtil";
 import {MessageActionRow, MessageButton, MessageSelectMenu} from "discord.js";
+import {LocaleHelper} from "../helper/LocaleHelper";
 
 export class DiscordInputGenerator {
     protected config = new ConfigHelper()
-    protected localeHelper = getLocaleHelper()
+    protected localeHelper = new LocaleHelper()
 
     public generateInputCache() {
         this.generateCacheForSection('buttons');

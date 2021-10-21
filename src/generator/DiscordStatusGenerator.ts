@@ -2,12 +2,11 @@ import {ConfigHelper} from "../helper/ConfigHelper";
 import {mergeDeep} from "../helper/ObjectMergeHelper";
 
 import statusMapping from "../meta/status_mapping.json"
-import {getLocaleHelper} from "../Application";
 import {setData} from "../utils/CacheUtil";
+import {LocaleHelper} from "../helper/LocaleHelper";
 
 export class DiscordStatusGenerator {
-    protected config = new ConfigHelper()
-    protected localeHelper = getLocaleHelper()
+    protected localeHelper = new LocaleHelper()
 
     public generateStatusCache() {
         const tempCache = {}

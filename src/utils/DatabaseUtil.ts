@@ -1,7 +1,6 @@
 import {ConfigHelper} from '../helper/ConfigHelper'
 import {waitUntil} from 'async-wait-until'
 import {logEmpty, logError, logRegular, logSuccess} from '../helper/ConsoleLogger'
-import {MoonrakerClient} from '../clients/MoonrakerClient'
 import {getMoonrakerClient} from "../Application";
 
 const defaultDatabase = {

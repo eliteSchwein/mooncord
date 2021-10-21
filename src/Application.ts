@@ -5,6 +5,7 @@ import {logEmpty, logSuccess} from './helper/ConsoleLogger'
 import {DatabaseUtil} from './utils/DatabaseUtil'
 import {LocaleHelper} from "./helper/LocaleHelper";
 import { findValue, setData } from './utils/CacheUtil'
+import {ConfigHelper} from "./helper/ConfigHelper";
 
 logSuccess(`Starting ${packageConfig.name} ${packageConfig.version}...`)
 logEmpty()
@@ -14,6 +15,9 @@ setData('package_config', packageConfig)
 Object.assign(global, { WebSocket: require('ws') })
 
 const localeHelper = new LocaleHelper()
+const configHelper = new ConfigHelper()
+configHelper.loadCache()
+localeHelper.loadCache()
 
 const moonrakerClient = new MoonrakerClient()
 const database = new DatabaseUtil()
@@ -29,8 +33,4 @@ export function getDiscordClient() {
 
 export function getDatabase() {
     return database
-}
-
-export function getLocaleHelper() {
-    return localeHelper
 }

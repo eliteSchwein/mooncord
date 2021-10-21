@@ -1,23 +1,27 @@
 import {readFileSync} from 'fs'
 
-import {ConfigHelper} from "./ConfigHelper";
 import path from "path";
 import {getEntry, setData, updateData} from "../utils/CacheUtil";
+import {ConfigHelper} from "./ConfigHelper";
 
 export class LocaleHelper {
     protected config = new ConfigHelper()
     protected fallbackLocalePath = path.resolve(__dirname, '../locales/en.json')
-    protected localePath = path.resolve(__dirname, `../locales/${this.config.getLocale()}.json`)
-    protected syntaxLocalePath = path.resolve(__dirname, `../locales/${this.config.getSyntaxLocale()}.json`)
 
     public constructor() {
+    }
+
+    public loadCache() {
         this.loadFallback()
         this.loadLocales()
     }
 
     protected loadLocales() {
-        const localeRaw = readFileSync(this.localePath, {encoding: 'utf8'})
-        const syntaxLocaleRaw  = readFileSync(this.syntaxLocalePath, {encoding: 'utf8'})
+        const localePath = path.resolve(__dirname, `../locales/${this.config.getLocale()}.json`)
+        const syntaxLocalePath = path.resolve(__dirname, `../locales/${this.config.getSyntaxLocale()}.json`)
+
+        const localeRaw = readFileSync(localePath, {encoding: 'utf8'})
+        const syntaxLocaleRaw  = readFileSync(syntaxLocalePath, {encoding: 'utf8'})
 
         updateData('locale', JSON.parse(localeRaw))
         updateData('syntax_locale', JSON.parse(syntaxLocaleRaw))
@@ -38,12 +42,8 @@ export class LocaleHelper {
         return getEntry('syntax_locale')
     }
 
-    public getAdminOnlyError(username:string) {
-        return this.getLocale().errors.admin_only.replace(/(\${username})/g, username)
-    }
-
-    public getControllerOnlyError(username:string) {
-        return this.getLocale().errors.controller_only.replace(/(\${username})/g, username)
+    public getNoPermission(username:string) {
+        return this.getLocale().messages.errors.no_permission.replace(/(\${username})/g, username)
     }
 
     public getGuildOnlyError(username:string) {

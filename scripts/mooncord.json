@@ -13,7 +13,7 @@
     },
     "permission": {
         "controllers": {
-            "roles": [],
+            "roles": "",
             "users": ""
         }
     },

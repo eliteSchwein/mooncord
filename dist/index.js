@@ -515,7 +515,7 @@ module.exports = function xhrAdapter(config) {
 
     // Handle timeout
     request.ontimeout = function handleTimeout() {
-      var timeoutErrorMessage = 'timeout of ' + config.timeout + 'ms exceeded';
+      var timeoutErrorMessage = config.timeout ? 'timeout of ' + config.timeout + 'ms exceeded' : 'timeout exceeded';
       var transitional = config.transitional || defaults.transitional;
       if (config.timeoutErrorMessage) {
         timeoutErrorMessage = config.timeoutErrorMessage;
@@ -1573,7 +1573,7 @@ module.exports = defaults;
 /***/ ((module) => {
 
 module.exports = {
-  "version": "0.22.0"
+  "version": "0.23.0"
 };
 
 /***/ }),
@@ -26591,7 +26591,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 473:
+/***/ 897:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -26602,12 +26602,11 @@ __nccwpck_require__.r(__webpack_exports__);
 __nccwpck_require__.d(__webpack_exports__, {
   "getDatabase": () => (/* binding */ getDatabase),
   "getDiscordClient": () => (/* binding */ getDiscordClient),
-  "getLocaleHelper": () => (/* binding */ getLocaleHelper),
   "getMoonrakerClient": () => (/* binding */ getMoonrakerClient)
 });
 
 ;// CONCATENATED MODULE: ./package.json
-const package_namespaceObject = JSON.parse('{"name":"mooncord","version":"0.0.5","description":"Moonraker Discord Bot based on Discord.js","main":"index.js","scripts":{"start":"node dist/index.js","ramdebugstart":"node --trace_gc dist/mooncord.js","checkcodestyle":"npx eslint ./**","autofixcodestyle":"npx eslint ./** --fix","build":"ncc build -m -e discord.js src/Application.ts -o dist","watch":"ncc build -w -e discord.js src/Application.ts -o dist"},"repository":{"type":"git","url":"git+https://github.com/eliteSchwein/mooncord.git"},"keywords":[],"author":"eliteSCHW31N","license":"ISC","bugs":{"url":"https://github.com/eliteSchwein/mooncord/issues"},"homepage":"https://github.com/eliteSchwein/mooncord#readme","devDependencies":{"@types/node":"^16.10.2","@vercel/ncc":"^0.31.1","async-wait-until":"^2.0.7","axios":"^0.22.0","colorts":"^0.1.63","eslint":"^7.32.0","eslint-config-galex":"^2.16.13","eslint-config-standard":"^16.0.3","eslint-plugin-import":"^2.24.2","eslint-plugin-node":"^11.1.0","eslint-plugin-promise":"^5.1.0","form-data":"^4.0.0","sharp":"^0.29.1","shelljs":"^0.8.4","typescript":"^4.4.3","websocket-ts":"^1.1.1","lodash":"^4.17.21","ws":"^8.2.3"},"dependencies":{"discord.js":"^13.2.0"}}');
+const package_namespaceObject = JSON.parse('{"name":"mooncord","version":"0.0.5","description":"Moonraker Discord Bot based on Discord.js","main":"index.js","scripts":{"start":"node dist/index.js","ramdebugstart":"node --trace_gc dist/mooncord.js","checkcodestyle":"npx eslint ./**","autofixcodestyle":"npx eslint ./** --fix","build":"ncc build -m -e discord.js src/Application.ts -o dist","watch":"ncc build -w -e discord.js src/Application.ts -o dist"},"repository":{"type":"git","url":"git+https://github.com/eliteSchwein/mooncord.git"},"keywords":[],"author":"eliteSCHW31N","license":"ISC","bugs":{"url":"https://github.com/eliteSchwein/mooncord/issues"},"homepage":"https://github.com/eliteSchwein/mooncord#readme","devDependencies":{"@types/node":"^16.11.1","@vercel/ncc":"^0.31.1","async-wait-until":"^2.0.8","axios":"^0.23.0","colorts":"^0.1.63","eslint":"^8.0.1","eslint-config-galex":"^3.0.1","eslint-config-standard":"^16.0.3","eslint-plugin-import":"^2.25.2","eslint-plugin-node":"^11.1.0","eslint-plugin-promise":"^5.1.1","form-data":"^4.0.0","sharp":"^0.29.1","shelljs":"^0.8.4","typescript":"^4.4.4","websocket-ts":"^1.1.1","lodash":"^4.17.21","ws":"^8.2.3"},"dependencies":{"discord.js":"^13.2.0"}}');
 var package_namespaceObject_0 = /*#__PURE__*/__nccwpck_require__.t(package_namespaceObject, 2);
 // EXTERNAL MODULE: ./node_modules/async-wait-until/dist/index.js
 var dist = __nccwpck_require__(1299);
@@ -26658,6 +26657,10 @@ function logRegular(message) {
 }
 ;
 function logNotice(message) {
+    console.log(getTimeStamp(), message.magenta);
+}
+;
+function logWarn(message) {
     console.log(getTimeStamp(), message.yellow);
 }
 ;
@@ -26712,12 +26715,17 @@ class ConfigHelper {
         this.configPath = `${args[0]}/mooncord.json`;
         this.configRaw = (0,external_fs_namespaceObject.readFileSync)(this.configPath, { encoding: 'utf8' });
         this.defaultConfig = (0,external_fs_namespaceObject.readFileSync)(__nccwpck_require__.ab + "mooncord_full.json", { encoding: 'utf8' });
+    }
+    loadCache() {
         const config = JSON.parse(this.defaultConfig);
         mergeDeep(config, JSON.parse(this.configRaw));
         setData('config', config);
     }
     getConfig() {
         return getEntry('config');
+    }
+    getPermissions() {
+        return this.getConfig().permission;
     }
     getMoonrakerSocketUrl() {
         return this.getConfig().connection.moonraker_socket_url;
@@ -26788,22 +26796,84 @@ class ConfigHelper {
     dumpCacheOnStart() {
         return this.getConfig().development.dump_cache_on_start;
     }
+    showNoPermissionPrivate() {
+        return this.getConfig().messages.show_no_permission_private;
+    }
 }
 
 ;// CONCATENATED MODULE: ./src/meta/command_structure.json
 const command_structure_namespaceObject = JSON.parse('{"admin":{"role":{"type":"subcommand","options":{"role":{"type":"role","required":true}}},"user":{"type":"subcommand","options":{"user":{"type":"user","required":true}}}},"dump":{},"editchannel":{"channel":{"type":"channel","required":false}},"emergency_stop":{},"execute":{"gcode":{"type":"string","required":true}},"fileinfo":{"file":{"type":"string","required":true}},"get_user_id":{"user":{"type":"user","required":false}},"get_log":{"log_file":{"type":"string","required":true,"choices":[{"name":"Klipper","value":"klipper"},{"name":"Moonraker","value":"moonraker"}]}},"info":{},"listfiles":{},"notify":{},"printjob":{"pause":{"type":"subcommand"},"cancel":{"type":"subcommand"},"resume":{"type":"subcommand"},"start":{"type":"subcommand","options":{"file":{"type":"string","required":true}}}},"status":{},"systeminfo":{"component":{"type":"string","required":true,"choices":"${systemInfoChoices}"}},"temp":{},"timelapse":{}}');
 ;// CONCATENATED MODULE: ./src/meta/command_option_types.json
 const command_option_types_namespaceObject = JSON.parse('{"subcommand":1,"subcommand_group":2,"string":3,"integer":4,"boolean":5,"user":6,"channel":7,"role":8,"mentionable":9,"number":10}');
-;// CONCATENATED MODULE: ./src/generator/DiscordCommandGenerator.ts
+;// CONCATENATED MODULE: ./src/helper/LocaleHelper.ts
 
+
+
+
+class LocaleHelper {
+    constructor() {
+        this.config = new ConfigHelper();
+        this.fallbackLocalePath = external_path_default().resolve(__dirname, '../locales/en.json');
+    }
+    loadCache() {
+        this.loadFallback();
+        this.loadLocales();
+    }
+    loadLocales() {
+        const localePath = external_path_default().resolve(__dirname, `../locales/${this.config.getLocale()}.json`);
+        const syntaxLocalePath = external_path_default().resolve(__dirname, `../locales/${this.config.getSyntaxLocale()}.json`);
+        const localeRaw = (0,external_fs_namespaceObject.readFileSync)(localePath, { encoding: 'utf8' });
+        const syntaxLocaleRaw = (0,external_fs_namespaceObject.readFileSync)(syntaxLocalePath, { encoding: 'utf8' });
+        updateData('locale', JSON.parse(localeRaw));
+        updateData('syntax_locale', JSON.parse(syntaxLocaleRaw));
+    }
+    loadFallback() {
+        const fallbackLocaleRaw = (0,external_fs_namespaceObject.readFileSync)(this.fallbackLocalePath, { encoding: 'utf8' });
+        setData('locale', JSON.parse(fallbackLocaleRaw));
+        setData('syntax_locale', JSON.parse(fallbackLocaleRaw));
+    }
+    getLocale() {
+        return getEntry('locale');
+    }
+    getSyntaxLocale() {
+        return getEntry('syntax_locale');
+    }
+    getNoPermission(username) {
+        return this.getLocale().messages.errors.no_permission.replace(/(\${username})/g, username);
+    }
+    getGuildOnlyError(username) {
+        return this.getLocale().errors.guild_only.replace(/(\${username})/g, username);
+    }
+    getCommandNotReadyError(username) {
+        return this.getLocale().errors.not_ready.replace(/(\${username})/g, username);
+    }
+    getSystemComponents() {
+        const components = [
+            {
+                "name": this.getLocale().embeds.system_update.title,
+                "value": "updates"
+            }
+        ];
+        for (const stateComponent in getEntry('state')) {
+            if (/(mcu)/g.test(stateComponent) && !/(temperature_sensor)/g.test(stateComponent)) {
+                components.push({
+                    name: stateComponent.toUpperCase(),
+                    value: stateComponent
+                });
+            }
+        }
+        return components;
+    }
+}
+
+;// CONCATENATED MODULE: ./src/generator/DiscordCommandGenerator.ts
 
 
 
 
 class DiscordCommandGenerator {
     constructor() {
-        this.config = new ConfigHelper();
-        this.localeHelper = getLocaleHelper();
+        this.localeHelper = new LocaleHelper();
     }
     getCommands() {
         const commandList = [];
@@ -26888,7 +26958,7 @@ const button_assign_namespaceObject = JSON.parse('{"list_files":["next_page","la
 class DiscordInputGenerator {
     constructor() {
         this.config = new ConfigHelper();
-        this.localeHelper = getLocaleHelper();
+        this.localeHelper = new LocaleHelper();
     }
     generateInputCache() {
         this.generateCacheForSection('buttons');
@@ -26991,14 +27061,111 @@ class DumpCommand {
     }
 }
 
+;// CONCATENATED MODULE: ./src/helper/PermissionHelper.ts
+
+
+class PermissionHelper {
+    constructor() {
+        this.config = new ConfigHelper();
+        this.permissions = this.config.getPermissions();
+        this.controllers = this.permissions.controllers;
+        this.botAdmins = this.permissions.botadmins;
+        if (typeof this.controllers.users === "string") {
+            this.controllers.users = [this.controllers.users];
+        }
+        if (typeof this.botAdmins.users === "string") {
+            this.botAdmins.users = [this.botAdmins.users];
+        }
+        if (typeof this.controllers.roles === "string") {
+            this.controllers.roles = [this.controllers.roles];
+        }
+    }
+    hasPermission(user, guild, command) {
+        const commandPermission = this.permissions.commands[command];
+        if (commandPermission.users === "*") {
+            return true;
+        }
+        if (this.isController(user, guild)) {
+            return true;
+        }
+        if (this.hasCommandPermission(user, guild, command)) {
+            return true;
+        }
+        return false;
+    }
+    getMember(user, guild) {
+        if (guild === null) {
+            return;
+        }
+        return guild.members.cache.get(user.id);
+    }
+    hasCommandPermission(user, guild, command) {
+        const commandPermission = this.permissions.commands[command];
+        const member = this.getMember(user, guild);
+        if (typeof commandPermission.users === "string") {
+            commandPermission.users = [commandPermission.users];
+        }
+        if (typeof commandPermission.roles === "string") {
+            commandPermission.roles = [commandPermission.roles];
+        }
+        if (commandPermission.guildadmin && this.isGuildAdmin(user, guild)) {
+            return true;
+        }
+        if (commandPermission.botadmin && this.isBotAdmin(user, guild)) {
+            return true;
+        }
+        if (commandPermission.users.includes(user.id)) {
+            return true;
+        }
+        if (typeof member !== 'undefined') {
+            return member.roles.cache.some((role) => commandPermission.roles.includes(role.id));
+        }
+    }
+    isGuildAdmin(user, guild) {
+        const member = this.getMember(user, guild);
+        if (typeof member !== 'undefined') {
+            return member.permissions.has(external_discord_js_namespaceObject.Permissions.FLAGS.ADMINISTRATOR, true);
+        }
+    }
+    isBotAdmin(user, guild) {
+        const member = this.getMember(user, guild);
+        if (this.botAdmins.users.includes(user.id)) {
+            return true;
+        }
+        if (typeof member === 'undefined') {
+            return;
+        }
+        const roles = this.botAdmins.guilds[guild.id];
+        return member.roles.cache.some((role) => roles.includes(role.id));
+    }
+    isController(user, guild) {
+        const member = this.getMember(user, guild);
+        if (this.controllers.users.includes(user.id)) {
+            return true;
+        }
+        if (typeof member !== 'undefined') {
+            return member.roles.cache.some((role) => this.controllers.roles.includes(role.id));
+        }
+    }
+}
+
 ;// CONCATENATED MODULE: ./src/events/discord/interactions/CommandInteraction.ts
+
+
+
 
 
 
 
 class CommandInteraction {
     constructor(interaction) {
+        this.config = new ConfigHelper();
         this.commandGenerator = new DiscordCommandGenerator();
+        this.localeHelper = new LocaleHelper();
+        this.permissionHelper = new PermissionHelper();
+        void this.execute(interaction);
+    }
+    async execute(interaction) {
         if (!interaction.isCommand()) {
             return;
         }
@@ -27007,8 +27174,16 @@ class CommandInteraction {
             return;
         }
         logNotice(`${interaction.user.tag} executed command: ${commandId}`);
-        new InfoCommand(interaction, commandId);
-        new DumpCommand(interaction, commandId);
+        if (!this.permissionHelper.hasPermission(interaction.user, interaction.guild, commandId)) {
+            await interaction.reply({
+                content: this.localeHelper.getNoPermission(interaction.user.tag),
+                ephemeral: this.config.showNoPermissionPrivate()
+            });
+            logWarn(`${interaction.user.tag} doesnt have the permission for: ${commandId}`);
+            return;
+        }
+        void new InfoCommand(interaction, commandId);
+        void new DumpCommand(interaction, commandId);
     }
 }
 
@@ -27061,11 +27236,9 @@ const status_mapping_namespaceObject = JSON.parse('{"disconnected":{"embed_id":"
 
 
 
-
 class DiscordStatusGenerator {
     constructor() {
-        this.config = new ConfigHelper();
-        this.localeHelper = getLocaleHelper();
+        this.localeHelper = new LocaleHelper();
     }
     generateStatusCache() {
         const tempCache = {};
@@ -27103,6 +27276,7 @@ class DiscordStatusGenerator {
 
 
 
+
 let interactionHandler;
 let debugHandler;
 class DiscordClient {
@@ -27112,7 +27286,7 @@ class DiscordClient {
         this.commandGenerator = new DiscordCommandGenerator();
         this.inputGenerator = new DiscordInputGenerator();
         this.statusGenerator = new DiscordStatusGenerator();
-        this.localeHelper = getLocaleHelper();
+        this.localeHelper = new LocaleHelper();
         this.connect();
     }
     async connect() {
@@ -27448,69 +27622,8 @@ class DatabaseUtil {
     }
 }
 
-;// CONCATENATED MODULE: ./src/helper/LocaleHelper.ts
-
-
-
-
-class LocaleHelper {
-    constructor() {
-        this.config = new ConfigHelper();
-        this.fallbackLocalePath = external_path_default().resolve(__dirname, '../locales/en.json');
-        this.localePath = external_path_default().resolve(__dirname, `../locales/${this.config.getLocale()}.json`);
-        this.syntaxLocalePath = external_path_default().resolve(__dirname, `../locales/${this.config.getSyntaxLocale()}.json`);
-        this.loadFallback();
-        this.loadLocales();
-    }
-    loadLocales() {
-        const localeRaw = (0,external_fs_namespaceObject.readFileSync)(this.localePath, { encoding: 'utf8' });
-        const syntaxLocaleRaw = (0,external_fs_namespaceObject.readFileSync)(this.syntaxLocalePath, { encoding: 'utf8' });
-        updateData('locale', JSON.parse(localeRaw));
-        updateData('syntax_locale', JSON.parse(syntaxLocaleRaw));
-    }
-    loadFallback() {
-        const fallbackLocaleRaw = (0,external_fs_namespaceObject.readFileSync)(this.fallbackLocalePath, { encoding: 'utf8' });
-        setData('locale', JSON.parse(fallbackLocaleRaw));
-        setData('syntax_locale', JSON.parse(fallbackLocaleRaw));
-    }
-    getLocale() {
-        return getEntry('locale');
-    }
-    getSyntaxLocale() {
-        return getEntry('syntax_locale');
-    }
-    getAdminOnlyError(username) {
-        return this.getLocale().errors.admin_only.replace(/(\${username})/g, username);
-    }
-    getControllerOnlyError(username) {
-        return this.getLocale().errors.controller_only.replace(/(\${username})/g, username);
-    }
-    getGuildOnlyError(username) {
-        return this.getLocale().errors.guild_only.replace(/(\${username})/g, username);
-    }
-    getCommandNotReadyError(username) {
-        return this.getLocale().errors.not_ready.replace(/(\${username})/g, username);
-    }
-    getSystemComponents() {
-        const components = [
-            {
-                "name": this.getLocale().embeds.system_update.title,
-                "value": "updates"
-            }
-        ];
-        for (const stateComponent in getEntry('state')) {
-            if (/(mcu)/g.test(stateComponent) && !/(temperature_sensor)/g.test(stateComponent)) {
-                components.push({
-                    name: stateComponent.toUpperCase(),
-                    value: stateComponent
-                });
-            }
-        }
-        return components;
-    }
-}
-
 ;// CONCATENATED MODULE: ./src/Application.ts
+
 
 
 
@@ -27523,6 +27636,9 @@ logEmpty();
 setData('package_config', package_namespaceObject_0);
 Object.assign(global, { WebSocket: __nccwpck_require__(8867) });
 const localeHelper = new LocaleHelper();
+const configHelper = new ConfigHelper();
+configHelper.loadCache();
+localeHelper.loadCache();
 const moonrakerClient = new MoonrakerClient();
 const Application_database = new DatabaseUtil();
 const discordClient = new DiscordClient();
@@ -27534,9 +27650,6 @@ function getDiscordClient() {
 }
 function getDatabase() {
     return Application_database;
-}
-function getLocaleHelper() {
-    return localeHelper;
 }
 
 
@@ -27794,7 +27907,7 @@ module.exports = require("zlib");
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(473);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(897);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()

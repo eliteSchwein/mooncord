@@ -13,6 +13,10 @@ export function logRegular(message:string) {
 };
 
 export function logNotice(message:string) {
+    console.log(getTimeStamp(), message.magenta)
+};
+
+export function logWarn(message:string) {
     console.log(getTimeStamp(), message.yellow)
 };
 

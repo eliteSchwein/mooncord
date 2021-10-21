@@ -2,7 +2,7 @@ import {waitUntil} from 'async-wait-until'
 
 import {Client, Intents} from 'discord.js'
 
-import {getDatabase, getLocaleHelper} from '../Application'
+import {getDatabase} from '../Application'
 import {ConfigHelper} from '../helper/ConfigHelper'
 import {logEmpty, logRegular, logSuccess} from '../helper/ConsoleLogger'
 import {dump, getEntry, setData} from '../utils/CacheUtil'
@@ -12,6 +12,7 @@ import {InteractionHandler} from "../events/discord/InteractionHandler";
 import {DebugHandler} from "../events/discord/DebugHandler";
 import {ActivityTypes} from "discord.js/typings/enums";
 import {DiscordStatusGenerator} from "../generator/DiscordStatusGenerator";
+import {LocaleHelper} from "../helper/LocaleHelper";
 
 let interactionHandler: InteractionHandler
 let debugHandler: DebugHandler
@@ -22,7 +23,7 @@ export class DiscordClient {
     protected commandGenerator = new DiscordCommandGenerator()
     protected inputGenerator = new DiscordInputGenerator()
     protected statusGenerator = new DiscordStatusGenerator()
-    protected localeHelper = getLocaleHelper()
+    protected localeHelper = new LocaleHelper()
     protected discordClient: Client
 
     public constructor() {

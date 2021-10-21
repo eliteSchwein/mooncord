@@ -128,16 +128,15 @@
             "printjob_executed": "Print Job request executed, ${username}!"
         },
         "errors": {
-            "admin_only": "You dont have the Permissions, ${username}",
             "check_console": "Please Check the Console!",
             "command_disabled": "The Command is disabled!",
             "command_failed": "An Error occured!",
             "command_timeout": "Command execution failed!",
-            "controller_only": "You dont have the Permissions, ${username}",
             "file_not_found": "File not Found!",
             "guild_only": "This Command is only aviable on a Guild, ${username}",
             "no_data": "There was no Data found for ${component}!",
             "no_files_found": "There are currently no Files!",
+            "no_permission": "You dont have the Permissions, ${username}",
             "no_timelapse": "There is no Timelapse aviable!",
             "not_ready": "This Command is not ready, ${username}!",
             "not_textchannel": "${channel} is not a Text Channel, ${username}!",

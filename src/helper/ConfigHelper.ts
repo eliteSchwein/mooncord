@@ -12,6 +12,9 @@ export class ConfigHelper {
     protected defaultConfig = readFileSync(path.resolve(__dirname, '../../scripts/mooncord_full.json'), {encoding: 'utf8'})
 
     public constructor() {
+    }
+
+    public loadCache() {
         const config = JSON.parse(this.defaultConfig)
         mergeDeep(config, JSON.parse(this.configRaw))
         setData('config', config)
@@ -19,6 +22,10 @@ export class ConfigHelper {
 
     public getConfig() {
         return getEntry('config')
+    }
+    
+    public getPermissions() {
+        return this.getConfig().permission
     }
 
     public getMoonrakerSocketUrl() {
@@ -111,5 +118,9 @@ export class ConfigHelper {
 
     public dumpCacheOnStart() {
         return this.getConfig().development.dump_cache_on_start
+    }
+
+    public showNoPermissionPrivate() {
+        return this.getConfig().messages.show_no_permission_private
     }
 }

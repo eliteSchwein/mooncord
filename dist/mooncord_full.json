@@ -21,6 +21,9 @@
             "execute": {}
         }
     },
+    "messages": {
+        "show_no_permission_private": true
+    },
     "custom_info": "Thanks for installing MoonCord and Happy Printing ❤",
     "language": {
         "messages": "en",
@@ -29,7 +32,7 @@
     },
     "permission": {
         "controllers": {
-            "roles": [],
+            "roles": "",
             "users": ""
         },
         "botadmins": {
