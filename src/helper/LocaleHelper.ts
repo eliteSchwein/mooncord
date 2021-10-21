@@ -3,6 +3,7 @@ import {readFileSync} from 'fs'
 import path from "path";
 import {getEntry, setData, updateData} from "../utils/CacheUtil";
 import {ConfigHelper} from "./ConfigHelper";
+import {logRegular} from "./ConsoleLogger";
 
 export class LocaleHelper {
     protected config = new ConfigHelper()
@@ -12,6 +13,7 @@ export class LocaleHelper {
     }
 
     public loadCache() {
+        logRegular("load Locale Cache...")
         this.loadFallback()
         this.loadLocales()
     }

@@ -2,7 +2,6 @@ import {ConfigHelper} from "../helper/ConfigHelper";
 import {mergeDeep} from "../helper/ObjectMergeHelper";
 
 import sectionMapping from '../meta/input_mapping.json'
-import buttonAssign from '../meta/button_assign.json'
 import {setData, getEntry} from "../utils/CacheUtil";
 import {MessageActionRow, MessageButton, MessageSelectMenu} from "discord.js";
 import {LocaleHelper} from "../helper/LocaleHelper";
@@ -45,15 +44,14 @@ export class DiscordInputGenerator {
         setData(section, sectionCache)
     }
 
-    public generateButtons(section: string) {
-        const assignButtons = buttonAssign[section]
+    public generateButtons(buttonIDs: []) {
         const row = new MessageActionRow()
 
-        if(typeof(assignButtons) === 'undefined') { return }
+        if(typeof(buttonIDs) === 'undefined') { return }
 
-        for(const index in assignButtons) {
-            const buttonId = assignButtons[index]
-            
+        for(const index in buttonIDs) {
+            const buttonId = buttonIDs[index]
+
             row.addComponents(this.generateButton(buttonId))
         }
 

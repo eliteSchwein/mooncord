@@ -2,6 +2,7 @@ import {readFileSync} from 'fs'
 import path from "path";
 import {mergeDeep} from "./ObjectMergeHelper";
 import {getEntry, setData} from "../utils/CacheUtil";
+import {logRegular} from "./ConsoleLogger";
 
 const args = process.argv.slice(2)
 
@@ -15,6 +16,7 @@ export class ConfigHelper {
     }
 
     public loadCache() {
+        logRegular("load Config Cache...")
         const config = JSON.parse(this.defaultConfig)
         mergeDeep(config, JSON.parse(this.configRaw))
         setData('config', config)

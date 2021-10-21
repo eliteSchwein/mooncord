@@ -1,0 +1,126 @@
+{
+  "fileinfo": {},
+  "list_files": {},
+  "info": {
+    "color": "#0099ff",
+    "thumbnail": "logo.png"
+  },
+  "printjob_start_request": {},
+  "printjob_start":{
+    "color": "#25db00",
+    "author": "${state.print_stats.filename}",
+    "thumbnail": "printjob_thumbnail",
+    "buttons": [],
+    "fields": [
+      {
+        "name": "${embeds.fields.print_time}",
+        "value": "${value_eta_print_time}"
+      }
+    ]
+  },
+  "printjob_done":{
+    "color": "#25db00",
+    "author": "${state.print_stats.filename}",
+    "thumbnail": "printjob_thumbnail",
+    "buttons": [],
+    "fields": [
+      {
+        "name": "${embeds.fields.print_time}",
+        "value": "${value_print_time}"
+      }
+    ]
+  },
+  "printjob_pause":{
+    "color": "#dbd400",
+    "author": "${state.print_stats.filename}",
+    "thumbnail": "printjob_thumbnail",
+    "buttons": ["printjob_resume","printjob_cancel"],
+    "fields": [
+      {
+        "name": "${embeds.fields.print_time}",
+        "value": "${value_print_time}"
+      },
+      {
+        "name": "${embeds.fields.eta_print_time}",
+        "value": "${value_eta_print_time}"
+      },
+      {
+        "name": "${embeds.fields.print_progress}",
+        "value": "${value_print_progress}%"
+      },
+      {
+        "name": "${embeds.fields.print_layers}",
+        "value": "${value_current_layer}/${value_max_layer}"
+      }
+    ]
+  },
+  "printjob_printing":{
+    "color": "#0099ff",
+    "author": "${state.print_stats.filename}",
+    "thumbnail": "printjob_thumbnail",
+    "buttons": [
+      "printjob_pause",
+      "printjob_cancel",
+      "printjob_refresh"],
+    "fields": [
+      {
+        "name": "${embeds.fields.print_time}",
+        "value": "${value_print_time}"
+      },
+      {
+        "name": "${embeds.fields.eta_print_time}",
+        "value": "${value_eta_print_time}"
+      },
+      {
+        "name": "${embeds.fields.print_progress}",
+        "value": "${value_print_progress}%"
+      },
+      {
+        "name": "${embeds.fields.print_layers}",
+        "value": "${value_current_layer}/${value_max_layer}"
+      }
+    ]
+  },
+  "printjob_stop":{
+    "color": "#c90000",
+    "author": "${state.print_stats.filename}",
+    "thumbnail": "printjob_thumbnail",
+    "buttons": [],
+    "fields": [
+      {
+        "name": "${embeds.fields.print_time}",
+        "value": "${value_print_time}"
+      }
+    ]
+  },
+  "temperatures": {},
+  "disconnected":{
+    "color": "#c90000",
+    "buttons": ["klipper_restart"]
+  },
+  "error":{
+    "color": "#c90000",
+    "buttons": ["klipper_restart"]
+  },
+  "offline":{
+    "color": "#c90000",
+    "buttons": []
+  },
+  "shutdown":{
+    "color": "#c90000",
+    "buttons": ["klipper_restart"]
+  },
+  "ready":{
+    "color": "#0099ff",
+    "buttons": [],
+    "description": "${versions}"
+  },
+  "startup":{
+    "color": "#0099ff",
+    "buttons": []
+  },
+  "wait": {},
+  "system_warning": {},
+  "throttle": {},
+  "system_update": {}
+}

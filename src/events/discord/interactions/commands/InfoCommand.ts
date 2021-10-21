@@ -6,6 +6,8 @@ export class InfoCommand {
     public constructor(interaction: CommandInteraction, commandId: string) {
         if(commandId !== 'info') { return }
 
-        this.embedHelper.generateEmbed('info')
+        const message = this.embedHelper.generateEmbed('info')
+        
+        void interaction.reply(message)
     }
 }

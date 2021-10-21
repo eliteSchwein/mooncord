@@ -66,11 +66,11 @@
         },
         "system_warning": {
             "title": "System Warning",
-            "base_description": "There is currently a System Warning because of ${reason}!"
+            "description": "There is currently a System Warning because of ${reason}!"
         },
         "throttle": {
             "title": "Throttle occured!",
-            "base_description": "The System is currently throttled because of ${reason}!"
+            "description": "The System is currently throttled because of ${reason}!"
         },
         "system_update": {
             "title": "System Updates"
