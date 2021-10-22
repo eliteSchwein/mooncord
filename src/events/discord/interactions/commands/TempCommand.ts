@@ -10,7 +10,7 @@ export class TempCommand {
 
         const fields = this.tempHelper.parseFields()
 
-        const message = this.embedHelper.generateEmbed('temperatures', {}, fields['fields'])
+        const message = this.embedHelper.generateEmbed('temperatures', null, fields['fields'])
         
         void interaction.reply(message)
     }

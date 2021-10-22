@@ -26591,7 +26591,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 587:
+/***/ 3587:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -26985,6 +26985,9 @@ class DiscordInputGenerator {
             const buttonId = buttonIDs[index];
             row.addComponents(this.generateButton(buttonId));
         }
+        if (row.components.length === 0) {
+            return;
+        }
         return row;
     }
     generateSelection(selectionId, entries) {
@@ -27060,7 +27063,7 @@ class EmbedHelper {
         const embed = new external_discord_js_namespaceObject.MessageEmbed();
         const embedDataUnformatted = this.getEmbeds()[embedID];
         if (providedFields !== null) {
-            mergeDeep(embedDataUnformatted, providedFields);
+            mergeDeep(embedDataUnformatted, { fields: providedFields });
         }
         let embedRaw = JSON.stringify(embedDataUnformatted);
         const placeholders = embedRaw.match(/(\${).*?}/g);
@@ -27078,10 +27081,15 @@ class EmbedHelper {
         files.push(thumbnail);
         components.push(buttons);
         embed.setTitle(embedData.title);
-        embed.setDescription(embedData.description);
         embed.setColor(embedData.color);
+        if (typeof embedData.description !== 'undefined') {
+            embed.setDescription(embedData.description);
+        }
         if (typeof thumbnail !== 'undefined') {
             embed.setThumbnail(`attachment://${thumbnail.name}`);
+        }
+        if (typeof embedData.fields !== 'undefined') {
+            embed.setFields(embedData.fields);
         }
         response.embeds = [embed];
         if (typeof components[0] !== 'undefined') {
@@ -27247,39 +27255,46 @@ const temp_mapping_namespaceObject = JSON.parse('{"supported_sensors":["heater_g
 
 
 
-
 class TempHelper {
     constructor() {
         this.cache = getEntry('state');
     }
     parseFields() {
-        const result = {};
+        const result = {
+            "fields": [],
+            "cache_ids": []
+        };
         const supportedSensors = temp_mapping_namespaceObject.supported_sensors;
         for (const sensorType of supportedSensors) {
-            mergeDeep(result, this.parseFieldsSet(sensorType));
+            const sensorResult = this.parseFieldsSet(sensorType);
+            if (sensorResult.fields.length > 0) {
+                result.fields = result.fields.concat(sensorResult.fields);
+                result.cache_ids = result.cache_ids.concat(sensorResult.cache_ids);
+            }
         }
         return result;
     }
     parseFieldsSet(key) {
         const allias = temp_mapping_namespaceObject.alliases[key];
+        const cacheData = this.parseCacheFields(key);
         if (typeof allias !== 'undefined') {
             key = allias;
         }
-        const cacheData = this.parseCacheFields(key);
         const mappingData = temp_mapping_namespaceObject[key];
-        const fields = {};
+        const fields = [];
         const cacheIds = [];
         for (const cacheKey in cacheData) {
             const keyData = {
-                name: `${mappingData.key}${cacheKey}`,
-                value: ''
+                name: `${mappingData.icon} ${cacheKey}`,
+                value: '',
+                inline: true
             };
             for (const fieldKey in mappingData.fields) {
                 const fieldData = mappingData.fields[fieldKey];
                 if (typeof cacheData[cacheKey][fieldKey] === 'undefined') {
                     continue;
                 }
-                if (typeof cacheData[cacheKey][fieldKey] === null) {
+                if (cacheData[cacheKey][fieldKey] === null) {
                     continue;
                 }
                 if (fieldData.suffix === '%') {
@@ -27290,18 +27305,17 @@ class TempHelper {
                 keyData.value = `${keyData.value}
                     \`${fieldData.label}:\`${cacheData[cacheKey][fieldKey]}${fieldData.suffix}`;
             }
-            fields[cacheKey] = keyData;
-            cacheIds.push(cacheData[cacheKey].cache_id);
+            fields.push(keyData);
+            cacheIds.push(cacheData[cacheKey]);
         }
-        return { fields, cacheIds };
+        return { fields: fields, cache_ids: cacheIds };
     }
     parseCacheFields(key) {
         const result = {};
         for (const cacheKey in this.cache) {
             const cacheKeySplit = cacheKey.split(' ');
             if (cacheKeySplit[0] === key) {
-                result[key.replace('_', '')] = this.cache[cacheKey];
-                result[key.replace('_', '')].cache_id = cacheKey;
+                result[cacheKey] = this.cache[cacheKey];
             }
         }
         return result;
@@ -27319,7 +27333,7 @@ class TempCommand {
             return;
         }
         const fields = this.tempHelper.parseFields();
-        const message = this.embedHelper.generateEmbed('temperatures', {}, fields['fields']);
+        const message = this.embedHelper.generateEmbed('temperatures', null, fields['fields']);
         void interaction.reply(message);
     }
 }
@@ -28088,7 +28102,7 @@ module.exports = require("zlib");
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(587);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(3587);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()

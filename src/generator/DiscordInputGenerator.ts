@@ -38,6 +38,10 @@ export class DiscordInputGenerator {
             row.addComponents(this.generateButton(buttonId))
         }
 
+        if(row.components.length === 0) {
+            return
+        }
+
         return row
     }
 

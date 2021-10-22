@@ -1,17 +1,24 @@
 import { getEntry } from "../utils/CacheUtil";
 import { formatPercent } from "./FormattingHelper";
-import { mergeDeep } from "./ObjectMergeHelper";
 import tempMapping from "../meta/temp_mapping.json"
 
 export class TempHelper {
     protected cache = getEntry('state')
 
     public parseFields() {
-        const result = {}
+        const result = {
+            "fields": [],
+            "cache_ids": []
+        }
         const supportedSensors = tempMapping.supported_sensors
 
         for(const sensorType of supportedSensors) {
-            mergeDeep(result, this.parseFieldsSet(sensorType))
+            const sensorResult = this.parseFieldsSet(sensorType)
+            
+            if(sensorResult.fields.length > 0) {
+                result.fields = result.fields.concat(sensorResult.fields)
+                result.cache_ids = result.cache_ids.concat(sensorResult.cache_ids)
+            }
         }
 
         return result
@@ -20,24 +27,26 @@ export class TempHelper {
     public parseFieldsSet(key: string) {
         const allias = tempMapping.alliases[key]
 
+        const cacheData = this.parseCacheFields(key)
+
         if(typeof allias !== 'undefined') { key = allias }
 
-        const cacheData = this.parseCacheFields(key)
         const mappingData = tempMapping[key]
-        const fields = {}
+        const fields = []
         const cacheIds = []
 
         for(const cacheKey in cacheData) {
             const keyData = {
-                name: `${mappingData.key}${cacheKey}`,
-                value: ''
+                name: `${mappingData.icon} ${cacheKey}`,
+                value: '',
+                inline: true
             }
             for(const fieldKey in mappingData.fields) {
                 const fieldData = mappingData.fields[fieldKey]
                 if(typeof cacheData[cacheKey][fieldKey] === 'undefined') {
                     continue
                 }
-                if(typeof cacheData[cacheKey][fieldKey] === null) {
+                if(cacheData[cacheKey][fieldKey] === null) {
                     continue
                 }
                 if(fieldData.suffix === '%') {
@@ -49,11 +58,11 @@ export class TempHelper {
                     \`${fieldData.label}:\`${cacheData[cacheKey][fieldKey]}${fieldData.suffix}`
                 
             }
-            fields[cacheKey] = keyData
-            cacheIds.push(cacheData[cacheKey].cache_id)
+            fields.push(keyData)
+            cacheIds.push(cacheData[cacheKey])
         }
 
-        return {fields, cacheIds}
+        return {fields: fields, cache_ids: cacheIds}
     }
 
     protected parseCacheFields(key) {
@@ -63,8 +72,7 @@ export class TempHelper {
             const cacheKeySplit = cacheKey.split(' ')
 
             if(cacheKeySplit[0] === key) {
-                result[key.replace('_', '')] = this.cache[cacheKey]
-                result[key.replace('_', '')].cache_id = cacheKey
+                result[cacheKey] = this.cache[cacheKey]
             }
         }
 

@@ -34,10 +34,13 @@ export class EmbedHelper {
     public generateEmbed(embedID: string,providedPlaceholders = null, providedFields = null) {
         const embed = new MessageEmbed()
         const embedDataUnformatted = this.getEmbeds()[embedID]
+
         if(providedFields !== null) {
-            mergeDeep(embedDataUnformatted, providedFields)
+            mergeDeep(embedDataUnformatted, {fields: providedFields})
         }
+
         let embedRaw = JSON.stringify(embedDataUnformatted)
+
         const placeholders = embedRaw.match(/(\${).*?}/g)
         const files = []
         const components = []
@@ -59,11 +62,18 @@ export class EmbedHelper {
         components.push(buttons)
 
         embed.setTitle(embedData.title)
-        embed.setDescription(embedData.description)
         embed.setColor(embedData.color)
+
+        if(typeof embedData.description !== 'undefined') {
+            embed.setDescription(embedData.description)
+        }
 
         if(typeof thumbnail !== 'undefined') {
             embed.setThumbnail(`attachment://${thumbnail.name}`)
+        }
+
+        if(typeof embedData.fields !== 'undefined') {
+            embed.setFields(embedData.fields)
         }
 
         response.embeds = [embed]
