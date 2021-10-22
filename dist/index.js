@@ -26969,24 +26969,12 @@ class DiscordInputGenerator {
         this.generateCacheForSection('selections');
     }
     generateCacheForSection(section) {
-        const sectionCache = {};
         let sectionConfig = this.localeHelper.getLocale()[section];
         if (this.config.isButtonSyntaxLocale()) {
             sectionConfig = this.localeHelper.getSyntaxLocale()[section];
         }
-        for (const selectionID in sectionConfig) {
-            sectionCache[selectionID] = {};
-            let text = { label: sectionConfig[selectionID] };
-            let mapping = input_mapping_namespaceObject[section][selectionID];
-            if (text.label.label !== 'undefined') {
-                text = sectionConfig[selectionID];
-            }
-            if (typeof (mapping) === 'undefined') {
-                mapping = {};
-            }
-            mergeDeep(sectionCache[selectionID], text, mapping);
-        }
-        setData(section, sectionCache);
+        mergeDeep(sectionConfig, input_mapping_namespaceObject[section]);
+        setData(section, sectionConfig);
     }
     generateButtons(buttonIDs) {
         const row = new external_discord_js_namespaceObject.MessageActionRow();

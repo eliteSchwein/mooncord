@@ -16,32 +16,15 @@ export class DiscordInputGenerator {
     }
 
     protected generateCacheForSection(section: string) {
-        const sectionCache = {}
-
         let sectionConfig = this.localeHelper.getLocale()[section]
 
         if(this.config.isButtonSyntaxLocale()) {
             sectionConfig = this.localeHelper.getSyntaxLocale()[section]
         }
 
-        for (const selectionID in sectionConfig) {
-            sectionCache[selectionID] = {}
+        mergeDeep(sectionConfig, sectionMapping[section])
 
-            let text = {label: sectionConfig[selectionID]}
-            let mapping = sectionMapping[section][selectionID]
-
-            if(text.label.label !== 'undefined') {
-                text = sectionConfig[selectionID]
-            }
-
-            if(typeof(mapping) === 'undefined') {
-                mapping = {}
-            }
-            mergeDeep(sectionCache[selectionID], text, mapping)
-        }
-
-
-        setData(section, sectionCache)
+        setData(section, sectionConfig)
     }
 
     public generateButtons(buttonIDs: []) {
