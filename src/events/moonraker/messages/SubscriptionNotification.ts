@@ -7,7 +7,7 @@ export class SubscriptionNotification {
 
         if(message.method !== 'notify_status_update') { return }
 
-        updateData('updates', message.params[0])
+        updateData('state', message.params[0])
         return true
     }
 }

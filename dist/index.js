@@ -27056,9 +27056,13 @@ class EmbedHelper {
     getFields() {
         return getEntry('embeds').fields;
     }
-    generateEmbed(embedID, providedPlaceholders = null) {
+    generateEmbed(embedID, providedPlaceholders = null, providedFields = null) {
         const embed = new external_discord_js_namespaceObject.MessageEmbed();
-        let embedRaw = JSON.stringify(this.getEmbeds()[embedID]);
+        const embedDataUnformatted = this.getEmbeds()[embedID];
+        if (providedFields !== null) {
+            mergeDeep(embedDataUnformatted, providedFields);
+        }
+        let embedRaw = JSON.stringify(embedDataUnformatted);
         const placeholders = embedRaw.match(/(\${).*?}/g);
         const files = [];
         const components = [];
@@ -27489,7 +27493,7 @@ class SubscriptionNotification {
         if (message.method !== 'notify_status_update') {
             return;
         }
-        updateData('updates', message.params[0]);
+        updateData('state', message.params[0]);
         return true;
     }
 }
@@ -27507,7 +27511,7 @@ class UpdateNotification {
         if (message.method !== 'notify_update_manager') {
             return;
         }
-        updateData('', message.params[0]);
+        updateData('updates', message.params[0]);
         return true;
     }
 }

@@ -31,9 +31,13 @@ export class EmbedHelper {
         return getEntry('embeds').fields
     }
 
-    public generateEmbed(embedID: string,providedPlaceholders = null) {
+    public generateEmbed(embedID: string,providedPlaceholders = null, providedFields = null) {
         const embed = new MessageEmbed()
-        let embedRaw = JSON.stringify(this.getEmbeds()[embedID])
+        const embedDataUnformatted = this.getEmbeds()[embedID]
+        if(providedFields !== null) {
+            mergeDeep(embedDataUnformatted, providedFields)
+        }
+        let embedRaw = JSON.stringify(embedDataUnformatted)
         const placeholders = embedRaw.match(/(\${).*?}/g)
         const files = []
         const components = []
