@@ -93,7 +93,9 @@
             "print_layers": "Layer",
             "slicer": "Slicer",
             "slicer_version": "Slicer version",
-            "height": "Height"
+            "height": "Height",
+            "min_temp": "Min Temp",
+            "max_temp": "Max Temp"
         }
     },
     "messages": {

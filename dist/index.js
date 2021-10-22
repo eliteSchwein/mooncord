@@ -27250,7 +27250,7 @@ function formatPercent(percent, digits) {
 }
 
 ;// CONCATENATED MODULE: ./src/meta/temp_mapping.json
-const temp_mapping_namespaceObject = JSON.parse('{"supported_sensors":["heater_generic","heater_bed","heater","extruder","fan_generic","heater_fan","controller_fan","temperature_sensor","temperature_fan","fan"],"alliases":{"heater_generic":"heater","heater_bed":"heater","extruder":"heater","fan_generic":"fan","heater_fan":"fan","controller_fan":"fan"},"temperature_sensor":{"icon":"🌡","fields":{"temperature":{"label":"${embeds.fields.current}","suffix":"°C"}}},"temperature_fan":{"icon":"♨","fields":{"power":{"label":"${embeds.fields.power}","suffix":"%"},"target":{"label":"${embeds.fields.target}","suffix":"°C"},"temperature":{"label":"${embeds.fields.current}","suffix":"°C"},"rpm":{"label":"${embeds.fields.speed}","suffix":"rpm"}}},"heater":{"icon":"♨","fields":{"power":{"label":"${embeds.fields.power}","suffix":"%"},"target":{"label":"${embeds.fields.target}","suffix":"°C"},"temperature":{"label":"${embeds.fields.current}","suffix":"°C"}}},"fan":{"icon":"💨","fields":{"speed":{"label":"${embeds.fields.power}","suffix":"%"},"rpm":{"label":"${embeds.fields.speed}","suffix":"rpm"}}}}');
+const temp_mapping_namespaceObject = JSON.parse('{"hide_types":["temperature_sensor","temperature_fan","controller_fan","fan_generic"],"supported_sensors":["heater_generic","heater_bed","heater","extruder","fan_generic","heater_fan","controller_fan","temperature_sensor","temperature_fan","fan"],"alliases":{"heater_generic":"heater","heater_bed":"heater","extruder":"heater","fan_generic":"fan","heater_fan":"fan","controller_fan":"fan"},"temperature_sensor":{"icon":"🌡","fields":{"temperature":{"label":"${embeds.fields.current}","suffix":"°C"},"measured_min_temp":{"label":"${embeds.fields.min_temp}","suffix":"°C"},"measured_max_temp":{"label":"${embeds.fields.max_temp}","suffix":"°C"}}},"temperature_fan":{"icon":"♨","fields":{"power":{"label":"${embeds.fields.power}","suffix":"%"},"target":{"label":"${embeds.fields.target}","suffix":"°C"},"temperature":{"label":"${embeds.fields.current}","suffix":"°C"},"rpm":{"label":"${embeds.fields.speed}","suffix":"rpm"}}},"heater":{"icon":"♨","fields":{"power":{"label":"${embeds.fields.power}","suffix":"%"},"target":{"label":"${embeds.fields.target}","suffix":"°C"},"temperature":{"label":"${embeds.fields.current}","suffix":"°C"}}},"fan":{"icon":"🌀","fields":{"speed":{"label":"${embeds.fields.power}","suffix":"%"},"rpm":{"label":"${embeds.fields.speed}","suffix":"rpm"}}}}');
 ;// CONCATENATED MODULE: ./src/helper/TempHelper.ts
 
 
@@ -27274,6 +27274,11 @@ class TempHelper {
         }
         return result;
     }
+    parseFieldTitle(key) {
+        const hideList = temp_mapping_namespaceObject.hide_types;
+        hideList.some(hideType => key = key.replace(hideType, ''));
+        return key;
+    }
     parseFieldsSet(key) {
         const allias = temp_mapping_namespaceObject.alliases[key];
         const cacheData = this.parseCacheFields(key);
@@ -27285,7 +27290,7 @@ class TempHelper {
         const cacheIds = [];
         for (const cacheKey in cacheData) {
             const keyData = {
-                name: `${mappingData.icon} ${cacheKey}`,
+                name: `${mappingData.icon} ${this.parseFieldTitle(cacheKey)}`,
                 value: '',
                 inline: true
             };
@@ -27299,7 +27304,7 @@ class TempHelper {
                 }
                 if (fieldData.suffix === '%') {
                     keyData.value = `${keyData.value}
-                        \`${fieldData.label}:\`${formatPercent(cacheData[cacheKey][fieldKey], 0)}${fieldData.suffix}`;
+                       \`${fieldData.label}:\`${formatPercent(cacheData[cacheKey][fieldKey], 0)}${fieldData.suffix}`;
                     continue;
                 }
                 keyData.value = `${keyData.value}

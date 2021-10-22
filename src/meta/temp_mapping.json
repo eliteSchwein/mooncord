@@ -1,4 +1,10 @@
 {
+    "hide_types": [
+        "temperature_sensor",
+        "temperature_fan",
+        "controller_fan",
+        "fan_generic"
+    ],
     "supported_sensors": [
         "heater_generic",
         "heater_bed",
@@ -24,6 +30,14 @@
         "fields": {
             "temperature": {
                 "label": "${embeds.fields.current}",
+                "suffix": "°C"
+            },
+            "measured_min_temp": {
+                "label": "${embeds.fields.min_temp}",
+                "suffix": "°C"
+            },
+            "measured_max_temp": {
+                "label": "${embeds.fields.max_temp}",
                 "suffix": "°C"
             }
         }
@@ -67,7 +81,7 @@
         }
     },
     "fan": {
-        "icon": "💨",
+        "icon": "\uD83C\uDF00",
         "fields": {
             "speed": {
                 "label": "${embeds.fields.power}",

@@ -24,6 +24,14 @@ export class TempHelper {
         return result
     }
 
+    protected parseFieldTitle(key: string) {
+        const hideList = tempMapping.hide_types
+
+        hideList.some(hideType => key = key.replace(hideType, ''))
+
+        return key
+    }
+
     public parseFieldsSet(key: string) {
         const allias = tempMapping.alliases[key]
 
@@ -37,7 +45,7 @@ export class TempHelper {
 
         for(const cacheKey in cacheData) {
             const keyData = {
-                name: `${mappingData.icon} ${cacheKey}`,
+                name: `${mappingData.icon} ${this.parseFieldTitle(cacheKey)}`,
                 value: '',
                 inline: true
             }
@@ -51,8 +59,8 @@ export class TempHelper {
                 }
                 if(fieldData.suffix === '%') {
                     keyData.value = `${keyData.value}
-                        \`${fieldData.label}:\`${formatPercent(cacheData[cacheKey][fieldKey], 0)}${fieldData.suffix}`
-                        continue
+                       \`${fieldData.label}:\`${formatPercent(cacheData[cacheKey][fieldKey], 0)}${fieldData.suffix}`
+                    continue
                 }
                 keyData.value = `${keyData.value}
                     \`${fieldData.label}:\`${cacheData[cacheKey][fieldKey]}${fieldData.suffix}`
