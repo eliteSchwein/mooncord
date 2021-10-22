@@ -1,54 +1,56 @@
 import { getEntry } from "../utils/CacheUtil";
 import { formatPercent } from "./FormattingHelper";
 import { mergeDeep } from "./ObjectMergeHelper";
+import tempMapping from "../meta/temp_mapping.json"
 
 export class TempHelper {
     protected cache = getEntry('state')
 
     public parseFields() {
         const result = {}
+        const supportedSensors = tempMapping.supported_sensors
 
-        mergeDeep(result, this.parseFanFields())
-        mergeDeep(result, this.parseExtruderFields())
+        for(const sensorType of supportedSensors) {
+            mergeDeep(result, this.parseFieldsSet(sensorType))
+        }
 
         return result
     }
 
-    public parseExtruderFields() {
-        const cacheData = this.parseCacheFields('extruder')
+    public parseFieldsSet(key: string) {
+        const allias = tempMapping.alliases[key]
+
+        if(typeof allias !== 'undefined') { key = allias }
+
+        const cacheData = this.parseCacheFields(key)
+        const mappingData = tempMapping[key]
         const fields = {}
         const cacheIds = []
 
-        for(const key in cacheData) {
+        for(const cacheKey in cacheData) {
             const keyData = {
-                name: `♨${key}`,
-                value: `📶\`\${embeds.fields.power}:\`${formatPercent(cacheData[key].power, 0)}%
-                    🌡\`\${embeds.fields.target}:\`${cacheData[key].target, 0}°C
-                    🌡\`\${embeds.fields.current}:\`${cacheData[key].temperature, 0}°C`
+                name: `${mappingData.key}${cacheKey}`,
+                value: ''
             }
-            fields[key] = keyData
-            cacheIds.push(cacheData[key].cache_id)
-        }
-
-        return {fields, cacheIds}
-    }
-
-    public parseFanFields() {
-        const cacheData = this.parseCacheFields('fan')
-        const fields = {}
-        const cacheIds = []
-
-        for(const key in cacheData) {
-            const keyData = {
-                name: `💨${key}`,
-                value: `📶\`\${embeds.fields.power}:\`${formatPercent(cacheData[key].speed, 0)}%`
-            }
-            if(cacheData[key].rpm !== null) {
+            for(const fieldKey in mappingData.fields) {
+                const fieldData = mappingData.fields[fieldKey]
+                if(typeof cacheData[cacheKey][fieldKey] === 'undefined') {
+                    continue
+                }
+                if(typeof cacheData[cacheKey][fieldKey] === null) {
+                    continue
+                }
+                if(fieldData.suffix === '%') {
+                    keyData.value = `${keyData.value}
+                        \`${fieldData.label}:\`${formatPercent(cacheData[cacheKey][fieldKey], 0)}${fieldData.suffix}`
+                        continue
+                }
                 keyData.value = `${keyData.value}
-                    💿\`\${embeds.fields.speed}:\`${cacheData[key].rpm}rpm`
+                    \`${fieldData.label}:\`${cacheData[cacheKey][fieldKey]}${fieldData.suffix}`
+                
             }
-            fields[key] = keyData
-            cacheIds.push(cacheData[key].cache_id)
+            fields[cacheKey] = keyData
+            cacheIds.push(cacheData[cacheKey].cache_id)
         }
 
         return {fields, cacheIds}
@@ -61,13 +63,8 @@ export class TempHelper {
             const cacheKeySplit = cacheKey.split(' ')
 
             if(cacheKeySplit[0] === key) {
-                if(typeof cacheKeySplit[1] === undefined) {
-                    result[cacheKeySplit[1]] = this.cache[cacheKey]
-                    result[cacheKeySplit[1]].cache_id = cacheKey
-                } else {
-                    result[cacheKeySplit[0]] = this.cache[cacheKey]
-                    result[cacheKeySplit[0]].cache_id = cacheKey
-                }
+                result[key.replace('_', '')] = this.cache[cacheKey]
+                result[key.replace('_', '')].cache_id = cacheKey
             }
         }
 

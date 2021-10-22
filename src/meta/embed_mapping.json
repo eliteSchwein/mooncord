@@ -93,7 +93,11 @@
       }
     ]
   },
-  "temperatures": {},
+  "temperatures": {
+    "color": "#0099ff",
+    "thumbnail": "temps.png",
+    "buttons": []
+  },
   "disconnected":{
     "color": "#c90000",
     "buttons": ["klipper_restart"]

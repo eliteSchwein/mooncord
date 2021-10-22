@@ -6,6 +6,7 @@ import {logNotice, logWarn} from "../../../helper/ConsoleLogger";
 import {PermissionHelper} from "../../../helper/PermissionHelper";
 import {ConfigHelper} from "../../../helper/ConfigHelper";
 import {LocaleHelper} from "../../../helper/LocaleHelper";
+import { TempCommand } from "./commands/TempCommand";
 
 export class CommandInteraction {
     protected config = new ConfigHelper()
@@ -35,5 +36,6 @@ export class CommandInteraction {
 
         void new InfoCommand(interaction, commandId)
         void new DumpCommand(interaction, commandId)
+        void new TempCommand(interaction, commandId)
     }
 }

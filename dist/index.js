@@ -26591,7 +26591,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 883:
+/***/ 587:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -27026,7 +27026,7 @@ class ButtonInteraction {
 }
 
 ;// CONCATENATED MODULE: ./src/meta/embed_mapping.json
-const embed_mapping_namespaceObject = JSON.parse('{"fileinfo":{},"list_files":{},"info":{"color":"#0099ff","thumbnail":"logo.png"},"printjob_start_request":{},"printjob_start":{"color":"#25db00","author":"${state.print_stats.filename}","thumbnail":"printjob_thumbnail","buttons":[],"fields":[{"name":"${embeds.fields.print_time}","value":"${value_eta_print_time}"}]},"printjob_done":{"color":"#25db00","author":"${state.print_stats.filename}","thumbnail":"printjob_thumbnail","buttons":[],"fields":[{"name":"${embeds.fields.print_time}","value":"${value_print_time}"}]},"printjob_pause":{"color":"#dbd400","author":"${state.print_stats.filename}","thumbnail":"printjob_thumbnail","buttons":["printjob_resume","printjob_cancel"],"fields":[{"name":"${embeds.fields.print_time}","value":"${value_print_time}"},{"name":"${embeds.fields.eta_print_time}","value":"${value_eta_print_time}"},{"name":"${embeds.fields.print_progress}","value":"${value_print_progress}%"},{"name":"${embeds.fields.print_layers}","value":"${value_current_layer}/${value_max_layer}"}]},"printjob_printing":{"color":"#0099ff","author":"${state.print_stats.filename}","thumbnail":"printjob_thumbnail","buttons":["printjob_pause","printjob_cancel","printjob_refresh"],"fields":[{"name":"${embeds.fields.print_time}","value":"${value_print_time}"},{"name":"${embeds.fields.eta_print_time}","value":"${value_eta_print_time}"},{"name":"${embeds.fields.print_progress}","value":"${value_print_progress}%"},{"name":"${embeds.fields.print_layers}","value":"${value_current_layer}/${value_max_layer}"}]},"printjob_stop":{"color":"#c90000","author":"${state.print_stats.filename}","thumbnail":"printjob_thumbnail","buttons":[],"fields":[{"name":"${embeds.fields.print_time}","value":"${value_print_time}"}]},"temperatures":{},"disconnected":{"color":"#c90000","buttons":["klipper_restart"]},"error":{"color":"#c90000","buttons":["klipper_restart"]},"offline":{"color":"#c90000","buttons":[]},"shutdown":{"color":"#c90000","buttons":["klipper_restart"]},"ready":{"color":"#0099ff","buttons":[],"description":"${versions}"},"startup":{"color":"#0099ff","buttons":[]},"wait":{},"system_warning":{},"throttle":{},"system_update":{}}');
+const embed_mapping_namespaceObject = JSON.parse('{"fileinfo":{},"list_files":{},"info":{"color":"#0099ff","thumbnail":"logo.png"},"printjob_start_request":{},"printjob_start":{"color":"#25db00","author":"${state.print_stats.filename}","thumbnail":"printjob_thumbnail","buttons":[],"fields":[{"name":"${embeds.fields.print_time}","value":"${value_eta_print_time}"}]},"printjob_done":{"color":"#25db00","author":"${state.print_stats.filename}","thumbnail":"printjob_thumbnail","buttons":[],"fields":[{"name":"${embeds.fields.print_time}","value":"${value_print_time}"}]},"printjob_pause":{"color":"#dbd400","author":"${state.print_stats.filename}","thumbnail":"printjob_thumbnail","buttons":["printjob_resume","printjob_cancel"],"fields":[{"name":"${embeds.fields.print_time}","value":"${value_print_time}"},{"name":"${embeds.fields.eta_print_time}","value":"${value_eta_print_time}"},{"name":"${embeds.fields.print_progress}","value":"${value_print_progress}%"},{"name":"${embeds.fields.print_layers}","value":"${value_current_layer}/${value_max_layer}"}]},"printjob_printing":{"color":"#0099ff","author":"${state.print_stats.filename}","thumbnail":"printjob_thumbnail","buttons":["printjob_pause","printjob_cancel","printjob_refresh"],"fields":[{"name":"${embeds.fields.print_time}","value":"${value_print_time}"},{"name":"${embeds.fields.eta_print_time}","value":"${value_eta_print_time}"},{"name":"${embeds.fields.print_progress}","value":"${value_print_progress}%"},{"name":"${embeds.fields.print_layers}","value":"${value_current_layer}/${value_max_layer}"}]},"printjob_stop":{"color":"#c90000","author":"${state.print_stats.filename}","thumbnail":"printjob_thumbnail","buttons":[],"fields":[{"name":"${embeds.fields.print_time}","value":"${value_print_time}"}]},"temperatures":{"color":"#0099ff","thumbnail":"temps.png","buttons":[]},"disconnected":{"color":"#c90000","buttons":["klipper_restart"]},"error":{"color":"#c90000","buttons":["klipper_restart"]},"offline":{"color":"#c90000","buttons":[]},"shutdown":{"color":"#c90000","buttons":["klipper_restart"]},"ready":{"color":"#0099ff","buttons":[],"description":"${versions}"},"startup":{"color":"#0099ff","buttons":[]},"wait":{},"system_warning":{},"throttle":{},"system_update":{}}');
 ;// CONCATENATED MODULE: ./src/helper/EmbedHelper.ts
 
 
@@ -27236,7 +27236,96 @@ class PermissionHelper {
     }
 }
 
+;// CONCATENATED MODULE: ./src/helper/FormattingHelper.ts
+function formatPercent(percent, digits) {
+    return (percent * 100).toFixed(digits);
+}
+
+;// CONCATENATED MODULE: ./src/meta/temp_mapping.json
+const temp_mapping_namespaceObject = JSON.parse('{"supported_sensors":["heater_generic","heater_bed","heater","extruder","fan_generic","heater_fan","controller_fan","temperature_sensor","temperature_fan","fan"],"alliases":{"heater_generic":"heater","heater_bed":"heater","extruder":"heater","fan_generic":"fan","heater_fan":"fan","controller_fan":"fan"},"temperature_sensor":{"icon":"🌡","fields":{"temperature":{"label":"${embeds.fields.current}","suffix":"°C"}}},"temperature_fan":{"icon":"♨","fields":{"power":{"label":"${embeds.fields.power}","suffix":"%"},"target":{"label":"${embeds.fields.target}","suffix":"°C"},"temperature":{"label":"${embeds.fields.current}","suffix":"°C"},"rpm":{"label":"${embeds.fields.speed}","suffix":"rpm"}}},"heater":{"icon":"♨","fields":{"power":{"label":"${embeds.fields.power}","suffix":"%"},"target":{"label":"${embeds.fields.target}","suffix":"°C"},"temperature":{"label":"${embeds.fields.current}","suffix":"°C"}}},"fan":{"icon":"💨","fields":{"speed":{"label":"${embeds.fields.power}","suffix":"%"},"rpm":{"label":"${embeds.fields.speed}","suffix":"rpm"}}}}');
+;// CONCATENATED MODULE: ./src/helper/TempHelper.ts
+
+
+
+
+class TempHelper {
+    constructor() {
+        this.cache = getEntry('state');
+    }
+    parseFields() {
+        const result = {};
+        const supportedSensors = temp_mapping_namespaceObject.supported_sensors;
+        for (const sensorType of supportedSensors) {
+            mergeDeep(result, this.parseFieldsSet(sensorType));
+        }
+        return result;
+    }
+    parseFieldsSet(key) {
+        const allias = temp_mapping_namespaceObject.alliases[key];
+        if (typeof allias !== 'undefined') {
+            key = allias;
+        }
+        const cacheData = this.parseCacheFields(key);
+        const mappingData = temp_mapping_namespaceObject[key];
+        const fields = {};
+        const cacheIds = [];
+        for (const cacheKey in cacheData) {
+            const keyData = {
+                name: `${mappingData.key}${cacheKey}`,
+                value: ''
+            };
+            for (const fieldKey in mappingData.fields) {
+                const fieldData = mappingData.fields[fieldKey];
+                if (typeof cacheData[cacheKey][fieldKey] === 'undefined') {
+                    continue;
+                }
+                if (typeof cacheData[cacheKey][fieldKey] === null) {
+                    continue;
+                }
+                if (fieldData.suffix === '%') {
+                    keyData.value = `${keyData.value}
+                        \`${fieldData.label}:\`${formatPercent(cacheData[cacheKey][fieldKey], 0)}${fieldData.suffix}`;
+                    continue;
+                }
+                keyData.value = `${keyData.value}
+                    \`${fieldData.label}:\`${cacheData[cacheKey][fieldKey]}${fieldData.suffix}`;
+            }
+            fields[cacheKey] = keyData;
+            cacheIds.push(cacheData[cacheKey].cache_id);
+        }
+        return { fields, cacheIds };
+    }
+    parseCacheFields(key) {
+        const result = {};
+        for (const cacheKey in this.cache) {
+            const cacheKeySplit = cacheKey.split(' ');
+            if (cacheKeySplit[0] === key) {
+                result[key.replace('_', '')] = this.cache[cacheKey];
+                result[key.replace('_', '')].cache_id = cacheKey;
+            }
+        }
+        return result;
+    }
+}
+
+;// CONCATENATED MODULE: ./src/events/discord/interactions/commands/TempCommand.ts
+
+
+class TempCommand {
+    constructor(interaction, commandId) {
+        this.embedHelper = new EmbedHelper();
+        this.tempHelper = new TempHelper();
+        if (commandId !== 'temp') {
+            return;
+        }
+        const fields = this.tempHelper.parseFields();
+        const message = this.embedHelper.generateEmbed('temperatures', {}, fields['fields']);
+        void interaction.reply(message);
+    }
+}
+
 ;// CONCATENATED MODULE: ./src/events/discord/interactions/CommandInteraction.ts
+
 
 
 
@@ -27271,6 +27360,7 @@ class CommandInteraction {
         }
         void new InfoCommand(interaction, commandId);
         void new DumpCommand(interaction, commandId);
+        void new TempCommand(interaction, commandId);
     }
 }
 
@@ -27998,7 +28088,7 @@ module.exports = require("zlib");
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(883);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(587);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()
