@@ -32,6 +32,10 @@ export class TempHelper {
         return key
     }
 
+    public isCold(temperature: number) {
+        return temperature < tempMapping.cold_meta.hot_temp
+    }
+
     public parseFieldsSet(key: string) {
         const allias = tempMapping.alliases[key]
 
@@ -48,6 +52,12 @@ export class TempHelper {
                 name: `${mappingData.icon} ${this.parseFieldTitle(cacheKey)}`,
                 value: '',
                 inline: true
+            }
+            if(typeof cacheData[cacheKey].temperature !== 'undefined' &&
+                tempMapping.heater_types.includes(key)) {
+                if(this.isCold(cacheData[cacheKey].temperature)) {
+                    keyData.name = `${tempMapping.cold_meta.icon} ${this.parseFieldTitle(cacheKey)}`
+                }
             }
             for(const fieldKey in mappingData.fields) {
                 const fieldData = mappingData.fields[fieldKey]

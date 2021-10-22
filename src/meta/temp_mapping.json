@@ -1,4 +1,15 @@
 {
+    "cold_meta": {
+        "icon": "❄",
+        "hot_temp": 50
+    },
+    "heater_types": [
+        "temperature_fan",
+        "heater_generic",
+        "heater_bed",
+        "heater",
+        "extruder"
+    ],
     "hide_types": [
         "temperature_sensor",
         "temperature_fan",

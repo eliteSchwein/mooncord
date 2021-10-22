@@ -27250,7 +27250,7 @@ function formatPercent(percent, digits) {
 }
 
 ;// CONCATENATED MODULE: ./src/meta/temp_mapping.json
-const temp_mapping_namespaceObject = JSON.parse('{"hide_types":["temperature_sensor","temperature_fan","controller_fan","fan_generic"],"supported_sensors":["heater_generic","heater_bed","heater","extruder","fan_generic","heater_fan","controller_fan","temperature_sensor","temperature_fan","fan"],"alliases":{"heater_generic":"heater","heater_bed":"heater","extruder":"heater","fan_generic":"fan","heater_fan":"fan","controller_fan":"fan"},"temperature_sensor":{"icon":"🌡","fields":{"temperature":{"label":"${embeds.fields.current}","suffix":"°C"},"measured_min_temp":{"label":"${embeds.fields.min_temp}","suffix":"°C"},"measured_max_temp":{"label":"${embeds.fields.max_temp}","suffix":"°C"}}},"temperature_fan":{"icon":"♨","fields":{"power":{"label":"${embeds.fields.power}","suffix":"%"},"target":{"label":"${embeds.fields.target}","suffix":"°C"},"temperature":{"label":"${embeds.fields.current}","suffix":"°C"},"rpm":{"label":"${embeds.fields.speed}","suffix":"rpm"}}},"heater":{"icon":"♨","fields":{"power":{"label":"${embeds.fields.power}","suffix":"%"},"target":{"label":"${embeds.fields.target}","suffix":"°C"},"temperature":{"label":"${embeds.fields.current}","suffix":"°C"}}},"fan":{"icon":"🌀","fields":{"speed":{"label":"${embeds.fields.power}","suffix":"%"},"rpm":{"label":"${embeds.fields.speed}","suffix":"rpm"}}}}');
+const temp_mapping_namespaceObject = JSON.parse('{"cold_meta":{"icon":"❄","hot_temp":50},"heater_types":["temperature_fan","heater_generic","heater_bed","heater","extruder"],"hide_types":["temperature_sensor","temperature_fan","controller_fan","fan_generic"],"supported_sensors":["heater_generic","heater_bed","heater","extruder","fan_generic","heater_fan","controller_fan","temperature_sensor","temperature_fan","fan"],"alliases":{"heater_generic":"heater","heater_bed":"heater","extruder":"heater","fan_generic":"fan","heater_fan":"fan","controller_fan":"fan"},"temperature_sensor":{"icon":"🌡","fields":{"temperature":{"label":"${embeds.fields.current}","suffix":"°C"},"measured_min_temp":{"label":"${embeds.fields.min_temp}","suffix":"°C"},"measured_max_temp":{"label":"${embeds.fields.max_temp}","suffix":"°C"}}},"temperature_fan":{"icon":"♨","fields":{"power":{"label":"${embeds.fields.power}","suffix":"%"},"target":{"label":"${embeds.fields.target}","suffix":"°C"},"temperature":{"label":"${embeds.fields.current}","suffix":"°C"},"rpm":{"label":"${embeds.fields.speed}","suffix":"rpm"}}},"heater":{"icon":"♨","fields":{"power":{"label":"${embeds.fields.power}","suffix":"%"},"target":{"label":"${embeds.fields.target}","suffix":"°C"},"temperature":{"label":"${embeds.fields.current}","suffix":"°C"}}},"fan":{"icon":"🌀","fields":{"speed":{"label":"${embeds.fields.power}","suffix":"%"},"rpm":{"label":"${embeds.fields.speed}","suffix":"rpm"}}}}');
 ;// CONCATENATED MODULE: ./src/helper/TempHelper.ts
 
 
@@ -27279,6 +27279,9 @@ class TempHelper {
         hideList.some(hideType => key = key.replace(hideType, ''));
         return key;
     }
+    isCold(temperature) {
+        return temperature < temp_mapping_namespaceObject.cold_meta.hot_temp;
+    }
     parseFieldsSet(key) {
         const allias = temp_mapping_namespaceObject.alliases[key];
         const cacheData = this.parseCacheFields(key);
@@ -27294,6 +27297,12 @@ class TempHelper {
                 value: '',
                 inline: true
             };
+            if (typeof cacheData[cacheKey].temperature !== 'undefined' &&
+                temp_mapping_namespaceObject.heater_types.includes(key)) {
+                if (this.isCold(cacheData[cacheKey].temperature)) {
+                    keyData.name = `${temp_mapping_namespaceObject.cold_meta.icon} ${this.parseFieldTitle(cacheKey)}`;
+                }
+            }
             for (const fieldKey in mappingData.fields) {
                 const fieldData = mappingData.fields[fieldKey];
                 if (typeof cacheData[cacheKey][fieldKey] === 'undefined') {
