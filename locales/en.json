@@ -111,6 +111,7 @@
             "other_id": "${username}`s id is ${id}",
             "notify_activated": "I will notify you of the print status via DM, ${username}!",
             "notify_deactivated": "I will no longer notify you of the print status via DM, ${username}!",
+            "emergency_stop": "Emergency Stop executed, ${username}!",
             "printjob_resume": {
                 "status_not_valid": "${username} the Print Job isn`t currently Pausing!",
                 "status_valid": "${username} you resumed the Print Job!",
@@ -265,10 +266,7 @@
         },
         "emergency_stop": {
             "description": "Emergency Stop the Printer?",
-            "command": "emergencystop",
-            "answer": {
-                "executed": "Emergency Stop executed, ${username}!"
-            }
+            "command": "emergencystop"
         },
         "execute": {
             "description": "Execute a GCode Command.",
