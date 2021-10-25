@@ -9,6 +9,7 @@ import {LocaleHelper} from "../../../helper/LocaleHelper";
 import { TempCommand } from "./commands/TempCommand";
 import { sleep } from "../../../helper/FormattingHelper";
 import { RestartCommand } from "./commands/RestartCommand";
+import { GetLodCommand } from "./commands/GetLogCommand";
 
 export class CommandInteraction {
     protected config = new ConfigHelper()
@@ -46,6 +47,7 @@ export class CommandInteraction {
         void new DumpCommand(interaction, commandId)
         void new TempCommand(interaction, commandId)
         void new RestartCommand(interaction, commandId)
+        void new GetLodCommand(interaction, commandId)
 
         await sleep(1500)
 

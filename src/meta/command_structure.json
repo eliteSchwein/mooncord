@@ -60,7 +60,7 @@
       "choices" : [
         {
           "name": "Klipper",
-          "value": "klipper"
+          "value": "klippy"
         },
         {
           "name": "Moonraker",

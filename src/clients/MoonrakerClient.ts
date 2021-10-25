@@ -50,6 +50,9 @@ export class MoonrakerClient {
 
         logRegular('Retrieve Printer Info...')
         const printerInfo = await this.send(`{"jsonrpc": "2.0", "method": "printer.info"}`)
+        
+        logRegular('Retrieve Server Config...')
+        const serverConfig = await this.send(`{"jsonrpc": "2.0", "method": "server.config"}`)
 
         logRegular('Retrieve Server Info...')
         const serverInfo = await this.send(`{"jsonrpc": "2.0", "method": "server.info"}`)
@@ -77,6 +80,7 @@ export class MoonrakerClient {
 
         setData('updates', updates.result)
         setData('printer_info', printerInfo.result)
+        setData('server_config', serverConfig.result)
         setData('server_info', serverInfo.result)
         setData('machine_info', machineInfo.result)
         setData('proc_stats', procStats.result)
@@ -106,7 +110,7 @@ export class MoonrakerClient {
     }
 
     public async send(message: string, timeout = 10_000) {
-        const id = Math.floor(Math.random() * 10_000) + 1
+        const id = Math.floor(Math.random() * 100_000) + 1
 
         const messageData = JSON.parse(message)
 

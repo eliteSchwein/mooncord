@@ -26591,7 +26591,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 307:
+/***/ 211:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -26886,7 +26886,7 @@ class ConfigHelper {
 }
 
 ;// CONCATENATED MODULE: ./src/meta/command_structure.json
-const command_structure_namespaceObject = JSON.parse('{"admin":{"role":{"type":"subcommand","options":{"role":{"type":"role","required":true}}},"user":{"type":"subcommand","options":{"user":{"type":"user","required":true}}}},"dump":{},"editchannel":{"channel":{"type":"channel","required":false}},"emergency_stop":{},"execute":{"gcode":{"type":"string","required":true}},"fileinfo":{"file":{"type":"string","required":true}},"get_user_id":{"user":{"type":"user","required":false}},"restart":{"service":{"type":"string","required":true,"choices":"${serviceChoices}"}},"get_log":{"log_file":{"type":"string","required":true,"choices":[{"name":"Klipper","value":"klipper"},{"name":"Moonraker","value":"moonraker"}]}},"info":{},"listfiles":{},"notify":{},"printjob":{"pause":{"type":"subcommand"},"cancel":{"type":"subcommand"},"resume":{"type":"subcommand"},"start":{"type":"subcommand","options":{"file":{"type":"string","required":true}}}},"status":{},"systeminfo":{"component":{"type":"string","required":true,"choices":"${systemInfoChoices}"}},"temp":{},"timelapse":{}}');
+const command_structure_namespaceObject = JSON.parse('{"admin":{"role":{"type":"subcommand","options":{"role":{"type":"role","required":true}}},"user":{"type":"subcommand","options":{"user":{"type":"user","required":true}}}},"dump":{},"editchannel":{"channel":{"type":"channel","required":false}},"emergency_stop":{},"execute":{"gcode":{"type":"string","required":true}},"fileinfo":{"file":{"type":"string","required":true}},"get_user_id":{"user":{"type":"user","required":false}},"restart":{"service":{"type":"string","required":true,"choices":"${serviceChoices}"}},"get_log":{"log_file":{"type":"string","required":true,"choices":[{"name":"Klipper","value":"klippy"},{"name":"Moonraker","value":"moonraker"}]}},"info":{},"listfiles":{},"notify":{},"printjob":{"pause":{"type":"subcommand"},"cancel":{"type":"subcommand"},"resume":{"type":"subcommand"},"start":{"type":"subcommand","options":{"file":{"type":"string","required":true}}}},"status":{},"systeminfo":{"component":{"type":"string","required":true,"choices":"${systemInfoChoices}"}},"temp":{},"timelapse":{}}');
 ;// CONCATENATED MODULE: ./src/meta/command_option_types.json
 const command_option_types_namespaceObject = JSON.parse('{"subcommand":1,"subcommand_group":2,"string":3,"integer":4,"boolean":5,"user":6,"channel":7,"role":8,"mentionable":9,"number":10}');
 ;// CONCATENATED MODULE: ./src/generator/DiscordCommandGenerator.ts
@@ -27419,7 +27419,66 @@ class RestartCommand {
     }
 }
 
+// EXTERNAL MODULE: ./node_modules/axios/index.js
+var axios = __nccwpck_require__(6545);
+var axios_default = /*#__PURE__*/__nccwpck_require__.n(axios);
+;// CONCATENATED MODULE: ./src/events/discord/interactions/commands/GetLogCommand.ts
+
+
+
+class GetLodCommand {
+    constructor(interaction, commandId) {
+        this.config = new ConfigHelper();
+        this.localeHelper = new LocaleHelper();
+        this.syntaxLocale = this.localeHelper.getSyntaxLocale();
+        this.locale = this.localeHelper.getLocale();
+        if (commandId !== 'get_log') {
+            return;
+        }
+        this.execute(interaction);
+    }
+    async execute(interaction) {
+        await interaction.deferReply({ ephemeral: true });
+        const service = interaction.options.getString(this.syntaxLocale.commands.get_log.options.log_file.name);
+        const request = await this.retrieveLog(service);
+        await interaction.editReply(request);
+    }
+    async retrieveLog(service) {
+        try {
+            const result = await axios_default().get(`${this.config.getMoonrakerUrl()}/server/files/${service}.log`, {
+                responseType: 'arraybuffer',
+                headers: {
+                    'X-Api-Key': this.config.getMoonrakerApiKey()
+                }
+            });
+            const bufferSize = Buffer.byteLength(result.data);
+            // if (bufferSize > Number.parseInt('8000000')) {
+            //    answer = this.locale.messages.log_too_large
+            //        .replace(/(\${service})/g, `\`${service}\``)
+            //    return answer
+            //}
+            console.log(result.data);
+            return result;
+        }
+        catch (error) {
+            if (typeof error.code !== 'undefined') {
+                return this.locale.messages.errors.log_failed
+                    .replace(/(\${service})/g, service)
+                    .replace(/(\${reason})/g, `${error.code}`);
+            }
+            if (error.response.status === 404) {
+                return this.locale.messages.errors.log_not_found
+                    .replace(/(\${service})/g, service);
+            }
+            return this.locale.messages.errors.log_failed
+                .replace(/(\${service})/g, service)
+                .replace(/(\${reason})/g, `${error.response.status} ${error.response.statusText}`);
+        }
+    }
+}
+
 ;// CONCATENATED MODULE: ./src/events/discord/interactions/CommandInteraction.ts
+
 
 
 
@@ -27463,6 +27522,7 @@ class CommandInteraction {
         void new DumpCommand(interaction, commandId);
         void new TempCommand(interaction, commandId);
         void new RestartCommand(interaction, commandId);
+        void new GetLodCommand(interaction, commandId);
         await sleep(1500);
         if (interaction.replied || interaction.deferred) {
             return;
@@ -27632,9 +27692,6 @@ class DiscordClient {
 
 // EXTERNAL MODULE: ./node_modules/websocket-ts/lib/index.js
 var lib = __nccwpck_require__(7913);
-// EXTERNAL MODULE: ./node_modules/axios/index.js
-var axios = __nccwpck_require__(6545);
-var axios_default = /*#__PURE__*/__nccwpck_require__.n(axios);
 ;// CONCATENATED MODULE: ./src/helper/APIKeyHelper.ts
 
 
@@ -27785,6 +27842,8 @@ class MoonrakerClient {
         const updates = await this.send(`{"jsonrpc": "2.0", "method": "machine.update.status", "params":{"refresh": "false"}}`, 300000);
         logRegular('Retrieve Printer Info...');
         const printerInfo = await this.send(`{"jsonrpc": "2.0", "method": "printer.info"}`);
+        logRegular('Retrieve Server Config...');
+        const serverConfig = await this.send(`{"jsonrpc": "2.0", "method": "server.config"}`);
         logRegular('Retrieve Server Info...');
         const serverInfo = await this.send(`{"jsonrpc": "2.0", "method": "server.info"}`);
         logRegular('Retrieve Machine System Info...');
@@ -27803,6 +27862,7 @@ class MoonrakerClient {
         this.ready = true;
         setData('updates', updates.result);
         setData('printer_info', printerInfo.result);
+        setData('server_config', serverConfig.result);
         setData('server_info', serverInfo.result);
         setData('machine_info', machineInfo.result);
         setData('proc_stats', procStats.result);
@@ -27829,7 +27889,7 @@ class MoonrakerClient {
         messageHandler = new MessageHandler(this.websocket);
     }
     async send(message, timeout = 10000) {
-        const id = Math.floor(Math.random() * 10000) + 1;
+        const id = Math.floor(Math.random() * 100000) + 1;
         const messageData = JSON.parse(message);
         messageData.id = id;
         this.websocket.send(JSON.stringify(messageData));
@@ -28195,7 +28255,7 @@ module.exports = require("zlib");
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(307);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(211);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()
