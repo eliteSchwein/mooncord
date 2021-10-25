@@ -27442,17 +27442,21 @@ class CommandInteraction {
         if (!interaction.isCommand()) {
             return;
         }
+        let logFeedback = interaction.commandName;
+        for (const option of interaction.options['_hoistedOptions']) {
+            logFeedback = `${logFeedback} ${option.name}:${option.value}`;
+        }
         const commandId = this.commandGenerator.getCommandId(interaction.commandName);
         if (typeof commandId === 'undefined') {
             return;
         }
-        logNotice(`${interaction.user.tag} executed command: ${commandId}`);
+        logNotice(`${interaction.user.tag} executed command: ${logFeedback}`);
         if (!this.permissionHelper.hasPermission(interaction.user, interaction.guild, commandId)) {
             await interaction.reply({
                 content: this.localeHelper.getNoPermission(interaction.user.tag),
                 ephemeral: this.config.showNoPermissionPrivate()
             });
-            logWarn(`${interaction.user.tag} doesnt have the permission for: ${commandId}`);
+            logWarn(`${interaction.user.tag} doesnt have the permission for: ${interaction.commandName} (${commandId})`);
             return;
         }
         void new InfoCommand(interaction, commandId);
