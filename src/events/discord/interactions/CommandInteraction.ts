@@ -2,7 +2,7 @@ import {Interaction} from "discord.js";
 import {InfoCommand} from "./commands/InfoCommand";
 import {DiscordCommandGenerator} from "../../../generator/DiscordCommandGenerator";
 import { DumpCommand } from "./commands/DumpCommand";
-import {logNotice, logWarn} from "../../../helper/ConsoleLogger";
+import {logNotice, logWarn} from "../../../helper/LoggerHelper";
 import {PermissionHelper} from "../../../helper/PermissionHelper";
 import {ConfigHelper} from "../../../helper/ConfigHelper";
 import {LocaleHelper} from "../../../helper/LocaleHelper";
@@ -53,6 +53,6 @@ export class CommandInteraction {
 
         if(interaction.replied || interaction.deferred) { return }
 
-        interaction.reply(this.localeHelper.getCommandNotReadyError(interaction.user.tag))
+        await interaction.reply(this.localeHelper.getCommandNotReadyError(interaction.user.tag))
     }
 }

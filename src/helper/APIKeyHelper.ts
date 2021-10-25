@@ -1,6 +1,6 @@
 import axios from 'axios'
 import {ConfigHelper} from './ConfigHelper'
-import {logRegular} from "./ConsoleLogger"
+import {logRegular} from "./LoggerHelper"
 
 export class APIKeyHelper {
     protected config = new ConfigHelper()

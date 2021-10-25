@@ -6,7 +6,7 @@ import {MessageAttachment, MessageEmbed} from "discord.js";
 import * as path from "path"
 import {DiscordInputGenerator} from "../generator/DiscordInputGenerator";
 import {mergeDeep} from "./ObjectMergeHelper";
-import {logRegular} from "./ConsoleLogger";
+import {logRegular} from "./LoggerHelper";
 
 export class EmbedHelper {
     protected localeHelper = new LocaleHelper()

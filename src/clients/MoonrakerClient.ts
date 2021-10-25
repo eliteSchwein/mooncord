@@ -2,8 +2,8 @@ import {ConfigHelper} from '../helper/ConfigHelper'
 import {Websocket, WebsocketBuilder, WebsocketEvents} from 'websocket-ts'
 import {APIKeyHelper} from '../helper/APIKeyHelper'
 import {waitUntil} from 'async-wait-until'
-import {logError, logRegular, logSuccess} from '../helper/ConsoleLogger'
-import {setData} from '../utils/CacheUtil'
+import {changePath, logError, logRegular, logSuccess} from '../helper/LoggerHelper'
+import {getLogPath, setData} from '../utils/CacheUtil'
 import {MessageHandler} from "../events/moonraker/MessageHandler";
 
 const requests: any = {}
@@ -91,6 +91,8 @@ export class MoonrakerClient {
             'readySince': new Date(),
             'event_count': this.websocket.underlyingWebsocket['_eventsCount']
         })
+
+        changePath(getLogPath())
 
         logSuccess('MoonRaker Client is ready')
     }

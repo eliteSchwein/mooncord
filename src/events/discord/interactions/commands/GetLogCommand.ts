@@ -1,9 +1,8 @@
-import {CommandInteraction, Interaction, MessageAttachment} from "discord.js";
-import { dump } from "../../../../utils/CacheUtil";
-import * as path from "path";
+import {CommandInteraction, MessageAttachment} from "discord.js";
 import { ConfigHelper } from "../../../../helper/ConfigHelper";
 import axios from "axios";
 import { LocaleHelper } from "../../../../helper/LocaleHelper";
+import {logError, logSuccess} from "../../../../helper/LoggerHelper";
 
 export class GetLodCommand {
     protected config = new ConfigHelper()
@@ -38,21 +37,24 @@ export class GetLodCommand {
 
             const bufferSize = Buffer.byteLength(<Buffer>result.data)
 
-           // if (bufferSize > Number.parseInt('8000000')) {
-            //    answer = this.locale.messages.log_too_large
-            //        .replace(/(\${service})/g, `\`${service}\``)
-            //    return answer
-            //}
+            if (bufferSize > Number.parseInt('8000000')) {
+                logError(`${service} Log to big, Logfile: ${bufferSize}byte Limit: 8000000byte`)
+                return this.locale.messages.errors.log_too_large
+                    .replace(/(\${service})/g, `\`${service}\``)
+            }
 
-            console.log(result.data)
+            const attachment = new MessageAttachment(<Buffer>result.data, `${service}.log`)
 
-            return result
+            logSuccess(`${service} Log Download successful!`)
+            return { files: [attachment] }
         } catch (error){
             if(typeof error.code !== 'undefined') {
+                logError(`${service} Log Download failed: ${error.config.url}: ${error.code}`)
                 return this.locale.messages.errors.log_failed
                     .replace(/(\${service})/g, service)
                     .replace(/(\${reason})/g, `${error.code}`)
             }
+            logError(`${service} Log Download failed: ${error.config.url}: ${error.response.status} ${error.response.statusText}`)
             if(error.response.status === 404) {
                 return this.locale.messages.errors.log_not_found
                     .replace(/(\${service})/g, service)

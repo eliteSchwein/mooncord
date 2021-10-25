@@ -4,7 +4,7 @@ import {Client, Intents} from 'discord.js'
 
 import {getDatabase} from '../Application'
 import {ConfigHelper} from '../helper/ConfigHelper'
-import {logEmpty, logRegular, logSuccess} from '../helper/ConsoleLogger'
+import {logEmpty, logRegular, logSuccess} from '../helper/LoggerHelper'
 import {dump, getEntry, setData} from '../utils/CacheUtil'
 import {DiscordCommandGenerator} from "../generator/DiscordCommandGenerator";
 import {DiscordInputGenerator} from '../generator/DiscordInputGenerator'

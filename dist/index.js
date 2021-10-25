@@ -26591,7 +26591,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 211:
+/***/ 8159:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -26606,7 +26606,7 @@ __nccwpck_require__.d(__webpack_exports__, {
 });
 
 ;// CONCATENATED MODULE: ./package.json
-const package_namespaceObject = JSON.parse('{"name":"mooncord","version":"0.0.5","description":"Moonraker Discord Bot based on Discord.js","main":"index.js","scripts":{"start":"node dist/index.js","ramdebugstart":"node --trace_gc dist/mooncord.js","checkcodestyle":"npx eslint ./**","autofixcodestyle":"npx eslint ./** --fix","build":"ncc build -m -e discord.js src/Application.ts -o dist","watch":"ncc build -w -e discord.js src/Application.ts -o dist"},"repository":{"type":"git","url":"git+https://github.com/eliteSchwein/mooncord.git"},"keywords":[],"author":"eliteSCHW31N","license":"ISC","bugs":{"url":"https://github.com/eliteSchwein/mooncord/issues"},"homepage":"https://github.com/eliteSchwein/mooncord#readme","devDependencies":{"@types/node":"^16.11.1","@vercel/ncc":"^0.31.1","async-wait-until":"^2.0.8","axios":"^0.23.0","colorts":"^0.1.63","eslint":"^8.0.1","eslint-config-galex":"^3.0.1","eslint-config-standard":"^16.0.3","eslint-plugin-import":"^2.25.2","eslint-plugin-node":"^11.1.0","eslint-plugin-promise":"^5.1.1","form-data":"^4.0.0","sharp":"^0.29.1","shelljs":"^0.8.4","typescript":"^4.4.4","websocket-ts":"^1.1.1","lodash":"^4.17.21","ws":"^8.2.3"},"dependencies":{"discord.js":"^13.2.0"}}');
+const package_namespaceObject = JSON.parse('{"name":"mooncord","version":"0.0.5","description":"Moonraker Discord Bot based on Discord.js","main":"index.js","scripts":{"start":"node dist/index.js","ramdebugstart":"node --trace_gc dist/mooncord.js","checkcodestyle":"npx eslint ./**","autofixcodestyle":"npx eslint ./** --fix","build":"ncc build -m -e discord.js src/Application.ts -o dist","watch":"ncc build -w -e discord.js src/Application.ts -o dist"},"repository":{"type":"git","url":"git+https://github.com/eliteSchwein/mooncord.git"},"keywords":[],"author":"eliteSCHW31N","license":"ISC","bugs":{"url":"https://github.com/eliteSchwein/mooncord/issues"},"homepage":"https://github.com/eliteSchwein/mooncord#readme","devDependencies":{"@types/node":"^16.11.1","@vercel/ncc":"^0.31.1","async-wait-until":"^2.0.8","axios":"^0.23.0","colorts":"^0.1.63","eslint":"^8.0.1","eslint-config-galex":"^3.0.1","eslint-config-standard":"^16.0.3","eslint-plugin-import":"^2.25.2","eslint-plugin-node":"^11.1.0","eslint-plugin-promise":"^5.1.1","form-data":"^4.0.0","lodash":"^4.17.21","sharp":"^0.29.1","shelljs":"^0.8.4","typescript":"^4.4.4","websocket-ts":"^1.1.1","ws":"^8.2.3"},"dependencies":{"discord.js":"^13.2.0"}}');
 var package_namespaceObject_0 = /*#__PURE__*/__nccwpck_require__.t(package_namespaceObject, 2);
 // EXTERNAL MODULE: ./node_modules/async-wait-until/dist/index.js
 var dist = __nccwpck_require__(1299);
@@ -26642,36 +26642,55 @@ function mergeDeep(target, ...sources) {
 
 // EXTERNAL MODULE: ./node_modules/colorts/lib/string.js
 var string = __nccwpck_require__(692);
-;// CONCATENATED MODULE: ./src/helper/ConsoleLogger.ts
+// EXTERNAL MODULE: external "util"
+var external_util_ = __nccwpck_require__(1669);
+;// CONCATENATED MODULE: ./src/helper/LoggerHelper.ts
 
+
+
+
+let log_file = external_fs_namespaceObject.createWriteStream(external_path_namespaceObject.resolve(__dirname, '../temp/log.log'), { flags: 'w' });
+let log_stdout = process.stdout;
+function hookLogFile() {
+    console.log = function (d) {
+        log_file.write(external_util_.format(d) + '\n');
+        log_stdout.write(external_util_.format(d) + '\n');
+    };
+    console.error = console.log;
+    process.on('uncaughtException', function (err) {
+        logError(`${err.name}: ${err.message}
+            ${err.stack}`);
+    });
+}
+function changePath(directory) {
+    if (external_fs_namespaceObject.existsSync(directory)) {
+        const current = external_fs_namespaceObject.readFileSync(log_file.path);
+        log_file = external_fs_namespaceObject.createWriteStream(external_path_namespaceObject.resolve(directory, 'mooncord.log'), { flags: 'w' });
+        log_stdout = process.stdout;
+        log_file.write(current);
+    }
+}
 function logError(message) {
-    console.log(getTimeStamp(), message.red);
+    console.log(`${getTimeStamp()} ${message}`.red);
 }
-;
 function logSuccess(message) {
-    console.log(getTimeStamp(), message.green);
+    console.log(`${getTimeStamp()} ${message}`.green);
 }
-;
 function logRegular(message) {
-    console.log(getTimeStamp(), message.white);
+    console.log(`${getTimeStamp()} ${message}`.white);
 }
-;
 function logNotice(message) {
-    console.log(getTimeStamp(), message.magenta);
+    console.log(`${getTimeStamp()} ${message}`.magenta);
 }
-;
 function logWarn(message) {
-    console.log(getTimeStamp(), message.yellow);
+    console.log(`${getTimeStamp()} ${message}`.yellow);
 }
-;
 function logEmpty() { console.log(''); }
 function getTimeStamp() {
     const date = new Date();
     return `[${date.toISOString()}]`.grey;
 }
 
-// EXTERNAL MODULE: external "util"
-var external_util_ = __nccwpck_require__(1669);
 // EXTERNAL MODULE: ./node_modules/lodash/lodash.js
 var lodash = __nccwpck_require__(250);
 ;// CONCATENATED MODULE: ./src/helper/LocaleHelper.ts
@@ -26776,6 +26795,9 @@ function getServiceChoices() {
         "value": "FirmwareRestart"
     });
     return choices;
+}
+function getLogPath() {
+    return cacheData.server_config.config.server.log_path;
 }
 async function dump() {
     void await writeDump();
@@ -27426,6 +27448,8 @@ var axios_default = /*#__PURE__*/__nccwpck_require__.n(axios);
 
 
 
+
+
 class GetLodCommand {
     constructor(interaction, commandId) {
         this.config = new ConfigHelper();
@@ -27452,20 +27476,23 @@ class GetLodCommand {
                 }
             });
             const bufferSize = Buffer.byteLength(result.data);
-            // if (bufferSize > Number.parseInt('8000000')) {
-            //    answer = this.locale.messages.log_too_large
-            //        .replace(/(\${service})/g, `\`${service}\``)
-            //    return answer
-            //}
-            console.log(result.data);
-            return result;
+            if (bufferSize > Number.parseInt('8000000')) {
+                logError(`${service} Log to big, Logfile: ${bufferSize}byte Limit: 8000000byte`);
+                return this.locale.messages.errors.log_too_large
+                    .replace(/(\${service})/g, `\`${service}\``);
+            }
+            const attachment = new external_discord_js_namespaceObject.MessageAttachment(result.data, `${service}.log`);
+            logSuccess(`${service} Log Download successful!`);
+            return { files: [attachment] };
         }
         catch (error) {
             if (typeof error.code !== 'undefined') {
+                logError(`${service} Log Download failed: ${error.config.url}: ${error.code}`);
                 return this.locale.messages.errors.log_failed
                     .replace(/(\${service})/g, service)
                     .replace(/(\${reason})/g, `${error.code}`);
             }
+            logError(`${service} Log Download failed: ${error.config.url}: ${error.response.status} ${error.response.statusText}`);
             if (error.response.status === 404) {
                 return this.locale.messages.errors.log_not_found
                     .replace(/(\${service})/g, service);
@@ -27527,7 +27554,7 @@ class CommandInteraction {
         if (interaction.replied || interaction.deferred) {
             return;
         }
-        interaction.reply(this.localeHelper.getCommandNotReadyError(interaction.user.tag));
+        await interaction.reply(this.localeHelper.getCommandNotReadyError(interaction.user.tag));
     }
 }
 
@@ -27872,6 +27899,7 @@ class MoonrakerClient {
             'readySince': new Date(),
             'event_count': this.websocket.underlyingWebsocket['_eventsCount']
         });
+        changePath(getLogPath());
         logSuccess('MoonRaker Client is ready');
     }
     registerEvents() {
@@ -27976,6 +28004,7 @@ class DatabaseUtil {
 
 
 
+hookLogFile();
 logSuccess(`Starting ${package_namespaceObject.name} ${package_namespaceObject.version}...`);
 logRegular('load Package Cache...');
 setData('package_config', package_namespaceObject_0);
@@ -28255,7 +28284,7 @@ module.exports = require("zlib");
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(211);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(8159);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()

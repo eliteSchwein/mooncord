@@ -1,6 +1,6 @@
 import * as fs from "fs";
 import * as path from "path";
-import {logSuccess} from "../helper/ConsoleLogger";
+import {logSuccess} from "../helper/LoggerHelper";
 import * as util from "util";
 import {mergeDeep} from "../helper/ObjectMergeHelper";
 import {get} from 'lodash'
@@ -41,6 +41,10 @@ export function getServiceChoices() {
         "value": "FirmwareRestart"
     })
     return choices
+}
+
+export function getLogPath() {
+    return cacheData.server_config.config.server.log_path
 }
 
 export async function dump() {
