@@ -49,11 +49,11 @@ export class LocaleHelper {
     }
 
     public getGuildOnlyError(username:string) {
-        return this.getLocale().errors.guild_only.replace(/(\${username})/g, username)
+        return this.getLocale().messages.errors.guild_only.replace(/(\${username})/g, username)
     }
 
     public getCommandNotReadyError(username:string) {
-        return this.getLocale().errors.not_ready.replace(/(\${username})/g, username)
+        return this.getLocale().messages.errors.not_ready.replace(/(\${username})/g, username)
     }
 
     public getEmbeds() {

@@ -10,10 +10,12 @@ export class DumpCommand {
     }
 
     protected async execute(interaction: CommandInteraction) {
+        await interaction.deferReply({ephemeral: true})
+
         void await dump()
 
         const attachment = new MessageAttachment(path.resolve(__dirname, '../temp/dump.json'), 'dump.json')
 
-        await interaction.reply({ files: [attachment], ephemeral: true })
+        await interaction.editReply({ files: [attachment] })
     }
 }

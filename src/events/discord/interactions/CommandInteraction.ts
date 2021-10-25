@@ -7,6 +7,8 @@ import {PermissionHelper} from "../../../helper/PermissionHelper";
 import {ConfigHelper} from "../../../helper/ConfigHelper";
 import {LocaleHelper} from "../../../helper/LocaleHelper";
 import { TempCommand } from "./commands/TempCommand";
+import { sleep } from "../../../helper/FormattingHelper";
+import { RestartCommand } from "./commands/RestartCommand";
 
 export class CommandInteraction {
     protected config = new ConfigHelper()
@@ -37,5 +39,12 @@ export class CommandInteraction {
         void new InfoCommand(interaction, commandId)
         void new DumpCommand(interaction, commandId)
         void new TempCommand(interaction, commandId)
+        void new RestartCommand(interaction, commandId)
+
+        await sleep(1500)
+
+        if(interaction.replied || interaction.deferred) { return }
+
+        interaction.reply(this.localeHelper.getCommandNotReadyError(interaction.user.tag))
     }
 }

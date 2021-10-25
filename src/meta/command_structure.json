@@ -46,6 +46,13 @@
       "required": false
     }
   },
+  "restart": {
+    "service": {
+      "type": "string",
+      "required": true,
+      "choices": "${serviceChoices}"
+    }
+  },
   "get_log": {
     "log_file": {
       "type": "string",

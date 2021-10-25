@@ -59,6 +59,12 @@
                 "users": [],
                 "roles": []
             },
+            "restart": {
+                "botadmin": true,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
             "execute": {
                 "botadmin": false,
                 "guildadmin": false,

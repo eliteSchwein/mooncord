@@ -100,6 +100,8 @@
     },
     "messages": {
         "answers": {
+            "restart_successful": "The Restart for ${service} was successful!",
+            "firmware_restart_successful": "The Firmware is restarting!",
             "for_gcode": "Timelapse for ${state.print_stats.filename}",
             "admin_added": "${mention} is now a Admin, ${username}!",
             "admin_removed": "${mention} is not longer a Admin, ${username}!",
@@ -138,6 +140,7 @@
             "file_not_found": "File not Found!",
             "guild_only": "This Command is only aviable on a Guild, ${username}",
             "no_data": "There was no Data found for ${component}!",
+            "restart_failed": "The Restart for ${service} failed: `${reason}`",
             "no_files_found": "There are currently no Files!",
             "no_permission": "You dont have the Permissions, ${username}",
             "no_timelapse": "There is no Timelapse aviable!",
@@ -305,6 +308,16 @@
                 "user": {
                     "name": "user",
                     "description": "Specifies a User."
+                }
+            }
+        },
+        "restart": {
+            "description": "Restart a Service.",
+            "command": "restart",
+            "options": {
+                "service": {
+                    "name": "service",
+                    "description": "Specifies a Service."
                 }
             }
         },

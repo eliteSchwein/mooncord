@@ -26591,7 +26591,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 3587:
+/***/ 307:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -26674,7 +26674,74 @@ function getTimeStamp() {
 var external_util_ = __nccwpck_require__(1669);
 // EXTERNAL MODULE: ./node_modules/lodash/lodash.js
 var lodash = __nccwpck_require__(250);
+;// CONCATENATED MODULE: ./src/helper/LocaleHelper.ts
+
+
+
+
+
+class LocaleHelper {
+    constructor() {
+        this.config = new ConfigHelper();
+        this.fallbackLocalePath = external_path_default().resolve(__dirname, '../locales/en.json');
+    }
+    loadCache() {
+        logRegular("load Locale Cache...");
+        this.loadFallback();
+        this.loadLocales();
+    }
+    loadLocales() {
+        const localePath = external_path_default().resolve(__dirname, `../locales/${this.config.getLocale()}.json`);
+        const syntaxLocalePath = external_path_default().resolve(__dirname, `../locales/${this.config.getSyntaxLocale()}.json`);
+        const localeRaw = (0,external_fs_namespaceObject.readFileSync)(localePath, { encoding: 'utf8' });
+        const syntaxLocaleRaw = (0,external_fs_namespaceObject.readFileSync)(syntaxLocalePath, { encoding: 'utf8' });
+        updateData('locale', JSON.parse(localeRaw));
+        updateData('syntax_locale', JSON.parse(syntaxLocaleRaw));
+    }
+    loadFallback() {
+        const fallbackLocaleRaw = (0,external_fs_namespaceObject.readFileSync)(this.fallbackLocalePath, { encoding: 'utf8' });
+        setData('locale', JSON.parse(fallbackLocaleRaw));
+        setData('syntax_locale', JSON.parse(fallbackLocaleRaw));
+    }
+    getLocale() {
+        return getEntry('locale');
+    }
+    getSyntaxLocale() {
+        return getEntry('syntax_locale');
+    }
+    getNoPermission(username) {
+        return this.getLocale().messages.errors.no_permission.replace(/(\${username})/g, username);
+    }
+    getGuildOnlyError(username) {
+        return this.getLocale().messages.errors.guild_only.replace(/(\${username})/g, username);
+    }
+    getCommandNotReadyError(username) {
+        return this.getLocale().messages.errors.not_ready.replace(/(\${username})/g, username);
+    }
+    getEmbeds() {
+        return this.getLocale().embeds;
+    }
+    getSystemComponents() {
+        const components = [
+            {
+                "name": this.getLocale().embeds.system_update.title,
+                "value": "updates"
+            }
+        ];
+        for (const stateComponent in getEntry('state')) {
+            if (/(mcu)/g.test(stateComponent) && !/(temperature_sensor)/g.test(stateComponent)) {
+                components.push({
+                    name: stateComponent.toUpperCase(),
+                    value: stateComponent
+                });
+            }
+        }
+        return components;
+    }
+}
+
 ;// CONCATENATED MODULE: ./src/utils/CacheUtil.ts
+
 
 
 
@@ -26694,6 +26761,21 @@ function getEntry(key) {
 }
 function findValue(key) {
     return (0,lodash.get)(cacheData, key);
+}
+function getServiceChoices() {
+    const localeHelper = new LocaleHelper();
+    const choices = [];
+    for (const service of cacheData.machine_info.system_info.available_services) {
+        choices.push({
+            "name": service,
+            "value": service
+        });
+    }
+    choices.push({
+        "name": localeHelper.getSyntaxLocale().buttons.klipper_restart.label,
+        "value": "FirmwareRestart"
+    });
+    return choices;
 }
 async function dump() {
     void await writeDump();
@@ -26804,75 +26886,9 @@ class ConfigHelper {
 }
 
 ;// CONCATENATED MODULE: ./src/meta/command_structure.json
-const command_structure_namespaceObject = JSON.parse('{"admin":{"role":{"type":"subcommand","options":{"role":{"type":"role","required":true}}},"user":{"type":"subcommand","options":{"user":{"type":"user","required":true}}}},"dump":{},"editchannel":{"channel":{"type":"channel","required":false}},"emergency_stop":{},"execute":{"gcode":{"type":"string","required":true}},"fileinfo":{"file":{"type":"string","required":true}},"get_user_id":{"user":{"type":"user","required":false}},"get_log":{"log_file":{"type":"string","required":true,"choices":[{"name":"Klipper","value":"klipper"},{"name":"Moonraker","value":"moonraker"}]}},"info":{},"listfiles":{},"notify":{},"printjob":{"pause":{"type":"subcommand"},"cancel":{"type":"subcommand"},"resume":{"type":"subcommand"},"start":{"type":"subcommand","options":{"file":{"type":"string","required":true}}}},"status":{},"systeminfo":{"component":{"type":"string","required":true,"choices":"${systemInfoChoices}"}},"temp":{},"timelapse":{}}');
+const command_structure_namespaceObject = JSON.parse('{"admin":{"role":{"type":"subcommand","options":{"role":{"type":"role","required":true}}},"user":{"type":"subcommand","options":{"user":{"type":"user","required":true}}}},"dump":{},"editchannel":{"channel":{"type":"channel","required":false}},"emergency_stop":{},"execute":{"gcode":{"type":"string","required":true}},"fileinfo":{"file":{"type":"string","required":true}},"get_user_id":{"user":{"type":"user","required":false}},"restart":{"service":{"type":"string","required":true,"choices":"${serviceChoices}"}},"get_log":{"log_file":{"type":"string","required":true,"choices":[{"name":"Klipper","value":"klipper"},{"name":"Moonraker","value":"moonraker"}]}},"info":{},"listfiles":{},"notify":{},"printjob":{"pause":{"type":"subcommand"},"cancel":{"type":"subcommand"},"resume":{"type":"subcommand"},"start":{"type":"subcommand","options":{"file":{"type":"string","required":true}}}},"status":{},"systeminfo":{"component":{"type":"string","required":true,"choices":"${systemInfoChoices}"}},"temp":{},"timelapse":{}}');
 ;// CONCATENATED MODULE: ./src/meta/command_option_types.json
 const command_option_types_namespaceObject = JSON.parse('{"subcommand":1,"subcommand_group":2,"string":3,"integer":4,"boolean":5,"user":6,"channel":7,"role":8,"mentionable":9,"number":10}');
-;// CONCATENATED MODULE: ./src/helper/LocaleHelper.ts
-
-
-
-
-
-class LocaleHelper {
-    constructor() {
-        this.config = new ConfigHelper();
-        this.fallbackLocalePath = external_path_default().resolve(__dirname, '../locales/en.json');
-    }
-    loadCache() {
-        logRegular("load Locale Cache...");
-        this.loadFallback();
-        this.loadLocales();
-    }
-    loadLocales() {
-        const localePath = external_path_default().resolve(__dirname, `../locales/${this.config.getLocale()}.json`);
-        const syntaxLocalePath = external_path_default().resolve(__dirname, `../locales/${this.config.getSyntaxLocale()}.json`);
-        const localeRaw = (0,external_fs_namespaceObject.readFileSync)(localePath, { encoding: 'utf8' });
-        const syntaxLocaleRaw = (0,external_fs_namespaceObject.readFileSync)(syntaxLocalePath, { encoding: 'utf8' });
-        updateData('locale', JSON.parse(localeRaw));
-        updateData('syntax_locale', JSON.parse(syntaxLocaleRaw));
-    }
-    loadFallback() {
-        const fallbackLocaleRaw = (0,external_fs_namespaceObject.readFileSync)(this.fallbackLocalePath, { encoding: 'utf8' });
-        setData('locale', JSON.parse(fallbackLocaleRaw));
-        setData('syntax_locale', JSON.parse(fallbackLocaleRaw));
-    }
-    getLocale() {
-        return getEntry('locale');
-    }
-    getSyntaxLocale() {
-        return getEntry('syntax_locale');
-    }
-    getNoPermission(username) {
-        return this.getLocale().messages.errors.no_permission.replace(/(\${username})/g, username);
-    }
-    getGuildOnlyError(username) {
-        return this.getLocale().errors.guild_only.replace(/(\${username})/g, username);
-    }
-    getCommandNotReadyError(username) {
-        return this.getLocale().errors.not_ready.replace(/(\${username})/g, username);
-    }
-    getEmbeds() {
-        return this.getLocale().embeds;
-    }
-    getSystemComponents() {
-        const components = [
-            {
-                "name": this.getLocale().embeds.system_update.title,
-                "value": "updates"
-            }
-        ];
-        for (const stateComponent in getEntry('state')) {
-            if (/(mcu)/g.test(stateComponent) && !/(temperature_sensor)/g.test(stateComponent)) {
-                components.push({
-                    name: stateComponent.toUpperCase(),
-                    value: stateComponent
-                });
-            }
-        }
-        return components;
-    }
-}
-
 ;// CONCATENATED MODULE: ./src/generator/DiscordCommandGenerator.ts
 
 
@@ -26938,6 +26954,9 @@ class DiscordCommandGenerator {
         if (typeof (optionMeta.choices) !== 'undefined') {
             if (optionMeta.choices === '${systemInfoChoices}') {
                 optionBuilder.choices = this.localeHelper.getSystemComponents();
+            }
+            else if (optionMeta.choices === '${serviceChoices}') {
+                optionBuilder.choices = getServiceChoices();
             }
             else {
                 optionBuilder.choices = optionMeta.choices;
@@ -27150,9 +27169,10 @@ class DumpCommand {
         this.execute(interaction);
     }
     async execute(interaction) {
+        await interaction.deferReply({ ephemeral: true });
         void await dump();
         const attachment = new external_discord_js_namespaceObject.MessageAttachment(external_path_namespaceObject.resolve(__dirname, '../temp/dump.json'), 'dump.json');
-        await interaction.reply({ files: [attachment], ephemeral: true });
+        await interaction.editReply({ files: [attachment] });
     }
 }
 
@@ -27247,6 +27267,9 @@ class PermissionHelper {
 ;// CONCATENATED MODULE: ./src/helper/FormattingHelper.ts
 function formatPercent(percent, digits) {
     return (percent * 100).toFixed(digits);
+}
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 ;// CONCATENATED MODULE: ./src/meta/temp_mapping.json
@@ -27352,7 +27375,53 @@ class TempCommand {
     }
 }
 
+;// CONCATENATED MODULE: ./src/events/discord/interactions/commands/RestartCommand.ts
+
+
+class RestartCommand {
+    constructor(interaction, commandId) {
+        this.localeHelper = new LocaleHelper();
+        this.locale = this.localeHelper.getLocale();
+        this.syntaxLocale = this.localeHelper.getSyntaxLocale();
+        this.moonrakerClient = getMoonrakerClient();
+        if (commandId !== 'restart') {
+            return;
+        }
+        this.execute(interaction);
+    }
+    async execute(interaction) {
+        const service = interaction.options.getString(this.syntaxLocale.commands.restart.options.service.name);
+        await interaction.deferReply();
+        let result;
+        if (service === 'FirmwareRestart') {
+            result = await this.restartFirmware();
+        }
+        else {
+            result = await this.restartService(service);
+        }
+        await interaction.editReply(result);
+    }
+    async restartService(service) {
+        const result = await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "machine.services.restart", "params": {"service": "${service}"}}`);
+        if (typeof result.error !== 'undefined') {
+            const reply = this.locale.messages.errors.restart_failed
+                .replace(/(\${service})/g, service)
+                .replace(/(\${reason})/g, result.error.message);
+            return reply;
+        }
+        const reply = this.locale.messages.answers.restart_successful
+            .replace(/(\${service})/g, service);
+        return reply;
+    }
+    async restartFirmware() {
+        void await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "printer.firmware_restart"}`);
+        return this.locale.messages.answers.firmware_restart_successful;
+    }
+}
+
 ;// CONCATENATED MODULE: ./src/events/discord/interactions/CommandInteraction.ts
+
+
 
 
 
@@ -27389,6 +27458,12 @@ class CommandInteraction {
         void new InfoCommand(interaction, commandId);
         void new DumpCommand(interaction, commandId);
         void new TempCommand(interaction, commandId);
+        void new RestartCommand(interaction, commandId);
+        await sleep(1500);
+        if (interaction.replied || interaction.deferred) {
+            return;
+        }
+        interaction.reply(this.localeHelper.getCommandNotReadyError(interaction.user.tag));
     }
 }
 
@@ -28116,7 +28191,7 @@ module.exports = require("zlib");
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(3587);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(307);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()

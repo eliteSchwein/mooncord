@@ -1,6 +1,6 @@
 import commandStructure from '../meta/command_structure.json'
 import commandOptionsTypes from '../meta/command_option_types.json'
-import {getEntry, setData} from "../utils/CacheUtil";
+import {getEntry, getServiceChoices, setData} from "../utils/CacheUtil";
 import {LocaleHelper} from "../helper/LocaleHelper";
 
 export class DiscordCommandGenerator {
@@ -74,6 +74,8 @@ export class DiscordCommandGenerator {
         if (typeof (optionMeta.choices) !== 'undefined') {
             if (optionMeta.choices === '${systemInfoChoices}') {
                 optionBuilder.choices = this.localeHelper.getSystemComponents()
+            } else if (optionMeta.choices === '${serviceChoices}') {
+                optionBuilder.choices = getServiceChoices()
             } else {
                 optionBuilder.choices = optionMeta.choices
             }

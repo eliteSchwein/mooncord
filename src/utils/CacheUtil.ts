@@ -4,6 +4,7 @@ import {logSuccess} from "../helper/ConsoleLogger";
 import * as util from "util";
 import {mergeDeep} from "../helper/ObjectMergeHelper";
 import {get} from 'lodash'
+import { LocaleHelper } from "../helper/LocaleHelper";
 
 const cacheData:any = {}
 const writeFile = util.promisify(fs.writeFile)
@@ -22,6 +23,24 @@ export function getEntry(key:string) {
 
 export function findValue(key:string) {
     return get(cacheData, key)
+}
+
+export function getServiceChoices() {
+    const localeHelper = new LocaleHelper()
+    const choices = []
+
+    for(const service of cacheData.machine_info.system_info.available_services) {
+        choices.push({
+            "name": service,
+            "value": service
+        })
+    }
+    
+    choices.push({
+        "name": localeHelper.getSyntaxLocale().buttons.klipper_restart.label,
+        "value": "FirmwareRestart"
+    })
+    return choices
 }
 
 export async function dump() {
