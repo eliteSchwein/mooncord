@@ -26644,7 +26644,19 @@ function mergeDeep(target, ...sources) {
 var string = __nccwpck_require__(692);
 // EXTERNAL MODULE: external "util"
 var external_util_ = __nccwpck_require__(1669);
+;// CONCATENATED MODULE: ./src/helper/FormattingHelper.ts
+function formatPercent(percent, digits) {
+    return (percent * 100).toFixed(digits);
+}
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+function stripAnsi(input) {
+    return input.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, '');
+}
+
 ;// CONCATENATED MODULE: ./src/helper/LoggerHelper.ts
+
 
 
 
@@ -26653,8 +26665,10 @@ let log_file = external_fs_namespaceObject.createWriteStream(external_path_names
 let log_stdout = process.stdout;
 function hookLogFile() {
     console.log = function (d) {
-        log_file.write(external_util_.format(d) + '\n');
-        log_stdout.write(external_util_.format(d) + '\n');
+        const consoleOutput = `${external_util_.format(d)}\n`;
+        const consoleLogOutput = stripAnsi(consoleOutput);
+        log_stdout.write(consoleOutput);
+        log_file.write(consoleLogOutput);
     };
     console.error = console.log;
     process.on('uncaughtException', function (err) {
@@ -26663,29 +26677,42 @@ function hookLogFile() {
     });
 }
 function changePath(directory) {
-    if (external_fs_namespaceObject.existsSync(directory)) {
-        const current = external_fs_namespaceObject.readFileSync(log_file.path);
-        log_file = external_fs_namespaceObject.createWriteStream(external_path_namespaceObject.resolve(directory, 'mooncord.log'), { flags: 'w' });
-        log_stdout = process.stdout;
-        log_file.write(current);
+    logRegular(`Change Log Path to ${directory}...`);
+    if (!external_fs_namespaceObject.existsSync(directory)) {
+        logWarn(`Path ${directory} not present`);
+        return;
     }
+    try {
+        external_fs_namespaceObject.accessSync(directory, external_fs_namespaceObject.constants.R_OK | external_fs_namespaceObject.constants.W_OK);
+    }
+    catch {
+        logWarn(`Cant Read or/and Write to ${directory}`);
+        return;
+    }
+    const current = external_fs_namespaceObject.readFileSync(log_file.path);
+    log_file = external_fs_namespaceObject.createWriteStream(external_path_namespaceObject.resolve(directory, 'mooncord.log'), { flags: 'w' });
+    log_stdout = process.stdout;
+    log_file.write(current);
 }
 function logError(message) {
-    console.log(`${getTimeStamp()} ${message}`.red);
+    console.log(`${getLevel('error')} ${getTimeStamp()} ${message}`.red);
 }
 function logSuccess(message) {
-    console.log(`${getTimeStamp()} ${message}`.green);
+    console.log(`${getLevel('info')} ${getTimeStamp()} ${message}`.green);
 }
 function logRegular(message) {
-    console.log(`${getTimeStamp()} ${message}`.white);
+    console.log(`${getLevel('info')} ${getTimeStamp()} ${message}`.white);
 }
 function logNotice(message) {
-    console.log(`${getTimeStamp()} ${message}`.magenta);
+    console.log(`${getLevel('info')} ${getTimeStamp()} ${message}`.magenta);
 }
 function logWarn(message) {
-    console.log(`${getTimeStamp()} ${message}`.yellow);
+    console.log(`${getLevel('warn')} ${getTimeStamp()} ${message}`.yellow);
 }
 function logEmpty() { console.log(''); }
+function getLevel(level) {
+    return `[${level}]`.grey;
+}
 function getTimeStamp() {
     const date = new Date();
     return `[${date.toISOString()}]`.grey;
@@ -27284,14 +27311,6 @@ class PermissionHelper {
             return member.roles.cache.some((role) => this.controllers.roles.includes(role.id));
         }
     }
-}
-
-;// CONCATENATED MODULE: ./src/helper/FormattingHelper.ts
-function formatPercent(percent, digits) {
-    return (percent * 100).toFixed(digits);
-}
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 ;// CONCATENATED MODULE: ./src/meta/temp_mapping.json

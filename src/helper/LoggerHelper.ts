@@ -2,14 +2,18 @@ import 'colorts/lib/string';
 import * as util from 'util'
 import * as fs from 'fs'
 import * as path from 'path'
+import {stripAnsi} from "./FormattingHelper";
 
 let log_file = fs.createWriteStream(path.resolve(__dirname, '../temp/log.log'), {flags : 'w'});
 let log_stdout = process.stdout;
 
 export function hookLogFile() {
     console.log = function(d) { //
-        log_file.write(util.format(d) + '\n');
-        log_stdout.write(util.format(d) + '\n');
+        const consoleOutput = `${util.format(d)}\n`
+        const consoleLogOutput = stripAnsi(consoleOutput)
+
+        log_stdout.write(consoleOutput);
+        log_file.write(consoleLogOutput)
     };
     console.error = console.log;
 
@@ -20,37 +24,52 @@ export function hookLogFile() {
 }
 
 export function changePath(directory: string) {
-    if(fs.existsSync(directory)) {
-        const current = fs.readFileSync(log_file.path)
-
-        log_file = fs.createWriteStream(path.resolve(directory, 'mooncord.log'), {flags : 'w'});
-        log_stdout = process.stdout;
-
-        log_file.write(current)
+    logRegular(`Change Log Path to ${directory}...`)
+    if(!fs.existsSync(directory)) {
+        logWarn(`Path ${directory} not present`)
+        return
     }
+
+    try {
+        fs.accessSync(directory,fs.constants.R_OK | fs.constants.W_OK)
+    } catch {
+        logWarn(`Cant Read or/and Write to ${directory}`)
+        return
+    }
+
+    const current = fs.readFileSync(log_file.path)
+
+    log_file = fs.createWriteStream(path.resolve(directory, 'mooncord.log'), {flags : 'w'});
+    log_stdout = process.stdout;
+
+    log_file.write(current)
 }
 
 export function logError (message:string) {
-    console.log(`${getTimeStamp()} ${message}`.red)
+    console.log(`${getLevel('error')} ${getTimeStamp()} ${message}`.red)
 }
 
 export function logSuccess(message:string) {
-    console.log(`${getTimeStamp()} ${message}`.green)
+    console.log(`${getLevel('info')} ${getTimeStamp()} ${message}`.green)
 }
 
 export function logRegular(message:string) {
-    console.log(`${getTimeStamp()} ${message}`.white)
+    console.log(`${getLevel('info')} ${getTimeStamp()} ${message}`.white)
 }
 
 export function logNotice(message:string) {
-    console.log(`${getTimeStamp()} ${message}`.magenta)
+    console.log(`${getLevel('info')} ${getTimeStamp()} ${message}`.magenta)
 }
 
 export function logWarn(message:string) {
-    console.log(`${getTimeStamp()} ${message}`.yellow)
+    console.log(`${getLevel('warn')} ${getTimeStamp()} ${message}`.yellow)
 }
 
 export function logEmpty() { console.log('') }
+
+function getLevel(level: string) {
+    return `[${level}]`.grey
+}
 
 function getTimeStamp() {
     const date = new Date()
