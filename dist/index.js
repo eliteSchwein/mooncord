@@ -1573,7 +1573,7 @@ module.exports = defaults;
 /***/ ((module) => {
 
 module.exports = {
-  "version": "0.23.0"
+  "version": "0.24.0"
 };
 
 /***/ }),
@@ -26606,7 +26606,7 @@ __nccwpck_require__.d(__webpack_exports__, {
 });
 
 ;// CONCATENATED MODULE: ./package.json
-const package_namespaceObject = JSON.parse('{"name":"mooncord","version":"0.0.5","description":"Moonraker Discord Bot based on Discord.js","main":"index.js","scripts":{"start":"node dist/index.js","ramdebugstart":"node --trace_gc dist/mooncord.js","checkcodestyle":"npx eslint ./**","autofixcodestyle":"npx eslint ./** --fix","build":"ncc build -m -e discord.js src/Application.ts -o dist","watch":"ncc build -w -e discord.js src/Application.ts -o dist"},"repository":{"type":"git","url":"git+https://github.com/eliteSchwein/mooncord.git"},"keywords":[],"author":"eliteSCHW31N","license":"ISC","bugs":{"url":"https://github.com/eliteSchwein/mooncord/issues"},"homepage":"https://github.com/eliteSchwein/mooncord#readme","devDependencies":{"@types/node":"^16.11.1","@vercel/ncc":"^0.31.1","async-wait-until":"^2.0.8","axios":"^0.23.0","colorts":"^0.1.63","eslint":"^8.0.1","eslint-config-galex":"^3.0.1","eslint-config-standard":"^16.0.3","eslint-plugin-import":"^2.25.2","eslint-plugin-node":"^11.1.0","eslint-plugin-promise":"^5.1.1","form-data":"^4.0.0","lodash":"^4.17.21","sharp":"^0.29.1","shelljs":"^0.8.4","typescript":"^4.4.4","websocket-ts":"^1.1.1","ws":"^8.2.3"},"dependencies":{"discord.js":"^13.2.0"}}');
+const package_namespaceObject = JSON.parse('{"name":"mooncord","version":"0.0.5","description":"Moonraker Discord Bot based on Discord.js","main":"index.js","scripts":{"start":"node dist/index.js","ramdebugstart":"node --trace_gc dist/mooncord.js","checkcodestyle":"npx eslint ./**","autofixcodestyle":"npx eslint ./** --fix","build":"ncc build -m -e discord.js src/Application.ts -o dist","watch":"ncc build -w -e discord.js src/Application.ts -o dist"},"repository":{"type":"git","url":"git+https://github.com/eliteSchwein/mooncord.git"},"keywords":[],"author":"eliteSCHW31N","license":"ISC","bugs":{"url":"https://github.com/eliteSchwein/mooncord/issues"},"homepage":"https://github.com/eliteSchwein/mooncord#readme","devDependencies":{"@types/node":"^16.11.6","@vercel/ncc":"^0.31.1","async-wait-until":"^2.0.8","axios":"^0.24.0","colorts":"^0.1.63","eslint":"^8.1.0","eslint-config-galex":"^3.1.2","eslint-config-standard":"^16.0.3","eslint-plugin-import":"^2.25.2","eslint-plugin-node":"^11.1.0","eslint-plugin-promise":"^5.1.1","form-data":"^4.0.0","lodash":"^4.17.21","sharp":"^0.29.2","shelljs":"^0.8.4","typescript":"^4.4.4","websocket-ts":"^1.1.1","ws":"^8.2.3"},"dependencies":{"discord.js":"^13.2.0"}}');
 var package_namespaceObject_0 = /*#__PURE__*/__nccwpck_require__.t(package_namespaceObject, 2);
 // EXTERNAL MODULE: ./node_modules/async-wait-until/dist/index.js
 var dist = __nccwpck_require__(1299);
@@ -27314,7 +27314,7 @@ class PermissionHelper {
 }
 
 ;// CONCATENATED MODULE: ./src/meta/temp_mapping.json
-const temp_mapping_namespaceObject = JSON.parse('{"cold_meta":{"icon":"❄","hot_temp":50},"heater_types":["temperature_fan","heater_generic","heater_bed","heater","extruder"],"hide_types":["temperature_sensor","temperature_fan","controller_fan","fan_generic"],"supported_sensors":["heater_generic","heater_bed","heater","extruder","fan_generic","heater_fan","controller_fan","temperature_sensor","temperature_fan","fan"],"alliases":{"heater_generic":"heater","heater_bed":"heater","extruder":"heater","fan_generic":"fan","heater_fan":"fan","controller_fan":"fan"},"temperature_sensor":{"icon":"🌡","fields":{"temperature":{"label":"${embeds.fields.current}","suffix":"°C"},"measured_min_temp":{"label":"${embeds.fields.min_temp}","suffix":"°C"},"measured_max_temp":{"label":"${embeds.fields.max_temp}","suffix":"°C"}}},"temperature_fan":{"icon":"♨","fields":{"power":{"label":"${embeds.fields.power}","suffix":"%"},"target":{"label":"${embeds.fields.target}","suffix":"°C"},"temperature":{"label":"${embeds.fields.current}","suffix":"°C"},"rpm":{"label":"${embeds.fields.speed}","suffix":"rpm"}}},"heater":{"icon":"♨","fields":{"power":{"label":"${embeds.fields.power}","suffix":"%"},"target":{"label":"${embeds.fields.target}","suffix":"°C"},"temperature":{"label":"${embeds.fields.current}","suffix":"°C"}}},"fan":{"icon":"🌀","fields":{"speed":{"label":"${embeds.fields.power}","suffix":"%"},"rpm":{"label":"${embeds.fields.speed}","suffix":"rpm"}}}}');
+const temp_mapping_namespaceObject = JSON.parse('{"cold_meta":{"icon":"❄","hot_temp":50},"slow_fan_meta":{"icon":"🔆","fast_fan":1},"fan_types":["temperature_fan","controller_fan","heater_fan","fan_generic","fan"],"heater_types":["temperature_fan","heater_generic","heater_bed","heater","extruder"],"hide_types":["temperature_sensor","temperature_fan","controller_fan","fan_generic"],"supported_sensors":["heater_generic","heater_bed","heater","extruder","fan_generic","heater_fan","controller_fan","temperature_sensor","temperature_fan","fan"],"alliases":{"heater_generic":"heater","heater_bed":"heater","extruder":"heater","fan_generic":"fan","heater_fan":"fan","controller_fan":"fan"},"temperature_sensor":{"icon":"🌡","fields":{"temperature":{"label":"${embeds.fields.current}","suffix":"°C"},"measured_min_temp":{"label":"${embeds.fields.min_temp}","suffix":"°C"},"measured_max_temp":{"label":"${embeds.fields.max_temp}","suffix":"°C"}}},"temperature_fan":{"icon":"♨","fields":{"power":{"label":"${embeds.fields.power}","suffix":"%"},"target":{"label":"${embeds.fields.target}","suffix":"°C"},"temperature":{"label":"${embeds.fields.current}","suffix":"°C"},"rpm":{"label":"${embeds.fields.speed}","suffix":"rpm"}}},"heater":{"icon":"♨","fields":{"power":{"label":"${embeds.fields.power}","suffix":"%"},"target":{"label":"${embeds.fields.target}","suffix":"°C"},"temperature":{"label":"${embeds.fields.current}","suffix":"°C"}}},"fan":{"icon":"🌀","fields":{"speed":{"label":"${embeds.fields.power}","suffix":"%"},"rpm":{"label":"${embeds.fields.speed}","suffix":"rpm"}}}}');
 ;// CONCATENATED MODULE: ./src/helper/TempHelper.ts
 
 
@@ -27346,6 +27346,9 @@ class TempHelper {
     isCold(temperature) {
         return temperature < temp_mapping_namespaceObject.cold_meta.hot_temp;
     }
+    isSlowFan(speed) {
+        return speed < (temp_mapping_namespaceObject.slow_fan_meta.fast_fan / 100);
+    }
     parseFieldsSet(key) {
         const allias = temp_mapping_namespaceObject.alliases[key];
         const cacheData = this.parseCacheFields(key);
@@ -27365,6 +27368,12 @@ class TempHelper {
                 temp_mapping_namespaceObject.heater_types.includes(key)) {
                 if (this.isCold(cacheData[cacheKey].temperature)) {
                     keyData.name = `${temp_mapping_namespaceObject.cold_meta.icon} ${this.parseFieldTitle(cacheKey)}`;
+                }
+            }
+            if (typeof cacheData[cacheKey].speed !== 'undefined' &&
+                temp_mapping_namespaceObject.fan_types.includes(key)) {
+                if (this.isSlowFan(cacheData[cacheKey].speed)) {
+                    keyData.name = `${temp_mapping_namespaceObject.slow_fan_meta.icon} ${this.parseFieldTitle(cacheKey)}`;
                 }
             }
             for (const fieldKey in mappingData.fields) {

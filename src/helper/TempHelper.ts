@@ -36,6 +36,10 @@ export class TempHelper {
         return temperature < tempMapping.cold_meta.hot_temp
     }
 
+    public isSlowFan(speed: number) {
+        return speed < (tempMapping.slow_fan_meta.fast_fan / 100)
+    }
+
     public parseFieldsSet(key: string) {
         const allias = tempMapping.alliases[key]
 
@@ -57,6 +61,12 @@ export class TempHelper {
                 tempMapping.heater_types.includes(key)) {
                 if(this.isCold(cacheData[cacheKey].temperature)) {
                     keyData.name = `${tempMapping.cold_meta.icon} ${this.parseFieldTitle(cacheKey)}`
+                }
+            }
+            if(typeof cacheData[cacheKey].speed !== 'undefined' &&
+                tempMapping.fan_types.includes(key)) {
+                if(this.isSlowFan(cacheData[cacheKey].speed)) {
+                    keyData.name = `${tempMapping.slow_fan_meta.icon} ${this.parseFieldTitle(cacheKey)}`
                 }
             }
             for(const fieldKey in mappingData.fields) {

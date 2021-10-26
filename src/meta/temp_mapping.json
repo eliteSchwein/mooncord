@@ -3,6 +3,17 @@
         "icon": "❄",
         "hot_temp": 50
     },
+    "slow_fan_meta": {
+        "icon": "\uD83D\uDD06",
+        "fast_fan": 1
+    },
+    "fan_types": [
+        "temperature_fan",
+        "controller_fan",
+        "heater_fan",
+        "fan_generic",
+        "fan"
+    ],
     "heater_types": [
         "temperature_fan",
         "heater_generic",
