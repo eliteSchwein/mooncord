@@ -26591,7 +26591,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 8159:
+/***/ 8185:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -27532,7 +27532,33 @@ class GetLodCommand {
     }
 }
 
+;// CONCATENATED MODULE: ./src/events/discord/interactions/commands/UserIdCommand.ts
+
+class UserIdCommand {
+    constructor(interaction, commandId) {
+        this.localeHelper = new LocaleHelper();
+        this.syntaxLocale = this.localeHelper.getSyntaxLocale();
+        this.locale = this.localeHelper.getLocale();
+        if (commandId !== 'get_user_id') {
+            return;
+        }
+        const userArgument = interaction.options.getUser(this.syntaxLocale.commands.get_user_id.options.user.name);
+        let answer;
+        if (userArgument === null) {
+            answer = this.locale.messages.answers.own_id
+                .replace(/\${id}/g, interaction.user.id);
+        }
+        else {
+            answer = this.locale.messages.answers.other_id
+                .replace(/\${id}/g, userArgument.id)
+                .replace(/\${username}/g, userArgument.tag);
+        }
+        void interaction.reply(answer);
+    }
+}
+
 ;// CONCATENATED MODULE: ./src/events/discord/interactions/CommandInteraction.ts
+
 
 
 
@@ -27578,6 +27604,7 @@ class CommandInteraction {
         void new TempCommand(interaction, commandId);
         void new RestartCommand(interaction, commandId);
         void new GetLodCommand(interaction, commandId);
+        void new UserIdCommand(interaction, commandId);
         await sleep(1500);
         if (interaction.replied || interaction.deferred) {
             return;
@@ -28312,7 +28339,7 @@ module.exports = require("zlib");
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(8159);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(8185);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()

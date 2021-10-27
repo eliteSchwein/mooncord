@@ -10,6 +10,7 @@ import { TempCommand } from "./commands/TempCommand";
 import { sleep } from "../../../helper/FormattingHelper";
 import { RestartCommand } from "./commands/RestartCommand";
 import { GetLodCommand } from "./commands/GetLogCommand";
+import {UserIdCommand} from "./commands/UserIdCommand";
 
 export class CommandInteraction {
     protected config = new ConfigHelper()
@@ -48,6 +49,7 @@ export class CommandInteraction {
         void new TempCommand(interaction, commandId)
         void new RestartCommand(interaction, commandId)
         void new GetLodCommand(interaction, commandId)
+        void new UserIdCommand(interaction, commandId)
 
         await sleep(1500)
 
