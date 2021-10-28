@@ -52,6 +52,21 @@ export class DiscordCommandGenerator {
         return builder
     }
 
+    protected buildChoices(choices: any, syntaxMeta: any) {
+        for(const index in choices) {
+            const choice = choices[index]
+
+            if(typeof syntaxMeta !== 'undefined' &&
+                typeof syntaxMeta[choice.value] !== 'undefined') {
+                choice.name = syntaxMeta[choice.value]
+            }
+
+            choices[index] = choice
+        }
+
+        return choices
+    }
+
     protected buildCommandOption(builder:any, meta:any, option:any, syntaxMeta:any, messageMeta:any) {
         if (typeof(meta) === 'undefined') { return }
 
@@ -77,7 +92,7 @@ export class DiscordCommandGenerator {
             } else if (optionMeta.choices === '${serviceChoices}') {
                 optionBuilder.choices = getServiceChoices()
             } else {
-                optionBuilder.choices = optionMeta.choices
+                optionBuilder.choices = this.buildChoices(optionMeta.choices, syntaxMeta.options[option].choices)
             }
         }
 

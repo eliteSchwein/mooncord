@@ -109,10 +109,14 @@
             "broadcast_channel_deactivated": "${channel} is not longer a Broadcast Channel, ${username}!",
             "execute_success": "Command Executed!",
             "log_retrieved": "Here is the current Log for ${service}",
-            "own_id": "Your id is `${id}`",
-            "other_id": "${username}'s id is `${id}`",
-            "notify_activated": "I will notify you of the print status via DM, ${username}!",
-            "notify_deactivated": "I will no longer notify you of the print status via DM, ${username}!",
+            "user_id": {
+                "own_id": "Your id is `${id}`",
+                "other_id": "${username}'s id is `${id}`"
+            },
+            "notify": {
+                "activated": "I will notify you of the print status via DM, ${username}!",
+                "deactivated": "I will no longer notify you of the print status via DM, ${username}!"
+            },
             "emergency_stop": "Emergency Stop executed, ${username}!",
             "reset_database": "Database got wiped",
             "printjob_resume": {
@@ -257,7 +261,17 @@
         },
         "dump": {
             "description": "dump cache.",
-            "command": "dump"
+            "command": "dump",
+            "options": {
+                "section": {
+                    "name": "section",
+                    "description": "Select the Section to dump.",
+                    "choices": {
+                        "cache": "Cache",
+                        "database": "Database"
+                    }
+                }
+            }
         },
         "reset_database": {
             "description": "clear the Database.",

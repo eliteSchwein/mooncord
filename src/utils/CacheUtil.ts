@@ -2,7 +2,7 @@ import * as fs from "fs";
 import * as path from "path";
 import {logSuccess} from "../helper/LoggerHelper";
 import * as util from "util";
-import {mergeDeep} from "../helper/ObjectMergeHelper";
+import {mergeDeep} from "../helper/DataHelper";
 import {get} from 'lodash'
 import { LocaleHelper } from "../helper/LocaleHelper";
 
@@ -53,6 +53,6 @@ export async function dump() {
 }
 
 async function writeDump() {
-    await writeFile(path.resolve(__dirname, '../temp/dump.json'), JSON.stringify(cacheData, null, 4), { encoding: 'utf8', flag: 'w+' })
+    await writeFile(path.resolve(__dirname, '../temp/cache_dump.json'), JSON.stringify(cacheData, null, 4), { encoding: 'utf8', flag: 'w+' })
     logSuccess('Dumped Cache!')
 }

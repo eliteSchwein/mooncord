@@ -1,5 +1,5 @@
 import {ConfigHelper} from "../helper/ConfigHelper";
-import {mergeDeep} from "../helper/ObjectMergeHelper";
+import {mergeDeep} from "../helper/DataHelper";
 
 import sectionMapping from '../meta/input_mapping.json'
 import {setData, getEntry} from "../utils/CacheUtil";

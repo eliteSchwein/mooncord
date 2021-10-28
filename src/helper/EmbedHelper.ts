@@ -5,7 +5,7 @@ import embedMapping from "../meta/embed_mapping.json"
 import {MessageAttachment, MessageEmbed} from "discord.js";
 import * as path from "path"
 import {DiscordInputGenerator} from "../generator/DiscordInputGenerator";
-import {mergeDeep} from "./ObjectMergeHelper";
+import {mergeDeep} from "./DataHelper";
 import {logRegular} from "./LoggerHelper";
 
 export class EmbedHelper {

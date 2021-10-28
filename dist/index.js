@@ -26591,7 +26591,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 5406:
+/***/ 907:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -26617,9 +26617,15 @@ const external_fs_namespaceObject = require("fs");
 ;// CONCATENATED MODULE: external "path"
 const external_path_namespaceObject = require("path");
 var external_path_default = /*#__PURE__*/__nccwpck_require__.n(external_path_namespaceObject);
-;// CONCATENATED MODULE: ./src/helper/ObjectMergeHelper.ts
+;// CONCATENATED MODULE: ./src/helper/DataHelper.ts
 function isObject(item) {
     return (item && typeof item === 'object' && !Array.isArray(item));
+}
+function removeFromArray(array, value) {
+    const index = array.indexOf(value);
+    if (index > -1) {
+        array.splice(index, 1);
+    }
 }
 function mergeDeep(target, ...sources) {
     if (!sources.length)
@@ -26831,7 +26837,7 @@ async function dump() {
     return cacheData;
 }
 async function writeDump() {
-    await writeFile(external_path_namespaceObject.resolve(__dirname, '../temp/dump.json'), JSON.stringify(cacheData, null, 4), { encoding: 'utf8', flag: 'w+' });
+    await writeFile(external_path_namespaceObject.resolve(__dirname, '../temp/cache_dump.json'), JSON.stringify(cacheData, null, 4), { encoding: 'utf8', flag: 'w+' });
     logSuccess('Dumped Cache!');
 }
 
@@ -26935,7 +26941,7 @@ class ConfigHelper {
 }
 
 ;// CONCATENATED MODULE: ./src/meta/command_structure.json
-const command_structure_namespaceObject = JSON.parse('{"admin":{"role":{"type":"subcommand","options":{"role":{"type":"role","required":true}}},"user":{"type":"subcommand","options":{"user":{"type":"user","required":true}}}},"dump":{},"reset_database":{},"editchannel":{"channel":{"type":"channel","required":false}},"emergency_stop":{},"execute":{"gcode":{"type":"string","required":true}},"fileinfo":{"file":{"type":"string","required":true}},"get_user_id":{"user":{"type":"user","required":false}},"restart":{"service":{"type":"string","required":true,"choices":"${serviceChoices}"}},"get_log":{"log_file":{"type":"string","required":true,"choices":[{"name":"Klipper","value":"klippy"},{"name":"Moonraker","value":"moonraker"}]}},"info":{},"listfiles":{},"notify":{},"printjob":{"pause":{"type":"subcommand"},"cancel":{"type":"subcommand"},"resume":{"type":"subcommand"},"start":{"type":"subcommand","options":{"file":{"type":"string","required":true}}}},"status":{},"systeminfo":{"component":{"type":"string","required":true,"choices":"${systemInfoChoices}"}},"temp":{},"timelapse":{}}');
+const command_structure_namespaceObject = JSON.parse('{"admin":{"role":{"type":"subcommand","options":{"role":{"type":"role","required":true}}},"user":{"type":"subcommand","options":{"user":{"type":"user","required":true}}}},"dump":{"section":{"type":"string","required":true,"choices":[{"value":"database"},{"value":"cache"}]}},"reset_database":{},"editchannel":{"channel":{"type":"channel","required":false}},"emergency_stop":{},"execute":{"gcode":{"type":"string","required":true}},"fileinfo":{"file":{"type":"string","required":true}},"get_user_id":{"user":{"type":"user","required":false}},"restart":{"service":{"type":"string","required":true,"choices":"${serviceChoices}"}},"get_log":{"log_file":{"type":"string","required":true,"choices":[{"name":"Klipper","value":"klippy"},{"name":"Moonraker","value":"moonraker"}]}},"info":{},"listfiles":{},"notify":{},"printjob":{"pause":{"type":"subcommand"},"cancel":{"type":"subcommand"},"resume":{"type":"subcommand"},"start":{"type":"subcommand","options":{"file":{"type":"string","required":true}}}},"status":{},"systeminfo":{"component":{"type":"string","required":true,"choices":"${systemInfoChoices}"}},"temp":{},"timelapse":{}}');
 ;// CONCATENATED MODULE: ./src/meta/command_option_types.json
 const command_option_types_namespaceObject = JSON.parse('{"subcommand":1,"subcommand_group":2,"string":3,"integer":4,"boolean":5,"user":6,"channel":7,"role":8,"mentionable":9,"number":10}');
 ;// CONCATENATED MODULE: ./src/generator/DiscordCommandGenerator.ts
@@ -26980,6 +26986,17 @@ class DiscordCommandGenerator {
         }
         return builder;
     }
+    buildChoices(choices, syntaxMeta) {
+        for (const index in choices) {
+            const choice = choices[index];
+            if (typeof syntaxMeta !== 'undefined' &&
+                typeof syntaxMeta[choice.value] !== 'undefined') {
+                choice.name = syntaxMeta[choice.value];
+            }
+            choices[index] = choice;
+        }
+        return choices;
+    }
     buildCommandOption(builder, meta, option, syntaxMeta, messageMeta) {
         if (typeof (meta) === 'undefined') {
             return;
@@ -27008,7 +27025,7 @@ class DiscordCommandGenerator {
                 optionBuilder.choices = getServiceChoices();
             }
             else {
-                optionBuilder.choices = optionMeta.choices;
+                optionBuilder.choices = this.buildChoices(optionMeta.choices, syntaxMeta.options[option].choices);
             }
         }
         for (const index in meta[option].options) {
@@ -27210,8 +27227,13 @@ class InfoCommand {
 
 
 
+
+
 class DumpCommand {
     constructor(interaction, commandId) {
+        this.databaseUtil = getDatabase();
+        this.localeHelper = new LocaleHelper();
+        this.syntaxLocale = this.localeHelper.getSyntaxLocale();
         if (commandId !== 'dump') {
             return;
         }
@@ -27219,8 +27241,14 @@ class DumpCommand {
     }
     async execute(interaction) {
         await interaction.deferReply({ ephemeral: true });
-        void await dump();
-        const attachment = new external_discord_js_namespaceObject.MessageAttachment(external_path_namespaceObject.resolve(__dirname, '../temp/dump.json'), 'dump.json');
+        const sectionArgument = interaction.options.getString(this.syntaxLocale.commands.dump.options.section.name);
+        if (sectionArgument === 'cache') {
+            void await dump();
+        }
+        else if (sectionArgument === 'database') {
+            void await this.databaseUtil.dump();
+        }
+        const attachment = new external_discord_js_namespaceObject.MessageAttachment(external_path_namespaceObject.resolve(__dirname, `../temp/${sectionArgument}_dump.json`), `${sectionArgument}.json`);
         await interaction.editReply({ files: [attachment] });
     }
 }
@@ -27545,11 +27573,11 @@ class UserIdCommand {
         const userArgument = interaction.options.getUser(this.syntaxLocale.commands.get_user_id.options.user.name);
         let answer;
         if (userArgument === null) {
-            answer = this.locale.messages.answers.own_id
+            answer = this.locale.messages.answers.user_id.own_id
                 .replace(/\${id}/g, interaction.user.id);
         }
         else {
-            answer = this.locale.messages.answers.other_id
+            answer = this.locale.messages.answers.user_id.other_id
                 .replace(/\${id}/g, userArgument.id)
                 .replace(/\${username}/g, userArgument.tag);
         }
@@ -27577,7 +27605,37 @@ class ResetDatabaseCommand {
     }
 }
 
+;// CONCATENATED MODULE: ./src/events/discord/interactions/commands/NotifyCommand.ts
+
+
+
+class NotifyCommand {
+    constructor(interaction, commandId) {
+        this.databaseUtil = getDatabase();
+        this.notifyList = this.databaseUtil.getDatabaseEntry('notify');
+        this.localeHelper = new LocaleHelper();
+        this.locale = this.localeHelper.getLocale();
+        if (commandId !== 'notify') {
+            return;
+        }
+        const user = interaction.user;
+        let answer;
+        if (this.notifyList.includes(user.id)) {
+            removeFromArray(this.notifyList, user.id);
+            answer = this.locale.messages.answers.notify.deactivated;
+        }
+        else {
+            this.notifyList.push(user.id);
+            answer = this.locale.messages.answers.notify.activated;
+        }
+        answer = answer.replace(/\${username}/g, user.tag);
+        this.databaseUtil.updateDatabaseEntry('notify', this.notifyList);
+        void interaction.reply(answer);
+    }
+}
+
 ;// CONCATENATED MODULE: ./src/events/discord/interactions/CommandInteraction.ts
+
 
 
 
@@ -27627,6 +27685,7 @@ class CommandInteraction {
         void new GetLodCommand(interaction, commandId);
         void new UserIdCommand(interaction, commandId);
         void new ResetDatabaseCommand(interaction, commandId);
+        void new NotifyCommand(interaction, commandId);
         await sleep(1500);
         if (interaction.replied || interaction.deferred) {
             return;
@@ -28018,7 +28077,11 @@ class MoonrakerClient {
     }
 }
 
+;// CONCATENATED MODULE: external "fs/promises"
+const promises_namespaceObject = require("fs/promises");
 ;// CONCATENATED MODULE: ./src/utils/DatabaseUtil.ts
+
+
 
 
 
@@ -28073,6 +28136,14 @@ class DatabaseUtil {
     }
     isReady() {
         return typeof database !== 'undefined';
+    }
+    async dump() {
+        void await this.writeDump();
+        return database;
+    }
+    async writeDump() {
+        await (0,promises_namespaceObject.writeFile)(external_path_default().resolve(__dirname, '../temp/database_dump.json'), JSON.stringify(database, null, 4), { encoding: 'utf8', flag: 'w+' });
+        logSuccess('Dumped Database!');
     }
 }
 
@@ -28366,7 +28437,7 @@ module.exports = require("zlib");
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(5406);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(907);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()

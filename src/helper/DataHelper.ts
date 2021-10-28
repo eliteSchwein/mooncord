@@ -1,5 +1,14 @@
+import exp from "constants";
+
 export function isObject(item) {
     return (item && typeof item === 'object' && !Array.isArray(item));
+}
+
+export function removeFromArray(array: any[], value: string|number|object) {
+    const index = array.indexOf(value);
+    if (index > -1) {
+        array.splice(index, 1);
+    }
 }
 
 export function mergeDeep(target, ...sources) {

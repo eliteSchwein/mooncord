@@ -2,6 +2,8 @@ import {ConfigHelper} from '../helper/ConfigHelper'
 import {waitUntil} from 'async-wait-until'
 import {logEmpty, logError, logRegular, logSuccess, logWarn} from '../helper/LoggerHelper'
 import {getMoonrakerClient} from "../Application";
+import path from "path";
+import {writeFile} from "fs/promises";
 
 const defaultDatabase = {
     'guilds': {},
@@ -73,5 +75,16 @@ export class DatabaseUtil {
 
     public isReady() {
         return typeof database !== 'undefined'
+    }
+
+
+    public async dump() {
+        void await this.writeDump()
+        return database
+    }
+
+    protected async writeDump() {
+        await writeFile(path.resolve(__dirname, '../temp/database_dump.json'), JSON.stringify(database, null, 4), { encoding: 'utf8', flag: 'w+' })
+        logSuccess('Dumped Database!')
     }
 }

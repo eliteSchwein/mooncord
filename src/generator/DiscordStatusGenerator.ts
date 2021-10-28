@@ -1,5 +1,5 @@
 import {ConfigHelper} from "../helper/ConfigHelper";
-import {mergeDeep} from "../helper/ObjectMergeHelper";
+import {mergeDeep} from "../helper/DataHelper";
 
 import statusMapping from "../meta/status_mapping.json"
 import {setData} from "../utils/CacheUtil";

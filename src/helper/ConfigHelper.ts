@@ -1,6 +1,6 @@
 import {readFileSync} from 'fs'
 import path from "path";
-import {mergeDeep} from "./ObjectMergeHelper";
+import {mergeDeep} from "./DataHelper";
 import {getEntry, setData} from "../utils/CacheUtil";
 import {logRegular} from "./LoggerHelper";
 

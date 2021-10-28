@@ -20,7 +20,20 @@
       }
     }
   },
-  "dump": {},
+  "dump": {
+    "section": {
+      "type": "string",
+      "required": true,
+      "choices": [
+        {
+          "value": "database"
+        },
+        {
+          "value": "cache"
+        }
+      ]
+    }
+  },
   "reset_database": {},
   "editchannel": {
     "channel": {
