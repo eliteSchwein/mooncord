@@ -21,6 +21,7 @@
     }
   },
   "dump": {},
+  "reset_database": {},
   "editchannel": {
     "channel": {
       "type": "channel",

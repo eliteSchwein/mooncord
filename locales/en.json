@@ -114,6 +114,7 @@
             "notify_activated": "I will notify you of the print status via DM, ${username}!",
             "notify_deactivated": "I will no longer notify you of the print status via DM, ${username}!",
             "emergency_stop": "Emergency Stop executed, ${username}!",
+            "reset_database": "Database got wiped",
             "printjob_resume": {
                 "status_not_valid": "${username} the Print Job isn`t currently Pausing!",
                 "status_valid": "${username} you resumed the Print Job!",
@@ -257,6 +258,10 @@
         "dump": {
             "description": "dump cache.",
             "command": "dump"
+        },
+        "reset_database": {
+            "description": "clear the Database.",
+            "command": "reset"
         },
         "editchannel": {
             "description": "Add or Remove broadcast channel.",

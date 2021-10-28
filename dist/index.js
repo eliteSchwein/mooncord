@@ -26591,7 +26591,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 8185:
+/***/ 5406:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -26935,7 +26935,7 @@ class ConfigHelper {
 }
 
 ;// CONCATENATED MODULE: ./src/meta/command_structure.json
-const command_structure_namespaceObject = JSON.parse('{"admin":{"role":{"type":"subcommand","options":{"role":{"type":"role","required":true}}},"user":{"type":"subcommand","options":{"user":{"type":"user","required":true}}}},"dump":{},"editchannel":{"channel":{"type":"channel","required":false}},"emergency_stop":{},"execute":{"gcode":{"type":"string","required":true}},"fileinfo":{"file":{"type":"string","required":true}},"get_user_id":{"user":{"type":"user","required":false}},"restart":{"service":{"type":"string","required":true,"choices":"${serviceChoices}"}},"get_log":{"log_file":{"type":"string","required":true,"choices":[{"name":"Klipper","value":"klippy"},{"name":"Moonraker","value":"moonraker"}]}},"info":{},"listfiles":{},"notify":{},"printjob":{"pause":{"type":"subcommand"},"cancel":{"type":"subcommand"},"resume":{"type":"subcommand"},"start":{"type":"subcommand","options":{"file":{"type":"string","required":true}}}},"status":{},"systeminfo":{"component":{"type":"string","required":true,"choices":"${systemInfoChoices}"}},"temp":{},"timelapse":{}}');
+const command_structure_namespaceObject = JSON.parse('{"admin":{"role":{"type":"subcommand","options":{"role":{"type":"role","required":true}}},"user":{"type":"subcommand","options":{"user":{"type":"user","required":true}}}},"dump":{},"reset_database":{},"editchannel":{"channel":{"type":"channel","required":false}},"emergency_stop":{},"execute":{"gcode":{"type":"string","required":true}},"fileinfo":{"file":{"type":"string","required":true}},"get_user_id":{"user":{"type":"user","required":false}},"restart":{"service":{"type":"string","required":true,"choices":"${serviceChoices}"}},"get_log":{"log_file":{"type":"string","required":true,"choices":[{"name":"Klipper","value":"klippy"},{"name":"Moonraker","value":"moonraker"}]}},"info":{},"listfiles":{},"notify":{},"printjob":{"pause":{"type":"subcommand"},"cancel":{"type":"subcommand"},"resume":{"type":"subcommand"},"start":{"type":"subcommand","options":{"file":{"type":"string","required":true}}}},"status":{},"systeminfo":{"component":{"type":"string","required":true,"choices":"${systemInfoChoices}"}},"temp":{},"timelapse":{}}');
 ;// CONCATENATED MODULE: ./src/meta/command_option_types.json
 const command_option_types_namespaceObject = JSON.parse('{"subcommand":1,"subcommand_group":2,"string":3,"integer":4,"boolean":5,"user":6,"channel":7,"role":8,"mentionable":9,"number":10}');
 ;// CONCATENATED MODULE: ./src/generator/DiscordCommandGenerator.ts
@@ -27557,7 +27557,28 @@ class UserIdCommand {
     }
 }
 
+;// CONCATENATED MODULE: ./src/events/discord/interactions/commands/ResetDatabaseCommand.ts
+
+
+class ResetDatabaseCommand {
+    constructor(interaction, commandId) {
+        this.databaseUtil = getDatabase();
+        this.localeHelper = new LocaleHelper();
+        this.locale = this.localeHelper.getLocale();
+        if (commandId !== 'reset_database') {
+            return;
+        }
+        this.execute(interaction);
+    }
+    async execute(interaction) {
+        await interaction.deferReply();
+        void await this.databaseUtil.resetDatabase();
+        await interaction.editReply(this.locale.messages.answers.reset_database);
+    }
+}
+
 ;// CONCATENATED MODULE: ./src/events/discord/interactions/CommandInteraction.ts
+
 
 
 
@@ -27605,6 +27626,7 @@ class CommandInteraction {
         void new RestartCommand(interaction, commandId);
         void new GetLodCommand(interaction, commandId);
         void new UserIdCommand(interaction, commandId);
+        void new ResetDatabaseCommand(interaction, commandId);
         await sleep(1500);
         if (interaction.replied || interaction.deferred) {
             return;
@@ -28024,6 +28046,11 @@ class DatabaseUtil {
         }
         database = databaseRequest.result.value;
     }
+    async resetDatabase() {
+        void await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "server.database.delete_item", "params": { "namespace": "${this.namespace}", "key": "dataset"}}`);
+        logWarn('Database wiped');
+        void await this.handleDatabaseMissing();
+    }
     async handleDatabaseMissing() {
         logRegular('generate Database Structure...');
         database = defaultDatabase;
@@ -28339,7 +28366,7 @@ module.exports = require("zlib");
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(8185);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(5406);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()

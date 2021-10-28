@@ -11,6 +11,7 @@ import { sleep } from "../../../helper/FormattingHelper";
 import { RestartCommand } from "./commands/RestartCommand";
 import { GetLodCommand } from "./commands/GetLogCommand";
 import {UserIdCommand} from "./commands/UserIdCommand";
+import {ResetDatabaseCommand} from "./commands/ResetDatabaseCommand";
 
 export class CommandInteraction {
     protected config = new ConfigHelper()
@@ -50,6 +51,7 @@ export class CommandInteraction {
         void new RestartCommand(interaction, commandId)
         void new GetLodCommand(interaction, commandId)
         void new UserIdCommand(interaction, commandId)
+        void new ResetDatabaseCommand(interaction, commandId)
 
         await sleep(1500)
 

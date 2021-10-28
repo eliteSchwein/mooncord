@@ -1,6 +1,6 @@
 import {ConfigHelper} from '../helper/ConfigHelper'
 import {waitUntil} from 'async-wait-until'
-import {logEmpty, logError, logRegular, logSuccess} from '../helper/LoggerHelper'
+import {logEmpty, logError, logRegular, logSuccess, logWarn} from '../helper/LoggerHelper'
 import {getMoonrakerClient} from "../Application";
 
 const defaultDatabase = {
@@ -33,6 +33,14 @@ export class DatabaseUtil {
         }
 
         database = databaseRequest.result.value
+    }
+
+    public async resetDatabase() {
+        void await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "server.database.delete_item", "params": { "namespace": "${this.namespace}", "key": "dataset"}}`)
+
+        logWarn('Database wiped')
+
+        void await this.handleDatabaseMissing()
     }
 
     private async handleDatabaseMissing() {

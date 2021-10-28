@@ -47,6 +47,12 @@
                 "users": [],
                 "roles": []
             },
+            "reset_database": {
+                "botadmin": true,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
             "editchannel": {
                 "botadmin": true,
                 "guildadmin": true,
