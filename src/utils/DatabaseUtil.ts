@@ -7,7 +7,7 @@ import {writeFile} from "fs/promises";
 
 const defaultDatabase = {
     'guilds': {},
-    'notify': ['']
+    'notify': []
 }
 
 let database:any

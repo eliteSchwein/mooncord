@@ -28089,7 +28089,7 @@ const promises_namespaceObject = require("fs/promises");
 
 const defaultDatabase = {
     'guilds': {},
-    'notify': ['']
+    'notify': []
 };
 let database;
 class DatabaseUtil {
