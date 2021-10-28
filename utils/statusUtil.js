@@ -74,6 +74,8 @@ async function removeOldStatus(channel, discordClient) {
 
   if (channel === null) { return }
 
+  if (typeof channel.messages === 'undefined') { return }
+
   let lastMessage = await channel.messages.fetch({ limit: 1 })
   lastMessage = lastMessage.first()
 
@@ -89,15 +91,32 @@ async function removeOldStatus(channel, discordClient) {
 }
 
 async function broadcastSection(list, section, discordClient, message) {
-  for (const index in list) {
-    const id = list[index]
+  let keys = list
+
+  if(typeof list === 'undefined') { return }
+
+  if(!Array.isArray(list)) {
+    keys = Object.keys(list)
+  }
+
+  for (const index in keys) {
+    const id = keys[index]
 
     if (section === 'guilds') {
-      broadcastSection(list[index].broadcastchannels, 'channels', discordClient, message)
-      return
+      broadcastSection(list[id].broadcastchannels, 'channels', discordClient, message)
+      continue
+    }
+
+    if(typeof discordClient[section] === 'undefined') {
+      continue
     }
 
     const channel = await discordClient[section].fetch(id)
+
+    if(typeof channel.type === 'undefined') {
+      continue
+    }
+
     await removeOldStatus(channel, discordClient)
     channel.send(message)
   }
