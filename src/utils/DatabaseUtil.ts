@@ -54,7 +54,7 @@ export class DatabaseUtil {
     }
 
     public async updateDatabase() {
-        const updateRequest = await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "server.database.post_item", "params": { "namespace": "${this.namespace}", "key": "dataset", "value": ${JSON.stringify(defaultDatabase)}}}`)
+        const updateRequest = await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "server.database.post_item", "params": { "namespace": "${this.namespace}", "key": "dataset", "value": ${JSON.stringify(database)}}}`)
 
         if(typeof updateRequest.error !== 'undefined') {
             logError(`Database Update failed: ${updateRequest.error.message}`)

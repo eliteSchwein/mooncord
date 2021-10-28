@@ -69,16 +69,17 @@ export class DiscordClient {
         logSuccess('Invite:'.green)
         console.log(getEntry('invite_url').cyan)
 
-        if(this.config.dumpCacheOnStart()) {
-            dump()
-        }
-
         this.discordClient.user.setPresence({status: "idle"})
 
         this.discordClient.user.setActivity(
             this.localeHelper.getLocale().embeds.ready.activity,
             {type: ActivityTypes.LISTENING}
         )
+
+        if(this.config.dumpCacheOnStart()) {
+            await dump()
+            await this.database.dump()
+        }
     }
 
     private async registerCommands() {

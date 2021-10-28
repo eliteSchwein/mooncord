@@ -27825,11 +27825,12 @@ class DiscordClient {
         logSuccess(`${'Name:'.green} ${(this.discordClient.user.tag).white}`);
         logSuccess('Invite:'.green);
         console.log(getEntry('invite_url').cyan);
-        if (this.config.dumpCacheOnStart()) {
-            dump();
-        }
         this.discordClient.user.setPresence({ status: "idle" });
         this.discordClient.user.setActivity(this.localeHelper.getLocale().embeds.ready.activity, { type: 2 /* LISTENING */ });
+        if (this.config.dumpCacheOnStart()) {
+            await dump();
+            await this.database.dump();
+        }
     }
     async registerCommands() {
         logRegular('Register Commands...');
@@ -28120,7 +28121,7 @@ class DatabaseUtil {
         await this.updateDatabase();
     }
     async updateDatabase() {
-        const updateRequest = await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "server.database.post_item", "params": { "namespace": "${this.namespace}", "key": "dataset", "value": ${JSON.stringify(defaultDatabase)}}}`);
+        const updateRequest = await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "server.database.post_item", "params": { "namespace": "${this.namespace}", "key": "dataset", "value": ${JSON.stringify(database)}}}`);
         if (typeof updateRequest.error !== 'undefined') {
             logError(`Database Update failed: ${updateRequest.error.message}`);
             return;
