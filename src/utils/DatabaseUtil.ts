@@ -7,7 +7,8 @@ import {writeFile} from "fs/promises";
 
 const defaultDatabase = {
     'guilds': {},
-    'notify': []
+    'notify': [],
+    'invite_url': ''
 }
 
 let database:any
@@ -15,7 +16,6 @@ let database:any
 export class DatabaseUtil {
     protected config = new ConfigHelper()
     protected moonrakerClient = getMoonrakerClient()
-    protected namespace = this.config.getMoonrakerDatabaseNamespace()
 
     public constructor() {
         this.retrieveDatabase()
@@ -27,7 +27,7 @@ export class DatabaseUtil {
         logEmpty()
         logSuccess('Retrieve Database...')
 
-        const databaseRequest = await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "server.database.get_item", "params": { "namespace": "${this.namespace}", "key": "dataset"}}`)
+        const databaseRequest = await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "server.database.get_item", "params": { "namespace": "mooncord", "key": "dataset"}}`)
 
         if(typeof databaseRequest.error !== 'undefined') {
             await this.handleDatabaseMissing()
@@ -38,7 +38,7 @@ export class DatabaseUtil {
     }
 
     public async resetDatabase() {
-        void await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "server.database.delete_item", "params": { "namespace": "${this.namespace}", "key": "dataset"}}`)
+        void await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "server.database.delete_item", "params": { "namespace": "mooncord", "key": "dataset"}}`)
 
         logWarn('Database wiped')
 
@@ -54,7 +54,7 @@ export class DatabaseUtil {
     }
 
     public async updateDatabase() {
-        const updateRequest = await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "server.database.post_item", "params": { "namespace": "${this.namespace}", "key": "dataset", "value": ${JSON.stringify(database)}}}`)
+        const updateRequest = await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "server.database.post_item", "params": { "namespace": "mooncord", "key": "dataset", "value": ${JSON.stringify(database)}}}`)
 
         if(typeof updateRequest.error !== 'undefined') {
             logError(`Database Update failed: ${updateRequest.error.message}`)

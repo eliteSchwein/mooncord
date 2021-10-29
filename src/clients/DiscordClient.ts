@@ -55,6 +55,8 @@ export class DiscordClient {
 
         this.generateCaches()
 
+        this.database.updateDatabaseEntry('invite_url', `https://discord.com/oauth2/authorize?client_id=${this.discordClient.user.id}&permissions=3422944320&scope=bot%20applications.commands`)
+
         setData('invite_url', `https://discord.com/oauth2/authorize?client_id=${this.discordClient.user.id}&permissions=3422944320&scope=bot%20applications.commands`)
         setData('discord_client', {
             'readySince': new Date(),

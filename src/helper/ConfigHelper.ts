@@ -42,10 +42,6 @@ export class ConfigHelper {
         return this.getConfig().connection.moonraker_token
     }
 
-    public getMoonrakerDatabaseNamespace() {
-        return this.getConfig().connection.moonraker_database
-    }
-
     public getDiscordToken() {
         return this.getConfig().connection.bot_token
     }

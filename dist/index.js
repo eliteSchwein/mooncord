@@ -26591,7 +26591,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 907:
+/***/ 9907:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -26874,9 +26874,6 @@ class ConfigHelper {
     }
     getMoonrakerApiKey() {
         return this.getConfig().connection.moonraker_token;
-    }
-    getMoonrakerDatabaseNamespace() {
-        return this.getConfig().connection.moonraker_database;
     }
     getDiscordToken() {
         return this.getConfig().connection.bot_token;
@@ -27813,6 +27810,7 @@ class DiscordClient {
         await this.registerCommands();
         await this.registerEvents();
         this.generateCaches();
+        this.database.updateDatabaseEntry('invite_url', `https://discord.com/oauth2/authorize?client_id=${this.discordClient.user.id}&permissions=3422944320&scope=bot%20applications.commands`);
         setData('invite_url', `https://discord.com/oauth2/authorize?client_id=${this.discordClient.user.id}&permissions=3422944320&scope=bot%20applications.commands`);
         setData('discord_client', {
             'readySince': new Date(),
@@ -28089,21 +28087,21 @@ const promises_namespaceObject = require("fs/promises");
 
 const defaultDatabase = {
     'guilds': {},
-    'notify': []
+    'notify': [],
+    'invite_url': ''
 };
 let database;
 class DatabaseUtil {
     constructor() {
         this.config = new ConfigHelper();
         this.moonrakerClient = getMoonrakerClient();
-        this.namespace = this.config.getMoonrakerDatabaseNamespace();
         this.retrieveDatabase();
     }
     async retrieveDatabase() {
         await (0,dist.waitUntil)(() => this.moonrakerClient.isReady(), { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 500 });
         logEmpty();
         logSuccess('Retrieve Database...');
-        const databaseRequest = await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "server.database.get_item", "params": { "namespace": "${this.namespace}", "key": "dataset"}}`);
+        const databaseRequest = await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "server.database.get_item", "params": { "namespace": "mooncord", "key": "dataset"}}`);
         if (typeof databaseRequest.error !== 'undefined') {
             await this.handleDatabaseMissing();
             return;
@@ -28111,7 +28109,7 @@ class DatabaseUtil {
         database = databaseRequest.result.value;
     }
     async resetDatabase() {
-        void await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "server.database.delete_item", "params": { "namespace": "${this.namespace}", "key": "dataset"}}`);
+        void await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "server.database.delete_item", "params": { "namespace": "mooncord", "key": "dataset"}}`);
         logWarn('Database wiped');
         void await this.handleDatabaseMissing();
     }
@@ -28121,7 +28119,7 @@ class DatabaseUtil {
         await this.updateDatabase();
     }
     async updateDatabase() {
-        const updateRequest = await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "server.database.post_item", "params": { "namespace": "${this.namespace}", "key": "dataset", "value": ${JSON.stringify(database)}}}`);
+        const updateRequest = await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "server.database.post_item", "params": { "namespace": "mooncord", "key": "dataset", "value": ${JSON.stringify(database)}}}`);
         if (typeof updateRequest.error !== 'undefined') {
             logError(`Database Update failed: ${updateRequest.error.message}`);
             return;
@@ -28438,7 +28436,7 @@ module.exports = require("zlib");
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(907);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(9907);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()

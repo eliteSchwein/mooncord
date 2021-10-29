@@ -3,7 +3,6 @@
         "moonraker_socket_url": "ws://127.0.0.1/websocket",
         "moonraker_url": "http://127.0.0.1",
         "moonraker_token": "",
-        "moonraker_database": "MC_SERVICE",
         "bot_token": ""
     },
     "language": {
