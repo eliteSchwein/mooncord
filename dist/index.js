@@ -26591,7 +26591,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 9907:
+/***/ 6447:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -27631,7 +27631,30 @@ class NotifyCommand {
     }
 }
 
+;// CONCATENATED MODULE: ./src/events/discord/interactions/commands/EmergencyStopCommand.ts
+
+
+class EmergencyStopCommand {
+    constructor(interaction, commandId) {
+        this.moonrakerClient = getMoonrakerClient();
+        this.localeHelper = new LocaleHelper();
+        this.locale = this.localeHelper.getLocale();
+        if (commandId !== 'emergency_stop') {
+            return;
+        }
+        this.execute(interaction);
+    }
+    async execute(interaction) {
+        await interaction.deferReply();
+        void await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "printer.emergency_stop" }`);
+        const answer = this.locale.messages.answers.emergency_stop
+            .replace(/\${username}/g, interaction.user.tag);
+        await interaction.editReply(answer);
+    }
+}
+
 ;// CONCATENATED MODULE: ./src/events/discord/interactions/CommandInteraction.ts
+
 
 
 
@@ -27683,6 +27706,7 @@ class CommandInteraction {
         void new UserIdCommand(interaction, commandId);
         void new ResetDatabaseCommand(interaction, commandId);
         void new NotifyCommand(interaction, commandId);
+        void new EmergencyStopCommand(interaction, commandId);
         await sleep(1500);
         if (interaction.replied || interaction.deferred) {
             return;
@@ -28436,7 +28460,7 @@ module.exports = require("zlib");
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(9907);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(6447);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()
