@@ -25,7 +25,7 @@
     "async-wait-until": "^2.0.8",
     "axios": "^0.24.0",
     "colors": "^1.4.0",
-    "discord.js": "^13.2.0",
+    "discord.js": "^13.3.1",
     "fluent-ffmpeg": "^2.1.2",
     "form-data": "^4.0.0",
     "log-symbols": "^4.1.0",
