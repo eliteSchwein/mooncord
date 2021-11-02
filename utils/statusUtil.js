@@ -20,13 +20,9 @@ let currentStatus = "startup"
 async function changeStatus(discordClient, newStatus) {
   const id = Math.floor(Math.random() * Number.parseInt('10_000')) + 1
   const currentStatusMeta = metadata[currentStatus].meta_data
-  const newStatusMeta = metadata[newStatus].meta_data
 
   if(!currentStatusMeta.allow_same && currentStatus === newStatus) { return false }
   if(currentStatusMeta.prevent.includes(newStatus)) { return false }
-  if(currentStatusMeta.order_id > 0 && 
-    newStatusMeta.order_id > 0 && 
-    currentStatusMeta.order_id > newStatusMeta.order_id) { return false }
 
   statusWaitList.push(id)
 
