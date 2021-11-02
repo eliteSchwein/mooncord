@@ -26591,7 +26591,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 6447:
+/***/ 8781:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -26606,7 +26606,7 @@ __nccwpck_require__.d(__webpack_exports__, {
 });
 
 ;// CONCATENATED MODULE: ./package.json
-const package_namespaceObject = JSON.parse('{"name":"mooncord","version":"0.0.5","description":"Moonraker Discord Bot based on Discord.js","main":"index.js","scripts":{"start":"node dist/index.js","ramdebugstart":"node --trace_gc dist/mooncord.js","checkcodestyle":"npx eslint ./**","autofixcodestyle":"npx eslint ./** --fix","build":"ncc build -m -e discord.js src/Application.ts -o dist","watch":"ncc build -w -e discord.js src/Application.ts -o dist"},"repository":{"type":"git","url":"git+https://github.com/eliteSchwein/mooncord.git"},"keywords":[],"author":"eliteSCHW31N","license":"ISC","bugs":{"url":"https://github.com/eliteSchwein/mooncord/issues"},"homepage":"https://github.com/eliteSchwein/mooncord#readme","devDependencies":{"@types/node":"^16.11.6","@vercel/ncc":"^0.31.1","async-wait-until":"^2.0.8","axios":"^0.24.0","colorts":"^0.1.63","eslint":"^8.1.0","eslint-config-galex":"^3.1.2","eslint-config-standard":"^16.0.3","eslint-plugin-import":"^2.25.2","eslint-plugin-node":"^11.1.0","eslint-plugin-promise":"^5.1.1","form-data":"^4.0.0","lodash":"^4.17.21","sharp":"^0.29.2","shelljs":"^0.8.4","typescript":"^4.4.4","websocket-ts":"^1.1.1","ws":"^8.2.3"},"dependencies":{"discord.js":"^13.2.0"}}');
+const package_namespaceObject = JSON.parse('{"name":"mooncord","version":"0.0.5","description":"Moonraker Discord Bot based on Discord.js","main":"index.js","scripts":{"start":"node dist/index.js","ramdebugstart":"node --trace_gc dist/mooncord.js","checkcodestyle":"npx eslint ./**","autofixcodestyle":"npx eslint ./** --fix","build":"ncc build -m -e discord.js src/Application.ts -o dist","watch":"ncc build -w -e discord.js src/Application.ts -o dist"},"repository":{"type":"git","url":"git+https://github.com/eliteSchwein/mooncord.git"},"keywords":[],"author":"eliteSCHW31N","license":"ISC","bugs":{"url":"https://github.com/eliteSchwein/mooncord/issues"},"homepage":"https://github.com/eliteSchwein/mooncord#readme","devDependencies":{"@types/node":"^16.11.6","@vercel/ncc":"^0.31.1","async-wait-until":"^2.0.8","axios":"^0.24.0","colorts":"^0.1.63","eslint":"^8.1.0","eslint-config-galex":"^3.2.0","eslint-config-standard":"^16.0.3","eslint-plugin-import":"^2.25.2","eslint-plugin-node":"^11.1.0","eslint-plugin-promise":"^5.1.1","form-data":"^4.0.0","lodash":"^4.17.21","sharp":"^0.29.2","shelljs":"^0.8.4","typescript":"^4.4.4","websocket-ts":"^1.1.1","ws":"^8.2.3"},"dependencies":{"discord.js":"^13.3.1"}}');
 var package_namespaceObject_0 = /*#__PURE__*/__nccwpck_require__.t(package_namespaceObject, 2);
 // EXTERNAL MODULE: ./node_modules/async-wait-until/dist/index.js
 var dist = __nccwpck_require__(1299);
@@ -27956,7 +27956,56 @@ class UpdateNotification {
     }
 }
 
+;// CONCATENATED MODULE: ./src/helper/FileListHelper.ts
+
+
+class FileListHelper {
+    constructor(moonrakerClient) {
+        this.moonrakerClient = moonrakerClient;
+    }
+    async retrieveFiles() {
+        logRegular('Retrieve current GCode Files...');
+        const currentFiles = await this.moonrakerClient.send('{"jsonrpc": "2.0", "method": "server.files.list", "params": {"root": "gcodes"}}');
+        setData('gcode_files', currentFiles.result);
+    }
+    getCurrentFiles() {
+        return getEntry('gcode_files');
+    }
+}
+
+;// CONCATENATED MODULE: ./src/events/moonraker/messages/FileEditNotification.ts
+
+
+
+class FileEditNotification {
+    constructor() {
+        this.moonrakerClient = getMoonrakerClient();
+        this.fileListHelper = new FileListHelper(this.moonrakerClient);
+    }
+    parse(message) {
+        if (typeof (message.method) === 'undefined') {
+            return;
+        }
+        if (typeof (message.params) === 'undefined') {
+            return;
+        }
+        if (message.method !== 'notify_filelist_changed') {
+            return;
+        }
+        const fileData = message.params[0];
+        logNotice(`File ${fileData.item.path} changed: ${fileData.action}`);
+        if (typeof fileData.source_item !== 'undefined') {
+            logNotice(`Source File: ${fileData.source_item.path}`);
+        }
+        if (fileData.item.path.endsWith('.gcode')) {
+            void this.fileListHelper.retrieveFiles();
+        }
+        return true;
+    }
+}
+
 ;// CONCATENATED MODULE: ./src/events/moonraker/MessageHandler.ts
+
 
 
 
@@ -27967,6 +28016,7 @@ class MessageHandler {
         this.procStatsNotification = new ProcStatsNotification();
         this.subscriptionNotification = new SubscriptionNotification();
         this.updateNotification = new UpdateNotification();
+        this.fileEditNotification = new FileEditNotification();
         this.websocket = websocket;
         websocket.addEventListener(lib.WebsocketEvents.message, ((instance, ev) => {
             const messageData = JSON.parse(ev.data);
@@ -27985,6 +28035,9 @@ class MessageHandler {
             if (this.updateNotification.parse(messageData)) {
                 return;
             }
+            if (this.fileEditNotification.parse(messageData)) {
+                return;
+            }
         }));
     }
 }
@@ -27997,10 +28050,12 @@ class MessageHandler {
 
 
 
+
 const requests = {};
 let messageHandler;
 class MoonrakerClient {
     constructor() {
+        this.fileListHelper = new FileListHelper(this);
         this.config = new ConfigHelper();
         this.apiKeyHelper = new APIKeyHelper();
         this.ready = false;
@@ -28038,6 +28093,7 @@ class MoonrakerClient {
         const procStats = await this.send(`{"jsonrpc": "2.0", "method": "machine.proc_stats"}`);
         logRegular('Retrieve Subscribable MoonRaker Objects...');
         const objects = await this.send(`{"jsonrpc": "2.0", "method": "printer.objects.list"}`);
+        await this.fileListHelper.retrieveFiles();
         const subscriptionObjects = {};
         for (const index in objects.result.objects) {
             const object = objects.result.objects[index];
@@ -28460,7 +28516,7 @@ module.exports = require("zlib");
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(6447);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(8781);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()

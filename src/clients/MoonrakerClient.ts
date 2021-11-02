@@ -5,11 +5,13 @@ import {waitUntil} from 'async-wait-until'
 import {changePath, logError, logRegular, logSuccess} from '../helper/LoggerHelper'
 import {getLogPath, setData} from '../utils/CacheUtil'
 import {MessageHandler} from "../events/moonraker/MessageHandler";
+import {FileListHelper} from "../helper/FileListHelper";
 
 const requests: any = {}
 let messageHandler: MessageHandler
 
 export class MoonrakerClient {
+    protected fileListHelper = new FileListHelper(this)
     protected config = new ConfigHelper()
     protected apiKeyHelper = new APIKeyHelper()
     protected ready = false
@@ -65,6 +67,8 @@ export class MoonrakerClient {
 
         logRegular('Retrieve Subscribable MoonRaker Objects...')
         const objects = await this.send(`{"jsonrpc": "2.0", "method": "printer.objects.list"}`)
+
+        await this.fileListHelper.retrieveFiles()
 
         const subscriptionObjects: any = {}
 
