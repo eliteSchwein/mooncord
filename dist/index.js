@@ -26667,20 +26667,44 @@ function stripAnsi(input) {
 
 
 
-let log_file = external_fs_namespaceObject.createWriteStream(external_path_namespaceObject.resolve(__dirname, '../temp/log.log'), { flags: 'w' });
-let log_stdout = process.stdout;
+let tempLog = '';
+let log_file;
+const log_stdout = process.stdout;
 function hookLogFile() {
-    console.log = function (d) {
+    console.log = (d) => {
         const consoleOutput = `${external_util_.format(d)}\n`;
         const consoleLogOutput = stripAnsi(consoleOutput);
         log_stdout.write(consoleOutput);
         log_file.write(consoleLogOutput);
     };
     console.error = console.log;
-    process.on('uncaughtException', function (err) {
+}
+function unhookTempLog() {
+    console.log = (d) => {
+        const consoleOutput = `${external_util_.format(d)}\n`;
+        log_stdout.write(consoleOutput);
+    };
+    console.error = console.log;
+}
+function tempHookLog() {
+    console.log = (d) => {
+        const consoleOutput = `${external_util_.format(d)}\n`;
+        const consoleLogOutput = stripAnsi(consoleOutput);
+        log_stdout.write(consoleOutput);
+        tempLog = tempLog.concat(consoleLogOutput);
+    };
+    console.error = console.log;
+}
+function hookProcess() {
+    process.on('uncaughtException', (err) => {
         logError(`${err.name}: ${err.message}
             ${err.stack}`);
     });
+}
+function changeTempPath(tempPath) {
+    log_file = external_fs_namespaceObject.createWriteStream(external_path_namespaceObject.resolve(__dirname, `${tempPath}/log.log`), { flags: 'w' });
+    log_file.write(tempLog);
+    hookLogFile();
 }
 function changePath(directory) {
     logRegular(`Change Log Path to ${directory}...`);
@@ -26695,10 +26719,16 @@ function changePath(directory) {
         logWarn(`Cant Read or/and Write to ${directory}`);
         return;
     }
-    const current = external_fs_namespaceObject.readFileSync(log_file.path);
+    let current;
+    try {
+        current = external_fs_namespaceObject.readFileSync(log_file.path);
+    }
+    catch {
+        current = Buffer.from(tempLog, 'utf8');
+    }
     log_file = external_fs_namespaceObject.createWriteStream(external_path_namespaceObject.resolve(directory, 'mooncord.log'), { flags: 'w' });
-    log_stdout = process.stdout;
     log_file.write(current);
+    hookLogFile();
 }
 function logError(message) {
     console.log(`${getLevel('error')} ${getTimeStamp()} ${message}`.red);
@@ -26850,14 +26880,14 @@ async function writeDump() {
 const args = process.argv.slice(2);
 class ConfigHelper {
     constructor() {
-        this.configPath = `${args[0]}/mooncord.json`;
-        this.configRaw = (0,external_fs_namespaceObject.readFileSync)(this.configPath, { encoding: 'utf8' });
-        this.defaultConfig = (0,external_fs_namespaceObject.readFileSync)(__nccwpck_require__.ab + "mooncord_full.json", { encoding: 'utf8' });
     }
     loadCache() {
         logRegular("load Config Cache...");
-        const config = JSON.parse(this.defaultConfig);
-        mergeDeep(config, JSON.parse(this.configRaw));
+        const configPath = `${args[0]}/mooncord.json`;
+        const configRaw = (0,external_fs_namespaceObject.readFileSync)(configPath, { encoding: 'utf8' });
+        const defaultConfig = (0,external_fs_namespaceObject.readFileSync)(__nccwpck_require__.ab + "mooncord_full.json", { encoding: 'utf8' });
+        const config = JSON.parse(defaultConfig);
+        mergeDeep(config, JSON.parse(configRaw));
         setData('config', config);
     }
     getConfig() {
@@ -26934,6 +26964,15 @@ class ConfigHelper {
     }
     showNoPermissionPrivate() {
         return this.getConfig().messages.show_no_permission_private;
+    }
+    getLogPath() {
+        return this.getConfig().logger.path;
+    }
+    isLogFileDisabled() {
+        return this.getConfig().logger.disable_file;
+    }
+    getTempPath() {
+        return this.getConfig().tmp_path;
     }
 }
 
@@ -28114,7 +28153,18 @@ class MoonrakerClient {
             'readySince': new Date(),
             'event_count': this.websocket.underlyingWebsocket['_eventsCount']
         });
-        changePath(getLogPath());
+        if (this.config.isLogFileDisabled()) {
+            logWarn('Log File is disabled!');
+            unhookTempLog();
+        }
+        else if (this.config.getLogPath() !== '') {
+            changeTempPath(this.config.getTempPath());
+            changePath(this.config.getLogPath());
+        }
+        else {
+            changeTempPath(this.config.getTempPath());
+            changePath(getLogPath());
+        }
         logSuccess('MoonRaker Client is ready');
     }
     registerEvents() {
@@ -28236,7 +28286,8 @@ class DatabaseUtil {
 
 
 
-hookLogFile();
+tempHookLog();
+hookProcess();
 logSuccess(`Starting ${package_namespaceObject.name} ${package_namespaceObject.version}...`);
 logRegular('load Package Cache...');
 setData('package_config', package_namespaceObject_0);

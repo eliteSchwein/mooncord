@@ -5,6 +5,11 @@
         "moonraker_token": "",
         "bot_token": ""
     },
+    "logger": {
+        "disable_file": false,
+        "path": ""
+    },
+    "tmp_path": "../temp",
     "status": {
         "update_interval": 10,
         "use_percent": true,

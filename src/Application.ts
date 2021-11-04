@@ -1,14 +1,15 @@
 import * as packageConfig from '../package.json'
 import {DiscordClient} from './clients/DiscordClient'
 import {MoonrakerClient} from './clients/MoonrakerClient'
-import {hookLogFile, logEmpty, logRegular, logSuccess} from './helper/LoggerHelper'
+import {hookProcess, logEmpty, logRegular, logSuccess, tempHookLog} from './helper/LoggerHelper'
 import {DatabaseUtil} from './utils/DatabaseUtil'
 import {LocaleHelper} from "./helper/LocaleHelper";
-import { findValue, setData } from './utils/CacheUtil'
+import { setData } from './utils/CacheUtil'
 import {ConfigHelper} from "./helper/ConfigHelper";
 import {EmbedHelper} from "./helper/EmbedHelper";
 
-hookLogFile()
+tempHookLog()
+hookProcess()
 
 logSuccess(`Starting ${packageConfig.name} ${packageConfig.version}...`)
 

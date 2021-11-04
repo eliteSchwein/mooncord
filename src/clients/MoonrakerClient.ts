@@ -2,7 +2,15 @@ import {ConfigHelper} from '../helper/ConfigHelper'
 import {Websocket, WebsocketBuilder, WebsocketEvents} from 'websocket-ts'
 import {APIKeyHelper} from '../helper/APIKeyHelper'
 import {waitUntil} from 'async-wait-until'
-import {changePath, logError, logRegular, logSuccess} from '../helper/LoggerHelper'
+import {
+    changePath,
+    changeTempPath,
+    logError,
+    logRegular,
+    logSuccess,
+    logWarn,
+    unhookTempLog
+} from '../helper/LoggerHelper'
 import {getLogPath, setData} from '../utils/CacheUtil'
 import {MessageHandler} from "../events/moonraker/MessageHandler";
 import {FileListHelper} from "../helper/FileListHelper";
@@ -96,7 +104,16 @@ export class MoonrakerClient {
             'event_count': this.websocket.underlyingWebsocket['_eventsCount']
         })
 
-        changePath(getLogPath())
+        if(this.config.isLogFileDisabled()) {
+            logWarn('Log File is disabled!')
+            unhookTempLog()
+        } else if(this.config.getLogPath() !== '') {
+            changeTempPath(this.config.getTempPath())
+            changePath(this.config.getLogPath())
+        } else {
+            changeTempPath(this.config.getTempPath())
+            changePath(getLogPath())
+        }
 
         logSuccess('MoonRaker Client is ready')
     }

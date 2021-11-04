@@ -4,23 +4,56 @@ import * as fs from 'fs'
 import * as path from 'path'
 import {stripAnsi} from "./FormattingHelper";
 
-let log_file = fs.createWriteStream(path.resolve(__dirname, '../temp/log.log'), {flags : 'w'});
-let log_stdout = process.stdout;
+let tempLog = ''
+let log_file: fs.WriteStream
+const log_stdout = process.stdout
 
-export function hookLogFile() {
-    console.log = function(d) { //
+function hookLogFile() {
+    console.log = (d) => {
         const consoleOutput = `${util.format(d)}\n`
         const consoleLogOutput = stripAnsi(consoleOutput)
 
-        log_stdout.write(consoleOutput);
+        log_stdout.write(consoleOutput)
         log_file.write(consoleLogOutput)
-    };
-    console.error = console.log;
+    }
 
-    process.on('uncaughtException', function(err) {
+    console.error = console.log
+}
+
+export function unhookTempLog() {
+    console.log = (d) => {
+        const consoleOutput = `${util.format(d)}\n`
+
+        log_stdout.write(consoleOutput)
+    }
+
+    console.error = console.log
+}
+
+export function tempHookLog() {
+    console.log = (d) => {
+        const consoleOutput = `${util.format(d)}\n`
+        const consoleLogOutput = stripAnsi(consoleOutput)
+
+        log_stdout.write(consoleOutput)
+
+        tempLog = tempLog.concat(consoleLogOutput)
+    }
+
+    console.error = console.log
+}
+
+export function hookProcess() {
+    process.on('uncaughtException', (err) => {
         logError(`${err.name}: ${err.message}
             ${err.stack}`)
-    });
+    })
+}
+
+export function changeTempPath(tempPath: string) {
+    log_file = fs.createWriteStream(path.resolve(__dirname, `${tempPath}/log.log`), {flags : 'w'})
+    log_file.write(tempLog)
+    hookLogFile()
 }
 
 export function changePath(directory: string) {
@@ -37,12 +70,19 @@ export function changePath(directory: string) {
         return
     }
 
-    const current = fs.readFileSync(log_file.path)
+    let current: Buffer
 
-    log_file = fs.createWriteStream(path.resolve(directory, 'mooncord.log'), {flags : 'w'});
-    log_stdout = process.stdout;
+    try {
+        current = fs.readFileSync(log_file.path)
+    } catch {
+        current = Buffer.from(tempLog, 'utf8')
+    }
+
+    log_file = fs.createWriteStream(path.resolve(directory, 'mooncord.log'), {flags : 'w'})
 
     log_file.write(current)
+
+    hookLogFile()
 }
 
 export function logError (message:string) {
