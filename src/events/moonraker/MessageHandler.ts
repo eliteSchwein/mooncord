@@ -25,10 +25,10 @@ export class MessageHandler {
                 'event_count': websocket.underlyingWebsocket['_eventsCount']
             })
 
-            if(this.procStatsNotification.parse(messageData)) { return }
-            if(this.subscriptionNotification.parse(messageData)) { return }
-            if(this.updateNotification.parse(messageData)) { return }
-            if(this.fileEditNotification.parse(messageData)) { return }
+            this.procStatsNotification.parse(messageData)
+            this.subscriptionNotification.parse(messageData)
+            this.updateNotification.parse(messageData)
+            this.fileEditNotification.parse(messageData)
         }))
     }
 }

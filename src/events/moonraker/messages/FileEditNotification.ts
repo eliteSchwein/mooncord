@@ -22,6 +22,5 @@ export class FileEditNotification {
         if(fileData.item.path.endsWith('.gcode')) {
             void this.fileListHelper.retrieveFiles()
         }
-        return true
     }
 }

@@ -8,6 +8,5 @@ export class UpdateNotification {
         if(message.method !== 'notify_update_manager') { return }
 
         updateData('updates', message.params[0])
-        return true
     }
 }

@@ -27955,7 +27955,6 @@ class ProcStatsNotification {
             return;
         }
         setData('proc_stats', message.params[0]);
-        return true;
     }
 }
 
@@ -27973,7 +27972,6 @@ class SubscriptionNotification {
             return;
         }
         updateData('state', message.params[0]);
-        return true;
     }
 }
 
@@ -27991,7 +27989,6 @@ class UpdateNotification {
             return;
         }
         updateData('updates', message.params[0]);
-        return true;
     }
 }
 
@@ -28039,7 +28036,6 @@ class FileEditNotification {
         if (fileData.item.path.endsWith('.gcode')) {
             void this.fileListHelper.retrieveFiles();
         }
-        return true;
     }
 }
 
@@ -28065,18 +28061,10 @@ class MessageHandler {
             updateData('moonraker_client', {
                 'event_count': websocket.underlyingWebsocket['_eventsCount']
             });
-            if (this.procStatsNotification.parse(messageData)) {
-                return;
-            }
-            if (this.subscriptionNotification.parse(messageData)) {
-                return;
-            }
-            if (this.updateNotification.parse(messageData)) {
-                return;
-            }
-            if (this.fileEditNotification.parse(messageData)) {
-                return;
-            }
+            this.procStatsNotification.parse(messageData);
+            this.subscriptionNotification.parse(messageData);
+            this.updateNotification.parse(messageData);
+            this.fileEditNotification.parse(messageData);
         }));
     }
 }

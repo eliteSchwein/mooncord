@@ -8,6 +8,5 @@ export class ProcStatsNotification {
         if(message.method !== 'notify_proc_stat_update') { return }
 
         setData('proc_stats', message.params[0])
-        return true
     }
 }
