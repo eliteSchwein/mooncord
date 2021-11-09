@@ -8,10 +8,15 @@ export class TempCommand {
     public constructor(interaction: CommandInteraction, commandId: string) {
         if(commandId !== 'temp') { return }
 
+        this.execute(interaction)
+    }
+
+    protected async execute(interaction: CommandInteraction) {
         const fields = this.tempHelper.parseFields()
 
-        const message = this.embedHelper.generateEmbed('temperatures', null, fields['fields'])
-        
-        void interaction.reply(message)
+        const message = await this.embedHelper.generateEmbed('temperatures', null, fields['fields'])
+
+        void interaction.reply(message.embed)
     }
+
 }

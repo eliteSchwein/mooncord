@@ -2,7 +2,6 @@
   "disconnected":{
     "embed_id": "disconnected",
     "meta_data": {
-      "order_id": 0,
       "allow_same": false,
       "prevent": [
         "pause"
@@ -16,9 +15,8 @@
   "error":{
     "embed_id": "error",
     "meta_data": {
-      "order_id": 0,
       "allow_same": false,
-      "prevent": []
+      "prevent": ["disconnected"]
     },
     "activity": {
       "status": "dnd",
@@ -28,7 +26,6 @@
   "offline":{
     "embed_id": "offline",
     "meta_data": {
-      "order_id": 0,
       "allow_same": false,
       "prevent": []
     },
@@ -40,7 +37,6 @@
   "shutdown":{
     "embed_id": "shutdown",
     "meta_data": {
-      "order_id": 0,
       "allow_same": false,
       "prevent": [
         "pause",
@@ -58,7 +54,6 @@
   "stop":{
     "embed_id": "printjob_stop",
     "meta_data": {
-      "order_id": 0,
       "allow_same": false,
       "prevent": [
         "start"
@@ -72,9 +67,8 @@
   "ready":{
     "embed_id": "ready",
     "meta_data": {
-      "order_id": 1,
       "allow_same": false,
-      "prevent": ["done"]
+      "prevent": ["done", "startup"]
     },
     "activity": {
       "status": "idle",
@@ -84,9 +78,8 @@
   "startup":{
     "embed_id": "startup",
     "meta_data": {
-      "order_id": 0,
       "allow_same": false,
-      "prevent": []
+      "prevent": ["error"]
     },
     "activity": {
       "status": "idle",
@@ -96,7 +89,6 @@
   "start":{
     "embed_id": "printjob_start",
     "meta_data": {
-      "order_id": 2,
       "allow_same": false,
       "prevent": []
     },
@@ -108,7 +100,6 @@
   "done":{
     "embed_id": "printjob_done",
     "meta_data": {
-      "order_id": 0,
       "allow_same": false,
       "prevent": []
     },
@@ -120,7 +111,6 @@
   "pause":{
     "embed_id": "printjob_pause",
     "meta_data": {
-      "order_id": 0,
       "allow_same": false,
       "prevent": []
     },
@@ -132,7 +122,6 @@
   "printing":{
     "embed_id": "printjob_printing",
     "meta_data": {
-      "order_id": 3,
       "allow_same": true,
       "prevent": []
     },

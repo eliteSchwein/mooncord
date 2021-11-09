@@ -28,3 +28,17 @@ export function mergeDeep(target, ...sources) {
 
     return mergeDeep(target, ...sources);
 }
+
+export async function sleep(delay) {
+    return await new Promise((r) => setTimeout(r, delay))
+}
+
+export function formatPercent(percent, digits) {
+    return (percent*100).toFixed(digits)
+}
+
+export function stripAnsi(input: string) {
+    return input.replace(
+        /[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g,
+        '')
+}

@@ -4,14 +4,17 @@ import {findValue, getEntry, setData} from "../utils/CacheUtil";
 import embedMapping from "../meta/embed_mapping.json"
 import {MessageAttachment, MessageEmbed} from "discord.js";
 import * as path from "path"
+import * as app from "../Application"
 import {DiscordInputGenerator} from "../generator/DiscordInputGenerator";
 import {mergeDeep} from "./DataHelper";
 import {logRegular} from "./LoggerHelper";
+import {WebcamHelper} from "./WebcamHelper";
 
 export class EmbedHelper {
     protected localeHelper = new LocaleHelper()
     protected configHelper = new ConfigHelper()
     protected inputGenerator = new DiscordInputGenerator()
+    protected webcamHelper = new WebcamHelper()
 
     public loadCache() {
         logRegular("load Embeds Cache...")
@@ -31,7 +34,7 @@ export class EmbedHelper {
         return getEntry('embeds').fields
     }
 
-    public generateEmbed(embedID: string,providedPlaceholders = null, providedFields = null) {
+    public async generateEmbed(embedID: string,providedPlaceholders = null, providedFields = null) {
         const embed = new MessageEmbed()
         const embedDataUnformatted = this.getEmbeds()[embedID]
 
@@ -48,13 +51,16 @@ export class EmbedHelper {
             embeds: undefined
         }
 
-        for(const placeholder of placeholders) {
-            embedRaw = embedRaw.replace(placeholder, this.parsePlaceholder(placeholder,providedPlaceholders))
+        if(placeholders !== null) {
+            for(const placeholder of placeholders) {
+                embedRaw = embedRaw.replace(placeholder, this.parsePlaceholder(placeholder,providedPlaceholders))
+            }
         }
 
         const embedData = JSON.parse(embedRaw)
 
-        const thumbnail = this.parseThumbnail(embedData.thumbnail)
+        const thumbnail = await this.parseImage(embedData.thumbnail)
+        const image = await this.parseImage(embedData.image)
         const buttons = this.inputGenerator.generateButtons(embedData.buttons)
 
         files.push(thumbnail)
@@ -70,6 +76,12 @@ export class EmbedHelper {
 
         if(typeof thumbnail !== 'undefined') {
             embed.setThumbnail(`attachment://${thumbnail.name}`)
+            files.push(thumbnail)
+        }
+
+        if(typeof image !== 'undefined') {
+            embed.setImage(`attachment://${image.name}`)
+            files.push(image)
         }
 
         if(typeof embedData.fields !== 'undefined') {
@@ -86,13 +98,17 @@ export class EmbedHelper {
             response['files'] = files
         }
 
-        return response
+        return {embed: response, activity: embedData.activity}
     }
-    protected parseThumbnail(thumbnailID: string) {
-        if(typeof thumbnailID === 'undefined') { return }
+    protected async parseImage(imageID: string) {
+        if(typeof imageID === 'undefined') { return }
+        
+        if(imageID === 'webcam') {
+            return this.webcamHelper.retrieveWebcam(app.getMoonrakerClient())
+        }
 
-        const thumbnailPath = path.resolve(__dirname, `../assets/images/${thumbnailID}`)
-        return new MessageAttachment(thumbnailPath, thumbnailID)
+        const imagePath = path.resolve(__dirname, `../assets/images/${imageID}`)
+        return new MessageAttachment(imagePath, imageID)
     }
     protected parsePlaceholder(placeholder: string,providedPlaceholders = null) {
         const placeholderId = placeholder
@@ -108,8 +124,10 @@ export class EmbedHelper {
         
         const cacheParser = findValue(placeholderId)
 
-        if(typeof cacheParser !== 'undefined') { return cacheParser }
+        if(typeof cacheParser === 'undefined') { return "" }
 
-        return ""
+        return cacheParser
+            .replace(/(")/g,'\'')
+            .replace(/(\n)/g,'\\n')
     }
 }

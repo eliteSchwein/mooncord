@@ -2,7 +2,7 @@ import 'colorts/lib/string';
 import * as util from 'util'
 import * as fs from 'fs'
 import * as path from 'path'
-import {stripAnsi} from "./FormattingHelper";
+import {stripAnsi} from "./DataHelper";
 
 let tempLog = ''
 let log_file: fs.WriteStream

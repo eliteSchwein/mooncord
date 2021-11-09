@@ -7,6 +7,7 @@ import {LocaleHelper} from "./helper/LocaleHelper";
 import { setData } from './utils/CacheUtil'
 import {ConfigHelper} from "./helper/ConfigHelper";
 import {EmbedHelper} from "./helper/EmbedHelper";
+import {StatusHelper} from "./helper/StatusHelper";
 
 tempHookLog()
 hookProcess()
@@ -15,6 +16,12 @@ logSuccess(`Starting ${packageConfig.name} ${packageConfig.version}...`)
 
 logRegular('load Package Cache...')
 setData('package_config', packageConfig)
+
+logRegular('init Function Cache...')
+setData('function', {
+    'current_status': 'startup',
+    'poll_printer_info': false
+})
 
 Object.assign(global, { WebSocket: require('ws') })
 

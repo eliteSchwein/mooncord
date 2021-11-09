@@ -1,6 +1,6 @@
 import { getEntry } from "../utils/CacheUtil";
-import { formatPercent } from "./FormattingHelper";
 import tempMapping from "../meta/temp_mapping.json"
+import {formatPercent} from "./DataHelper";
 
 export class TempHelper {
     protected cache = getEntry('state')

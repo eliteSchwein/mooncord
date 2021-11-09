@@ -10,6 +10,7 @@
     "color": "#25db00",
     "author": "${state.print_stats.filename}",
     "thumbnail": "printjob_thumbnail",
+    "image": "webcam",
     "buttons": [],
     "fields": [
       {
@@ -22,6 +23,7 @@
     "color": "#25db00",
     "author": "${state.print_stats.filename}",
     "thumbnail": "printjob_thumbnail",
+    "image": "webcam",
     "buttons": [],
     "fields": [
       {
@@ -34,6 +36,7 @@
     "color": "#dbd400",
     "author": "${state.print_stats.filename}",
     "thumbnail": "printjob_thumbnail",
+    "image": "webcam",
     "buttons": ["printjob_resume","printjob_cancel"],
     "fields": [
       {
@@ -58,6 +61,7 @@
     "color": "#0099ff",
     "author": "${state.print_stats.filename}",
     "thumbnail": "printjob_thumbnail",
+    "image": "webcam",
     "buttons": [
       "printjob_pause",
       "printjob_cancel",
@@ -85,6 +89,7 @@
     "color": "#c90000",
     "author": "${state.print_stats.filename}",
     "thumbnail": "printjob_thumbnail",
+    "image": "webcam",
     "buttons": [],
     "fields": [
       {
@@ -100,9 +105,11 @@
   },
   "disconnected":{
     "color": "#c90000",
+    "image": "webcam",
     "buttons": ["klipper_restart"]
   },
   "error":{
+    "description": "```${printer_info.state_message}```",
     "color": "#c90000",
     "buttons": ["klipper_restart"]
   },
@@ -112,10 +119,12 @@
   },
   "shutdown":{
     "color": "#c90000",
+    "image": "webcam",
     "buttons": ["klipper_restart"]
   },
   "ready":{
     "color": "#0099ff",
+    "image": "webcam",
     "buttons": [],
     "description": "${versions}"
   },

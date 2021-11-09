@@ -14,6 +14,7 @@ import {
 import {getLogPath, setData} from '../utils/CacheUtil'
 import {MessageHandler} from "../events/moonraker/MessageHandler";
 import {FileListHelper} from "../helper/FileListHelper";
+import {SchedulerHelper} from "../helper/SchedulerHelper";
 
 const requests: any = {}
 let messageHandler: MessageHandler
@@ -43,16 +44,18 @@ export class MoonrakerClient {
             process.exit(5)
         }))
 
-        this.websocket.addEventListener(WebsocketEvents.open, (((instance, ev) => {
+        this.websocket.addEventListener(WebsocketEvents.open, ((async (instance, ev) => {
             logSuccess('Connected to MoonRaker')
 
             this.registerEvents()
 
-            this.sendInitCommands()
+            await this.sendInitCommands()
+
+            this.changeLogPath()
         })))
     }
 
-    private async sendInitCommands() {
+    public async sendInitCommands() {
         logRegular('Send Initial Commands...')
 
         logRegular('Retrieve MoonRaker Update Manager Data...')
@@ -103,7 +106,9 @@ export class MoonrakerClient {
             'readySince': new Date(),
             'event_count': this.websocket.underlyingWebsocket['_eventsCount']
         })
+    }
 
+    private changeLogPath() {
         if(this.config.isLogFileDisabled()) {
             logWarn('Log File is disabled!')
             unhookTempLog()
@@ -114,6 +119,10 @@ export class MoonrakerClient {
             changeTempPath(this.config.getTempPath())
             changePath(getLogPath())
         }
+
+        logRegular('Register Scheduler...')
+
+        void new SchedulerHelper(this)
 
         logSuccess('MoonRaker Client is ready')
     }

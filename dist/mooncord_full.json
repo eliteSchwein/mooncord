@@ -190,5 +190,9 @@
     },
     "development": {
         "dump_cache_on_start": true
+    },
+    "scheduler": {
+        "high_inteval": 500,
+        "moderate_interval": 60000
     }
 }

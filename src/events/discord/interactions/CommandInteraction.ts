@@ -7,13 +7,14 @@ import {PermissionHelper} from "../../../helper/PermissionHelper";
 import {ConfigHelper} from "../../../helper/ConfigHelper";
 import {LocaleHelper} from "../../../helper/LocaleHelper";
 import { TempCommand } from "./commands/TempCommand";
-import { sleep } from "../../../helper/FormattingHelper";
 import { RestartCommand } from "./commands/RestartCommand";
 import { GetLodCommand } from "./commands/GetLogCommand";
 import {UserIdCommand} from "./commands/UserIdCommand";
 import {ResetDatabaseCommand} from "./commands/ResetDatabaseCommand";
 import {NotifyCommand} from "./commands/NotifyCommand";
 import {EmergencyStopCommand} from "./commands/EmergencyStopCommand";
+import {StatusCommand} from "./commands/StatusCommand";
+import {sleep} from "../../../helper/DataHelper";
 
 export class CommandInteraction {
     protected config = new ConfigHelper()
@@ -56,6 +57,7 @@ export class CommandInteraction {
         void new ResetDatabaseCommand(interaction, commandId)
         void new NotifyCommand(interaction, commandId)
         void new EmergencyStopCommand(interaction, commandId)
+        void new StatusCommand(interaction, commandId)
 
         await sleep(1500)
 

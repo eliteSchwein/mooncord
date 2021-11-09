@@ -90,6 +90,10 @@ export class ConfigHelper {
         return this.getConfig().webcam.brightness
     }
 
+    public getWebcamRotation() {
+        return this.getConfig().webcam.rotation
+    }
+
     public getWebcamContrast() {
         return this.getConfig().webcam.contrast
     }
@@ -132,5 +136,13 @@ export class ConfigHelper {
 
     public getTempPath() {
         return this.getConfig().tmp_path
+    }
+
+    public getModerateSchedulerInterval() {
+        return this.getConfig().scheduler.moderate_interval
+    }
+
+    public getHighSchedulerInterval() {
+        return this.getConfig().scheduler.high_interval
     }
 }
