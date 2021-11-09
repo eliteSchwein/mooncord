@@ -13,6 +13,7 @@ import {DebugHandler} from "../events/discord/DebugHandler";
 import {ActivityTypes} from "discord.js/typings/enums";
 import {DiscordStatusGenerator} from "../generator/DiscordStatusGenerator";
 import {LocaleHelper} from "../helper/LocaleHelper";
+import {StatusHelper} from "../helper/StatusHelper";
 
 let interactionHandler: InteractionHandler
 let debugHandler: DebugHandler
@@ -24,6 +25,7 @@ export class DiscordClient {
     protected inputGenerator = new DiscordInputGenerator()
     protected statusGenerator = new DiscordStatusGenerator()
     protected localeHelper = new LocaleHelper()
+    protected statusHelper = new StatusHelper()
     protected discordClient: Client
 
     public constructor() {
@@ -77,6 +79,8 @@ export class DiscordClient {
             this.localeHelper.getLocale().embeds.startup.activity,
             {type: ActivityTypes.LISTENING}
         )
+
+        await this.statusHelper.update(null, this)
 
         if(this.config.dumpCacheOnStart()) {
             await dump()

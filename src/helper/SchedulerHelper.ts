@@ -50,7 +50,7 @@ export class SchedulerHelper {
             await this.requestPrintInfo()
         }
 
-        this.statusHelper.update()
+        await this.statusHelper.update()
     }
 
     protected async requestPrintInfo() {

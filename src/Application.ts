@@ -7,7 +7,6 @@ import {LocaleHelper} from "./helper/LocaleHelper";
 import { setData } from './utils/CacheUtil'
 import {ConfigHelper} from "./helper/ConfigHelper";
 import {EmbedHelper} from "./helper/EmbedHelper";
-import {StatusHelper} from "./helper/StatusHelper";
 
 tempHookLog()
 hookProcess()

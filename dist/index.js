@@ -33771,7 +33771,7 @@ class WebcamHelper {
         await this.executePostProcess(beforeStatus);
         try {
             const res = await fetch(this.configHelper.getWebcamUrl());
-            const buffer = await res.buffer();
+            const buffer = await res.arrayBuffer();
             // Only run Jimp if they want the image modifed
             if (this.configHelper.getWebcamBrightness() ||
                 this.configHelper.getWebcamContrast() ||
@@ -33780,7 +33780,7 @@ class WebcamHelper {
                 this.configHelper.getWebcamRotation() ||
                 this.configHelper.isWebcamSepia() ||
                 this.configHelper.isWebcamVerticalMirrored()) {
-                const image = external_sharp_default()(buffer);
+                const image = external_sharp_default()(Buffer.from(buffer));
                 image
                     .rotate(this.configHelper.getWebcamRotation())
                     .flip(this.configHelper.isWebcamVerticalMirrored())
@@ -33810,12 +33810,12 @@ class WebcamHelper {
             }
             // Else just send the normal images
             await this.executePostProcess(afterStatus);
-            return new external_discord_js_namespaceObject.MessageAttachment(buffer, "snapshot.png");
+            return new external_discord_js_namespaceObject.MessageAttachment(Buffer.from(buffer), "snapshot.png");
         }
         catch (error) {
             if (error) {
                 logError(`Webcam Issue: ${error}`);
-                return new external_discord_js_namespaceObject.MessageAttachment((0,external_path_namespaceObject.resolve)(__dirname, "../images/snapshot-error.png"), "snapshot-error.png");
+                return new external_discord_js_namespaceObject.MessageAttachment((0,external_path_namespaceObject.resolve)(__dirname, '../assets/images/snapshot-error.png'), 'snapshot-error.png');
             }
         }
     }
@@ -33895,8 +33895,8 @@ class EmbedHelper {
         }
         let embedRaw = JSON.stringify(embedDataUnformatted);
         const placeholders = embedRaw.match(/(\${).*?}/g);
-        const files = [];
-        const components = [];
+        let files = [];
+        let components = [];
         const response = {
             embeds: undefined
         };
@@ -33909,8 +33909,10 @@ class EmbedHelper {
         const thumbnail = await this.parseImage(embedData.thumbnail);
         const image = await this.parseImage(embedData.image);
         const buttons = this.inputGenerator.generateButtons(embedData.buttons);
-        files.push(thumbnail);
+        files.push(thumbnail, image);
         components.push(buttons);
+        files = files.filter((element) => { return element != null; });
+        components = components.filter((element) => { return element != null; });
         embed.setTitle(embedData.title);
         embed.setColor(embedData.color);
         if (typeof embedData.description !== 'undefined') {
@@ -33918,20 +33920,18 @@ class EmbedHelper {
         }
         if (typeof thumbnail !== 'undefined') {
             embed.setThumbnail(`attachment://${thumbnail.name}`);
-            files.push(thumbnail);
         }
         if (typeof image !== 'undefined') {
             embed.setImage(`attachment://${image.name}`);
-            files.push(image);
         }
         if (typeof embedData.fields !== 'undefined') {
             embed.setFields(embedData.fields);
         }
         response.embeds = [embed];
-        if (typeof components[0] !== 'undefined') {
+        if (components.length > 0) {
             response['components'] = components;
         }
-        if (typeof files[0] !== 'undefined') {
+        if (files.length > 0) {
             response['files'] = files;
         }
         return { embed: response, activity: embedData.activity };
@@ -34416,7 +34416,7 @@ class EmergencyStopCommand {
 }
 
 ;// CONCATENATED MODULE: ./src/meta/status_mapping.json
-const status_mapping_namespaceObject = JSON.parse('{"disconnected":{"embed_id":"disconnected","meta_data":{"allow_same":false,"prevent":["pause"]},"activity":{"status":"dnd","type":"LISTENING"}},"error":{"embed_id":"error","meta_data":{"allow_same":false,"prevent":["disconnected"]},"activity":{"status":"dnd","type":"LISTENING"}},"offline":{"embed_id":"offline","meta_data":{"allow_same":false,"prevent":[]},"activity":{"status":"dnd","type":"LISTENING"}},"shutdown":{"embed_id":"shutdown","meta_data":{"allow_same":false,"prevent":["pause","start","done","ready","printing"]},"activity":{"status":"dnd","type":"LISTENING"}},"stop":{"embed_id":"printjob_stop","meta_data":{"allow_same":false,"prevent":["start"]},"activity":{"status":"idle","type":"LISTENING"}},"ready":{"embed_id":"ready","meta_data":{"allow_same":false,"prevent":["done","startup"]},"activity":{"status":"idle","type":"LISTENING"}},"startup":{"embed_id":"startup","meta_data":{"allow_same":false,"prevent":["error"]},"activity":{"status":"idle","type":"WATCHING"}},"start":{"embed_id":"printjob_start","meta_data":{"allow_same":false,"prevent":[]},"activity":{"status":"online","type":"LISTENING"}},"done":{"embed_id":"printjob_done","meta_data":{"allow_same":false,"prevent":[]},"activity":{"status":"idle","type":"WATCHING"}},"pause":{"embed_id":"printjob_pause","meta_data":{"allow_same":false,"prevent":[]},"activity":{"status":"idle","type":"PLAYING"}},"printing":{"embed_id":"printjob_printing","meta_data":{"allow_same":true,"prevent":[]},"activity":{"status":"online","type":"WATCHING"}}}');
+const status_mapping_namespaceObject = JSON.parse('{"disconnected":{"embed_id":"disconnected","meta_data":{"allow_same":false,"prevent":["pause"]},"activity":{"status":"dnd","type":"LISTENING"}},"error":{"embed_id":"error","meta_data":{"allow_same":false,"prevent":["disconnected"]},"activity":{"status":"dnd","type":"LISTENING"}},"offline":{"embed_id":"offline","meta_data":{"allow_same":false,"prevent":[]},"activity":{"status":"dnd","type":"LISTENING"}},"shutdown":{"embed_id":"shutdown","meta_data":{"allow_same":false,"prevent":["pause","start","done","ready","printing"]},"activity":{"status":"dnd","type":"LISTENING"}},"stop":{"embed_id":"printjob_stop","meta_data":{"allow_same":false,"prevent":["start"]},"activity":{"status":"idle","type":"LISTENING"}},"ready":{"embed_id":"ready","meta_data":{"allow_same":false,"prevent":["done","startup"]},"activity":{"status":"idle","type":"LISTENING"}},"startup":{"embed_id":"startup","meta_data":{"allow_same":false,"prevent":["error","disconnected"]},"activity":{"status":"idle","type":"WATCHING"}},"start":{"embed_id":"printjob_start","meta_data":{"allow_same":false,"prevent":[]},"activity":{"status":"online","type":"LISTENING"}},"done":{"embed_id":"printjob_done","meta_data":{"allow_same":false,"prevent":[]},"activity":{"status":"idle","type":"WATCHING"}},"pause":{"embed_id":"printjob_pause","meta_data":{"allow_same":false,"prevent":[]},"activity":{"status":"idle","type":"PLAYING"}},"printing":{"embed_id":"printjob_printing","meta_data":{"allow_same":true,"prevent":[]},"activity":{"status":"online","type":"WATCHING"}}}');
 ;// CONCATENATED MODULE: ./src/events/discord/interactions/commands/StatusCommand.ts
 
 
@@ -34583,7 +34583,59 @@ class DiscordStatusGenerator {
     }
 }
 
+;// CONCATENATED MODULE: ./src/helper/StatusHelper.ts
+
+
+
+
+
+
+class StatusHelper {
+    constructor() {
+        this.embedHelper = new EmbedHelper();
+        this.localeHelper = new LocaleHelper();
+    }
+    async update(status = null, discordClient = null) {
+        if (typeof discordClient === null) {
+            discordClient = getDiscordClient();
+        }
+        this.discordClient = discordClient;
+        const functionCache = getEntry('function');
+        const serverInfo = getEntry('server_info');
+        if (typeof serverInfo === 'undefined') {
+            return;
+        }
+        if (typeof status === 'undefined' || status === null) {
+            status = serverInfo.klippy_state;
+        }
+        if (typeof status === 'undefined') {
+            return;
+        }
+        const currentStatus = functionCache.current_status;
+        const currentStatusMeta = status_mapping_namespaceObject[currentStatus];
+        const statusMeta = status_mapping_namespaceObject[status];
+        if (!currentStatusMeta.meta_data.allow_same && status === currentStatus) {
+            return;
+        }
+        if (currentStatusMeta.meta_data.prevent.includes(status)) {
+            return;
+        }
+        const statusEmbed = await this.embedHelper.generateEmbed(statusMeta.embed_id);
+        logRegular(`klipper status changed to ${status}...`);
+        updateData('function', {
+            'current_status': status
+        });
+        if (typeof statusMeta.activity !== 'undefined') {
+            this.discordClient.getClient().user.setPresence({
+                status: statusMeta.activity.status
+            });
+            this.discordClient.getClient().user.setActivity(statusEmbed.activity, { type: statusMeta.activity.type });
+        }
+    }
+}
+
 ;// CONCATENATED MODULE: ./src/clients/DiscordClient.ts
+
 
 
 
@@ -34606,6 +34658,7 @@ class DiscordClient {
         this.inputGenerator = new DiscordInputGenerator();
         this.statusGenerator = new DiscordStatusGenerator();
         this.localeHelper = new LocaleHelper();
+        this.statusHelper = new StatusHelper();
         this.connect();
     }
     async connect() {
@@ -34640,6 +34693,7 @@ class DiscordClient {
         console.log(getEntry('invite_url').cyan);
         this.discordClient.user.setPresence({ status: "idle" });
         this.discordClient.user.setActivity(this.localeHelper.getLocale().embeds.startup.activity, { type: 2 /* LISTENING */ });
+        await this.statusHelper.update(null, this);
         if (this.config.dumpCacheOnStart()) {
             await dump();
             await this.database.dump();
@@ -34791,54 +34845,6 @@ class FileEditNotification {
     }
 }
 
-;// CONCATENATED MODULE: ./src/helper/StatusHelper.ts
-
-
-
-
-
-
-class StatusHelper {
-    constructor() {
-        this.embedHelper = new EmbedHelper();
-        this.discordClient = getDiscordClient();
-        this.localeHelper = new LocaleHelper();
-    }
-    async update(status = null) {
-        const functionCache = getEntry('function');
-        const serverInfo = getEntry('server_info');
-        if (typeof serverInfo === 'undefined') {
-            return;
-        }
-        if (typeof status === 'undefined' || status === null) {
-            status = serverInfo.klippy_state;
-        }
-        if (typeof status === 'undefined') {
-            return;
-        }
-        const currentStatus = functionCache.current_status;
-        const currentStatusMeta = status_mapping_namespaceObject[currentStatus];
-        const statusMeta = status_mapping_namespaceObject[status];
-        if (!currentStatusMeta.meta_data.allow_same && status === currentStatus) {
-            return;
-        }
-        if (currentStatusMeta.meta_data.prevent.includes(status)) {
-            return;
-        }
-        const statusEmbed = await this.embedHelper.generateEmbed(statusMeta.embed_id);
-        logRegular(`klipper status changed to ${status}...`);
-        updateData('function', {
-            'current_status': status
-        });
-        if (typeof statusMeta.activity !== 'undefined') {
-            this.discordClient.getClient().user.setPresence({
-                status: statusMeta.activity.status
-            });
-            this.discordClient.getClient().user.setActivity(statusEmbed.activity, { type: statusMeta.activity.type });
-        }
-    }
-}
-
 ;// CONCATENATED MODULE: ./src/events/moonraker/messages/StateUpdateNotification.ts
 
 
@@ -34948,7 +34954,7 @@ class SchedulerHelper {
         if (serverInfo.result.klippy_state === 'error') {
             await this.requestPrintInfo();
         }
-        this.statusHelper.update();
+        await this.statusHelper.update();
     }
     async requestPrintInfo() {
         const printerInfo = await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "printer.info"}`);

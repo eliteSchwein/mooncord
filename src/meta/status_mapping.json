@@ -79,7 +79,7 @@
     "embed_id": "startup",
     "meta_data": {
       "allow_same": false,
-      "prevent": ["error"]
+      "prevent": ["error", "disconnected"]
     },
     "activity": {
       "status": "idle",

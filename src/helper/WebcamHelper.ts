@@ -22,7 +22,7 @@ export class WebcamHelper {
 
         try {
             const res = await fetch(this.configHelper.getWebcamUrl())
-            const buffer = await res.buffer()
+            const buffer = await res.arrayBuffer()
 
             // Only run Jimp if they want the image modifed
             if (
@@ -34,7 +34,7 @@ export class WebcamHelper {
                 this.configHelper.isWebcamSepia() ||
                 this.configHelper.isWebcamVerticalMirrored()
             ) {
-                const image = sharp(buffer)
+                const image = sharp(Buffer.from(buffer))
 
                 image
                     .rotate(this.configHelper.getWebcamRotation())
@@ -74,14 +74,14 @@ export class WebcamHelper {
             // Else just send the normal images
             await this.executePostProcess(afterStatus)
 
-            return new MessageAttachment(buffer, "snapshot.png")
+            return new MessageAttachment(Buffer.from(buffer), "snapshot.png")
         } catch (error) {
             if (error) {
                 logError(`Webcam Issue: ${error}`)
 
                 return new MessageAttachment(
-                    resolve(__dirname, "../images/snapshot-error.png"),
-                    "snapshot-error.png"
+                    resolve(__dirname, '../assets/images/snapshot-error.png'),
+                    'snapshot-error.png'
                 )
             }
         }

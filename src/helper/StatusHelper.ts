@@ -1,16 +1,21 @@
 import {getEntry, updateData} from "../utils/CacheUtil"
 import statusMapping from "../meta/status_mapping.json"
 import {EmbedHelper} from "./EmbedHelper";
-import {getDiscordClient} from "../Application";
+import * as app from "../Application";
 import {LocaleHelper} from "./LocaleHelper";
 import {logRegular} from "./LoggerHelper";
+import {DiscordClient} from "../clients/DiscordClient";
 
 export class StatusHelper {
     protected embedHelper = new EmbedHelper()
-    protected discordClient = getDiscordClient()
     protected localeHelper = new LocaleHelper()
+    protected discordClient: DiscordClient
 
-    public async update(status = null) {
+    public async update(status: string = null, discordClient: DiscordClient = null) {
+        if(typeof discordClient === null) {
+            discordClient = app.getDiscordClient()
+        }
+        this.discordClient = discordClient
         const functionCache = getEntry('function')
         const serverInfo  = getEntry('server_info')
 

@@ -45,8 +45,8 @@ export class EmbedHelper {
         let embedRaw = JSON.stringify(embedDataUnformatted)
 
         const placeholders = embedRaw.match(/(\${).*?}/g)
-        const files = []
-        const components = []
+        let files = []
+        let components = []
         const response = {
             embeds: undefined
         }
@@ -63,9 +63,12 @@ export class EmbedHelper {
         const image = await this.parseImage(embedData.image)
         const buttons = this.inputGenerator.generateButtons(embedData.buttons)
 
-        files.push(thumbnail)
+        files.push(thumbnail, image)
 
         components.push(buttons)
+
+        files = files.filter((element) => { return element != null})
+        components = components.filter((element) => { return element != null})
 
         embed.setTitle(embedData.title)
         embed.setColor(embedData.color)
@@ -76,12 +79,10 @@ export class EmbedHelper {
 
         if(typeof thumbnail !== 'undefined') {
             embed.setThumbnail(`attachment://${thumbnail.name}`)
-            files.push(thumbnail)
         }
 
         if(typeof image !== 'undefined') {
             embed.setImage(`attachment://${image.name}`)
-            files.push(image)
         }
 
         if(typeof embedData.fields !== 'undefined') {
@@ -90,11 +91,11 @@ export class EmbedHelper {
 
         response.embeds = [embed]
 
-        if(typeof components[0] !== 'undefined') {
+        if(components.length > 0) {
             response['components'] = components
         }
 
-        if(typeof files[0] !== 'undefined') {
+        if(files.length > 0) {
             response['files'] = files
         }
 
