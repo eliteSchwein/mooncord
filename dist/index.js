@@ -33815,7 +33815,7 @@ class WebcamHelper {
         catch (error) {
             if (error) {
                 logError(`Webcam Issue: ${error}`);
-                return new external_discord_js_namespaceObject.MessageAttachment((0,external_path_namespaceObject.resolve)(__dirname, '../assets/images/snapshot-error.png'), 'snapshot-error.png');
+                return new external_discord_js_namespaceObject.MessageAttachment((0,external_path_namespaceObject.resolve)(__dirname, '../assets/images/snapshot-error-2.png'), 'snapshot-error.png');
             }
         }
     }
