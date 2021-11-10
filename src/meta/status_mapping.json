@@ -16,7 +16,7 @@
     "embed_id": "error",
     "meta_data": {
       "allow_same": false,
-      "prevent": ["disconnected"]
+      "prevent": ["disconnected","error"]
     },
     "activity": {
       "status": "dnd",
@@ -79,7 +79,7 @@
     "embed_id": "startup",
     "meta_data": {
       "allow_same": false,
-      "prevent": ["error", "disconnected"]
+      "prevent": ["disconnected"]
     },
     "activity": {
       "status": "idle",
