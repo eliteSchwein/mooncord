@@ -108,7 +108,7 @@ export class EmbedHelper {
             return this.webcamHelper.retrieveWebcam(app.getMoonrakerClient())
         }
 
-        const imagePath = path.resolve(__dirname, `../assets/images/${imageID}`)
+        const imagePath = path.resolve(__dirname, `../assets/icon-sets/${this.configHelper.getIconSet()}/${imageID}`)
         return new MessageAttachment(imagePath, imageID)
     }
     protected parsePlaceholder(placeholder: string,providedPlaceholders = null) {

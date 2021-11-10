@@ -80,7 +80,7 @@ export class WebcamHelper {
                 logError(`Webcam Issue: ${error}`)
 
                 return new MessageAttachment(
-                    resolve(__dirname, '../assets/images/snapshot-error.png'),
+                    resolve(__dirname, `../assets/icon-sets/${this.configHelper.getIconSet()}/snapshot-error.png`),
                     'snapshot-error.png'
                 )
             }

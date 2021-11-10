@@ -31564,6 +31564,9 @@ class ConfigHelper {
     getHighSchedulerInterval() {
         return this.getConfig().scheduler.high_interval;
     }
+    getIconSet() {
+        return this.getConfig().messages.icon_set;
+    }
 }
 
 ;// CONCATENATED MODULE: ./src/meta/command_structure.json
@@ -33815,7 +33818,7 @@ class WebcamHelper {
         catch (error) {
             if (error) {
                 logError(`Webcam Issue: ${error}`);
-                return new external_discord_js_namespaceObject.MessageAttachment((0,external_path_namespaceObject.resolve)(__dirname, '../assets/images/snapshot-error.png'), 'snapshot-error.png');
+                return new external_discord_js_namespaceObject.MessageAttachment((0,external_path_namespaceObject.resolve)(__dirname, `../assets/icon-sets/${this.configHelper.getIconSet()}/snapshot-error.png`), 'snapshot-error.png');
             }
         }
     }
@@ -33943,7 +33946,7 @@ class EmbedHelper {
         if (imageID === 'webcam') {
             return this.webcamHelper.retrieveWebcam(getMoonrakerClient());
         }
-        const imagePath = external_path_namespaceObject.resolve(__dirname, `../assets/images/${imageID}`);
+        const imagePath = external_path_namespaceObject.resolve(__dirname, `../assets/icon-sets/${this.configHelper.getIconSet()}/${imageID}`);
         return new external_discord_js_namespaceObject.MessageAttachment(imagePath, imageID);
     }
     parsePlaceholder(placeholder, providedPlaceholders = null) {

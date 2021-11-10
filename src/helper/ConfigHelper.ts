@@ -145,4 +145,8 @@ export class ConfigHelper {
     public getHighSchedulerInterval() {
         return this.getConfig().scheduler.high_interval
     }
+
+    public getIconSet() {
+        return this.getConfig().messages.icon_set
+    }
 }
