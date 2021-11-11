@@ -1,15 +1,17 @@
 import {CommandInteraction, MessageAttachment} from "discord.js";
-import statusMapping from "../../../../meta/status_mapping.json"
 import {getDatabase} from "../../../../Application";
 import {LocaleHelper} from "../../../../helper/LocaleHelper";
 import {getEntry} from "../../../../utils/CacheUtil";
 import {EmbedHelper} from "../../../../helper/EmbedHelper";
+import {ConfigHelper} from "../../../../helper/ConfigHelper";
 
 export class StatusCommand {
     protected databaseUtil = getDatabase()
     protected localeHelper = new LocaleHelper()
     protected syntaxLocale = this.localeHelper.getSyntaxLocale()
     protected embedHelper = new EmbedHelper()
+    protected configHelper = new ConfigHelper()
+    protected statusMeta = this.configHelper.getStatusMeta()
 
     public constructor(interaction: CommandInteraction, commandId: string) {
         if(commandId !== 'status') { return }
@@ -23,7 +25,7 @@ export class StatusCommand {
         const functionCache = getEntry('function')
 
         const currentStatus = functionCache.current_status
-        const currentStatusMeta = statusMapping[currentStatus]
+        const currentStatusMeta = this.configHelper.getStatusMeta()[currentStatus]
 
         const message = await this.embedHelper.generateEmbed(currentStatusMeta.embed_id)
 

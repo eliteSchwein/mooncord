@@ -1,7 +1,6 @@
 import {ConfigHelper} from "../helper/ConfigHelper";
 import {mergeDeep} from "../helper/DataHelper";
 
-import sectionMapping from '../meta/input_mapping.json'
 import {setData, getEntry} from "../utils/CacheUtil";
 import {MessageActionRow, MessageButton, MessageSelectMenu} from "discord.js";
 import {LocaleHelper} from "../helper/LocaleHelper";
@@ -9,6 +8,7 @@ import {LocaleHelper} from "../helper/LocaleHelper";
 export class DiscordInputGenerator {
     protected config = new ConfigHelper()
     protected localeHelper = new LocaleHelper()
+    protected inputMeta = this.config.getInputMeta()
 
     public generateInputCache() {
         this.generateCacheForSection('buttons');
@@ -22,7 +22,7 @@ export class DiscordInputGenerator {
             sectionConfig = this.localeHelper.getSyntaxLocale()[section]
         }
 
-        mergeDeep(sectionConfig, sectionMapping[section])
+        mergeDeep(sectionConfig, this.inputMeta[section])
 
         setData(section, sectionConfig)
     }

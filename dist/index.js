@@ -31174,7 +31174,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 8309:
+/***/ 5861:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -31460,8 +31460,6 @@ async function writeDump() {
 
 const args = process.argv.slice(2);
 class ConfigHelper {
-    constructor() {
-    }
     loadCache() {
         logRegular("load Config Cache...");
         const configPath = `${args[0]}/mooncord.json`;
@@ -31567,6 +31565,18 @@ class ConfigHelper {
     getIconSet() {
         return this.getConfig().messages.icon_set;
     }
+    getEmbedMeta() {
+        return this.getConfig().embed_meta;
+    }
+    getInputMeta() {
+        return this.getConfig().input_meta;
+    }
+    getStatusMeta() {
+        return this.getConfig().status_meta;
+    }
+    getTempMeta() {
+        return this.getConfig().temp_meta;
+    }
 }
 
 ;// CONCATENATED MODULE: ./src/meta/command_structure.json
@@ -31664,10 +31674,7 @@ class DiscordCommandGenerator {
     }
 }
 
-;// CONCATENATED MODULE: ./src/meta/input_mapping.json
-const input_mapping_namespaceObject = JSON.parse('{"buttons":{"next_page":{"emoji":"➡️","style":"SECONDARY","permission_mapping":"listfiles","function_mapping":{"page_up":true}},"last_page":{"emoji":"⬅️","style":"SECONDARY","permission_mapping":"listfiles","function_mapping":{"page_up":false}},"printjob_resume":{"emoji":"▶️","style":"PRIMARY","permission_mapping":"printjob","function_mapping":{"refresh_status":false,"required_status":["pause"],"macro":"RESUME"}},"printjob_cancel":{"emoji":"⛔","style":"DANGER","permission_mapping":"printjob","function_mapping":{"refresh_status":false,"required_status":["pause","printing"],"macro":"CANCEL_PRINT"}},"printjob_pause":{"emoji":"☕","style":"SECONDARY","permission_mapping":"printjob","function_mapping":{"refresh_status":false,"required_status":["printing"],"macro":"PAUSE"}},"printjob_refresh":{"emoji":"🔄","style":"PRIMARY","permission_mapping":"status","function_mapping":{"refresh_status":true}},"to_printlist":{"emoji":"📘","permission_mapping":"listfiles","style":"SECONDARY"},"printjob_start":{"emoji":"🖨️","permission_mapping":"printjob_start","style":"SECONDARY"},"klipper_restart":{"emoji":"🔄","permission_mapping":"service_restart","style":"PRIMARY"},"update_system":{"permission_mapping":"update_system","style":"SECONDARY"},"printjob_start_yes":{"permission_mapping":"printjob_start","style":"SUCCESS"},"printjob_start_no":{"permission_mapping":"printjob_start","style":"DANGER"}},"selections":{"printlist_view_printjob":{"permission_mapping":"fileinfo"}}}');
 ;// CONCATENATED MODULE: ./src/generator/DiscordInputGenerator.ts
-
 
 
 
@@ -31677,6 +31684,7 @@ class DiscordInputGenerator {
     constructor() {
         this.config = new ConfigHelper();
         this.localeHelper = new LocaleHelper();
+        this.inputMeta = this.config.getInputMeta();
     }
     generateInputCache() {
         this.generateCacheForSection('buttons');
@@ -31687,7 +31695,7 @@ class DiscordInputGenerator {
         if (this.config.isButtonSyntaxLocale()) {
             sectionConfig = this.localeHelper.getSyntaxLocale()[section];
         }
-        mergeDeep(sectionConfig, input_mapping_namespaceObject[section]);
+        mergeDeep(sectionConfig, this.inputMeta[section]);
         setData(section, sectionConfig);
     }
     generateButtons(buttonIDs) {
@@ -31742,8 +31750,6 @@ class ButtonInteraction {
     }
 }
 
-;// CONCATENATED MODULE: ./src/meta/embed_mapping.json
-const embed_mapping_namespaceObject = JSON.parse('{"fileinfo":{},"list_files":{},"info":{"color":"#0099ff","thumbnail":"logo.png"},"printjob_start_request":{},"printjob_start":{"color":"#25db00","author":"${state.print_stats.filename}","thumbnail":"printjob_thumbnail","image":"webcam","buttons":[],"fields":[{"name":"${embeds.fields.print_time}","value":"${value_eta_print_time}"}]},"printjob_done":{"color":"#25db00","author":"${state.print_stats.filename}","thumbnail":"printjob_thumbnail","image":"webcam","buttons":[],"fields":[{"name":"${embeds.fields.print_time}","value":"${value_print_time}"}]},"printjob_pause":{"color":"#dbd400","author":"${state.print_stats.filename}","thumbnail":"printjob_thumbnail","image":"webcam","buttons":["printjob_resume","printjob_cancel"],"fields":[{"name":"${embeds.fields.print_time}","value":"${value_print_time}"},{"name":"${embeds.fields.eta_print_time}","value":"${value_eta_print_time}"},{"name":"${embeds.fields.print_progress}","value":"${value_print_progress}%"},{"name":"${embeds.fields.print_layers}","value":"${value_current_layer}/${value_max_layer}"}]},"printjob_printing":{"color":"#0099ff","author":"${state.print_stats.filename}","thumbnail":"printjob_thumbnail","image":"webcam","buttons":["printjob_pause","printjob_cancel","printjob_refresh"],"fields":[{"name":"${embeds.fields.print_time}","value":"${value_print_time}"},{"name":"${embeds.fields.eta_print_time}","value":"${value_eta_print_time}"},{"name":"${embeds.fields.print_progress}","value":"${value_print_progress}%"},{"name":"${embeds.fields.print_layers}","value":"${value_current_layer}/${value_max_layer}"}]},"printjob_stop":{"color":"#c90000","author":"${state.print_stats.filename}","thumbnail":"printjob_thumbnail","image":"webcam","buttons":[],"fields":[{"name":"${embeds.fields.print_time}","value":"${value_print_time}"}]},"temperatures":{"color":"#0099ff","thumbnail":"temps.png","buttons":[]},"disconnected":{"color":"#c90000","image":"webcam","buttons":["klipper_restart"]},"error":{"description":"```${printer_info.state_message}```","color":"#c90000","buttons":["klipper_restart"]},"offline":{"color":"#c90000","buttons":[]},"shutdown":{"color":"#c90000","image":"webcam","buttons":["klipper_restart"]},"ready":{"color":"#0099ff","image":"webcam","buttons":[],"description":"${versions}"},"startup":{"color":"#0099ff","buttons":[]},"wait":{},"system_warning":{},"throttle":{},"system_update":{}}');
 // EXTERNAL MODULE: ./node_modules/axios/index.js
 var axios = __nccwpck_require__(6545);
 var axios_default = /*#__PURE__*/__nccwpck_require__.n(axios);
@@ -33869,17 +33875,17 @@ class WebcamHelper {
 
 
 
-
 class EmbedHelper {
     constructor() {
         this.localeHelper = new LocaleHelper();
         this.configHelper = new ConfigHelper();
         this.inputGenerator = new DiscordInputGenerator();
         this.webcamHelper = new WebcamHelper();
+        this.embedMeta = this.configHelper.getEmbedMeta();
     }
     loadCache() {
         logRegular("load Embeds Cache...");
-        const embeds = embed_mapping_namespaceObject;
+        const embeds = this.embedMeta;
         const embedsLocale = this.localeHelper.getEmbeds();
         mergeDeep(embeds, embedsLocale);
         setData('embeds', embeds);
@@ -34103,8 +34109,6 @@ class PermissionHelper {
     }
 }
 
-;// CONCATENATED MODULE: ./src/meta/temp_mapping.json
-const temp_mapping_namespaceObject = JSON.parse('{"cold_meta":{"icon":"❄","hot_temp":50},"slow_fan_meta":{"icon":"🔆","fast_fan":1},"fan_types":["temperature_fan","controller_fan","heater_fan","fan_generic","fan"],"heater_types":["temperature_fan","heater_generic","heater_bed","heater","extruder"],"hide_types":["temperature_sensor","temperature_fan","controller_fan","fan_generic"],"supported_sensors":["heater_generic","heater_bed","heater","extruder","fan_generic","heater_fan","controller_fan","temperature_sensor","temperature_fan","fan"],"alliases":{"heater_generic":"heater","heater_bed":"heater","extruder":"heater","fan_generic":"fan","heater_fan":"fan","controller_fan":"fan"},"temperature_sensor":{"icon":"🌡","fields":{"temperature":{"label":"${embeds.fields.current}","suffix":"°C"},"measured_min_temp":{"label":"${embeds.fields.min_temp}","suffix":"°C"},"measured_max_temp":{"label":"${embeds.fields.max_temp}","suffix":"°C"}}},"temperature_fan":{"icon":"♨","fields":{"power":{"label":"${embeds.fields.power}","suffix":"%"},"target":{"label":"${embeds.fields.target}","suffix":"°C"},"temperature":{"label":"${embeds.fields.current}","suffix":"°C"},"rpm":{"label":"${embeds.fields.speed}","suffix":"rpm"}}},"heater":{"icon":"♨","fields":{"power":{"label":"${embeds.fields.power}","suffix":"%"},"target":{"label":"${embeds.fields.target}","suffix":"°C"},"temperature":{"label":"${embeds.fields.current}","suffix":"°C"}}},"fan":{"icon":"🌀","fields":{"speed":{"label":"${embeds.fields.power}","suffix":"%"},"rpm":{"label":"${embeds.fields.speed}","suffix":"rpm"}}}}');
 ;// CONCATENATED MODULE: ./src/helper/TempHelper.ts
 
 
@@ -34112,13 +34116,15 @@ const temp_mapping_namespaceObject = JSON.parse('{"cold_meta":{"icon":"❄","hot
 class TempHelper {
     constructor() {
         this.cache = getEntry('state');
+        this.configHelper = new ConfigHelper();
+        this.tempMeta = this.configHelper.getTempMeta();
     }
     parseFields() {
         const result = {
             "fields": [],
             "cache_ids": []
         };
-        const supportedSensors = temp_mapping_namespaceObject.supported_sensors;
+        const supportedSensors = this.tempMeta.supported_sensors;
         for (const sensorType of supportedSensors) {
             const sensorResult = this.parseFieldsSet(sensorType);
             if (sensorResult.fields.length > 0) {
@@ -34129,23 +34135,23 @@ class TempHelper {
         return result;
     }
     parseFieldTitle(key) {
-        const hideList = temp_mapping_namespaceObject.hide_types;
+        const hideList = this.tempMeta.hide_types;
         hideList.some(hideType => key = key.replace(hideType, ''));
         return key;
     }
     isCold(temperature) {
-        return temperature < temp_mapping_namespaceObject.cold_meta.hot_temp;
+        return temperature < this.tempMeta.cold_meta.hot_temp;
     }
     isSlowFan(speed) {
-        return speed < (temp_mapping_namespaceObject.slow_fan_meta.fast_fan / 100);
+        return speed < (this.tempMeta.slow_fan_meta.fast_fan / 100);
     }
     parseFieldsSet(key) {
-        const allias = temp_mapping_namespaceObject.alliases[key];
+        const allias = this.tempMeta.alliases[key];
         const cacheData = this.parseCacheFields(key);
         if (typeof allias !== 'undefined') {
             key = allias;
         }
-        const mappingData = temp_mapping_namespaceObject[key];
+        const mappingData = this.tempMeta[key];
         const fields = [];
         const cacheIds = [];
         for (const cacheKey in cacheData) {
@@ -34155,15 +34161,15 @@ class TempHelper {
                 inline: true
             };
             if (typeof cacheData[cacheKey].temperature !== 'undefined' &&
-                temp_mapping_namespaceObject.heater_types.includes(key)) {
+                this.tempMeta.heater_types.includes(key)) {
                 if (this.isCold(cacheData[cacheKey].temperature)) {
-                    keyData.name = `${temp_mapping_namespaceObject.cold_meta.icon} ${this.parseFieldTitle(cacheKey)}`;
+                    keyData.name = `${this.tempMeta.cold_meta.icon} ${this.parseFieldTitle(cacheKey)}`;
                 }
             }
             if (typeof cacheData[cacheKey].speed !== 'undefined' &&
-                temp_mapping_namespaceObject.fan_types.includes(key)) {
+                this.tempMeta.fan_types.includes(key)) {
                 if (this.isSlowFan(cacheData[cacheKey].speed)) {
-                    keyData.name = `${temp_mapping_namespaceObject.slow_fan_meta.icon} ${this.parseFieldTitle(cacheKey)}`;
+                    keyData.name = `${this.tempMeta.slow_fan_meta.icon} ${this.parseFieldTitle(cacheKey)}`;
                 }
             }
             for (const fieldKey in mappingData.fields) {
@@ -34418,8 +34424,6 @@ class EmergencyStopCommand {
     }
 }
 
-;// CONCATENATED MODULE: ./src/meta/status_mapping.json
-const status_mapping_namespaceObject = JSON.parse('{"disconnected":{"embed_id":"disconnected","meta_data":{"allow_same":false,"prevent":["pause"]},"activity":{"status":"dnd","type":"LISTENING"}},"error":{"embed_id":"error","meta_data":{"allow_same":false,"prevent":["disconnected","error"]},"activity":{"status":"dnd","type":"LISTENING"}},"offline":{"embed_id":"offline","meta_data":{"allow_same":false,"prevent":[]},"activity":{"status":"dnd","type":"LISTENING"}},"shutdown":{"embed_id":"shutdown","meta_data":{"allow_same":false,"prevent":["pause","start","done","ready","printing"]},"activity":{"status":"dnd","type":"LISTENING"}},"stop":{"embed_id":"printjob_stop","meta_data":{"allow_same":false,"prevent":["start"]},"activity":{"status":"idle","type":"LISTENING"}},"ready":{"embed_id":"ready","meta_data":{"allow_same":false,"prevent":["done","startup"]},"activity":{"status":"idle","type":"LISTENING"}},"startup":{"embed_id":"startup","meta_data":{"allow_same":false,"prevent":["disconnected"]},"activity":{"status":"idle","type":"WATCHING"}},"start":{"embed_id":"printjob_start","meta_data":{"allow_same":false,"prevent":[]},"activity":{"status":"online","type":"LISTENING"}},"done":{"embed_id":"printjob_done","meta_data":{"allow_same":false,"prevent":[]},"activity":{"status":"idle","type":"WATCHING"}},"pause":{"embed_id":"printjob_pause","meta_data":{"allow_same":false,"prevent":[]},"activity":{"status":"idle","type":"PLAYING"}},"printing":{"embed_id":"printjob_printing","meta_data":{"allow_same":true,"prevent":[]},"activity":{"status":"online","type":"WATCHING"}}}');
 ;// CONCATENATED MODULE: ./src/events/discord/interactions/commands/StatusCommand.ts
 
 
@@ -34432,6 +34436,8 @@ class StatusCommand {
         this.localeHelper = new LocaleHelper();
         this.syntaxLocale = this.localeHelper.getSyntaxLocale();
         this.embedHelper = new EmbedHelper();
+        this.configHelper = new ConfigHelper();
+        this.statusMeta = this.configHelper.getStatusMeta();
         if (commandId !== 'status') {
             return;
         }
@@ -34441,7 +34447,7 @@ class StatusCommand {
         await interaction.deferReply();
         const functionCache = getEntry('function');
         const currentStatus = functionCache.current_status;
-        const currentStatusMeta = status_mapping_namespaceObject[currentStatus];
+        const currentStatusMeta = this.configHelper.getStatusMeta()[currentStatus];
         const message = await this.embedHelper.generateEmbed(currentStatusMeta.embed_id);
         await interaction.editReply(message.embed);
     }
@@ -34561,12 +34567,14 @@ class DebugHandler {
 class DiscordStatusGenerator {
     constructor() {
         this.localeHelper = new LocaleHelper();
+        this.configHelper = new ConfigHelper();
+        this.statusMeta = this.configHelper.getStatusMeta();
     }
     generateStatusCache() {
         const tempCache = {};
         const locale = this.localeHelper.getLocale();
-        for (const statusId in status_mapping_namespaceObject) {
-            const statusData = status_mapping_namespaceObject[statusId];
+        for (const statusId in this.statusMeta) {
+            const statusData = this.statusMeta[statusId];
             const statusLocale = locale.embeds[statusData.embed_id];
             tempCache[statusId] = statusData;
             mergeDeep(tempCache[statusId], {
@@ -34596,7 +34604,9 @@ class DiscordStatusGenerator {
 class StatusHelper {
     constructor() {
         this.embedHelper = new EmbedHelper();
+        this.configHelper = new ConfigHelper();
         this.localeHelper = new LocaleHelper();
+        this.statusMeta = this.configHelper.getStatusMeta();
     }
     async update(status = null, discordClient = null) {
         if (typeof discordClient === null) {
@@ -34615,8 +34625,8 @@ class StatusHelper {
             return;
         }
         const currentStatus = functionCache.current_status;
-        const currentStatusMeta = status_mapping_namespaceObject[currentStatus];
-        const statusMeta = status_mapping_namespaceObject[status];
+        const currentStatusMeta = this.statusMeta[currentStatus];
+        const statusMeta = this.statusMeta[status];
         if (!currentStatusMeta.meta_data.allow_same && status === currentStatus) {
             return;
         }
@@ -35187,10 +35197,10 @@ setData('function', {
     'poll_printer_info': false
 });
 Object.assign(global, { WebSocket: __nccwpck_require__(8867) });
-const localeHelper = new LocaleHelper();
 const configHelper = new ConfigHelper();
-const embedHelper = new EmbedHelper();
 configHelper.loadCache();
+const localeHelper = new LocaleHelper();
+const embedHelper = new EmbedHelper();
 localeHelper.loadCache();
 embedHelper.loadCache();
 logEmpty();
@@ -35635,7 +35645,7 @@ module.exports = require("zlib");
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(8309);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(5861);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()

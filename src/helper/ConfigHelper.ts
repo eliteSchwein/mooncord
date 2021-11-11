@@ -8,9 +8,6 @@ const args = process.argv.slice(2)
 
 export class ConfigHelper {
 
-    public constructor() {
-    }
-
     public loadCache() {
         logRegular("load Config Cache...")
         const configPath = `${args[0]}/mooncord.json`
@@ -148,5 +145,21 @@ export class ConfigHelper {
 
     public getIconSet() {
         return this.getConfig().messages.icon_set
+    }
+
+    public getEmbedMeta() {
+        return this.getConfig().embed_meta
+    }
+
+    public getInputMeta() {
+        return this.getConfig().input_meta
+    }
+
+    public getStatusMeta() {
+        return this.getConfig().status_meta
+    }
+
+    public getTempMeta() {
+        return this.getConfig().temp_meta
     }
 }

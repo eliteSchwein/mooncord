@@ -1,7 +1,6 @@
 import {LocaleHelper} from "./LocaleHelper";
 import {ConfigHelper} from "./ConfigHelper";
 import {findValue, getEntry, setData} from "../utils/CacheUtil";
-import embedMapping from "../meta/embed_mapping.json"
 import {MessageAttachment, MessageEmbed} from "discord.js";
 import * as path from "path"
 import * as app from "../Application"
@@ -15,10 +14,11 @@ export class EmbedHelper {
     protected configHelper = new ConfigHelper()
     protected inputGenerator = new DiscordInputGenerator()
     protected webcamHelper = new WebcamHelper()
+    protected embedMeta = this.configHelper.getEmbedMeta()
 
     public loadCache() {
         logRegular("load Embeds Cache...")
-        const embeds = embedMapping
+        const embeds = this.embedMeta
         const embedsLocale = this.localeHelper.getEmbeds()
 
         mergeDeep(embeds, embedsLocale)

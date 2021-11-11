@@ -24,10 +24,11 @@ setData('function', {
 
 Object.assign(global, { WebSocket: require('ws') })
 
-const localeHelper = new LocaleHelper()
 const configHelper = new ConfigHelper()
-const embedHelper = new EmbedHelper()
 configHelper.loadCache()
+
+const localeHelper = new LocaleHelper()
+const embedHelper = new EmbedHelper()
 localeHelper.loadCache()
 embedHelper.loadCache()
 

@@ -1,16 +1,18 @@
 import { getEntry } from "../utils/CacheUtil";
-import tempMapping from "../meta/temp_mapping.json"
 import {formatPercent} from "./DataHelper";
+import {ConfigHelper} from "./ConfigHelper";
 
 export class TempHelper {
     protected cache = getEntry('state')
+    protected configHelper = new ConfigHelper()
+    protected tempMeta = this.configHelper.getTempMeta()
 
     public parseFields() {
         const result = {
             "fields": [],
             "cache_ids": []
         }
-        const supportedSensors = tempMapping.supported_sensors
+        const supportedSensors = this.tempMeta.supported_sensors
 
         for(const sensorType of supportedSensors) {
             const sensorResult = this.parseFieldsSet(sensorType)
@@ -25,7 +27,7 @@ export class TempHelper {
     }
 
     protected parseFieldTitle(key: string) {
-        const hideList = tempMapping.hide_types
+        const hideList = this.tempMeta.hide_types
 
         hideList.some(hideType => key = key.replace(hideType, ''))
 
@@ -33,21 +35,21 @@ export class TempHelper {
     }
 
     public isCold(temperature: number) {
-        return temperature < tempMapping.cold_meta.hot_temp
+        return temperature < this.tempMeta.cold_meta.hot_temp
     }
 
     public isSlowFan(speed: number) {
-        return speed < (tempMapping.slow_fan_meta.fast_fan / 100)
+        return speed < (this.tempMeta.slow_fan_meta.fast_fan / 100)
     }
 
     public parseFieldsSet(key: string) {
-        const allias = tempMapping.alliases[key]
+        const allias = this.tempMeta.alliases[key]
 
         const cacheData = this.parseCacheFields(key)
 
         if(typeof allias !== 'undefined') { key = allias }
 
-        const mappingData = tempMapping[key]
+        const mappingData = this.tempMeta[key]
         const fields = []
         const cacheIds = []
 
@@ -58,15 +60,15 @@ export class TempHelper {
                 inline: true
             }
             if(typeof cacheData[cacheKey].temperature !== 'undefined' &&
-                tempMapping.heater_types.includes(key)) {
+                this.tempMeta.heater_types.includes(key)) {
                 if(this.isCold(cacheData[cacheKey].temperature)) {
-                    keyData.name = `${tempMapping.cold_meta.icon} ${this.parseFieldTitle(cacheKey)}`
+                    keyData.name = `${this.tempMeta.cold_meta.icon} ${this.parseFieldTitle(cacheKey)}`
                 }
             }
             if(typeof cacheData[cacheKey].speed !== 'undefined' &&
-                tempMapping.fan_types.includes(key)) {
+                this.tempMeta.fan_types.includes(key)) {
                 if(this.isSlowFan(cacheData[cacheKey].speed)) {
-                    keyData.name = `${tempMapping.slow_fan_meta.icon} ${this.parseFieldTitle(cacheKey)}`
+                    keyData.name = `${this.tempMeta.slow_fan_meta.icon} ${this.parseFieldTitle(cacheKey)}`
                 }
             }
             for(const fieldKey in mappingData.fields) {

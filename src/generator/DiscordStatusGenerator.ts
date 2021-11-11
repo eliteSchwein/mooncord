@@ -1,19 +1,20 @@
 import {ConfigHelper} from "../helper/ConfigHelper";
 import {mergeDeep} from "../helper/DataHelper";
 
-import statusMapping from "../meta/status_mapping.json"
 import {setData} from "../utils/CacheUtil";
 import {LocaleHelper} from "../helper/LocaleHelper";
 
 export class DiscordStatusGenerator {
     protected localeHelper = new LocaleHelper()
+    protected configHelper = new ConfigHelper()
+    protected statusMeta = this.configHelper.getStatusMeta()
 
     public generateStatusCache() {
         const tempCache = {}
         const locale = this.localeHelper.getLocale()
 
-        for(const statusId in statusMapping) {
-            const statusData = statusMapping[statusId]
+        for(const statusId in this.statusMeta) {
+            const statusData = this.statusMeta[statusId]
             const statusLocale = locale.embeds[statusData.embed_id]
             tempCache[statusId] = statusData
 
