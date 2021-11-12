@@ -19,6 +19,7 @@ setData('package_config', packageConfig)
 logRegular('init Function Cache...')
 setData('function', {
     'current_status': 'startup',
+    'status_in_query': false,
     'poll_printer_info': false
 })
 

@@ -6,6 +6,7 @@ import {logRegular} from "./LoggerHelper";
 import {DiscordClient} from "../clients/DiscordClient";
 import {ConfigHelper} from "./ConfigHelper";
 import { NotificationHelper } from "./NotificationHelper";
+import {waitUntil} from "async-wait-until";
 
 export class StatusHelper {
     protected embedHelper = new EmbedHelper()
@@ -36,19 +37,32 @@ export class StatusHelper {
         const currentStatus = functionCache.current_status
         const currentStatusMeta = this.statusMeta[currentStatus]
         const statusMeta = this.statusMeta[status]
-
         if(!currentStatusMeta.meta_data.allow_same && status === currentStatus) { return }
         if(currentStatusMeta.meta_data.prevent.includes(status)) { return }
-
-        const statusEmbed = await this.embedHelper.generateEmbed(statusMeta.embed_id)
 
         logRegular(`klipper status changed to ${status}...`)
 
         updateData('function', {
             'current_status': status
         })
+        
+        await waitUntil(() => !functionCache.status_in_query, { timeout: 10_000, intervalBetweenAttempts: 500 })
+
+        updateData('function', {
+            'status_in_query': true
+        })
+
+        const statusEmbed = await this.embedHelper.generateEmbed(statusMeta.embed_id)
 
         this.notificationHelper.broadcastMessage(statusEmbed.embed)
+
+        updateData('function', {
+            'status_in_query': false
+        })
+
+        if(this.discordClient === null) {
+            this.discordClient = app.getDiscordClient()
+        }
 
         if(typeof statusMeta.activity !== 'undefined') {
             this.discordClient.getClient().user.setPresence({

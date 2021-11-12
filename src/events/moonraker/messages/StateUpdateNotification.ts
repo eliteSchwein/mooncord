@@ -11,23 +11,26 @@ export class StateUpdateNotification {
         if(typeof(message.method) === 'undefined') { return }
 
         if(message.method === 'notify_klippy_disconnected') {
+            console.log('disconnected')
             this.statusHelper.update('disconnected')
             updateData('function', {
-                'poll_server_info': true
+                'poll_printer_info': true
             })
         }
 
         if(message.method === 'notify_klippy_shutdown') {
+            console.log('shutdown')
             this.statusHelper.update('shutdown')
             updateData('function', {
-                'poll_server_info': true
+                'poll_printer_info': true
             })
         }
 
         if(message.method === 'notify_klippy_ready') {
+            console.log('ready')
             this.statusHelper.update('ready')
             updateData('function', {
-                'poll_server_info': false
+                'poll_printer_info': false
             })
             this.moonrakerClient.sendInitCommands()
         }

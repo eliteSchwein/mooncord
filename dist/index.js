@@ -34690,18 +34690,27 @@ class NotificationHelper {
         }
         for (const userId of this.notifyList) {
             const user = await this.discordClient.getClient().users.fetch(userId);
+            const channel = user.dmChannel;
+            if (channel === null) {
+                await user.send(message);
+                return;
+            }
             this.broadcastChannels([user.dmChannel], message);
         }
     }
-    broadcastGuilds(message) {
+    async broadcastGuilds(message) {
         for (const guildId in this.broadcastList) {
             const guildMeta = this.broadcastList[guildId];
-            this.broadcastChannels(guildMeta.broadcast_channels, message);
+            const guild = await this.discordClient.getClient().guilds.fetch(guildId);
+            const channels = guild.channels.cache.filter((channel) => { return guildMeta.broadcast_channels.includes(channel.id); });
+            this.broadcastChannels(channels, message);
         }
     }
     async broadcastChannels(channels, message) {
-        for (const channelId of channels) {
-            const channel = await this.discordClient.getClient().channels.fetch(channelId);
+        for (let channel of channels) {
+            if (channel.constructor.name === 'Array') {
+                channel = channel[1];
+            }
             await this.removeOldStatus(channel);
             await channel.send(message);
         }
@@ -34730,6 +34739,7 @@ class NotificationHelper {
 }
 
 ;// CONCATENATED MODULE: ./src/helper/StatusHelper.ts
+
 
 
 
@@ -34770,12 +34780,22 @@ class StatusHelper {
         if (currentStatusMeta.meta_data.prevent.includes(status)) {
             return;
         }
-        const statusEmbed = await this.embedHelper.generateEmbed(statusMeta.embed_id);
         logRegular(`klipper status changed to ${status}...`);
         updateData('function', {
             'current_status': status
         });
+        await (0,dist.waitUntil)(() => !functionCache.status_in_query, { timeout: 10000, intervalBetweenAttempts: 500 });
+        updateData('function', {
+            'status_in_query': true
+        });
+        const statusEmbed = await this.embedHelper.generateEmbed(statusMeta.embed_id);
         this.notificationHelper.broadcastMessage(statusEmbed.embed);
+        updateData('function', {
+            'status_in_query': false
+        });
+        if (this.discordClient === null) {
+            this.discordClient = getDiscordClient();
+        }
         if (typeof statusMeta.activity !== 'undefined') {
             this.discordClient.getClient().user.setPresence({
                 status: statusMeta.activity.status
@@ -35010,21 +35030,24 @@ class StateUpdateNotification {
             return;
         }
         if (message.method === 'notify_klippy_disconnected') {
+            console.log('disconnected');
             this.statusHelper.update('disconnected');
             updateData('function', {
-                'poll_server_info': true
+                'poll_printer_info': true
             });
         }
         if (message.method === 'notify_klippy_shutdown') {
+            console.log('shutdown');
             this.statusHelper.update('shutdown');
             updateData('function', {
-                'poll_server_info': true
+                'poll_printer_info': true
             });
         }
         if (message.method === 'notify_klippy_ready') {
+            console.log('ready');
             this.statusHelper.update('ready');
             updateData('function', {
-                'poll_server_info': false
+                'poll_printer_info': false
             });
             this.moonrakerClient.sendInitCommands();
         }
@@ -35102,6 +35125,7 @@ class SchedulerHelper {
     async pollServerInfo() {
         const serverInfo = await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "server.info"}`);
         updateData('server_info', serverInfo.result);
+        console.log(serverInfo.result);
         if (serverInfo.result.klippy_state === 'error') {
             await this.requestPrintInfo();
         }
@@ -35332,6 +35356,7 @@ setData('package_config', package_namespaceObject_0);
 logRegular('init Function Cache...');
 setData('function', {
     'current_status': 'startup',
+    'status_in_query': false,
     'poll_printer_info': false
 });
 Object.assign(global, { WebSocket: __nccwpck_require__(8867) });

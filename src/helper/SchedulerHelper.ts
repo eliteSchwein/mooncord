@@ -46,6 +46,8 @@ export class SchedulerHelper {
 
         updateData('server_info', serverInfo.result)
 
+        console.log(serverInfo.result)
+
         if(serverInfo.result.klippy_state === 'error') {
             await this.requestPrintInfo()
         }

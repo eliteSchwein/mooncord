@@ -32,21 +32,35 @@ export class NotificationHelper {
         if(this.discordClient === null) { return }
         for(const userId of this.notifyList) {
             const user = await this.discordClient.getClient().users.fetch(userId)
+
+            const channel = user.dmChannel
+
+            if(channel === null) {
+                await user.send(message)
+                return
+            }
+
             this.broadcastChannels([user.dmChannel], message)
         }
     }
 
-    protected broadcastGuilds(message) {
+    protected async broadcastGuilds(message) {
         for(const guildId in this.broadcastList) {
             const guildMeta = this.broadcastList[guildId]
-            this.broadcastChannels(guildMeta.broadcast_channels, message)
+            const guild = await this.discordClient.getClient().guilds.fetch(guildId)
+
+            const channels = guild.channels.cache.filter(
+                (channel) => {return guildMeta.broadcast_channels.includes(channel.id)})
+
+            this.broadcastChannels(channels, message)
         }
     }
 
     protected async broadcastChannels(channels,message) {
-        for(const channelId of channels) {
-            const channel = await this.discordClient.getClient().channels.fetch(channelId) as TextChannel
-
+        for(let channel of channels) {
+            if(channel.constructor.name === 'Array') {
+                channel = channel[1]
+            }
             await this.removeOldStatus(channel)
 
             await channel.send(message)
