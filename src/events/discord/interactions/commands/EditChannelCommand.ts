@@ -1,9 +1,7 @@
-import {CommandInteraction, GuildChannel, TextChannel} from "discord.js";
-import {EmbedHelper} from "../../../../helper/EmbedHelper";
+import {CommandInteraction, TextChannel} from "discord.js";
 import {getDatabase} from "../../../../Application";
 import {LocaleHelper} from "../../../../helper/LocaleHelper";
 import {removeFromArray} from "../../../../helper/DataHelper";
-import {updateData} from "../../../../utils/CacheUtil";
 
 export class EditChannelCommand {
     protected databaseUtil = getDatabase()

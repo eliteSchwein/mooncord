@@ -5,6 +5,7 @@ import {LocaleHelper} from "./LocaleHelper";
 import {logRegular} from "./LoggerHelper";
 import {DiscordClient} from "../clients/DiscordClient";
 import {ConfigHelper} from "./ConfigHelper";
+import { NotificationHelper } from "./NotificationHelper";
 
 export class StatusHelper {
     protected embedHelper = new EmbedHelper()
@@ -12,6 +13,7 @@ export class StatusHelper {
     protected localeHelper = new LocaleHelper()
     protected statusMeta = this.configHelper.getStatusMeta()
     protected discordClient: DiscordClient
+    protected notificationHelper = new NotificationHelper()
 
     public async update(status: string = null, discordClient: DiscordClient = null) {
         if(typeof discordClient === null) {
@@ -45,6 +47,8 @@ export class StatusHelper {
         updateData('function', {
             'current_status': status
         })
+
+        this.notificationHelper.broadcastMessage(statusEmbed)
 
         if(typeof statusMeta.activity !== 'undefined') {
             this.discordClient.getClient().user.setPresence({

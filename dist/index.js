@@ -31174,7 +31174,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 60:
+/***/ 149:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -34657,7 +34657,66 @@ class DiscordStatusGenerator {
     }
 }
 
+;// CONCATENATED MODULE: ./src/helper/NotificationHelper.ts
+
+
+class NotificationHelper {
+    constructor() {
+        this.databaseUtil = getDatabase();
+        this.broadcastList = [];
+        this.notifyList = [];
+        this.localeHelper = new LocaleHelper();
+        this.locale = this.localeHelper.getLocale();
+        if (!this.databaseUtil.isReady()) {
+            return;
+        }
+        this.discordClient = getDiscordClient();
+        this.broadcastList = this.databaseUtil.getDatabaseEntry('guilds');
+        this.notifyList = this.databaseUtil.getDatabaseEntry('notify');
+    }
+    broadcastMessage(message) {
+        this.broadcastGuilds(message);
+        this.broadcastChannels(this.notifyList, message);
+    }
+    broadcastGuilds(message) {
+        for (const guildMeta of this.broadcastList) {
+            this.broadcastChannels(guildMeta.broadcast_channels, message);
+        }
+    }
+    async broadcastChannels(channels, message) {
+        for (const channelId of channels) {
+            const channel = await this.discordClient.getClient().channels.fetch(channelId);
+            await this.removeOldStatus(channel);
+            await channel.send(message);
+        }
+    }
+    async removeOldStatus(channel) {
+        if (typeof channel.messages === 'undefined') {
+            return;
+        }
+        const messages = await channel.messages.fetch({ limit: 1 });
+        const lastMessage = messages.first();
+        if (lastMessage.author.id === this.discordClient.getClient().user.id) {
+            return;
+        }
+        if (lastMessage.deleted) {
+            return;
+        }
+        if (lastMessage.embeds.length === 0) {
+            return;
+        }
+        if (typeof (lastMessage.embeds[0]) === 'undefined') {
+            return;
+        }
+        if (lastMessage.embeds[0].title !== this.locale.embeds.printjob_printing.title) {
+            return;
+        }
+        await lastMessage.delete();
+    }
+}
+
 ;// CONCATENATED MODULE: ./src/helper/StatusHelper.ts
+
 
 
 
@@ -34670,6 +34729,7 @@ class StatusHelper {
         this.configHelper = new ConfigHelper();
         this.localeHelper = new LocaleHelper();
         this.statusMeta = this.configHelper.getStatusMeta();
+        this.notificationHelper = new NotificationHelper();
     }
     async update(status = null, discordClient = null) {
         if (typeof discordClient === null) {
@@ -34701,6 +34761,7 @@ class StatusHelper {
         updateData('function', {
             'current_status': status
         });
+        this.notificationHelper.broadcastMessage(statusEmbed);
         if (typeof statusMeta.activity !== 'undefined') {
             this.discordClient.getClient().user.setPresence({
                 status: statusMeta.activity.status
@@ -35708,7 +35769,7 @@ module.exports = require("zlib");
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(60);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(149);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()
