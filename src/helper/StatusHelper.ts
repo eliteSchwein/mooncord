@@ -48,7 +48,7 @@ export class StatusHelper {
             'current_status': status
         })
 
-        this.notificationHelper.broadcastMessage(statusEmbed)
+        this.notificationHelper.broadcastMessage(statusEmbed.embed)
 
         if(typeof statusMeta.activity !== 'undefined') {
             this.discordClient.getClient().user.setPresence({

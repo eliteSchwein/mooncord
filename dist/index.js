@@ -31174,7 +31174,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 149:
+/***/ 8149:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -34663,23 +34663,39 @@ class DiscordStatusGenerator {
 class NotificationHelper {
     constructor() {
         this.databaseUtil = getDatabase();
-        this.broadcastList = [];
+        this.broadcastList = {};
         this.notifyList = [];
         this.localeHelper = new LocaleHelper();
         this.locale = this.localeHelper.getLocale();
+    }
+    getEntries() {
         if (!this.databaseUtil.isReady()) {
-            return;
+            return false;
         }
         this.discordClient = getDiscordClient();
         this.broadcastList = this.databaseUtil.getDatabaseEntry('guilds');
         this.notifyList = this.databaseUtil.getDatabaseEntry('notify');
+        return true;
     }
     broadcastMessage(message) {
+        if (!this.getEntries()) {
+            return;
+        }
         this.broadcastGuilds(message);
-        this.broadcastChannels(this.notifyList, message);
+        void this.notifyUsers(message);
+    }
+    async notifyUsers(message) {
+        if (this.discordClient === null) {
+            return;
+        }
+        for (const userId of this.notifyList) {
+            const user = await this.discordClient.getClient().users.fetch(userId);
+            this.broadcastChannels([user.dmChannel], message);
+        }
     }
     broadcastGuilds(message) {
-        for (const guildMeta of this.broadcastList) {
+        for (const guildId in this.broadcastList) {
+            const guildMeta = this.broadcastList[guildId];
             this.broadcastChannels(guildMeta.broadcast_channels, message);
         }
     }
@@ -34696,9 +34712,7 @@ class NotificationHelper {
         }
         const messages = await channel.messages.fetch({ limit: 1 });
         const lastMessage = messages.first();
-        if (lastMessage.author.id === this.discordClient.getClient().user.id) {
-            return;
-        }
+        //if (lastMessage.author.id === this.discordClient.getClient().user.id) { return }
         if (lastMessage.deleted) {
             return;
         }
@@ -34761,7 +34775,7 @@ class StatusHelper {
         updateData('function', {
             'current_status': status
         });
-        this.notificationHelper.broadcastMessage(statusEmbed);
+        this.notificationHelper.broadcastMessage(statusEmbed.embed);
         if (typeof statusMeta.activity !== 'undefined') {
             this.discordClient.getClient().user.setPresence({
                 status: statusMeta.activity.status
@@ -35769,7 +35783,7 @@ module.exports = require("zlib");
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(149);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(8149);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()
