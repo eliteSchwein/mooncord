@@ -15,6 +15,7 @@ import {NotifyCommand} from "./commands/NotifyCommand";
 import {EmergencyStopCommand} from "./commands/EmergencyStopCommand";
 import {StatusCommand} from "./commands/StatusCommand";
 import {sleep} from "../../../helper/DataHelper";
+import {EditChannelCommand} from "./commands/EditChannelCommand";
 
 export class CommandInteraction {
     protected config = new ConfigHelper()
@@ -58,6 +59,7 @@ export class CommandInteraction {
         void new NotifyCommand(interaction, commandId)
         void new EmergencyStopCommand(interaction, commandId)
         void new StatusCommand(interaction, commandId)
+        void new EditChannelCommand(interaction, commandId)
 
         await sleep(1500)
 

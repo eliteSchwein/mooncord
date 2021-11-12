@@ -31174,7 +31174,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 5861:
+/***/ 60:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -34453,7 +34453,69 @@ class StatusCommand {
     }
 }
 
+;// CONCATENATED MODULE: ./src/events/discord/interactions/commands/EditChannelCommand.ts
+
+
+
+class EditChannelCommand {
+    constructor(interaction, commandId) {
+        this.databaseUtil = getDatabase();
+        this.broadcastList = this.databaseUtil.getDatabaseEntry('guilds');
+        this.localeHelper = new LocaleHelper();
+        this.locale = this.localeHelper.getLocale();
+        this.syntaxLocale = this.localeHelper.getSyntaxLocale();
+        if (commandId !== 'editchannel') {
+            return;
+        }
+        let channelOption = interaction.options.getChannel(this.syntaxLocale.commands.editchannel.options.channel.name);
+        const user = interaction.user;
+        let channel = interaction.channel;
+        if (channel === null) {
+            void interaction.reply(this.locale.messages.errors.guild_only
+                .replace(/\${username}/g, user.tag));
+            return;
+        }
+        if (channel.type === 'DM') {
+            void interaction.reply(this.locale.messages.errors.guild_only
+                .replace(/\${username}/g, user.tag));
+            return;
+        }
+        if (channelOption !== null) {
+            if (channelOption.type !== 'GUILD_TEXT') {
+                void interaction.reply(this.locale.messages.errors.not_textchannel
+                    .replace(/\${username}/g, user.tag)
+                    .replace(/\${channel}/g, channelOption.name));
+                return;
+            }
+            channel = channelOption;
+        }
+        if (!Object.keys(this.broadcastList).includes(interaction.guildId)) {
+            this.broadcastList[interaction.guildId] = {
+                'broadcast_channels': []
+            };
+            this.databaseUtil.updateDatabaseEntry('guilds', this.broadcastList);
+        }
+        const broadcastChannels = this.broadcastList[interaction.guildId].broadcast_channels;
+        let answer;
+        if (broadcastChannels.includes(channel.id)) {
+            removeFromArray(broadcastChannels, channel.id);
+            answer = this.locale.messages.answers.broadcast_channel.deactivated;
+        }
+        else {
+            broadcastChannels.push(channel.id);
+            answer = this.locale.messages.answers.broadcast_channel.activated;
+        }
+        this.broadcastList[interaction.guildId].broadcast_channels = broadcastChannels;
+        answer = answer
+            .replace(/\${username}/g, user.tag)
+            .replace(/\${channel}/g, channel.name);
+        this.databaseUtil.updateDatabaseEntry('guilds', this.broadcastList);
+        void interaction.reply(answer);
+    }
+}
+
 ;// CONCATENATED MODULE: ./src/events/discord/interactions/CommandInteraction.ts
+
 
 
 
@@ -34509,6 +34571,7 @@ class CommandInteraction {
         void new NotifyCommand(interaction, commandId);
         void new EmergencyStopCommand(interaction, commandId);
         void new StatusCommand(interaction, commandId);
+        void new EditChannelCommand(interaction, commandId);
         await sleep(1500);
         if (interaction.replied || interaction.deferred) {
             return;
@@ -35645,7 +35708,7 @@ module.exports = require("zlib");
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(5861);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(60);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()

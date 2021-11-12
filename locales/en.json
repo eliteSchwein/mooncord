@@ -105,8 +105,10 @@
             "for_gcode": "Timelapse for ${state.print_stats.filename}",
             "admin_added": "${mention} is now a Admin, ${username}!",
             "admin_removed": "${mention} is not longer a Admin, ${username}!",
-            "broadcast_channel_activated": "${channel} is now a Broadcast Channel, ${username}!",
-            "broadcast_channel_deactivated": "${channel} is not longer a Broadcast Channel, ${username}!",
+            "broadcast_channel": {
+                "activated": "`${channel}` is now a Broadcast Channel, ${username}!",
+                "deactivated": "`${channel}` is not longer a Broadcast Channel, ${username}!"
+            },
             "execute_success": "Command Executed!",
             "log_retrieved": "Here is the current Log for ${service}",
             "user_id": {
@@ -150,7 +152,7 @@
             "no_permission": "You dont have the Permissions, ${username}",
             "no_timelapse": "There is no Timelapse aviable!",
             "not_ready": "This Command is not ready, ${username}!",
-            "not_textchannel": "${channel} is not a Text Channel, ${username}!",
+            "not_textchannel": "`${channel}` is not a Text Channel, ${username}!",
             "execute_error": "Error: `${gcode_feedback}`",
             "execute_unknown": "Unknown GCode Command: `${gcode_feedback}`",
             "log_too_large": "The Log for ${service} is too big!",
