@@ -14,21 +14,16 @@ export class SchedulerHelper {
 
         this.scheduleModerate()
         this.scheduleHigh()
-        this.scheduleHighSync()
-    }
-
-    protected scheduleHighSync() {
-        setInterval( () => {
-            updateData('moonraker_client', {
-                'event_count': this.moonrakerClient.getWebsocket().underlyingWebsocket['_eventsCount']
-            })
-        }, this.configHelper.getHighSchedulerInterval())
     }
 
     protected scheduleHigh() {
-        setInterval(async () => {
-            if(this.functionCache.poll_server_info) {
-                await this.pollServerInfo()
+        setInterval( () => {
+            this.functionCache = getEntry('function')
+            updateData('moonraker_client', {
+                'event_count': this.moonrakerClient.getWebsocket().underlyingWebsocket['_eventsCount']
+            })
+            if(this.functionCache.poll_printer_info) {
+                void this.pollServerInfo()
             }
         }, this.configHelper.getHighSchedulerInterval())
     }
@@ -44,15 +39,17 @@ export class SchedulerHelper {
     protected async pollServerInfo() {
         const serverInfo = await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "server.info"}`)
 
-        updateData('server_info', serverInfo.result)
+        if(typeof serverInfo.result === 'undefined') { return }
+        if(typeof serverInfo.result.klippy_state === 'undefined') { return }
+        if(serverInfo.result.klippy_state === 'disconnected') { return }
 
-        console.log(serverInfo.result)
+        updateData('server_info', serverInfo.result)
 
         if(serverInfo.result.klippy_state === 'error') {
             await this.requestPrintInfo()
         }
 
-        await this.statusHelper.update()
+        void this.statusHelper.update()
     }
 
     protected async requestPrintInfo() {

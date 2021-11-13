@@ -208,7 +208,7 @@
         "printjob_start":{
             "color": "#25db00",
             "author": "${state.print_stats.filename}",
-            "thumbnail": "printjob_thumbnail",
+            "thumbnail": "thumbnail_not_found.png",
             "image": "webcam",
             "buttons": [],
             "fields": [
@@ -221,7 +221,7 @@
         "printjob_done":{
             "color": "#25db00",
             "author": "${state.print_stats.filename}",
-            "thumbnail": "printjob_thumbnail",
+            "thumbnail": "thumbnail_not_found.png",
             "image": "webcam",
             "buttons": [],
             "fields": [
@@ -234,7 +234,7 @@
         "printjob_pause":{
             "color": "#dbd400",
             "author": "${state.print_stats.filename}",
-            "thumbnail": "printjob_thumbnail",
+            "thumbnail": "thumbnail_not_found.png",
             "image": "webcam",
             "buttons": ["printjob_resume","printjob_cancel"],
             "fields": [
@@ -259,7 +259,7 @@
         "printjob_printing":{
             "color": "#0099ff",
             "author": "${state.print_stats.filename}",
-            "thumbnail": "printjob_thumbnail",
+            "thumbnail": "thumbnail_not_found.png",
             "image": "webcam",
             "buttons": [
                 "printjob_pause",
@@ -287,7 +287,7 @@
         "printjob_stop":{
             "color": "#c90000",
             "author": "${state.print_stats.filename}",
-            "thumbnail": "printjob_thumbnail",
+            "thumbnail": "thumbnail_not_found.png",
             "image": "webcam",
             "buttons": [],
             "fields": [
@@ -444,7 +444,7 @@
             "embed_id": "error",
             "meta_data": {
                 "allow_same": false,
-                "prevent": ["disconnected","error"]
+                "prevent": []
             },
             "activity": {
                 "status": "dnd",
@@ -507,7 +507,7 @@
             "embed_id": "startup",
             "meta_data": {
                 "allow_same": false,
-                "prevent": ["disconnected"]
+                "prevent": ["disconnected","error"]
             },
             "activity": {
                 "status": "idle",

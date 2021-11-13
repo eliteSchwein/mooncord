@@ -31174,7 +31174,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 8149:
+/***/ 853:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -33934,7 +33934,15 @@ class EmbedHelper {
             embed.setImage(`attachment://${image.name}`);
         }
         if (typeof embedData.fields !== 'undefined') {
-            embed.setFields(embedData.fields);
+            embedData.fields.forEach(field => {
+                if (field.name === '') {
+                    field.name = 'N/A';
+                }
+                if (field.value === '') {
+                    field.value = 'N/A';
+                }
+                embed.addField(field.name, field.value, true);
+            });
         }
         response.embeds = [embed];
         if (components.length > 0) {
@@ -34937,7 +34945,11 @@ class ProcStatsNotification {
 
 ;// CONCATENATED MODULE: ./src/events/moonraker/messages/SubscriptionNotification.ts
 
+
 class SubscriptionNotification {
+    constructor() {
+        this.statusHelper = new StatusHelper();
+    }
     parse(message) {
         if (typeof (message.method) === 'undefined') {
             return;
@@ -34945,10 +34957,27 @@ class SubscriptionNotification {
         if (typeof (message.params) === 'undefined') {
             return;
         }
+        const param = message.params[0];
         if (message.method !== 'notify_status_update') {
             return;
         }
-        updateData('state', message.params[0]);
+        updateData('state', param);
+        if (typeof param.print_stats !== 'undefined') {
+            this.parsePrintStats(param.print_stats);
+        }
+    }
+    parsePrintStats(printStatsData) {
+        if (typeof printStatsData.state === 'undefined') {
+            return;
+        }
+        let status = printStatsData.state;
+        if (status === 'standby') {
+            status = 'ready';
+        }
+        if (status === 'printing') {
+            void this.statusHelper.update('start');
+        }
+        void this.statusHelper.update(status);
     }
 }
 
@@ -35030,21 +35059,18 @@ class StateUpdateNotification {
             return;
         }
         if (message.method === 'notify_klippy_disconnected') {
-            console.log('disconnected');
             this.statusHelper.update('disconnected');
             updateData('function', {
                 'poll_printer_info': true
             });
         }
         if (message.method === 'notify_klippy_shutdown') {
-            console.log('shutdown');
             this.statusHelper.update('shutdown');
             updateData('function', {
                 'poll_printer_info': true
             });
         }
         if (message.method === 'notify_klippy_ready') {
-            console.log('ready');
             this.statusHelper.update('ready');
             updateData('function', {
                 'poll_printer_info': false
@@ -35054,7 +35080,32 @@ class StateUpdateNotification {
     }
 }
 
+;// CONCATENATED MODULE: ./src/events/moonraker/messages/GcodeResponseNotification.ts
+
+
+
+class GcodeResponseNotification {
+    constructor() {
+        this.moonrakerClient = getMoonrakerClient();
+        this.fileListHelper = new FileListHelper(this.moonrakerClient);
+        this.stateCache = getEntry('state');
+    }
+    parse(message) {
+        if (typeof (message.method) === 'undefined') {
+            return;
+        }
+        if (typeof (message.params) === 'undefined') {
+            return;
+        }
+        const param = message.params[0];
+        if (message.method !== 'notify_gcode_response') {
+            return;
+        }
+    }
+}
+
 ;// CONCATENATED MODULE: ./src/events/moonraker/MessageHandler.ts
+
 
 
 
@@ -35069,6 +35120,7 @@ class MessageHandler {
         this.updateNotification = new UpdateNotification();
         this.fileEditNotification = new FileEditNotification();
         this.stateUpdateNotification = new StateUpdateNotification();
+        this.gcodeResponseNotification = new GcodeResponseNotification();
         this.websocket = websocket;
         websocket.addEventListener(lib.WebsocketEvents.message, ((instance, ev) => {
             const messageData = JSON.parse(ev.data);
@@ -35084,6 +35136,7 @@ class MessageHandler {
             this.updateNotification.parse(messageData);
             this.fileEditNotification.parse(messageData);
             this.stateUpdateNotification.parse(messageData);
+            this.gcodeResponseNotification.parse(messageData);
         }));
     }
 }
@@ -35100,19 +35153,15 @@ class SchedulerHelper {
         this.moonrakerClient = moonrakerClient;
         this.scheduleModerate();
         this.scheduleHigh();
-        this.scheduleHighSync();
     }
-    scheduleHighSync() {
+    scheduleHigh() {
         setInterval(() => {
+            this.functionCache = getEntry('function');
             updateData('moonraker_client', {
                 'event_count': this.moonrakerClient.getWebsocket().underlyingWebsocket['_eventsCount']
             });
-        }, this.configHelper.getHighSchedulerInterval());
-    }
-    scheduleHigh() {
-        setInterval(async () => {
-            if (this.functionCache.poll_server_info) {
-                await this.pollServerInfo();
+            if (this.functionCache.poll_printer_info) {
+                void this.pollServerInfo();
             }
         }, this.configHelper.getHighSchedulerInterval());
     }
@@ -35124,12 +35173,20 @@ class SchedulerHelper {
     }
     async pollServerInfo() {
         const serverInfo = await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "server.info"}`);
+        if (typeof serverInfo.result === 'undefined') {
+            return;
+        }
+        if (typeof serverInfo.result.klippy_state === 'undefined') {
+            return;
+        }
+        if (serverInfo.result.klippy_state === 'disconnected') {
+            return;
+        }
         updateData('server_info', serverInfo.result);
-        console.log(serverInfo.result);
         if (serverInfo.result.klippy_state === 'error') {
             await this.requestPrintInfo();
         }
-        await this.statusHelper.update();
+        void this.statusHelper.update();
     }
     async requestPrintInfo() {
         const printerInfo = await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "printer.info"}`);
@@ -35808,7 +35865,7 @@ module.exports = require("zlib");
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(8149);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(853);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()

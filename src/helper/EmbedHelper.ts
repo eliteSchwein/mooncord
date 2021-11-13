@@ -86,7 +86,11 @@ export class EmbedHelper {
         }
 
         if(typeof embedData.fields !== 'undefined') {
-            embed.setFields(embedData.fields)
+            embedData.fields.forEach(field => {
+                if(field.name === '') {field.name = 'N/A'}
+                if(field.value === '') {field.value = 'N/A'}
+                embed.addField(field.name, field.value, true)
+            })
         }
 
         response.embeds = [embed]
