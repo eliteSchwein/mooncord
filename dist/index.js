@@ -31174,7 +31174,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 853:
+/***/ 8853:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -34742,7 +34742,12 @@ class NotificationHelper {
         if (lastMessage.embeds[0].title !== this.locale.embeds.printjob_printing.title) {
             return;
         }
-        await lastMessage.delete();
+        try {
+            await lastMessage.delete();
+        }
+        catch {
+            return;
+        }
     }
 }
 
@@ -34949,6 +34954,7 @@ class ProcStatsNotification {
 class SubscriptionNotification {
     constructor() {
         this.statusHelper = new StatusHelper();
+        this.functionCache = getEntry('function');
     }
     parse(message) {
         if (typeof (message.method) === 'undefined') {
@@ -34976,6 +34982,9 @@ class SubscriptionNotification {
         }
         if (status === 'printing') {
             void this.statusHelper.update('start');
+        }
+        if (status === 'ready' && this.functionCache.current_status === 'printing') {
+            void this.statusHelper.update('stop');
         }
         void this.statusHelper.update(status);
     }
@@ -35865,7 +35874,7 @@ module.exports = require("zlib");
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(853);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(8853);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()

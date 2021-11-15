@@ -1,8 +1,9 @@
-import {setData, updateData} from "../../../utils/CacheUtil";
+import {getEntry, setData, updateData} from "../../../utils/CacheUtil";
 import {StatusHelper} from "../../../helper/StatusHelper";
 
 export class SubscriptionNotification {
     protected statusHelper = new StatusHelper()
+    protected functionCache = getEntry('function')
     public parse(message) {
         if(typeof(message.method) === 'undefined') { return }
         if(typeof(message.params) === 'undefined') { return }
@@ -27,6 +28,10 @@ export class SubscriptionNotification {
 
         if(status === 'printing') {
             void this.statusHelper.update('start')
+        }
+
+        if(status === 'ready' && this.functionCache.current_status === 'printing') {
+            void this.statusHelper.update('stop')
         }
 
         void this.statusHelper.update(status)

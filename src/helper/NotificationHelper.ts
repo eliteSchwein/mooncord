@@ -79,6 +79,10 @@ export class NotificationHelper {
         if (typeof(lastMessage.embeds[0]) === 'undefined') { return }
         if (lastMessage.embeds[0].title !== this.locale.embeds.printjob_printing.title) { return }
 
-        await lastMessage.delete()
+        try{
+            await lastMessage.delete()
+        } catch {
+            return
+        }
     }
 }
