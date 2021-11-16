@@ -32,6 +32,7 @@
     },
     "custom_info": "Thanks for installing MoonCord and Happy Printing ❤",
     "language": {
+        "date_locale": "de-DE",
         "messages": "en",
         "command_syntax": "en",
         "buttons_use_syntax_locale": false
@@ -213,8 +214,12 @@
             "buttons": [],
             "fields": [
                 {
-                    "name": "${embeds.fields.print_time}",
-                    "value": "${value_eta_print_time}"
+                    "name": "${embeds.fields.print_left_time}",
+                    "value": "${formatTime:time.left}"
+                },
+                {
+                    "name": "${embeds.fields.eta_print_time}",
+                    "value": "${formatDate:time.eta}"
                 }
             ]
         },
@@ -227,7 +232,7 @@
             "fields": [
                 {
                     "name": "${embeds.fields.print_time}",
-                    "value": "${value_print_time}"
+                    "value": "${formatTime:time.duration}"
                 }
             ]
         },
@@ -240,19 +245,19 @@
             "fields": [
                 {
                     "name": "${embeds.fields.print_time}",
-                    "value": "${value_print_time}"
+                    "value": "${formatTime:time.duration}"
                 },
                 {
-                    "name": "${embeds.fields.eta_print_time}",
-                    "value": "${value_eta_print_time}"
+                    "name": "${embeds.fields.print_left_time}",
+                    "value": "${formatTime:time.left}"
                 },
                 {
                     "name": "${embeds.fields.print_progress}",
-                    "value": "${value_print_progress}%"
+                    "value": "${percent:0:state.display_status.progress}%"
                 },
                 {
                     "name": "${embeds.fields.print_layers}",
-                    "value": "${value_current_layer}/${value_max_layer}"
+                    "value": "${layers.current}/${layers.top}"
                 }
             ]
         },
@@ -268,19 +273,23 @@
             "fields": [
                 {
                     "name": "${embeds.fields.print_time}",
-                    "value": "${value_print_time}"
+                    "value": "${formatTime:time.duration}"
+                },
+                {
+                    "name": "${embeds.fields.print_left_time}",
+                    "value": "${formatTime:time.left}"
                 },
                 {
                     "name": "${embeds.fields.eta_print_time}",
-                    "value": "${value_eta_print_time}"
+                    "value": "${formatDate:time.eta}"
                 },
                 {
                     "name": "${embeds.fields.print_progress}",
-                    "value": "${value_print_progress}%"
+                    "value": "${percent:0:state.display_status.progress}%"
                 },
                 {
                     "name": "${embeds.fields.print_layers}",
-                    "value": "${value_current_layer}/${value_max_layer}"
+                    "value": "${layers.current}/${layers.top}"
                 }
             ]
         },
@@ -293,7 +302,15 @@
             "fields": [
                 {
                     "name": "${embeds.fields.print_time}",
-                    "value": "${value_print_time}"
+                    "value": "${formatTime:time.duration}"
+                },
+                {
+                    "name": "${embeds.fields.print_progress}",
+                    "value": "${percent:0:state.display_status.progress}%"
+                },
+                {
+                    "name": "${embeds.fields.print_layers}",
+                    "value": "${layers.current}/${layers.top}"
                 }
             ]
         },
@@ -325,7 +342,8 @@
             "color": "#0099ff",
             "image": "webcam",
             "buttons": [],
-            "description": "${versions}"
+            "fields": [],
+            "show_versions": true
         },
         "startup":{
             "color": "#0099ff",

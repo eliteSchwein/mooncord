@@ -5,9 +5,10 @@ import {MessageAttachment, MessageEmbed} from "discord.js";
 import * as path from "path"
 import * as app from "../Application"
 import {DiscordInputGenerator} from "../generator/DiscordInputGenerator";
-import {mergeDeep} from "./DataHelper";
+import {formatPercent, mergeDeep, parseCalculatedPlaceholder} from "./DataHelper";
 import {logRegular} from "./LoggerHelper";
 import {WebcamHelper} from "./WebcamHelper";
+import { VersionHelper } from "./VersionHelper";
 
 export class EmbedHelper {
     protected localeHelper = new LocaleHelper()
@@ -15,6 +16,7 @@ export class EmbedHelper {
     protected inputGenerator = new DiscordInputGenerator()
     protected webcamHelper = new WebcamHelper()
     protected embedMeta = this.configHelper.getEmbedMeta()
+    protected versionHelper = new VersionHelper()
 
     public loadCache() {
         logRegular("load Embeds Cache...")
@@ -85,6 +87,10 @@ export class EmbedHelper {
             embed.setImage(`attachment://${image.name}`)
         }
 
+        if(embedData.show_versions) {
+            embedData.fields = embedData.fields.concat(this.versionHelper.getFields())
+        }
+
         if(typeof embedData.fields !== 'undefined') {
             embedData.fields.forEach(field => {
                 if(field.name === '') {field.name = 'N/A'}
@@ -127,9 +133,16 @@ export class EmbedHelper {
             }
         }
         
-        const cacheParser = findValue(placeholderId)
+        let cacheParser = findValue(placeholderId)
+
+        if(placeholderId.includes(':')) {
+            const templateFragments = placeholderId.split(':')
+            cacheParser = parseCalculatedPlaceholder(templateFragments)
+        }
 
         if(typeof cacheParser === 'undefined') { return "" }
+
+        cacheParser = String(cacheParser)
 
         return cacheParser
             .replace(/(")/g,'\'')

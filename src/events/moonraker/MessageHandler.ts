@@ -29,7 +29,7 @@ export class MessageHandler {
                 'event_count': websocket.underlyingWebsocket['_eventsCount']
             })
 
-            //console.log(messageData)
+            // console.log(messageData)
 
             this.procStatsNotification.parse(messageData)
             this.subscriptionNotification.parse(messageData)

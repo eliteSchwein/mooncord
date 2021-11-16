@@ -162,4 +162,8 @@ export class ConfigHelper {
     public getTempMeta() {
         return this.getConfig().temp_meta
     }
+
+    public getDateLocale() {
+        return this.getConfig().language.date_locale
+    }
 }

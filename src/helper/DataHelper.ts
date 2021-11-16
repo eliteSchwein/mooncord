@@ -1,4 +1,6 @@
 import exp from "constants";
+import {findValue, getEntry} from "../utils/CacheUtil";
+import { ConfigHelper } from "./ConfigHelper";
 
 export function isObject(item) {
     return (item && typeof item === 'object' && !Array.isArray(item));
@@ -42,3 +44,46 @@ export function stripAnsi(input: string) {
         /[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g,
         '')
 }
+export function parseCalculatedPlaceholder(fragments) {
+    if(fragments[0] === 'percent') {
+        return formatPercent(findValue(fragments[2]), fragments[1])
+    }
+    if(fragments[0] === 'formatDate') {
+        return formatDate(findValue(fragments[1]))
+    }
+    if(fragments[0] === 'formatTime') {
+        return formatTime(findValue(fragments[1]))
+    }
+}
+export function formatTime(seconds) {
+    if (isNaN(Number(seconds)) || !isFinite(seconds)) {seconds = 0}
+    let isNeg = false
+    if (seconds < 0) {
+      seconds = Math.abs(seconds)
+      isNeg = true
+    }
+    const h = Math.floor(seconds / 3600)
+    const m = Math.floor(seconds % 3600 / 60)
+    const s = Math.floor(seconds % 3600 % 60)
+  
+    let r = `${s  }s`
+    r = `${m  }m ${  r}`
+    if (h > 0) {r = `${h  }h ${  r}`}
+  
+    return (isNeg) ? `-${  r}` : r
+}
+export function formatDate(seconds) {
+    if (isNaN(Number(seconds)) || !isFinite(seconds)) { return 'N/A' }
+
+    const configHelper = new ConfigHelper()
+    const date = new Date(seconds * 1000)
+
+    return date.toLocaleDateString(configHelper.getDateLocale(), 
+        { weekday: 'short',
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit' })
+    }

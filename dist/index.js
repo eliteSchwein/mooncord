@@ -31174,7 +31174,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 8853:
+/***/ 634:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -31189,7 +31189,7 @@ __nccwpck_require__.d(__webpack_exports__, {
 });
 
 ;// CONCATENATED MODULE: ./package.json
-const package_namespaceObject = JSON.parse('{"name":"mooncord","version":"0.0.5","description":"Moonraker Discord Bot based on Discord.js","main":"index.js","scripts":{"start":"node dist/index.js","ramdebugstart":"node --trace_gc dist/mooncord.js","checkcodestyle":"npx eslint ./**","autofixcodestyle":"npx eslint ./** --fix","build":"ncc build -m -e discord.js -e sharp src/Application.ts -o dist","watch":"ncc build -w -e discord.js -e sharp src/Application.ts -o dist"},"repository":{"type":"git","url":"git+https://github.com/eliteSchwein/mooncord.git"},"keywords":[],"author":"eliteSCHW31N","license":"ISC","bugs":{"url":"https://github.com/eliteSchwein/mooncord/issues"},"homepage":"https://github.com/eliteSchwein/mooncord#readme","devDependencies":{"@types/node":"^16.11.6","@types/sharp":"^0.29.3","@vercel/ncc":"^0.31.1","async-wait-until":"^2.0.8","axios":"^0.24.0","colorts":"^0.1.63","eslint":"^8.1.0","eslint-config-galex":"^3.2.0","eslint-config-standard":"^16.0.3","eslint-plugin-import":"^2.25.2","eslint-plugin-node":"^11.1.0","eslint-plugin-promise":"^5.1.1","form-data":"^4.0.0","lodash":"^4.17.21","node-fetch":"^3.1.0","shelljs":"^0.8.4","typescript":"^4.4.4","websocket-ts":"^1.1.1","ws":"^8.2.3"},"dependencies":{"discord.js":"^13.3.1","sharp":"^0.29.2"}}');
+const package_namespaceObject = JSON.parse('{"name":"mooncord","version":"0.0.5","description":"Moonraker Discord Bot based on Discord.js","main":"index.js","scripts":{"start":"node dist/index.js","debugstart":"node --trace_gc --trace-deprecation --trace-warnings --trace-uncaught --track-heap-objects dist/index.js","checkcodestyle":"npx eslint ./**","autofixcodestyle":"npx eslint ./** --fix","build":"ncc build -m -e discord.js -e sharp src/Application.ts -o dist","watch":"ncc build -w -e discord.js -e sharp src/Application.ts -o dist"},"repository":{"type":"git","url":"git+https://github.com/eliteSchwein/mooncord.git"},"keywords":[],"author":"eliteSCHW31N","license":"ISC","bugs":{"url":"https://github.com/eliteSchwein/mooncord/issues"},"homepage":"https://github.com/eliteSchwein/mooncord#readme","devDependencies":{"@types/node":"^16.11.6","@types/sharp":"^0.29.3","@vercel/ncc":"^0.31.1","async-wait-until":"^2.0.8","axios":"^0.24.0","colorts":"^0.1.63","eslint":"^8.1.0","eslint-config-galex":"^3.2.0","eslint-config-standard":"^16.0.3","eslint-plugin-import":"^2.25.2","eslint-plugin-node":"^11.1.0","eslint-plugin-promise":"^5.1.1","form-data":"^4.0.0","lodash":"^4.17.21","node-fetch":"^3.1.0","shelljs":"^0.8.4","typescript":"^4.4.4","websocket-ts":"^1.1.1","ws":"^8.2.3"},"dependencies":{"discord.js":"^13.3.1","sharp":"^0.29.2"}}');
 var package_namespaceObject_0 = /*#__PURE__*/__nccwpck_require__.t(package_namespaceObject, 2);
 // EXTERNAL MODULE: ./node_modules/async-wait-until/dist/index.js
 var dist = __nccwpck_require__(1299);
@@ -31200,44 +31200,6 @@ const external_fs_namespaceObject = require("fs");
 ;// CONCATENATED MODULE: external "path"
 const external_path_namespaceObject = require("path");
 var external_path_default = /*#__PURE__*/__nccwpck_require__.n(external_path_namespaceObject);
-;// CONCATENATED MODULE: ./src/helper/DataHelper.ts
-function isObject(item) {
-    return (item && typeof item === 'object' && !Array.isArray(item));
-}
-function removeFromArray(array, value) {
-    const index = array.indexOf(value);
-    if (index > -1) {
-        array.splice(index, 1);
-    }
-}
-function mergeDeep(target, ...sources) {
-    if (!sources.length)
-        return target;
-    const source = sources.shift();
-    if (isObject(target) && isObject(source)) {
-        for (const key in source) {
-            if (isObject(source[key])) {
-                if (!target[key])
-                    Object.assign(target, { [key]: {} });
-                mergeDeep(target[key], source[key]);
-            }
-            else {
-                Object.assign(target, { [key]: source[key] });
-            }
-        }
-    }
-    return mergeDeep(target, ...sources);
-}
-async function sleep(delay) {
-    return await new Promise((r) => setTimeout(r, delay));
-}
-function formatPercent(percent, digits) {
-    return (percent * 100).toFixed(digits);
-}
-function stripAnsi(input) {
-    return input.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, '');
-}
-
 // EXTERNAL MODULE: ./node_modules/colorts/lib/string.js
 var string = __nccwpck_require__(692);
 // EXTERNAL MODULE: external "util"
@@ -31452,6 +31414,90 @@ async function writeDump() {
     logSuccess('Dumped Cache!');
 }
 
+;// CONCATENATED MODULE: ./src/helper/DataHelper.ts
+
+
+function isObject(item) {
+    return (item && typeof item === 'object' && !Array.isArray(item));
+}
+function removeFromArray(array, value) {
+    const index = array.indexOf(value);
+    if (index > -1) {
+        array.splice(index, 1);
+    }
+}
+function mergeDeep(target, ...sources) {
+    if (!sources.length)
+        return target;
+    const source = sources.shift();
+    if (isObject(target) && isObject(source)) {
+        for (const key in source) {
+            if (isObject(source[key])) {
+                if (!target[key])
+                    Object.assign(target, { [key]: {} });
+                mergeDeep(target[key], source[key]);
+            }
+            else {
+                Object.assign(target, { [key]: source[key] });
+            }
+        }
+    }
+    return mergeDeep(target, ...sources);
+}
+async function sleep(delay) {
+    return await new Promise((r) => setTimeout(r, delay));
+}
+function formatPercent(percent, digits) {
+    return (percent * 100).toFixed(digits);
+}
+function stripAnsi(input) {
+    return input.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, '');
+}
+function parseCalculatedPlaceholder(fragments) {
+    if (fragments[0] === 'percent') {
+        return formatPercent(findValue(fragments[2]), fragments[1]);
+    }
+    if (fragments[0] === 'formatDate') {
+        return formatDate(findValue(fragments[1]));
+    }
+    if (fragments[0] === 'formatTime') {
+        return formatTime(findValue(fragments[1]));
+    }
+}
+function formatTime(seconds) {
+    if (isNaN(Number(seconds)) || !isFinite(seconds)) {
+        seconds = 0;
+    }
+    let isNeg = false;
+    if (seconds < 0) {
+        seconds = Math.abs(seconds);
+        isNeg = true;
+    }
+    const h = Math.floor(seconds / 3600);
+    const m = Math.floor(seconds % 3600 / 60);
+    const s = Math.floor(seconds % 3600 % 60);
+    let r = `${s}s`;
+    r = `${m}m ${r}`;
+    if (h > 0) {
+        r = `${h}h ${r}`;
+    }
+    return (isNeg) ? `-${r}` : r;
+}
+function formatDate(seconds) {
+    if (isNaN(Number(seconds)) || !isFinite(seconds)) {
+        return 'N/A';
+    }
+    const configHelper = new ConfigHelper();
+    const date = new Date(seconds * 1000);
+    return date.toLocaleDateString(configHelper.getDateLocale(), { weekday: 'short',
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit' });
+}
+
 ;// CONCATENATED MODULE: ./src/helper/ConfigHelper.ts
 
 
@@ -31576,6 +31622,9 @@ class ConfigHelper {
     }
     getTempMeta() {
         return this.getConfig().temp_meta;
+    }
+    getDateLocale() {
+        return this.getConfig().language.date_locale;
     }
 }
 
@@ -33864,7 +33913,31 @@ class WebcamHelper {
     }
 }
 
+;// CONCATENATED MODULE: ./src/helper/VersionHelper.ts
+
+class VersionHelper {
+    getFields() {
+        const updateCache = getEntry('updates');
+        const fields = [];
+        for (const component in updateCache.version_info) {
+            if (component !== 'system') {
+                const componentdata = updateCache.version_info[component];
+                let { version } = componentdata;
+                if (version !== componentdata.remote_version) {
+                    version = version.concat(` **(${componentdata.remote_version})**`);
+                }
+                fields.push({
+                    name: component,
+                    value: version
+                });
+            }
+        }
+        return fields;
+    }
+}
+
 ;// CONCATENATED MODULE: ./src/helper/EmbedHelper.ts
+
 
 
 
@@ -33882,6 +33955,7 @@ class EmbedHelper {
         this.inputGenerator = new DiscordInputGenerator();
         this.webcamHelper = new WebcamHelper();
         this.embedMeta = this.configHelper.getEmbedMeta();
+        this.versionHelper = new VersionHelper();
     }
     loadCache() {
         logRegular("load Embeds Cache...");
@@ -33933,6 +34007,9 @@ class EmbedHelper {
         if (typeof image !== 'undefined') {
             embed.setImage(`attachment://${image.name}`);
         }
+        if (embedData.show_versions) {
+            embedData.fields = embedData.fields.concat(this.versionHelper.getFields());
+        }
         if (typeof embedData.fields !== 'undefined') {
             embedData.fields.forEach(field => {
                 if (field.name === '') {
@@ -33973,10 +34050,15 @@ class EmbedHelper {
                 return providedParser;
             }
         }
-        const cacheParser = findValue(placeholderId);
+        let cacheParser = findValue(placeholderId);
+        if (placeholderId.includes(':')) {
+            const templateFragments = placeholderId.split(':');
+            cacheParser = parseCalculatedPlaceholder(templateFragments);
+        }
         if (typeof cacheParser === 'undefined') {
             return "";
         }
+        cacheParser = String(cacheParser);
         return cacheParser
             .replace(/(")/g, '\'')
             .replace(/(\n)/g, '\\n');
@@ -34773,7 +34855,7 @@ class StatusHelper {
             discordClient = getDiscordClient();
         }
         this.discordClient = discordClient;
-        const functionCache = getEntry('function');
+        let functionCache = getEntry('function');
         const serverInfo = getEntry('server_info');
         if (typeof serverInfo === 'undefined') {
             return;
@@ -34797,7 +34879,8 @@ class StatusHelper {
         updateData('function', {
             'current_status': status
         });
-        await (0,dist.waitUntil)(() => !functionCache.status_in_query, { timeout: 10000, intervalBetweenAttempts: 500 });
+        functionCache = getEntry('function');
+        await (0,dist.waitUntil)(() => !functionCache.status_in_query, { timeout: 20000, intervalBetweenAttempts: 500 });
         updateData('function', {
             'status_in_query': true
         });
@@ -34948,12 +35031,68 @@ class ProcStatsNotification {
     }
 }
 
+;// CONCATENATED MODULE: ./src/helper/MetadataHelper.ts
+
+
+class MetadataHelper {
+    constructor() {
+        this.moonrakerClient = getMoonrakerClient();
+    }
+    async retrieveMetaData(filename) {
+        const metaData = await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${filename}"}}`);
+        setData('meta_data', metaData.result);
+    }
+}
+
+;// CONCATENATED MODULE: ./src/helper/TimeHelper.ts
+
+function updateTimes() {
+    const stateCache = getEntry('state');
+    const metaDataCache = getEntry('meta_data');
+    const endTime = Math.floor(Date.now() / 1000);
+    const duration = stateCache.print_stats.print_duration;
+    let total = duration / stateCache.display_status.progress;
+    if (total === 0 ||
+        isNaN(total) ||
+        !isFinite(total)) {
+        total = metaDataCache.estimated_time;
+    }
+    const left = (total - duration) / stateCache.gcode_move.speed_factor || 1;
+    const end = endTime + (total - duration);
+    updateData('time', {
+        'total': total,
+        'duration': duration,
+        'left': left,
+        'eta': end
+    });
+}
+
+;// CONCATENATED MODULE: ./src/helper/LayerHelper.ts
+
+function updateLayers() {
+    const stateCache = getEntry('state');
+    const metaDataCache = getEntry('meta_data');
+    let top_layer = Math.ceil((metaDataCache.object_height - metaDataCache.first_layer_height) / metaDataCache.layer_height + 1);
+    top_layer = top_layer > 0 ? top_layer : 0;
+    let current_layer = Math.ceil((stateCache.gcode_move.gcode_position[2] - metaDataCache.first_layer_height) / metaDataCache.layer_height + 1);
+    current_layer = (current_layer <= top_layer) ? current_layer : top_layer;
+    current_layer = current_layer > 0 ? current_layer : 0;
+    updateData('layers', {
+        'top': top_layer,
+        'current': current_layer
+    });
+}
+
 ;// CONCATENATED MODULE: ./src/events/moonraker/messages/SubscriptionNotification.ts
+
+
+
 
 
 class SubscriptionNotification {
     constructor() {
         this.statusHelper = new StatusHelper();
+        this.metadataHelper = new MetadataHelper();
         this.functionCache = getEntry('function');
     }
     parse(message) {
@@ -34969,10 +35108,10 @@ class SubscriptionNotification {
         }
         updateData('state', param);
         if (typeof param.print_stats !== 'undefined') {
-            this.parsePrintStats(param.print_stats);
+            void this.parsePrintStats(param.print_stats);
         }
     }
-    parsePrintStats(printStatsData) {
+    async parsePrintStats(printStatsData) {
         if (typeof printStatsData.state === 'undefined') {
             return;
         }
@@ -34981,10 +35120,10 @@ class SubscriptionNotification {
             status = 'ready';
         }
         if (status === 'printing') {
-            void this.statusHelper.update('start');
-        }
-        if (status === 'ready' && this.functionCache.current_status === 'printing') {
-            void this.statusHelper.update('stop');
+            await this.metadataHelper.retrieveMetaData(findValue('state.print_stats.filename'));
+            updateTimes();
+            updateLayers();
+            await this.statusHelper.update('start');
         }
         void this.statusHelper.update(status);
     }
@@ -35093,11 +35232,13 @@ class StateUpdateNotification {
 
 
 
+
 class GcodeResponseNotification {
     constructor() {
         this.moonrakerClient = getMoonrakerClient();
         this.fileListHelper = new FileListHelper(this.moonrakerClient);
         this.stateCache = getEntry('state');
+        this.statusHelper = new StatusHelper();
     }
     parse(message) {
         if (typeof (message.method) === 'undefined') {
@@ -35109,6 +35250,9 @@ class GcodeResponseNotification {
         const param = message.params[0];
         if (message.method !== 'notify_gcode_response') {
             return;
+        }
+        if (param === '// action:cancel') {
+            this.statusHelper.update('stop');
         }
     }
 }
@@ -35139,7 +35283,7 @@ class MessageHandler {
             updateData('moonraker_client', {
                 'event_count': websocket.underlyingWebsocket['_eventsCount']
             });
-            //console.log(messageData)
+            // console.log(messageData)
             this.procStatsNotification.parse(messageData);
             this.subscriptionNotification.parse(messageData);
             this.updateNotification.parse(messageData);
@@ -35424,6 +35568,18 @@ setData('function', {
     'current_status': 'startup',
     'status_in_query': false,
     'poll_printer_info': false
+});
+logRegular('init Time Cache...');
+setData('time', {
+    'total': 0,
+    'duration': 0,
+    'left': 0,
+    'eta': 0
+});
+logRegular('init Layer Cache...');
+setData('layers', {
+    'top': 0,
+    'current': 0
 });
 Object.assign(global, { WebSocket: __nccwpck_require__(8867) });
 const configHelper = new ConfigHelper();
@@ -35874,7 +36030,7 @@ module.exports = require("zlib");
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(8853);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(634);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()

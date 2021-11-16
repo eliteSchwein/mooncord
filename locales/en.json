@@ -89,6 +89,7 @@
             "power": "Power",
             "print_time": "Print Time",
             "eta_print_time": "ETA Print Time",
+            "print_left_time": "Print Time left",
             "print_progress": "Progress",
             "print_layers": "Layer",
             "slicer": "Slicer",

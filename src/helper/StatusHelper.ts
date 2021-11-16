@@ -21,7 +21,7 @@ export class StatusHelper {
             discordClient = app.getDiscordClient()
         }
         this.discordClient = discordClient
-        const functionCache = getEntry('function')
+        let functionCache = getEntry('function')
         const serverInfo  = getEntry('server_info')
 
         if(typeof serverInfo === 'undefined') { return }
@@ -45,8 +45,10 @@ export class StatusHelper {
         updateData('function', {
             'current_status': status
         })
+
+        functionCache = getEntry('function')
         
-        await waitUntil(() => !functionCache.status_in_query, { timeout: 10_000, intervalBetweenAttempts: 500 })
+        await waitUntil(() => !functionCache.status_in_query, { timeout: 20_000, intervalBetweenAttempts: 500 })
 
         updateData('function', {
             'status_in_query': true

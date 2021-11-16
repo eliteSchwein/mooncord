@@ -23,6 +23,20 @@ setData('function', {
     'poll_printer_info': false
 })
 
+logRegular('init Time Cache...')
+setData('time', {
+    'total': 0,
+    'duration': 0,
+    'left': 0,
+    'eta': 0
+})
+
+logRegular('init Layer Cache...')
+setData('layers', {
+    'top': 0,
+    'current': 0
+})
+
 Object.assign(global, { WebSocket: require('ws') })
 
 const configHelper = new ConfigHelper()

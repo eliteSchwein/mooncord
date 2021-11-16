@@ -1,8 +1,12 @@
-import {getEntry, setData, updateData} from "../../../utils/CacheUtil";
+import {findValue, getEntry, setData, updateData} from "../../../utils/CacheUtil";
 import {StatusHelper} from "../../../helper/StatusHelper";
+import { MetadataHelper } from "../../../helper/MetadataHelper";
+import { updateTimes } from "../../../helper/TimeHelper";
+import { updateLayers } from "../../../helper/LayerHelper";
 
 export class SubscriptionNotification {
     protected statusHelper = new StatusHelper()
+    protected metadataHelper = new MetadataHelper()
     protected functionCache = getEntry('function')
     public parse(message) {
         if(typeof(message.method) === 'undefined') { return }
@@ -15,11 +19,11 @@ export class SubscriptionNotification {
         updateData('state', param)
 
         if(typeof param.print_stats !== 'undefined') {
-            this.parsePrintStats(param.print_stats)
+            void this.parsePrintStats(param.print_stats)
         }
     }
 
-    protected parsePrintStats(printStatsData) {
+    protected async parsePrintStats(printStatsData) {
         if(typeof printStatsData.state === 'undefined') { return }
 
         let status = printStatsData.state
@@ -27,11 +31,10 @@ export class SubscriptionNotification {
         if(status === 'standby') { status = 'ready'}
 
         if(status === 'printing') {
-            void this.statusHelper.update('start')
-        }
-
-        if(status === 'ready' && this.functionCache.current_status === 'printing') {
-            void this.statusHelper.update('stop')
+            await this.metadataHelper.retrieveMetaData(findValue('state.print_stats.filename'))
+            updateTimes()
+            updateLayers()
+            await this.statusHelper.update('start')
         }
 
         void this.statusHelper.update(status)
