@@ -14,6 +14,7 @@ import {
 import {getLogPath, setData} from '../utils/CacheUtil'
 import {MessageHandler} from "../events/moonraker/MessageHandler";
 import {FileListHelper} from "../helper/FileListHelper";
+import {MetadataHelper} from "../helper/MetadataHelper";
 import {SchedulerHelper} from "../helper/SchedulerHelper";
 
 const requests: any = {}
@@ -24,6 +25,7 @@ export class MoonrakerClient {
     protected config = new ConfigHelper()
     protected apiKeyHelper = new APIKeyHelper()
     protected ready = false
+    protected metadataHelper = new MetadataHelper(this)
     protected websocket:Websocket
 
     public constructor() {
@@ -100,6 +102,10 @@ export class MoonrakerClient {
         setData('machine_info', machineInfo.result)
         setData('proc_stats', procStats.result)
         setData('state', data.result.status)
+
+        if(data.result.status.print_stats.filename !== null) {
+            this.metadataHelper.retrieveMetaData(data.result.status.print_stats.filename)
+        }
 
         setData('moonraker_client', {
             'url': this.websocket.underlyingWebsocket.url,

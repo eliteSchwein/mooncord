@@ -20,7 +20,9 @@ logRegular('init Function Cache...')
 setData('function', {
     'current_status': 'startup',
     'status_in_query': false,
-    'poll_printer_info': false
+    'poll_printer_info': false,
+    'current_percent': 0,
+    'status_cooldown': 0
 })
 
 logRegular('init Time Cache...')

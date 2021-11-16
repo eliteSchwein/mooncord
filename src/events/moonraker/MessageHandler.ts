@@ -6,6 +6,7 @@ import {updateData} from "../../utils/CacheUtil";
 import {FileEditNotification} from "./messages/FileEditNotification";
 import {StateUpdateNotification} from "./messages/StateUpdateNotification";
 import {GcodeResponseNotification} from "./messages/GcodeResponseNotification";
+import { PrintProgressNotification } from "./messages/PrintProgressNotification";
 
 export class MessageHandler {
     protected websocket: Websocket
@@ -16,6 +17,7 @@ export class MessageHandler {
     protected fileEditNotification = new FileEditNotification()
     protected stateUpdateNotification = new StateUpdateNotification()
     protected gcodeResponseNotification = new GcodeResponseNotification()
+    protected printProgressNotification = new PrintProgressNotification()
 
     public constructor(websocket: Websocket) {
         this.websocket = websocket
@@ -37,6 +39,7 @@ export class MessageHandler {
             this.fileEditNotification.parse(messageData)
             this.stateUpdateNotification.parse(messageData)
             this.gcodeResponseNotification.parse(messageData)
+            this.printProgressNotification.parse(messageData)
         }))
     }
 }

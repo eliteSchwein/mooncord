@@ -28,8 +28,6 @@ export class SubscriptionNotification {
 
         let status = printStatsData.state
 
-        if(status === 'standby') { status = 'ready'}
-
         if(status === 'printing') {
             await this.metadataHelper.retrieveMetaData(findValue('state.print_stats.filename'))
             updateTimes()

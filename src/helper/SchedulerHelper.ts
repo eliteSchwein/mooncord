@@ -36,6 +36,39 @@ export class SchedulerHelper {
         }, this.configHelper.getModerateSchedulerInterval())
     }
 
+    protected scheduleStatus() {
+        setInterval(async () => {
+            if(this.configHelper.isStatusPerPercent()) {
+                this.updateStatusCooldown()
+            } else {
+                this.postPrintProgress()
+            }
+        }, this.getStatusInterval())
+    }
+
+    protected postPrintProgress() {
+        if(this.functionCache.current_status !== 'printing') { return }
+
+        this.statusHelper.update()
+    }
+
+    protected updateStatusCooldown() {
+        const statusCooldown = this.functionCache.status_cooldown
+        if(statusCooldown === 0) { return }
+
+        this.functionCache.status_cooldown--
+
+        updateData('function', this.functionCache)
+    }
+
+    protected getStatusInterval() {
+        if(this.configHelper.isStatusPerPercent()) {
+            return this.configHelper.getStatusMinInterval() * 1000
+        } else {
+            return this.configHelper.getStatusInterval() * 1000 * 60
+        }
+    }
+
     protected async pollServerInfo() {
         const serverInfo = await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "server.info"}`)
 

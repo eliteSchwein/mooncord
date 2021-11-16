@@ -31174,7 +31174,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 634:
+/***/ 1093:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -34857,11 +34857,20 @@ class StatusHelper {
         this.discordClient = discordClient;
         let functionCache = getEntry('function');
         const serverInfo = getEntry('server_info');
+        const klipperStatus = findValue('state.print_stats.state');
         if (typeof serverInfo === 'undefined') {
             return;
         }
         if (typeof status === 'undefined' || status === null) {
-            status = serverInfo.klippy_state;
+            if (serverInfo.klippy_connected) {
+                status = klipperStatus;
+            }
+            else {
+                status = serverInfo.klippy_state;
+            }
+        }
+        if (status === 'standby') {
+            status = 'ready';
         }
         if (typeof status === 'undefined') {
             return;
@@ -34875,9 +34884,13 @@ class StatusHelper {
         if (currentStatusMeta.meta_data.prevent.includes(status)) {
             return;
         }
+        if (status === 'printing' && !this.checkPercentSame()) {
+            return;
+        }
         logRegular(`klipper status changed to ${status}...`);
         updateData('function', {
-            'current_status': status
+            'current_status': status,
+            'current_percent': findValue('state.display_status.progress').toFixed(2)
         });
         functionCache = getEntry('function');
         await (0,dist.waitUntil)(() => !functionCache.status_in_query, { timeout: 20000, intervalBetweenAttempts: 500 });
@@ -34885,10 +34898,6 @@ class StatusHelper {
             'status_in_query': true
         });
         const statusEmbed = await this.embedHelper.generateEmbed(statusMeta.embed_id);
-        this.notificationHelper.broadcastMessage(statusEmbed.embed);
-        updateData('function', {
-            'status_in_query': false
-        });
         if (this.discordClient === null) {
             this.discordClient = getDiscordClient();
         }
@@ -34898,6 +34907,34 @@ class StatusHelper {
             });
             this.discordClient.getClient().user.setActivity(statusEmbed.activity, { type: statusMeta.activity.type });
         }
+        if (status === 'printing' && !this.checkPercentMatch()) {
+            return;
+        }
+        this.notificationHelper.broadcastMessage(statusEmbed.embed);
+        updateData('function', {
+            'status_in_query': false
+        });
+    }
+    checkPercentSame() {
+        const progress = findValue('state.display_status.progress').toFixed(2);
+        const currentProgress = findValue('function.current_percent');
+        if (progress === 0 || progress === 1) {
+            return false;
+        }
+        if (progress === currentProgress) {
+            return false;
+        }
+        return true;
+    }
+    checkPercentMatch() {
+        const progress = findValue('state.display_status.progress').toFixed(2) * 100;
+        if (!this.configHelper.isStatusPerPercent()) {
+            return true;
+        }
+        if (this.configHelper.getStatusInterval() % progress === 0) {
+            return true;
+        }
+        return false;
     }
 }
 
@@ -35035,8 +35072,13 @@ class ProcStatsNotification {
 
 
 class MetadataHelper {
-    constructor() {
-        this.moonrakerClient = getMoonrakerClient();
+    constructor(moonrakerClient = null) {
+        if (moonrakerClient !== null) {
+            this.moonrakerClient = moonrakerClient;
+        }
+        else {
+            this.moonrakerClient = getMoonrakerClient();
+        }
     }
     async retrieveMetaData(filename) {
         const metaData = await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${filename}"}}`);
@@ -35116,9 +35158,6 @@ class SubscriptionNotification {
             return;
         }
         let status = printStatsData.state;
-        if (status === 'standby') {
-            status = 'ready';
-        }
         if (status === 'printing') {
             await this.metadataHelper.retrieveMetaData(findValue('state.print_stats.filename'));
             updateTimes();
@@ -35257,7 +35296,33 @@ class GcodeResponseNotification {
     }
 }
 
+;// CONCATENATED MODULE: ./src/events/moonraker/messages/PrintProgressNotification.ts
+
+
+
+
+
+class PrintProgressNotification {
+    constructor() {
+        this.functionCache = getEntry('function');
+        this.configHelper = new ConfigHelper();
+        this.statusHelper = new StatusHelper();
+    }
+    parse(message) {
+        if (this.functionCache.current_status !== 'printing') {
+            return;
+        }
+        updateTimes();
+        updateLayers();
+        if (!this.configHelper.isStatusPerPercent()) {
+            return;
+        }
+        this.statusHelper.update();
+    }
+}
+
 ;// CONCATENATED MODULE: ./src/events/moonraker/MessageHandler.ts
+
 
 
 
@@ -35274,6 +35339,7 @@ class MessageHandler {
         this.fileEditNotification = new FileEditNotification();
         this.stateUpdateNotification = new StateUpdateNotification();
         this.gcodeResponseNotification = new GcodeResponseNotification();
+        this.printProgressNotification = new PrintProgressNotification();
         this.websocket = websocket;
         websocket.addEventListener(lib.WebsocketEvents.message, ((instance, ev) => {
             const messageData = JSON.parse(ev.data);
@@ -35290,6 +35356,7 @@ class MessageHandler {
             this.fileEditNotification.parse(messageData);
             this.stateUpdateNotification.parse(messageData);
             this.gcodeResponseNotification.parse(messageData);
+            this.printProgressNotification.parse(messageData);
         }));
     }
 }
@@ -35324,6 +35391,38 @@ class SchedulerHelper {
             setData('machine_info', machineInfo.result);
         }, this.configHelper.getModerateSchedulerInterval());
     }
+    scheduleStatus() {
+        setInterval(async () => {
+            if (this.configHelper.isStatusPerPercent()) {
+                this.updateStatusCooldown();
+            }
+            else {
+                this.postPrintProgress();
+            }
+        }, this.getStatusInterval());
+    }
+    postPrintProgress() {
+        if (this.functionCache.current_status !== 'printing') {
+            return;
+        }
+        this.statusHelper.update();
+    }
+    updateStatusCooldown() {
+        const statusCooldown = this.functionCache.status_cooldown;
+        if (statusCooldown === 0) {
+            return;
+        }
+        this.functionCache.status_cooldown--;
+        updateData('function', this.functionCache);
+    }
+    getStatusInterval() {
+        if (this.configHelper.isStatusPerPercent()) {
+            return this.configHelper.getStatusMinInterval() * 1000;
+        }
+        else {
+            return this.configHelper.getStatusInterval() * 1000 * 60;
+        }
+    }
     async pollServerInfo() {
         const serverInfo = await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "server.info"}`);
         if (typeof serverInfo.result === 'undefined') {
@@ -35357,6 +35456,7 @@ class SchedulerHelper {
 
 
 
+
 const requests = {};
 let messageHandler;
 class MoonrakerClient {
@@ -35365,6 +35465,7 @@ class MoonrakerClient {
         this.config = new ConfigHelper();
         this.apiKeyHelper = new APIKeyHelper();
         this.ready = false;
+        this.metadataHelper = new MetadataHelper(this);
         logSuccess('Connect to MoonRaker...');
         this.connect();
     }
@@ -35416,6 +35517,9 @@ class MoonrakerClient {
         setData('machine_info', machineInfo.result);
         setData('proc_stats', procStats.result);
         setData('state', data.result.status);
+        if (data.result.status.print_stats.filename !== null) {
+            this.metadataHelper.retrieveMetaData(data.result.status.print_stats.filename);
+        }
         setData('moonraker_client', {
             'url': this.websocket.underlyingWebsocket.url,
             'readySince': new Date(),
@@ -35567,7 +35671,9 @@ logRegular('init Function Cache...');
 setData('function', {
     'current_status': 'startup',
     'status_in_query': false,
-    'poll_printer_info': false
+    'poll_printer_info': false,
+    'current_percent': 0,
+    'status_cooldown': 0
 });
 logRegular('init Time Cache...');
 setData('time', {
@@ -36030,7 +36136,7 @@ module.exports = require("zlib");
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(634);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(1093);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()
