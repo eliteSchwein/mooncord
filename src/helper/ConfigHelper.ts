@@ -166,4 +166,8 @@ export class ConfigHelper {
     public getDateLocale() {
         return this.getConfig().language.date_locale
     }
+
+    public getDiscordRequestTimeout() {
+        return this.getConfig().discord.request_timeout
+    }
 }

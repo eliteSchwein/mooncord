@@ -45,7 +45,8 @@ export class DiscordClient {
                 Intents.FLAGS.GUILD_MESSAGES,
                 Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
                 Intents.FLAGS.GUILD_INTEGRATIONS
-            ]})
+            ],
+            restRequestTimeout: this.config.getDiscordRequestTimeout() * 1000})
 
         logRegular('Connect to Discord...')
 

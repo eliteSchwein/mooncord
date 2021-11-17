@@ -31626,6 +31626,9 @@ class ConfigHelper {
     getDateLocale() {
         return this.getConfig().language.date_locale;
     }
+    getDiscordRequestTimeout() {
+        return this.getConfig().discord.request_timeout;
+    }
 }
 
 ;// CONCATENATED MODULE: ./src/meta/command_structure.json
@@ -34976,7 +34979,8 @@ class DiscordClient {
                 external_discord_js_namespaceObject.Intents.FLAGS.GUILD_MESSAGES,
                 external_discord_js_namespaceObject.Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
                 external_discord_js_namespaceObject.Intents.FLAGS.GUILD_INTEGRATIONS
-            ] });
+            ],
+            restRequestTimeout: this.config.getDiscordRequestTimeout() * 1000 });
         logRegular('Connect to Discord...');
         await this.discordClient.login(this.config.getDiscordToken());
         await this.registerCommands();
