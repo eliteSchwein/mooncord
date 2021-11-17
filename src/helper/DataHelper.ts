@@ -48,6 +48,9 @@ export function parseCalculatedPlaceholder(fragments) {
     if(fragments[0] === 'percent') {
         return formatPercent(findValue(fragments[2]), fragments[1])
     }
+    if(fragments[0] === 'round') {
+        return findValue(fragments[2]).toFixed(fragments[1])
+    }
     if(fragments[0] === 'formatDate') {
         return formatDate(findValue(fragments[1]))
     }
