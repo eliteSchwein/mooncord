@@ -33918,13 +33918,18 @@ class WebcamHelper {
 
 ;// CONCATENATED MODULE: ./src/helper/VersionHelper.ts
 
+
 class VersionHelper {
+    constructor() {
+        this.versionData = findValue('updates.version_info');
+        this.localeHelper = new LocaleHelper();
+        this.locale = this.localeHelper.getLocale();
+    }
     getFields() {
-        const updateCache = getEntry('updates');
         const fields = [];
-        for (const component in updateCache.version_info) {
+        for (const component in this.versionData) {
             if (component !== 'system') {
-                const componentdata = updateCache.version_info[component];
+                const componentdata = this.versionData[component];
                 let { version } = componentdata;
                 if (version !== componentdata.remote_version) {
                     version = version.concat(` **(${componentdata.remote_version})**`);
@@ -33937,9 +33942,124 @@ class VersionHelper {
         }
         return fields;
     }
+    getUpdateFields() {
+        const fields = [];
+        for (const component in this.versionData) {
+            if (component !== 'system') {
+                fields.push({
+                    name: component,
+                    value: `${this.versionData[component].version} \n🆕 ${this.versionData[component].remote_version}`
+                });
+            }
+            else {
+                fields.push({
+                    name: this.locale.embeds.fields.system,
+                    value: `${this.locale.embeds.fields.packages}: ${this.versionData[component].package_count}`
+                });
+            }
+        }
+        return fields;
+    }
+}
+
+;// CONCATENATED MODULE: ./src/helper/TempHelper.ts
+
+
+
+class TempHelper {
+    constructor() {
+        this.cache = getEntry('state');
+        this.configHelper = new ConfigHelper();
+        this.tempMeta = this.configHelper.getTempMeta();
+    }
+    parseFields() {
+        const result = {
+            "fields": [],
+            "cache_ids": []
+        };
+        const supportedSensors = this.tempMeta.supported_sensors;
+        for (const sensorType of supportedSensors) {
+            const sensorResult = this.parseFieldsSet(sensorType);
+            if (sensorResult.fields.length > 0) {
+                result.fields = result.fields.concat(sensorResult.fields);
+                result.cache_ids = result.cache_ids.concat(sensorResult.cache_ids);
+            }
+        }
+        return result;
+    }
+    parseFieldTitle(key) {
+        const hideList = this.tempMeta.hide_types;
+        hideList.some(hideType => key = key.replace(hideType, ''));
+        return key;
+    }
+    isCold(temperature) {
+        return temperature < this.tempMeta.cold_meta.hot_temp;
+    }
+    isSlowFan(speed) {
+        return speed < (this.tempMeta.slow_fan_meta.fast_fan / 100);
+    }
+    parseFieldsSet(key) {
+        const allias = this.tempMeta.alliases[key];
+        const cacheData = this.parseCacheFields(key);
+        if (typeof allias !== 'undefined') {
+            key = allias;
+        }
+        const mappingData = this.tempMeta[key];
+        const fields = [];
+        const cacheIds = [];
+        for (const cacheKey in cacheData) {
+            const keyData = {
+                name: `${mappingData.icon} ${this.parseFieldTitle(cacheKey)}`,
+                value: '',
+                inline: true
+            };
+            if (typeof cacheData[cacheKey].temperature !== 'undefined' &&
+                this.tempMeta.heater_types.includes(key)) {
+                if (this.isCold(cacheData[cacheKey].temperature)) {
+                    keyData.name = `${this.tempMeta.cold_meta.icon} ${this.parseFieldTitle(cacheKey)}`;
+                }
+            }
+            if (typeof cacheData[cacheKey].speed !== 'undefined' &&
+                this.tempMeta.fan_types.includes(key)) {
+                if (this.isSlowFan(cacheData[cacheKey].speed)) {
+                    keyData.name = `${this.tempMeta.slow_fan_meta.icon} ${this.parseFieldTitle(cacheKey)}`;
+                }
+            }
+            for (const fieldKey in mappingData.fields) {
+                const fieldData = mappingData.fields[fieldKey];
+                if (typeof cacheData[cacheKey][fieldKey] === 'undefined') {
+                    continue;
+                }
+                if (cacheData[cacheKey][fieldKey] === null) {
+                    continue;
+                }
+                if (fieldData.suffix === '%') {
+                    keyData.value = `${keyData.value}
+                       \`${fieldData.label}:\`${formatPercent(cacheData[cacheKey][fieldKey], 0)}${fieldData.suffix}`;
+                    continue;
+                }
+                keyData.value = `${keyData.value}
+                    \`${fieldData.label}:\`${cacheData[cacheKey][fieldKey]}${fieldData.suffix}`;
+            }
+            fields.push(keyData);
+            cacheIds.push(cacheData[cacheKey]);
+        }
+        return { fields: fields, cache_ids: cacheIds };
+    }
+    parseCacheFields(key) {
+        const result = {};
+        for (const cacheKey in this.cache) {
+            const cacheKeySplit = cacheKey.split(' ');
+            if (cacheKeySplit[0] === key) {
+                result[cacheKey] = this.cache[cacheKey];
+            }
+        }
+        return result;
+    }
 }
 
 ;// CONCATENATED MODULE: ./src/helper/EmbedHelper.ts
+
 
 
 
@@ -33958,6 +34078,7 @@ class EmbedHelper {
         this.inputGenerator = new DiscordInputGenerator();
         this.webcamHelper = new WebcamHelper();
         this.embedMeta = this.configHelper.getEmbedMeta();
+        this.tempHelper = new TempHelper();
         this.versionHelper = new VersionHelper();
     }
     loadCache() {
@@ -34012,6 +34133,12 @@ class EmbedHelper {
         }
         if (embedData.show_versions) {
             embedData.fields = embedData.fields.concat(this.versionHelper.getFields());
+        }
+        if (embedData.show_updates) {
+            embedData.fields = embedData.fields.concat(this.versionHelper.getUpdateFields());
+        }
+        if (embedData.show_temps) {
+            embedData.fields = embedData.fields.concat(this.tempHelper.parseFields().fields);
         }
         if (typeof embedData.fields !== 'undefined') {
             embedData.fields.forEach(field => {
@@ -34202,102 +34329,6 @@ class PermissionHelper {
     }
 }
 
-;// CONCATENATED MODULE: ./src/helper/TempHelper.ts
-
-
-
-class TempHelper {
-    constructor() {
-        this.cache = getEntry('state');
-        this.configHelper = new ConfigHelper();
-        this.tempMeta = this.configHelper.getTempMeta();
-    }
-    parseFields() {
-        const result = {
-            "fields": [],
-            "cache_ids": []
-        };
-        const supportedSensors = this.tempMeta.supported_sensors;
-        for (const sensorType of supportedSensors) {
-            const sensorResult = this.parseFieldsSet(sensorType);
-            if (sensorResult.fields.length > 0) {
-                result.fields = result.fields.concat(sensorResult.fields);
-                result.cache_ids = result.cache_ids.concat(sensorResult.cache_ids);
-            }
-        }
-        return result;
-    }
-    parseFieldTitle(key) {
-        const hideList = this.tempMeta.hide_types;
-        hideList.some(hideType => key = key.replace(hideType, ''));
-        return key;
-    }
-    isCold(temperature) {
-        return temperature < this.tempMeta.cold_meta.hot_temp;
-    }
-    isSlowFan(speed) {
-        return speed < (this.tempMeta.slow_fan_meta.fast_fan / 100);
-    }
-    parseFieldsSet(key) {
-        const allias = this.tempMeta.alliases[key];
-        const cacheData = this.parseCacheFields(key);
-        if (typeof allias !== 'undefined') {
-            key = allias;
-        }
-        const mappingData = this.tempMeta[key];
-        const fields = [];
-        const cacheIds = [];
-        for (const cacheKey in cacheData) {
-            const keyData = {
-                name: `${mappingData.icon} ${this.parseFieldTitle(cacheKey)}`,
-                value: '',
-                inline: true
-            };
-            if (typeof cacheData[cacheKey].temperature !== 'undefined' &&
-                this.tempMeta.heater_types.includes(key)) {
-                if (this.isCold(cacheData[cacheKey].temperature)) {
-                    keyData.name = `${this.tempMeta.cold_meta.icon} ${this.parseFieldTitle(cacheKey)}`;
-                }
-            }
-            if (typeof cacheData[cacheKey].speed !== 'undefined' &&
-                this.tempMeta.fan_types.includes(key)) {
-                if (this.isSlowFan(cacheData[cacheKey].speed)) {
-                    keyData.name = `${this.tempMeta.slow_fan_meta.icon} ${this.parseFieldTitle(cacheKey)}`;
-                }
-            }
-            for (const fieldKey in mappingData.fields) {
-                const fieldData = mappingData.fields[fieldKey];
-                if (typeof cacheData[cacheKey][fieldKey] === 'undefined') {
-                    continue;
-                }
-                if (cacheData[cacheKey][fieldKey] === null) {
-                    continue;
-                }
-                if (fieldData.suffix === '%') {
-                    keyData.value = `${keyData.value}
-                       \`${fieldData.label}:\`${formatPercent(cacheData[cacheKey][fieldKey], 0)}${fieldData.suffix}`;
-                    continue;
-                }
-                keyData.value = `${keyData.value}
-                    \`${fieldData.label}:\`${cacheData[cacheKey][fieldKey]}${fieldData.suffix}`;
-            }
-            fields.push(keyData);
-            cacheIds.push(cacheData[cacheKey]);
-        }
-        return { fields: fields, cache_ids: cacheIds };
-    }
-    parseCacheFields(key) {
-        const result = {};
-        for (const cacheKey in this.cache) {
-            const cacheKeySplit = cacheKey.split(' ');
-            if (cacheKeySplit[0] === key) {
-                result[cacheKey] = this.cache[cacheKey];
-            }
-        }
-        return result;
-    }
-}
-
 ;// CONCATENATED MODULE: ./src/events/discord/interactions/commands/TempCommand.ts
 
 
@@ -34311,8 +34342,7 @@ class TempCommand {
         this.execute(interaction);
     }
     async execute(interaction) {
-        const fields = this.tempHelper.parseFields();
-        const message = await this.embedHelper.generateEmbed('temperatures', null, fields['fields']);
+        const message = await this.embedHelper.generateEmbed('temperatures');
         void interaction.reply(message.embed);
     }
 }
@@ -34865,12 +34895,11 @@ class StatusHelper {
             return;
         }
         if (typeof status === 'undefined' || status === null) {
-            if (serverInfo.klippy_connected) {
-                status = klipperStatus;
-            }
-            else {
-                status = serverInfo.klippy_state;
-            }
+            //if(serverInfo.klippy_connected && serverInfo.klippy_state !== 'shutdown') {
+            //status = klipperStatus
+            // } else {
+            status = serverInfo.klippy_state;
+            // }
         }
         if (status === 'standby') {
             status = 'ready';
@@ -35174,8 +35203,14 @@ class SubscriptionNotification {
 
 ;// CONCATENATED MODULE: ./src/events/moonraker/messages/UpdateNotification.ts
 
+
+
 class UpdateNotification {
-    parse(message) {
+    constructor() {
+        this.embedHelper = new EmbedHelper();
+        this.notificationHelper = new NotificationHelper();
+    }
+    async parse(message) {
         if (typeof (message.method) === 'undefined') {
             return;
         }
@@ -35186,6 +35221,8 @@ class UpdateNotification {
             return;
         }
         updateData('updates', message.params[0]);
+        const embed = await this.embedHelper.generateEmbed('system_update');
+        void this.notificationHelper.broadcastMessage(embed.embed);
     }
 }
 

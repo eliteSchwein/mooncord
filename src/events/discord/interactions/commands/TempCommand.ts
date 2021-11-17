@@ -12,9 +12,7 @@ export class TempCommand {
     }
 
     protected async execute(interaction: CommandInteraction) {
-        const fields = this.tempHelper.parseFields()
-
-        const message = await this.embedHelper.generateEmbed('temperatures', null, fields['fields'])
+        const message = await this.embedHelper.generateEmbed('temperatures')
 
         void interaction.reply(message.embed)
     }

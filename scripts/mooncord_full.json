@@ -320,7 +320,9 @@
         "temperatures": {
             "color": "#0099ff",
             "thumbnail": "temps.png",
-            "buttons": []
+            "buttons": [],
+            "fields": [],
+            "show_temps": true
         },
         "disconnected":{
             "color": "#c90000",
@@ -355,7 +357,13 @@
         "wait": {},
         "system_warning": {},
         "throttle": {},
-        "system_update": {}
+        "system_update": {
+            "color": "#fbff00",
+            "thumbnail": "update.png",
+            "buttons": ["update_system"],
+            "fields": [],
+            "show_updates": true
+        }
     },
     "input_meta": {
         "buttons": {

@@ -28,11 +28,11 @@ export class StatusHelper {
         if(typeof serverInfo === 'undefined') { return }
 
         if(typeof status === 'undefined' || status === null) {
-            if(serverInfo.klippy_connected) {
-                status = klipperStatus
-            } else {
+            //if(serverInfo.klippy_connected && serverInfo.klippy_state !== 'shutdown') {
+                //status = klipperStatus
+           // } else {
                 status = serverInfo.klippy_state
-            }
+           // }
         }
 
         if(status === 'standby') {

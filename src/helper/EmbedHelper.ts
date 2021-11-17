@@ -9,6 +9,7 @@ import {formatPercent, mergeDeep, parseCalculatedPlaceholder} from "./DataHelper
 import {logRegular} from "./LoggerHelper";
 import {WebcamHelper} from "./WebcamHelper";
 import { VersionHelper } from "./VersionHelper";
+import { TempHelper } from "./TempHelper";
 
 export class EmbedHelper {
     protected localeHelper = new LocaleHelper()
@@ -16,6 +17,7 @@ export class EmbedHelper {
     protected inputGenerator = new DiscordInputGenerator()
     protected webcamHelper = new WebcamHelper()
     protected embedMeta = this.configHelper.getEmbedMeta()
+    protected tempHelper = new TempHelper()
     protected versionHelper = new VersionHelper()
 
     public loadCache() {
@@ -89,6 +91,14 @@ export class EmbedHelper {
 
         if(embedData.show_versions) {
             embedData.fields = embedData.fields.concat(this.versionHelper.getFields())
+        }
+
+        if(embedData.show_updates) {
+            embedData.fields = embedData.fields.concat(this.versionHelper.getUpdateFields())
+        }
+
+        if(embedData.show_temps) {
+            embedData.fields = embedData.fields.concat(this.tempHelper.parseFields().fields)
         }
 
         if(typeof embedData.fields !== 'undefined') {
