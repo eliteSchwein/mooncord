@@ -461,7 +461,8 @@
             "meta_data": {
                 "allow_same": false,
                 "prevent": [
-                    "pause"
+                    "pause",
+                    "error"
                 ]
             },
             "activity": {
@@ -473,7 +474,7 @@
             "embed_id": "error",
             "meta_data": {
                 "allow_same": false,
-                "prevent": []
+                "prevent": ["startup"]
             },
             "activity": {
                 "status": "dnd",
@@ -536,7 +537,7 @@
             "embed_id": "startup",
             "meta_data": {
                 "allow_same": false,
-                "prevent": ["disconnected","error"]
+                "prevent": ["disconnected"]
             },
             "activity": {
                 "status": "idle",
