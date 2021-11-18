@@ -24,11 +24,14 @@ export class StatusHelper {
         let functionCache = getEntry('function')
         const serverInfo  = getEntry('server_info')
         const klipperStatus = findValue('state.print_stats.state')
+        const klippyConnected = serverInfo.klippy_connected
 
         if(typeof serverInfo === 'undefined') { return }
 
         if(typeof status === 'undefined' || status === null) {
-            if(serverInfo.klippy_connected && serverInfo.klippy_state !== 'shutdown') {
+            if(klippyConnected &&
+                serverInfo.klippy_state !== 'shutdown' &&
+                serverInfo.klippy_state !== 'error') {
                 status = klipperStatus
             } else {
                 status = serverInfo.klippy_state

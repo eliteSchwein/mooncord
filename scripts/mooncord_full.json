@@ -330,7 +330,7 @@
             "buttons": ["klipper_restart"]
         },
         "error":{
-            "description": "```${printer_info.state_message}```",
+            "description": "```${state_message}```",
             "color": "#c90000",
             "buttons": ["klipper_restart"]
         },
@@ -341,6 +341,7 @@
         "shutdown":{
             "color": "#c90000",
             "image": "webcam",
+            "description": "```${state_message}```",
             "buttons": ["klipper_restart"]
         },
         "ready":{
@@ -461,8 +462,7 @@
             "meta_data": {
                 "allow_same": false,
                 "prevent": [
-                    "pause",
-                    "error"
+                    "pause"
                 ]
             },
             "activity": {
@@ -474,7 +474,7 @@
             "embed_id": "error",
             "meta_data": {
                 "allow_same": false,
-                "prevent": ["startup"]
+                "prevent": []
             },
             "activity": {
                 "status": "dnd",

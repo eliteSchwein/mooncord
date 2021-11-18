@@ -34189,6 +34189,9 @@ class EmbedHelper {
             const templateFragments = placeholderId.split(':');
             cacheParser = parseCalculatedPlaceholder(templateFragments);
         }
+        if (placeholderId === 'state_message') {
+            cacheParser = this.getStateMessage();
+        }
         if (typeof cacheParser === 'undefined') {
             return "";
         }
@@ -34196,6 +34199,16 @@ class EmbedHelper {
         return cacheParser
             .replace(/(")/g, '\'')
             .replace(/(\n)/g, '\\n');
+    }
+    getStateMessage() {
+        const webhookState = findValue('state.webhooks.state');
+        const webhookStateMessage = findValue('state.webhooks.state_message');
+        const state = findValue('function.current_status');
+        const printerInfoStateMessage = findValue('printer_info.state_message');
+        if (webhookState === state) {
+            return webhookStateMessage;
+        }
+        return printerInfoStateMessage;
     }
 }
 
@@ -34895,11 +34908,14 @@ class StatusHelper {
         let functionCache = getEntry('function');
         const serverInfo = getEntry('server_info');
         const klipperStatus = findValue('state.print_stats.state');
+        const klippyConnected = serverInfo.klippy_connected;
         if (typeof serverInfo === 'undefined') {
             return;
         }
         if (typeof status === 'undefined' || status === null) {
-            if (serverInfo.klippy_connected && serverInfo.klippy_state !== 'shutdown') {
+            if (klippyConnected &&
+                serverInfo.klippy_state !== 'shutdown' &&
+                serverInfo.klippy_state !== 'error') {
                 status = klipperStatus;
             }
             else {
@@ -35577,8 +35593,12 @@ class MoonrakerClient {
         setData('machine_info', machineInfo.result);
         setData('proc_stats', procStats.result);
         setData('state', data.result.status);
-        if (data.result.status.print_stats.filename !== null) {
-            this.metadataHelper.retrieveMetaData(data.result.status.print_stats.filename);
+        if (typeof data.result.status !== 'undefined') {
+            if (typeof data.result.status.print_stats !== 'undefined') {
+                if (data.result.status.print_stats.filename !== null) {
+                    await this.metadataHelper.retrieveMetaData(data.result.status.print_stats.filename);
+                }
+            }
         }
         setData('moonraker_client', {
             'url': this.websocket.underlyingWebsocket.url,

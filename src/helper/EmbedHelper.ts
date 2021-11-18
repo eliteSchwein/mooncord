@@ -150,6 +150,10 @@ export class EmbedHelper {
             cacheParser = parseCalculatedPlaceholder(templateFragments)
         }
 
+        if(placeholderId === 'state_message') {
+            cacheParser = this.getStateMessage()
+        }
+
         if(typeof cacheParser === 'undefined') { return "" }
 
         cacheParser = String(cacheParser)
@@ -157,5 +161,18 @@ export class EmbedHelper {
         return cacheParser
             .replace(/(")/g,'\'')
             .replace(/(\n)/g,'\\n')
+    }
+
+    protected getStateMessage() {
+        const webhookState = findValue('state.webhooks.state')
+        const webhookStateMessage = findValue('state.webhooks.state_message')
+        const state = findValue('function.current_status')
+        const printerInfoStateMessage = findValue('printer_info.state_message')
+
+        if(webhookState === state) {
+            return webhookStateMessage
+        }
+
+        return printerInfoStateMessage
     }
 }

@@ -103,8 +103,12 @@ export class MoonrakerClient {
         setData('proc_stats', procStats.result)
         setData('state', data.result.status)
 
-        if(data.result.status.print_stats.filename !== null) {
-            this.metadataHelper.retrieveMetaData(data.result.status.print_stats.filename)
+        if(typeof data.result.status !== 'undefined') {
+            if (typeof data.result.status.print_stats !== 'undefined') {
+                if (data.result.status.print_stats.filename !== null) {
+                    await this.metadataHelper.retrieveMetaData(data.result.status.print_stats.filename)
+                }
+            }
         }
 
         setData('moonraker_client', {
