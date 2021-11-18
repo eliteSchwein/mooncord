@@ -2,18 +2,18 @@ import { findValue } from "../utils/CacheUtil";
 import { LocaleHelper } from "./LocaleHelper";
 
 export class VersionHelper {
-    protected versionData = findValue('updates.version_info')
     protected localeHelper = new LocaleHelper()
     protected locale = this.localeHelper.getLocale()
 
     public getFields() {
+        const versionData = findValue('updates.version_info')
         const fields = []
-        for (const component in this.versionData) {
+        for (const component in versionData) {
             if (component !== 'system') {
-                const componentdata = this.versionData[component]
-                let {version} = componentdata
-                if (version !== componentdata.remote_version) {
-                    version = version.concat(` **(${componentdata.remote_version})**`)
+                const componentdata = versionData[component]
+                let {version, remote_version} = componentdata
+                if (version !== remote_version) {
+                    version = `${version} **(${remote_version})**`
                 }
                 fields.push({
                     name:component,
@@ -25,17 +25,18 @@ export class VersionHelper {
     }
 
     public getUpdateFields() {
+        const versionData = findValue('updates.version_info')
         const fields = []
-        for (const component in this.versionData) {
+        for (const component in versionData) {
             if (component !== 'system') {
                 fields.push({
                     name:component,
-                    value:`${this.versionData[component].version} \n🆕 ${this.versionData[component].remote_version}`
+                    value:`${versionData[component].version} \n🆕 ${versionData[component].remote_version}`
                 })
             } else {
                 fields.push({
                     name:this.locale.embeds.fields.system,
-                    value:`${this.locale.embeds.fields.packages}: ${this.versionData[component].package_count}`
+                    value:`${this.locale.embeds.fields.packages}: ${versionData[component].package_count}`
                 })
             }
         }

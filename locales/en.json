@@ -27,7 +27,7 @@
         },
         "printjob_printing":{
             "title": "Printing",
-            "activity": "Printing: ${value_print_progress}%"
+            "activity": "Printing: ${percent:0:state.display_status.progress}%"
         },
         "printjob_stop":{
             "title": "Print stopped",

@@ -21,7 +21,7 @@ setData('function', {
     'current_status': 'startup',
     'status_in_query': false,
     'poll_printer_info': false,
-    'current_percent': 0,
+    'current_percent': -1,
     'status_cooldown': 0
 })
 

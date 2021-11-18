@@ -31189,7 +31189,7 @@ __nccwpck_require__.d(__webpack_exports__, {
 });
 
 ;// CONCATENATED MODULE: ./package.json
-const package_namespaceObject = JSON.parse('{"name":"mooncord","version":"0.0.5","description":"Moonraker Discord Bot based on Discord.js","main":"index.js","scripts":{"start":"node dist/index.js","debugstart":"node --trace_gc --trace-deprecation --trace-warnings --trace-uncaught --track-heap-objects dist/index.js","checkcodestyle":"npx eslint ./**","autofixcodestyle":"npx eslint ./** --fix","build":"ncc build -m -e discord.js -e sharp src/Application.ts -o dist","watch":"ncc build -w -e discord.js -e sharp src/Application.ts -o dist"},"repository":{"type":"git","url":"git+https://github.com/eliteSchwein/mooncord.git"},"keywords":[],"author":"eliteSCHW31N","license":"ISC","bugs":{"url":"https://github.com/eliteSchwein/mooncord/issues"},"homepage":"https://github.com/eliteSchwein/mooncord#readme","devDependencies":{"@types/node":"^16.11.7","@types/sharp":"^0.29.3","@vercel/ncc":"^0.31.1","async-wait-until":"^2.0.8","axios":"^0.24.0","colorts":"^0.1.63","eslint":"^8.2.0","eslint-config-galex":"^3.3.3","eslint-config-standard":"^16.0.3","eslint-plugin-import":"^2.25.3","eslint-plugin-node":"^11.1.0","eslint-plugin-promise":"^5.1.1","form-data":"^4.0.0","lodash":"^4.17.21","node-fetch":"^3.1.0","shelljs":"^0.8.4","typescript":"^4.4.4","websocket-ts":"^1.1.1","ws":"^8.2.3"},"dependencies":{"discord.js":"^13.3.1","sharp":"^0.29.3"}}');
+const package_namespaceObject = JSON.parse('{"name":"mooncord","version":"0.0.5","description":"Moonraker Discord Bot based on Discord.js","main":"index.js","scripts":{"start":"node dist/index.js","debugstart":"node --trace_gc --trace-deprecation --trace-warnings --trace-uncaught --track-heap-objects dist/index.js","checkcodestyle":"npx eslint ./**","autofixcodestyle":"npx eslint ./** --fix","build":"ncc build -m -d -e discord.js -e sharp src/Application.ts -o dist","watch":"ncc build -w -d -e discord.js -e sharp src/Application.ts -o dist"},"repository":{"type":"git","url":"git+https://github.com/eliteSchwein/mooncord.git"},"keywords":[],"author":"eliteSCHW31N","license":"ISC","bugs":{"url":"https://github.com/eliteSchwein/mooncord/issues"},"homepage":"https://github.com/eliteSchwein/mooncord#readme","devDependencies":{"@types/node":"^16.11.7","@types/sharp":"^0.29.3","@vercel/ncc":"^0.31.1","async-wait-until":"^2.0.8","axios":"^0.24.0","colorts":"^0.1.63","eslint":"^8.2.0","eslint-config-galex":"^3.3.3","eslint-config-standard":"^16.0.3","eslint-plugin-import":"^2.25.3","eslint-plugin-node":"^11.1.0","eslint-plugin-promise":"^5.1.1","form-data":"^4.0.0","lodash":"^4.17.21","node-fetch":"^3.1.0","shelljs":"^0.8.4","typescript":"^4.4.4","websocket-ts":"^1.1.1","ws":"^8.2.3"},"dependencies":{"discord.js":"^13.3.1","sharp":"^0.29.3"}}');
 var package_namespaceObject_0 = /*#__PURE__*/__nccwpck_require__.t(package_namespaceObject, 2);
 // EXTERNAL MODULE: ./node_modules/async-wait-until/dist/index.js
 var dist = __nccwpck_require__(1299);
@@ -33924,18 +33924,18 @@ class WebcamHelper {
 
 class VersionHelper {
     constructor() {
-        this.versionData = findValue('updates.version_info');
         this.localeHelper = new LocaleHelper();
         this.locale = this.localeHelper.getLocale();
     }
     getFields() {
+        const versionData = findValue('updates.version_info');
         const fields = [];
-        for (const component in this.versionData) {
+        for (const component in versionData) {
             if (component !== 'system') {
-                const componentdata = this.versionData[component];
-                let { version } = componentdata;
-                if (version !== componentdata.remote_version) {
-                    version = version.concat(` **(${componentdata.remote_version})**`);
+                const componentdata = versionData[component];
+                let { version, remote_version } = componentdata;
+                if (version !== remote_version) {
+                    version = `${version} **(${remote_version})**`;
                 }
                 fields.push({
                     name: component,
@@ -33946,18 +33946,19 @@ class VersionHelper {
         return fields;
     }
     getUpdateFields() {
+        const versionData = findValue('updates.version_info');
         const fields = [];
-        for (const component in this.versionData) {
+        for (const component in versionData) {
             if (component !== 'system') {
                 fields.push({
                     name: component,
-                    value: `${this.versionData[component].version} \n🆕 ${this.versionData[component].remote_version}`
+                    value: `${versionData[component].version} \n🆕 ${versionData[component].remote_version}`
                 });
             }
             else {
                 fields.push({
                     name: this.locale.embeds.fields.system,
-                    value: `${this.locale.embeds.fields.packages}: ${this.versionData[component].package_count}`
+                    value: `${this.locale.embeds.fields.packages}: ${versionData[component].package_count}`
                 });
             }
         }
@@ -34099,7 +34100,16 @@ class EmbedHelper {
     }
     async generateEmbed(embedID, providedPlaceholders = null, providedFields = null) {
         const embed = new external_discord_js_namespaceObject.MessageEmbed();
-        const embedDataUnformatted = this.getEmbeds()[embedID];
+        const embedDataUnformatted = { ...this.getEmbeds()[embedID] };
+        if (embedDataUnformatted.show_versions) {
+            embedDataUnformatted.fields = [...embedDataUnformatted.fields, ...this.versionHelper.getFields()];
+        }
+        if (embedDataUnformatted.show_updates) {
+            embedDataUnformatted.fields = [...embedDataUnformatted.fields, ...this.versionHelper.getUpdateFields()];
+        }
+        if (embedDataUnformatted.show_temps) {
+            embedDataUnformatted.fields = [...embedDataUnformatted.fields, ...this.tempHelper.parseFields().fields];
+        }
         if (providedFields !== null) {
             mergeDeep(embedDataUnformatted, { fields: providedFields });
         }
@@ -34133,15 +34143,6 @@ class EmbedHelper {
         }
         if (typeof image !== 'undefined') {
             embed.setImage(`attachment://${image.name}`);
-        }
-        if (embedData.show_versions) {
-            embedData.fields = embedData.fields.concat(this.versionHelper.getFields());
-        }
-        if (embedData.show_updates) {
-            embedData.fields = embedData.fields.concat(this.versionHelper.getUpdateFields());
-        }
-        if (embedData.show_temps) {
-            embedData.fields = embedData.fields.concat(this.tempHelper.parseFields().fields);
         }
         if (typeof embedData.fields !== 'undefined') {
             embedData.fields.forEach(field => {
@@ -34898,11 +34899,12 @@ class StatusHelper {
             return;
         }
         if (typeof status === 'undefined' || status === null) {
-            //if(serverInfo.klippy_connected && serverInfo.klippy_state !== 'shutdown') {
-            //status = klipperStatus
-            // } else {
-            status = serverInfo.klippy_state;
-            // }
+            if (serverInfo.klippy_connected && serverInfo.klippy_state !== 'shutdown') {
+                status = klipperStatus;
+            }
+            else {
+                status = serverInfo.klippy_state;
+            }
         }
         if (status === 'standby') {
             status = 'ready';
@@ -34911,6 +34913,9 @@ class StatusHelper {
             return;
         }
         const currentStatus = functionCache.current_status;
+        if (status === 'printing' && currentStatus === 'startup') {
+            await this.update('start');
+        }
         const currentStatusMeta = this.statusMeta[currentStatus];
         const statusMeta = this.statusMeta[status];
         if (!currentStatusMeta.meta_data.allow_same && status === currentStatus) {
@@ -34922,11 +34927,24 @@ class StatusHelper {
         if (status === 'printing' && !this.checkPercentSame()) {
             return;
         }
-        logRegular(`klipper status changed to ${status}...`);
+        const progress = findValue('state.display_status.progress').toFixed(2);
         updateData('function', {
-            'current_status': status,
-            'current_percent': findValue('state.display_status.progress').toFixed(2)
+            'current_status': status
         });
+        if (status === 'start') {
+            updateData('function', {
+                'current_percent': -1
+            });
+        }
+        if (status === 'printing') {
+            updateData('function', {
+                'current_percent': progress
+            });
+            logRegular(`print is to ${(progress * 100).toFixed(0)}% done...`);
+        }
+        else {
+            logRegular(`klipper status changed to ${status}...`);
+        }
         functionCache = getEntry('function');
         await (0,dist.waitUntil)(() => !functionCache.status_in_query, { timeout: 20000, intervalBetweenAttempts: 500 });
         updateData('function', {
@@ -34936,37 +34954,35 @@ class StatusHelper {
         if (this.discordClient === null) {
             this.discordClient = getDiscordClient();
         }
+        if (status === 'printing' && this.checkPercentMatch() ||
+            status !== 'printing') {
+            this.notificationHelper.broadcastMessage(statusEmbed.embed);
+        }
+        updateData('function', {
+            'status_in_query': false
+        });
         if (typeof statusMeta.activity !== 'undefined') {
             this.discordClient.getClient().user.setPresence({
                 status: statusMeta.activity.status
             });
             this.discordClient.getClient().user.setActivity(statusEmbed.activity, { type: statusMeta.activity.type });
         }
-        if (status === 'printing' && !this.checkPercentMatch()) {
-            return;
-        }
-        this.notificationHelper.broadcastMessage(statusEmbed.embed);
-        updateData('function', {
-            'status_in_query': false
-        });
     }
     checkPercentSame() {
         const progress = findValue('state.display_status.progress').toFixed(2);
         const currentProgress = findValue('function.current_percent');
-        if (progress === 0 || progress === 1) {
-            return false;
-        }
         if (progress === currentProgress) {
             return false;
         }
         return true;
     }
     checkPercentMatch() {
-        const progress = findValue('state.display_status.progress').toFixed(2) * 100;
+        let progress = findValue('state.display_status.progress').toFixed(2);
+        progress = (progress * 100).toFixed(2);
         if (!this.configHelper.isStatusPerPercent()) {
             return true;
         }
-        if (this.configHelper.getStatusInterval() % progress === 0) {
+        if (progress % this.configHelper.getStatusInterval().toFixed(2) === 0) {
             return true;
         }
         return false;
@@ -35716,7 +35732,7 @@ setData('function', {
     'current_status': 'startup',
     'status_in_query': false,
     'poll_printer_info': false,
-    'current_percent': 0,
+    'current_percent': -1,
     'status_cooldown': 0
 });
 logRegular('init Time Cache...');

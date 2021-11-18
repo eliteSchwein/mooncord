@@ -40,7 +40,19 @@ export class EmbedHelper {
 
     public async generateEmbed(embedID: string,providedPlaceholders = null, providedFields = null) {
         const embed = new MessageEmbed()
-        const embedDataUnformatted = this.getEmbeds()[embedID]
+        const embedDataUnformatted = { ...this.getEmbeds()[embedID]}
+
+        if(embedDataUnformatted.show_versions) {
+            embedDataUnformatted.fields = [...embedDataUnformatted.fields, ...this.versionHelper.getFields()]
+        }
+
+        if(embedDataUnformatted.show_updates) {
+            embedDataUnformatted.fields = [...embedDataUnformatted.fields, ...this.versionHelper.getUpdateFields()]
+        }
+
+        if(embedDataUnformatted.show_temps) {
+            embedDataUnformatted.fields = [...embedDataUnformatted.fields, ...this.tempHelper.parseFields().fields]
+        }
 
         if(providedFields !== null) {
             mergeDeep(embedDataUnformatted, {fields: providedFields})
@@ -87,18 +99,6 @@ export class EmbedHelper {
 
         if(typeof image !== 'undefined') {
             embed.setImage(`attachment://${image.name}`)
-        }
-
-        if(embedData.show_versions) {
-            embedData.fields = embedData.fields.concat(this.versionHelper.getFields())
-        }
-
-        if(embedData.show_updates) {
-            embedData.fields = embedData.fields.concat(this.versionHelper.getUpdateFields())
-        }
-
-        if(embedData.show_temps) {
-            embedData.fields = embedData.fields.concat(this.tempHelper.parseFields().fields)
         }
 
         if(typeof embedData.fields !== 'undefined') {
