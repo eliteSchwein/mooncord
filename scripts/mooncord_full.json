@@ -461,9 +461,7 @@
             "embed_id": "disconnected",
             "meta_data": {
                 "allow_same": false,
-                "prevent": [
-                    "pause"
-                ]
+                "prevent": []
             },
             "activity": {
                 "status": "dnd",
@@ -496,13 +494,7 @@
             "embed_id": "shutdown",
             "meta_data": {
                 "allow_same": false,
-                "prevent": [
-                    "pause",
-                    "start",
-                    "done",
-                    "ready",
-                    "printing"
-                ]
+                "prevent": []
             },
             "activity": {
                 "status": "dnd",
@@ -513,9 +505,7 @@
             "embed_id": "printjob_stop",
             "meta_data": {
                 "allow_same": false,
-                "prevent": [
-                    "start"
-                ]
+                "prevent": []
             },
             "activity": {
                 "status": "idle",
@@ -526,7 +516,7 @@
             "embed_id": "ready",
             "meta_data": {
                 "allow_same": false,
-                "prevent": ["done", "startup"]
+                "prevent": ["startup"]
             },
             "activity": {
                 "status": "idle",
@@ -537,7 +527,7 @@
             "embed_id": "startup",
             "meta_data": {
                 "allow_same": false,
-                "prevent": ["disconnected"]
+                "prevent": []
             },
             "activity": {
                 "status": "idle",

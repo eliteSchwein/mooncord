@@ -34943,6 +34943,7 @@ class StatusHelper {
         if (status === 'printing' && !this.checkPercentSame()) {
             return;
         }
+        console.trace();
         const progress = findValue('state.display_status.progress').toFixed(2);
         updateData('function', {
             'current_status': status
@@ -35317,7 +35318,7 @@ class StateUpdateNotification {
         this.moonrakerClient = getMoonrakerClient();
         this.statusHelper = new StatusHelper();
     }
-    parse(message) {
+    async parse(message) {
         if (typeof (message.method) === 'undefined') {
             return;
         }
@@ -35334,11 +35335,11 @@ class StateUpdateNotification {
             });
         }
         if (message.method === 'notify_klippy_ready') {
-            this.statusHelper.update('ready');
             updateData('function', {
                 'poll_printer_info': false
             });
-            this.moonrakerClient.sendInitCommands();
+            await this.moonrakerClient.sendInitCommands();
+            this.statusHelper.update('ready');
         }
     }
 }
@@ -35514,7 +35515,7 @@ class SchedulerHelper {
         if (serverInfo.result.klippy_state === 'error') {
             await this.requestPrintInfo();
         }
-        void this.statusHelper.update();
+        void this.statusHelper.update(serverInfo.result.klippy_state);
     }
     async requestPrintInfo() {
         const printerInfo = await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "printer.info"}`);

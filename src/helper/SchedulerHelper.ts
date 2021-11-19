@@ -82,7 +82,7 @@ export class SchedulerHelper {
             await this.requestPrintInfo()
         }
 
-        void this.statusHelper.update()
+        void this.statusHelper.update(serverInfo.result.klippy_state)
     }
 
     protected async requestPrintInfo() {

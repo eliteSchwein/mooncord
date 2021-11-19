@@ -7,7 +7,7 @@ export class StateUpdateNotification {
     protected moonrakerClient = getMoonrakerClient()
     protected statusHelper = new StatusHelper()
 
-    public parse(message) {
+    public async parse(message) {
         if(typeof(message.method) === 'undefined') { return }
 
         if(message.method === 'notify_klippy_disconnected') {
@@ -25,11 +25,11 @@ export class StateUpdateNotification {
         }
 
         if(message.method === 'notify_klippy_ready') {
-            this.statusHelper.update('ready')
             updateData('function', {
                 'poll_printer_info': false
             })
-            this.moonrakerClient.sendInitCommands()
+            await this.moonrakerClient.sendInitCommands()
+            this.statusHelper.update('ready')
         }
     }
 }
