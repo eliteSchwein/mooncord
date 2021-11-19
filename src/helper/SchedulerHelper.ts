@@ -19,6 +19,11 @@ export class SchedulerHelper {
     protected scheduleHigh() {
         setInterval( () => {
             this.functionCache = getEntry('function')
+
+            if(typeof this.moonrakerClient.getWebsocket() === 'undefined') {
+                return
+            }
+
             updateData('moonraker_client', {
                 'event_count': this.moonrakerClient.getWebsocket().underlyingWebsocket['_eventsCount']
             })
@@ -81,6 +86,8 @@ export class SchedulerHelper {
         if(serverInfo.result.klippy_state === 'error') {
             await this.requestPrintInfo()
         }
+
+        console.log(serverInfo.result)
 
         void this.statusHelper.update(serverInfo.result.klippy_state)
     }

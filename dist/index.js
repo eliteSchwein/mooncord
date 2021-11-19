@@ -35438,93 +35438,7 @@ class MessageHandler {
     }
 }
 
-;// CONCATENATED MODULE: ./src/helper/SchedulerHelper.ts
-
-
-
-class SchedulerHelper {
-    constructor(moonrakerClient) {
-        this.configHelper = new ConfigHelper();
-        this.functionCache = getEntry('function');
-        this.statusHelper = new StatusHelper();
-        this.moonrakerClient = moonrakerClient;
-        this.scheduleModerate();
-        this.scheduleHigh();
-    }
-    scheduleHigh() {
-        setInterval(() => {
-            this.functionCache = getEntry('function');
-            updateData('moonraker_client', {
-                'event_count': this.moonrakerClient.getWebsocket().underlyingWebsocket['_eventsCount']
-            });
-            if (this.functionCache.poll_printer_info) {
-                void this.pollServerInfo();
-            }
-        }, this.configHelper.getHighSchedulerInterval());
-    }
-    scheduleModerate() {
-        setInterval(async () => {
-            const machineInfo = await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "machine.system_info"}`);
-            setData('machine_info', machineInfo.result);
-        }, this.configHelper.getModerateSchedulerInterval());
-    }
-    scheduleStatus() {
-        setInterval(async () => {
-            if (this.configHelper.isStatusPerPercent()) {
-                this.updateStatusCooldown();
-            }
-            else {
-                this.postPrintProgress();
-            }
-        }, this.getStatusInterval());
-    }
-    postPrintProgress() {
-        if (this.functionCache.current_status !== 'printing') {
-            return;
-        }
-        this.statusHelper.update();
-    }
-    updateStatusCooldown() {
-        const statusCooldown = this.functionCache.status_cooldown;
-        if (statusCooldown === 0) {
-            return;
-        }
-        this.functionCache.status_cooldown--;
-        updateData('function', this.functionCache);
-    }
-    getStatusInterval() {
-        if (this.configHelper.isStatusPerPercent()) {
-            return this.configHelper.getStatusMinInterval() * 1000;
-        }
-        else {
-            return this.configHelper.getStatusInterval() * 1000 * 60;
-        }
-    }
-    async pollServerInfo() {
-        const serverInfo = await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "server.info"}`);
-        if (typeof serverInfo.result === 'undefined') {
-            return;
-        }
-        if (typeof serverInfo.result.klippy_state === 'undefined') {
-            return;
-        }
-        if (serverInfo.result.klippy_state === 'disconnected') {
-            return;
-        }
-        updateData('server_info', serverInfo.result);
-        if (serverInfo.result.klippy_state === 'error') {
-            await this.requestPrintInfo();
-        }
-        void this.statusHelper.update(serverInfo.result.klippy_state);
-    }
-    async requestPrintInfo() {
-        const printerInfo = await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "printer.info"}`);
-        updateData('printer_info', printerInfo.result);
-    }
-}
-
 ;// CONCATENATED MODULE: ./src/clients/MoonrakerClient.ts
-
 
 
 
@@ -35620,8 +35534,6 @@ class MoonrakerClient {
             changeTempPath(this.config.getTempPath());
             changePath(getLogPath());
         }
-        logRegular('Register Scheduler...');
-        void new SchedulerHelper(this);
         logSuccess('MoonRaker Client is ready');
     }
     registerEvents() {
@@ -35733,7 +35645,97 @@ class DatabaseUtil {
     }
 }
 
+;// CONCATENATED MODULE: ./src/helper/SchedulerHelper.ts
+
+
+
+class SchedulerHelper {
+    constructor(moonrakerClient) {
+        this.configHelper = new ConfigHelper();
+        this.functionCache = getEntry('function');
+        this.statusHelper = new StatusHelper();
+        this.moonrakerClient = moonrakerClient;
+        this.scheduleModerate();
+        this.scheduleHigh();
+    }
+    scheduleHigh() {
+        setInterval(() => {
+            this.functionCache = getEntry('function');
+            if (typeof this.moonrakerClient.getWebsocket() === 'undefined') {
+                return;
+            }
+            updateData('moonraker_client', {
+                'event_count': this.moonrakerClient.getWebsocket().underlyingWebsocket['_eventsCount']
+            });
+            if (this.functionCache.poll_printer_info) {
+                void this.pollServerInfo();
+            }
+        }, this.configHelper.getHighSchedulerInterval());
+    }
+    scheduleModerate() {
+        setInterval(async () => {
+            const machineInfo = await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "machine.system_info"}`);
+            setData('machine_info', machineInfo.result);
+        }, this.configHelper.getModerateSchedulerInterval());
+    }
+    scheduleStatus() {
+        setInterval(async () => {
+            if (this.configHelper.isStatusPerPercent()) {
+                this.updateStatusCooldown();
+            }
+            else {
+                this.postPrintProgress();
+            }
+        }, this.getStatusInterval());
+    }
+    postPrintProgress() {
+        if (this.functionCache.current_status !== 'printing') {
+            return;
+        }
+        this.statusHelper.update();
+    }
+    updateStatusCooldown() {
+        const statusCooldown = this.functionCache.status_cooldown;
+        if (statusCooldown === 0) {
+            return;
+        }
+        this.functionCache.status_cooldown--;
+        updateData('function', this.functionCache);
+    }
+    getStatusInterval() {
+        if (this.configHelper.isStatusPerPercent()) {
+            return this.configHelper.getStatusMinInterval() * 1000;
+        }
+        else {
+            return this.configHelper.getStatusInterval() * 1000 * 60;
+        }
+    }
+    async pollServerInfo() {
+        const serverInfo = await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "server.info"}`);
+        if (typeof serverInfo.result === 'undefined') {
+            return;
+        }
+        if (typeof serverInfo.result.klippy_state === 'undefined') {
+            return;
+        }
+        if (serverInfo.result.klippy_state === 'disconnected') {
+            return;
+        }
+        updateData('server_info', serverInfo.result);
+        if (serverInfo.result.klippy_state === 'error') {
+            await this.requestPrintInfo();
+        }
+        console.log(serverInfo.result);
+        void this.statusHelper.update(serverInfo.result.klippy_state);
+    }
+    async requestPrintInfo() {
+        const printerInfo = await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "printer.info"}`);
+        updateData('printer_info', printerInfo.result);
+    }
+}
+
 ;// CONCATENATED MODULE: ./src/Application.ts
+
 
 
 
@@ -35779,6 +35781,8 @@ logEmpty();
 const moonrakerClient = new MoonrakerClient();
 const Application_database = new DatabaseUtil();
 const discordClient = new DiscordClient();
+logRegular('Register Scheduler...');
+void new SchedulerHelper(moonrakerClient);
 function getMoonrakerClient() {
     return moonrakerClient;
 }

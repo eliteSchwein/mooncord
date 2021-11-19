@@ -7,6 +7,7 @@ import {LocaleHelper} from "./helper/LocaleHelper";
 import { setData } from './utils/CacheUtil'
 import {ConfigHelper} from "./helper/ConfigHelper";
 import {EmbedHelper} from "./helper/EmbedHelper";
+import {SchedulerHelper} from "./helper/SchedulerHelper";
 
 tempHookLog()
 hookProcess()
@@ -54,6 +55,10 @@ logEmpty()
 const moonrakerClient = new MoonrakerClient()
 const database = new DatabaseUtil()
 const discordClient = new DiscordClient()
+
+logRegular('Register Scheduler...')
+
+void new SchedulerHelper(moonrakerClient)
 
 export function getMoonrakerClient() {
     return moonrakerClient

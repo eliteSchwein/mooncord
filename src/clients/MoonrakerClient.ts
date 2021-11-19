@@ -130,10 +130,6 @@ export class MoonrakerClient {
             changePath(getLogPath())
         }
 
-        logRegular('Register Scheduler...')
-
-        void new SchedulerHelper(this)
-
         logSuccess('MoonRaker Client is ready')
     }
 
