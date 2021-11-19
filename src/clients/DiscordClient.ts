@@ -87,6 +87,10 @@ export class DiscordClient {
             await dump()
             await this.database.dump()
         }
+
+        logSuccess('Discord Client is ready')
+        logEmpty()
+        logSuccess('MoonCord is ready')
     }
 
     private async registerCommands() {

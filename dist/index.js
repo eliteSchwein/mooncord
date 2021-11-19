@@ -35071,6 +35071,9 @@ class DiscordClient {
             await dump();
             await this.database.dump();
         }
+        logSuccess('Discord Client is ready');
+        logEmpty();
+        logSuccess('MoonCord is ready');
     }
     async registerCommands() {
         logRegular('Register Commands...');
@@ -35711,6 +35714,9 @@ class SchedulerHelper {
         }
     }
     async pollServerInfo() {
+        if (this.functionCache.server_info_in_query) {
+            return;
+        }
         const serverInfo = await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "server.info"}`);
         if (typeof serverInfo.result === 'undefined') {
             return;
@@ -35722,11 +35728,16 @@ class SchedulerHelper {
             return;
         }
         updateData('server_info', serverInfo.result);
+        updateData('function', {
+            'server_info_in_query': true
+        });
         if (serverInfo.result.klippy_state === 'error') {
             await this.requestPrintInfo();
         }
-        console.log(serverInfo.result);
         void this.statusHelper.update(serverInfo.result.klippy_state);
+        updateData('function', {
+            'server_info_in_query': false
+        });
     }
     async requestPrintInfo() {
         const printerInfo = await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "printer.info"}`);
@@ -35754,6 +35765,7 @@ logRegular('init Function Cache...');
 setData('function', {
     'current_status': 'startup',
     'status_in_query': false,
+    'server_info_in_query': false,
     'poll_printer_info': false,
     'current_percent': -1,
     'status_cooldown': 0

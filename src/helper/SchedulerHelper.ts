@@ -75,6 +75,8 @@ export class SchedulerHelper {
     }
 
     protected async pollServerInfo() {
+        if(this.functionCache.server_info_in_query) { return }
+
         const serverInfo = await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "server.info"}`)
 
         if(typeof serverInfo.result === 'undefined') { return }
@@ -82,14 +84,19 @@ export class SchedulerHelper {
         if(serverInfo.result.klippy_state === 'disconnected') { return }
 
         updateData('server_info', serverInfo.result)
+        updateData('function', {
+            'server_info_in_query': true
+        })
 
         if(serverInfo.result.klippy_state === 'error') {
             await this.requestPrintInfo()
         }
 
-        console.log(serverInfo.result)
-
         void this.statusHelper.update(serverInfo.result.klippy_state)
+
+        updateData('function', {
+            'server_info_in_query': false
+        })
     }
 
     protected async requestPrintInfo() {

@@ -461,7 +461,7 @@
             "embed_id": "disconnected",
             "meta_data": {
                 "allow_same": false,
-                "prevent": []
+                "prevent": ["shutdown"]
             },
             "activity": {
                 "status": "dnd",
@@ -527,7 +527,7 @@
             "embed_id": "startup",
             "meta_data": {
                 "allow_same": false,
-                "prevent": []
+                "prevent": ["shutdown"]
             },
             "activity": {
                 "status": "idle",
