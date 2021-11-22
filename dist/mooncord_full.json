@@ -206,10 +206,6 @@
     "discord": {
         "request_timeout": 30
     },
-    "scheduler": {
-        "high_inteval": 500,
-        "moderate_interval": 60000
-    },
     "embed_meta": {
         "fileinfo": {},
         "list_files": {},
@@ -470,7 +466,7 @@
             "embed_id": "disconnected",
             "meta_data": {
                 "allow_same": false,
-                "prevent": ["shutdown"]
+                "prevent": []
             },
             "activity": {
                 "status": "dnd",
@@ -503,7 +499,7 @@
             "embed_id": "shutdown",
             "meta_data": {
                 "allow_same": false,
-                "prevent": []
+                "prevent": ["pause"]
             },
             "activity": {
                 "status": "dnd",
@@ -512,6 +508,17 @@
         },
         "stop":{
             "embed_id": "printjob_stop",
+            "meta_data": {
+                "allow_same": false,
+                "prevent": []
+            },
+            "activity": {
+                "status": "idle",
+                "type": "LISTENING"
+            }
+        },
+        "botstart": {
+            "embed_id": "startup",
             "meta_data": {
                 "allow_same": false,
                 "prevent": []
@@ -536,7 +543,7 @@
             "embed_id": "startup",
             "meta_data": {
                 "allow_same": false,
-                "prevent": ["shutdown"]
+                "prevent": ["disconnected"]
             },
             "activity": {
                 "status": "idle",

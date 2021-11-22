@@ -1,6 +1,5 @@
-import {setData, updateData} from "../../../utils/CacheUtil";
+import {updateData} from "../../../utils/CacheUtil";
 import {getMoonrakerClient} from "../../../Application";
-import {logRegular} from "../../../helper/LoggerHelper";
 import {StatusHelper} from "../../../helper/StatusHelper";
 
 export class StateUpdateNotification {
@@ -29,7 +28,7 @@ export class StateUpdateNotification {
                 'poll_printer_info': false
             })
             await this.moonrakerClient.sendInitCommands()
-            this.statusHelper.update('ready')
+            await this.statusHelper.update('ready')
         }
     }
 }

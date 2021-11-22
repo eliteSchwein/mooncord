@@ -1,7 +1,8 @@
 import {MoonrakerClient} from "../clients/MoonrakerClient";
 import {ConfigHelper} from "./ConfigHelper";
-import {getEntry, setData, updateData} from "../utils/CacheUtil";
+import {findValue, getEntry, setData, updateData} from "../utils/CacheUtil";
 import {StatusHelper} from "./StatusHelper";
+import {logRegular} from "./LoggerHelper";
 
 export class SchedulerHelper {
     protected configHelper = new ConfigHelper()
@@ -30,7 +31,7 @@ export class SchedulerHelper {
             if(this.functionCache.poll_printer_info) {
                 void this.pollServerInfo()
             }
-        }, this.configHelper.getHighSchedulerInterval())
+        }, 250)
     }
 
     protected scheduleModerate() {
@@ -38,7 +39,7 @@ export class SchedulerHelper {
             const machineInfo = await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "machine.system_info"}`)
 
             setData('machine_info', machineInfo.result)
-        }, this.configHelper.getModerateSchedulerInterval())
+        }, 60000)
     }
 
     protected scheduleStatus() {
@@ -77,22 +78,22 @@ export class SchedulerHelper {
     protected async pollServerInfo() {
         if(this.functionCache.server_info_in_query) { return }
 
+        const currentStatus = findValue('function.current_status')
         const serverInfo = await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "server.info"}`)
 
         if(typeof serverInfo.result === 'undefined') { return }
         if(typeof serverInfo.result.klippy_state === 'undefined') { return }
-        if(serverInfo.result.klippy_state === 'disconnected') { return }
+
+        if(currentStatus !== serverInfo.result.klippy_state) {
+            await this.requestPrintInfo()
+        }
 
         updateData('server_info', serverInfo.result)
         updateData('function', {
             'server_info_in_query': true
         })
 
-        if(serverInfo.result.klippy_state === 'error') {
-            await this.requestPrintInfo()
-        }
-
-        void this.statusHelper.update(serverInfo.result.klippy_state)
+        await this.statusHelper.update()
 
         updateData('function', {
             'server_info_in_query': false

@@ -96,9 +96,7 @@ export class DiscordClient {
 
         const currentPrintfile = findValue('state.print_stats.filename')
 
-        if(currentPrintfile !== null && currentPrintfile !== '') {
-            await this.metadataHelper.updateMetaData(currentPrintfile)
-        }
+        await this.metadataHelper.updateMetaData(currentPrintfile)
 
         await this.statusHelper.update(null, this)
     }

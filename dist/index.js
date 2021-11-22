@@ -31174,7 +31174,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 651:
+/***/ 7651:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -31604,12 +31604,6 @@ class ConfigHelper {
     }
     getTempPath() {
         return this.getConfig().tmp_path;
-    }
-    getModerateSchedulerInterval() {
-        return this.getConfig().scheduler.moderate_interval;
-    }
-    getHighSchedulerInterval() {
-        return this.getConfig().scheduler.high_interval;
     }
     getIconSet() {
         return this.getConfig().messages.icon_set;
@@ -34116,6 +34110,15 @@ class MetadataHelper {
         return metaData.result;
     }
     async updateMetaData(filename) {
+        if (typeof filename === 'undefined') {
+            return;
+        }
+        if (filename === null) {
+            return;
+        }
+        if (filename === '') {
+            return;
+        }
         const metaData = await this.getMetaData(filename);
         setData('meta_data', metaData);
         updateTimes();
@@ -35079,22 +35082,22 @@ class StatusHelper {
         const serverInfo = getEntry('server_info');
         const stateCache = getEntry('state');
         const klipperStatus = stateCache.print_stats.state;
-        const klippyConnected = serverInfo.klippy_connected;
         if (typeof serverInfo === 'undefined') {
             return;
         }
         if (typeof status === 'undefined' || status === null) {
-            if (klippyConnected &&
-                serverInfo.klippy_state !== 'shutdown' &&
-                serverInfo.klippy_state !== 'error') {
-                status = klipperStatus;
+            if (serverInfo.klippy_state !== 'ready') {
+                status = serverInfo.klippy_state;
             }
             else {
-                status = serverInfo.klippy_state;
+                status = klipperStatus;
             }
         }
         if (status === 'standby') {
             status = 'ready';
+        }
+        if (status === 'paused') {
+            status = 'pause';
         }
         if (typeof status === 'undefined') {
             return;
@@ -35249,9 +35252,7 @@ class DiscordClient {
         logEmpty();
         logSuccess('MoonCord is ready');
         const currentPrintfile = findValue('state.print_stats.filename');
-        if (currentPrintfile !== null && currentPrintfile !== '') {
-            await this.metadataHelper.updateMetaData(currentPrintfile);
-        }
+        await this.metadataHelper.updateMetaData(currentPrintfile);
         await this.statusHelper.update(null, this);
     }
     async registerCommands() {
@@ -35463,7 +35464,7 @@ class StateUpdateNotification {
                 'poll_printer_info': false
             });
             await this.moonrakerClient.sendInitCommands();
-            this.statusHelper.update('ready');
+            await this.statusHelper.update('ready');
         }
     }
 }
@@ -35794,13 +35795,13 @@ class SchedulerHelper {
             if (this.functionCache.poll_printer_info) {
                 void this.pollServerInfo();
             }
-        }, this.configHelper.getHighSchedulerInterval());
+        }, 250);
     }
     scheduleModerate() {
         setInterval(async () => {
             const machineInfo = await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "machine.system_info"}`);
             setData('machine_info', machineInfo.result);
-        }, this.configHelper.getModerateSchedulerInterval());
+        }, 60000);
     }
     scheduleStatus() {
         setInterval(async () => {
@@ -35838,6 +35839,7 @@ class SchedulerHelper {
         if (this.functionCache.server_info_in_query) {
             return;
         }
+        const currentStatus = findValue('function.current_status');
         const serverInfo = await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "server.info"}`);
         if (typeof serverInfo.result === 'undefined') {
             return;
@@ -35845,17 +35847,14 @@ class SchedulerHelper {
         if (typeof serverInfo.result.klippy_state === 'undefined') {
             return;
         }
-        if (serverInfo.result.klippy_state === 'disconnected') {
-            return;
+        if (currentStatus !== serverInfo.result.klippy_state) {
+            await this.requestPrintInfo();
         }
         updateData('server_info', serverInfo.result);
         updateData('function', {
             'server_info_in_query': true
         });
-        if (serverInfo.result.klippy_state === 'error') {
-            await this.requestPrintInfo();
-        }
-        void this.statusHelper.update(serverInfo.result.klippy_state);
+        await this.statusHelper.update();
         updateData('function', {
             'server_info_in_query': false
         });
@@ -35884,7 +35883,7 @@ logRegular('load Package Cache...');
 setData('package_config', package_namespaceObject_0);
 logRegular('init Function Cache...');
 setData('function', {
-    'current_status': 'startup',
+    'current_status': 'botstart',
     'status_in_query': false,
     'server_info_in_query': false,
     'poll_printer_info': false,
@@ -36354,7 +36353,7 @@ module.exports = require("zlib");
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(651);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(7651);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()

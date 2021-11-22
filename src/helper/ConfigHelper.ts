@@ -135,14 +135,6 @@ export class ConfigHelper {
         return this.getConfig().tmp_path
     }
 
-    public getModerateSchedulerInterval() {
-        return this.getConfig().scheduler.moderate_interval
-    }
-
-    public getHighSchedulerInterval() {
-        return this.getConfig().scheduler.high_interval
-    }
-
     public getIconSet() {
         return this.getConfig().messages.icon_set
     }

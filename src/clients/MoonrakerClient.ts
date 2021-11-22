@@ -11,7 +11,7 @@ import {
     logWarn,
     unhookTempLog
 } from '../helper/LoggerHelper'
-import {getLogPath, setData} from '../utils/CacheUtil'
+import {findValue, getLogPath, setData} from '../utils/CacheUtil'
 import {MessageHandler} from "../events/moonraker/MessageHandler";
 import {FileListHelper} from "../helper/FileListHelper";
 import {MetadataHelper} from "../helper/MetadataHelper";

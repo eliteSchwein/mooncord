@@ -27,6 +27,10 @@ export class MetadataHelper {
     }
 
     public async updateMetaData(filename: string) {
+        if(typeof filename === 'undefined') { return }
+        if(filename === null) { return }
+        if(filename === '') { return }
+
         const metaData = await this.getMetaData(filename)
 
         setData('meta_data', metaData)

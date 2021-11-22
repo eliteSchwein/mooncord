@@ -25,17 +25,14 @@ export class StatusHelper {
         const serverInfo  = getEntry('server_info')
         const stateCache = getEntry('state')
         const klipperStatus = stateCache.print_stats.state
-        const klippyConnected = serverInfo.klippy_connected
 
         if(typeof serverInfo === 'undefined') { return }
 
         if(typeof status === 'undefined' || status === null) {
-            if(klippyConnected &&
-                serverInfo.klippy_state !== 'shutdown' &&
-                serverInfo.klippy_state !== 'error') {
-                status = klipperStatus
-            } else {
+            if(serverInfo.klippy_state !== 'ready') {
                 status = serverInfo.klippy_state
+            } else {
+                status = klipperStatus
             }
         }
 
@@ -43,9 +40,11 @@ export class StatusHelper {
             status = 'ready'
         }
 
-        if(typeof status === 'undefined') {
-            return
+        if(status === 'paused') {
+            status = 'pause'
         }
+
+        if(typeof status === 'undefined') { return }
 
         const currentStatus = functionCache.current_status
 
