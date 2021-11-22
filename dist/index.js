@@ -31174,7 +31174,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 7651:
+/***/ 6102:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -34312,24 +34312,37 @@ class EmbedHelper {
 
 
 
+
 class RefreshButton {
-    constructor(interaction, buttonId) {
+    constructor(interaction, buttonData) {
         this.databaseUtil = getDatabase();
         this.embedHelper = new EmbedHelper();
         this.configHelper = new ConfigHelper();
-        if (buttonId !== 'printjob_refresh') {
+        this.localeHelper = new LocaleHelper();
+        this.locale = this.localeHelper.getLocale();
+        if (!buttonData.function_mapping.refresh_status) {
             return;
         }
         void this.execute(interaction);
     }
     async execute(interaction) {
         const functionCache = getEntry('function');
+        const waitMessage = this.locale.messages.answers.status_update
+            .replace(/(\${username})/g, interaction.user.tag);
+        if (interaction.replied) {
+            await interaction.followUp({ ephemeral: true, content: waitMessage });
+        }
+        else {
+            await interaction.deferReply({ ephemeral: true });
+            await interaction.editReply(waitMessage);
+        }
         const currentStatus = functionCache.current_status;
         const currentStatusMeta = this.configHelper.getStatusMeta()[currentStatus];
         const currentMessage = interaction.message;
+        await currentMessage.edit({ components: null });
         const message = await this.embedHelper.generateEmbed(currentStatusMeta.embed_id);
         await currentMessage.removeAttachments();
-        await interaction.update(message.embed);
+        await currentMessage.edit(message.embed);
     }
 }
 
@@ -34437,7 +34450,52 @@ class PermissionHelper {
     }
 }
 
+;// CONCATENATED MODULE: ./src/events/discord/interactions/buttons/MacroButton.ts
+
+
+
+
+
+class MacroButton {
+    constructor(interaction, buttonData) {
+        this.databaseUtil = getDatabase();
+        this.embedHelper = new EmbedHelper();
+        this.configHelper = new ConfigHelper();
+        this.moonrakerClient = getMoonrakerClient();
+        this.localeHelper = new LocaleHelper();
+        this.locale = this.localeHelper.getLocale();
+        if (typeof buttonData.function_mapping.macros === 'undefined') {
+            return;
+        }
+        if (buttonData.function_mapping.macros.empty) {
+            return;
+        }
+        void this.execute(interaction, buttonData);
+    }
+    async execute(interaction, buttonData) {
+        for (const macro of buttonData.function_mapping.macros) {
+            logNotice(`executing macro: ${macro}`);
+            void this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "printer.gcode.script", "params": {"script": "${macro}"}}`, Number.POSITIVE_INFINITY);
+        }
+        let label = buttonData.label;
+        if (typeof buttonData.emoji !== 'undefined') {
+            label = `${buttonData.emoji} ${label}`;
+        }
+        const message = this.locale.messages.answers.macros_executed
+            .replace(/(\${username})/g, interaction.user.tag)
+            .replace(/(\${button_label})/g, label);
+        if (interaction.replied) {
+            await interaction.followUp({ ephemeral: false, content: message });
+        }
+        else {
+            await interaction.reply({ ephemeral: false, content: message });
+        }
+    }
+}
+
 ;// CONCATENATED MODULE: ./src/events/discord/interactions/ButtonInteraction.ts
+
+
 
 
 
@@ -34449,6 +34507,9 @@ class ButtonInteraction {
         this.config = new ConfigHelper();
         this.permissionHelper = new PermissionHelper();
         this.localeHelper = new LocaleHelper();
+        this.locale = this.localeHelper.getLocale();
+        this.buttonsCache = getEntry('buttons');
+        this.functionCache = getEntry('function');
         void this.execute(interaction);
     }
     async execute(interaction) {
@@ -34459,6 +34520,7 @@ class ButtonInteraction {
         if (buttonId === null) {
             return;
         }
+        const buttonData = this.buttonsCache[buttonId];
         logNotice(`${interaction.user.tag} pressed button: ${buttonId}`);
         if (!this.permissionHelper.hasPermission(interaction.user, interaction.guild, buttonId)) {
             await interaction.reply({
@@ -34468,7 +34530,17 @@ class ButtonInteraction {
             logWarn(`${interaction.user.tag} doesnt have the permission for: ${interaction.customId}`);
             return;
         }
-        void new RefreshButton(interaction, buttonId);
+        if (typeof buttonData.function_mapping.required_states !== 'undefined') {
+            const requiredStates = buttonData.function_mapping.required_states;
+            if (!requiredStates.includes(this.functionCache.current_status)) {
+                const message = this.locale.messages.errors.not_ready
+                    .replace(/(\${username})/g, interaction.user.tag);
+                await interaction.reply(message);
+                return;
+            }
+        }
+        void new MacroButton(interaction, buttonData);
+        void new RefreshButton(interaction, buttonData);
         await sleep(1500);
         if (interaction.replied || interaction.deferred) {
             return;
@@ -36353,7 +36425,7 @@ module.exports = require("zlib");
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(7651);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(6102);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()

@@ -106,6 +106,8 @@
             "for_gcode": "Timelapse for ${state.print_stats.filename}",
             "admin_added": "${mention} is now a Admin, ${username}!",
             "admin_removed": "${mention} is not longer a Admin, ${username}!",
+            "macros_executed": "The Macros for `${button_label}` got executed, ${username}!",
+            "status_update": "Please wait the Status is refreshing, ${username}",
             "broadcast_channel": {
                 "activated": "`${channel}` is now a Broadcast Channel, ${username}!",
                 "deactivated": "`${channel}` is not longer a Broadcast Channel, ${username}!"
