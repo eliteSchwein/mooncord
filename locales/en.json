@@ -17,8 +17,8 @@
             "title": "Print started",
             "activity": "start ${state.print_stats.filename}"
         },
-        "printjob_done":{
-            "title": "Print Done",
+        "printjob_complete":{
+            "title": "Print Complete",
             "activity": "Finished Print"
         },
         "printjob_pause":{

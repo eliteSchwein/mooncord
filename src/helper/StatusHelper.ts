@@ -23,7 +23,8 @@ export class StatusHelper {
         this.discordClient = discordClient
         let functionCache = getEntry('function')
         const serverInfo  = getEntry('server_info')
-        const klipperStatus = findValue('state.print_stats.state')
+        const stateCache = getEntry('state')
+        const klipperStatus = stateCache.print_stats.state
         const klippyConnected = serverInfo.klippy_connected
 
         if(typeof serverInfo === 'undefined') { return }
@@ -52,6 +53,10 @@ export class StatusHelper {
             await this.update('start')
         }
 
+        if(status === 'complete' && currentStatus === 'startup') {
+            status = 'ready'
+        }
+
         const currentStatusMeta = this.statusMeta[currentStatus]
         const statusMeta = this.statusMeta[status]
         if(!currentStatusMeta.meta_data.allow_same && status === currentStatus) { return }
@@ -60,7 +65,7 @@ export class StatusHelper {
 
         console.trace()
 
-        const progress = findValue('state.display_status.progress').toFixed(2)
+        const progress = stateCache.display_status.progress.toFixed(2)
 
         updateData('function', {
             'current_status': status
@@ -76,7 +81,7 @@ export class StatusHelper {
             updateData('function', {
                 'current_percent': progress
             })
-            logRegular(`print is to ${(progress*100).toFixed(0)}% done...`)
+            logRegular(`print is to ${(progress*100).toFixed(0)}% complete...`)
         } else {
             logRegular(`klipper status changed to ${status}...`)
         }

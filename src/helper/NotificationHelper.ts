@@ -67,7 +67,7 @@ export class NotificationHelper {
         }
     }
 
-    protected async removeOldStatus(channel: TextChannel) {
+    public async removeOldStatus(channel: TextChannel) {
         if(typeof channel.messages === 'undefined') { return }
 
         const messages = await channel.messages.fetch({limit: 1})

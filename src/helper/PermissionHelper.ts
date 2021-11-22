@@ -19,13 +19,21 @@ export class PermissionHelper {
         }
     }
     public hasPermission(user: User, guild: Guild, command: string) {
-        const commandPermission = this.permissions.commands[command]
-
-        if(commandPermission.users === "*") { return true }
+        let commandPermission = this.permissions.commands[command]
+        const buttonPermission = this.permissions.buttons[command]
+        
+        if(typeof buttonPermission !== 'undefined') {
+            if(buttonPermission.users === "*") { return true }
+            
+            commandPermission = this.permissions.commands[buttonPermission.command_assign]
+        }
+        
+        if(typeof commandPermission !== 'undefined' && commandPermission.users === "*") { return true }
 
         if(this.isController(user,guild)) { return true }
 
-        if(this.hasCommandPermission(user,guild,command)) { return true }
+        if(this.hasSectionPermission(user,guild,commandPermission)) { return true }
+        if(this.hasSectionPermission(user,guild,buttonPermission)) { return true }
 
         return false
     }
@@ -37,27 +45,32 @@ export class PermissionHelper {
         return guild.members.cache.get(user.id)
     }
 
-    public hasCommandPermission(user: User, guild: Guild, command: string) {
+    public hasCommandPermission(user: User, guild: Guild, command:string) {
         const commandPermission = this.permissions.commands[command]
+        return this.hasSectionPermission(user, guild, commandPermission)
+    }
+
+    protected hasSectionPermission(user: User, guild: Guild, permissions) {
+        if(typeof permissions === 'undefined') { return false }
         const member = this.getMember(user, guild)
 
-        if(typeof commandPermission.users === "string") {
-            commandPermission.users = [commandPermission.users]
+        if(typeof permissions.users === "string") {
+            permissions.users = [permissions.users]
         }
-        if(typeof commandPermission.roles === "string") {
-            commandPermission.roles = [commandPermission.roles]
+        if(typeof permissions.roles === "string") {
+            permissions.roles = [permissions.roles]
         }
 
-        if(commandPermission.guildadmin && this.isGuildAdmin(user,guild)) {
+        if(permissions.guildadmin && this.isGuildAdmin(user,guild)) {
             return true
         }
-        if(commandPermission.botadmin && this.isBotAdmin(user, guild)) {
+        if(permissions.botadmin && this.isBotAdmin(user, guild)) {
             return true
         }
-        if(commandPermission.users.includes(user.id)) { return true }
+        if(permissions.users.includes(user.id)) { return true }
 
         if(typeof member !== 'undefined') {
-            return member.roles.cache.some((role) => commandPermission.roles.includes(role.id))
+            return member.roles.cache.some((role) => permissions.roles.includes(role.id))
         }
     }
 

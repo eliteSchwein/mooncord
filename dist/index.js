@@ -31174,7 +31174,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 1093:
+/***/ 651:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -31793,15 +31793,6 @@ class DiscordInputGenerator {
             button.setEmoji(buttonMeta.emoji);
         }
         return button;
-    }
-}
-
-;// CONCATENATED MODULE: ./src/events/discord/interactions/ButtonInteraction.ts
-class ButtonInteraction {
-    constructor(interaction) {
-        if (!interaction.isButton()) {
-            return;
-        }
     }
 }
 
@@ -34212,6 +34203,176 @@ class EmbedHelper {
     }
 }
 
+;// CONCATENATED MODULE: ./src/events/discord/interactions/buttons/RefreshButton.ts
+
+
+
+
+class RefreshButton {
+    constructor(interaction, buttonId) {
+        this.databaseUtil = getDatabase();
+        this.embedHelper = new EmbedHelper();
+        this.configHelper = new ConfigHelper();
+        if (buttonId !== 'printjob_refresh') {
+            return;
+        }
+        void this.execute(interaction);
+    }
+    async execute(interaction) {
+        const functionCache = getEntry('function');
+        const currentStatus = functionCache.current_status;
+        const currentStatusMeta = this.configHelper.getStatusMeta()[currentStatus];
+        const currentMessage = interaction.message;
+        const message = await this.embedHelper.generateEmbed(currentStatusMeta.embed_id);
+        await currentMessage.removeAttachments();
+        await interaction.update(message.embed);
+    }
+}
+
+;// CONCATENATED MODULE: ./src/helper/PermissionHelper.ts
+
+
+class PermissionHelper {
+    constructor() {
+        this.config = new ConfigHelper();
+        this.permissions = this.config.getPermissions();
+        this.controllers = this.permissions.controllers;
+        this.botAdmins = this.permissions.botadmins;
+        if (typeof this.controllers.users === "string") {
+            this.controllers.users = [this.controllers.users];
+        }
+        if (typeof this.botAdmins.users === "string") {
+            this.botAdmins.users = [this.botAdmins.users];
+        }
+        if (typeof this.controllers.roles === "string") {
+            this.controllers.roles = [this.controllers.roles];
+        }
+    }
+    hasPermission(user, guild, command) {
+        let commandPermission = this.permissions.commands[command];
+        const buttonPermission = this.permissions.buttons[command];
+        if (typeof buttonPermission !== 'undefined') {
+            if (buttonPermission.users === "*") {
+                return true;
+            }
+            commandPermission = this.permissions.commands[buttonPermission.command_assign];
+        }
+        if (typeof commandPermission !== 'undefined' && commandPermission.users === "*") {
+            return true;
+        }
+        if (this.isController(user, guild)) {
+            return true;
+        }
+        if (this.hasSectionPermission(user, guild, commandPermission)) {
+            return true;
+        }
+        if (this.hasSectionPermission(user, guild, buttonPermission)) {
+            return true;
+        }
+        return false;
+    }
+    getMember(user, guild) {
+        if (guild === null) {
+            return;
+        }
+        return guild.members.cache.get(user.id);
+    }
+    hasCommandPermission(user, guild, command) {
+        const commandPermission = this.permissions.commands[command];
+        return this.hasSectionPermission(user, guild, commandPermission);
+    }
+    hasSectionPermission(user, guild, permissions) {
+        if (typeof permissions === 'undefined') {
+            return false;
+        }
+        const member = this.getMember(user, guild);
+        if (typeof permissions.users === "string") {
+            permissions.users = [permissions.users];
+        }
+        if (typeof permissions.roles === "string") {
+            permissions.roles = [permissions.roles];
+        }
+        if (permissions.guildadmin && this.isGuildAdmin(user, guild)) {
+            return true;
+        }
+        if (permissions.botadmin && this.isBotAdmin(user, guild)) {
+            return true;
+        }
+        if (permissions.users.includes(user.id)) {
+            return true;
+        }
+        if (typeof member !== 'undefined') {
+            return member.roles.cache.some((role) => permissions.roles.includes(role.id));
+        }
+    }
+    isGuildAdmin(user, guild) {
+        const member = this.getMember(user, guild);
+        if (typeof member !== 'undefined') {
+            return member.permissions.has(external_discord_js_namespaceObject.Permissions.FLAGS.ADMINISTRATOR, true);
+        }
+    }
+    isBotAdmin(user, guild) {
+        const member = this.getMember(user, guild);
+        if (this.botAdmins.users.includes(user.id)) {
+            return true;
+        }
+        if (typeof member === 'undefined') {
+            return;
+        }
+        const roles = this.botAdmins.guilds[guild.id];
+        return member.roles.cache.some((role) => roles.includes(role.id));
+    }
+    isController(user, guild) {
+        const member = this.getMember(user, guild);
+        if (this.controllers.users.includes(user.id)) {
+            return true;
+        }
+        if (typeof member !== 'undefined') {
+            return member.roles.cache.some((role) => this.controllers.roles.includes(role.id));
+        }
+    }
+}
+
+;// CONCATENATED MODULE: ./src/events/discord/interactions/ButtonInteraction.ts
+
+
+
+
+
+
+class ButtonInteraction {
+    constructor(interaction) {
+        this.config = new ConfigHelper();
+        this.permissionHelper = new PermissionHelper();
+        this.localeHelper = new LocaleHelper();
+        void this.execute(interaction);
+    }
+    async execute(interaction) {
+        if (!interaction.isButton()) {
+            return;
+        }
+        const buttonId = interaction.customId;
+        if (buttonId === null) {
+            return;
+        }
+        logNotice(`${interaction.user.tag} pressed button: ${buttonId}`);
+        if (!this.permissionHelper.hasPermission(interaction.user, interaction.guild, buttonId)) {
+            await interaction.reply({
+                content: this.localeHelper.getNoPermission(interaction.user.tag),
+                ephemeral: this.config.showNoPermissionPrivate()
+            });
+            logWarn(`${interaction.user.tag} doesnt have the permission for: ${interaction.customId}`);
+            return;
+        }
+        void new RefreshButton(interaction, buttonId);
+        await sleep(1500);
+        if (interaction.replied || interaction.deferred) {
+            return;
+        }
+        await interaction.reply(this.localeHelper.getCommandNotReadyError(interaction.user.tag));
+    }
+}
+
 ;// CONCATENATED MODULE: ./src/events/discord/interactions/commands/InfoCommand.ts
 
 class InfoCommand {
@@ -34255,94 +34416,6 @@ class DumpCommand {
         }
         const attachment = new external_discord_js_namespaceObject.MessageAttachment(external_path_namespaceObject.resolve(__dirname, `../temp/${sectionArgument}_dump.json`), `${sectionArgument}.json`);
         await interaction.editReply({ files: [attachment] });
-    }
-}
-
-;// CONCATENATED MODULE: ./src/helper/PermissionHelper.ts
-
-
-class PermissionHelper {
-    constructor() {
-        this.config = new ConfigHelper();
-        this.permissions = this.config.getPermissions();
-        this.controllers = this.permissions.controllers;
-        this.botAdmins = this.permissions.botadmins;
-        if (typeof this.controllers.users === "string") {
-            this.controllers.users = [this.controllers.users];
-        }
-        if (typeof this.botAdmins.users === "string") {
-            this.botAdmins.users = [this.botAdmins.users];
-        }
-        if (typeof this.controllers.roles === "string") {
-            this.controllers.roles = [this.controllers.roles];
-        }
-    }
-    hasPermission(user, guild, command) {
-        const commandPermission = this.permissions.commands[command];
-        if (commandPermission.users === "*") {
-            return true;
-        }
-        if (this.isController(user, guild)) {
-            return true;
-        }
-        if (this.hasCommandPermission(user, guild, command)) {
-            return true;
-        }
-        return false;
-    }
-    getMember(user, guild) {
-        if (guild === null) {
-            return;
-        }
-        return guild.members.cache.get(user.id);
-    }
-    hasCommandPermission(user, guild, command) {
-        const commandPermission = this.permissions.commands[command];
-        const member = this.getMember(user, guild);
-        if (typeof commandPermission.users === "string") {
-            commandPermission.users = [commandPermission.users];
-        }
-        if (typeof commandPermission.roles === "string") {
-            commandPermission.roles = [commandPermission.roles];
-        }
-        if (commandPermission.guildadmin && this.isGuildAdmin(user, guild)) {
-            return true;
-        }
-        if (commandPermission.botadmin && this.isBotAdmin(user, guild)) {
-            return true;
-        }
-        if (commandPermission.users.includes(user.id)) {
-            return true;
-        }
-        if (typeof member !== 'undefined') {
-            return member.roles.cache.some((role) => commandPermission.roles.includes(role.id));
-        }
-    }
-    isGuildAdmin(user, guild) {
-        const member = this.getMember(user, guild);
-        if (typeof member !== 'undefined') {
-            return member.permissions.has(external_discord_js_namespaceObject.Permissions.FLAGS.ADMINISTRATOR, true);
-        }
-    }
-    isBotAdmin(user, guild) {
-        const member = this.getMember(user, guild);
-        if (this.botAdmins.users.includes(user.id)) {
-            return true;
-        }
-        if (typeof member === 'undefined') {
-            return;
-        }
-        const roles = this.botAdmins.guilds[guild.id];
-        return member.roles.cache.some((role) => roles.includes(role.id));
-    }
-    isController(user, guild) {
-        const member = this.getMember(user, guild);
-        if (this.controllers.users.includes(user.id)) {
-            return true;
-        }
-        if (typeof member !== 'undefined') {
-            return member.roles.cache.some((role) => this.controllers.roles.includes(role.id));
-        }
     }
 }
 
@@ -34569,15 +34642,11 @@ class EmergencyStopCommand {
 
 
 
-
 class StatusCommand {
     constructor(interaction, commandId) {
         this.databaseUtil = getDatabase();
-        this.localeHelper = new LocaleHelper();
-        this.syntaxLocale = this.localeHelper.getSyntaxLocale();
         this.embedHelper = new EmbedHelper();
         this.configHelper = new ConfigHelper();
-        this.statusMeta = this.configHelper.getStatusMeta();
         if (commandId !== 'status') {
             return;
         }
@@ -34907,7 +34976,8 @@ class StatusHelper {
         this.discordClient = discordClient;
         let functionCache = getEntry('function');
         const serverInfo = getEntry('server_info');
-        const klipperStatus = findValue('state.print_stats.state');
+        const stateCache = getEntry('state');
+        const klipperStatus = stateCache.print_stats.state;
         const klippyConnected = serverInfo.klippy_connected;
         if (typeof serverInfo === 'undefined') {
             return;
@@ -34932,6 +35002,9 @@ class StatusHelper {
         if (status === 'printing' && currentStatus === 'startup') {
             await this.update('start');
         }
+        if (status === 'complete' && currentStatus === 'startup') {
+            status = 'ready';
+        }
         const currentStatusMeta = this.statusMeta[currentStatus];
         const statusMeta = this.statusMeta[status];
         if (!currentStatusMeta.meta_data.allow_same && status === currentStatus) {
@@ -34944,7 +35017,7 @@ class StatusHelper {
             return;
         }
         console.trace();
-        const progress = findValue('state.display_status.progress').toFixed(2);
+        const progress = stateCache.display_status.progress.toFixed(2);
         updateData('function', {
             'current_status': status
         });
@@ -34957,7 +35030,7 @@ class StatusHelper {
             updateData('function', {
                 'current_percent': progress
             });
-            logRegular(`print is to ${(progress * 100).toFixed(0)}% done...`);
+            logRegular(`print is to ${(progress * 100).toFixed(0)}% complete...`);
         }
         else {
             logRegular(`klipper status changed to ${status}...`);
@@ -35236,7 +35309,10 @@ class SubscriptionNotification {
             updateLayers();
             await this.statusHelper.update('start');
         }
-        void this.statusHelper.update(status);
+        await this.statusHelper.update(status);
+        if (status === 'complete') {
+            await this.statusHelper.update('ready');
+        }
     }
 }
 
@@ -36233,7 +36309,7 @@ module.exports = require("zlib");
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(1093);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(651);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()

@@ -47,6 +47,15 @@
             "users": [],
             "guilds": {}
         },
+        "buttons": {
+            "printjob_refresh": {
+                "command_assign": "status",
+                "botadmin": true,
+                "guildadmin": true,
+                "users": "*",
+                "roles": []
+            }
+        },
         "commands": {
             "dump": {
                 "botadmin": true,
@@ -226,7 +235,7 @@
                 }
             ]
         },
-        "printjob_done":{
+        "printjob_complete":{
             "color": "#25db00",
             "author": "${state.print_stats.filename}",
             "thumbnail": "thumbnail_not_found.png",
@@ -545,8 +554,8 @@
                 "type": "LISTENING"
             }
         },
-        "done":{
-            "embed_id": "printjob_done",
+        "complete":{
+            "embed_id": "printjob_complete",
             "meta_data": {
                 "allow_same": false,
                 "prevent": []
