@@ -10,6 +10,7 @@ import {logRegular} from "./LoggerHelper";
 import {WebcamHelper} from "./WebcamHelper";
 import { VersionHelper } from "./VersionHelper";
 import { TempHelper } from "./TempHelper";
+import {MetadataHelper} from "./MetadataHelper";
 
 export class EmbedHelper {
     protected localeHelper = new LocaleHelper()
@@ -122,10 +123,15 @@ export class EmbedHelper {
         return {embed: response, activity: embedData.activity}
     }
     protected async parseImage(imageID: string) {
+        const metadataHelper = new MetadataHelper()
         if(typeof imageID === 'undefined') { return }
         
         if(imageID === 'webcam') {
             return this.webcamHelper.retrieveWebcam(app.getMoonrakerClient())
+        }
+        
+        if(imageID === 'thumbnail') {
+            return metadataHelper.getThumbnail(findValue('state.print_stats.filename'))
         }
 
         const imagePath = path.resolve(__dirname, `../assets/icon-sets/${this.configHelper.getIconSet()}/${imageID}`)

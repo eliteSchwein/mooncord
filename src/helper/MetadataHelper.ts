@@ -1,9 +1,14 @@
 import { getMoonrakerClient } from "../Application";
 import { MoonrakerClient } from "../clients/MoonrakerClient";
 import { setData } from "../utils/CacheUtil";
+import {ConfigHelper} from "./ConfigHelper";
+import path from "path";
+import {MessageAttachment} from "discord.js";
+import axios from "axios";
 
 export class MetadataHelper {
     protected moonrakerClient: MoonrakerClient
+    protected configHelper = new ConfigHelper()
 
     public constructor(moonrakerClient: MoonrakerClient = null) {
         if(moonrakerClient !== null) {
@@ -13,9 +18,47 @@ export class MetadataHelper {
         }
     }
 
-    public async retrieveMetaData(filename: string) {
+    public async getMetaData(filename: string) {
         const metaData = await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${filename}"}}`)
 
-        setData('meta_data', metaData.result)
+        return metaData.result
+    }
+
+    public async updateMetaData(filename: string) {
+        const metaData = await this.getMetaData(filename)
+
+        setData('meta_data', metaData)
+    }
+
+    public async getThumbnail(filename: string) {
+        const metaData = await this.getMetaData(filename)
+        const placeholderPath = path.resolve(__dirname, `../assets/icon-sets/${this.configHelper.getIconSet()}/thumbnail_not_found.png`)
+        const placeholder = new MessageAttachment(placeholderPath, 'thumbnail_not_found.png')
+
+        if(typeof metaData === 'undefined') { return placeholder }
+
+        const thumbnailFile = metaData.thumbnails.reduce((prev, current) => { return (prev.size > current.size) ? prev : current})
+        let thumbnail: string
+        try {
+            thumbnail = await this.getBase64(`${this.configHelper.getMoonrakerUrl()}/server/files/gcodes/${thumbnailFile.relative_path}`)
+        } catch (e) {
+            console.error(e)
+            return placeholder
+        }
+
+        const thumbnailBuffer = Buffer.from(thumbnail, 'base64')
+
+        return new MessageAttachment(thumbnailBuffer, 'thumbnail.png')
+    }
+
+    protected async getBase64(url:string) {
+        const response = await axios.get(url,
+            {responseType: 'arraybuffer',
+                headers: {
+                    'X-Api-Key': this.configHelper.getMoonrakerApiKey()
+                }})
+
+
+        return Buffer.from(response.data, 'binary').toString('base64')
     }
 }

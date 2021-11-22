@@ -221,7 +221,7 @@
         "printjob_start":{
             "color": "#25db00",
             "author": "${state.print_stats.filename}",
-            "thumbnail": "thumbnail_not_found.png",
+            "thumbnail": "thumbnail",
             "image": "webcam",
             "buttons": [],
             "fields": [
@@ -238,7 +238,7 @@
         "printjob_complete":{
             "color": "#25db00",
             "author": "${state.print_stats.filename}",
-            "thumbnail": "thumbnail_not_found.png",
+            "thumbnail": "thumbnail",
             "image": "webcam",
             "buttons": [],
             "fields": [
@@ -251,7 +251,7 @@
         "printjob_pause":{
             "color": "#dbd400",
             "author": "${state.print_stats.filename}",
-            "thumbnail": "thumbnail_not_found.png",
+            "thumbnail": "thumbnail",
             "image": "webcam",
             "buttons": ["printjob_resume","printjob_cancel"],
             "fields": [
@@ -276,7 +276,7 @@
         "printjob_printing":{
             "color": "#0099ff",
             "author": "${state.print_stats.filename}",
-            "thumbnail": "thumbnail_not_found.png",
+            "thumbnail": "thumbnail",
             "image": "webcam",
             "buttons": [
                 "printjob_pause",
@@ -308,7 +308,7 @@
         "printjob_stop":{
             "color": "#c90000",
             "author": "${state.print_stats.filename}",
-            "thumbnail": "thumbnail_not_found.png",
+            "thumbnail": "thumbnail",
             "image": "webcam",
             "buttons": [],
             "fields": [

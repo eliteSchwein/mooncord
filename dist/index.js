@@ -34053,7 +34053,61 @@ class TempHelper {
     }
 }
 
+;// CONCATENATED MODULE: ./src/helper/MetadataHelper.ts
+
+
+
+
+
+
+class MetadataHelper {
+    constructor(moonrakerClient = null) {
+        this.configHelper = new ConfigHelper();
+        if (moonrakerClient !== null) {
+            this.moonrakerClient = moonrakerClient;
+        }
+        else {
+            this.moonrakerClient = getMoonrakerClient();
+        }
+    }
+    async getMetaData(filename) {
+        const metaData = await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${filename}"}}`);
+        return metaData.result;
+    }
+    async updateMetaData(filename) {
+        const metaData = await this.getMetaData(filename);
+        setData('meta_data', metaData);
+    }
+    async getThumbnail(filename) {
+        const metaData = await this.getMetaData(filename);
+        const placeholderPath = external_path_default().resolve(__dirname, `../assets/icon-sets/${this.configHelper.getIconSet()}/thumbnail_not_found.png`);
+        const placeholder = new external_discord_js_namespaceObject.MessageAttachment(placeholderPath, 'thumbnail_not_found.png');
+        if (typeof metaData === 'undefined') {
+            return placeholder;
+        }
+        const thumbnailFile = metaData.thumbnails.reduce((prev, current) => { return (prev.size > current.size) ? prev : current; });
+        let thumbnail;
+        try {
+            thumbnail = await this.getBase64(`${this.configHelper.getMoonrakerUrl()}/server/files/gcodes/${thumbnailFile.relative_path}`);
+        }
+        catch (e) {
+            console.error(e);
+            return placeholder;
+        }
+        const thumbnailBuffer = Buffer.from(thumbnail, 'base64');
+        return new external_discord_js_namespaceObject.MessageAttachment(thumbnailBuffer, 'thumbnail.png');
+    }
+    async getBase64(url) {
+        const response = await axios_default().get(url, { responseType: 'arraybuffer',
+            headers: {
+                'X-Api-Key': this.configHelper.getMoonrakerApiKey()
+            } });
+        return Buffer.from(response.data, 'binary').toString('base64');
+    }
+}
+
 ;// CONCATENATED MODULE: ./src/helper/EmbedHelper.ts
+
 
 
 
@@ -34156,11 +34210,15 @@ class EmbedHelper {
         return { embed: response, activity: embedData.activity };
     }
     async parseImage(imageID) {
+        const metadataHelper = new MetadataHelper();
         if (typeof imageID === 'undefined') {
             return;
         }
         if (imageID === 'webcam') {
             return this.webcamHelper.retrieveWebcam(getMoonrakerClient());
+        }
+        if (imageID === 'thumbnail') {
+            return metadataHelper.getThumbnail(findValue('state.print_stats.filename'));
         }
         const imagePath = external_path_namespaceObject.resolve(__dirname, `../assets/icon-sets/${this.configHelper.getIconSet()}/${imageID}`);
         return new external_discord_js_namespaceObject.MessageAttachment(imagePath, imageID);
@@ -35016,7 +35074,6 @@ class StatusHelper {
         if (status === 'printing' && !this.checkPercentSame()) {
             return;
         }
-        console.trace();
         const progress = stateCache.display_status.progress.toFixed(2);
         updateData('function', {
             'current_status': status
@@ -35079,7 +35136,49 @@ class StatusHelper {
     }
 }
 
+;// CONCATENATED MODULE: ./src/helper/TimeHelper.ts
+
+function updateTimes() {
+    const stateCache = getEntry('state');
+    const metaDataCache = getEntry('meta_data');
+    const endTime = Math.floor(Date.now() / 1000);
+    const duration = stateCache.print_stats.print_duration;
+    let total = duration / stateCache.display_status.progress;
+    if (total === 0 ||
+        isNaN(total) ||
+        !isFinite(total)) {
+        total = metaDataCache.estimated_time;
+    }
+    const left = (total - duration) / stateCache.gcode_move.speed_factor || 1;
+    const end = endTime + (total - duration);
+    updateData('time', {
+        'total': total,
+        'duration': duration,
+        'left': left,
+        'eta': end
+    });
+}
+
+;// CONCATENATED MODULE: ./src/helper/LayerHelper.ts
+
+function updateLayers() {
+    const stateCache = getEntry('state');
+    const metaDataCache = getEntry('meta_data');
+    let top_layer = Math.ceil((metaDataCache.object_height - metaDataCache.first_layer_height) / metaDataCache.layer_height + 1);
+    top_layer = top_layer > 0 ? top_layer : 0;
+    let current_layer = Math.ceil((stateCache.gcode_move.gcode_position[2] - metaDataCache.first_layer_height) / metaDataCache.layer_height + 1);
+    current_layer = (current_layer <= top_layer) ? current_layer : top_layer;
+    current_layer = current_layer > 0 ? current_layer : 0;
+    updateData('layers', {
+        'top': top_layer,
+        'current': current_layer
+    });
+}
+
 ;// CONCATENATED MODULE: ./src/clients/DiscordClient.ts
+
+
+
 
 
 
@@ -35104,6 +35203,7 @@ class DiscordClient {
         this.statusGenerator = new DiscordStatusGenerator();
         this.localeHelper = new LocaleHelper();
         this.statusHelper = new StatusHelper();
+        this.metadataHelper = new MetadataHelper();
         this.connect();
     }
     async connect() {
@@ -35139,7 +35239,6 @@ class DiscordClient {
         console.log(getEntry('invite_url').cyan);
         this.discordClient.user.setPresence({ status: "idle" });
         this.discordClient.user.setActivity(this.localeHelper.getLocale().embeds.startup.activity, { type: 2 /* LISTENING */ });
-        await this.statusHelper.update(null, this);
         if (this.config.dumpCacheOnStart()) {
             await dump();
             await this.database.dump();
@@ -35147,6 +35246,13 @@ class DiscordClient {
         logSuccess('Discord Client is ready');
         logEmpty();
         logSuccess('MoonCord is ready');
+        const currentPrintfile = findValue('state.print_stats.filename');
+        if (currentPrintfile !== null && currentPrintfile !== '') {
+            await this.metadataHelper.updateMetaData(currentPrintfile);
+            updateTimes();
+            updateLayers();
+        }
+        await this.statusHelper.update(null, this);
     }
     async registerCommands() {
         logRegular('Register Commands...');
@@ -35213,63 +35319,6 @@ class ProcStatsNotification {
     }
 }
 
-;// CONCATENATED MODULE: ./src/helper/MetadataHelper.ts
-
-
-class MetadataHelper {
-    constructor(moonrakerClient = null) {
-        if (moonrakerClient !== null) {
-            this.moonrakerClient = moonrakerClient;
-        }
-        else {
-            this.moonrakerClient = getMoonrakerClient();
-        }
-    }
-    async retrieveMetaData(filename) {
-        const metaData = await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${filename}"}}`);
-        setData('meta_data', metaData.result);
-    }
-}
-
-;// CONCATENATED MODULE: ./src/helper/TimeHelper.ts
-
-function updateTimes() {
-    const stateCache = getEntry('state');
-    const metaDataCache = getEntry('meta_data');
-    const endTime = Math.floor(Date.now() / 1000);
-    const duration = stateCache.print_stats.print_duration;
-    let total = duration / stateCache.display_status.progress;
-    if (total === 0 ||
-        isNaN(total) ||
-        !isFinite(total)) {
-        total = metaDataCache.estimated_time;
-    }
-    const left = (total - duration) / stateCache.gcode_move.speed_factor || 1;
-    const end = endTime + (total - duration);
-    updateData('time', {
-        'total': total,
-        'duration': duration,
-        'left': left,
-        'eta': end
-    });
-}
-
-;// CONCATENATED MODULE: ./src/helper/LayerHelper.ts
-
-function updateLayers() {
-    const stateCache = getEntry('state');
-    const metaDataCache = getEntry('meta_data');
-    let top_layer = Math.ceil((metaDataCache.object_height - metaDataCache.first_layer_height) / metaDataCache.layer_height + 1);
-    top_layer = top_layer > 0 ? top_layer : 0;
-    let current_layer = Math.ceil((stateCache.gcode_move.gcode_position[2] - metaDataCache.first_layer_height) / metaDataCache.layer_height + 1);
-    current_layer = (current_layer <= top_layer) ? current_layer : top_layer;
-    current_layer = current_layer > 0 ? current_layer : 0;
-    updateData('layers', {
-        'top': top_layer,
-        'current': current_layer
-    });
-}
-
 ;// CONCATENATED MODULE: ./src/events/moonraker/messages/SubscriptionNotification.ts
 
 
@@ -35304,7 +35353,7 @@ class SubscriptionNotification {
         }
         let status = printStatsData.state;
         if (status === 'printing') {
-            await this.metadataHelper.retrieveMetaData(findValue('state.print_stats.filename'));
+            await this.metadataHelper.updateMetaData(findValue('state.print_stats.filename'));
             updateTimes();
             updateLayers();
             await this.statusHelper.update('start');
@@ -35590,7 +35639,7 @@ class MoonrakerClient {
         if (typeof data.result.status !== 'undefined') {
             if (typeof data.result.status.print_stats !== 'undefined') {
                 if (data.result.status.print_stats.filename !== null) {
-                    await this.metadataHelper.retrieveMetaData(data.result.status.print_stats.filename);
+                    await this.metadataHelper.updateMetaData(data.result.status.print_stats.filename);
                 }
             }
         }

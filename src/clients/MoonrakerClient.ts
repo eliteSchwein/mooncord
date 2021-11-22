@@ -106,7 +106,7 @@ export class MoonrakerClient {
         if(typeof data.result.status !== 'undefined') {
             if (typeof data.result.status.print_stats !== 'undefined') {
                 if (data.result.status.print_stats.filename !== null) {
-                    await this.metadataHelper.retrieveMetaData(data.result.status.print_stats.filename)
+                    await this.metadataHelper.updateMetaData(data.result.status.print_stats.filename)
                 }
             }
         }

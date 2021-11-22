@@ -5,7 +5,7 @@ import {Client, Intents} from 'discord.js'
 import {getDatabase} from '../Application'
 import {ConfigHelper} from '../helper/ConfigHelper'
 import {logEmpty, logRegular, logSuccess} from '../helper/LoggerHelper'
-import {dump, getEntry, setData} from '../utils/CacheUtil'
+import {dump, findValue, getEntry, setData} from '../utils/CacheUtil'
 import {DiscordCommandGenerator} from "../generator/DiscordCommandGenerator";
 import {DiscordInputGenerator} from '../generator/DiscordInputGenerator'
 import {InteractionHandler} from "../events/discord/InteractionHandler";
@@ -14,6 +14,9 @@ import {ActivityTypes} from "discord.js/typings/enums";
 import {DiscordStatusGenerator} from "../generator/DiscordStatusGenerator";
 import {LocaleHelper} from "../helper/LocaleHelper";
 import {StatusHelper} from "../helper/StatusHelper";
+import {MetadataHelper} from "../helper/MetadataHelper";
+import {updateTimes} from "../helper/TimeHelper";
+import {updateLayers} from "../helper/LayerHelper";
 
 let interactionHandler: InteractionHandler
 let debugHandler: DebugHandler
@@ -26,6 +29,7 @@ export class DiscordClient {
     protected statusGenerator = new DiscordStatusGenerator()
     protected localeHelper = new LocaleHelper()
     protected statusHelper = new StatusHelper()
+    protected metadataHelper = new MetadataHelper()
     protected discordClient: Client
 
     public constructor() {
@@ -81,8 +85,6 @@ export class DiscordClient {
             {type: ActivityTypes.LISTENING}
         )
 
-        await this.statusHelper.update(null, this)
-
         if(this.config.dumpCacheOnStart()) {
             await dump()
             await this.database.dump()
@@ -91,6 +93,16 @@ export class DiscordClient {
         logSuccess('Discord Client is ready')
         logEmpty()
         logSuccess('MoonCord is ready')
+
+        const currentPrintfile = findValue('state.print_stats.filename')
+
+        if(currentPrintfile !== null && currentPrintfile !== '') {
+            await this.metadataHelper.updateMetaData(currentPrintfile)
+            updateTimes()
+            updateLayers()
+        }
+
+        await this.statusHelper.update(null, this)
     }
 
     private async registerCommands() {

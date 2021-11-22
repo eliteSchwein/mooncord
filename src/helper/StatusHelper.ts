@@ -63,8 +63,6 @@ export class StatusHelper {
         if(currentStatusMeta.meta_data.prevent.includes(status)) { return }
         if(status === 'printing' && !this.checkPercentSame()) { return }
 
-        console.trace()
-
         const progress = stateCache.display_status.progress.toFixed(2)
 
         updateData('function', {
