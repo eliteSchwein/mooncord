@@ -30,8 +30,6 @@ export class SubscriptionNotification {
 
         if(status === 'printing') {
             await this.metadataHelper.updateMetaData(findValue('state.print_stats.filename'))
-            updateTimes()
-            updateLayers()
             await this.statusHelper.update('start')
         }
 

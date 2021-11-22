@@ -5,6 +5,8 @@ import {ConfigHelper} from "./ConfigHelper";
 import path from "path";
 import {MessageAttachment} from "discord.js";
 import axios from "axios";
+import {updateTimes} from "./TimeHelper";
+import {updateLayers} from "./LayerHelper";
 
 export class MetadataHelper {
     protected moonrakerClient: MoonrakerClient
@@ -28,6 +30,9 @@ export class MetadataHelper {
         const metaData = await this.getMetaData(filename)
 
         setData('meta_data', metaData)
+
+        updateTimes()
+        updateLayers()
     }
 
     public async getThumbnail(filename: string) {

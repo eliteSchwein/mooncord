@@ -98,8 +98,6 @@ export class DiscordClient {
 
         if(currentPrintfile !== null && currentPrintfile !== '') {
             await this.metadataHelper.updateMetaData(currentPrintfile)
-            updateTimes()
-            updateLayers()
         }
 
         await this.statusHelper.update(null, this)

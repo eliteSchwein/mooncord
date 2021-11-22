@@ -34053,7 +34053,48 @@ class TempHelper {
     }
 }
 
+;// CONCATENATED MODULE: ./src/helper/TimeHelper.ts
+
+function updateTimes() {
+    const stateCache = getEntry('state');
+    const metaDataCache = getEntry('meta_data');
+    const endTime = Math.floor(Date.now() / 1000);
+    const duration = stateCache.print_stats.print_duration;
+    let total = duration / stateCache.display_status.progress;
+    if (total === 0 ||
+        isNaN(total) ||
+        !isFinite(total)) {
+        total = metaDataCache.estimated_time;
+    }
+    const left = (total - duration) / stateCache.gcode_move.speed_factor || 1;
+    const end = endTime + (total - duration);
+    updateData('time', {
+        'total': total,
+        'duration': duration,
+        'left': left,
+        'eta': end
+    });
+}
+
+;// CONCATENATED MODULE: ./src/helper/LayerHelper.ts
+
+function updateLayers() {
+    const stateCache = getEntry('state');
+    const metaDataCache = getEntry('meta_data');
+    let top_layer = Math.ceil((metaDataCache.object_height - metaDataCache.first_layer_height) / metaDataCache.layer_height + 1);
+    top_layer = top_layer > 0 ? top_layer : 0;
+    let current_layer = Math.ceil((stateCache.gcode_move.gcode_position[2] - metaDataCache.first_layer_height) / metaDataCache.layer_height + 1);
+    current_layer = (current_layer <= top_layer) ? current_layer : top_layer;
+    current_layer = current_layer > 0 ? current_layer : 0;
+    updateData('layers', {
+        'top': top_layer,
+        'current': current_layer
+    });
+}
+
 ;// CONCATENATED MODULE: ./src/helper/MetadataHelper.ts
+
+
 
 
 
@@ -34077,6 +34118,8 @@ class MetadataHelper {
     async updateMetaData(filename) {
         const metaData = await this.getMetaData(filename);
         setData('meta_data', metaData);
+        updateTimes();
+        updateLayers();
     }
     async getThumbnail(filename) {
         const metaData = await this.getMetaData(filename);
@@ -35136,48 +35179,7 @@ class StatusHelper {
     }
 }
 
-;// CONCATENATED MODULE: ./src/helper/TimeHelper.ts
-
-function updateTimes() {
-    const stateCache = getEntry('state');
-    const metaDataCache = getEntry('meta_data');
-    const endTime = Math.floor(Date.now() / 1000);
-    const duration = stateCache.print_stats.print_duration;
-    let total = duration / stateCache.display_status.progress;
-    if (total === 0 ||
-        isNaN(total) ||
-        !isFinite(total)) {
-        total = metaDataCache.estimated_time;
-    }
-    const left = (total - duration) / stateCache.gcode_move.speed_factor || 1;
-    const end = endTime + (total - duration);
-    updateData('time', {
-        'total': total,
-        'duration': duration,
-        'left': left,
-        'eta': end
-    });
-}
-
-;// CONCATENATED MODULE: ./src/helper/LayerHelper.ts
-
-function updateLayers() {
-    const stateCache = getEntry('state');
-    const metaDataCache = getEntry('meta_data');
-    let top_layer = Math.ceil((metaDataCache.object_height - metaDataCache.first_layer_height) / metaDataCache.layer_height + 1);
-    top_layer = top_layer > 0 ? top_layer : 0;
-    let current_layer = Math.ceil((stateCache.gcode_move.gcode_position[2] - metaDataCache.first_layer_height) / metaDataCache.layer_height + 1);
-    current_layer = (current_layer <= top_layer) ? current_layer : top_layer;
-    current_layer = current_layer > 0 ? current_layer : 0;
-    updateData('layers', {
-        'top': top_layer,
-        'current': current_layer
-    });
-}
-
 ;// CONCATENATED MODULE: ./src/clients/DiscordClient.ts
-
-
 
 
 
@@ -35249,8 +35251,6 @@ class DiscordClient {
         const currentPrintfile = findValue('state.print_stats.filename');
         if (currentPrintfile !== null && currentPrintfile !== '') {
             await this.metadataHelper.updateMetaData(currentPrintfile);
-            updateTimes();
-            updateLayers();
         }
         await this.statusHelper.update(null, this);
     }
@@ -35323,8 +35323,6 @@ class ProcStatsNotification {
 
 
 
-
-
 class SubscriptionNotification {
     constructor() {
         this.statusHelper = new StatusHelper();
@@ -35354,8 +35352,6 @@ class SubscriptionNotification {
         let status = printStatsData.state;
         if (status === 'printing') {
             await this.metadataHelper.updateMetaData(findValue('state.print_stats.filename'));
-            updateTimes();
-            updateLayers();
             await this.statusHelper.update('start');
         }
         await this.statusHelper.update(status);
