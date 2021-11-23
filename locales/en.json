@@ -1,10 +1,17 @@
 {
+    "pages": {
+        "list_files": {
+            "entry_label": "${data.path}"
+        }
+    },
     "embeds": {
         "fileinfo": {
             "title": "File Informations"
         },
         "list_files": {
-            "title": "Print Files"
+            "title": "Print Files",
+            "description": "${page_entries}",
+            "footer": "Page ${current_page}/${last_page}"
         },
         "info": {
             "title": "Informations",
@@ -209,10 +216,10 @@
         "printjob_start": {
             "label": "Print"
         },
-        "printjob_start_yes": {
+        "request_accept": {
             "label": "Yes"
         },
-        "printjob_start_no": {
+        "request_deny": {
             "label": "No"
         },
         "klipper_restart": {
@@ -234,7 +241,8 @@
     "selections": {
         "printlist_view_printjob": {
             "label": "Click for more Details",
-            "description": "More Details for ${entry}"
+            "option_label": "${data.path}",
+            "option_description": "${data.path}"
         }
     },
     "commands": {

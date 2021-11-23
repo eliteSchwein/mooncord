@@ -162,4 +162,8 @@ export class ConfigHelper {
     public getDiscordRequestTimeout() {
         return this.getConfig().discord.request_timeout
     }
+
+    public getEntriesPerPage() {
+        return this.getConfig().messages.entries_per_page
+    }
 }

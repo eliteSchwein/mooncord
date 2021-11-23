@@ -28,7 +28,8 @@
     "messages": {
         "show_no_permission_private": true,
         "icon_set": "acryl",
-        "snapshot_error_alternate_background": false
+        "snapshot_error_alternate_background": false,
+        "entries_per_page": 8
     },
     "custom_info": "Thanks for installing MoonCord and Happy Printing ❤",
     "language": {
@@ -46,6 +47,15 @@
             "_comment": "this Section is managed by the /admin command",
             "users": [],
             "guilds": {}
+        },
+        "selections": {
+            "printlist_view_printjob": {
+                "command_assign": "fileinfo",
+                "botadmin": true,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            }
         },
         "buttons": {
             "printjob_refresh": {
@@ -208,7 +218,17 @@
     },
     "embed_meta": {
         "fileinfo": {},
-        "list_files": {},
+        "list_files": {
+            "color": "#0099ff",
+            "thumbnail": "printlist.png",
+            "buttons": [
+                "last_page",
+                "next_page"],
+            "selection": {
+                "id": "printlist_view_printjob",
+                "data": "${raw_entries}"
+            }
+        },
         "info": {
             "color": "#0099ff",
             "thumbnail": "logo.png"
@@ -386,7 +406,7 @@
                 "style":"SECONDARY",
                 "permission_mapping": "listfiles",
                 "function_mapping": {
-                    "page_up": false
+                    "page_down": true
                 }
             },
             "printjob_resume": {
@@ -423,12 +443,16 @@
             "to_printlist": {
                 "emoji": "📘",
                 "style":"SECONDARY",
-                "function_mapping": {}
+                "function_mapping": {
+                    "show_printlist": true
+                }
             },
             "printjob_start": {
                 "emoji": "🖨️",
                 "style":"SECONDARY",
-                "function_mapping": {}
+                "function_mapping": {
+                    "request": "printjob_start"
+                }
             },
             "klipper_restart": {
                 "emoji": "🔄",
@@ -439,20 +463,26 @@
             },
             "update_system": {
                 "style":"SECONDARY",
-                "function_mapping": {}
+                "function_mapping": {
+
+                }
             },
-            "printjob_start_yes": {
+            "request_accept": {
                 "style":"SUCCESS",
-                "function_mapping": {}
+                "function_mapping": {
+                    "request_accept": true
+                }
             },
-            "printjob_start_no": {
+            "request_deny": {
                 "style":"DANGER",
-                "function_mapping": {}
+                "function_mapping": {
+                    "request_deny": true
+                }
             }
         },
         "selections": {
             "printlist_view_printjob": {
-                "permission_mapping": "fileinfo"
+                "option_value": "${data.path}"
             }
         }
     },

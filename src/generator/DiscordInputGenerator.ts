@@ -1,5 +1,5 @@
 import {ConfigHelper} from "../helper/ConfigHelper";
-import {mergeDeep} from "../helper/DataHelper";
+import {mergeDeep, parsePageData} from "../helper/DataHelper";
 
 import {setData, getEntry} from "../utils/CacheUtil";
 import {MessageActionRow, MessageButton, MessageSelectMenu} from "discord.js";
@@ -45,23 +45,35 @@ export class DiscordInputGenerator {
         return row
     }
 
-    public generateSelection(selectionId: string, entries) {
+    public generateSelection(selectionData) {
+        if(typeof selectionData === 'undefined') {
+            return
+        }
         const cache = getEntry('selections')
-        const selectionMeta = cache[selectionId]
+        const selectionMeta = cache[selectionData.id]
+        const row = new MessageActionRow()
 
         const selection = new MessageSelectMenu()
-            .setCustomId(selectionId)
+            .setCustomId(selectionData.id)
             .setPlaceholder(selectionMeta.label)
 
-        for(const entry of entries) {
+        for(const data of selectionData.data) {
+            const selectionMetaRaw = JSON.stringify(selectionMeta)
+
+            const selectionMetaParsed = JSON.parse(parsePageData(selectionMetaRaw, data))
+
+            console.log(selectionMetaParsed)
+
             selection.addOptions([{
-                label: entry,
-                description: selectionMeta.description.replace(/(\${entry})/g, entry),
-                value: entry
+                label: selectionMetaParsed.option_label,
+                description: selectionMetaParsed.option_description,
+                value: selectionMetaParsed.option_value
             }])
         }
 
-        return selection
+        row.addComponents(selection)
+
+        return row
     }
 
     public generateButton(buttonId: string) {

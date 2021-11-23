@@ -79,10 +79,12 @@ export class EmbedHelper {
         const thumbnail = await this.parseImage(embedData.thumbnail)
         const image = await this.parseImage(embedData.image)
         const buttons = this.inputGenerator.generateButtons(embedData.buttons)
+        const selection = this.inputGenerator.generateSelection(embedData.selection)
 
         files.push(thumbnail, image)
 
         components.push(buttons)
+        components.push(selection)
 
         files = files.filter((element) => { return element != null})
         components = components.filter((element) => { return element != null})
@@ -92,6 +94,10 @@ export class EmbedHelper {
 
         if(typeof embedData.description !== 'undefined') {
             embed.setDescription(embedData.description)
+        }
+
+        if(typeof embedData.footer !== 'undefined') {
+            embed.setFooter(embedData.footer)
         }
 
         if(typeof thumbnail !== 'undefined') {
@@ -145,7 +151,12 @@ export class EmbedHelper {
         if(providedPlaceholders !== null) {
             const providedParser = providedPlaceholders[placeholderId]
             if(typeof providedParser !== 'undefined') {
+                if(typeof providedParser !== 'string') {
+                    return providedParser
+                }
                 return providedParser
+                    .replace(/(")/g,'\'')
+                    .replace(/(\n)/g,'\\n')
             }
         }
         

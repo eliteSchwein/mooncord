@@ -51,8 +51,8 @@ export class ButtonInteraction {
             }
         }
 
-        void new MacroButton(interaction, buttonData)
         void new RefreshButton(interaction, buttonData)
+        void new MacroButton(interaction, buttonData)
 
         await sleep(1500)
 

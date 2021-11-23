@@ -27,8 +27,7 @@ export class RefreshButton {
         if(interaction.replied) {
             await interaction.followUp({ephemeral: true, content: waitMessage})
         } else {
-            await interaction.deferReply({ephemeral: true})
-            await interaction.editReply(waitMessage)
+            await interaction.update({components: null, content: waitMessage})
         }
 
         const currentStatus = functionCache.current_status

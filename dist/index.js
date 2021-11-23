@@ -31174,7 +31174,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 6102:
+/***/ 8380:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -31450,6 +31450,21 @@ async function sleep(delay) {
 function formatPercent(percent, digits) {
     return (percent * 100).toFixed(digits);
 }
+function parsePageData(rawData, data) {
+    let parsedData = rawData;
+    rawData.replace(/(\${data)*.*(})/g, (match, $1) => {
+        console.log('match:' + match);
+        const dataProperty = match
+            .replace(/(\${data.)/g, '')
+            .replace(/(})/g, '');
+        console.log('prop:' + data[dataProperty]);
+        console.log('test:' + rawData);
+        parsedData = rawData.replace(match, data[dataProperty]);
+        return data[dataProperty];
+    });
+    console.log(parsedData);
+    return parsedData;
+}
 function stripAnsi(input) {
     return input.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, '');
 }
@@ -31626,6 +31641,9 @@ class ConfigHelper {
     getDiscordRequestTimeout() {
         return this.getConfig().discord.request_timeout;
     }
+    getEntriesPerPage() {
+        return this.getConfig().messages.entries_per_page;
+    }
 }
 
 ;// CONCATENATED MODULE: ./src/meta/command_structure.json
@@ -31761,20 +31779,28 @@ class DiscordInputGenerator {
         }
         return row;
     }
-    generateSelection(selectionId, entries) {
+    generateSelection(selectionData) {
+        if (typeof selectionData === 'undefined') {
+            return;
+        }
         const cache = getEntry('selections');
-        const selectionMeta = cache[selectionId];
+        const selectionMeta = cache[selectionData.id];
+        const row = new external_discord_js_namespaceObject.MessageActionRow();
         const selection = new external_discord_js_namespaceObject.MessageSelectMenu()
-            .setCustomId(selectionId)
+            .setCustomId(selectionData.id)
             .setPlaceholder(selectionMeta.label);
-        for (const entry of entries) {
+        for (const data of selectionData.data) {
+            const selectionMetaRaw = JSON.stringify(selectionMeta);
+            const selectionMetaParsed = JSON.parse(parsePageData(selectionMetaRaw, data));
+            console.log(selectionMetaParsed);
             selection.addOptions([{
-                    label: entry,
-                    description: selectionMeta.description.replace(/(\${entry})/g, entry),
-                    value: entry
+                    label: selectionMetaParsed.option_label,
+                    description: selectionMetaParsed.option_description,
+                    value: selectionMetaParsed.option_value
                 }]);
         }
-        return selection;
+        row.addComponents(selection);
+        return row;
     }
     generateButton(buttonId) {
         const cache = getEntry("buttons");
@@ -34220,14 +34246,19 @@ class EmbedHelper {
         const thumbnail = await this.parseImage(embedData.thumbnail);
         const image = await this.parseImage(embedData.image);
         const buttons = this.inputGenerator.generateButtons(embedData.buttons);
+        const selection = this.inputGenerator.generateSelection(embedData.selection);
         files.push(thumbnail, image);
         components.push(buttons);
+        components.push(selection);
         files = files.filter((element) => { return element != null; });
         components = components.filter((element) => { return element != null; });
         embed.setTitle(embedData.title);
         embed.setColor(embedData.color);
         if (typeof embedData.description !== 'undefined') {
             embed.setDescription(embedData.description);
+        }
+        if (typeof embedData.footer !== 'undefined') {
+            embed.setFooter(embedData.footer);
         }
         if (typeof thumbnail !== 'undefined') {
             embed.setThumbnail(`attachment://${thumbnail.name}`);
@@ -34276,7 +34307,12 @@ class EmbedHelper {
         if (providedPlaceholders !== null) {
             const providedParser = providedPlaceholders[placeholderId];
             if (typeof providedParser !== 'undefined') {
-                return providedParser;
+                if (typeof providedParser !== 'string') {
+                    return providedParser;
+                }
+                return providedParser
+                    .replace(/(")/g, '\'')
+                    .replace(/(\n)/g, '\\n');
             }
         }
         let cacheParser = findValue(placeholderId);
@@ -34333,8 +34369,7 @@ class RefreshButton {
             await interaction.followUp({ ephemeral: true, content: waitMessage });
         }
         else {
-            await interaction.deferReply({ ephemeral: true });
-            await interaction.editReply(waitMessage);
+            await interaction.update({ components: null, content: waitMessage });
         }
         const currentStatus = functionCache.current_status;
         const currentStatusMeta = this.configHelper.getStatusMeta()[currentStatus];
@@ -34539,8 +34574,8 @@ class ButtonInteraction {
                 return;
             }
         }
-        void new MacroButton(interaction, buttonData);
         void new RefreshButton(interaction, buttonData);
+        void new MacroButton(interaction, buttonData);
         await sleep(1500);
         if (interaction.replied || interaction.deferred) {
             return;
@@ -34899,7 +34934,86 @@ class EditChannelCommand {
     }
 }
 
+;// CONCATENATED MODULE: ./src/helper/PageHelper.ts
+
+
+
+class PageHelper {
+    constructor(pageData, pageId) {
+        this.configHelper = new ConfigHelper();
+        this.localeHelper = new LocaleHelper();
+        this.locale = this.localeHelper.getLocale();
+        this.data = pageData;
+        this.pageLocale = this.locale.pages[pageId];
+    }
+    getPage(pageUp, currentPage) {
+        const page = this.getNewPage(pageUp, currentPage);
+        const entries = this.getEntries(page.calcPage);
+        return {
+            'page_entries': entries.entries,
+            'current_page': page.labelPage,
+            'last_page': this.getLastPage(),
+            'raw_entries': entries.raw_entries
+        };
+    }
+    getEntries(page) {
+        let entries = '';
+        const max = this.configHelper.getEntriesPerPage() - 1;
+        const rawEntries = [];
+        for (let i = (page * max) + page; i <= max + (page * max) + page; i++) {
+            const entry = this.data[i];
+            rawEntries.push(entry);
+            const label = parsePageData(this.pageLocale.entry_label, entry);
+            entries = `${entries}${label}\n`;
+        }
+        return { 'entries': entries, 'raw_entries': JSON.stringify(rawEntries) };
+    }
+    getLastPage() {
+        return Math.floor(this.data.length / this.configHelper.getEntriesPerPage());
+    }
+    getNewPage(pageUp, currentPage) {
+        const lastPage = this.getLastPage();
+        let page = currentPage - 1;
+        if (pageUp) {
+            if (page !== lastPage - 1) {
+                page++;
+            }
+        }
+        else if (page !== 0) {
+            page--;
+        }
+        return { calcPage: page, labelPage: (page + 1) };
+    }
+}
+
+;// CONCATENATED MODULE: ./src/events/discord/interactions/commands/FileListCommand.ts
+
+
+
+
+
+class FileListCommand {
+    constructor(interaction, commandId) {
+        this.databaseUtil = getDatabase();
+        this.localeHelper = new LocaleHelper();
+        this.syntaxLocale = this.localeHelper.getSyntaxLocale();
+        this.embedHelper = new EmbedHelper();
+        if (commandId !== 'listfiles') {
+            return;
+        }
+        this.execute(interaction);
+    }
+    async execute(interaction) {
+        await interaction.deferReply();
+        const pageHelper = new PageHelper(getEntry('gcode_files'), 'list_files');
+        const pageData = pageHelper.getPage(false, 1);
+        const embed = await this.embedHelper.generateEmbed('list_files', pageData);
+        await interaction.editReply(embed.embed);
+    }
+}
+
 ;// CONCATENATED MODULE: ./src/events/discord/interactions/CommandInteraction.ts
+
 
 
 
@@ -34957,6 +35071,7 @@ class CommandInteraction {
         void new EmergencyStopCommand(interaction, commandId);
         void new StatusCommand(interaction, commandId);
         void new EditChannelCommand(interaction, commandId);
+        void new FileListCommand(interaction, commandId);
         await sleep(1500);
         if (interaction.replied || interaction.deferred) {
             return;
@@ -36425,7 +36540,7 @@ module.exports = require("zlib");
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(6102);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(8380);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()

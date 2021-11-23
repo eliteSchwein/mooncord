@@ -39,6 +39,22 @@ export function formatPercent(percent, digits) {
     return (percent*100).toFixed(digits)
 }
 
+export function parsePageData(rawData: string, data) {
+    let parsedData = rawData
+    rawData.replace(/(\${data)*.*(})/g, (match, $1) => {
+        console.log('match:' +match)
+        const dataProperty = match
+            .replace(/(\${data.)/g, '')
+            .replace(/(})/g, '')
+        console.log('prop:' + data[dataProperty])
+        console.log('test:' + rawData)
+        parsedData = rawData.replace(match, data[dataProperty])
+        return data[dataProperty]
+    })
+    console.log(parsedData)
+    return parsedData
+}
+
 export function stripAnsi(input: string) {
     return input.replace(
         /[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g,
