@@ -40,18 +40,16 @@ export function formatPercent(percent, digits) {
 }
 
 export function parsePageData(rawData: string, data) {
-    let parsedData = rawData
-    rawData.replace(/(\${data)*.*(})/g, (match, $1) => {
-        console.log('match:' +match)
+    const parsedData = rawData.replace(/(\${data).*?(})/g, (match) => {
         const dataProperty = match
             .replace(/(\${data.)/g, '')
             .replace(/(})/g, '')
-        console.log('prop:' + data[dataProperty])
-        console.log('test:' + rawData)
-        parsedData = rawData.replace(match, data[dataProperty])
+
+        if(typeof data[dataProperty] === 'undefined') {
+            return match
+        }
         return data[dataProperty]
     })
-    console.log(parsedData)
     return parsedData
 }
 

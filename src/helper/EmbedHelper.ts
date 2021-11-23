@@ -61,7 +61,8 @@ export class EmbedHelper {
 
         let embedRaw = JSON.stringify(embedDataUnformatted)
 
-        const placeholders = embedRaw.match(/(\${).*?}/g)
+
+        const placeholders = embedRaw.matchAll(/(\${).*?}/g)
         let files = []
         let components = []
         const response = {
@@ -70,7 +71,15 @@ export class EmbedHelper {
 
         if(placeholders !== null) {
             for(const placeholder of placeholders) {
-                embedRaw = embedRaw.replace(placeholder, this.parsePlaceholder(placeholder,providedPlaceholders))
+                const placeholderContent = this.parsePlaceholder(placeholder[0],providedPlaceholders)
+                if(!placeholderContent.double_dash) {
+                    const endPos = placeholder.index + placeholder[0].length
+                    embedRaw = embedRaw.slice(0,placeholder.index-1) +
+                        placeholderContent.content +
+                        embedRaw.slice(endPos+1)
+                } else {
+                    embedRaw = embedRaw.replace(placeholder[0], placeholderContent.content)
+                }
             }
         }
 
@@ -83,8 +92,8 @@ export class EmbedHelper {
 
         files.push(thumbnail, image)
 
-        components.push(buttons)
         components.push(selection)
+        components.push(buttons)
 
         files = files.filter((element) => { return element != null})
         components = components.filter((element) => { return element != null})
@@ -151,12 +160,24 @@ export class EmbedHelper {
         if(providedPlaceholders !== null) {
             const providedParser = providedPlaceholders[placeholderId]
             if(typeof providedParser !== 'undefined') {
-                if(typeof providedParser !== 'string') {
-                    return providedParser
+                if(typeof providedParser === 'object') {
+                    return {
+                        'content': JSON.stringify(providedParser),
+                        'double_dash': false
+                    }
                 }
-                return providedParser
-                    .replace(/(")/g,'\'')
-                    .replace(/(\n)/g,'\\n')
+                if(typeof providedParser !== 'string') {
+                    return {
+                        'content': providedParser,
+                        'double_dash': true
+                    }
+                }
+                return {
+                    'content': providedParser
+                        .replace(/(")/g,'\'')
+                        .replace(/(\n)/g,'\\n'),
+                    'double_dash': true
+                }
             }
         }
         
@@ -171,13 +192,21 @@ export class EmbedHelper {
             cacheParser = this.getStateMessage()
         }
 
-        if(typeof cacheParser === 'undefined') { return "" }
+        if(typeof cacheParser === 'undefined') {
+            return {
+                'content': '',
+                'double_dash': true
+            }
+        }
 
         cacheParser = String(cacheParser)
 
-        return cacheParser
-            .replace(/(")/g,'\'')
-            .replace(/(\n)/g,'\\n')
+        return {
+            'content': cacheParser
+                .replace(/(")/g,'\'')
+                .replace(/(\n)/g,'\\n'),
+            'double_dash': true
+        }
     }
 
     protected getStateMessage() {

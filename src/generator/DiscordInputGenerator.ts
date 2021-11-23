@@ -62,8 +62,6 @@ export class DiscordInputGenerator {
 
             const selectionMetaParsed = JSON.parse(parsePageData(selectionMetaRaw, data))
 
-            console.log(selectionMetaParsed)
-
             selection.addOptions([{
                 label: selectionMetaParsed.option_label,
                 description: selectionMetaParsed.option_description,

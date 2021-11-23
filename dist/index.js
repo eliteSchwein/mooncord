@@ -26,13 +26,13 @@ var utils = __nccwpck_require__(328);
 var settle = __nccwpck_require__(3211);
 var buildFullPath = __nccwpck_require__(1934);
 var buildURL = __nccwpck_require__(646);
-var http = __nccwpck_require__(8605);
-var https = __nccwpck_require__(7211);
-var httpFollow = __nccwpck_require__(7707).http;
-var httpsFollow = __nccwpck_require__(7707).https;
-var url = __nccwpck_require__(8835);
-var zlib = __nccwpck_require__(8761);
-var VERSION = __nccwpck_require__(4322).version;
+var http = __nccwpck_require__(3685);
+var https = __nccwpck_require__(5687);
+var httpFollow = (__nccwpck_require__(7707).http);
+var httpsFollow = (__nccwpck_require__(7707).https);
+var url = __nccwpck_require__(7310);
+var zlib = __nccwpck_require__(9796);
+var VERSION = (__nccwpck_require__(4322).version);
 var createError = __nccwpck_require__(5226);
 var enhanceError = __nccwpck_require__(1516);
 var defaults = __nccwpck_require__(8190);
@@ -653,7 +653,7 @@ axios.Axios = Axios;
 axios.Cancel = __nccwpck_require__(8875);
 axios.CancelToken = __nccwpck_require__(1587);
 axios.isCancel = __nccwpck_require__(4057);
-axios.VERSION = __nccwpck_require__(4322).version;
+axios.VERSION = (__nccwpck_require__(4322).version);
 
 // Expose all/spread
 axios.all = function all(promises) {
@@ -667,7 +667,7 @@ axios.isAxiosError = __nccwpck_require__(650);
 module.exports = axios;
 
 // Allow use of default import syntax in TypeScript
-module.exports.default = axios;
+module.exports["default"] = axios;
 
 
 /***/ }),
@@ -1997,7 +1997,7 @@ module.exports = function spread(callback) {
 "use strict";
 
 
-var VERSION = __nccwpck_require__(4322).version;
+var VERSION = (__nccwpck_require__(4322).version);
 
 var validators = {};
 
@@ -2647,7 +2647,7 @@ exports.Colors = Colors;
 function color(str) {
     return (new Colors(str));
 }
-exports.default = color;
+exports["default"] = color;
 function echo(colorSting) {
     console.log(colorSting.toString());
 }
@@ -2721,7 +2721,7 @@ Object.keys(colors_1.styles).forEach((styleName) => {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const process_1 = __nccwpck_require__(1765);
+const process_1 = __nccwpck_require__(7282);
 class System {
     static colorSupported() {
         let supported = false;
@@ -3341,8 +3341,8 @@ if (typeof process === 'undefined' || process.type === 'renderer' || process.bro
  * Module dependencies.
  */
 
-const tty = __nccwpck_require__(3867);
-const util = __nccwpck_require__(1669);
+const tty = __nccwpck_require__(6224);
+const util = __nccwpck_require__(3837);
 
 /**
  * This is the Node.js implementation of `debug()`.
@@ -3604,327 +3604,6 @@ formatters.O = function (v) {
 
 /***/ }),
 
-/***/ 5276:
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __nccwpck_require__) => {
-
-"use strict";
-/* harmony export */ __nccwpck_require__.d(__webpack_exports__, {
-/* harmony export */   "Z": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* unused harmony export File */
-/* harmony import */ var _index_js__WEBPACK_IMPORTED_MODULE_0__ = __nccwpck_require__(6792);
-
-
-const _File = class File extends _index_js__WEBPACK_IMPORTED_MODULE_0__/* .default */ .Z {
-  #lastModified = 0
-  #name = ''
-
-  /**
-   * @param {*[]} fileBits
-   * @param {string} fileName
-   * @param {{lastModified?: number, type?: string}} options
-   */// @ts-ignore
-  constructor (fileBits, fileName, options = {}) {
-    if (arguments.length < 2) {
-      throw new TypeError(`Failed to construct 'File': 2 arguments required, but only ${arguments.length} present.`)
-    }
-    super(fileBits, options)
-
-    if (options === null) options = {}
-
-    // Simulate WebIDL type casting for NaN value in lastModified option.
-    const lastModified = options.lastModified === undefined ? Date.now() : Number(options.lastModified)
-    if (!Number.isNaN(lastModified)) {
-      this.#lastModified = lastModified
-    }
-
-    this.#name = String(fileName)
-  }
-
-  get name () {
-    return this.#name
-  }
-
-  get lastModified () {
-    return this.#lastModified
-  }
-
-  get [Symbol.toStringTag] () {
-    return 'File'
-  }
-}
-
-/** @type {typeof globalThis.File} */// @ts-ignore
-const File = _File
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (File);
-
-
-/***/ }),
-
-/***/ 6792:
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __nccwpck_require__) => {
-
-"use strict";
-/* harmony export */ __nccwpck_require__.d(__webpack_exports__, {
-/* harmony export */   "Z": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* unused harmony export Blob */
-/* harmony import */ var _streams_cjs__WEBPACK_IMPORTED_MODULE_0__ = __nccwpck_require__(8010);
-/*! fetch-blob. MIT License. Jimmy Wärting <https://jimmy.warting.se/opensource> */
-
-// TODO (jimmywarting): in the feature use conditional loading with top level await (requires 14.x)
-// Node has recently added whatwg stream into core
-
-
-
-/** @typedef {import('buffer').Blob} NodeBlob} */
-
-// 64 KiB (same size chrome slice theirs blob into Uint8array's)
-const POOL_SIZE = 65536
-
-/** @param {(Blob | NodeBlob | Uint8Array)[]} parts */
-async function * toIterator (parts, clone = true) {
-  for (const part of parts) {
-    if ('stream' in part) {
-      yield * part.stream()
-    } else if (ArrayBuffer.isView(part)) {
-      if (clone) {
-        let position = part.byteOffset
-        const end = part.byteOffset + part.byteLength
-        while (position !== end) {
-          const size = Math.min(end - position, POOL_SIZE)
-          const chunk = part.buffer.slice(position, position + size)
-          position += chunk.byteLength
-          yield new Uint8Array(chunk)
-        }
-      } else {
-        yield part
-      }
-    } else {
-      /* c8 ignore start */
-      // For blobs that have arrayBuffer but no stream method (nodes buffer.Blob)
-      let position = 0
-      while (position !== part.size) {
-        const chunk = part.slice(position, Math.min(part.size, position + POOL_SIZE))
-        const buffer = await chunk.arrayBuffer()
-        position += buffer.byteLength
-        yield new Uint8Array(buffer)
-      }
-      /* c8 ignore end */
-    }
-  }
-}
-
-const _Blob = class Blob {
-  /** @type {Array.<(Blob|Uint8Array)>} */
-  #parts = []
-  #type = ''
-  #size = 0
-
-  /**
-   * The Blob() constructor returns a new Blob object. The content
-   * of the blob consists of the concatenation of the values given
-   * in the parameter array.
-   *
-   * @param {*} blobParts
-   * @param {{ type?: string }} [options]
-   */
-  constructor (blobParts = [], options = {}) {
-    if (typeof blobParts !== 'object' || blobParts === null) {
-      throw new TypeError('Failed to construct \'Blob\': The provided value cannot be converted to a sequence.')
-    }
-
-    if (typeof blobParts[Symbol.iterator] !== 'function') {
-      throw new TypeError('Failed to construct \'Blob\': The object must have a callable @@iterator property.')
-    }
-
-    if (typeof options !== 'object' && typeof options !== 'function') {
-      throw new TypeError('Failed to construct \'Blob\': parameter 2 cannot convert to dictionary.')
-    }
-
-    if (options === null) options = {}
-
-    const encoder = new TextEncoder()
-    for (const element of blobParts) {
-      let part
-      if (ArrayBuffer.isView(element)) {
-        part = new Uint8Array(element.buffer.slice(element.byteOffset, element.byteOffset + element.byteLength))
-      } else if (element instanceof ArrayBuffer) {
-        part = new Uint8Array(element.slice(0))
-      } else if (element instanceof Blob) {
-        part = element
-      } else {
-        part = encoder.encode(element)
-      }
-
-      this.#size += ArrayBuffer.isView(part) ? part.byteLength : part.size
-      this.#parts.push(part)
-    }
-
-    const type = options.type === undefined ? '' : String(options.type)
-
-    this.#type = /^[\x20-\x7E]*$/.test(type) ? type : ''
-  }
-
-  /**
-   * The Blob interface's size property returns the
-   * size of the Blob in bytes.
-   */
-  get size () {
-    return this.#size
-  }
-
-  /**
-   * The type property of a Blob object returns the MIME type of the file.
-   */
-  get type () {
-    return this.#type
-  }
-
-  /**
-   * The text() method in the Blob interface returns a Promise
-   * that resolves with a string containing the contents of
-   * the blob, interpreted as UTF-8.
-   *
-   * @return {Promise<string>}
-   */
-  async text () {
-    // More optimized than using this.arrayBuffer()
-    // that requires twice as much ram
-    const decoder = new TextDecoder()
-    let str = ''
-    for await (const part of toIterator(this.#parts, false)) {
-      str += decoder.decode(part, { stream: true })
-    }
-    // Remaining
-    str += decoder.decode()
-    return str
-  }
-
-  /**
-   * The arrayBuffer() method in the Blob interface returns a
-   * Promise that resolves with the contents of the blob as
-   * binary data contained in an ArrayBuffer.
-   *
-   * @return {Promise<ArrayBuffer>}
-   */
-  async arrayBuffer () {
-    // Easier way... Just a unnecessary overhead
-    // const view = new Uint8Array(this.size);
-    // await this.stream().getReader({mode: 'byob'}).read(view);
-    // return view.buffer;
-
-    const data = new Uint8Array(this.size)
-    let offset = 0
-    for await (const chunk of toIterator(this.#parts, false)) {
-      data.set(chunk, offset)
-      offset += chunk.length
-    }
-
-    return data.buffer
-  }
-
-  stream () {
-    const it = toIterator(this.#parts, true)
-
-    return new globalThis.ReadableStream({
-      type: 'bytes',
-      async pull (ctrl) {
-        const chunk = await it.next()
-        chunk.done ? ctrl.close() : ctrl.enqueue(chunk.value)
-      },
-
-      async cancel () {
-        await it.return()
-      }
-    })
-  }
-
-  /**
-   * The Blob interface's slice() method creates and returns a
-   * new Blob object which contains data from a subset of the
-   * blob on which it's called.
-   *
-   * @param {number} [start]
-   * @param {number} [end]
-   * @param {string} [type]
-   */
-  slice (start = 0, end = this.size, type = '') {
-    const { size } = this
-
-    let relativeStart = start < 0 ? Math.max(size + start, 0) : Math.min(start, size)
-    let relativeEnd = end < 0 ? Math.max(size + end, 0) : Math.min(end, size)
-
-    const span = Math.max(relativeEnd - relativeStart, 0)
-    const parts = this.#parts
-    const blobParts = []
-    let added = 0
-
-    for (const part of parts) {
-      // don't add the overflow to new blobParts
-      if (added >= span) {
-        break
-      }
-
-      const size = ArrayBuffer.isView(part) ? part.byteLength : part.size
-      if (relativeStart && size <= relativeStart) {
-        // Skip the beginning and change the relative
-        // start & end position as we skip the unwanted parts
-        relativeStart -= size
-        relativeEnd -= size
-      } else {
-        let chunk
-        if (ArrayBuffer.isView(part)) {
-          chunk = part.subarray(relativeStart, Math.min(size, relativeEnd))
-          added += chunk.byteLength
-        } else {
-          chunk = part.slice(relativeStart, Math.min(size, relativeEnd))
-          added += chunk.size
-        }
-        relativeEnd -= size
-        blobParts.push(chunk)
-        relativeStart = 0 // All next sequential parts should start at 0
-      }
-    }
-
-    const blob = new Blob([], { type: String(type).toLowerCase() })
-    blob.#size = span
-    blob.#parts = blobParts
-
-    return blob
-  }
-
-  get [Symbol.toStringTag] () {
-    return 'Blob'
-  }
-
-  static [Symbol.hasInstance] (object) {
-    return (
-      object &&
-      typeof object === 'object' &&
-      typeof object.constructor === 'function' &&
-      (
-        typeof object.stream === 'function' ||
-        typeof object.arrayBuffer === 'function'
-      ) &&
-      /^(Blob|File)$/.test(object[Symbol.toStringTag])
-    )
-  }
-}
-
-Object.defineProperties(_Blob.prototype, {
-  size: { enumerable: true },
-  type: { enumerable: true },
-  slice: { enumerable: true }
-})
-
-/** @type {typeof globalThis.Blob} */
-const Blob = _Blob
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Blob);
-
-
-/***/ }),
-
 /***/ 1133:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
@@ -3950,12 +3629,12 @@ module.exports = function () {
 /***/ 7707:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
-var url = __nccwpck_require__(8835);
+var url = __nccwpck_require__(7310);
 var URL = url.URL;
-var http = __nccwpck_require__(8605);
-var https = __nccwpck_require__(7211);
-var Writable = __nccwpck_require__(2413).Writable;
-var assert = __nccwpck_require__(2357);
+var http = __nccwpck_require__(3685);
+var https = __nccwpck_require__(5687);
+var Writable = (__nccwpck_require__(2781).Writable);
+var assert = __nccwpck_require__(9491);
 var debug = __nccwpck_require__(1133);
 
 // Create handlers that pass events from native requests
@@ -4488,61 +4167,6 @@ function abortRequest(request) {
 // Exports
 module.exports = wrap({ http: http, https: https });
 module.exports.wrap = wrap;
-
-
-/***/ }),
-
-/***/ 1402:
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __nccwpck_require__) => {
-
-"use strict";
-/* harmony export */ __nccwpck_require__.d(__webpack_exports__, {
-/* harmony export */   "Ct": () => (/* binding */ FormData),
-/* harmony export */   "au": () => (/* binding */ formDataToBlob)
-/* harmony export */ });
-/* unused harmony export File */
-/* harmony import */ var fetch_blob__WEBPACK_IMPORTED_MODULE_0__ = __nccwpck_require__(6792);
-/* harmony import */ var fetch_blob_file_js__WEBPACK_IMPORTED_MODULE_1__ = __nccwpck_require__(5276);
-/*! formdata-polyfill. MIT License. Jimmy Wärting <https://jimmy.warting.se/opensource> */
-
-
-
-
-var {toStringTag:t,iterator:i,hasInstance:h}=Symbol,
-r=Math.random,
-m='append,set,get,getAll,delete,keys,values,entries,forEach,constructor'.split(','),
-f=(a,b,c)=>(a+='',/^(Blob|File)$/.test(b && b[t])?[(c=c!==void 0?c+'':b[t]=='File'?b.name:'blob',a),b.name!==c||b[t]=='blob'?new fetch_blob_file_js__WEBPACK_IMPORTED_MODULE_1__/* .default */ .Z([b],c,b):b]:[a,b+'']),
-e=(c,f)=>(f?c:c.replace(/\r?\n|\r/g,'\r\n')).replace(/\n/g,'%0A').replace(/\r/g,'%0D').replace(/"/g,'%22'),
-x=(n, a, e)=>{if(a.length<e){throw new TypeError(`Failed to execute '${n}' on 'FormData': ${e} arguments required, but only ${a.length} present.`)}}
-
-const File = (/* unused pure expression or super */ null && (F))
-
-/** @type {typeof globalThis.FormData} */
-const FormData = class FormData {
-#d=[];
-constructor(...a){if(a.length)throw new TypeError(`Failed to construct 'FormData': parameter 1 is not of type 'HTMLFormElement'.`)}
-get [t]() {return 'FormData'}
-[i](){return this.entries()}
-static [h](o) {return o&&typeof o==='object'&&o[t]==='FormData'&&!m.some(m=>typeof o[m]!='function')}
-append(...a){x('append',arguments,2);this.#d.push(f(...a))}
-delete(a){x('delete',arguments,1);a+='';this.#d=this.#d.filter(([b])=>b!==a)}
-get(a){x('get',arguments,1);a+='';for(var b=this.#d,l=b.length,c=0;c<l;c++)if(b[c][0]===a)return b[c][1];return null}
-getAll(a,b){x('getAll',arguments,1);b=[];a+='';this.#d.forEach(c=>c[0]===a&&b.push(c[1]));return b}
-has(a){x('has',arguments,1);a+='';return this.#d.some(b=>b[0]===a)}
-forEach(a,b){x('forEach',arguments,1);for(var [c,d]of this)a.call(b,d,c,this)}
-set(...a){x('set',arguments,2);var b=[],c=!0;a=f(...a);this.#d.forEach(d=>{d[0]===a[0]?c&&(c=!b.push(a)):b.push(d)});c&&b.push(a);this.#d=b}
-*entries(){yield*this.#d}
-*keys(){for(var[a]of this)yield a}
-*values(){for(var[,a]of this)yield a}}
-
-/** @param {FormData} F */
-function formDataToBlob (F,B=fetch_blob__WEBPACK_IMPORTED_MODULE_0__/* .default */ .Z){
-var b=`${r()}${r()}`.replace(/\./g, '').slice(-28).padStart(32, '-'),c=[],p=`--${b}\r\nContent-Disposition: form-data; name="`
-F.forEach((v,n)=>typeof v=='string'
-?c.push(p+e(n)+`"\r\n\r\n${v.replace(/\r(?!\n)|(?<!\r)\n/g, '\r\n')}\r\n`)
-:c.push(p+e(n)+`"; filename="${e(v.name, 1)}"\r\nContent-Type: ${v.type||"application/octet-stream"}\r\n\r\n`, v, '\r\n'))
-c.push(`--${b}--`)
-return new B(c,{type:"multipart/form-data; boundary="+b})}
 
 
 /***/ }),
@@ -21954,8 +21578,8 @@ function plural(ms, msAbs, n, name) {
 
 "use strict";
 
-const os = __nccwpck_require__(2087);
-const tty = __nccwpck_require__(3867);
+const os = __nccwpck_require__(2037);
+const tty = __nccwpck_require__(6224);
 const hasFlag = __nccwpck_require__(1621);
 
 const {env} = process;
@@ -27571,7 +27195,7 @@ module.exports = Limiter;
 "use strict";
 
 
-const zlib = __nccwpck_require__(8761);
+const zlib = __nccwpck_require__(9796);
 
 const bufferUtil = __nccwpck_require__(9436);
 const Limiter = __nccwpck_require__(1356);
@@ -28090,7 +27714,7 @@ function inflateOnError(err) {
 "use strict";
 
 
-const { Writable } = __nccwpck_require__(2413);
+const { Writable } = __nccwpck_require__(2781);
 
 const PerMessageDeflate = __nccwpck_require__(6684);
 const {
@@ -28712,9 +28336,9 @@ function error(ErrorCtor, message, prefix, statusCode, errorCode) {
 
 
 
-const net = __nccwpck_require__(1631);
-const tls = __nccwpck_require__(4016);
-const { randomFillSync } = __nccwpck_require__(6417);
+const net = __nccwpck_require__(1808);
+const tls = __nccwpck_require__(4404);
+const { randomFillSync } = __nccwpck_require__(6113);
 
 const PerMessageDeflate = __nccwpck_require__(6684);
 const { EMPTY_BUFFER } = __nccwpck_require__(5949);
@@ -28785,8 +28409,8 @@ class Sender {
     if (payloadLength === 126) {
       target.writeUInt16BE(data.length, 2);
     } else if (payloadLength === 127) {
-      target.writeUInt32BE(0, 2);
-      target.writeUInt32BE(data.length, 6);
+      target[2] = target[3] = 0;
+      target.writeUIntBE(data.length, 4, 6);
     }
 
     if (!options.mask) return [target, data];
@@ -29140,7 +28764,7 @@ module.exports = Sender;
 "use strict";
 
 
-const { Duplex } = __nccwpck_require__(2413);
+const { Duplex } = __nccwpck_require__(2781);
 
 /**
  * Emits the `'close'` event on a stream.
@@ -29187,22 +28811,7 @@ function duplexOnError(err) {
  * @public
  */
 function createWebSocketStream(ws, options) {
-  let resumeOnReceiverDrain = true;
   let terminateOnDestroy = true;
-
-  function receiverOnDrain() {
-    if (resumeOnReceiverDrain) ws._socket.resume();
-  }
-
-  if (ws.readyState === ws.CONNECTING) {
-    ws.once('open', function open() {
-      ws._receiver.removeAllListeners('drain');
-      ws._receiver.on('drain', receiverOnDrain);
-    });
-  } else {
-    ws._receiver.removeAllListeners('drain');
-    ws._receiver.on('drain', receiverOnDrain);
-  }
 
   const duplex = new Duplex({
     ...options,
@@ -29216,10 +28825,7 @@ function createWebSocketStream(ws, options) {
     const data =
       !isBinary && duplex._readableState.objectMode ? msg.toString() : msg;
 
-    if (!duplex.push(data)) {
-      resumeOnReceiverDrain = false;
-      ws._socket.pause();
-    }
+    if (!duplex.push(data)) ws.pause();
   });
 
   ws.once('error', function error(err) {
@@ -29295,10 +28901,7 @@ function createWebSocketStream(ws, options) {
   };
 
   duplex._read = function () {
-    if (ws.readyState === ws.OPEN && !resumeOnReceiverDrain) {
-      resumeOnReceiverDrain = true;
-      if (!ws._receiver._writableState.needDrain) ws._socket.resume();
-    }
+    if (ws.isPaused) ws.resume();
   };
 
   duplex._write = function (chunk, encoding, callback) {
@@ -29532,12 +29135,12 @@ try {
 
 
 
-const EventEmitter = __nccwpck_require__(8614);
-const http = __nccwpck_require__(8605);
-const https = __nccwpck_require__(7211);
-const net = __nccwpck_require__(1631);
-const tls = __nccwpck_require__(4016);
-const { createHash } = __nccwpck_require__(6417);
+const EventEmitter = __nccwpck_require__(2361);
+const http = __nccwpck_require__(3685);
+const https = __nccwpck_require__(5687);
+const net = __nccwpck_require__(1808);
+const tls = __nccwpck_require__(4404);
+const { createHash } = __nccwpck_require__(6113);
 
 const extension = __nccwpck_require__(2035);
 const PerMessageDeflate = __nccwpck_require__(6684);
@@ -30025,14 +29628,14 @@ function abortHandshake(socket, code, message, headers) {
 
 
 
-const EventEmitter = __nccwpck_require__(8614);
-const https = __nccwpck_require__(7211);
-const http = __nccwpck_require__(8605);
-const net = __nccwpck_require__(1631);
-const tls = __nccwpck_require__(4016);
-const { randomBytes, createHash } = __nccwpck_require__(6417);
-const { Readable } = __nccwpck_require__(2413);
-const { URL } = __nccwpck_require__(8835);
+const EventEmitter = __nccwpck_require__(2361);
+const https = __nccwpck_require__(5687);
+const http = __nccwpck_require__(3685);
+const net = __nccwpck_require__(1808);
+const tls = __nccwpck_require__(4404);
+const { randomBytes, createHash } = __nccwpck_require__(6113);
+const { Readable } = __nccwpck_require__(2781);
+const { URL } = __nccwpck_require__(7310);
 
 const PerMessageDeflate = __nccwpck_require__(6684);
 const Receiver = __nccwpck_require__(5066);
@@ -30081,6 +29684,7 @@ class WebSocket extends EventEmitter {
     this._closeMessage = EMPTY_BUFFER;
     this._closeTimer = null;
     this._extensions = {};
+    this._paused = false;
     this._protocol = '';
     this._readyState = WebSocket.CONNECTING;
     this._receiver = null;
@@ -30145,6 +29749,13 @@ class WebSocket extends EventEmitter {
    */
   get extensions() {
     return Object.keys(this._extensions).join();
+  }
+
+  /**
+   * @type {Boolean}
+   */
+  get isPaused() {
+    return this._paused;
   }
 
   /**
@@ -30336,6 +29947,23 @@ class WebSocket extends EventEmitter {
   }
 
   /**
+   * Pause the socket.
+   *
+   * @public
+   */
+  pause() {
+    if (
+      this.readyState === WebSocket.CONNECTING ||
+      this.readyState === WebSocket.CLOSED
+    ) {
+      return;
+    }
+
+    this._paused = true;
+    this._socket.pause();
+  }
+
+  /**
    * Send a ping.
    *
    * @param {*} [data] The data to send
@@ -30397,6 +30025,23 @@ class WebSocket extends EventEmitter {
 
     if (mask === undefined) mask = !this._isServer;
     this._sender.pong(data || EMPTY_BUFFER, mask, cb);
+  }
+
+  /**
+   * Resume the socket.
+   *
+   * @public
+   */
+  resume() {
+    if (
+      this.readyState === WebSocket.CONNECTING ||
+      this.readyState === WebSocket.CLOSED
+    ) {
+      return;
+    }
+
+    this._paused = false;
+    if (!this._receiver._writableState.needDrain) this._socket.resume();
   }
 
   /**
@@ -30541,6 +30186,7 @@ Object.defineProperty(WebSocket.prototype, 'CLOSED', {
   'binaryType',
   'bufferedAmount',
   'extensions',
+  'isPaused',
   'protocol',
   'readyState',
   'url'
@@ -30653,19 +30299,26 @@ function initAsClient(websocket, address, protocols, options) {
 
   const isSecure = parsedUrl.protocol === 'wss:';
   const isUnixSocket = parsedUrl.protocol === 'ws+unix:';
+  let invalidURLMessage;
 
   if (parsedUrl.protocol !== 'ws:' && !isSecure && !isUnixSocket) {
-    throw new SyntaxError(
-      'The URL\'s protocol must be one of "ws:", "wss:", or "ws+unix:"'
-    );
+    invalidURLMessage =
+      'The URL\'s protocol must be one of "ws:", "wss:", or "ws+unix:"';
+  } else if (isUnixSocket && !parsedUrl.pathname) {
+    invalidURLMessage = "The URL's pathname is empty";
+  } else if (parsedUrl.hash) {
+    invalidURLMessage = 'The URL contains a fragment identifier';
   }
 
-  if (isUnixSocket && !parsedUrl.pathname) {
-    throw new SyntaxError("The URL's pathname is empty");
-  }
+  if (invalidURLMessage) {
+    const err = new SyntaxError(invalidURLMessage);
 
-  if (parsedUrl.hash) {
-    throw new SyntaxError('The URL contains a fragment identifier');
+    if (websocket._redirects === 0) {
+      throw err;
+    } else {
+      emitErrorAndClose(websocket, err);
+      return;
+    }
   }
 
   const defaultPort = isSecure ? 443 : 80;
@@ -30747,9 +30400,7 @@ function initAsClient(websocket, address, protocols, options) {
     if (req === null || req.aborted) return;
 
     req = websocket._req = null;
-    websocket._readyState = WebSocket.CLOSING;
-    websocket.emit('error', err);
-    websocket.emitClose();
+    emitErrorAndClose(websocket, err);
   });
 
   req.on('response', (res) => {
@@ -30769,7 +30420,15 @@ function initAsClient(websocket, address, protocols, options) {
 
       req.abort();
 
-      const addr = new URL(location, address);
+      let addr;
+
+      try {
+        addr = new URL(location, address);
+      } catch (e) {
+        const err = new SyntaxError(`Invalid URL: ${location}`);
+        emitErrorAndClose(websocket, err);
+        return;
+      }
 
       initAsClient(websocket, addr, protocols, options);
     } else if (!websocket.emit('unexpected-response', req, res)) {
@@ -30870,6 +30529,19 @@ function initAsClient(websocket, address, protocols, options) {
       skipUTF8Validation: opts.skipUTF8Validation
     });
   });
+}
+
+/**
+ * Emit the `'error'` and `'close'` event.
+ *
+ * @param {WebSocket} websocket The WebSocket instance
+ * @param {Error} The error to emit
+ * @private
+ */
+function emitErrorAndClose(websocket, err) {
+  websocket._readyState = WebSocket.CLOSING;
+  websocket.emit('error', err);
+  websocket.emitClose();
 }
 
 /**
@@ -30998,7 +30670,9 @@ function receiverOnConclude(code, reason) {
  * @private
  */
 function receiverOnDrain() {
-  this[kWebSocket]._socket.resume();
+  const websocket = this[kWebSocket];
+
+  if (!websocket.isPaused) websocket._socket.resume();
 }
 
 /**
@@ -31174,7 +30848,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 8380:
+/***/ 5803:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -31189,7 +30863,7 @@ __nccwpck_require__.d(__webpack_exports__, {
 });
 
 ;// CONCATENATED MODULE: ./package.json
-const package_namespaceObject = JSON.parse('{"name":"mooncord","version":"0.0.5","description":"Moonraker Discord Bot based on Discord.js","main":"index.js","scripts":{"start":"node dist/index.js","debugstart":"node --trace_gc --trace-deprecation --trace-warnings --trace-uncaught --track-heap-objects dist/index.js","checkcodestyle":"npx eslint ./**","autofixcodestyle":"npx eslint ./** --fix","build":"ncc build -m -d -e discord.js -e sharp src/Application.ts -o dist","watch":"ncc build -w -d -e discord.js -e sharp src/Application.ts -o dist"},"repository":{"type":"git","url":"git+https://github.com/eliteSchwein/mooncord.git"},"keywords":[],"author":"eliteSCHW31N","license":"ISC","bugs":{"url":"https://github.com/eliteSchwein/mooncord/issues"},"homepage":"https://github.com/eliteSchwein/mooncord#readme","devDependencies":{"@types/node":"^16.11.7","@types/sharp":"^0.29.3","@vercel/ncc":"^0.31.1","async-wait-until":"^2.0.8","axios":"^0.24.0","colorts":"^0.1.63","eslint":"^8.2.0","eslint-config-galex":"^3.3.3","eslint-config-standard":"^16.0.3","eslint-plugin-import":"^2.25.3","eslint-plugin-node":"^11.1.0","eslint-plugin-promise":"^5.1.1","form-data":"^4.0.0","lodash":"^4.17.21","node-fetch":"^3.1.0","shelljs":"^0.8.4","typescript":"^4.4.4","websocket-ts":"^1.1.1","ws":"^8.2.3"},"dependencies":{"discord.js":"^13.3.1","sharp":"^0.29.3"}}');
+const package_namespaceObject = JSON.parse('{"name":"mooncord","version":"0.0.5","description":"Moonraker Discord Bot based on Discord.js","main":"index.js","scripts":{"start":"node dist/index.js","debugstart":"node --trace_gc --trace-deprecation --trace-warnings --trace-uncaught --track-heap-objects dist/index.js","checkcodestyle":"npx eslint ./**","autofixcodestyle":"npx eslint ./** --fix","build":"ncc build -m -d -e discord.js -e sharp src/Application.ts -o dist","watch":"ncc build -w -d -e discord.js -e sharp src/Application.ts -o dist"},"repository":{"type":"git","url":"git+https://github.com/eliteSchwein/mooncord.git"},"keywords":[],"author":"eliteSCHW31N","license":"ISC","bugs":{"url":"https://github.com/eliteSchwein/mooncord/issues"},"homepage":"https://github.com/eliteSchwein/mooncord#readme","devDependencies":{"@types/node":"^16.11.9","@types/sharp":"^0.29.4","@vercel/ncc":"^0.32.0","async-wait-until":"^2.0.9","axios":"^0.24.0","colorts":"^0.1.63","eslint":"^8.3.0","eslint-config-galex":"^3.3.4","eslint-config-standard":"^16.0.3","eslint-plugin-import":"^2.25.3","eslint-plugin-node":"^11.1.0","eslint-plugin-promise":"^5.1.1","form-data":"^4.0.0","lodash":"^4.17.21","node-fetch":"^3.1.0","shelljs":"^0.8.4","typescript":"^4.5.2","websocket-ts":"^1.1.1","ws":"^8.3.0"},"dependencies":{"discord.js":"^13.3.1","sharp":"^0.29.3"}}');
 var package_namespaceObject_0 = /*#__PURE__*/__nccwpck_require__.t(package_namespaceObject, 2);
 // EXTERNAL MODULE: ./node_modules/async-wait-until/dist/index.js
 var dist = __nccwpck_require__(1299);
@@ -31203,7 +30877,7 @@ var external_path_default = /*#__PURE__*/__nccwpck_require__.n(external_path_nam
 // EXTERNAL MODULE: ./node_modules/colorts/lib/string.js
 var string = __nccwpck_require__(692);
 // EXTERNAL MODULE: external "util"
-var external_util_ = __nccwpck_require__(1669);
+var external_util_ = __nccwpck_require__(3837);
 ;// CONCATENATED MODULE: ./src/helper/LoggerHelper.ts
 
 
@@ -31451,18 +31125,15 @@ function formatPercent(percent, digits) {
     return (percent * 100).toFixed(digits);
 }
 function parsePageData(rawData, data) {
-    let parsedData = rawData;
-    rawData.replace(/(\${data)*.*(})/g, (match, $1) => {
-        console.log('match:' + match);
+    const parsedData = rawData.replace(/(\${data).*?(})/g, (match) => {
         const dataProperty = match
             .replace(/(\${data.)/g, '')
             .replace(/(})/g, '');
-        console.log('prop:' + data[dataProperty]);
-        console.log('test:' + rawData);
-        parsedData = rawData.replace(match, data[dataProperty]);
+        if (typeof data[dataProperty] === 'undefined') {
+            return match;
+        }
         return data[dataProperty];
     });
-    console.log(parsedData);
     return parsedData;
 }
 function stripAnsi(input) {
@@ -31792,7 +31463,6 @@ class DiscordInputGenerator {
         for (const data of selectionData.data) {
             const selectionMetaRaw = JSON.stringify(selectionMeta);
             const selectionMetaParsed = JSON.parse(parsePageData(selectionMetaRaw, data));
-            console.log(selectionMetaParsed);
             selection.addOptions([{
                     label: selectionMetaParsed.option_label,
                     description: selectionMetaParsed.option_description,
@@ -31887,9 +31557,9 @@ function dataUriToBuffer(uri) {
 ;// CONCATENATED MODULE: external "node:util"
 const external_node_util_namespaceObject = require("node:util");
 // EXTERNAL MODULE: ./node_modules/fetch-blob/index.js
-var fetch_blob = __nccwpck_require__(6792);
+var fetch_blob = __nccwpck_require__(1410);
 // EXTERNAL MODULE: ./node_modules/formdata-polyfill/esm.min.js
-var esm_min = __nccwpck_require__(1402);
+var esm_min = __nccwpck_require__(8010);
 ;// CONCATENATED MODULE: ./node_modules/node-fetch/src/errors/base.js
 class FetchBaseError extends Error {
 	constructor(message, type) {
@@ -32119,7 +31789,7 @@ class Body {
 			return formData;
 		}
 
-		const {toFormData} = await __nccwpck_require__.e(/* import() */ 478).then(__nccwpck_require__.bind(__nccwpck_require__, 478));
+		const {toFormData} = await __nccwpck_require__.e(/* import() */ 905).then(__nccwpck_require__.bind(__nccwpck_require__, 9905));
 		return toFormData(this.body, ct);
 	}
 
@@ -32828,7 +32498,7 @@ const getSearch = parsedURL => {
 };
 
 // EXTERNAL MODULE: external "net"
-var external_net_ = __nccwpck_require__(1631);
+var external_net_ = __nccwpck_require__(1808);
 ;// CONCATENATED MODULE: ./node_modules/node-fetch/src/utils/referrer.js
 
 
@@ -34231,7 +33901,7 @@ class EmbedHelper {
             mergeDeep(embedDataUnformatted, { fields: providedFields });
         }
         let embedRaw = JSON.stringify(embedDataUnformatted);
-        const placeholders = embedRaw.match(/(\${).*?}/g);
+        const placeholders = embedRaw.matchAll(/(\${).*?}/g);
         let files = [];
         let components = [];
         const response = {
@@ -34239,7 +33909,16 @@ class EmbedHelper {
         };
         if (placeholders !== null) {
             for (const placeholder of placeholders) {
-                embedRaw = embedRaw.replace(placeholder, this.parsePlaceholder(placeholder, providedPlaceholders));
+                const placeholderContent = this.parsePlaceholder(placeholder[0], providedPlaceholders);
+                if (!placeholderContent.double_dash) {
+                    const endPos = placeholder.index + placeholder[0].length;
+                    embedRaw = embedRaw.slice(0, placeholder.index - 1) +
+                        placeholderContent.content +
+                        embedRaw.slice(endPos + 1);
+                }
+                else {
+                    embedRaw = embedRaw.replace(placeholder[0], placeholderContent.content);
+                }
             }
         }
         const embedData = JSON.parse(embedRaw);
@@ -34248,8 +33927,8 @@ class EmbedHelper {
         const buttons = this.inputGenerator.generateButtons(embedData.buttons);
         const selection = this.inputGenerator.generateSelection(embedData.selection);
         files.push(thumbnail, image);
-        components.push(buttons);
         components.push(selection);
+        components.push(buttons);
         files = files.filter((element) => { return element != null; });
         components = components.filter((element) => { return element != null; });
         embed.setTitle(embedData.title);
@@ -34307,12 +33986,24 @@ class EmbedHelper {
         if (providedPlaceholders !== null) {
             const providedParser = providedPlaceholders[placeholderId];
             if (typeof providedParser !== 'undefined') {
-                if (typeof providedParser !== 'string') {
-                    return providedParser;
+                if (typeof providedParser === 'object') {
+                    return {
+                        'content': JSON.stringify(providedParser),
+                        'double_dash': false
+                    };
                 }
-                return providedParser
-                    .replace(/(")/g, '\'')
-                    .replace(/(\n)/g, '\\n');
+                if (typeof providedParser !== 'string') {
+                    return {
+                        'content': providedParser,
+                        'double_dash': true
+                    };
+                }
+                return {
+                    'content': providedParser
+                        .replace(/(")/g, '\'')
+                        .replace(/(\n)/g, '\\n'),
+                    'double_dash': true
+                };
             }
         }
         let cacheParser = findValue(placeholderId);
@@ -34324,12 +34015,18 @@ class EmbedHelper {
             cacheParser = this.getStateMessage();
         }
         if (typeof cacheParser === 'undefined') {
-            return "";
+            return {
+                'content': '',
+                'double_dash': true
+            };
         }
         cacheParser = String(cacheParser);
-        return cacheParser
-            .replace(/(")/g, '\'')
-            .replace(/(\n)/g, '\\n');
+        return {
+            'content': cacheParser
+                .replace(/(")/g, '\'')
+                .replace(/(\n)/g, '\\n'),
+            'double_dash': true
+        };
     }
     getStateMessage() {
         const webhookState = findValue('state.webhooks.state');
@@ -34966,7 +34663,7 @@ class PageHelper {
             const label = parsePageData(this.pageLocale.entry_label, entry);
             entries = `${entries}${label}\n`;
         }
-        return { 'entries': entries, 'raw_entries': JSON.stringify(rawEntries) };
+        return { 'entries': entries, 'raw_entries': rawEntries };
     }
     getLastPage() {
         return Math.floor(this.data.length / this.configHelper.getEntriesPerPage());
@@ -36131,7 +35828,167 @@ module.exports = eval("require")("utf-8-validate");
 
 /***/ }),
 
-/***/ 8010:
+/***/ 9491:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("assert");
+
+/***/ }),
+
+/***/ 4300:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("buffer");
+
+/***/ }),
+
+/***/ 6113:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("crypto");
+
+/***/ }),
+
+/***/ 2361:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("events");
+
+/***/ }),
+
+/***/ 3685:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("http");
+
+/***/ }),
+
+/***/ 5687:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("https");
+
+/***/ }),
+
+/***/ 1808:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("net");
+
+/***/ }),
+
+/***/ 7561:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("node:fs");
+
+/***/ }),
+
+/***/ 9411:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("node:path");
+
+/***/ }),
+
+/***/ 7742:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("node:process");
+
+/***/ }),
+
+/***/ 2477:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("node:stream/web");
+
+/***/ }),
+
+/***/ 4086:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("node:worker_threads");
+
+/***/ }),
+
+/***/ 2037:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("os");
+
+/***/ }),
+
+/***/ 7282:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("process");
+
+/***/ }),
+
+/***/ 2781:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("stream");
+
+/***/ }),
+
+/***/ 4404:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("tls");
+
+/***/ }),
+
+/***/ 6224:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("tty");
+
+/***/ }),
+
+/***/ 7310:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("url");
+
+/***/ }),
+
+/***/ 3837:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("util");
+
+/***/ }),
+
+/***/ 9796:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("zlib");
+
+/***/ }),
+
+/***/ 8572:
 /***/ ((__unused_webpack_module, __unused_webpack_exports, __nccwpck_require__) => {
 
 /* c8 ignore start */
@@ -36143,11 +36000,11 @@ if (!globalThis.ReadableStream) {
   // and it's preferred over the polyfilled version. So we also
   // suppress the warning that gets emitted by NodeJS for using it.
   try {
-    const process = __nccwpck_require__(8760)
+    const process = __nccwpck_require__(7742)
     const { emitWarning } = process
     try {
       process.emitWarning = () => {}
-      Object.assign(globalThis, __nccwpck_require__(9435))
+      Object.assign(globalThis, __nccwpck_require__(2477))
       process.emitWarning = emitWarning
     } catch (error) {
       process.emitWarning = emitWarning
@@ -36162,7 +36019,7 @@ if (!globalThis.ReadableStream) {
 try {
   // Don't use node: prefix for this, require+node: is not supported until node v14.14
   // Only `import()` can use prefix in 12.20 and later
-  const { Blob } = __nccwpck_require__(4293)
+  const { Blob } = __nccwpck_require__(4300)
   if (Blob && !Blob.prototype.stream) {
     Blob.prototype.stream = function name (params) {
       let position = 0
@@ -36189,163 +36046,379 @@ try {
 
 /***/ }),
 
-/***/ 2357:
-/***/ ((module) => {
+/***/ 3213:
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
-module.exports = require("assert");
+/* harmony export */ __nccwpck_require__.d(__webpack_exports__, {
+/* harmony export */   "Z": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* unused harmony export File */
+/* harmony import */ var _index_js__WEBPACK_IMPORTED_MODULE_0__ = __nccwpck_require__(1410);
+
+
+const _File = class File extends _index_js__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .Z {
+  #lastModified = 0
+  #name = ''
+
+  /**
+   * @param {*[]} fileBits
+   * @param {string} fileName
+   * @param {{lastModified?: number, type?: string}} options
+   */// @ts-ignore
+  constructor (fileBits, fileName, options = {}) {
+    if (arguments.length < 2) {
+      throw new TypeError(`Failed to construct 'File': 2 arguments required, but only ${arguments.length} present.`)
+    }
+    super(fileBits, options)
+
+    if (options === null) options = {}
+
+    // Simulate WebIDL type casting for NaN value in lastModified option.
+    const lastModified = options.lastModified === undefined ? Date.now() : Number(options.lastModified)
+    if (!Number.isNaN(lastModified)) {
+      this.#lastModified = lastModified
+    }
+
+    this.#name = String(fileName)
+  }
+
+  get name () {
+    return this.#name
+  }
+
+  get lastModified () {
+    return this.#lastModified
+  }
+
+  get [Symbol.toStringTag] () {
+    return 'File'
+  }
+}
+
+/** @type {typeof globalThis.File} */// @ts-ignore
+const File = _File
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (File);
+
 
 /***/ }),
 
-/***/ 4293:
-/***/ ((module) => {
+/***/ 1410:
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
-module.exports = require("buffer");
+/* harmony export */ __nccwpck_require__.d(__webpack_exports__, {
+/* harmony export */   "Z": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* unused harmony export Blob */
+/* harmony import */ var _streams_cjs__WEBPACK_IMPORTED_MODULE_0__ = __nccwpck_require__(8572);
+/*! fetch-blob. MIT License. Jimmy Wärting <https://jimmy.warting.se/opensource> */
+
+// TODO (jimmywarting): in the feature use conditional loading with top level await (requires 14.x)
+// Node has recently added whatwg stream into core
+
+
+
+/** @typedef {import('buffer').Blob} NodeBlob} */
+
+// 64 KiB (same size chrome slice theirs blob into Uint8array's)
+const POOL_SIZE = 65536
+
+/** @param {(Blob | NodeBlob | Uint8Array)[]} parts */
+async function * toIterator (parts, clone = true) {
+  for (const part of parts) {
+    if ('stream' in part) {
+      yield * part.stream()
+    } else if (ArrayBuffer.isView(part)) {
+      if (clone) {
+        let position = part.byteOffset
+        const end = part.byteOffset + part.byteLength
+        while (position !== end) {
+          const size = Math.min(end - position, POOL_SIZE)
+          const chunk = part.buffer.slice(position, position + size)
+          position += chunk.byteLength
+          yield new Uint8Array(chunk)
+        }
+      } else {
+        yield part
+      }
+    } else {
+      /* c8 ignore start */
+      // For blobs that have arrayBuffer but no stream method (nodes buffer.Blob)
+      let position = 0
+      while (position !== part.size) {
+        const chunk = part.slice(position, Math.min(part.size, position + POOL_SIZE))
+        const buffer = await chunk.arrayBuffer()
+        position += buffer.byteLength
+        yield new Uint8Array(buffer)
+      }
+      /* c8 ignore end */
+    }
+  }
+}
+
+const _Blob = class Blob {
+  /** @type {Array.<(Blob|Uint8Array)>} */
+  #parts = []
+  #type = ''
+  #size = 0
+
+  /**
+   * The Blob() constructor returns a new Blob object. The content
+   * of the blob consists of the concatenation of the values given
+   * in the parameter array.
+   *
+   * @param {*} blobParts
+   * @param {{ type?: string }} [options]
+   */
+  constructor (blobParts = [], options = {}) {
+    if (typeof blobParts !== 'object' || blobParts === null) {
+      throw new TypeError('Failed to construct \'Blob\': The provided value cannot be converted to a sequence.')
+    }
+
+    if (typeof blobParts[Symbol.iterator] !== 'function') {
+      throw new TypeError('Failed to construct \'Blob\': The object must have a callable @@iterator property.')
+    }
+
+    if (typeof options !== 'object' && typeof options !== 'function') {
+      throw new TypeError('Failed to construct \'Blob\': parameter 2 cannot convert to dictionary.')
+    }
+
+    if (options === null) options = {}
+
+    const encoder = new TextEncoder()
+    for (const element of blobParts) {
+      let part
+      if (ArrayBuffer.isView(element)) {
+        part = new Uint8Array(element.buffer.slice(element.byteOffset, element.byteOffset + element.byteLength))
+      } else if (element instanceof ArrayBuffer) {
+        part = new Uint8Array(element.slice(0))
+      } else if (element instanceof Blob) {
+        part = element
+      } else {
+        part = encoder.encode(element)
+      }
+
+      this.#size += ArrayBuffer.isView(part) ? part.byteLength : part.size
+      this.#parts.push(part)
+    }
+
+    const type = options.type === undefined ? '' : String(options.type)
+
+    this.#type = /^[\x20-\x7E]*$/.test(type) ? type : ''
+  }
+
+  /**
+   * The Blob interface's size property returns the
+   * size of the Blob in bytes.
+   */
+  get size () {
+    return this.#size
+  }
+
+  /**
+   * The type property of a Blob object returns the MIME type of the file.
+   */
+  get type () {
+    return this.#type
+  }
+
+  /**
+   * The text() method in the Blob interface returns a Promise
+   * that resolves with a string containing the contents of
+   * the blob, interpreted as UTF-8.
+   *
+   * @return {Promise<string>}
+   */
+  async text () {
+    // More optimized than using this.arrayBuffer()
+    // that requires twice as much ram
+    const decoder = new TextDecoder()
+    let str = ''
+    for await (const part of toIterator(this.#parts, false)) {
+      str += decoder.decode(part, { stream: true })
+    }
+    // Remaining
+    str += decoder.decode()
+    return str
+  }
+
+  /**
+   * The arrayBuffer() method in the Blob interface returns a
+   * Promise that resolves with the contents of the blob as
+   * binary data contained in an ArrayBuffer.
+   *
+   * @return {Promise<ArrayBuffer>}
+   */
+  async arrayBuffer () {
+    // Easier way... Just a unnecessary overhead
+    // const view = new Uint8Array(this.size);
+    // await this.stream().getReader({mode: 'byob'}).read(view);
+    // return view.buffer;
+
+    const data = new Uint8Array(this.size)
+    let offset = 0
+    for await (const chunk of toIterator(this.#parts, false)) {
+      data.set(chunk, offset)
+      offset += chunk.length
+    }
+
+    return data.buffer
+  }
+
+  stream () {
+    const it = toIterator(this.#parts, true)
+
+    return new globalThis.ReadableStream({
+      type: 'bytes',
+      async pull (ctrl) {
+        const chunk = await it.next()
+        chunk.done ? ctrl.close() : ctrl.enqueue(chunk.value)
+      },
+
+      async cancel () {
+        await it.return()
+      }
+    })
+  }
+
+  /**
+   * The Blob interface's slice() method creates and returns a
+   * new Blob object which contains data from a subset of the
+   * blob on which it's called.
+   *
+   * @param {number} [start]
+   * @param {number} [end]
+   * @param {string} [type]
+   */
+  slice (start = 0, end = this.size, type = '') {
+    const { size } = this
+
+    let relativeStart = start < 0 ? Math.max(size + start, 0) : Math.min(start, size)
+    let relativeEnd = end < 0 ? Math.max(size + end, 0) : Math.min(end, size)
+
+    const span = Math.max(relativeEnd - relativeStart, 0)
+    const parts = this.#parts
+    const blobParts = []
+    let added = 0
+
+    for (const part of parts) {
+      // don't add the overflow to new blobParts
+      if (added >= span) {
+        break
+      }
+
+      const size = ArrayBuffer.isView(part) ? part.byteLength : part.size
+      if (relativeStart && size <= relativeStart) {
+        // Skip the beginning and change the relative
+        // start & end position as we skip the unwanted parts
+        relativeStart -= size
+        relativeEnd -= size
+      } else {
+        let chunk
+        if (ArrayBuffer.isView(part)) {
+          chunk = part.subarray(relativeStart, Math.min(size, relativeEnd))
+          added += chunk.byteLength
+        } else {
+          chunk = part.slice(relativeStart, Math.min(size, relativeEnd))
+          added += chunk.size
+        }
+        relativeEnd -= size
+        blobParts.push(chunk)
+        relativeStart = 0 // All next sequential parts should start at 0
+      }
+    }
+
+    const blob = new Blob([], { type: String(type).toLowerCase() })
+    blob.#size = span
+    blob.#parts = blobParts
+
+    return blob
+  }
+
+  get [Symbol.toStringTag] () {
+    return 'Blob'
+  }
+
+  static [Symbol.hasInstance] (object) {
+    return (
+      object &&
+      typeof object === 'object' &&
+      typeof object.constructor === 'function' &&
+      (
+        typeof object.stream === 'function' ||
+        typeof object.arrayBuffer === 'function'
+      ) &&
+      /^(Blob|File)$/.test(object[Symbol.toStringTag])
+    )
+  }
+}
+
+Object.defineProperties(_Blob.prototype, {
+  size: { enumerable: true },
+  type: { enumerable: true },
+  slice: { enumerable: true }
+})
+
+/** @type {typeof globalThis.Blob} */
+const Blob = _Blob
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Blob);
+
 
 /***/ }),
 
-/***/ 6417:
-/***/ ((module) => {
+/***/ 8010:
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
-module.exports = require("crypto");
+/* harmony export */ __nccwpck_require__.d(__webpack_exports__, {
+/* harmony export */   "Ct": () => (/* binding */ FormData),
+/* harmony export */   "au": () => (/* binding */ formDataToBlob)
+/* harmony export */ });
+/* unused harmony export File */
+/* harmony import */ var fetch_blob__WEBPACK_IMPORTED_MODULE_0__ = __nccwpck_require__(1410);
+/* harmony import */ var fetch_blob_file_js__WEBPACK_IMPORTED_MODULE_1__ = __nccwpck_require__(3213);
+/*! formdata-polyfill. MIT License. Jimmy Wärting <https://jimmy.warting.se/opensource> */
 
-/***/ }),
 
-/***/ 8614:
-/***/ ((module) => {
 
-"use strict";
-module.exports = require("events");
 
-/***/ }),
+var {toStringTag:t,iterator:i,hasInstance:h}=Symbol,
+r=Math.random,
+m='append,set,get,getAll,delete,keys,values,entries,forEach,constructor'.split(','),
+f=(a,b,c)=>(a+='',/^(Blob|File)$/.test(b && b[t])?[(c=c!==void 0?c+'':b[t]=='File'?b.name:'blob',a),b.name!==c||b[t]=='blob'?new fetch_blob_file_js__WEBPACK_IMPORTED_MODULE_1__/* ["default"] */ .Z([b],c,b):b]:[a,b+'']),
+e=(c,f)=>(f?c:c.replace(/\r?\n|\r/g,'\r\n')).replace(/\n/g,'%0A').replace(/\r/g,'%0D').replace(/"/g,'%22'),
+x=(n, a, e)=>{if(a.length<e){throw new TypeError(`Failed to execute '${n}' on 'FormData': ${e} arguments required, but only ${a.length} present.`)}}
 
-/***/ 8605:
-/***/ ((module) => {
+const File = (/* unused pure expression or super */ null && (F))
 
-"use strict";
-module.exports = require("http");
+/** @type {typeof globalThis.FormData} */
+const FormData = class FormData {
+#d=[];
+constructor(...a){if(a.length)throw new TypeError(`Failed to construct 'FormData': parameter 1 is not of type 'HTMLFormElement'.`)}
+get [t]() {return 'FormData'}
+[i](){return this.entries()}
+static [h](o) {return o&&typeof o==='object'&&o[t]==='FormData'&&!m.some(m=>typeof o[m]!='function')}
+append(...a){x('append',arguments,2);this.#d.push(f(...a))}
+delete(a){x('delete',arguments,1);a+='';this.#d=this.#d.filter(([b])=>b!==a)}
+get(a){x('get',arguments,1);a+='';for(var b=this.#d,l=b.length,c=0;c<l;c++)if(b[c][0]===a)return b[c][1];return null}
+getAll(a,b){x('getAll',arguments,1);b=[];a+='';this.#d.forEach(c=>c[0]===a&&b.push(c[1]));return b}
+has(a){x('has',arguments,1);a+='';return this.#d.some(b=>b[0]===a)}
+forEach(a,b){x('forEach',arguments,1);for(var [c,d]of this)a.call(b,d,c,this)}
+set(...a){x('set',arguments,2);var b=[],c=!0;a=f(...a);this.#d.forEach(d=>{d[0]===a[0]?c&&(c=!b.push(a)):b.push(d)});c&&b.push(a);this.#d=b}
+*entries(){yield*this.#d}
+*keys(){for(var[a]of this)yield a}
+*values(){for(var[,a]of this)yield a}}
 
-/***/ }),
+/** @param {FormData} F */
+function formDataToBlob (F,B=fetch_blob__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .Z){
+var b=`${r()}${r()}`.replace(/\./g, '').slice(-28).padStart(32, '-'),c=[],p=`--${b}\r\nContent-Disposition: form-data; name="`
+F.forEach((v,n)=>typeof v=='string'
+?c.push(p+e(n)+`"\r\n\r\n${v.replace(/\r(?!\n)|(?<!\r)\n/g, '\r\n')}\r\n`)
+:c.push(p+e(n)+`"; filename="${e(v.name, 1)}"\r\nContent-Type: ${v.type||"application/octet-stream"}\r\n\r\n`, v, '\r\n'))
+c.push(`--${b}--`)
+return new B(c,{type:"multipart/form-data; boundary="+b})}
 
-/***/ 7211:
-/***/ ((module) => {
-
-"use strict";
-module.exports = require("https");
-
-/***/ }),
-
-/***/ 1631:
-/***/ ((module) => {
-
-"use strict";
-module.exports = require("net");
-
-/***/ }),
-
-/***/ 3994:
-/***/ ((module) => {
-
-"use strict";
-module.exports = require("node:fs");
-
-/***/ }),
-
-/***/ 2049:
-/***/ ((module) => {
-
-"use strict";
-module.exports = require("node:path");
-
-/***/ }),
-
-/***/ 8760:
-/***/ ((module) => {
-
-"use strict";
-module.exports = require("node:process");
-
-/***/ }),
-
-/***/ 9435:
-/***/ ((module) => {
-
-"use strict";
-module.exports = require("node:stream/web");
-
-/***/ }),
-
-/***/ 9585:
-/***/ ((module) => {
-
-"use strict";
-module.exports = require("node:worker_threads");
-
-/***/ }),
-
-/***/ 2087:
-/***/ ((module) => {
-
-"use strict";
-module.exports = require("os");
-
-/***/ }),
-
-/***/ 1765:
-/***/ ((module) => {
-
-"use strict";
-module.exports = require("process");
-
-/***/ }),
-
-/***/ 2413:
-/***/ ((module) => {
-
-"use strict";
-module.exports = require("stream");
-
-/***/ }),
-
-/***/ 4016:
-/***/ ((module) => {
-
-"use strict";
-module.exports = require("tls");
-
-/***/ }),
-
-/***/ 3867:
-/***/ ((module) => {
-
-"use strict";
-module.exports = require("tty");
-
-/***/ }),
-
-/***/ 8835:
-/***/ ((module) => {
-
-"use strict";
-module.exports = require("url");
-
-/***/ }),
-
-/***/ 1669:
-/***/ ((module) => {
-
-"use strict";
-module.exports = require("util");
-
-/***/ }),
-
-/***/ 8761:
-/***/ ((module) => {
-
-"use strict";
-module.exports = require("zlib");
 
 /***/ })
 
@@ -36540,7 +36613,7 @@ module.exports = require("zlib");
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(8380);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(5803);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()

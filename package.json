@@ -23,14 +23,14 @@
   },
   "homepage": "https://github.com/eliteSchwein/mooncord#readme",
   "devDependencies": {
-    "@types/node": "^16.11.7",
-    "@types/sharp": "^0.29.3",
-    "@vercel/ncc": "^0.31.1",
-    "async-wait-until": "^2.0.8",
+    "@types/node": "^16.11.9",
+    "@types/sharp": "^0.29.4",
+    "@vercel/ncc": "^0.32.0",
+    "async-wait-until": "^2.0.9",
     "axios": "^0.24.0",
     "colorts": "^0.1.63",
-    "eslint": "^8.2.0",
-    "eslint-config-galex": "^3.3.3",
+    "eslint": "^8.3.0",
+    "eslint-config-galex": "^3.3.4",
     "eslint-config-standard": "^16.0.3",
     "eslint-plugin-import": "^2.25.3",
     "eslint-plugin-node": "^11.1.0",
@@ -39,9 +39,9 @@
     "lodash": "^4.17.21",
     "node-fetch": "^3.1.0",
     "shelljs": "^0.8.4",
-    "typescript": "^4.4.4",
+    "typescript": "^4.5.2",
     "websocket-ts": "^1.1.1",
-    "ws": "^8.2.3"
+    "ws": "^8.3.0"
   },
   "dependencies": {
     "discord.js": "^13.3.1",

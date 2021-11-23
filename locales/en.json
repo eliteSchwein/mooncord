@@ -240,9 +240,9 @@
     },
     "selections": {
         "printlist_view_printjob": {
-            "label": "Click for more Details",
+            "label": "Select a File...",
             "option_label": "${data.path}",
-            "option_description": "${data.path}"
+            "option_description": "Click for more Details"
         }
     },
     "commands": {

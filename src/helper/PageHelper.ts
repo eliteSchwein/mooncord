@@ -39,7 +39,7 @@ export class PageHelper {
 
             entries = `${entries}${label}\n`
         }
-        return { 'entries': entries, 'raw_entries': JSON.stringify(rawEntries) }
+        return { 'entries': entries, 'raw_entries': rawEntries }
     }
 
     protected getLastPage() {
