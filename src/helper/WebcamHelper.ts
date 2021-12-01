@@ -4,9 +4,10 @@ import axios from "axios";
 import sharp from "sharp";
 import {MessageAttachment} from "discord.js";
 import {resolve} from "path"
-import {logError} from "./LoggerHelper";
+import {logEmpty, logError} from "./LoggerHelper";
 import {MoonrakerClient} from "../clients/MoonrakerClient";
 import fetch from "node-fetch";
+import StackTrace from "stacktrace-js";
 
 export class WebcamHelper {
     protected configHelper = new ConfigHelper()
@@ -76,14 +77,21 @@ export class WebcamHelper {
 
             return new MessageAttachment(Buffer.from(buffer), "snapshot.png")
         } catch (error) {
-            if (error) {
-                logError(`Webcam Issue: ${error}`)
+            const reason = error as string
+            const trace = await StackTrace.get()
 
-                return new MessageAttachment(
-                    resolve(__dirname, `../assets/icon-sets/${this.configHelper.getIconSet()}/snapshot-error.png`),
-                    'snapshot-error.png'
-                )
+            logEmpty()
+            logError('Webcam Error:')
+            logError(`Url: ${this.configHelper.getWebcamUrl()}`)
+            logError(`Error: ${reason}`)
+            if(this.configHelper.traceOnWebErrors()) {
+                logError(trace)
             }
+
+            return new MessageAttachment(
+                resolve(__dirname, `../assets/icon-sets/${this.configHelper.getIconSet()}/snapshot-error.png`),
+                'snapshot-error.png'
+            )
         }
     }
 

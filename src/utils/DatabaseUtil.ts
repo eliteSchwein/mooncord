@@ -21,7 +21,7 @@ export class DatabaseUtil {
         this.retrieveDatabase()
     }
 
-    private async retrieveDatabase() {
+    public async retrieveDatabase() {
         await waitUntil(() => this.moonrakerClient.isReady(), { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 500 })
 
         logEmpty()

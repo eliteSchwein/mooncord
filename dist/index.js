@@ -33931,7 +33931,7 @@ __nccwpck_require__.d(__webpack_exports__, {
 });
 
 ;// CONCATENATED MODULE: ./package.json
-const package_namespaceObject = JSON.parse('{"name":"mooncord","version":"0.0.5","description":"Moonraker Discord Bot based on Discord.js","main":"index.js","scripts":{"start":"node dist/index.js","debugstart":"node --trace_gc --trace-deprecation --trace-warnings --trace-uncaught --track-heap-objects dist/index.js","checkcodestyle":"npx eslint ./**","autofixcodestyle":"npx eslint ./** --fix","build":"ncc build -m -d -e discord.js -e sharp src/Application.ts -o dist","watch":"ncc build -w -d -e discord.js -e sharp src/Application.ts -o dist"},"repository":{"type":"git","url":"git+https://github.com/eliteSchwein/mooncord.git"},"keywords":[],"author":"eliteSCHW31N","license":"ISC","bugs":{"url":"https://github.com/eliteSchwein/mooncord/issues"},"homepage":"https://github.com/eliteSchwein/mooncord#readme","devDependencies":{"@types/node":"^16.11.9","@types/sharp":"^0.29.4","@vercel/ncc":"^0.32.0","async-wait-until":"^2.0.9","axios":"^0.24.0","colorts":"^0.1.63","eslint":"^8.3.0","eslint-config-galex":"^3.3.4","eslint-config-standard":"^16.0.3","eslint-plugin-import":"^2.25.3","eslint-plugin-node":"^11.1.0","eslint-plugin-promise":"^5.1.1","form-data":"^4.0.0","lodash":"^4.17.21","node-fetch":"^3.1.0","shelljs":"^0.8.4","stacktrace-js":"^2.0.2","typescript":"^4.5.2","websocket-ts":"^1.1.1","ws":"^8.3.0"},"dependencies":{"discord.js":"^13.3.1","sharp":"^0.29.3"}}');
+const package_namespaceObject = JSON.parse('{"name":"mooncord","version":"0.0.5","description":"Moonraker Discord Bot based on Discord.js","main":"index.js","scripts":{"start":"node dist/index.js","debugstart":"node --trace_gc --trace-deprecation --trace-warnings --trace-uncaught --track-heap-objects dist/index.js","checkcodestyle":"npx eslint ./**","autofixcodestyle":"npx eslint ./** --fix","build":"ncc build -m -d -e discord.js -e sharp src/Application.ts -o dist","watch":"ncc build -w -d -e discord.js -e sharp src/Application.ts -o dist"},"repository":{"type":"git","url":"git+https://github.com/eliteSchwein/mooncord.git"},"keywords":[],"author":"eliteSCHW31N","license":"ISC","bugs":{"url":"https://github.com/eliteSchwein/mooncord/issues"},"homepage":"https://github.com/eliteSchwein/mooncord#readme","devDependencies":{"@types/node":"^16.11.11","@types/sharp":"^0.29.4","@vercel/ncc":"^0.32.0","async-wait-until":"^2.0.9","axios":"^0.24.0","colorts":"^0.1.63","eslint":"^8.3.0","eslint-config-galex":"^3.3.4","eslint-config-standard":"^16.0.3","eslint-plugin-import":"^2.25.3","eslint-plugin-node":"^11.1.0","eslint-plugin-promise":"^5.2.0","form-data":"^4.0.0","lodash":"^4.17.21","node-fetch":"^3.1.0","shelljs":"^0.8.4","stacktrace-js":"^2.0.2","typescript":"^4.5.2","websocket-ts":"^1.1.1","ws":"^8.3.0"},"dependencies":{"discord.js":"^13.3.1","sharp":"^0.29.3"}}');
 var package_namespaceObject_0 = /*#__PURE__*/__nccwpck_require__.t(package_namespaceObject, 2);
 // EXTERNAL MODULE: ./node_modules/async-wait-until/dist/index.js
 var dist = __nccwpck_require__(1299);
@@ -36574,7 +36574,11 @@ function fixResponseChunkedTransferBadEnding(request, errorCallback) {
 	});
 }
 
+// EXTERNAL MODULE: ./node_modules/stacktrace-js/stacktrace.js
+var stacktrace = __nccwpck_require__(638);
+var stacktrace_default = /*#__PURE__*/__nccwpck_require__.n(stacktrace);
 ;// CONCATENATED MODULE: ./src/helper/WebcamHelper.ts
+
 
 
 
@@ -36636,10 +36640,16 @@ class WebcamHelper {
             return new external_discord_js_namespaceObject.MessageAttachment(Buffer.from(buffer), "snapshot.png");
         }
         catch (error) {
-            if (error) {
-                logError(`Webcam Issue: ${error}`);
-                return new external_discord_js_namespaceObject.MessageAttachment((0,external_path_namespaceObject.resolve)(__dirname, `../assets/icon-sets/${this.configHelper.getIconSet()}/snapshot-error.png`), 'snapshot-error.png');
+            const reason = error;
+            const trace = await stacktrace_default().get();
+            logEmpty();
+            logError('Webcam Error:');
+            logError(`Url: ${this.configHelper.getWebcamUrl()}`);
+            logError(`Error: ${reason}`);
+            if (this.configHelper.traceOnWebErrors()) {
+                logError(trace);
             }
+            return new external_discord_js_namespaceObject.MessageAttachment((0,external_path_namespaceObject.resolve)(__dirname, `../assets/icon-sets/${this.configHelper.getIconSet()}/snapshot-error.png`), 'snapshot-error.png');
         }
     }
     async triggerWebsite(url, post) {
@@ -36860,8 +36870,6 @@ function updateLayers() {
     });
 }
 
-// EXTERNAL MODULE: ./node_modules/stacktrace-js/stacktrace.js
-var stacktrace = __nccwpck_require__(638);
 ;// CONCATENATED MODULE: ./src/helper/MetadataHelper.ts
 
 
@@ -38233,6 +38241,9 @@ class DiscordClient {
         await this.metadataHelper.updateMetaData(currentPrintfile);
         await this.statusHelper.update(null, this);
     }
+    unregisterEvents() {
+        this.discordClient.removeAllListeners();
+    }
     async registerCommands() {
         logRegular('Register Commands...');
         await this.discordClient.application?.commands.set(this.commandGenerator.getCommands());
@@ -38566,6 +38577,8 @@ class MessageHandler {
 
 
 
+
+
 const requests = {};
 let messageHandler;
 class MoonrakerClient {
@@ -38576,7 +38589,6 @@ class MoonrakerClient {
         this.ready = false;
         this.metadataHelper = new MetadataHelper(this);
         this.alreadyRunning = false;
-        this.reconnectRunning = false;
         this.reconnectAttempt = 1;
         logSuccess('Connect to MoonRaker...');
         this.connect();
@@ -38586,27 +38598,48 @@ class MoonrakerClient {
         logEmpty();
         logError('Websocket Error:');
         logError(event.error);
-        console.log(this.alreadyRunning);
         if (!this.alreadyRunning) {
             process.exit(5);
         }
     }
     async closeHandler(instance, event) {
         logWarn('Moonraker disconnected!');
-        if (this.reconnectRunning) {
+        if (!this.alreadyRunning) {
             return;
         }
+        if (this.reconnectAttempt !== 1) {
+            return;
+        }
+        const statusHelper = new StatusHelper();
+        await statusHelper.update('moonraker_disconnected');
         this.reconnectScheduler = setInterval(() => {
             logRegular(`Reconnect Attempt ${this.reconnectAttempt} to Moonraker...`);
-            this.connect();
+            void this.connect();
             this.reconnectAttempt++;
         }, this.config.getMoonrakerRetryInterval() * 1000);
     }
     async successHandler(instance, event) {
         logSuccess('Connected to MoonRaker');
         this.alreadyRunning = true;
-        clearInterval(this.reconnectScheduler);
+        if (this.reconnectAttempt === 1) {
+            return;
+        }
         this.reconnectAttempt = 1;
+        await this.rebuildCache();
+    }
+    async rebuildCache() {
+        const discordClient = getDiscordClient();
+        const database = getDatabase();
+        const statusHelper = new StatusHelper();
+        logEmpty();
+        logRegular('rebuild Cache...');
+        await database.retrieveDatabase();
+        discordClient.unregisterEvents();
+        await discordClient.registerCommands();
+        await discordClient.registerEvents();
+        discordClient.generateCaches();
+        await statusHelper.update('ready');
+        logSuccess('Reconnected to Moonraker');
     }
     async connect() {
         const oneShotToken = await this.apiKeyHelper.getOneShotToken();
@@ -38620,10 +38653,14 @@ class MoonrakerClient {
             this.errorHandler(instance, ev);
         })));
         this.websocket.addEventListener(lib.WebsocketEvents.open, ((async (instance, ev) => {
-            this.successHandler(instance, ev);
+            if (this.reconnectAttempt !== 1) {
+                clearInterval(this.reconnectScheduler);
+                this.reconnectAttempt = 2;
+            }
             this.registerEvents();
             await this.sendInitCommands();
             this.changeLogPath();
+            await this.successHandler(instance, ev);
         })));
     }
     async sendInitCommands() {

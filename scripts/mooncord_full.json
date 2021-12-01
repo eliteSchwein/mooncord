@@ -65,6 +65,83 @@
                 "guildadmin": true,
                 "users": "*",
                 "roles": []
+            },
+            "next_page": {
+                "command_assign": "listfiles",
+                "botadmin": true,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
+            "last_page": {
+                "command_assign": "listfiles",
+                "botadmin": true,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
+            "printjob_resume": {
+                "command_assign": "printjob",
+                "botadmin": true,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
+            "printjob_cancel": {
+                "command_assign": "printjob",
+                "botadmin": true,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
+            "printjob_pause": {
+                "command_assign": "printjob",
+                "botadmin": true,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
+            "printjob_start": {
+                "command_assign": "printjob_start",
+                "botadmin": false,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
+            "reconnect_moonraker": {
+                "command_assign": "service_restart",
+                "botadmin": true,
+                "guildadmin": true,
+                "users": [],
+                "roles": []
+            },
+            "klipper_restart": {
+                "command_assign": "service_restart",
+                "botadmin": true,
+                "guildadmin": true,
+                "users": [],
+                "roles": []
+            },
+            "update_system": {
+                "command_assign": "service_restart",
+                "botadmin": true,
+                "guildadmin": true,
+                "users": [],
+                "roles": []
+            },
+            "request_accept": {
+                "command_assign": "printjob",
+                "botadmin": true,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
+            "request_deny": {
+                "command_assign": "printjob",
+                "botadmin": true,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
             }
         },
         "commands": {
@@ -356,6 +433,10 @@
             "image": "webcam",
             "buttons": ["klipper_restart"]
         },
+        "moonraker_disconnected":{
+            "color": "#c90000",
+            "buttons": ["reconnect_moonraker"]
+        },
         "error":{
             "description": "```${state_message}```",
             "color": "#c90000",
@@ -456,6 +537,13 @@
                     "request": "printjob_start"
                 }
             },
+            "reconnect_moonraker": {
+                "emoji": "🔄",
+                "style":"PRIMARY",
+                "function_mapping": {
+                    "request": "reconnect_moonraker"
+                }
+            },
             "klipper_restart": {
                 "emoji": "🔄",
                 "style":"PRIMARY",
@@ -491,6 +579,17 @@
     "status_meta": {
         "disconnected":{
             "embed_id": "disconnected",
+            "meta_data": {
+                "allow_same": false,
+                "prevent": []
+            },
+            "activity": {
+                "status": "dnd",
+                "type": "LISTENING"
+            }
+        },
+        "moonraker_disconnected":{
+            "embed_id": "moonraker_disconnected",
             "meta_data": {
                 "allow_same": false,
                 "prevent": []

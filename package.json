@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/eliteSchwein/mooncord#readme",
   "devDependencies": {
-    "@types/node": "^16.11.9",
+    "@types/node": "^16.11.11",
     "@types/sharp": "^0.29.4",
     "@vercel/ncc": "^0.32.0",
     "async-wait-until": "^2.0.9",
@@ -34,7 +34,7 @@
     "eslint-config-standard": "^16.0.3",
     "eslint-plugin-import": "^2.25.3",
     "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^5.1.1",
+    "eslint-plugin-promise": "^5.2.0",
     "form-data": "^4.0.0",
     "lodash": "^4.17.21",
     "node-fetch": "^3.1.0",

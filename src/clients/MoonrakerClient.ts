@@ -19,6 +19,8 @@ import {FileListHelper} from "../helper/FileListHelper";
 import {MetadataHelper} from "../helper/MetadataHelper";
 import {SchedulerHelper} from "../helper/SchedulerHelper";
 import { getObjectValue } from '../helper/DataHelper'
+import * as App from '../Application'
+import {StatusHelper} from "../helper/StatusHelper";
 
 const requests: any = {}
 let messageHandler: MessageHandler
@@ -31,7 +33,6 @@ export class MoonrakerClient {
     protected metadataHelper = new MetadataHelper(this)
     protected websocket: Websocket
     protected alreadyRunning = false
-    protected reconnectRunning = false
     protected reconnectScheduler: any
     protected reconnectAttempt = 1
 
@@ -46,7 +47,6 @@ export class MoonrakerClient {
         logEmpty()
         logError('Websocket Error:')
         logError(event.error)
-        console.log(this.alreadyRunning)
         if(!this.alreadyRunning) {
             process.exit(5)
         }
@@ -54,11 +54,15 @@ export class MoonrakerClient {
 
     private async closeHandler(instance, event) {
         logWarn('Moonraker disconnected!')
-        if(this.reconnectRunning) { return }
+        if(!this.alreadyRunning) { return }
+        if(this.reconnectAttempt !== 1) { return }
+
+        const statusHelper = new StatusHelper()
+        await statusHelper.update('moonraker_disconnected')
 
         this.reconnectScheduler = setInterval(() => {
             logRegular(`Reconnect Attempt ${this.reconnectAttempt} to Moonraker...`)
-            this.connect()
+            void this.connect()
             this.reconnectAttempt++
         }, this.config.getMoonrakerRetryInterval() * 1000)
     }
@@ -66,8 +70,27 @@ export class MoonrakerClient {
     private async successHandler(instance, event) {
         logSuccess('Connected to MoonRaker')
         this.alreadyRunning = true
-        clearInterval(this.reconnectScheduler)
+        if(this.reconnectAttempt === 1) { return }
         this.reconnectAttempt = 1
+        await this.rebuildCache()
+    }
+
+    private async rebuildCache() {
+        const discordClient = App.getDiscordClient()
+        const database = App.getDatabase()
+        const statusHelper = new StatusHelper()
+        logEmpty()
+        logRegular('rebuild Cache...')
+
+        await database.retrieveDatabase()
+
+        discordClient.unregisterEvents()
+        await discordClient.registerCommands()
+        await discordClient.registerEvents()
+        discordClient.generateCaches()
+
+        await statusHelper.update('ready')
+        logSuccess('Reconnected to Moonraker')
     }
 
     public async connect() {
@@ -86,13 +109,18 @@ export class MoonrakerClient {
         })))
 
         this.websocket.addEventListener(WebsocketEvents.open, ((async (instance, ev) => {
-            this.successHandler(instance, ev)
+            if(this.reconnectAttempt !== 1) {
+                clearInterval(this.reconnectScheduler)
+                this.reconnectAttempt = 2
+            }
 
             this.registerEvents()
 
             await this.sendInitCommands()
 
             this.changeLogPath()
+
+            await this.successHandler(instance, ev)
         })))
     }
 

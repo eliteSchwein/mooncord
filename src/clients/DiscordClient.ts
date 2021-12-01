@@ -101,18 +101,22 @@ export class DiscordClient {
         await this.statusHelper.update(null, this)
     }
 
-    private async registerCommands() {
+    public unregisterEvents() {
+        this.discordClient.removeAllListeners()
+    }
+
+    public async registerCommands() {
         logRegular('Register Commands...')
         await this.discordClient.application?.commands.set(this.commandGenerator.getCommands())
     }
 
-    private async registerEvents() {
+    public async registerEvents() {
         logRegular('Register Events...')
         interactionHandler = new InteractionHandler(this.discordClient)
         debugHandler = new DebugHandler(this.discordClient)
     }
 
-    private generateCaches() {
+    public generateCaches() {
         logRegular('Generate Caches...')
         this.inputGenerator.generateInputCache()
         this.statusGenerator.generateStatusCache()

@@ -47,6 +47,10 @@
             "title": "Printer Disconnected!",
             "activity": "wait for Klipper"
         },
+        "moonraker_disconnected":{
+            "title": "Moonraker Connection lost!",
+            "activity": "wait for Moonraker"
+        },
         "error":{
             "title": "A Error occured!",
             "activity": "wait for User"
@@ -224,6 +228,9 @@
         },
         "klipper_restart": {
             "label": "Restart Firmware"
+        },
+        "reconnect_moonraker": {
+            "label": "Reconnect"
         },
         "update_system": {
             "label": "Update"
