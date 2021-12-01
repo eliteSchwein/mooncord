@@ -45,6 +45,7 @@ export function tempHookLog() {
 
 export function hookProcess() {
     process.on('uncaughtException', (err) => {
+        logEmpty()
         logError(`${err.name}: ${err.message}
             ${err.stack}`)
     })
@@ -85,24 +86,24 @@ export function changePath(directory: string) {
     hookLogFile()
 }
 
-export function logError (message:string) {
-    console.log(`${getLevel('error')} ${getTimeStamp()} ${message}`.red)
+export function logError (message) {
+    console.log(`${getLevel('error')} ${getTimeStamp()} ${util.format(message)}`.red)
 }
 
-export function logSuccess(message:string) {
-    console.log(`${getLevel('info')} ${getTimeStamp()} ${message}`.green)
+export function logSuccess(message) {
+    console.log(`${getLevel('info')} ${getTimeStamp()} ${util.format(message)}`.green)
 }
 
-export function logRegular(message:string) {
-    console.log(`${getLevel('info')} ${getTimeStamp()} ${message}`.white)
+export function logRegular(message) {
+    console.log(`${getLevel('info')} ${getTimeStamp()} ${util.format(message)}`.white)
 }
 
-export function logNotice(message:string) {
-    console.log(`${getLevel('info')} ${getTimeStamp()} ${message}`.magenta)
+export function logNotice(message) {
+    console.log(`${getLevel('info')} ${getTimeStamp()} ${util.format(message)}`.magenta)
 }
 
-export function logWarn(message:string) {
-    console.log(`${getLevel('warn')} ${getTimeStamp()} ${message}`.yellow)
+export function logWarn(message) {
+    console.log(`${getLevel('warn')} ${getTimeStamp()} ${util.format(message)}`.yellow)
 }
 
 export function logEmpty() { console.log('') }

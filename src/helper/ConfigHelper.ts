@@ -166,4 +166,12 @@ export class ConfigHelper {
     public getEntriesPerPage() {
         return this.getConfig().messages.entries_per_page
     }
+
+    public traceOnWebErrors() {
+        return this.getConfig().development.trace_on_web_error
+    }
+
+    public getMoonrakerRetryInterval() {
+        return this.getConfig().connection.moonraker_retry_interval
+    }
 }

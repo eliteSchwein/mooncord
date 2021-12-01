@@ -1,10 +1,12 @@
 import {ConfigHelper} from '../helper/ConfigHelper'
-import {Websocket, WebsocketBuilder, WebsocketEvents} from 'websocket-ts'
+import {ConstantBackoff, LinearBackoff, Websocket, WebsocketBuilder, WebsocketEvents} from 'websocket-ts'
 import {APIKeyHelper} from '../helper/APIKeyHelper'
 import {waitUntil} from 'async-wait-until'
+import * as util from 'util'
 import {
     changePath,
     changeTempPath,
+    logEmpty,
     logError,
     logRegular,
     logSuccess,
@@ -16,6 +18,7 @@ import {MessageHandler} from "../events/moonraker/MessageHandler";
 import {FileListHelper} from "../helper/FileListHelper";
 import {MetadataHelper} from "../helper/MetadataHelper";
 import {SchedulerHelper} from "../helper/SchedulerHelper";
+import { getObjectValue } from '../helper/DataHelper'
 
 const requests: any = {}
 let messageHandler: MessageHandler
@@ -26,7 +29,11 @@ export class MoonrakerClient {
     protected apiKeyHelper = new APIKeyHelper()
     protected ready = false
     protected metadataHelper = new MetadataHelper(this)
-    protected websocket:Websocket
+    protected websocket: Websocket
+    protected alreadyRunning = false
+    protected reconnectRunning = false
+    protected reconnectScheduler: any
+    protected reconnectAttempt = 1
 
     public constructor() {
         logSuccess('Connect to MoonRaker...')
@@ -34,20 +41,52 @@ export class MoonrakerClient {
         this.connect()
     }
 
-    private async connect() {
+    private async errorHandler(instance, event) {
+        const reason = event.message
+        logEmpty()
+        logError('Websocket Error:')
+        logError(event.error)
+        console.log(this.alreadyRunning)
+        if(!this.alreadyRunning) {
+            process.exit(5)
+        }
+    }
+
+    private async closeHandler(instance, event) {
+        logWarn('Moonraker disconnected!')
+        if(this.reconnectRunning) { return }
+
+        this.reconnectScheduler = setInterval(() => {
+            logRegular(`Reconnect Attempt ${this.reconnectAttempt} to Moonraker...`)
+            this.connect()
+            this.reconnectAttempt++
+        }, this.config.getMoonrakerRetryInterval() * 1000)
+    }
+
+    private async successHandler(instance, event) {
+        logSuccess('Connected to MoonRaker')
+        this.alreadyRunning = true
+        clearInterval(this.reconnectScheduler)
+        this.reconnectAttempt = 1
+    }
+
+    public async connect() {
         const oneShotToken = await this.apiKeyHelper.getOneShotToken()
         const socketUrl = this.config.getMoonrakerSocketUrl()
 
-        this.websocket = new WebsocketBuilder(`${socketUrl}?token=${oneShotToken}`).build()
-
-        this.websocket.addEventListener(WebsocketEvents.error, ((instance, ev) => {
-            logError('Websocket Error:')
-            console.log(ev)
-            process.exit(5)
-        }))
+        this.websocket = new WebsocketBuilder(`${socketUrl}?token=${oneShotToken}`)
+            .build()
+            
+        this.websocket.addEventListener(WebsocketEvents.close, ((async (instance, ev) => {
+            this.closeHandler(instance, ev)
+        })))
+            
+        this.websocket.addEventListener(WebsocketEvents.error, ((async (instance, ev) => {
+            this.errorHandler(instance, ev)
+        })))
 
         this.websocket.addEventListener(WebsocketEvents.open, ((async (instance, ev) => {
-            logSuccess('Connected to MoonRaker')
+            this.successHandler(instance, ev)
 
             this.registerEvents()
 

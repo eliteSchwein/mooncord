@@ -72,6 +72,9 @@ export function parseCalculatedPlaceholder(fragments) {
         return formatTime(findValue(fragments[1]))
     }
 }
+export function getObjectValue<T, K extends keyof T>(obj: T, key: K): T[K] {
+    return obj[key];
+}
 export function formatTime(seconds) {
     if (isNaN(Number(seconds)) || !isFinite(seconds)) {seconds = 0}
     let isNeg = false
