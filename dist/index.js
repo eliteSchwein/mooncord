@@ -33927,7 +33927,8 @@ __nccwpck_require__.r(__webpack_exports__);
 __nccwpck_require__.d(__webpack_exports__, {
   "getDatabase": () => (/* binding */ getDatabase),
   "getDiscordClient": () => (/* binding */ getDiscordClient),
-  "getMoonrakerClient": () => (/* binding */ getMoonrakerClient)
+  "getMoonrakerClient": () => (/* binding */ getMoonrakerClient),
+  "reinitClients": () => (/* binding */ reinitClients)
 });
 
 ;// CONCATENATED MODULE: ./package.json
@@ -38242,6 +38243,7 @@ class DiscordClient {
         await this.statusHelper.update(null, this);
     }
     unregisterEvents() {
+        logRegular('Unregister Events...');
         this.discordClient.removeAllListeners();
     }
     async registerCommands() {
@@ -38442,6 +38444,7 @@ class FileEditNotification {
 
 
 
+
 class StateUpdateNotification {
     constructor() {
         this.moonrakerClient = getMoonrakerClient();
@@ -38467,7 +38470,9 @@ class StateUpdateNotification {
             updateData('function', {
                 'poll_printer_info': false
             });
-            await this.moonrakerClient.sendInitCommands();
+            logEmpty();
+            logSuccess('klipper is ready...');
+            await reinitClients();
             await this.statusHelper.update('ready');
         }
     }
@@ -38618,28 +38623,25 @@ class MoonrakerClient {
             this.reconnectAttempt++;
         }, this.config.getMoonrakerRetryInterval() * 1000);
     }
-    async successHandler(instance, event) {
-        logSuccess('Connected to MoonRaker');
-        this.alreadyRunning = true;
-        if (this.reconnectAttempt === 1) {
+    async connectHandler(instance, event) {
+        if (typeof this.reconnectScheduler !== 'undefined') {
             return;
         }
-        this.reconnectAttempt = 1;
-        await this.rebuildCache();
+        logSuccess('Connected to MoonRaker');
+        this.alreadyRunning = true;
+        this.registerEvents();
+        await this.sendInitCommands();
+        this.changeLogPath();
     }
-    async rebuildCache() {
-        const discordClient = getDiscordClient();
-        const database = getDatabase();
+    async reconnectHandler(instance, event) {
+        if (typeof this.reconnectScheduler === 'undefined') {
+            return;
+        }
+        logSuccess('Reconnected to MoonRaker');
         const statusHelper = new StatusHelper();
-        logEmpty();
-        logRegular('rebuild Cache...');
-        await database.retrieveDatabase();
-        discordClient.unregisterEvents();
-        await discordClient.registerCommands();
-        await discordClient.registerEvents();
-        discordClient.generateCaches();
-        await statusHelper.update('ready');
-        logSuccess('Reconnected to Moonraker');
+        this.reconnectAttempt = 1;
+        await reinitClients();
+        await statusHelper.update();
     }
     async connect() {
         const oneShotToken = await this.apiKeyHelper.getOneShotToken();
@@ -38653,14 +38655,10 @@ class MoonrakerClient {
             this.errorHandler(instance, ev);
         })));
         this.websocket.addEventListener(lib.WebsocketEvents.open, ((async (instance, ev) => {
-            if (this.reconnectAttempt !== 1) {
-                clearInterval(this.reconnectScheduler);
-                this.reconnectAttempt = 2;
-            }
-            this.registerEvents();
-            await this.sendInitCommands();
-            this.changeLogPath();
-            await this.successHandler(instance, ev);
+            clearInterval(this.reconnectScheduler);
+            await this.reconnectHandler(instance, ev);
+            await this.connectHandler(instance, ev);
+            this.reconnectScheduler = undefined;
         })));
     }
     async sendInitCommands() {
@@ -38901,6 +38899,9 @@ class SchedulerHelper {
         if (this.functionCache.server_info_in_query) {
             return;
         }
+        updateData('function', {
+            'server_info_in_query': true
+        });
         const currentStatus = findValue('function.current_status');
         const serverInfo = await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "server.info"}`);
         if (typeof serverInfo.result === 'undefined') {
@@ -38914,12 +38915,12 @@ class SchedulerHelper {
         }
         updateData('server_info', serverInfo.result);
         updateData('function', {
-            'server_info_in_query': true
-        });
-        await this.statusHelper.update();
-        updateData('function', {
             'server_info_in_query': false
         });
+        if (serverInfo.result.klippy_state === 'ready') {
+            return;
+        }
+        await this.statusHelper.update();
     }
     async requestPrintInfo() {
         const printerInfo = await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "printer.info"}`);
@@ -38985,6 +38986,17 @@ function getDiscordClient() {
 }
 function getDatabase() {
     return Application_database;
+}
+async function reinitClients() {
+    logEmpty();
+    logSuccess('reinitiate Clients...');
+    await moonrakerClient.sendInitCommands();
+    await moonrakerClient.changeLogPath();
+    await Application_database.retrieveDatabase();
+    discordClient.unregisterEvents();
+    await discordClient.registerCommands();
+    await discordClient.registerEvents();
+    discordClient.generateCaches();
 }
 
 

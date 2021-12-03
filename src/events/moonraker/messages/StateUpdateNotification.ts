@@ -1,6 +1,7 @@
 import {updateData} from "../../../utils/CacheUtil";
-import {getMoonrakerClient} from "../../../Application";
+import {getMoonrakerClient, reinitClients} from "../../../Application";
 import {StatusHelper} from "../../../helper/StatusHelper";
+import { logEmpty, logSuccess } from "../../../helper/LoggerHelper";
 
 export class StateUpdateNotification {
     protected moonrakerClient = getMoonrakerClient()
@@ -27,7 +28,9 @@ export class StateUpdateNotification {
             updateData('function', {
                 'poll_printer_info': false
             })
-            await this.moonrakerClient.sendInitCommands()
+            logEmpty()
+            logSuccess('klipper is ready...')
+            await reinitClients()
             await this.statusHelper.update('ready')
         }
     }

@@ -102,6 +102,7 @@ export class DiscordClient {
     }
 
     public unregisterEvents() {
+        logRegular('Unregister Events...')
         this.discordClient.removeAllListeners()
     }
 

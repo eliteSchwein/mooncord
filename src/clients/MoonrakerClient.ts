@@ -67,30 +67,28 @@ export class MoonrakerClient {
         }, this.config.getMoonrakerRetryInterval() * 1000)
     }
 
-    private async successHandler(instance, event) {
+    private async connectHandler(instance, event) {
+        if(typeof this.reconnectScheduler !== 'undefined') { return }
         logSuccess('Connected to MoonRaker')
         this.alreadyRunning = true
-        if(this.reconnectAttempt === 1) { return }
-        this.reconnectAttempt = 1
-        await this.rebuildCache()
+
+        this.registerEvents()
+
+        await this.sendInitCommands()
+
+        this.changeLogPath()
     }
 
-    private async rebuildCache() {
-        const discordClient = App.getDiscordClient()
-        const database = App.getDatabase()
+    private async reconnectHandler(instance, event) {
+        if(typeof this.reconnectScheduler === 'undefined') { return }
+        logSuccess('Reconnected to MoonRaker')
+
         const statusHelper = new StatusHelper()
-        logEmpty()
-        logRegular('rebuild Cache...')
 
-        await database.retrieveDatabase()
+        this.reconnectAttempt = 1
+        await App.reinitClients()
 
-        discordClient.unregisterEvents()
-        await discordClient.registerCommands()
-        await discordClient.registerEvents()
-        discordClient.generateCaches()
-
-        await statusHelper.update('ready')
-        logSuccess('Reconnected to Moonraker')
+        await statusHelper.update()
     }
 
     public async connect() {
@@ -109,18 +107,12 @@ export class MoonrakerClient {
         })))
 
         this.websocket.addEventListener(WebsocketEvents.open, ((async (instance, ev) => {
-            if(this.reconnectAttempt !== 1) {
-                clearInterval(this.reconnectScheduler)
-                this.reconnectAttempt = 2
-            }
+            clearInterval(this.reconnectScheduler)
 
-            this.registerEvents()
+            await this.reconnectHandler(instance, ev)
+            await this.connectHandler(instance, ev)
 
-            await this.sendInitCommands()
-
-            this.changeLogPath()
-
-            await this.successHandler(instance, ev)
+            this.reconnectScheduler = undefined
         })))
     }
 
@@ -185,7 +177,7 @@ export class MoonrakerClient {
         })
     }
 
-    private changeLogPath() {
+    public changeLogPath() {
         if(this.config.isLogFileDisabled()) {
             logWarn('Log File is disabled!')
             unhookTempLog()

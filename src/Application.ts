@@ -1,7 +1,7 @@
 import * as packageConfig from '../package.json'
 import {DiscordClient} from './clients/DiscordClient'
 import {MoonrakerClient} from './clients/MoonrakerClient'
-import {hookProcess, logEmpty, logRegular, logSuccess, tempHookLog} from './helper/LoggerHelper'
+import {hookProcess, logEmpty, logNotice, logRegular, logSuccess, tempHookLog} from './helper/LoggerHelper'
 import {DatabaseUtil} from './utils/DatabaseUtil'
 import {LocaleHelper} from "./helper/LocaleHelper";
 import { setData } from './utils/CacheUtil'
@@ -71,4 +71,19 @@ export function getDiscordClient() {
 
 export function getDatabase() {
     return database
+}
+
+export async function reinitClients() {
+    logEmpty()
+    logSuccess('reinitiate Clients...')
+
+    await moonrakerClient.sendInitCommands()
+    await moonrakerClient.changeLogPath()
+
+    await database.retrieveDatabase()
+
+    discordClient.unregisterEvents()
+    await discordClient.registerCommands()
+    await discordClient.registerEvents()
+    discordClient.generateCaches()
 }
