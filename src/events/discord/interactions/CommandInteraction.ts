@@ -63,7 +63,7 @@ export class CommandInteraction {
         void new EditChannelCommand(interaction, commandId)
         void new FileListCommand(interaction, commandId)
 
-        await sleep(1500)
+        await sleep(3000)
 
         if(interaction.replied || interaction.deferred) { return }
 

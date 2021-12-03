@@ -20,8 +20,7 @@ export class PageHelper {
 
         return {
             'page_entries': entries.entries,
-            'current_page': page.labelPage,
-            'last_page': this.getLastPage(),
+            'pages': `${page.labelPage}/${this.getLastPage()}`,
             'raw_entries': entries.raw_entries
         }
     }

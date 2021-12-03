@@ -33916,7 +33916,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 5803:
+/***/ 670:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -36988,6 +36988,15 @@ class EmbedHelper {
     getFields() {
         return getEntry('embeds').fields;
     }
+    getRawEmbedByTitle(title) {
+        const embeds = this.getEmbeds();
+        for (const embedID in embeds) {
+            const embedData = embeds[embedID];
+            if (embedData.title === title) {
+                return { embedID, embedData };
+            }
+        }
+    }
     async generateEmbed(embedID, providedPlaceholders = null, providedFields = null) {
         const embed = new external_discord_js_namespaceObject.MessageEmbed();
         const embedDataUnformatted = { ...this.getEmbeds()[embedID] };
@@ -37328,7 +37337,108 @@ class MacroButton {
     }
 }
 
+;// CONCATENATED MODULE: ./src/helper/PageHelper.ts
+
+
+
+class PageHelper {
+    constructor(pageData, pageId) {
+        this.configHelper = new ConfigHelper();
+        this.localeHelper = new LocaleHelper();
+        this.locale = this.localeHelper.getLocale();
+        this.data = pageData;
+        this.pageLocale = this.locale.pages[pageId];
+    }
+    getPage(pageUp, currentPage) {
+        const page = this.getNewPage(pageUp, currentPage);
+        const entries = this.getEntries(page.calcPage);
+        return {
+            'page_entries': entries.entries,
+            'pages': `${page.labelPage}/${this.getLastPage()}`,
+            'raw_entries': entries.raw_entries
+        };
+    }
+    getEntries(page) {
+        let entries = '';
+        const max = this.configHelper.getEntriesPerPage() - 1;
+        const rawEntries = [];
+        for (let i = (page * max) + page; i <= max + (page * max) + page; i++) {
+            const entry = this.data[i];
+            rawEntries.push(entry);
+            const label = parsePageData(this.pageLocale.entry_label, entry);
+            entries = `${entries}${label}\n`;
+        }
+        return { 'entries': entries, 'raw_entries': rawEntries };
+    }
+    getLastPage() {
+        return Math.floor(this.data.length / this.configHelper.getEntriesPerPage());
+    }
+    getNewPage(pageUp, currentPage) {
+        const lastPage = this.getLastPage();
+        let page = currentPage - 1;
+        if (pageUp) {
+            if (page !== lastPage - 1) {
+                page++;
+            }
+        }
+        else if (page !== 0) {
+            page--;
+        }
+        return { calcPage: page, labelPage: (page + 1) };
+    }
+}
+
+;// CONCATENATED MODULE: ./src/events/discord/interactions/buttons/PageButton.ts
+
+
+
+
+
+
+
+class PageButton {
+    constructor(interaction, buttonData) {
+        this.databaseUtil = getDatabase();
+        this.embedHelper = new EmbedHelper();
+        this.configHelper = new ConfigHelper();
+        this.localeHelper = new LocaleHelper();
+        this.locale = this.localeHelper.getLocale();
+        if (typeof buttonData.function_mapping === 'undefined') {
+            return;
+        }
+        void this.execute(interaction, buttonData);
+    }
+    async execute(interaction, buttonData) {
+        const functionMap = buttonData.function_mapping;
+        if (interaction.message.embeds.length === 0) {
+            return;
+        }
+        const embed = interaction.message.embeds[0];
+        const embedData = this.embedHelper.getRawEmbedByTitle(embed.title);
+        if (typeof embedData === 'undefined') {
+            return;
+        }
+        const filterFooter = embedData.embedData.footer.replace(/(\${pages})/g, '');
+        const pages = embed.footer.text.replace(filterFooter, '').split('/');
+        const currentPage = Number.parseInt(pages[0]);
+        const pageHelper = new PageHelper(getEntry('gcode_files'), embedData.embedID);
+        const pageData = pageHelper.getPage(functionMap.page_up, currentPage);
+        logNotice(`select Page ${pageData.pages} for ${embedData.embedID}`);
+        const answer = await this.embedHelper.generateEmbed(embedData.embedID, pageData);
+        const currentMessage = interaction.message;
+        await currentMessage.edit({ components: null });
+        await currentMessage.removeAttachments();
+        if (interaction.replied) {
+            await currentMessage.edit(answer.embed);
+        }
+        else {
+            interaction.update(answer.embed);
+        }
+    }
+}
+
 ;// CONCATENATED MODULE: ./src/events/discord/interactions/ButtonInteraction.ts
+
 
 
 
@@ -37374,9 +37484,10 @@ class ButtonInteraction {
                 return;
             }
         }
+        void new PageButton(interaction, buttonData);
         void new RefreshButton(interaction, buttonData);
         void new MacroButton(interaction, buttonData);
-        await sleep(1500);
+        await sleep(3000);
         if (interaction.replied || interaction.deferred) {
             return;
         }
@@ -37734,58 +37845,6 @@ class EditChannelCommand {
     }
 }
 
-;// CONCATENATED MODULE: ./src/helper/PageHelper.ts
-
-
-
-class PageHelper {
-    constructor(pageData, pageId) {
-        this.configHelper = new ConfigHelper();
-        this.localeHelper = new LocaleHelper();
-        this.locale = this.localeHelper.getLocale();
-        this.data = pageData;
-        this.pageLocale = this.locale.pages[pageId];
-    }
-    getPage(pageUp, currentPage) {
-        const page = this.getNewPage(pageUp, currentPage);
-        const entries = this.getEntries(page.calcPage);
-        return {
-            'page_entries': entries.entries,
-            'current_page': page.labelPage,
-            'last_page': this.getLastPage(),
-            'raw_entries': entries.raw_entries
-        };
-    }
-    getEntries(page) {
-        let entries = '';
-        const max = this.configHelper.getEntriesPerPage() - 1;
-        const rawEntries = [];
-        for (let i = (page * max) + page; i <= max + (page * max) + page; i++) {
-            const entry = this.data[i];
-            rawEntries.push(entry);
-            const label = parsePageData(this.pageLocale.entry_label, entry);
-            entries = `${entries}${label}\n`;
-        }
-        return { 'entries': entries, 'raw_entries': rawEntries };
-    }
-    getLastPage() {
-        return Math.floor(this.data.length / this.configHelper.getEntriesPerPage());
-    }
-    getNewPage(pageUp, currentPage) {
-        const lastPage = this.getLastPage();
-        let page = currentPage - 1;
-        if (pageUp) {
-            if (page !== lastPage - 1) {
-                page++;
-            }
-        }
-        else if (page !== 0) {
-            page--;
-        }
-        return { calcPage: page, labelPage: (page + 1) };
-    }
-}
-
 ;// CONCATENATED MODULE: ./src/events/discord/interactions/commands/FileListCommand.ts
 
 
@@ -37872,7 +37931,7 @@ class CommandInteraction {
         void new StatusCommand(interaction, commandId);
         void new EditChannelCommand(interaction, commandId);
         void new FileListCommand(interaction, commandId);
-        await sleep(1500);
+        await sleep(3000);
         if (interaction.replied || interaction.deferred) {
             return;
         }
@@ -39803,7 +39862,7 @@ return new B(c,{type:"multipart/form-data; boundary="+b})}
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(5803);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(670);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()

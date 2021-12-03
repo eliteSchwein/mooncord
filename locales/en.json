@@ -11,7 +11,7 @@
         "list_files": {
             "title": "Print Files",
             "description": "${page_entries}",
-            "footer": "Page ${current_page}/${last_page}"
+            "footer": "Page ${pages}"
         },
         "info": {
             "title": "Informations",

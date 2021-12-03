@@ -39,6 +39,16 @@ export class EmbedHelper {
         return getEntry('embeds').fields
     }
 
+    public getRawEmbedByTitle(title:string) {
+        const embeds = this.getEmbeds()
+        for(const embedID in embeds) {
+            const embedData = embeds[embedID]
+            if(embedData.title === title) {
+                return {embedID, embedData}
+            }
+        }
+    }
+
     public async generateEmbed(embedID: string,providedPlaceholders = null, providedFields = null) {
         const embed = new MessageEmbed()
         const embedDataUnformatted = { ...this.getEmbeds()[embedID]}

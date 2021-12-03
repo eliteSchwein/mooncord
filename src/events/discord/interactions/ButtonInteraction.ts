@@ -7,6 +7,7 @@ import {LocaleHelper} from "../../../helper/LocaleHelper";
 import {sleep} from "../../../helper/DataHelper";
 import {getEntry} from "../../../utils/CacheUtil";
 import {MacroButton} from "./buttons/MacroButton";
+import { PageButton } from "./buttons/PageButton";
 
 export class ButtonInteraction {
     protected config = new ConfigHelper()
@@ -51,10 +52,11 @@ export class ButtonInteraction {
             }
         }
 
+        void new PageButton(interaction, buttonData)
         void new RefreshButton(interaction, buttonData)
         void new MacroButton(interaction, buttonData)
 
-        await sleep(1500)
+        await sleep(3000)
 
         if(interaction.replied || interaction.deferred) { return }
 
