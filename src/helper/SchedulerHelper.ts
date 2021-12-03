@@ -78,6 +78,10 @@ export class SchedulerHelper {
     protected async pollServerInfo() {
         if(this.functionCache.server_info_in_query) { return }
 
+        updateData('function', {
+            'server_info_in_query': true
+        })
+
         const currentStatus = findValue('function.current_status')
         const serverInfo = await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "server.info"}`)
 
@@ -89,15 +93,14 @@ export class SchedulerHelper {
         }
 
         updateData('server_info', serverInfo.result)
-        updateData('function', {
-            'server_info_in_query': true
-        })
-
-        await this.statusHelper.update()
 
         updateData('function', {
             'server_info_in_query': false
         })
+
+        if(serverInfo.result.klippy_state === 'ready') { return }
+
+        await this.statusHelper.update()
     }
 
     protected async requestPrintInfo() {
