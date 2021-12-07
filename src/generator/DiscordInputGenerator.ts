@@ -56,6 +56,8 @@ export class DiscordInputGenerator {
         const selection = new MessageSelectMenu()
             .setCustomId(selectionData.id)
             .setPlaceholder(selectionMeta.label)
+            .setMinValues(selectionMeta.min_value)
+            .setMaxValues(selectionMeta.max_value)
 
         for(const data of selectionData.data) {
             const selectionMetaRaw = JSON.stringify(selectionMeta)

@@ -16,6 +16,8 @@ export class PageButton {
 
     public constructor(interaction: ButtonInteraction, buttonData) {
         if(typeof buttonData.function_mapping === 'undefined') { return }
+        if(!buttonData.function_mapping.page_up &&
+            !buttonData.function_mapping.page_down) { return }
 
         void this.execute(interaction, buttonData)
     }

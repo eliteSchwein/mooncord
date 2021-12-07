@@ -17,6 +17,7 @@ import {StatusCommand} from "./commands/StatusCommand";
 import {sleep} from "../../../helper/DataHelper";
 import {EditChannelCommand} from "./commands/EditChannelCommand";
 import {FileListCommand} from "./commands/FileListCommand";
+import {FileInfoCommand} from "./commands/FileInfoCommand";
 
 export class CommandInteraction {
     protected config = new ConfigHelper()
@@ -62,6 +63,7 @@ export class CommandInteraction {
         void new StatusCommand(interaction, commandId)
         void new EditChannelCommand(interaction, commandId)
         void new FileListCommand(interaction, commandId)
+        void new FileInfoCommand(interaction, commandId)
 
         await sleep(3000)
 

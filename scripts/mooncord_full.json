@@ -296,7 +296,13 @@
         "request_timeout": 30
     },
     "embed_meta": {
-        "fileinfo": {},
+        "fileinfo": {
+            "color": "#0099ff",
+            "buttons": [
+                "request_accept",
+                "request_deny",
+                "to_printlist"]
+        },
         "list_files": {
             "color": "#0099ff",
             "thumbnail": "printlist.png",
@@ -572,6 +578,8 @@
         },
         "selections": {
             "printlist_view_printjob": {
+                "min_value": 1,
+                "max_value": 1,
                 "option_value": "${data.path}"
             }
         }

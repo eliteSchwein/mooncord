@@ -8,6 +8,7 @@ import {sleep} from "../../../helper/DataHelper";
 import {getEntry} from "../../../utils/CacheUtil";
 import {MacroButton} from "./buttons/MacroButton";
 import { PageButton } from "./buttons/PageButton";
+import {PrintlistButton} from "./buttons/PrintlistButton";
 
 export class ButtonInteraction {
     protected config = new ConfigHelper()
@@ -54,6 +55,7 @@ export class ButtonInteraction {
 
         void new PageButton(interaction, buttonData)
         void new RefreshButton(interaction, buttonData)
+        void new PrintlistButton(interaction, buttonData)
         void new MacroButton(interaction, buttonData)
 
         await sleep(3000)

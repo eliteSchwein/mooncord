@@ -6,7 +6,8 @@
     },
     "embeds": {
         "fileinfo": {
-            "title": "File Informations"
+            "title": "File Informations",
+            "description": "Print Time: ${estimated_time}\nSlicer: ${slicer}\nSlicer Version: ${slicer_version}\nHeight: ${object_height}mm"
         },
         "list_files": {
             "title": "Print Files",

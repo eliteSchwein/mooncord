@@ -80,8 +80,6 @@ export class MetadataHelper {
                 headers: {
                     'X-Api-Key': this.configHelper.getMoonrakerApiKey()
                 }})
-
-
         return Buffer.from(response.data, 'binary').toString('base64')
     }
 }

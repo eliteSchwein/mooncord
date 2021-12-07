@@ -21,11 +21,18 @@ export class PermissionHelper {
     public hasPermission(user: User, guild: Guild, command: string) {
         let commandPermission = this.permissions.commands[command]
         const buttonPermission = this.permissions.buttons[command]
+        const selectPermission = this.permissions.selections[command]
         
         if(typeof buttonPermission !== 'undefined') {
             if(buttonPermission.users === "*") { return true }
             
             commandPermission = this.permissions.commands[buttonPermission.command_assign]
+        }
+
+        if(typeof selectPermission !== 'undefined') {
+            if(selectPermission.users === "*") { return true }
+
+            commandPermission = this.permissions.commands[selectPermission.command_assign]
         }
         
         if(typeof commandPermission !== 'undefined' && commandPermission.users === "*") { return true }
@@ -34,6 +41,7 @@ export class PermissionHelper {
 
         if(this.hasSectionPermission(user,guild,commandPermission)) { return true }
         if(this.hasSectionPermission(user,guild,buttonPermission)) { return true }
+        if(this.hasSectionPermission(user,guild,selectPermission)) { return true }
 
         return false
     }

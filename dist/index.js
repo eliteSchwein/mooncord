@@ -33916,7 +33916,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 670:
+/***/ 594:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -34538,7 +34538,9 @@ class DiscordInputGenerator {
         const row = new external_discord_js_namespaceObject.MessageActionRow();
         const selection = new external_discord_js_namespaceObject.MessageSelectMenu()
             .setCustomId(selectionData.id)
-            .setPlaceholder(selectionMeta.label);
+            .setPlaceholder(selectionMeta.label)
+            .setMinValues(selectionMeta.min_value)
+            .setMaxValues(selectionMeta.max_value);
         for (const data of selectionData.data) {
             const selectionMetaRaw = JSON.stringify(selectionMeta);
             const selectionMetaParsed = JSON.parse(parsePageData(selectionMetaRaw, data));
@@ -37212,11 +37214,18 @@ class PermissionHelper {
     hasPermission(user, guild, command) {
         let commandPermission = this.permissions.commands[command];
         const buttonPermission = this.permissions.buttons[command];
+        const selectPermission = this.permissions.selections[command];
         if (typeof buttonPermission !== 'undefined') {
             if (buttonPermission.users === "*") {
                 return true;
             }
             commandPermission = this.permissions.commands[buttonPermission.command_assign];
+        }
+        if (typeof selectPermission !== 'undefined') {
+            if (selectPermission.users === "*") {
+                return true;
+            }
+            commandPermission = this.permissions.commands[selectPermission.command_assign];
         }
         if (typeof commandPermission !== 'undefined' && commandPermission.users === "*") {
             return true;
@@ -37228,6 +37237,9 @@ class PermissionHelper {
             return true;
         }
         if (this.hasSectionPermission(user, guild, buttonPermission)) {
+            return true;
+        }
+        if (this.hasSectionPermission(user, guild, selectPermission)) {
             return true;
         }
         return false;
@@ -37406,6 +37418,10 @@ class PageButton {
         if (typeof buttonData.function_mapping === 'undefined') {
             return;
         }
+        if (!buttonData.function_mapping.page_up &&
+            !buttonData.function_mapping.page_down) {
+            return;
+        }
         void this.execute(interaction, buttonData);
     }
     async execute(interaction, buttonData) {
@@ -37437,7 +37453,44 @@ class PageButton {
     }
 }
 
+;// CONCATENATED MODULE: ./src/events/discord/interactions/buttons/PrintlistButton.ts
+
+
+
+
+
+
+class PrintlistButton {
+    constructor(interaction, buttonData) {
+        this.databaseUtil = getDatabase();
+        this.embedHelper = new EmbedHelper();
+        this.configHelper = new ConfigHelper();
+        this.moonrakerClient = getMoonrakerClient();
+        this.localeHelper = new LocaleHelper();
+        this.locale = this.localeHelper.getLocale();
+        if (!buttonData.function_mapping.show_printlist) {
+            return;
+        }
+        void this.execute(interaction);
+    }
+    async execute(interaction) {
+        const pageHelper = new PageHelper(getEntry('gcode_files'), 'list_files');
+        const pageData = pageHelper.getPage(false, 1);
+        const answer = await this.embedHelper.generateEmbed('list_files', pageData);
+        const currentMessage = interaction.message;
+        await currentMessage.edit({ components: null });
+        await currentMessage.removeAttachments();
+        if (interaction.replied) {
+            await currentMessage.edit(answer.embed);
+        }
+        else {
+            await interaction.update(answer.embed);
+        }
+    }
+}
+
 ;// CONCATENATED MODULE: ./src/events/discord/interactions/ButtonInteraction.ts
+
 
 
 
@@ -37486,6 +37539,7 @@ class ButtonInteraction {
         }
         void new PageButton(interaction, buttonData);
         void new RefreshButton(interaction, buttonData);
+        void new PrintlistButton(interaction, buttonData);
         void new MacroButton(interaction, buttonData);
         await sleep(3000);
         if (interaction.replied || interaction.deferred) {
@@ -37871,7 +37925,32 @@ class FileListCommand {
     }
 }
 
+;// CONCATENATED MODULE: ./src/events/discord/interactions/commands/FileInfoCommand.ts
+
+
+class FileInfoCommand {
+    constructor(interaction, commandId) {
+        this.localeHelper = new LocaleHelper();
+        this.locale = this.localeHelper.getLocale();
+        this.syntaxLocale = this.localeHelper.getSyntaxLocale();
+        this.metadataHelper = new MetadataHelper();
+        if (commandId !== 'fileinfo') {
+            return;
+        }
+        this.execute(interaction);
+    }
+    async execute(interaction) {
+        let filename = interaction.options.getString(this.syntaxLocale.commands.printlist.options.file.name);
+        if (!filename.endsWith('.gcode')) {
+            filename = `${filename}.gcode`;
+        }
+        const metadata = await this.metadataHelper.getMetaData(filename);
+        console.log(metadata);
+    }
+}
+
 ;// CONCATENATED MODULE: ./src/events/discord/interactions/CommandInteraction.ts
+
 
 
 
@@ -37931,6 +38010,7 @@ class CommandInteraction {
         void new StatusCommand(interaction, commandId);
         void new EditChannelCommand(interaction, commandId);
         void new FileListCommand(interaction, commandId);
+        void new FileInfoCommand(interaction, commandId);
         await sleep(3000);
         if (interaction.replied || interaction.deferred) {
             return;
@@ -37939,12 +38019,97 @@ class CommandInteraction {
     }
 }
 
+;// CONCATENATED MODULE: ./src/events/discord/interactions/selections/ViewPrintJob.ts
+
+
+
+
+
+
+class ViewPrintJobSelection {
+    constructor(interaction, selectionId) {
+        this.databaseUtil = getDatabase();
+        this.embedHelper = new EmbedHelper();
+        this.configHelper = new ConfigHelper();
+        this.moonrakerClient = getMoonrakerClient();
+        this.localeHelper = new LocaleHelper();
+        this.locale = this.localeHelper.getLocale();
+        this.metadataHelper = new MetadataHelper();
+        if (selectionId !== 'printlist_view_printjob') {
+            return;
+        }
+        void this.execute(interaction);
+    }
+    async execute(interaction) {
+        const metadata = await this.metadataHelper.getMetaData(interaction.values[0]);
+        const thumbnail = await this.metadataHelper.getThumbnail(interaction.values[0]);
+        metadata.estimated_time = formatTime(metadata.estimated_time);
+        const embedData = await this.embedHelper.generateEmbed('fileinfo', metadata);
+        const embed = embedData.embed.embeds[0];
+        embed.setThumbnail(`attachment://${thumbnail.name}`);
+        const currentMessage = interaction.message;
+        await currentMessage.edit({ components: null });
+        await currentMessage.removeAttachments();
+        if (interaction.replied) {
+            await currentMessage.edit({ embeds: [embed],
+                files: [thumbnail],
+                components: embedData.embed['components'] });
+        }
+        else {
+            await interaction.update({ embeds: [embed],
+                files: [thumbnail],
+                components: embedData.embed['components'] });
+        }
+    }
+}
+
 ;// CONCATENATED MODULE: ./src/events/discord/interactions/SelectInteraction.ts
+
+
+
+
+
+
+
+
 class SelectInteraction {
     constructor(interaction) {
+        this.permissionHelper = new PermissionHelper();
+        this.localeHelper = new LocaleHelper();
+        this.locale = this.localeHelper.getLocale();
+        this.selectionsCache = getEntry('selections');
+        this.functionCache = getEntry('function');
+        this.config = new ConfigHelper();
+        void this.execute(interaction);
+    }
+    async execute(interaction) {
         if (!interaction.isSelectMenu()) {
             return;
         }
+        const selectId = interaction.customId;
+        let logValues = external_util_.format(interaction.values);
+        logValues = logValues.slice(2, -1)
+            .replace('\n', '');
+        if (selectId === null) {
+            return;
+        }
+        const selectData = this.selectionsCache[selectId];
+        logNotice(`${interaction.user.tag} pressed selection: ${selectId}`);
+        logNotice(`value/s: ${logValues}`);
+        if (!this.permissionHelper.hasPermission(interaction.user, interaction.guild, selectId)) {
+            await interaction.reply({
+                content: this.localeHelper.getNoPermission(interaction.user.tag),
+                ephemeral: this.config.showNoPermissionPrivate()
+            });
+            logWarn(`${interaction.user.tag} doesnt have the permission for: ${interaction.customId}`);
+            return;
+        }
+        new ViewPrintJobSelection(interaction, selectId);
+        await sleep(2000);
+        if (interaction.replied || interaction.deferred) {
+            return;
+        }
+        await interaction.reply(this.localeHelper.getCommandNotReadyError(interaction.user.tag));
     }
 }
 
@@ -39862,7 +40027,7 @@ return new B(c,{type:"multipart/form-data; boundary="+b})}
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(670);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(594);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()
