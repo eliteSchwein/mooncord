@@ -297,10 +297,10 @@
     },
     "embed_meta": {
         "fileinfo": {
+            "author": "${filename}",
             "color": "#0099ff",
             "buttons": [
-                "request_accept",
-                "request_deny",
+                "printjob_start",
                 "to_printlist"]
         },
         "list_files": {

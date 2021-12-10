@@ -71,7 +71,6 @@ export class EmbedHelper {
 
         let embedRaw = JSON.stringify(embedDataUnformatted)
 
-
         const placeholders = embedRaw.matchAll(/(\${).*?}/g)
         let files = []
         let components = []
@@ -113,6 +112,10 @@ export class EmbedHelper {
 
         if(typeof embedData.description !== 'undefined') {
             embed.setDescription(embedData.description)
+        }
+
+        if(typeof embedData.author !== 'undefined') {
+            embed.setAuthor(embedData.author)
         }
 
         if(typeof embedData.footer !== 'undefined') {

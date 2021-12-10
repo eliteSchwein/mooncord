@@ -25,14 +25,28 @@ export class ViewPrintJobSelection {
 
     protected async execute(interaction: SelectMenuInteraction) {
         const metadata = await this.metadataHelper.getMetaData(interaction.values[0])
+
+        if(typeof metadata === 'undefined') {
+            if(interaction.replied) {
+                await interaction.editReply(this.locale.messages.errors.file_not_found)
+            } else {
+                await interaction.reply(this.locale.messages.errors.file_not_found)
+            }
+            return
+        }
+
         const thumbnail = await this.metadataHelper.getThumbnail(interaction.values[0])
 
         metadata.estimated_time = formatTime(metadata.estimated_time)
+        metadata.filename = interaction.values[0]
         
         const embedData = await this.embedHelper.generateEmbed('fileinfo', metadata)
         const embed = embedData.embed.embeds[0] as MessageEmbed
 
         embed.setThumbnail(`attachment://${thumbnail.name}`)
+
+        embedData.embed.embeds = [embed]
+        embedData.embed['files'] = [thumbnail]
 
         const currentMessage = interaction.message as Message
 
@@ -40,13 +54,9 @@ export class ViewPrintJobSelection {
         await currentMessage.removeAttachments()
 
         if(interaction.replied) {
-            await currentMessage.edit({embeds: [embed],
-                files: [thumbnail],
-                components: embedData.embed['components']})
+            await currentMessage.edit(embedData.embed)
         } else {
-            await interaction.update({embeds: [embed],
-                files: [thumbnail],
-                components: embedData.embed['components']})
+            await interaction.update(embedData.embed)
         }
     }
 }

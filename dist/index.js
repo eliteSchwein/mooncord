@@ -33916,7 +33916,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 594:
+/***/ 4594:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -33932,7 +33932,7 @@ __nccwpck_require__.d(__webpack_exports__, {
 });
 
 ;// CONCATENATED MODULE: ./package.json
-const package_namespaceObject = JSON.parse('{"name":"mooncord","version":"0.0.5","description":"Moonraker Discord Bot based on Discord.js","main":"index.js","scripts":{"start":"node dist/index.js","debugstart":"node --trace_gc --trace-deprecation --trace-warnings --trace-uncaught --track-heap-objects dist/index.js","checkcodestyle":"npx eslint ./**","autofixcodestyle":"npx eslint ./** --fix","build":"ncc build -m -d -e discord.js -e sharp src/Application.ts -o dist","watch":"ncc build -w -d -e discord.js -e sharp src/Application.ts -o dist"},"repository":{"type":"git","url":"git+https://github.com/eliteSchwein/mooncord.git"},"keywords":[],"author":"eliteSCHW31N","license":"ISC","bugs":{"url":"https://github.com/eliteSchwein/mooncord/issues"},"homepage":"https://github.com/eliteSchwein/mooncord#readme","devDependencies":{"@types/node":"^16.11.11","@types/sharp":"^0.29.4","@vercel/ncc":"^0.32.0","async-wait-until":"^2.0.9","axios":"^0.24.0","colorts":"^0.1.63","eslint":"^8.3.0","eslint-config-galex":"^3.3.4","eslint-config-standard":"^16.0.3","eslint-plugin-import":"^2.25.3","eslint-plugin-node":"^11.1.0","eslint-plugin-promise":"^5.2.0","form-data":"^4.0.0","lodash":"^4.17.21","node-fetch":"^3.1.0","shelljs":"^0.8.4","stacktrace-js":"^2.0.2","typescript":"^4.5.2","websocket-ts":"^1.1.1","ws":"^8.3.0"},"dependencies":{"discord.js":"^13.3.1","sharp":"^0.29.3"}}');
+const package_namespaceObject = JSON.parse('{"name":"mooncord","version":"0.0.5","description":"Moonraker Discord Bot based on Discord.js","main":"index.js","scripts":{"start":"node dist/index.js","debugstart":"node --trace_gc --trace-deprecation --trace-warnings --trace-uncaught --track-heap-objects dist/index.js","checkcodestyle":"npx eslint ./**","autofixcodestyle":"npx eslint ./** --fix","build":"ncc build -m -d -e discord.js -e sharp src/Application.ts -o dist","watch":"ncc build -w -d -e discord.js -e sharp src/Application.ts -o dist"},"repository":{"type":"git","url":"git+https://github.com/eliteSchwein/mooncord.git"},"keywords":[],"author":"eliteSCHW31N","license":"ISC","bugs":{"url":"https://github.com/eliteSchwein/mooncord/issues"},"homepage":"https://github.com/eliteSchwein/mooncord#readme","devDependencies":{"@types/node":"^16.11.12","@types/sharp":"^0.29.4","@vercel/ncc":"^0.33.0","async-wait-until":"^2.0.9","axios":"^0.24.0","colorts":"^0.1.63","eslint":"^8.4.1","eslint-config-galex":"^3.3.5","eslint-config-standard":"^16.0.3","eslint-plugin-import":"^2.25.3","eslint-plugin-node":"^11.1.0","eslint-plugin-promise":"^5.2.0","form-data":"^4.0.0","lodash":"^4.17.21","node-fetch":"^3.1.0","shelljs":"^0.8.4","stacktrace-js":"^2.0.2","typescript":"^4.5.3","websocket-ts":"^1.1.1","ws":"^8.3.0"},"dependencies":{"discord.js":"^13.3.1","sharp":"^0.29.3"}}');
 var package_namespaceObject_0 = /*#__PURE__*/__nccwpck_require__.t(package_namespaceObject, 2);
 // EXTERNAL MODULE: ./node_modules/async-wait-until/dist/index.js
 var dist = __nccwpck_require__(1299);
@@ -36923,7 +36923,7 @@ class MetadataHelper {
         }
         const thumbnailFile = metaData.thumbnails.reduce((prev, current) => { return (prev.size > current.size) ? prev : current; });
         const relativePath = thumbnailFile.relative_path;
-        const thumbnailURL = `${url}/server/files/gcodes/${relativePath}`;
+        const thumbnailURL = encodeURI(`${url}/server/files/gcodes/${relativePath}`);
         let thumbnail;
         try {
             thumbnail = await this.getBase64(thumbnailURL);
@@ -37049,6 +37049,9 @@ class EmbedHelper {
         embed.setColor(embedData.color);
         if (typeof embedData.description !== 'undefined') {
             embed.setDescription(embedData.description);
+        }
+        if (typeof embedData.author !== 'undefined') {
+            embed.setAuthor(embedData.author);
         }
         if (typeof embedData.footer !== 'undefined') {
             embed.setFooter(embedData.footer);
@@ -37928,24 +37931,39 @@ class FileListCommand {
 ;// CONCATENATED MODULE: ./src/events/discord/interactions/commands/FileInfoCommand.ts
 
 
+
+
 class FileInfoCommand {
     constructor(interaction, commandId) {
         this.localeHelper = new LocaleHelper();
         this.locale = this.localeHelper.getLocale();
         this.syntaxLocale = this.localeHelper.getSyntaxLocale();
         this.metadataHelper = new MetadataHelper();
+        this.embedHelper = new EmbedHelper();
         if (commandId !== 'fileinfo') {
             return;
         }
-        this.execute(interaction);
+        void this.execute(interaction);
     }
     async execute(interaction) {
-        let filename = interaction.options.getString(this.syntaxLocale.commands.printlist.options.file.name);
+        let filename = interaction.options.getString(this.syntaxLocale.commands.fileinfo.options.file.name);
         if (!filename.endsWith('.gcode')) {
             filename = `${filename}.gcode`;
         }
         const metadata = await this.metadataHelper.getMetaData(filename);
-        console.log(metadata);
+        if (typeof metadata === 'undefined') {
+            await interaction.reply(this.locale.messages.errors.file_not_found);
+            return;
+        }
+        metadata.estimated_time = formatTime(metadata.estimated_time);
+        metadata.filename = filename;
+        const thumbnail = await this.metadataHelper.getThumbnail(filename);
+        const embedData = await this.embedHelper.generateEmbed('fileinfo', metadata);
+        const embed = embedData.embed.embeds[0];
+        embed.setThumbnail(`attachment://${thumbnail.name}`);
+        embedData.embed.embeds = [embed];
+        embedData.embed['files'] = [thumbnail];
+        await interaction.reply(embedData.embed);
     }
 }
 
@@ -37998,6 +38016,7 @@ class CommandInteraction {
             logWarn(`${interaction.user.tag} doesnt have the permission for: ${interaction.commandName} (${commandId})`);
             return;
         }
+        void new FileInfoCommand(interaction, commandId);
         void new InfoCommand(interaction, commandId);
         void new DumpCommand(interaction, commandId);
         void new TempCommand(interaction, commandId);
@@ -38010,8 +38029,7 @@ class CommandInteraction {
         void new StatusCommand(interaction, commandId);
         void new EditChannelCommand(interaction, commandId);
         void new FileListCommand(interaction, commandId);
-        void new FileInfoCommand(interaction, commandId);
-        await sleep(3000);
+        await sleep(2000);
         if (interaction.replied || interaction.deferred) {
             return;
         }
@@ -38042,23 +38060,31 @@ class ViewPrintJobSelection {
     }
     async execute(interaction) {
         const metadata = await this.metadataHelper.getMetaData(interaction.values[0]);
+        if (typeof metadata === 'undefined') {
+            if (interaction.replied) {
+                await interaction.editReply(this.locale.messages.errors.file_not_found);
+            }
+            else {
+                await interaction.reply(this.locale.messages.errors.file_not_found);
+            }
+            return;
+        }
         const thumbnail = await this.metadataHelper.getThumbnail(interaction.values[0]);
         metadata.estimated_time = formatTime(metadata.estimated_time);
+        metadata.filename = interaction.values[0];
         const embedData = await this.embedHelper.generateEmbed('fileinfo', metadata);
         const embed = embedData.embed.embeds[0];
         embed.setThumbnail(`attachment://${thumbnail.name}`);
+        embedData.embed.embeds = [embed];
+        embedData.embed['files'] = [thumbnail];
         const currentMessage = interaction.message;
         await currentMessage.edit({ components: null });
         await currentMessage.removeAttachments();
         if (interaction.replied) {
-            await currentMessage.edit({ embeds: [embed],
-                files: [thumbnail],
-                components: embedData.embed['components'] });
+            await currentMessage.edit(embedData.embed);
         }
         else {
-            await interaction.update({ embeds: [embed],
-                files: [thumbnail],
-                components: embedData.embed['components'] });
+            await interaction.update(embedData.embed);
         }
     }
 }
@@ -40027,7 +40053,7 @@ return new B(c,{type:"multipart/form-data; boundary="+b})}
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(594);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(4594);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()

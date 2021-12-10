@@ -51,6 +51,7 @@ export class CommandInteraction {
             return;
         }
 
+        void new FileInfoCommand(interaction, commandId)
         void new InfoCommand(interaction, commandId)
         void new DumpCommand(interaction, commandId)
         void new TempCommand(interaction, commandId)
@@ -63,9 +64,8 @@ export class CommandInteraction {
         void new StatusCommand(interaction, commandId)
         void new EditChannelCommand(interaction, commandId)
         void new FileListCommand(interaction, commandId)
-        void new FileInfoCommand(interaction, commandId)
 
-        await sleep(3000)
+        await sleep(2000)
 
         if(interaction.replied || interaction.deferred) { return }
 

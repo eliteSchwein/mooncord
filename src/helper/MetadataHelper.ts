@@ -51,7 +51,7 @@ export class MetadataHelper {
 
         const thumbnailFile = metaData.thumbnails.reduce((prev, current) => { return (prev.size > current.size) ? prev : current})
         const relativePath = thumbnailFile.relative_path
-        const thumbnailURL = `${url}/server/files/gcodes/${relativePath}`
+        const thumbnailURL = encodeURI(`${url}/server/files/gcodes/${relativePath}`)
         let thumbnail: string
         try {
             thumbnail = await this.getBase64(thumbnailURL)
