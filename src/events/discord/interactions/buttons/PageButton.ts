@@ -14,18 +14,19 @@ export class PageButton {
     protected localeHelper = new LocaleHelper()
     protected locale = this.localeHelper.getLocale()
 
-    public constructor(interaction: ButtonInteraction, buttonData) {
+    public async execute(interaction: ButtonInteraction, buttonData) {
         if(typeof buttonData.function_mapping === 'undefined') { return }
         if(!buttonData.function_mapping.page_up &&
             !buttonData.function_mapping.page_down) { return }
 
-        void this.execute(interaction, buttonData)
-    }
-
-    protected async execute(interaction: ButtonInteraction, buttonData) {
         const functionMap = buttonData.function_mapping
 
         if(interaction.message.embeds.length === 0) { return }
+
+        if(!interaction.replied &&
+            !interaction.deferred) {
+            await interaction.deferReply()
+        }
 
         const embed = interaction.message.embeds[0]
         const embedData = this.embedHelper.getRawEmbedByTitle(embed.title)
@@ -48,11 +49,11 @@ export class PageButton {
 
         await currentMessage.edit({components: null})
         await currentMessage.removeAttachments()
-        
-        if(interaction.replied) {
-            await currentMessage.edit(answer.embed)
-        } else {
-            interaction.update(answer.embed)
+
+        await currentMessage.edit(answer.embed)
+
+        if(!interaction.replied) {
+            await interaction.deleteReply()
         }
     }
 }

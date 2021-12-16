@@ -33916,7 +33916,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 4594:
+/***/ 632:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -37164,18 +37164,17 @@ class EmbedHelper {
 
 
 class RefreshButton {
-    constructor(interaction, buttonData) {
+    constructor() {
         this.databaseUtil = getDatabase();
         this.embedHelper = new EmbedHelper();
         this.configHelper = new ConfigHelper();
         this.localeHelper = new LocaleHelper();
         this.locale = this.localeHelper.getLocale();
+    }
+    async execute(interaction, buttonData) {
         if (!buttonData.function_mapping.refresh_status) {
             return;
         }
-        void this.execute(interaction);
-    }
-    async execute(interaction) {
         const functionCache = getEntry('function');
         const waitMessage = this.locale.messages.answers.status_update
             .replace(/(\${username})/g, interaction.user.tag);
@@ -37316,22 +37315,21 @@ class PermissionHelper {
 
 
 class MacroButton {
-    constructor(interaction, buttonData) {
+    constructor() {
         this.databaseUtil = getDatabase();
         this.embedHelper = new EmbedHelper();
         this.configHelper = new ConfigHelper();
         this.moonrakerClient = getMoonrakerClient();
         this.localeHelper = new LocaleHelper();
         this.locale = this.localeHelper.getLocale();
+    }
+    async execute(interaction, buttonData) {
         if (typeof buttonData.function_mapping.macros === 'undefined') {
             return;
         }
         if (buttonData.function_mapping.macros.empty) {
             return;
         }
-        void this.execute(interaction, buttonData);
-    }
-    async execute(interaction, buttonData) {
         for (const macro of buttonData.function_mapping.macros) {
             logNotice(`executing macro: ${macro}`);
             void this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "printer.gcode.script", "params": {"script": "${macro}"}}`, Number.POSITIVE_INFINITY);
@@ -37347,7 +37345,7 @@ class MacroButton {
             await interaction.followUp({ ephemeral: false, content: message });
         }
         else {
-            await interaction.reply({ ephemeral: false, content: message });
+            await interaction.reply(message);
         }
     }
 }
@@ -37412,12 +37410,14 @@ class PageHelper {
 
 
 class PageButton {
-    constructor(interaction, buttonData) {
+    constructor() {
         this.databaseUtil = getDatabase();
         this.embedHelper = new EmbedHelper();
         this.configHelper = new ConfigHelper();
         this.localeHelper = new LocaleHelper();
         this.locale = this.localeHelper.getLocale();
+    }
+    async execute(interaction, buttonData) {
         if (typeof buttonData.function_mapping === 'undefined') {
             return;
         }
@@ -37425,12 +37425,13 @@ class PageButton {
             !buttonData.function_mapping.page_down) {
             return;
         }
-        void this.execute(interaction, buttonData);
-    }
-    async execute(interaction, buttonData) {
         const functionMap = buttonData.function_mapping;
         if (interaction.message.embeds.length === 0) {
             return;
+        }
+        if (!interaction.replied &&
+            !interaction.deferred) {
+            await interaction.deferReply();
         }
         const embed = interaction.message.embeds[0];
         const embedData = this.embedHelper.getRawEmbedByTitle(embed.title);
@@ -37447,11 +37448,9 @@ class PageButton {
         const currentMessage = interaction.message;
         await currentMessage.edit({ components: null });
         await currentMessage.removeAttachments();
-        if (interaction.replied) {
-            await currentMessage.edit(answer.embed);
-        }
-        else {
-            interaction.update(answer.embed);
+        await currentMessage.edit(answer.embed);
+        if (!interaction.replied) {
+            await interaction.deleteReply();
         }
     }
 }
@@ -37464,35 +37463,124 @@ class PageButton {
 
 
 class PrintlistButton {
-    constructor(interaction, buttonData) {
+    constructor() {
         this.databaseUtil = getDatabase();
         this.embedHelper = new EmbedHelper();
         this.configHelper = new ConfigHelper();
         this.moonrakerClient = getMoonrakerClient();
         this.localeHelper = new LocaleHelper();
         this.locale = this.localeHelper.getLocale();
+    }
+    async execute(interaction, buttonData) {
         if (!buttonData.function_mapping.show_printlist) {
             return;
         }
-        void this.execute(interaction);
-    }
-    async execute(interaction) {
+        if (!interaction.replied &&
+            !interaction.deferred) {
+            await interaction.deferReply();
+        }
         const pageHelper = new PageHelper(getEntry('gcode_files'), 'list_files');
         const pageData = pageHelper.getPage(false, 1);
         const answer = await this.embedHelper.generateEmbed('list_files', pageData);
         const currentMessage = interaction.message;
         await currentMessage.edit({ components: null });
         await currentMessage.removeAttachments();
-        if (interaction.replied) {
-            await currentMessage.edit(answer.embed);
-        }
-        else {
-            await interaction.update(answer.embed);
+        await currentMessage.edit(answer.embed);
+        if (!interaction.replied) {
+            await interaction.deleteReply();
         }
     }
 }
 
+;// CONCATENATED MODULE: ./src/events/discord/interactions/buttons/PrintRequestButton.ts
+
+
+
+
+class PrintRequestButton {
+    constructor() {
+        this.localeHelper = new LocaleHelper();
+        this.locale = this.localeHelper.getLocale();
+        this.metadataHelper = new MetadataHelper();
+        this.embedHelper = new EmbedHelper();
+    }
+    async execute(interaction, buttonData) {
+        if (!buttonData.function_mapping.request_printjob) {
+            return;
+        }
+        const currentEmbed = interaction.message.embeds[0];
+        if (currentEmbed.author === null) {
+            return;
+        }
+        if (!interaction.replied &&
+            !interaction.deferred) {
+            await interaction.deferReply();
+        }
+        const printFile = currentEmbed.author.name;
+        const metadata = await this.metadataHelper.getMetaData(printFile);
+        if (typeof metadata === 'undefined') {
+            await interaction.editReply(this.locale.messages.errors.file_not_found);
+            return;
+        }
+        const thumbnail = await this.metadataHelper.getThumbnail(printFile);
+        metadata.estimated_time = formatTime(metadata.estimated_time);
+        metadata.filename = printFile;
+        const embedData = await this.embedHelper.generateEmbed('printjob_start_request', metadata);
+        const embed = embedData.embed.embeds[0];
+        embed.setThumbnail(`attachment://${thumbnail.name}`);
+        embedData.embed.embeds = [embed];
+        embedData.embed['files'] = [thumbnail];
+        const currentMessage = interaction.message;
+        await currentMessage.edit({ components: null });
+        await currentMessage.removeAttachments();
+        await currentMessage.edit(embedData.embed);
+        if (!interaction.replied) {
+            await interaction.deleteReply();
+        }
+    }
+}
+
+;// CONCATENATED MODULE: ./src/events/discord/interactions/buttons/DeleteButton.ts
+
+
+class DeleteButton {
+    constructor() {
+        this.moonrakerClient = getMoonrakerClient();
+        this.localeHelper = new LocaleHelper();
+        this.locale = this.localeHelper.getLocale();
+    }
+    async execute(interaction, buttonData) {
+        if (!buttonData.function_mapping.delete) {
+            return;
+        }
+        if (typeof buttonData.function_mapping.root_path === 'undefined') {
+            return;
+        }
+        const currentEmbed = interaction.message.embeds[0];
+        if (currentEmbed.author === null) {
+            return;
+        }
+        if (!interaction.replied &&
+            !interaction.deferred) {
+            await interaction.deferReply();
+        }
+        const rootPath = buttonData.function_mapping.root_path;
+        const filename = currentEmbed.author.name;
+        const feedback = await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "server.files.delete_file", "params": {"path":"${rootPath}/${filename}"}}`);
+        if (typeof feedback.error !== 'undefined') {
+            await interaction.editReply(this.locale.messages.errors.file_not_found);
+            return;
+        }
+        const answer = this.locale.messages.answers.file_deleted
+            .replace(/(\${root})/g, rootPath)
+            .replace(/(\${filename})/g, filename);
+        await interaction.editReply(answer);
+    }
+}
+
 ;// CONCATENATED MODULE: ./src/events/discord/interactions/ButtonInteraction.ts
+
+
 
 
 
@@ -37540,10 +37628,12 @@ class ButtonInteraction {
                 return;
             }
         }
-        void new PageButton(interaction, buttonData);
-        void new RefreshButton(interaction, buttonData);
-        void new PrintlistButton(interaction, buttonData);
-        void new MacroButton(interaction, buttonData);
+        await new DeleteButton().execute(interaction, buttonData);
+        await new RefreshButton().execute(interaction, buttonData);
+        await new PrintRequestButton().execute(interaction, buttonData);
+        await new PrintlistButton().execute(interaction, buttonData);
+        await new PageButton().execute(interaction, buttonData);
+        await new MacroButton().execute(interaction, buttonData);
         await sleep(3000);
         if (interaction.replied || interaction.deferred) {
             return;
@@ -37967,7 +38057,79 @@ class FileInfoCommand {
     }
 }
 
+;// CONCATENATED MODULE: ./src/events/discord/interactions/commands/PrintjobCommand.ts
+
+
+
+
+
+
+class PrintjobCommand {
+    constructor(interaction, commandId) {
+        this.localeHelper = new LocaleHelper();
+        this.locale = this.localeHelper.getLocale();
+        this.syntaxLocale = this.localeHelper.getSyntaxLocale();
+        this.metadataHelper = new MetadataHelper();
+        this.embedHelper = new EmbedHelper();
+        this.buttonsCache = getEntry('buttons');
+        this.moonrakerClient = getMoonrakerClient();
+        this.functionCache = getEntry('function');
+        if (commandId !== 'printjob') {
+            return;
+        }
+        void this.execute(interaction);
+    }
+    async execute(interaction) {
+        const subCommand = interaction.options.getSubcommand();
+        if (subCommand === this.syntaxLocale.commands.printjob.options.pause.name) {
+            await this.triggerMacro('printjob_pause', interaction, this.locale.messages.answers.printjob_pause, 'pause');
+            return;
+        }
+        if (subCommand === this.syntaxLocale.commands.printjob.options.cancel.name) {
+            await this.triggerMacro('printjob_cancel', interaction, this.locale.messages.answers.printjob_cancel);
+            return;
+        }
+        if (subCommand === this.syntaxLocale.commands.printjob.options.resume.name) {
+            await this.triggerMacro('printjob_resume', interaction, this.locale.messages.answers.printjob_resume, 'printing');
+            return;
+        }
+    }
+    async triggerMacro(buttonId, interaction, subLocale, status = '') {
+        const buttonData = this.buttonsCache[buttonId];
+        if (typeof buttonData.function_mapping.macros === 'undefined') {
+            return;
+        }
+        if (buttonData.function_mapping.macros.empty) {
+            return;
+        }
+        if (typeof buttonData.function_mapping.required_states === 'undefined') {
+            return;
+        }
+        const requiredStates = buttonData.function_mapping.required_states;
+        if (status === this.functionCache.current_status) {
+            const message = subLocale.status_same
+                .replace(/(\${username})/g, interaction.user.tag);
+            await interaction.reply(message);
+            return;
+        }
+        if (!requiredStates.includes(this.functionCache.current_status)) {
+            const message = subLocale.status_not_valid
+                .replace(/(\${username})/g, interaction.user.tag);
+            await interaction.reply(message);
+            return;
+        }
+        for (const macro of buttonData.function_mapping.macros) {
+            logNotice(`executing macro: ${macro}`);
+            void this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "printer.gcode.script", "params": {"script": "${macro}"}}`, Number.POSITIVE_INFINITY);
+        }
+        const message = subLocale.status_valid
+            .replace(/(\${username})/g, interaction.user.tag);
+        await interaction.reply(message);
+    }
+}
+
 ;// CONCATENATED MODULE: ./src/events/discord/interactions/CommandInteraction.ts
+
 
 
 
@@ -38029,6 +38191,7 @@ class CommandInteraction {
         void new StatusCommand(interaction, commandId);
         void new EditChannelCommand(interaction, commandId);
         void new FileListCommand(interaction, commandId);
+        void new PrintjobCommand(interaction, commandId);
         await sleep(2000);
         if (interaction.replied || interaction.deferred) {
             return;
@@ -38059,14 +38222,10 @@ class ViewPrintJobSelection {
         void this.execute(interaction);
     }
     async execute(interaction) {
+        await interaction.deferReply();
         const metadata = await this.metadataHelper.getMetaData(interaction.values[0]);
         if (typeof metadata === 'undefined') {
-            if (interaction.replied) {
-                await interaction.editReply(this.locale.messages.errors.file_not_found);
-            }
-            else {
-                await interaction.reply(this.locale.messages.errors.file_not_found);
-            }
+            await interaction.editReply(this.locale.messages.errors.file_not_found);
             return;
         }
         const thumbnail = await this.metadataHelper.getThumbnail(interaction.values[0]);
@@ -38080,12 +38239,8 @@ class ViewPrintJobSelection {
         const currentMessage = interaction.message;
         await currentMessage.edit({ components: null });
         await currentMessage.removeAttachments();
-        if (interaction.replied) {
-            await currentMessage.edit(embedData.embed);
-        }
-        else {
-            await interaction.update(embedData.embed);
-        }
+        await currentMessage.edit(embedData.embed);
+        await interaction.deleteReply();
     }
 }
 
@@ -40053,7 +40208,7 @@ return new B(c,{type:"multipart/form-data; boundary="+b})}
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(4594);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(632);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()

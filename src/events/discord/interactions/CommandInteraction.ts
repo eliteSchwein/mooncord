@@ -18,6 +18,7 @@ import {sleep} from "../../../helper/DataHelper";
 import {EditChannelCommand} from "./commands/EditChannelCommand";
 import {FileListCommand} from "./commands/FileListCommand";
 import {FileInfoCommand} from "./commands/FileInfoCommand";
+import {PrintjobCommand} from "./commands/PrintjobCommand";
 
 export class CommandInteraction {
     protected config = new ConfigHelper()
@@ -64,6 +65,7 @@ export class CommandInteraction {
         void new StatusCommand(interaction, commandId)
         void new EditChannelCommand(interaction, commandId)
         void new FileListCommand(interaction, commandId)
+        void new PrintjobCommand(interaction, commandId)
 
         await sleep(2000)
 

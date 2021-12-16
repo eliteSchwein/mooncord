@@ -66,14 +66,14 @@
                 "users": "*",
                 "roles": []
             },
-            "next_page": {
+            "next_page_printlist": {
                 "command_assign": "listfiles",
                 "botadmin": true,
                 "guildadmin": false,
                 "users": [],
                 "roles": []
             },
-            "last_page": {
+            "last_page_printlist": {
                 "command_assign": "listfiles",
                 "botadmin": true,
                 "guildadmin": false,
@@ -81,6 +81,13 @@
                 "roles": []
             },
             "printjob_resume": {
+                "command_assign": "printjob",
+                "botadmin": true,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
+            "clear_file": {
                 "command_assign": "printjob",
                 "botadmin": true,
                 "guildadmin": false,
@@ -108,6 +115,13 @@
                 "users": [],
                 "roles": []
             },
+            "delete_gcode": {
+                "command_assign": "fileinfo",
+                "botadmin": true,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
             "reconnect_moonraker": {
                 "command_assign": "service_restart",
                 "botadmin": true,
@@ -129,14 +143,14 @@
                 "users": [],
                 "roles": []
             },
-            "request_accept": {
+            "printjob_request_accept": {
                 "command_assign": "printjob",
                 "botadmin": true,
                 "guildadmin": false,
                 "users": [],
                 "roles": []
             },
-            "request_deny": {
+            "printjob_request_deny": {
                 "command_assign": "printjob",
                 "botadmin": true,
                 "guildadmin": false,
@@ -301,14 +315,15 @@
             "color": "#0099ff",
             "buttons": [
                 "printjob_start",
-                "to_printlist"]
+                "to_printlist",
+                "delete_gcode"]
         },
         "list_files": {
             "color": "#0099ff",
             "thumbnail": "printlist.png",
             "buttons": [
-                "last_page",
-                "next_page"],
+                "last_page_printlist",
+                "next_page_printlist"],
             "selection": {
                 "id": "printlist_view_printjob",
                 "data": "${raw_entries}"
@@ -318,7 +333,14 @@
             "color": "#0099ff",
             "thumbnail": "logo.png"
         },
-        "printjob_start_request": {},
+        "printjob_start_request": {
+            "author": "${filename}",
+            "color": "#0099ff",
+            "buttons": [
+                "printjob_request_accept",
+                "printjob_request_deny",
+                "to_printlist"]
+        },
         "printjob_start":{
             "color": "#25db00",
             "author": "${state.print_stats.filename}",
@@ -341,7 +363,7 @@
             "author": "${state.print_stats.filename}",
             "thumbnail": "thumbnail",
             "image": "webcam",
-            "buttons": [],
+            "buttons": ["clear_file"],
             "fields": [
                 {
                     "name": "${embeds.fields.print_time}",
@@ -482,7 +504,7 @@
     },
     "input_meta": {
         "buttons": {
-            "next_page": {
+            "next_page_printlist": {
                 "emoji": "➡️",
                 "style":"SECONDARY",
                 "permission_mapping": "listfiles",
@@ -490,7 +512,7 @@
                     "page_up": true
                 }
             },
-            "last_page": {
+            "last_page_printlist": {
                 "emoji": "⬅️",
                 "style":"SECONDARY",
                 "permission_mapping": "listfiles",
@@ -522,6 +544,14 @@
                     "macros": ["PAUSE"]
                 }
             },
+            "clear_file": {
+                "emoji": "🧹",
+                "style":"SECONDARY",
+                "function_mapping": {
+                    "required_states" : ["complete"],
+                    "macros": ["SDCARD_RESET_FILE"]
+                }
+            },
             "printjob_refresh": {
                 "emoji": "🔄",
                 "style":"PRIMARY",
@@ -536,11 +566,20 @@
                     "show_printlist": true
                 }
             },
+            "delete_gcode": {
+                "emoji": "🪣",
+                "style": "DANGER",
+                "function_mapping": {
+                    "show_printlist": true,
+                    "delete": true,
+                    "root_path": "gcodes"
+                }
+            },
             "printjob_start": {
                 "emoji": "🖨️",
                 "style":"SECONDARY",
                 "function_mapping": {
-                    "request": "printjob_start"
+                    "request_printjob": true
                 }
             },
             "reconnect_moonraker": {
@@ -563,13 +602,13 @@
 
                 }
             },
-            "request_accept": {
+            "printjob_request_accept": {
                 "style":"SUCCESS",
                 "function_mapping": {
-                    "request_accept": true
+                    "start_print": true
                 }
             },
-            "request_deny": {
+            "printjob_request_deny": {
                 "style":"DANGER",
                 "function_mapping": {
                     "request_deny": true

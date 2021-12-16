@@ -12,13 +12,9 @@ export class RefreshButton {
     protected localeHelper = new LocaleHelper()
     protected locale = this.localeHelper.getLocale()
 
-    public constructor(interaction: ButtonInteraction, buttonData) {
+    public async execute(interaction: ButtonInteraction, buttonData) {
         if(!buttonData.function_mapping.refresh_status) { return }
 
-        void this.execute(interaction)
-    }
-
-    protected async execute(interaction: ButtonInteraction) {
         const functionCache = getEntry('function')
 
         const waitMessage = this.locale.messages.answers.status_update

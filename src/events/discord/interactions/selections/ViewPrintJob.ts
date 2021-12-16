@@ -24,14 +24,12 @@ export class ViewPrintJobSelection {
     }
 
     protected async execute(interaction: SelectMenuInteraction) {
+        await interaction.deferReply()
+
         const metadata = await this.metadataHelper.getMetaData(interaction.values[0])
 
         if(typeof metadata === 'undefined') {
-            if(interaction.replied) {
-                await interaction.editReply(this.locale.messages.errors.file_not_found)
-            } else {
-                await interaction.reply(this.locale.messages.errors.file_not_found)
-            }
+            await interaction.editReply(this.locale.messages.errors.file_not_found)
             return
         }
 
@@ -53,10 +51,8 @@ export class ViewPrintJobSelection {
         await currentMessage.edit({components: null})
         await currentMessage.removeAttachments()
 
-        if(interaction.replied) {
-            await currentMessage.edit(embedData.embed)
-        } else {
-            await interaction.update(embedData.embed)
-        }
+        await currentMessage.edit(embedData.embed)
+
+        await interaction.deleteReply()
     }
 }

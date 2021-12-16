@@ -15,13 +15,14 @@ export class PrintlistButton {
     protected localeHelper = new LocaleHelper()
     protected locale = this.localeHelper.getLocale()
 
-    public constructor(interaction: ButtonInteraction, buttonData) {
+    public async execute(interaction: ButtonInteraction, buttonData) {
         if(!buttonData.function_mapping.show_printlist) { return }
 
-        void this.execute(interaction)
-    }
+        if(!interaction.replied &&
+            !interaction.deferred) {
+            await interaction.deferReply()
+        }
 
-    protected async execute(interaction: ButtonInteraction) {
         const pageHelper = new PageHelper(getEntry('gcode_files'), 'list_files')
         const pageData = pageHelper.getPage(false, 1)
 
@@ -32,10 +33,10 @@ export class PrintlistButton {
         await currentMessage.edit({components: null})
         await currentMessage.removeAttachments()
 
-        if(interaction.replied) {
-            await currentMessage.edit(answer.embed)
-        } else {
-            await interaction.update(answer.embed)
+        await currentMessage.edit(answer.embed)
+
+        if(!interaction.replied) {
+            await interaction.deleteReply()
         }
     }
 }

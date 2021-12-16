@@ -14,14 +14,10 @@ export class MacroButton {
     protected localeHelper = new LocaleHelper()
     protected locale = this.localeHelper.getLocale()
 
-    public constructor(interaction: ButtonInteraction, buttonData) {
+    public async execute(interaction: ButtonInteraction, buttonData) {
         if(typeof buttonData.function_mapping.macros === 'undefined') { return }
         if(buttonData.function_mapping.macros.empty) { return }
 
-        void this.execute(interaction, buttonData)
-    }
-
-    protected async execute(interaction: ButtonInteraction, buttonData) {
         for(const macro of buttonData.function_mapping.macros) {
             logNotice(`executing macro: ${macro}`)
             void this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "printer.gcode.script", "params": {"script": "${macro}"}}`, Number.POSITIVE_INFINITY)
@@ -40,7 +36,7 @@ export class MacroButton {
         if(interaction.replied) {
             await interaction.followUp({ephemeral: false, content: message})
         } else {
-            await interaction.reply({ephemeral: false, content: message})
+            await interaction.reply(message)
         }
     }
 }
