@@ -33916,7 +33916,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 632:
+/***/ 5632:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -38064,6 +38064,7 @@ class FileInfoCommand {
 
 
 
+
 class PrintjobCommand {
     constructor(interaction, commandId) {
         this.localeHelper = new LocaleHelper();
@@ -38081,18 +38082,44 @@ class PrintjobCommand {
     }
     async execute(interaction) {
         const subCommand = interaction.options.getSubcommand();
-        if (subCommand === this.syntaxLocale.commands.printjob.options.pause.name) {
-            await this.triggerMacro('printjob_pause', interaction, this.locale.messages.answers.printjob_pause, 'pause');
+        switch (subCommand) {
+            case this.syntaxLocale.commands.printjob.options.pause.name: {
+                await this.triggerMacro('printjob_pause', interaction, this.locale.messages.answers.printjob_pause, 'pause');
+                break;
+            }
+            case this.syntaxLocale.commands.printjob.options.cancel.name: {
+                await this.triggerMacro('printjob_cancel', interaction, this.locale.messages.answers.printjob_cancel);
+                break;
+            }
+            case this.syntaxLocale.commands.printjob.options.resume.name: {
+                await this.triggerMacro('printjob_resume', interaction, this.locale.messages.answers.printjob_resume, 'printing');
+                break;
+            }
+            case this.syntaxLocale.commands.printjob.options.start.name: {
+                await this.requestPrintjob(interaction.options.getString(this.syntaxLocale.commands.printjob.options.start.options.file.name), interaction);
+                break;
+            }
+        }
+    }
+    async requestPrintjob(printFile, interaction) {
+        await interaction.deferReply();
+        if (!printFile.endsWith('.gcode')) {
+            printFile = `${printFile}.gcode`;
+        }
+        const metadata = await this.metadataHelper.getMetaData(printFile);
+        if (typeof metadata === 'undefined') {
+            await interaction.editReply(this.locale.messages.errors.file_not_found);
             return;
         }
-        if (subCommand === this.syntaxLocale.commands.printjob.options.cancel.name) {
-            await this.triggerMacro('printjob_cancel', interaction, this.locale.messages.answers.printjob_cancel);
-            return;
-        }
-        if (subCommand === this.syntaxLocale.commands.printjob.options.resume.name) {
-            await this.triggerMacro('printjob_resume', interaction, this.locale.messages.answers.printjob_resume, 'printing');
-            return;
-        }
+        const thumbnail = await this.metadataHelper.getThumbnail(printFile);
+        metadata.estimated_time = formatTime(metadata.estimated_time);
+        metadata.filename = printFile;
+        const embedData = await this.embedHelper.generateEmbed('printjob_start_request', metadata);
+        const embed = embedData.embed.embeds[0];
+        embed.setThumbnail(`attachment://${thumbnail.name}`);
+        embedData.embed.embeds = [embed];
+        embedData.embed['files'] = [thumbnail];
+        await interaction.editReply(embedData.embed);
     }
     async triggerMacro(buttonId, interaction, subLocale, status = '') {
         const buttonData = this.buttonsCache[buttonId];
@@ -40208,7 +40235,7 @@ return new B(c,{type:"multipart/form-data; boundary="+b})}
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(632);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(5632);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()

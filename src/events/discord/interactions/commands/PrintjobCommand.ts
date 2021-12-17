@@ -5,6 +5,7 @@ import {EmbedHelper} from "../../../../helper/EmbedHelper";
 import {getEntry} from "../../../../utils/CacheUtil";
 import {logNotice} from "../../../../helper/LoggerHelper";
 import {getMoonrakerClient} from "../../../../Application";
+import {formatTime} from "../../../../helper/DataHelper";
 
 export class PrintjobCommand {
     protected localeHelper = new LocaleHelper()
@@ -25,20 +26,56 @@ export class PrintjobCommand {
     protected async execute(interaction: CommandInteraction) {
         const subCommand = interaction.options.getSubcommand()
 
-        if(subCommand === this.syntaxLocale.commands.printjob.options.pause.name) {
-            await this.triggerMacro('printjob_pause', interaction, this.locale.messages.answers.printjob_pause, 'pause')
+        switch (subCommand) {
+            case this.syntaxLocale.commands.printjob.options.pause.name: {
+                await this.triggerMacro('printjob_pause', interaction, this.locale.messages.answers.printjob_pause, 'pause')
+                break
+            }
+            case this.syntaxLocale.commands.printjob.options.cancel.name: {
+                await this.triggerMacro('printjob_cancel', interaction, this.locale.messages.answers.printjob_cancel)
+                break
+            }
+            case this.syntaxLocale.commands.printjob.options.resume.name: {
+                await this.triggerMacro('printjob_resume', interaction, this.locale.messages.answers.printjob_resume, 'printing')
+                break
+            }
+            case this.syntaxLocale.commands.printjob.options.start.name: {
+                await this.requestPrintjob(interaction.options.getString(
+                    this.syntaxLocale.commands.printjob.options.start.options.file.name
+                ), interaction)
+                break
+            }
+        }
+    }
+
+    protected async requestPrintjob(printFile: string,interaction: CommandInteraction) {
+        await interaction.deferReply()
+
+        if(!printFile.endsWith('.gcode')) {
+            printFile = `${printFile}.gcode`
+        }
+
+        const metadata = await this.metadataHelper.getMetaData(printFile)
+
+        if(typeof metadata === 'undefined') {
+            await interaction.editReply(this.locale.messages.errors.file_not_found)
             return
         }
 
-        if(subCommand === this.syntaxLocale.commands.printjob.options.cancel.name) {
-            await this.triggerMacro('printjob_cancel', interaction, this.locale.messages.answers.printjob_cancel)
-            return
-        }
+        const thumbnail = await this.metadataHelper.getThumbnail(printFile)
 
-        if(subCommand === this.syntaxLocale.commands.printjob.options.resume.name) {
-            await this.triggerMacro('printjob_resume', interaction, this.locale.messages.answers.printjob_resume, 'printing')
-            return
-        }
+        metadata.estimated_time = formatTime(metadata.estimated_time)
+        metadata.filename = printFile
+
+        const embedData = await this.embedHelper.generateEmbed('printjob_start_request', metadata)
+        const embed = embedData.embed.embeds[0] as MessageEmbed
+
+        embed.setThumbnail(`attachment://${thumbnail.name}`)
+
+        embedData.embed.embeds = [embed]
+        embedData.embed['files'] = [thumbnail]
+
+        await interaction.editReply(embedData.embed)
     }
 
     protected async triggerMacro(buttonId: string, interaction: CommandInteraction, subLocale, status = '') {
