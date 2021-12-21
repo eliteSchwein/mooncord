@@ -1,17 +1,20 @@
-import {ButtonInteraction} from "discord.js";
+import {ButtonInteraction, Message, MessageEmbed} from "discord.js";
 import {getMoonrakerClient} from "../../../../Application";
 import {LocaleHelper} from "../../../../helper/LocaleHelper";
+import {EmbedHelper} from "../../../../helper/EmbedHelper";
 
 export class DeleteButton {
     protected moonrakerClient = getMoonrakerClient()
     protected localeHelper = new LocaleHelper()
     protected locale = this.localeHelper.getLocale()
+    protected embedHelper = new EmbedHelper()
 
     public async execute(interaction: ButtonInteraction, buttonData) {
         if (!buttonData.function_mapping.delete) { return }
         if(typeof buttonData.function_mapping.root_path === 'undefined') { return }
 
-        const currentEmbed = interaction.message.embeds[0]
+        const currentMessage = interaction.message as Message
+        const currentEmbed = currentMessage.embeds[0] as MessageEmbed
 
         if(currentEmbed.author === null) {
             return
@@ -23,7 +26,7 @@ export class DeleteButton {
         }
 
         const rootPath = buttonData.function_mapping.root_path
-        const filename = currentEmbed.author.name
+        const filename = this.embedHelper.getAuthorName(currentEmbed)
 
         const feedback = await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "server.files.delete_file", "params": {"path":"${rootPath}/${filename}"}}`)
 
@@ -36,6 +39,6 @@ export class DeleteButton {
             .replace(/(\${root})/g, rootPath)
             .replace(/(\${filename})/g, filename)
 
-        await interaction.editReply(answer)
+        await currentMessage.edit({content: answer, components: [], embeds: []})
     }
 }

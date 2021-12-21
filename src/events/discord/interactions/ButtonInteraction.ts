@@ -11,6 +11,8 @@ import { PageButton } from "./buttons/PageButton";
 import {PrintlistButton} from "./buttons/PrintlistButton";
 import {PrintRequestButton} from "./buttons/PrintRequestButton";
 import {DeleteButton} from "./buttons/DeleteButton";
+import {PrintJobStartButton} from "./buttons/PrintJobStartButton";
+import {MessageButton} from "./buttons/MessageButton";
 
 export class ButtonInteraction {
     protected config = new ConfigHelper()
@@ -55,14 +57,16 @@ export class ButtonInteraction {
             }
         }
 
+        await new MessageButton().execute(interaction, buttonData)
         await new DeleteButton().execute(interaction, buttonData)
         await new RefreshButton().execute(interaction, buttonData)
         await new PrintRequestButton().execute(interaction, buttonData)
         await new PrintlistButton().execute(interaction, buttonData)
         await new PageButton().execute(interaction, buttonData)
+        await new PrintJobStartButton().execute(interaction, buttonData)
         await new MacroButton().execute(interaction, buttonData)
 
-        await sleep(3000)
+        await sleep(2000)
 
         if(interaction.replied || interaction.deferred) { return }
 

@@ -115,7 +115,21 @@
                 "users": [],
                 "roles": []
             },
-            "delete_gcode": {
+            "printjob_delete_request": {
+                "command_assign": "fileinfo",
+                "botadmin": true,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
+            "printjob_delete_accept": {
+                "command_assign": "fileinfo",
+                "botadmin": true,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
+            "printjob_delete_deny": {
                 "command_assign": "fileinfo",
                 "botadmin": true,
                 "guildadmin": false,
@@ -315,8 +329,9 @@
             "color": "#0099ff",
             "buttons": [
                 "printjob_start",
-                "to_printlist",
-                "delete_gcode"]
+                "printjob_delete_request",
+                "to_printlist"
+            ]
         },
         "list_files": {
             "color": "#0099ff",
@@ -339,6 +354,14 @@
             "buttons": [
                 "printjob_request_accept",
                 "printjob_request_deny",
+                "to_printlist"]
+        },
+        "printjob_delete_request": {
+            "author": "${filename}",
+            "color": "#c90000",
+            "buttons": [
+                "printjob_delete_deny",
+                "printjob_delete_accept",
                 "to_printlist"]
         },
         "printjob_start":{
@@ -525,7 +548,8 @@
                 "style":"PRIMARY",
                 "function_mapping": {
                     "required_states" : ["pause"],
-                    "macros": ["RESUME"]
+                    "macros": ["RESUME"],
+                    "message": "${locale.messages.answers.printjob_resume.status_valid}"
                 }
             },
             "printjob_cancel": {
@@ -533,7 +557,8 @@
                 "style":"DANGER",
                 "function_mapping": {
                     "required_states" : ["pause", "printing"],
-                    "macros": ["CANCEL_PRINT"]
+                    "macros": ["CANCEL_PRINT"],
+                    "message": "${locale.messages.answers.printjob_cancel.status_valid}"
                 }
             },
             "printjob_pause": {
@@ -541,7 +566,8 @@
                 "style":"SECONDARY",
                 "function_mapping": {
                     "required_states" : ["printing"],
-                    "macros": ["PAUSE"]
+                    "macros": ["PAUSE"],
+                    "message": "${locale.messages.answers.printjob_pause.status_valid}"
                 }
             },
             "clear_file": {
@@ -549,7 +575,8 @@
                 "style":"SECONDARY",
                 "function_mapping": {
                     "required_states" : ["complete"],
-                    "macros": ["SDCARD_RESET_FILE"]
+                    "macros": ["SDCARD_RESET_FILE"],
+                    "message": "${locale.messages.answers.printjob_clear}"
                 }
             },
             "printjob_refresh": {
@@ -566,13 +593,17 @@
                     "show_printlist": true
                 }
             },
-            "delete_gcode": {
-                "emoji": "🪣",
+            "printjob_delete_accept": {
                 "style": "DANGER",
                 "function_mapping": {
-                    "show_printlist": true,
                     "delete": true,
                     "root_path": "gcodes"
+                }
+            },
+            "printjob_delete_deny": {
+                "style":"SUCCESS",
+                "function_mapping": {
+                    "message": "${locale.messages.answers.printjob_delete_abort}"
                 }
             },
             "printjob_start": {
@@ -580,6 +611,14 @@
                 "style":"SECONDARY",
                 "function_mapping": {
                     "request_printjob": true
+                }
+            },
+            "printjob_delete_request": {
+                "emoji": "🪣",
+                "style":"DANGER",
+                "function_mapping": {
+                    "request_printjob": true,
+                    "request_embed": "printjob_delete_request"
                 }
             },
             "reconnect_moonraker": {
@@ -593,7 +632,8 @@
                 "emoji": "🔄",
                 "style":"PRIMARY",
                 "function_mapping": {
-                    "macros": ["FIRMWARE_RESTART"]
+                    "macros": ["FIRMWARE_RESTART"],
+                    "message": "${locale.messages.answers.firmware_restart_successful}"
                 }
             },
             "update_system": {
@@ -604,14 +644,16 @@
             },
             "printjob_request_accept": {
                 "style":"SUCCESS",
+                "required_states" : ["ready"],
                 "function_mapping": {
-                    "start_print": true
+                    "start_print": true,
+                    "message": "${locale.messages.answers.printjob_executed}"
                 }
             },
             "printjob_request_deny": {
                 "style":"DANGER",
                 "function_mapping": {
-                    "request_deny": true
+                    "message": "${locale.messages.answers.printjob_request_abort}"
                 }
             }
         },

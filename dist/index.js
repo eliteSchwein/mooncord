@@ -31199,7 +31199,13 @@ class Receiver extends Writable {
       }
 
       data = this.consume(this._payloadLength);
-      if (this._masked) unmask(data, this._mask);
+
+      if (
+        this._masked &&
+        (this._mask[0] | this._mask[1] | this._mask[2] | this._mask[3]) !== 0
+      ) {
+        unmask(data, this._mask);
+      }
     }
 
     if (this._opcode > 0x07) return this.controlMessage(data);
@@ -31413,7 +31419,7 @@ const { EMPTY_BUFFER } = __nccwpck_require__(5949);
 const { isValidStatusCode } = __nccwpck_require__(6279);
 const { mask: applyMask, toBuffer } = __nccwpck_require__(9436);
 
-const mask = Buffer.alloc(4);
+const maskBuffer = Buffer.alloc(4);
 
 /**
  * HyBi Sender implementation.
@@ -31424,9 +31430,17 @@ class Sender {
    *
    * @param {(net.Socket|tls.Socket)} socket The connection socket
    * @param {Object} [extensions] An object containing the negotiated extensions
+   * @param {Function} [generateMask] The function used to generate the masking
+   *     key
    */
-  constructor(socket, extensions) {
+  constructor(socket, extensions, generateMask) {
     this._extensions = extensions || {};
+
+    if (generateMask) {
+      this._generateMask = generateMask;
+      this._maskBuffer = Buffer.alloc(4);
+    }
+
     this._socket = socket;
 
     this._firstFragment = true;
@@ -31444,8 +31458,12 @@ class Sender {
    * @param {Object} options Options object
    * @param {Boolean} [options.fin=false] Specifies whether or not to set the
    *     FIN bit
+   * @param {Function} [options.generateMask] The function used to generate the
+   *     masking key
    * @param {Boolean} [options.mask=false] Specifies whether or not to mask
    *     `data`
+   * @param {Buffer} [options.maskBuffer] The buffer used to store the masking
+   *     key
    * @param {Number} options.opcode The opcode
    * @param {Boolean} [options.readOnly=false] Specifies whether `data` can be
    *     modified
@@ -31455,8 +31473,26 @@ class Sender {
    * @public
    */
   static frame(data, options) {
-    const merge = options.mask && options.readOnly;
-    let offset = options.mask ? 6 : 2;
+    let mask;
+    let merge = false;
+    let offset = 2;
+    let skipMasking = false;
+
+    if (options.mask) {
+      mask = options.maskBuffer || maskBuffer;
+
+      if (options.generateMask) {
+        options.generateMask(mask);
+      } else {
+        randomFillSync(mask, 0, 4);
+      }
+
+      skipMasking = (mask[0] | mask[1] | mask[2] | mask[3]) === 0;
+      if (options.readOnly && !skipMasking) merge = true;
+
+      offset = 6;
+    }
+
     let payloadLength = data.length;
 
     if (data.length >= 65536) {
@@ -31483,13 +31519,13 @@ class Sender {
 
     if (!options.mask) return [target, data];
 
-    randomFillSync(mask, 0, 4);
-
     target[1] |= 0x80;
     target[offset - 4] = mask[0];
     target[offset - 3] = mask[1];
     target[offset - 2] = mask[2];
     target[offset - 1] = mask[3];
+
+    if (skipMasking) return [target, data];
 
     if (merge) {
       applyMask(data, mask, target, offset, data.length);
@@ -31558,6 +31594,8 @@ class Sender {
         rsv1: false,
         opcode: 0x08,
         mask,
+        maskBuffer: this._maskBuffer,
+        generateMask: this._generateMask,
         readOnly: false
       }),
       cb
@@ -31602,6 +31640,8 @@ class Sender {
         rsv1: false,
         opcode: 0x09,
         mask,
+        maskBuffer: this._maskBuffer,
+        generateMask: this._generateMask,
         readOnly
       }),
       cb
@@ -31646,6 +31686,8 @@ class Sender {
         rsv1: false,
         opcode: 0x0a,
         mask,
+        maskBuffer: this._maskBuffer,
+        generateMask: this._generateMask,
         readOnly
       }),
       cb
@@ -31701,6 +31743,8 @@ class Sender {
         rsv1,
         opcode,
         mask: options.mask,
+        maskBuffer: this._maskBuffer,
+        generateMask: this._generateMask,
         readOnly: toBuffer.readOnly
       };
 
@@ -31716,6 +31760,8 @@ class Sender {
           rsv1: false,
           opcode,
           mask: options.mask,
+          maskBuffer: this._maskBuffer,
+          generateMask: this._generateMask,
           readOnly: toBuffer.readOnly
         }),
         cb
@@ -31733,8 +31779,12 @@ class Sender {
    * @param {Number} options.opcode The opcode
    * @param {Boolean} [options.fin=false] Specifies whether or not to set the
    *     FIN bit
+   * @param {Function} [options.generateMask] The function used to generate the
+   *     masking key
    * @param {Boolean} [options.mask=false] Specifies whether or not to mask
    *     `data`
+   * @param {Buffer} [options.maskBuffer] The buffer used to store the masking
+   *     key
    * @param {Boolean} [options.readOnly=false] Specifies whether `data` can be
    *     modified
    * @param {Boolean} [options.rsv1=false] Specifies whether or not to set the
@@ -32886,6 +32936,8 @@ class WebSocket extends EventEmitter {
    *     server and client
    * @param {Buffer} head The first packet of the upgraded stream
    * @param {Object} options Options object
+   * @param {Function} [options.generateMask] The function used to generate the
+   *     masking key
    * @param {Number} [options.maxPayload=0] The maximum allowed message size
    * @param {Boolean} [options.skipUTF8Validation=false] Specifies whether or
    *     not to skip UTF-8 validation for text and close messages
@@ -32900,7 +32952,7 @@ class WebSocket extends EventEmitter {
       skipUTF8Validation: options.skipUTF8Validation
     });
 
-    this._sender = new Sender(socket, this._extensions);
+    this._sender = new Sender(socket, this._extensions, options.generateMask);
     this._receiver = receiver;
     this._socket = socket;
 
@@ -33307,6 +33359,8 @@ module.exports = WebSocket;
  * @param {Object} [options] Connection options
  * @param {Boolean} [options.followRedirects=false] Whether or not to follow
  *     redirects
+ * @param {Function} [options.generateMask] The function used to generate the
+ *     masking key
  * @param {Number} [options.handshakeTimeout] Timeout in milliseconds for the
  *     handshake request
  * @param {Number} [options.maxPayload=104857600] The maximum allowed message
@@ -33593,6 +33647,7 @@ function initAsClient(websocket, address, protocols, options) {
     }
 
     websocket.setSocket(socket, head, {
+      generateMask: opts.generateMask,
       maxPayload: opts.maxPayload,
       skipUTF8Validation: opts.skipUTF8Validation
     });
@@ -33916,7 +33971,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 5632:
+/***/ 8889:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -33932,7 +33987,7 @@ __nccwpck_require__.d(__webpack_exports__, {
 });
 
 ;// CONCATENATED MODULE: ./package.json
-const package_namespaceObject = JSON.parse('{"name":"mooncord","version":"0.0.5","description":"Moonraker Discord Bot based on Discord.js","main":"index.js","scripts":{"start":"node dist/index.js","debugstart":"node --trace_gc --trace-deprecation --trace-warnings --trace-uncaught --track-heap-objects dist/index.js","checkcodestyle":"npx eslint ./**","autofixcodestyle":"npx eslint ./** --fix","build":"ncc build -m -d -e discord.js -e sharp src/Application.ts -o dist","watch":"ncc build -w -d -e discord.js -e sharp src/Application.ts -o dist"},"repository":{"type":"git","url":"git+https://github.com/eliteSchwein/mooncord.git"},"keywords":[],"author":"eliteSCHW31N","license":"ISC","bugs":{"url":"https://github.com/eliteSchwein/mooncord/issues"},"homepage":"https://github.com/eliteSchwein/mooncord#readme","devDependencies":{"@types/node":"^16.11.12","@types/sharp":"^0.29.4","@vercel/ncc":"^0.33.0","async-wait-until":"^2.0.9","axios":"^0.24.0","colorts":"^0.1.63","eslint":"^8.4.1","eslint-config-galex":"^3.3.5","eslint-config-standard":"^16.0.3","eslint-plugin-import":"^2.25.3","eslint-plugin-node":"^11.1.0","eslint-plugin-promise":"^5.2.0","form-data":"^4.0.0","lodash":"^4.17.21","node-fetch":"^3.1.0","shelljs":"^0.8.4","stacktrace-js":"^2.0.2","typescript":"^4.5.3","websocket-ts":"^1.1.1","ws":"^8.3.0"},"dependencies":{"discord.js":"^13.3.1","sharp":"^0.29.3"}}');
+const package_namespaceObject = JSON.parse('{"name":"mooncord","version":"0.0.5","description":"Moonraker Discord Bot based on Discord.js","main":"index.js","scripts":{"start":"node dist/index.js","debugstart":"node --trace_gc --trace-deprecation --trace-warnings --trace-uncaught --track-heap-objects dist/index.js","checkcodestyle":"npx eslint ./**","autofixcodestyle":"npx eslint ./** --fix","build":"ncc build -m -d -e discord.js -e sharp src/Application.ts -o dist","watch":"ncc build -w -d -e discord.js -e sharp src/Application.ts -o dist"},"repository":{"type":"git","url":"git+https://github.com/eliteSchwein/mooncord.git"},"keywords":[],"author":"eliteSCHW31N","license":"ISC","bugs":{"url":"https://github.com/eliteSchwein/mooncord/issues"},"homepage":"https://github.com/eliteSchwein/mooncord#readme","devDependencies":{"@types/node":"^17.0.2","@types/sharp":"^0.29.4","@vercel/ncc":"^0.33.1","async-wait-until":"^2.0.9","axios":"^0.24.0","colorts":"^0.1.63","eslint":"^8.5.0","eslint-config-galex":"^3.4.1","eslint-config-standard":"^16.0.3","eslint-plugin-import":"^2.25.3","eslint-plugin-node":"^11.1.0","eslint-plugin-promise":"^6.0.0","form-data":"^4.0.0","lodash":"^4.17.21","node-fetch":"^3.1.0","shelljs":"^0.8.4","stacktrace-js":"^2.0.2","typescript":"^4.5.4","websocket-ts":"^1.1.1","ws":"^8.4.0"},"dependencies":{"discord.js":"^13.3.1","sharp":"^0.29.3"}}');
 var package_namespaceObject_0 = /*#__PURE__*/__nccwpck_require__.t(package_namespaceObject, 2);
 // EXTERNAL MODULE: ./node_modules/async-wait-until/dist/index.js
 var dist = __nccwpck_require__(1299);
@@ -36999,6 +37054,18 @@ class EmbedHelper {
             }
         }
     }
+    getAuthorName(embed) {
+        if (embed.author === null) {
+            return '';
+        }
+        return embed.author.name;
+    }
+    getTitle(embed) {
+        if (embed.title === null) {
+            return '';
+        }
+        return embed.title;
+    }
     async generateEmbed(embedID, providedPlaceholders = null, providedFields = null) {
         const embed = new external_discord_js_namespaceObject.MessageEmbed();
         const embedDataUnformatted = { ...this.getEmbeds()[embedID] };
@@ -37332,7 +37399,10 @@ class MacroButton {
         }
         for (const macro of buttonData.function_mapping.macros) {
             logNotice(`executing macro: ${macro}`);
-            void this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "printer.gcode.script", "params": {"script": "${macro}"}}`, Number.POSITIVE_INFINITY);
+            void this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "printer.gcode.script", "params": {"script": "${macro}"}}`, 60000);
+        }
+        if (!buttonData.function_mapping.macro_message) {
+            return;
         }
         let label = buttonData.label;
         if (typeof buttonData.emoji !== 'undefined') {
@@ -37508,6 +37578,10 @@ class PrintRequestButton {
         if (!buttonData.function_mapping.request_printjob) {
             return;
         }
+        let embedId = 'printjob_start_request';
+        if (typeof buttonData.function_mapping.request_embed !== 'undefined') {
+            embedId = buttonData.function_mapping.request_embed;
+        }
         const currentEmbed = interaction.message.embeds[0];
         if (currentEmbed.author === null) {
             return;
@@ -37516,7 +37590,7 @@ class PrintRequestButton {
             !interaction.deferred) {
             await interaction.deferReply();
         }
-        const printFile = currentEmbed.author.name;
+        const printFile = this.embedHelper.getAuthorName(currentEmbed);
         const metadata = await this.metadataHelper.getMetaData(printFile);
         if (typeof metadata === 'undefined') {
             await interaction.editReply(this.locale.messages.errors.file_not_found);
@@ -37525,7 +37599,7 @@ class PrintRequestButton {
         const thumbnail = await this.metadataHelper.getThumbnail(printFile);
         metadata.estimated_time = formatTime(metadata.estimated_time);
         metadata.filename = printFile;
-        const embedData = await this.embedHelper.generateEmbed('printjob_start_request', metadata);
+        const embedData = await this.embedHelper.generateEmbed(embedId, metadata);
         const embed = embedData.embed.embeds[0];
         embed.setThumbnail(`attachment://${thumbnail.name}`);
         embedData.embed.embeds = [embed];
@@ -37543,11 +37617,13 @@ class PrintRequestButton {
 ;// CONCATENATED MODULE: ./src/events/discord/interactions/buttons/DeleteButton.ts
 
 
+
 class DeleteButton {
     constructor() {
         this.moonrakerClient = getMoonrakerClient();
         this.localeHelper = new LocaleHelper();
         this.locale = this.localeHelper.getLocale();
+        this.embedHelper = new EmbedHelper();
     }
     async execute(interaction, buttonData) {
         if (!buttonData.function_mapping.delete) {
@@ -37556,7 +37632,8 @@ class DeleteButton {
         if (typeof buttonData.function_mapping.root_path === 'undefined') {
             return;
         }
-        const currentEmbed = interaction.message.embeds[0];
+        const currentMessage = interaction.message;
+        const currentEmbed = currentMessage.embeds[0];
         if (currentEmbed.author === null) {
             return;
         }
@@ -37565,7 +37642,7 @@ class DeleteButton {
             await interaction.deferReply();
         }
         const rootPath = buttonData.function_mapping.root_path;
-        const filename = currentEmbed.author.name;
+        const filename = this.embedHelper.getAuthorName(currentEmbed);
         const feedback = await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "server.files.delete_file", "params": {"path":"${rootPath}/${filename}"}}`);
         if (typeof feedback.error !== 'undefined') {
             await interaction.editReply(this.locale.messages.errors.file_not_found);
@@ -37574,11 +37651,82 @@ class DeleteButton {
         const answer = this.locale.messages.answers.file_deleted
             .replace(/(\${root})/g, rootPath)
             .replace(/(\${filename})/g, filename);
-        await interaction.editReply(answer);
+        await currentMessage.edit({ content: answer, components: [], embeds: [] });
+    }
+}
+
+;// CONCATENATED MODULE: ./src/events/discord/interactions/buttons/PrintJobStartButton.ts
+
+
+
+
+class PrintJobStartButton {
+    constructor() {
+        this.localeHelper = new LocaleHelper();
+        this.locale = this.localeHelper.getLocale();
+        this.metadataHelper = new MetadataHelper();
+        this.embedHelper = new EmbedHelper();
+        this.moonrakerClient = getMoonrakerClient();
+    }
+    async execute(interaction, buttonData) {
+        if (!buttonData.function_mapping.start_print) {
+            return;
+        }
+        const currentMessage = interaction.message;
+        const embed = currentMessage.embeds[0];
+        const printFile = this.embedHelper.getAuthorName(embed);
+        const metadata = await this.metadataHelper.getMetaData(printFile);
+        if (typeof metadata === 'undefined') {
+            await interaction.editReply(this.locale.messages.errors.file_not_found);
+            return;
+        }
+        await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "printer.print.start", "params": {"filename": "${printFile}"}}`);
+    }
+}
+
+;// CONCATENATED MODULE: ./src/events/discord/interactions/buttons/MessageButton.ts
+
+
+class MessageButton {
+    constructor() {
+        this.embedHelper = new EmbedHelper();
+    }
+    async execute(interaction, buttonData) {
+        if (typeof buttonData.function_mapping.message === 'undefined') {
+            return;
+        }
+        const currentMessage = interaction.message;
+        const embed = currentMessage.embeds[0];
+        let label = buttonData.label;
+        if (typeof buttonData.emoji !== 'undefined') {
+            label = `${buttonData.emoji} ${label}`;
+        }
+        let message = buttonData.function_mapping.message;
+        if (/(\${).*?}/g.test(message)) {
+            const placeholderId = message
+                .replace(/(\${)/g, '')
+                .replace(/}/g, '');
+            message = findValue(placeholderId);
+        }
+        message = message
+            .replace(/(\${username})/g, interaction.user.tag)
+            .replace(/(\${button_label})/g, label)
+            .replace(/(\${embed_author})/g, this.embedHelper.getAuthorName(embed))
+            .replace(/(\${embed_title})/g, this.embedHelper.getTitle(embed));
+        if (interaction.replied) {
+            await interaction.followUp(message);
+        }
+        else {
+            await currentMessage.edit({ components: null, embeds: null });
+            await currentMessage.removeAttachments();
+            await interaction.update({ content: message, components: [], embeds: [] });
+        }
     }
 }
 
 ;// CONCATENATED MODULE: ./src/events/discord/interactions/ButtonInteraction.ts
+
+
 
 
 
@@ -37628,13 +37776,15 @@ class ButtonInteraction {
                 return;
             }
         }
+        await new MessageButton().execute(interaction, buttonData);
         await new DeleteButton().execute(interaction, buttonData);
         await new RefreshButton().execute(interaction, buttonData);
         await new PrintRequestButton().execute(interaction, buttonData);
         await new PrintlistButton().execute(interaction, buttonData);
         await new PageButton().execute(interaction, buttonData);
+        await new PrintJobStartButton().execute(interaction, buttonData);
         await new MacroButton().execute(interaction, buttonData);
-        await sleep(3000);
+        await sleep(2000);
         if (interaction.replied || interaction.deferred) {
             return;
         }
@@ -40235,7 +40385,7 @@ return new B(c,{type:"multipart/form-data; boundary="+b})}
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(5632);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(8889);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()

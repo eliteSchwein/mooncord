@@ -49,6 +49,18 @@ export class EmbedHelper {
         }
     }
 
+    public getAuthorName(embed: MessageEmbed) {
+        if(embed.author === null) { return '' }
+
+        return embed.author.name
+    }
+
+    public getTitle(embed: MessageEmbed) {
+        if(embed.title === null) { return '' }
+
+        return embed.title
+    }
+
     public async generateEmbed(embedID: string,providedPlaceholders = null, providedFields = null) {
         const embed = new MessageEmbed()
         const embedDataUnformatted = { ...this.getEmbeds()[embedID]}

@@ -13,7 +13,13 @@ export class PrintRequestButton {
     public async execute(interaction: ButtonInteraction, buttonData) {
         if(!buttonData.function_mapping.request_printjob) { return }
 
-        const currentEmbed = interaction.message.embeds[0]
+        let embedId = 'printjob_start_request'
+
+        if(typeof buttonData.function_mapping.request_embed !== 'undefined') {
+            embedId = buttonData.function_mapping.request_embed
+        }
+
+        const currentEmbed = interaction.message.embeds[0] as MessageEmbed
 
         if(currentEmbed.author === null) {
             return
@@ -24,7 +30,7 @@ export class PrintRequestButton {
             await interaction.deferReply()
         }
 
-        const printFile = currentEmbed.author.name
+        const printFile = this.embedHelper.getAuthorName(currentEmbed)
 
         const metadata = await this.metadataHelper.getMetaData(printFile)
 
@@ -38,7 +44,7 @@ export class PrintRequestButton {
         metadata.estimated_time = formatTime(metadata.estimated_time)
         metadata.filename = printFile
 
-        const embedData = await this.embedHelper.generateEmbed('printjob_start_request', metadata)
+        const embedData = await this.embedHelper.generateEmbed(embedId, metadata)
         const embed = embedData.embed.embeds[0] as MessageEmbed
 
         embed.setThumbnail(`attachment://${thumbnail.name}`)

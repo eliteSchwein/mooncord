@@ -20,8 +20,10 @@ export class MacroButton {
 
         for(const macro of buttonData.function_mapping.macros) {
             logNotice(`executing macro: ${macro}`)
-            void this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "printer.gcode.script", "params": {"script": "${macro}"}}`, Number.POSITIVE_INFINITY)
+            void this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "printer.gcode.script", "params": {"script": "${macro}"}}`, 60_000)
         }
+
+        if(!buttonData.function_mapping.macro_message) { return }
 
         let label = buttonData.label
 
