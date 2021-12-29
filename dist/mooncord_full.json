@@ -157,6 +157,13 @@
                 "users": [],
                 "roles": []
             },
+            "reconnect": {
+                "command_assign": "service_restart",
+                "botadmin": true,
+                "guildadmin": true,
+                "users": [],
+                "roles": []
+            },
             "printjob_request_accept": {
                 "command_assign": "printjob",
                 "botadmin": true,
@@ -486,7 +493,7 @@
         },
         "moonraker_disconnected":{
             "color": "#c90000",
-            "buttons": ["reconnect_moonraker"]
+            "buttons": ["reconnect"]
         },
         "error":{
             "description": "```${state_message}```",
@@ -621,11 +628,12 @@
                     "request_embed": "printjob_delete_request"
                 }
             },
-            "reconnect_moonraker": {
+            "reconnect": {
                 "emoji": "🔄",
                 "style":"PRIMARY",
                 "function_mapping": {
-                    "request": "reconnect_moonraker"
+                    "reconnect": true,
+                    "message": "${locale.messages.answers.reconnect}"
                 }
             },
             "klipper_restart": {

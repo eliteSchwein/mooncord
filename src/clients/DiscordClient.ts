@@ -32,15 +32,11 @@ export class DiscordClient {
     protected metadataHelper = new MetadataHelper()
     protected discordClient: Client
 
-    public constructor() {
-        this.connect()
-    }
-
-    private async connect() {
-        await waitUntil(() => this.database.isReady(), { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 500 })
-
+    public async connect() {
         logEmpty()
         logSuccess('Load Discord Client...')
+
+        this.close()
 
         this.discordClient = new Client({intents: [
                 Intents.FLAGS.DIRECT_MESSAGES,
@@ -97,8 +93,6 @@ export class DiscordClient {
         const currentPrintfile = findValue('state.print_stats.filename')
 
         await this.metadataHelper.updateMetaData(currentPrintfile)
-
-        await this.statusHelper.update(null, this)
     }
 
     public unregisterEvents() {
@@ -129,5 +123,10 @@ export class DiscordClient {
 
     public getClient() {
         return this.discordClient
+    }
+
+    public close() {
+        if (typeof this.discordClient === 'undefined') { return }
+        this.discordClient.destroy()
     }
 }

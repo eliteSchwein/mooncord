@@ -9,16 +9,26 @@ export class SchedulerHelper {
     protected functionCache = getEntry('function')
     protected statusHelper = new StatusHelper()
     protected moonrakerClient: MoonrakerClient
+    protected highScheduler: NodeJS.Timer
+    protected moderateScheduler: NodeJS.Timer
+    protected statusScheduler: NodeJS.Timer
 
-    public constructor(moonrakerClient: MoonrakerClient) {
+    public init(moonrakerClient: MoonrakerClient) {
         this.moonrakerClient = moonrakerClient
 
         this.scheduleModerate()
         this.scheduleHigh()
+        this.scheduleStatus()
+    }
+
+    public clear() {
+        clearInterval(this.highScheduler)
+        clearInterval(this.moderateScheduler)
+        clearInterval(this.statusScheduler)
     }
 
     protected scheduleHigh() {
-        setInterval( () => {
+        this.highScheduler = setInterval( () => {
             this.functionCache = getEntry('function')
 
             if(typeof this.moonrakerClient.getWebsocket() === 'undefined') {
@@ -35,7 +45,7 @@ export class SchedulerHelper {
     }
 
     protected scheduleModerate() {
-        setInterval(async () => {
+        this.moderateScheduler = setInterval(async () => {
             const machineInfo = await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "machine.system_info"}`)
 
             setData('machine_info', machineInfo.result)

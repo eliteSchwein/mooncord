@@ -33971,7 +33971,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 8889:
+/***/ 4273:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -33983,14 +33983,14 @@ __nccwpck_require__.d(__webpack_exports__, {
   "getDatabase": () => (/* binding */ getDatabase),
   "getDiscordClient": () => (/* binding */ getDiscordClient),
   "getMoonrakerClient": () => (/* binding */ getMoonrakerClient),
-  "reinitClients": () => (/* binding */ reinitClients)
+  "restartBot": () => (/* binding */ restartBot)
 });
 
 ;// CONCATENATED MODULE: ./package.json
 const package_namespaceObject = JSON.parse('{"name":"mooncord","version":"0.0.5","description":"Moonraker Discord Bot based on Discord.js","main":"index.js","scripts":{"start":"node dist/index.js","debugstart":"node --trace_gc --trace-deprecation --trace-warnings --trace-uncaught --track-heap-objects dist/index.js","checkcodestyle":"npx eslint ./**","autofixcodestyle":"npx eslint ./** --fix","build":"ncc build -m -d -e discord.js -e sharp src/Application.ts -o dist","watch":"ncc build -w -d -e discord.js -e sharp src/Application.ts -o dist"},"repository":{"type":"git","url":"git+https://github.com/eliteSchwein/mooncord.git"},"keywords":[],"author":"eliteSCHW31N","license":"ISC","bugs":{"url":"https://github.com/eliteSchwein/mooncord/issues"},"homepage":"https://github.com/eliteSchwein/mooncord#readme","devDependencies":{"@types/node":"^17.0.2","@types/sharp":"^0.29.4","@vercel/ncc":"^0.33.1","async-wait-until":"^2.0.9","axios":"^0.24.0","colorts":"^0.1.63","eslint":"^8.5.0","eslint-config-galex":"^3.4.1","eslint-config-standard":"^16.0.3","eslint-plugin-import":"^2.25.3","eslint-plugin-node":"^11.1.0","eslint-plugin-promise":"^6.0.0","form-data":"^4.0.0","lodash":"^4.17.21","node-fetch":"^3.1.0","shelljs":"^0.8.4","stacktrace-js":"^2.0.2","typescript":"^4.5.4","websocket-ts":"^1.1.1","ws":"^8.4.0"},"dependencies":{"discord.js":"^13.3.1","sharp":"^0.29.3"}}');
 var package_namespaceObject_0 = /*#__PURE__*/__nccwpck_require__.t(package_namespaceObject, 2);
-// EXTERNAL MODULE: ./node_modules/async-wait-until/dist/index.js
-var dist = __nccwpck_require__(1299);
+// EXTERNAL MODULE: external "util"
+var external_util_ = __nccwpck_require__(3837);
 ;// CONCATENATED MODULE: external "discord.js"
 const external_discord_js_namespaceObject = require("discord.js");
 ;// CONCATENATED MODULE: external "fs"
@@ -34000,8 +34000,6 @@ const external_path_namespaceObject = require("path");
 var external_path_default = /*#__PURE__*/__nccwpck_require__.n(external_path_namespaceObject);
 // EXTERNAL MODULE: ./node_modules/colorts/lib/string.js
 var string = __nccwpck_require__(692);
-// EXTERNAL MODULE: external "util"
-var external_util_ = __nccwpck_require__(3837);
 ;// CONCATENATED MODULE: ./src/helper/LoggerHelper.ts
 
 
@@ -34688,7 +34686,7 @@ function dataUriToBuffer(uri) {
     buffer.charset = charset;
     return buffer;
 }
-/* harmony default export */ const data_uri_to_buffer_dist = (dataUriToBuffer);
+/* harmony default export */ const dist = (dataUriToBuffer);
 //# sourceMappingURL=index.js.map
 ;// CONCATENATED MODULE: external "node:util"
 const external_node_util_namespaceObject = require("node:util");
@@ -36336,7 +36334,7 @@ async function fetch(url, options_) {
 		}
 
 		if (parsedURL.protocol === 'data:') {
-			const data = data_uri_to_buffer_dist(request.url);
+			const data = dist(request.url);
 			const response = new Response(data, {headers: {'Content-Type': data.typeFull}});
 			resolve(response);
 			return;
@@ -37724,7 +37722,19 @@ class MessageButton {
     }
 }
 
+;// CONCATENATED MODULE: ./src/events/discord/interactions/buttons/ReconnectButton.ts
+
+class ReconnectButton {
+    async execute(interaction, buttonData) {
+        if (!buttonData.function_mapping.reconnect) {
+            return;
+        }
+        await restartBot();
+    }
+}
+
 ;// CONCATENATED MODULE: ./src/events/discord/interactions/ButtonInteraction.ts
+
 
 
 
@@ -37778,6 +37788,7 @@ class ButtonInteraction {
         }
         await new MessageButton().execute(interaction, buttonData);
         await new DeleteButton().execute(interaction, buttonData);
+        await new ReconnectButton().execute(interaction, buttonData);
         await new RefreshButton().execute(interaction, buttonData);
         await new PrintRequestButton().execute(interaction, buttonData);
         await new PrintlistButton().execute(interaction, buttonData);
@@ -38603,7 +38614,12 @@ class NotificationHelper {
         }
         const messages = await channel.messages.fetch({ limit: 1 });
         const lastMessage = messages.first();
-        //if (lastMessage.author.id === this.discordClient.getClient().user.id) { return }
+        if (typeof this.locale === 'undefined') {
+            return;
+        }
+        if (lastMessage.author.id === this.discordClient.getClient().user.id) {
+            return;
+        }
         if (lastMessage.deleted) {
             return;
         }
@@ -38625,6 +38641,8 @@ class NotificationHelper {
     }
 }
 
+// EXTERNAL MODULE: ./node_modules/async-wait-until/dist/index.js
+var async_wait_until_dist = __nccwpck_require__(1299);
 ;// CONCATENATED MODULE: ./src/helper/StatusHelper.ts
 
 
@@ -38708,7 +38726,7 @@ class StatusHelper {
             logRegular(`klipper status changed to ${status}...`);
         }
         functionCache = getEntry('function');
-        await (0,dist.waitUntil)(() => !functionCache.status_in_query, { timeout: 20000, intervalBetweenAttempts: 500 });
+        await (0,async_wait_until_dist.waitUntil)(() => !functionCache.status_in_query, { timeout: 20000, intervalBetweenAttempts: 500 });
         updateData('function', {
             'status_in_query': true
         });
@@ -38765,7 +38783,6 @@ class StatusHelper {
 
 
 
-
 let interactionHandler;
 let debugHandler;
 class DiscordClient {
@@ -38778,12 +38795,11 @@ class DiscordClient {
         this.localeHelper = new LocaleHelper();
         this.statusHelper = new StatusHelper();
         this.metadataHelper = new MetadataHelper();
-        this.connect();
     }
     async connect() {
-        await (0,dist.waitUntil)(() => this.database.isReady(), { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 500 });
         logEmpty();
         logSuccess('Load Discord Client...');
+        this.close();
         this.discordClient = new external_discord_js_namespaceObject.Client({ intents: [
                 external_discord_js_namespaceObject.Intents.FLAGS.DIRECT_MESSAGES,
                 external_discord_js_namespaceObject.Intents.FLAGS.DIRECT_MESSAGE_REACTIONS,
@@ -38822,7 +38838,6 @@ class DiscordClient {
         logSuccess('MoonCord is ready');
         const currentPrintfile = findValue('state.print_stats.filename');
         await this.metadataHelper.updateMetaData(currentPrintfile);
-        await this.statusHelper.update(null, this);
     }
     unregisterEvents() {
         logRegular('Unregister Events...');
@@ -38847,6 +38862,12 @@ class DiscordClient {
     }
     getClient() {
         return this.discordClient;
+    }
+    close() {
+        if (typeof this.discordClient === 'undefined') {
+            return;
+        }
+        this.discordClient.destroy();
     }
 }
 
@@ -39054,8 +39075,7 @@ class StateUpdateNotification {
             });
             logEmpty();
             logSuccess('klipper is ready...');
-            await reinitClients();
-            await this.statusHelper.update('ready');
+            await restartBot();
         }
     }
 }
@@ -39165,7 +39185,6 @@ class MessageHandler {
 
 
 
-
 const requests = {};
 let messageHandler;
 class MoonrakerClient {
@@ -39177,8 +39196,6 @@ class MoonrakerClient {
         this.metadataHelper = new MetadataHelper(this);
         this.alreadyRunning = false;
         this.reconnectAttempt = 1;
-        logSuccess('Connect to MoonRaker...');
-        this.connect();
     }
     async errorHandler(instance, event) {
         const reason = event.message;
@@ -39206,6 +39223,9 @@ class MoonrakerClient {
         }, this.config.getMoonrakerRetryInterval() * 1000);
     }
     async connectHandler(instance, event) {
+        if (this.alreadyRunning) {
+            return;
+        }
         if (typeof this.reconnectScheduler !== 'undefined') {
             return;
         }
@@ -39216,16 +39236,21 @@ class MoonrakerClient {
         this.changeLogPath();
     }
     async reconnectHandler(instance, event) {
+        if (!this.alreadyRunning) {
+            return;
+        }
         if (typeof this.reconnectScheduler === 'undefined') {
             return;
         }
         logSuccess('Reconnected to MoonRaker');
-        const statusHelper = new StatusHelper();
         this.reconnectAttempt = 1;
-        await reinitClients();
-        await statusHelper.update();
+        this.registerEvents();
+        await this.sendInitCommands();
+        this.changeLogPath();
     }
     async connect() {
+        logSuccess('Connect to MoonRaker...');
+        this.ready = false;
         const oneShotToken = await this.apiKeyHelper.getOneShotToken();
         const socketUrl = this.config.getMoonrakerSocketUrl();
         this.websocket = new lib.WebsocketBuilder(`${socketUrl}?token=${oneShotToken}`)
@@ -39322,7 +39347,7 @@ class MoonrakerClient {
         const messageData = JSON.parse(message);
         messageData.id = id;
         this.websocket.send(JSON.stringify(messageData));
-        await (0,dist.waitUntil)(() => typeof requests[id] !== 'undefined', { timeout, intervalBetweenAttempts: 500 });
+        await (0,async_wait_until_dist.waitUntil)(() => typeof requests[id] !== 'undefined', { timeout, intervalBetweenAttempts: 500 });
         return requests[id];
     }
     isReady() {
@@ -39340,12 +39365,14 @@ class MoonrakerClient {
     getWebsocket() {
         return this.websocket;
     }
+    close() {
+        this.websocket.close();
+    }
 }
 
 ;// CONCATENATED MODULE: external "fs/promises"
 const promises_namespaceObject = require("fs/promises");
 ;// CONCATENATED MODULE: ./src/utils/DatabaseUtil.ts
-
 
 
 
@@ -39361,10 +39388,8 @@ class DatabaseUtil {
     constructor() {
         this.config = new ConfigHelper();
         this.moonrakerClient = getMoonrakerClient();
-        this.retrieveDatabase();
     }
     async retrieveDatabase() {
-        await (0,dist.waitUntil)(() => this.moonrakerClient.isReady(), { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 500 });
         logEmpty();
         logSuccess('Retrieve Database...');
         const databaseRequest = await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "server.database.get_item", "params": { "namespace": "mooncord", "key": "dataset"}}`);
@@ -39417,16 +39442,24 @@ class DatabaseUtil {
 
 
 class SchedulerHelper {
-    constructor(moonrakerClient) {
+    constructor() {
         this.configHelper = new ConfigHelper();
         this.functionCache = getEntry('function');
         this.statusHelper = new StatusHelper();
+    }
+    init(moonrakerClient) {
         this.moonrakerClient = moonrakerClient;
         this.scheduleModerate();
         this.scheduleHigh();
+        this.scheduleStatus();
+    }
+    clear() {
+        clearInterval(this.highScheduler);
+        clearInterval(this.moderateScheduler);
+        clearInterval(this.statusScheduler);
     }
     scheduleHigh() {
-        setInterval(() => {
+        this.highScheduler = setInterval(() => {
             this.functionCache = getEntry('function');
             if (typeof this.moonrakerClient.getWebsocket() === 'undefined') {
                 return;
@@ -39440,7 +39473,7 @@ class SchedulerHelper {
         }, 250);
     }
     scheduleModerate() {
-        setInterval(async () => {
+        this.moderateScheduler = setInterval(async () => {
             const machineInfo = await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "machine.system_info"}`);
             setData('machine_info', machineInfo.result);
         }, 60000);
@@ -39521,45 +39554,79 @@ class SchedulerHelper {
 
 
 
+
+
+
+Object.assign(global, { WebSocket: __nccwpck_require__(8867) });
 tempHookLog();
 hookProcess();
 logSuccess(`Starting ${package_namespaceObject.name} ${package_namespaceObject.version}...`);
-logRegular('load Package Cache...');
-setData('package_config', package_namespaceObject_0);
-logRegular('init Function Cache...');
-setData('function', {
-    'current_status': 'botstart',
-    'status_in_query': false,
-    'server_info_in_query': false,
-    'poll_printer_info': false,
-    'current_percent': -1,
-    'status_cooldown': 0
-});
-logRegular('init Time Cache...');
-setData('time', {
-    'total': 0,
-    'duration': 0,
-    'left': 0,
-    'eta': 0
-});
-logRegular('init Layer Cache...');
-setData('layers', {
-    'top': 0,
-    'current': 0
-});
-Object.assign(global, { WebSocket: __nccwpck_require__(8867) });
 const configHelper = new ConfigHelper();
 configHelper.loadCache();
 const localeHelper = new LocaleHelper();
 const embedHelper = new EmbedHelper();
-localeHelper.loadCache();
-embedHelper.loadCache();
-logEmpty();
 const moonrakerClient = new MoonrakerClient();
 const Application_database = new DatabaseUtil();
 const discordClient = new DiscordClient();
-logRegular('Register Scheduler...');
-void new SchedulerHelper(moonrakerClient);
+const schedulerHelper = new SchedulerHelper();
+const statusHelper = new StatusHelper();
+void init();
+async function init() {
+    initCache();
+    logEmpty();
+    let currentInitState = 'Moonraker Client';
+    try {
+        await moonrakerClient.connect();
+        await (0,async_wait_until_dist.waitUntil)(() => moonrakerClient.isReady(), { timeout: 10000, intervalBetweenAttempts: 500 });
+        currentInitState = 'Database';
+        await Application_database.retrieveDatabase();
+        await (0,async_wait_until_dist.waitUntil)(() => Application_database.isReady(), { timeout: 10000, intervalBetweenAttempts: 500 });
+        currentInitState = 'Discord Client';
+        await discordClient.connect();
+        await (0,async_wait_until_dist.waitUntil)(() => discordClient.isConnected(), { timeout: 10000, intervalBetweenAttempts: 500 });
+    }
+    catch (error) {
+        logError(`couldn't load ${currentInitState} in Time! Reason: ${external_util_.format(error)}`);
+    }
+    logRegular('Register Scheduler...');
+    schedulerHelper.init(moonrakerClient);
+    await statusHelper.update('ready', discordClient);
+}
+async function restartBot() {
+    logEmpty();
+    logSuccess('restart Bot...');
+    schedulerHelper.clear();
+    moonrakerClient.close();
+    await init();
+}
+function initCache() {
+    logRegular('load Package Cache...');
+    setData('package_config', package_namespaceObject_0);
+    logRegular('init Function Cache...');
+    setData('function', {
+        'current_status': 'botstart',
+        'status_in_query': false,
+        'server_info_in_query': false,
+        'poll_printer_info': false,
+        'current_percent': -1,
+        'status_cooldown': 0
+    });
+    logRegular('init Time Cache...');
+    setData('time', {
+        'total': 0,
+        'duration': 0,
+        'left': 0,
+        'eta': 0
+    });
+    logRegular('init Layer Cache...');
+    setData('layers', {
+        'top': 0,
+        'current': 0
+    });
+    configHelper.loadCache();
+    localeHelper.loadCache();
+    embedHelper.loadCache();
+}
 function getMoonrakerClient() {
     return moonrakerClient;
 }
@@ -39568,17 +39635,6 @@ function getDiscordClient() {
 }
 function getDatabase() {
     return Application_database;
-}
-async function reinitClients() {
-    logEmpty();
-    logSuccess('reinitiate Clients...');
-    await moonrakerClient.sendInitCommands();
-    await moonrakerClient.changeLogPath();
-    await Application_database.retrieveDatabase();
-    discordClient.unregisterEvents();
-    await discordClient.registerCommands();
-    await discordClient.registerEvents();
-    discordClient.generateCaches();
 }
 
 
@@ -40385,7 +40441,7 @@ return new B(c,{type:"multipart/form-data; boundary="+b})}
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(8889);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(4273);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()

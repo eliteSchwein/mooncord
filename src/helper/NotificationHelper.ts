@@ -73,7 +73,8 @@ export class NotificationHelper {
         const messages = await channel.messages.fetch({limit: 1})
         const lastMessage = messages.first()
 
-        //if (lastMessage.author.id === this.discordClient.getClient().user.id) { return }
+        if (typeof this.locale === 'undefined') { return }
+        if (lastMessage.author.id === this.discordClient.getClient().user.id) { return }
         if (lastMessage.deleted) { return }
         if (lastMessage.embeds.length === 0) { return }
         if (typeof(lastMessage.embeds[0]) === 'undefined') { return }

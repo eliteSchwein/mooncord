@@ -160,7 +160,8 @@
             "printjob_clear": "The current Print Job got cleared, `${username}`!",
             "printjob_request_abort": "Print Job request for `${embed_author}` aborted, `${username}`!",
             "printjob_delete_abort": "Print Job Deletion request for `${embed_author}` aborted, `${username}`!",
-            "printjob_executed": "Print Job request executed, `${username}`!"
+            "printjob_executed": "Print Job request executed, `${username}`!",
+            "reconnect": "MoonCord will reconnect to Moonraker and Discord, `${username}`!"
         },
         "errors": {
             "check_console": "Please Check the Console!",
@@ -238,7 +239,7 @@
         "klipper_restart": {
             "label": "Restart Firmware"
         },
-        "reconnect_moonraker": {
+        "reconnect": {
             "label": "Reconnect"
         },
         "update_system": {

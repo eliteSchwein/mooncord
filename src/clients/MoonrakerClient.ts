@@ -36,12 +36,6 @@ export class MoonrakerClient {
     protected reconnectScheduler: any
     protected reconnectAttempt = 1
 
-    public constructor() {
-        logSuccess('Connect to MoonRaker...')
-
-        this.connect()
-    }
-
     private async errorHandler(instance, event) {
         const reason = event.message
         logEmpty()
@@ -68,8 +62,11 @@ export class MoonrakerClient {
     }
 
     private async connectHandler(instance, event) {
-        if(typeof this.reconnectScheduler !== 'undefined') { return }
+        if (this.alreadyRunning) { return }
+        if (typeof this.reconnectScheduler !== 'undefined') { return }
+
         logSuccess('Connected to MoonRaker')
+
         this.alreadyRunning = true
 
         this.registerEvents()
@@ -80,18 +77,25 @@ export class MoonrakerClient {
     }
 
     private async reconnectHandler(instance, event) {
-        if(typeof this.reconnectScheduler === 'undefined') { return }
+        if (!this.alreadyRunning) { return }
+        if (typeof this.reconnectScheduler === 'undefined') { return }
+
         logSuccess('Reconnected to MoonRaker')
 
-        const statusHelper = new StatusHelper()
-
         this.reconnectAttempt = 1
-        await App.reinitClients()
 
-        await statusHelper.update()
+        this.registerEvents()
+
+        await this.sendInitCommands()
+
+        this.changeLogPath()
     }
 
     public async connect() {
+        logSuccess('Connect to MoonRaker...')
+
+        this.ready = false
+
         const oneShotToken = await this.apiKeyHelper.getOneShotToken()
         const socketUrl = this.config.getMoonrakerSocketUrl()
 
@@ -234,5 +238,9 @@ export class MoonrakerClient {
 
     public getWebsocket() {
         return this.websocket
+    }
+
+    public close() {
+        this.websocket.close()
     }
 }

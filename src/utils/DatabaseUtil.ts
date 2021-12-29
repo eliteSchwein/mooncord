@@ -17,13 +17,7 @@ export class DatabaseUtil {
     protected config = new ConfigHelper()
     protected moonrakerClient = getMoonrakerClient()
 
-    public constructor() {
-        this.retrieveDatabase()
-    }
-
     public async retrieveDatabase() {
-        await waitUntil(() => this.moonrakerClient.isReady(), { timeout: Number.POSITIVE_INFINITY, intervalBetweenAttempts: 500 })
-
         logEmpty()
         logSuccess('Retrieve Database...')
 
