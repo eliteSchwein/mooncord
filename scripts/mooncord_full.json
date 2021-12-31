@@ -510,6 +510,44 @@
             "description": "```${state_message}```",
             "buttons": ["klipper_restart"]
         },
+        "systeminfo_cpu": {
+            "color": "#0099ff",
+            "thumbnail": "cpu.png",
+            "selection": {
+                "id": "systeminfo_select",
+                "data": "${raw_entries}"
+            },
+            "fields": [
+                {
+                    "name": "${embeds.fields.cores}",
+                    "value": "${machine_info.system_info.cpu_info.cpu_count}"
+                },
+                {
+                    "name": "${embeds.fields.arch}",
+                    "value": "${machine_info.system_info.cpu_info.processor}"
+                },
+                {
+                    "name": "${embeds.fields.model}",
+                    "value": "${machine_info.system_info.cpu_info.model}"
+                },
+                {
+                    "name": "${embeds.fields.desc}",
+                    "value": "${machine_info.system_info.cpu_info.cpu_desc}"
+                },
+                {
+                    "name": "${embeds.fields.chipset}",
+                    "value": "${machine_info.system_info.cpu_info.hardware_desc}"
+                },
+                {
+                    "name": "${embeds.fields.bits}",
+                    "value": "${machine_info.system_info.cpu_info.bits}"
+                },
+                {
+                    "name": "${embeds.fields.load}",
+                    "value": "${state.system_stats.sysload} / ${machine_info.system_info.cpu_info.cpu_count}"
+                }
+            ]
+        },
         "ready":{
             "color": "#0099ff",
             "image": "webcam",
@@ -670,6 +708,12 @@
                 "min_value": 1,
                 "max_value": 1,
                 "option_value": "${data.path}"
+            },
+            "systeminfo_select": {
+                "min_value": 1,
+                "max_value": 1,
+                "option_value": "${data.value}",
+                "mcu_options": true
             }
         }
     },

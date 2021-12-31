@@ -5,6 +5,9 @@
         }
     },
     "embeds": {
+        "systeminfo_cpu": {
+            "title": "CPU Information"
+        },
         "fileinfo": {
             "title": "File Informations",
             "description": "Print Time: ${estimated_time}\nSlicer: ${slicer}\nSlicer Version: ${slicer_version}\nHeight: ${object_height}mm"
@@ -113,7 +116,12 @@
             "slicer_version": "Slicer version",
             "height": "Height",
             "min_temp": "Min Temp",
-            "max_temp": "Max Temp"
+            "max_temp": "Max Temp",
+            "cores": "Cores",
+            "arch": "Architecture",
+            "bits": "Bits",
+            "model": "Model",
+            "desc": "Description"
         }
     },
     "messages": {
@@ -272,6 +280,30 @@
             "label": "Select a File...",
             "option_label": "${data.path}",
             "option_description": "Click for more Details"
+        },
+        "systeminfo_select": {
+            "label": "Select a Component...",
+            "option_label": "${data.label}",
+            "option_description": "Click for more Details",
+            "mcu_options": true,
+            "options": [
+                {
+                    "label": "CPU",
+                    "value": "cpu"
+                },
+                {
+                    "label": "Memory",
+                    "value": "memory"
+                },
+                {
+                    "label": "System",
+                    "value": "system"
+                },
+                {
+                    "label": "Updates",
+                    "value": "updates"
+                }
+            ]
         }
     },
     "commands": {

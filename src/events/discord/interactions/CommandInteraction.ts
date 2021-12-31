@@ -19,6 +19,7 @@ import {EditChannelCommand} from "./commands/EditChannelCommand";
 import {FileListCommand} from "./commands/FileListCommand";
 import {FileInfoCommand} from "./commands/FileInfoCommand";
 import {PrintjobCommand} from "./commands/PrintjobCommand";
+import {SystemInfoCommand} from "./commands/SystemInfoCommand";
 
 export class CommandInteraction {
     protected config = new ConfigHelper()
@@ -66,6 +67,7 @@ export class CommandInteraction {
         void new EditChannelCommand(interaction, commandId)
         void new FileListCommand(interaction, commandId)
         void new PrintjobCommand(interaction, commandId)
+        void new SystemInfoCommand(interaction, commandId)
 
         await sleep(2000)
 

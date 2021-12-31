@@ -33971,7 +33971,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 4273:
+/***/ 680:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -34450,7 +34450,7 @@ class ConfigHelper {
 }
 
 ;// CONCATENATED MODULE: ./src/meta/command_structure.json
-const command_structure_namespaceObject = JSON.parse('{"admin":{"role":{"type":"subcommand","options":{"role":{"type":"role","required":true}}},"user":{"type":"subcommand","options":{"user":{"type":"user","required":true}}}},"dump":{"section":{"type":"string","required":true,"choices":[{"value":"database"},{"value":"cache"}]}},"reset_database":{},"editchannel":{"channel":{"type":"channel","required":false}},"emergency_stop":{},"execute":{"gcode":{"type":"string","required":true}},"fileinfo":{"file":{"type":"string","required":true}},"get_user_id":{"user":{"type":"user","required":false}},"restart":{"service":{"type":"string","required":true,"choices":"${serviceChoices}"}},"get_log":{"log_file":{"type":"string","required":true,"choices":[{"name":"Klipper","value":"klippy"},{"name":"Moonraker","value":"moonraker"}]}},"info":{},"listfiles":{},"notify":{},"printjob":{"pause":{"type":"subcommand"},"cancel":{"type":"subcommand"},"resume":{"type":"subcommand"},"start":{"type":"subcommand","options":{"file":{"type":"string","required":true}}}},"status":{},"systeminfo":{"component":{"type":"string","required":true,"choices":"${systemInfoChoices}"}},"temp":{},"timelapse":{}}');
+const command_structure_namespaceObject = JSON.parse('{"admin":{"role":{"type":"subcommand","options":{"role":{"type":"role","required":true}}},"user":{"type":"subcommand","options":{"user":{"type":"user","required":true}}}},"dump":{"section":{"type":"string","required":true,"choices":[{"value":"database"},{"value":"cache"}]}},"reset_database":{},"editchannel":{"channel":{"type":"channel","required":false}},"emergency_stop":{},"execute":{"gcode":{"type":"string","required":true}},"fileinfo":{"file":{"type":"string","required":true}},"get_user_id":{"user":{"type":"user","required":false}},"restart":{"service":{"type":"string","required":true,"choices":"${serviceChoices}"}},"get_log":{"log_file":{"type":"string","required":true,"choices":[{"name":"Klipper","value":"klippy"},{"name":"Moonraker","value":"moonraker"}]}},"info":{},"listfiles":{},"notify":{},"printjob":{"pause":{"type":"subcommand"},"cancel":{"type":"subcommand"},"resume":{"type":"subcommand"},"start":{"type":"subcommand","options":{"file":{"type":"string","required":true}}}},"status":{},"systeminfo":{},"temp":{},"timelapse":{}}');
 ;// CONCATENATED MODULE: ./src/meta/command_option_types.json
 const command_option_types_namespaceObject = JSON.parse('{"subcommand":1,"subcommand_group":2,"string":3,"integer":4,"boolean":5,"user":6,"channel":7,"role":8,"mentionable":9,"number":10}');
 ;// CONCATENATED MODULE: ./src/generator/DiscordCommandGenerator.ts
@@ -34544,7 +34544,28 @@ class DiscordCommandGenerator {
     }
 }
 
+;// CONCATENATED MODULE: ./src/helper/MCUHelper.ts
+
+class MCUHelper {
+    constructor() {
+        this.stateCache = getEntry('state');
+    }
+    getMCUOptions() {
+        const options = [];
+        for (const key in this.stateCache) {
+            if (key.startsWith('mcu')) {
+                options.push({
+                    "label": key,
+                    "value": key
+                });
+            }
+        }
+        return options;
+    }
+}
+
 ;// CONCATENATED MODULE: ./src/generator/DiscordInputGenerator.ts
+
 
 
 
@@ -34555,6 +34576,7 @@ class DiscordInputGenerator {
         this.config = new ConfigHelper();
         this.localeHelper = new LocaleHelper();
         this.inputMeta = this.config.getInputMeta();
+        this.mcuHelper = new MCUHelper();
     }
     generateInputCache() {
         this.generateCacheForSection('buttons');
@@ -34594,6 +34616,12 @@ class DiscordInputGenerator {
             .setPlaceholder(selectionMeta.label)
             .setMinValues(selectionMeta.min_value)
             .setMaxValues(selectionMeta.max_value);
+        if (typeof selectionMeta.options !== 'undefined') {
+            selectionData.data = selectionMeta.options;
+        }
+        if (selectionMeta.mcu_options) {
+            selectionData.data = [...selectionData.data, ...this.mcuHelper.getMCUOptions()];
+        }
         for (const data of selectionData.data) {
             const selectionMetaRaw = JSON.stringify(selectionMeta);
             const selectionMetaParsed = JSON.parse(parsePageData(selectionMetaRaw, data));
@@ -38316,7 +38344,30 @@ class PrintjobCommand {
     }
 }
 
+;// CONCATENATED MODULE: ./src/events/discord/interactions/commands/SystemInfoCommand.ts
+
+
+
+class SystemInfoCommand {
+    constructor(interaction, commandId) {
+        this.databaseUtil = getDatabase();
+        this.localeHelper = new LocaleHelper();
+        this.syntaxLocale = this.localeHelper.getSyntaxLocale();
+        this.embedHelper = new EmbedHelper();
+        if (commandId !== 'systeminfo') {
+            return;
+        }
+        this.execute(interaction);
+    }
+    async execute(interaction) {
+        await interaction.deferReply();
+        const embed = await this.embedHelper.generateEmbed('systeminfo_cpu');
+        await interaction.editReply(embed.embed);
+    }
+}
+
 ;// CONCATENATED MODULE: ./src/events/discord/interactions/CommandInteraction.ts
+
 
 
 
@@ -38380,6 +38431,7 @@ class CommandInteraction {
         void new EditChannelCommand(interaction, commandId);
         void new FileListCommand(interaction, commandId);
         void new PrintjobCommand(interaction, commandId);
+        void new SystemInfoCommand(interaction, commandId);
         await sleep(2000);
         if (interaction.replied || interaction.deferred) {
             return;
@@ -38432,7 +38484,45 @@ class ViewPrintJobSelection {
     }
 }
 
+;// CONCATENATED MODULE: ./src/events/discord/interactions/selections/ViewSystemInfo.ts
+
+
+
+
+
+class ViewSystemInfo {
+    constructor(interaction, selectionId) {
+        this.databaseUtil = getDatabase();
+        this.embedHelper = new EmbedHelper();
+        this.configHelper = new ConfigHelper();
+        this.moonrakerClient = getMoonrakerClient();
+        this.localeHelper = new LocaleHelper();
+        this.locale = this.localeHelper.getLocale();
+        this.metadataHelper = new MetadataHelper();
+        if (selectionId !== 'systeminfo_select') {
+            return;
+        }
+        void this.execute(interaction);
+    }
+    async execute(interaction) {
+        await interaction.deferReply();
+        const currentMessage = interaction.message;
+        const component = interaction.values[0];
+        let embedData = await this.embedHelper.generateEmbed('systeminfo_cpu');
+        if (component.startsWith('mcu')) {
+        }
+        else {
+            embedData = await this.embedHelper.generateEmbed(`systeminfo_${component}`);
+        }
+        await currentMessage.edit({ components: null });
+        await currentMessage.removeAttachments();
+        await currentMessage.edit(embedData.embed);
+        await interaction.deleteReply();
+    }
+}
+
 ;// CONCATENATED MODULE: ./src/events/discord/interactions/SelectInteraction.ts
+
 
 
 
@@ -38474,6 +38564,7 @@ class SelectInteraction {
             return;
         }
         new ViewPrintJobSelection(interaction, selectId);
+        new ViewSystemInfo(interaction, selectId);
         await sleep(2000);
         if (interaction.replied || interaction.deferred) {
             return;
@@ -40441,7 +40532,7 @@ return new B(c,{type:"multipart/form-data; boundary="+b})}
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(4273);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(680);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()

@@ -106,13 +106,7 @@
     }
   },
   "status": {},
-  "systeminfo": {
-    "component": {
-      "type": "string",
-      "required": true,
-      "choices": "${systemInfoChoices}"
-    }
-  },
+  "systeminfo": {},
   "temp": {},
   "timelapse": {}
 }
