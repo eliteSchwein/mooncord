@@ -8,6 +8,9 @@
         "systeminfo_cpu": {
             "title": "CPU Information"
         },
+        "systeminfo_memory": {
+            "title": "Memory Information"
+        },
         "fileinfo": {
             "title": "File Informations",
             "description": "Print Time: ${estimated_time}\nSlicer: ${slicer}\nSlicer Version: ${slicer_version}\nHeight: ${object_height}mm"
@@ -117,11 +120,17 @@
             "height": "Height",
             "min_temp": "Min Temp",
             "max_temp": "Max Temp",
+            "temp": "Temp",
             "cores": "Cores",
             "arch": "Architecture",
             "bits": "Bits",
             "model": "Model",
-            "desc": "Description"
+            "desc": "Description",
+            "manufacturer": "Manufacturer",
+            "manufactured": "Manufactured",
+            "total_ram": "Total RAM",
+            "free_ram": "Free RAM",
+            "total_sd": "Total SD"
         }
     },
     "messages": {

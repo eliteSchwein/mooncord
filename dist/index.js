@@ -2438,6 +2438,180 @@ module.exports = {
 
 /***/ }),
 
+/***/ 966:
+/***/ ((module) => {
+
+"use strict";
+/*!
+ * bytes
+ * Copyright(c) 2012-2014 TJ Holowaychuk
+ * Copyright(c) 2015 Jed Watson
+ * MIT Licensed
+ */
+
+
+
+/**
+ * Module exports.
+ * @public
+ */
+
+module.exports = bytes;
+module.exports.format = format;
+module.exports.parse = parse;
+
+/**
+ * Module variables.
+ * @private
+ */
+
+var formatThousandsRegExp = /\B(?=(\d{3})+(?!\d))/g;
+
+var formatDecimalsRegExp = /(?:\.0*|(\.[^0]+)0+)$/;
+
+var map = {
+  b:  1,
+  kb: 1 << 10,
+  mb: 1 << 20,
+  gb: 1 << 30,
+  tb: Math.pow(1024, 4),
+  pb: Math.pow(1024, 5),
+};
+
+var parseRegExp = /^((-|\+)?(\d+(?:\.\d+)?)) *(kb|mb|gb|tb|pb)$/i;
+
+/**
+ * Convert the given value in bytes into a string or parse to string to an integer in bytes.
+ *
+ * @param {string|number} value
+ * @param {{
+ *  case: [string],
+ *  decimalPlaces: [number]
+ *  fixedDecimals: [boolean]
+ *  thousandsSeparator: [string]
+ *  unitSeparator: [string]
+ *  }} [options] bytes options.
+ *
+ * @returns {string|number|null}
+ */
+
+function bytes(value, options) {
+  if (typeof value === 'string') {
+    return parse(value);
+  }
+
+  if (typeof value === 'number') {
+    return format(value, options);
+  }
+
+  return null;
+}
+
+/**
+ * Format the given value in bytes into a string.
+ *
+ * If the value is negative, it is kept as such. If it is a float,
+ * it is rounded.
+ *
+ * @param {number} value
+ * @param {object} [options]
+ * @param {number} [options.decimalPlaces=2]
+ * @param {number} [options.fixedDecimals=false]
+ * @param {string} [options.thousandsSeparator=]
+ * @param {string} [options.unit=]
+ * @param {string} [options.unitSeparator=]
+ *
+ * @returns {string|null}
+ * @public
+ */
+
+function format(value, options) {
+  if (!Number.isFinite(value)) {
+    return null;
+  }
+
+  var mag = Math.abs(value);
+  var thousandsSeparator = (options && options.thousandsSeparator) || '';
+  var unitSeparator = (options && options.unitSeparator) || '';
+  var decimalPlaces = (options && options.decimalPlaces !== undefined) ? options.decimalPlaces : 2;
+  var fixedDecimals = Boolean(options && options.fixedDecimals);
+  var unit = (options && options.unit) || '';
+
+  if (!unit || !map[unit.toLowerCase()]) {
+    if (mag >= map.pb) {
+      unit = 'PB';
+    } else if (mag >= map.tb) {
+      unit = 'TB';
+    } else if (mag >= map.gb) {
+      unit = 'GB';
+    } else if (mag >= map.mb) {
+      unit = 'MB';
+    } else if (mag >= map.kb) {
+      unit = 'KB';
+    } else {
+      unit = 'B';
+    }
+  }
+
+  var val = value / map[unit.toLowerCase()];
+  var str = val.toFixed(decimalPlaces);
+
+  if (!fixedDecimals) {
+    str = str.replace(formatDecimalsRegExp, '$1');
+  }
+
+  if (thousandsSeparator) {
+    str = str.split('.').map(function (s, i) {
+      return i === 0
+        ? s.replace(formatThousandsRegExp, thousandsSeparator)
+        : s
+    }).join('.');
+  }
+
+  return str + unitSeparator + unit;
+}
+
+/**
+ * Parse the string value into an integer in bytes.
+ *
+ * If no unit is given, it is assumed the value is in bytes.
+ *
+ * @param {number|string} val
+ *
+ * @returns {number|null}
+ * @public
+ */
+
+function parse(val) {
+  if (typeof val === 'number' && !isNaN(val)) {
+    return val;
+  }
+
+  if (typeof val !== 'string') {
+    return null;
+  }
+
+  // Test if the string passed is valid
+  var results = parseRegExp.exec(val);
+  var floatValue;
+  var unit = 'b';
+
+  if (!results) {
+    // Nothing could be extracted from the given string
+    floatValue = parseInt(val, 10);
+    unit = 'b'
+  } else {
+    // Retrieve the value and the unit
+    floatValue = parseFloat(results[1]);
+    unit = results[4].toLowerCase();
+  }
+
+  return Math.floor(map[unit] * floatValue);
+}
+
+
+/***/ }),
+
 /***/ 5617:
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
@@ -33971,7 +34145,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 680:
+/***/ 7680:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -33987,7 +34161,7 @@ __nccwpck_require__.d(__webpack_exports__, {
 });
 
 ;// CONCATENATED MODULE: ./package.json
-const package_namespaceObject = JSON.parse('{"name":"mooncord","version":"0.0.5","description":"Moonraker Discord Bot based on Discord.js","main":"index.js","scripts":{"start":"node dist/index.js","debugstart":"node --trace_gc --trace-deprecation --trace-warnings --trace-uncaught --track-heap-objects dist/index.js","checkcodestyle":"npx eslint ./**","autofixcodestyle":"npx eslint ./** --fix","build":"ncc build -m -d -e discord.js -e sharp src/Application.ts -o dist","watch":"ncc build -w -d -e discord.js -e sharp src/Application.ts -o dist"},"repository":{"type":"git","url":"git+https://github.com/eliteSchwein/mooncord.git"},"keywords":[],"author":"eliteSCHW31N","license":"ISC","bugs":{"url":"https://github.com/eliteSchwein/mooncord/issues"},"homepage":"https://github.com/eliteSchwein/mooncord#readme","devDependencies":{"@types/node":"^17.0.2","@types/sharp":"^0.29.4","@vercel/ncc":"^0.33.1","async-wait-until":"^2.0.9","axios":"^0.24.0","colorts":"^0.1.63","eslint":"^8.5.0","eslint-config-galex":"^3.4.1","eslint-config-standard":"^16.0.3","eslint-plugin-import":"^2.25.3","eslint-plugin-node":"^11.1.0","eslint-plugin-promise":"^6.0.0","form-data":"^4.0.0","lodash":"^4.17.21","node-fetch":"^3.1.0","shelljs":"^0.8.4","stacktrace-js":"^2.0.2","typescript":"^4.5.4","websocket-ts":"^1.1.1","ws":"^8.4.0"},"dependencies":{"discord.js":"^13.3.1","sharp":"^0.29.3"}}');
+const package_namespaceObject = JSON.parse('{"name":"mooncord","version":"0.0.5","description":"Moonraker Discord Bot based on Discord.js","main":"index.js","scripts":{"start":"node dist/index.js","debugstart":"node --trace_gc --trace-deprecation --trace-warnings --trace-uncaught --track-heap-objects dist/index.js","checkcodestyle":"npx eslint ./**","autofixcodestyle":"npx eslint ./** --fix","build":"ncc build -m -d -e discord.js -e sharp src/Application.ts -o dist","watch":"ncc build -w -d -e discord.js -e sharp src/Application.ts -o dist"},"repository":{"type":"git","url":"git+https://github.com/eliteSchwein/mooncord.git"},"keywords":[],"author":"eliteSCHW31N","license":"ISC","bugs":{"url":"https://github.com/eliteSchwein/mooncord/issues"},"homepage":"https://github.com/eliteSchwein/mooncord#readme","devDependencies":{"bytes":"^3.1.1","@types/node":"^17.0.6","@types/sharp":"^0.29.5","@vercel/ncc":"^0.33.1","async-wait-until":"2.0.6","axios":"^0.24.0","colorts":"^0.1.63","eslint":"^8.6.0","eslint-config-galex":"^3.5.4","eslint-config-standard":"^16.0.3","eslint-plugin-import":"^2.25.3","eslint-plugin-node":"^11.1.0","eslint-plugin-promise":"^6.0.0","form-data":"^4.0.0","lodash":"^4.17.21","node-fetch":"^3.1.0","shelljs":"^0.8.4","stacktrace-js":"^2.0.2","typescript":"^4.5.4","websocket-ts":"^1.1.1","ws":"^8.4.0"},"dependencies":{"discord.js":"^13.5.0","sharp":"^0.29.3"}}');
 var package_namespaceObject_0 = /*#__PURE__*/__nccwpck_require__.t(package_namespaceObject, 2);
 // EXTERNAL MODULE: external "util"
 var external_util_ = __nccwpck_require__(3837);
@@ -38484,7 +38658,11 @@ class ViewPrintJobSelection {
     }
 }
 
+// EXTERNAL MODULE: ./node_modules/bytes/index.js
+var bytes = __nccwpck_require__(966);
 ;// CONCATENATED MODULE: ./src/events/discord/interactions/selections/ViewSystemInfo.ts
+
+
 
 
 
@@ -38508,11 +38686,25 @@ class ViewSystemInfo {
         await interaction.deferReply();
         const currentMessage = interaction.message;
         const component = interaction.values[0];
+        const totalMemoryRaw = bytes.parse(findValue('machine_info.system_info.cpu_info.total_memory') +
+            findValue('machine_info.system_info.cpu_info.memory_units'));
+        const freeMemoryRaw = findValue('state.system_stats.memavail');
+        const totalSDRaw = findValue('machine_info.system_info.sd_info.total_bytes');
+        const totalMemory = (totalMemoryRaw / (1024 ** 3))
+            .toFixed(2);
+        const freeMemory = (freeMemoryRaw / (1024 ** 2))
+            .toFixed(2);
+        const totalSD = (totalSDRaw / (1024 ** 2))
+            .toFixed(2);
         let embedData = await this.embedHelper.generateEmbed('systeminfo_cpu');
         if (component.startsWith('mcu')) {
         }
         else {
-            embedData = await this.embedHelper.generateEmbed(`systeminfo_${component}`);
+            embedData = await this.embedHelper.generateEmbed(`systeminfo_${component}`, {
+                "total_ram": totalMemory,
+                "free_ram": freeMemory,
+                "total_sd": totalSD
+            });
         }
         await currentMessage.edit({ components: null });
         await currentMessage.removeAttachments();
@@ -40532,7 +40724,7 @@ return new B(c,{type:"multipart/form-data; boundary="+b})}
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(680);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(7680);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()
