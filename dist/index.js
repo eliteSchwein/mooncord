@@ -2438,7 +2438,7 @@ module.exports = {
 
 /***/ }),
 
-/***/ 966:
+/***/ 6966:
 /***/ ((module) => {
 
 "use strict";
@@ -34145,7 +34145,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 7680:
+/***/ 2613:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -34735,6 +34735,21 @@ class MCUHelper {
             }
         }
         return options;
+    }
+    getMCULoad(mcu) {
+        const rawMCUData = findValue(`state.${mcu}`);
+        const mcuLoad = ((rawMCUData.last_stats.mcu_task_avg + 3 * rawMCUData.last_stats.mcu_task_stddev) / 0.0025) * 100;
+        const mcuAwake = (rawMCUData.last_stats.mcu_awake / 5) * 100;
+        const mcuFreq = rawMCUData.last_stats.freq / 1000000;
+        return {
+            "mcu_name": mcu,
+            "mcu_load": mcuLoad.toFixed(2),
+            "mcu_awake": mcuAwake.toFixed(2),
+            "mcu_freq": mcuFreq.toFixed(1),
+            "mcu_chipset": rawMCUData.mcu_constants.MCU,
+            "mcu_version": rawMCUData.mcu_version,
+            "mcu_raw": rawMCUData
+        };
     }
 }
 
@@ -36929,7 +36944,7 @@ class WebcamHelper {
                 const gcode = execute.replace("gcode:", "");
                 const id = Math.floor(Math.random() * Number.parseInt("10_000")) + 1;
                 await this.moonrakerClient
-                    .send(`{"jsonrpc": "2.0", "method": "printer.gcode.script", "params": {"script": "${gcode}"}, "id": ${id}}`);
+                    .send({ "method": "printer.gcode.script", "params": { "script": gcode }, id });
             }
             if (execute.startsWith("website_post:")) {
                 const url = execute.replace("website_post:", "");
@@ -37150,7 +37165,7 @@ class MetadataHelper {
         }
     }
     async getMetaData(filename) {
-        const metaData = await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${filename}"}}`);
+        const metaData = await this.moonrakerClient.send({ "method": "server.files.metadata", "params": { filename } });
         return metaData.result;
     }
     async updateMetaData(filename) {
@@ -37599,7 +37614,7 @@ class MacroButton {
         }
         for (const macro of buttonData.function_mapping.macros) {
             logNotice(`executing macro: ${macro}`);
-            void this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "printer.gcode.script", "params": {"script": "${macro}"}}`, 60000);
+            void this.moonrakerClient.send({ "method": "printer.gcode.script", "params": { "script": macro } }, 60000);
         }
         if (!buttonData.function_mapping.macro_message) {
             return;
@@ -37843,7 +37858,7 @@ class DeleteButton {
         }
         const rootPath = buttonData.function_mapping.root_path;
         const filename = this.embedHelper.getAuthorName(currentEmbed);
-        const feedback = await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "server.files.delete_file", "params": {"path":"${rootPath}/${filename}"}}`);
+        const feedback = await this.moonrakerClient.send({ "method": "server.files.delete_file", "params": { "path": `${rootPath}/${filename}` } });
         if (typeof feedback.error !== 'undefined') {
             await interaction.editReply(this.locale.messages.errors.file_not_found);
             return;
@@ -37880,7 +37895,7 @@ class PrintJobStartButton {
             await interaction.editReply(this.locale.messages.errors.file_not_found);
             return;
         }
-        await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "printer.print.start", "params": {"filename": "${printFile}"}}`);
+        await this.moonrakerClient.send({ "method": "printer.print.start", "params": { "filename": printFile } });
     }
 }
 
@@ -38096,7 +38111,7 @@ class RestartCommand {
         await interaction.editReply(result);
     }
     async restartService(service) {
-        const result = await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "machine.services.restart", "params": {"service": "${service}"}}`);
+        const result = await this.moonrakerClient.send({ "method": "machine.services.restart", "params": { service } });
         if (typeof result.error !== 'undefined') {
             const reply = this.locale.messages.errors.restart_failed
                 .replace(/(\${service})/g, service)
@@ -38108,7 +38123,7 @@ class RestartCommand {
         return reply;
     }
     async restartFirmware() {
-        void await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "printer.firmware_restart"}`);
+        void await this.moonrakerClient.send({ "method": "printer.firmware_restart" });
         return this.locale.messages.answers.firmware_restart_successful;
     }
 }
@@ -38262,7 +38277,7 @@ class EmergencyStopCommand {
     }
     async execute(interaction) {
         await interaction.deferReply();
-        void await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "printer.emergency_stop" }`);
+        void await this.moonrakerClient.send({ "method": "printer.emergency_stop" });
         const answer = this.locale.messages.answers.emergency_stop
             .replace(/\${username}/g, interaction.user.tag);
         await interaction.editReply(answer);
@@ -38510,7 +38525,7 @@ class PrintjobCommand {
         }
         for (const macro of buttonData.function_mapping.macros) {
             logNotice(`executing macro: ${macro}`);
-            void this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "printer.gcode.script", "params": {"script": "${macro}"}}`, Number.POSITIVE_INFINITY);
+            void this.moonrakerClient.send({ "method": "printer.gcode.script", "params": { "script": macro } }, Number.POSITIVE_INFINITY);
         }
         const message = subLocale.status_valid
             .replace(/(\${username})/g, interaction.user.tag);
@@ -38658,10 +38673,7 @@ class ViewPrintJobSelection {
     }
 }
 
-// EXTERNAL MODULE: ./node_modules/bytes/index.js
-var bytes = __nccwpck_require__(966);
 ;// CONCATENATED MODULE: ./src/events/discord/interactions/selections/ViewSystemInfo.ts
-
 
 
 
@@ -38677,6 +38689,7 @@ class ViewSystemInfo {
         this.localeHelper = new LocaleHelper();
         this.locale = this.localeHelper.getLocale();
         this.metadataHelper = new MetadataHelper();
+        this.mcuHelper = new MCUHelper();
         if (selectionId !== 'systeminfo_select') {
             return;
         }
@@ -38686,25 +38699,13 @@ class ViewSystemInfo {
         await interaction.deferReply();
         const currentMessage = interaction.message;
         const component = interaction.values[0];
-        const totalMemoryRaw = bytes.parse(findValue('machine_info.system_info.cpu_info.total_memory') +
-            findValue('machine_info.system_info.cpu_info.memory_units'));
-        const freeMemoryRaw = findValue('state.system_stats.memavail');
-        const totalSDRaw = findValue('machine_info.system_info.sd_info.total_bytes');
-        const totalMemory = (totalMemoryRaw / (1024 ** 3))
-            .toFixed(2);
-        const freeMemory = (freeMemoryRaw / (1024 ** 2))
-            .toFixed(2);
-        const totalSD = (totalSDRaw / (1024 ** 2))
-            .toFixed(2);
         let embedData = await this.embedHelper.generateEmbed('systeminfo_cpu');
         if (component.startsWith('mcu')) {
+            const mcuData = this.mcuHelper.getMCULoad(component);
+            embedData = await this.embedHelper.generateEmbed(`systeminfo_mcu`, mcuData);
         }
         else {
-            embedData = await this.embedHelper.generateEmbed(`systeminfo_${component}`, {
-                "total_ram": totalMemory,
-                "free_ram": freeMemory,
-                "total_sd": totalSD
-            });
+            embedData = await this.embedHelper.generateEmbed(`systeminfo_${component}`);
         }
         await currentMessage.edit({ components: null });
         await currentMessage.removeAttachments();
@@ -39212,7 +39213,72 @@ class ProcStatsNotification {
     }
 }
 
+// EXTERNAL MODULE: ./node_modules/bytes/index.js
+var bytes = __nccwpck_require__(6966);
+;// CONCATENATED MODULE: ./src/helper/UsageHelper.ts
+
+
+
+class UsageHelper {
+    constructor() {
+        this.moonrakerClient = getMoonrakerClient();
+        this.lastCpuTime = 0;
+    }
+    updateKlipperLoad() {
+        const currentCpuTime = findValue('state.system_stats.cputime');
+        const klipperLoad = ((currentCpuTime - this.lastCpuTime) * 100).toFixed(2);
+        this.lastCpuTime = currentCpuTime;
+        if (Number(klipperLoad) === 0) {
+            return;
+        }
+        updateData('usage', {
+            'klipper_load': klipperLoad
+        });
+    }
+    updateSystemLoad() {
+        const coreCount = findValue('machine_info.system_info.cpu_info.cpu_count');
+        const systemLoad = findValue('state.system_stats.sysload');
+        const percent = ((100 * systemLoad) / coreCount).toFixed(2);
+        updateData('usage', {
+            'system_load': percent
+        });
+    }
+    updateMemoryUsage() {
+        const totalMemoryRaw = bytes.parse(findValue('machine_info.system_info.cpu_info.total_memory') +
+            findValue('machine_info.system_info.cpu_info.memory_units'));
+        const freeMemoryRaw = findValue('state.system_stats.memavail');
+        const usedMemoryRaw = (totalMemoryRaw * 1024) / freeMemoryRaw;
+        const totalMemory = (totalMemoryRaw / (1024 ** 3))
+            .toFixed(2);
+        const freeMemory = (freeMemoryRaw / (1024 ** 2))
+            .toFixed(2);
+        const usedMemory = (usedMemoryRaw / (1024 ** 2))
+            .toFixed(2);
+        updateData('usage', {
+            'total_ram': totalMemory,
+            'free_ram': freeMemory,
+            'used_ram': usedMemory
+        });
+    }
+    async updateDiskUsage() {
+        const directoryInformation = await this.moonrakerClient.send({ "method": "server.files.get_directory" });
+        const diskUsageRaw = directoryInformation.result.disk_usage;
+        const totalDisk = (diskUsageRaw.total / (1024 ** 3))
+            .toFixed(2);
+        const freeDisk = (diskUsageRaw.free / (1024 ** 3))
+            .toFixed(2);
+        const usedDisk = (diskUsageRaw.used / (1024 ** 3))
+            .toFixed(2);
+        updateData('usage', {
+            'total_disk': totalDisk,
+            'used_disk': usedDisk,
+            'free_disk': freeDisk
+        });
+    }
+}
+
 ;// CONCATENATED MODULE: ./src/events/moonraker/messages/SubscriptionNotification.ts
+
 
 
 
@@ -39221,6 +39287,7 @@ class SubscriptionNotification {
         this.statusHelper = new StatusHelper();
         this.metadataHelper = new MetadataHelper();
         this.functionCache = getEntry('function');
+        this.usageHelper = new UsageHelper();
     }
     parse(message) {
         if (typeof (message.method) === 'undefined') {
@@ -39234,6 +39301,9 @@ class SubscriptionNotification {
             return;
         }
         updateData('state', param);
+        this.usageHelper.updateMemoryUsage();
+        this.usageHelper.updateKlipperLoad();
+        this.usageHelper.updateSystemLoad();
         if (typeof param.print_stats !== 'undefined') {
             void this.parsePrintStats(param.print_stats);
         }
@@ -39288,7 +39358,7 @@ class FileListHelper {
     }
     async retrieveFiles() {
         logRegular('Retrieve current GCode Files...');
-        const currentFiles = await this.moonrakerClient.send('{"jsonrpc": "2.0", "method": "server.files.list", "params": {"root": "gcodes"}}');
+        const currentFiles = await this.moonrakerClient.send({ "method": "server.files.list", "params": { "root": "gcodes" } });
         setData('gcode_files', currentFiles.result);
     }
     getCurrentFiles() {
@@ -39554,19 +39624,19 @@ class MoonrakerClient {
     async sendInitCommands() {
         logRegular('Send Initial Commands...');
         logRegular('Retrieve MoonRaker Update Manager Data...');
-        const updates = await this.send(`{"jsonrpc": "2.0", "method": "machine.update.status", "params":{"refresh": "false"}}`, 300000);
+        const updates = await this.send({ "method": "machine.update.status", "params": { "refresh": false } }, 300000);
         logRegular('Retrieve Printer Info...');
-        const printerInfo = await this.send(`{"jsonrpc": "2.0", "method": "printer.info"}`);
+        const printerInfo = await this.send({ "method": "printer.info" });
         logRegular('Retrieve Server Config...');
-        const serverConfig = await this.send(`{"jsonrpc": "2.0", "method": "server.config"}`);
+        const serverConfig = await this.send({ "method": "server.config" });
         logRegular('Retrieve Server Info...');
-        const serverInfo = await this.send(`{"jsonrpc": "2.0", "method": "server.info"}`);
+        const serverInfo = await this.send({ "method": "server.info" });
         logRegular('Retrieve Machine System Info...');
-        const machineInfo = await this.send(`{"jsonrpc": "2.0", "method": "machine.system_info"}`);
+        const machineInfo = await this.send({ "method": "machine.system_info" });
         logRegular('Retrieve Proc Stats Info...');
-        const procStats = await this.send(`{"jsonrpc": "2.0", "method": "machine.proc_stats"}`);
+        const procStats = await this.send({ "method": "machine.proc_stats" });
         logRegular('Retrieve Subscribable MoonRaker Objects...');
-        const objects = await this.send(`{"jsonrpc": "2.0", "method": "printer.objects.list"}`);
+        const objects = await this.send({ "method": "printer.objects.list" });
         await this.fileListHelper.retrieveFiles();
         const subscriptionObjects = {};
         for (const index in objects.result.objects) {
@@ -39574,7 +39644,7 @@ class MoonrakerClient {
             subscriptionObjects[object] = null;
         }
         logRegular('Subscribe to MoonRaker Objects...');
-        const data = await this.send(`{"jsonrpc": "2.0", "method": "printer.objects.subscribe", "params": { "objects":${JSON.stringify(subscriptionObjects)}}}`);
+        const data = await this.send({ "method": "printer.objects.subscribe", "params": { "objects": subscriptionObjects } });
         this.ready = true;
         setData('updates', updates.result);
         setData('printer_info', printerInfo.result);
@@ -39627,9 +39697,9 @@ class MoonrakerClient {
     }
     async send(message, timeout = 10000) {
         const id = Math.floor(Math.random() * 100000) + 1;
-        const messageData = JSON.parse(message);
-        messageData.id = id;
-        this.websocket.send(JSON.stringify(messageData));
+        message.id = id;
+        message.jsonrpc = '2.0';
+        this.websocket.send(JSON.stringify(message));
         await (0,async_wait_until_dist.waitUntil)(() => typeof requests[id] !== 'undefined', { timeout, intervalBetweenAttempts: 500 });
         return requests[id];
     }
@@ -39675,7 +39745,7 @@ class DatabaseUtil {
     async retrieveDatabase() {
         logEmpty();
         logSuccess('Retrieve Database...');
-        const databaseRequest = await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "server.database.get_item", "params": { "namespace": "mooncord", "key": "dataset"}}`);
+        const databaseRequest = await this.moonrakerClient.send({ "method": "server.database.get_item", "params": { "namespace": "mooncord", "key": "dataset" } });
         if (typeof databaseRequest.error !== 'undefined') {
             await this.handleDatabaseMissing();
             return;
@@ -39683,7 +39753,7 @@ class DatabaseUtil {
         database = databaseRequest.result.value;
     }
     async resetDatabase() {
-        void await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "server.database.delete_item", "params": { "namespace": "mooncord", "key": "dataset"}}`);
+        void await this.moonrakerClient.send({ "method": "server.database.delete_item", "params": { "namespace": "mooncord", "key": "dataset" } });
         logWarn('Database wiped');
         void await this.handleDatabaseMissing();
     }
@@ -39693,7 +39763,7 @@ class DatabaseUtil {
         await this.updateDatabase();
     }
     async updateDatabase() {
-        const updateRequest = await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "server.database.post_item", "params": { "namespace": "mooncord", "key": "dataset", "value": ${JSON.stringify(database)}}}`);
+        const updateRequest = await this.moonrakerClient.send({ "method": "server.database.post_item", "params": { "namespace": "mooncord", "key": "dataset", "value": database } });
         if (typeof updateRequest.error !== 'undefined') {
             logError(`Database Update failed: ${updateRequest.error.message}`);
             return;
@@ -39724,17 +39794,20 @@ class DatabaseUtil {
 
 
 
+
 class SchedulerHelper {
     constructor() {
         this.configHelper = new ConfigHelper();
         this.functionCache = getEntry('function');
         this.statusHelper = new StatusHelper();
+        this.usageHelper = new UsageHelper();
     }
     init(moonrakerClient) {
         this.moonrakerClient = moonrakerClient;
         this.scheduleModerate();
         this.scheduleHigh();
         this.scheduleStatus();
+        this.usageHelper.updateDiskUsage();
     }
     clear() {
         clearInterval(this.highScheduler);
@@ -39757,8 +39830,9 @@ class SchedulerHelper {
     }
     scheduleModerate() {
         this.moderateScheduler = setInterval(async () => {
-            const machineInfo = await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "machine.system_info"}`);
+            const machineInfo = await this.moonrakerClient.send({ "method": "machine.system_info" });
             setData('machine_info', machineInfo.result);
+            await this.usageHelper.updateDiskUsage();
         }, 60000);
     }
     scheduleStatus() {
@@ -39801,7 +39875,7 @@ class SchedulerHelper {
             'server_info_in_query': true
         });
         const currentStatus = findValue('function.current_status');
-        const serverInfo = await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "server.info"}`);
+        const serverInfo = await this.moonrakerClient.send({ "method": "server.info" });
         if (typeof serverInfo.result === 'undefined') {
             return;
         }
@@ -39821,7 +39895,7 @@ class SchedulerHelper {
         await this.statusHelper.update();
     }
     async requestPrintInfo() {
-        const printerInfo = await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "printer.info"}`);
+        const printerInfo = await this.moonrakerClient.send({ "method": "printer.info" });
         updateData('printer_info', printerInfo.result);
     }
 }
@@ -39893,6 +39967,17 @@ function initCache() {
         'poll_printer_info': false,
         'current_percent': -1,
         'status_cooldown': 0
+    });
+    logRegular('init Memory Cache...');
+    setData('usage', {
+        'total_ram': '',
+        'used_ram': '',
+        'free_ram': '',
+        'total_disk': '',
+        'used_disk': '',
+        'free_disk': '',
+        'klipper_load': 0,
+        'system_load': 0
     });
     logRegular('init Time Cache...');
     setData('time', {
@@ -40724,7 +40809,7 @@ return new B(c,{type:"multipart/form-data; boundary="+b})}
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(7680);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(2613);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()

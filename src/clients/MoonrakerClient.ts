@@ -124,25 +124,25 @@ export class MoonrakerClient {
         logRegular('Send Initial Commands...')
 
         logRegular('Retrieve MoonRaker Update Manager Data...')
-        const updates = await this.send(`{"jsonrpc": "2.0", "method": "machine.update.status", "params":{"refresh": "false"}}`, 300_000)
+        const updates = await this.send({"method": "machine.update.status", "params":{"refresh": false}}, 300_000)
 
         logRegular('Retrieve Printer Info...')
-        const printerInfo = await this.send(`{"jsonrpc": "2.0", "method": "printer.info"}`)
+        const printerInfo = await this.send({"method": "printer.info"})
         
         logRegular('Retrieve Server Config...')
-        const serverConfig = await this.send(`{"jsonrpc": "2.0", "method": "server.config"}`)
+        const serverConfig = await this.send({"method": "server.config"})
 
         logRegular('Retrieve Server Info...')
-        const serverInfo = await this.send(`{"jsonrpc": "2.0", "method": "server.info"}`)
+        const serverInfo = await this.send({"method": "server.info"})
 
         logRegular('Retrieve Machine System Info...')
-        const machineInfo = await this.send(`{"jsonrpc": "2.0", "method": "machine.system_info"}`)
+        const machineInfo = await this.send({"method": "machine.system_info"})
 
         logRegular('Retrieve Proc Stats Info...')
-        const procStats = await this.send(`{"jsonrpc": "2.0", "method": "machine.proc_stats"}`)
+        const procStats = await this.send({"method": "machine.proc_stats"})
 
         logRegular('Retrieve Subscribable MoonRaker Objects...')
-        const objects = await this.send(`{"jsonrpc": "2.0", "method": "printer.objects.list"}`)
+        const objects = await this.send({"method": "printer.objects.list"})
 
         await this.fileListHelper.retrieveFiles()
 
@@ -154,7 +154,7 @@ export class MoonrakerClient {
         }
 
         logRegular('Subscribe to MoonRaker Objects...')
-        const data = await this.send(`{"jsonrpc": "2.0", "method": "printer.objects.subscribe", "params": { "objects":${JSON.stringify(subscriptionObjects)}}}`)
+        const data = await this.send({"method": "printer.objects.subscribe", "params": { "objects": subscriptionObjects}})
 
         this.ready = true
 
@@ -210,14 +210,13 @@ export class MoonrakerClient {
         messageHandler = new MessageHandler(this.websocket)
     }
 
-    public async send(message: string, timeout = 10_000) {
+    public async send(message, timeout = 10_000) {
         const id = Math.floor(Math.random() * 100_000) + 1
 
-        const messageData = JSON.parse(message)
+        message.id = id
+        message.jsonrpc = '2.0'
 
-        messageData.id = id
-
-        this.websocket.send(JSON.stringify(messageData))
+        this.websocket.send(JSON.stringify(message))
 
         await waitUntil(() => typeof requests[id] !== 'undefined', { timeout, intervalBetweenAttempts: 500 })
 

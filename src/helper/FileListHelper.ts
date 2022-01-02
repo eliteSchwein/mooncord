@@ -11,7 +11,7 @@ export class FileListHelper {
 
     public async retrieveFiles() {
         logRegular('Retrieve current GCode Files...')
-        const currentFiles = await this.moonrakerClient.send('{"jsonrpc": "2.0", "method": "server.files.list", "params": {"root": "gcodes"}}')
+        const currentFiles = await this.moonrakerClient.send({"method": "server.files.list", "params": {"root": "gcodes"}})
 
         setData('gcode_files', currentFiles.result)
     }

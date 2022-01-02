@@ -3,6 +3,7 @@ import {ConfigHelper} from "./ConfigHelper";
 import {findValue, getEntry, setData, updateData} from "../utils/CacheUtil";
 import {StatusHelper} from "./StatusHelper";
 import {logRegular} from "./LoggerHelper";
+import {UsageHelper} from "./UsageHelper";
 
 export class SchedulerHelper {
     protected configHelper = new ConfigHelper()
@@ -12,6 +13,7 @@ export class SchedulerHelper {
     protected highScheduler: NodeJS.Timer
     protected moderateScheduler: NodeJS.Timer
     protected statusScheduler: NodeJS.Timer
+    protected usageHelper = new UsageHelper()
 
     public init(moonrakerClient: MoonrakerClient) {
         this.moonrakerClient = moonrakerClient
@@ -19,6 +21,8 @@ export class SchedulerHelper {
         this.scheduleModerate()
         this.scheduleHigh()
         this.scheduleStatus()
+
+        this.usageHelper.updateDiskUsage()
     }
 
     public clear() {
@@ -46,9 +50,11 @@ export class SchedulerHelper {
 
     protected scheduleModerate() {
         this.moderateScheduler = setInterval(async () => {
-            const machineInfo = await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "machine.system_info"}`)
+            const machineInfo = await this.moonrakerClient.send({"method": "machine.system_info"})
 
             setData('machine_info', machineInfo.result)
+
+            await this.usageHelper.updateDiskUsage()
         }, 60000)
     }
 
@@ -93,7 +99,7 @@ export class SchedulerHelper {
         })
 
         const currentStatus = findValue('function.current_status')
-        const serverInfo = await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "server.info"}`)
+        const serverInfo = await this.moonrakerClient.send({"method": "server.info"})
 
         if(typeof serverInfo.result === 'undefined') { return }
         if(typeof serverInfo.result.klippy_state === 'undefined') { return }
@@ -114,7 +120,7 @@ export class SchedulerHelper {
     }
 
     protected async requestPrintInfo() {
-        const printerInfo = await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "printer.info"}`)
+        const printerInfo = await this.moonrakerClient.send({"method": "printer.info"})
 
         updateData('printer_info', printerInfo.result)
     }

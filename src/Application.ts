@@ -87,6 +87,18 @@ function initCache() {
         'status_cooldown': 0
     })
 
+    logRegular('init Memory Cache...')
+    setData('usage', {
+        'total_ram': '',
+        'used_ram': '',
+        'free_ram': '',
+        'total_disk': '',
+        'used_disk': '',
+        'free_disk': '',
+        'klipper_load': 0,
+        'system_load': 0
+    })
+
     logRegular('init Time Cache...')
     setData('time', {
         'total': 0,

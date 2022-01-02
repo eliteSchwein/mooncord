@@ -11,6 +11,15 @@
         "systeminfo_memory": {
             "title": "Memory Information"
         },
+        "systeminfo_system": {
+            "title": "System Information"
+        },
+        "systeminfo_mcu": {
+            "title": "${mcu_name} Information"
+        },
+        "systeminfo_update": {
+            "title": "System Updates"
+        },
         "fileinfo": {
             "title": "File Informations",
             "description": "Print Time: ${estimated_time}\nSlicer: ${slicer}\nSlicer Version: ${slicer_version}\nHeight: ${object_height}mm"
@@ -104,7 +113,7 @@
             "chipset": "Chipset",
             "version": "Version",
             "load": "Load",
-            "awake": "Awake",
+            "awake_time": "Awake Time",
             "frequency": "Freq",
             "current": "Current",
             "target": "Target",
@@ -130,7 +139,16 @@
             "manufactured": "Manufactured",
             "total_ram": "Total RAM",
             "free_ram": "Free RAM",
-            "total_sd": "Total SD"
+            "used_ram": "Used RAM",
+            "total_disk": "Total Disk",
+            "used_disk": "Used Disk",
+            "free_disk": "Free Disk",
+            "system_load": "System Load",
+            "moonraker_load": "Moonraker Load",
+            "klipper_load": "Klipper Load",
+            "distribution": "Distribution",
+            "distribution_like": "Distribution Like",
+            "codename": "Codename"
         }
     },
     "messages": {
@@ -310,7 +328,7 @@
                 },
                 {
                     "label": "Updates",
-                    "value": "updates"
+                    "value": "update"
                 }
             ]
         }

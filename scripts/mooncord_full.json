@@ -543,10 +543,6 @@
                     "value": "${machine_info.system_info.cpu_info.bits}"
                 },
                 {
-                    "name": "${embeds.fields.load}",
-                    "value": "${state.system_stats.sysload} / ${machine_info.system_info.cpu_info.cpu_count}"
-                },
-                {
                     "name": "${embeds.fields.temp}",
                     "value": "${proc_stats.cpu_temp} °C"
                 }
@@ -562,11 +558,15 @@
             "fields": [
                 {
                     "name": "${embeds.fields.total_ram}",
-                    "value": "${total_ram} GB"
+                    "value": "${usage.total_ram} GB"
+                },
+                {
+                    "name": "${embeds.fields.used_ram}",
+                    "value": "${usage.used_ram} GB"
                 },
                 {
                     "name": "${embeds.fields.free_ram}",
-                    "value": "${free_ram} GB"
+                    "value": "${usage.free_ram} GB"
                 },
                 {
                     "name": "${embeds.fields.manufacturer}",
@@ -581,10 +581,93 @@
                     "value": "${machine_info.system_info.sd_info.product_name} ${machine_info.system_info.sd_info.product_revision}"
                 },
                 {
-                    "name": "${embeds.fields.manufactured}",
-                    "value": "${total_sd} GB"
+                    "name": "${embeds.fields.total_disk}",
+                    "value": "${usage.total_disk} GB"
+                },
+                {
+                    "name": "${embeds.fields.used_disk}",
+                    "value": "${usage.used_disk} GB"
+                },
+                {
+                    "name": "${embeds.fields.free_disk}",
+                    "value": "${usage.free_disk} GB"
                 }
             ]
+        },
+        "systeminfo_system": {
+            "color": "#0099ff",
+            "thumbnail": "system.png",
+            "selection": {
+                "id": "systeminfo_select",
+                "data": "${raw_entries}"
+            },
+            "fields": [
+                {
+                    "name": "${embeds.fields.system_load}",
+                    "value": "${usage.system_load} %"
+                },
+                {
+                    "name": "${embeds.fields.moonraker_load}",
+                    "value": "${proc_stats.moonraker_stats.cpu_usage} %"
+                },
+                {
+                    "name": "${embeds.fields.klipper_load}",
+                    "value": "${usage.klipper_load} %"
+                },
+                {
+                    "name": "${embeds.fields.distribution}",
+                    "value": "${machine_info.system_info.distribution.name}"
+                },
+                {
+                    "name": "${embeds.fields.codename}",
+                    "value": "${machine_info.system_info.distribution.codename}"
+                },
+                {
+                    "name": "${embeds.fields.distribution_like}",
+                    "value": "${machine_info.system_info.distribution.like}"
+                }
+            ]
+        },
+        "systeminfo_mcu": {
+            "color": "#0099ff",
+            "thumbnail": "mcu.png",
+            "selection": {
+                "id": "systeminfo_select",
+                "data": "${raw_entries}"
+            },
+            "fields": [
+                {
+                    "name": "${embeds.fields.chipset}",
+                    "value": "${mcu_chipset}"
+                },
+                {
+                    "name": "${embeds.fields.load}",
+                    "value": "${mcu_load} %"
+                },
+                {
+                    "name": "${embeds.fields.awake_time}",
+                    "value": "${mcu_awake} s"
+                },
+                {
+                    "name": "${embeds.fields.frequency}",
+                    "value": "${mcu_freq} MHz"
+                },
+                {
+                    "name": "${embeds.fields.version}",
+                    "value": "${mcu_version}"
+                }
+            ]
+        },
+        "systeminfo_update": {
+            "color": "#fbff00",
+            "thumbnail": "update.png",
+            "selection": {
+                "id": "systeminfo_select",
+                "data": "${raw_entries}"
+            },
+            "buttons": ["update_system"],
+            "fields": [],
+            "show_updates": true
         },
         "ready":{
             "color": "#0099ff",

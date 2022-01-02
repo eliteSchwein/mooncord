@@ -28,7 +28,7 @@ export class DeleteButton {
         const rootPath = buttonData.function_mapping.root_path
         const filename = this.embedHelper.getAuthorName(currentEmbed)
 
-        const feedback = await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "server.files.delete_file", "params": {"path":"${rootPath}/${filename}"}}`)
+        const feedback = await this.moonrakerClient.send({"method": "server.files.delete_file", "params": {"path": `${rootPath}/${filename}`}})
 
         if(typeof feedback.error !== 'undefined') {
             await interaction.editReply(this.locale.messages.errors.file_not_found)

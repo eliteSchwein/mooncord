@@ -26,6 +26,6 @@ export class PrintJobStartButton {
             return
         }
 
-        await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "printer.print.start", "params": {"filename": "${printFile}"}}`)
+        await this.moonrakerClient.send({"method": "printer.print.start", "params": {"filename": printFile}})
     }
 }

@@ -31,7 +31,7 @@ export class RestartCommand {
     }
 
     protected async restartService(service: string) {
-        const result = await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "machine.services.restart", "params": {"service": "${service}"}}`)
+        const result = await this.moonrakerClient.send({"method": "machine.services.restart", "params": {service}})
 
         if(typeof result.error !== 'undefined') {
             const reply = this.locale.messages.errors.restart_failed
@@ -46,7 +46,7 @@ export class RestartCommand {
     }
 
     protected async restartFirmware() {
-        void await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "printer.firmware_restart"}`)
+        void await this.moonrakerClient.send({"method": "printer.firmware_restart"})
 
         return this.locale.messages.answers.firmware_restart_successful
     }

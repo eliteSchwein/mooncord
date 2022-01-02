@@ -3,11 +3,14 @@ import {StatusHelper} from "../../../helper/StatusHelper";
 import { MetadataHelper } from "../../../helper/MetadataHelper";
 import { updateTimes } from "../../../helper/TimeHelper";
 import { updateLayers } from "../../../helper/LayerHelper";
+import {UsageHelper} from "../../../helper/UsageHelper";
 
 export class SubscriptionNotification {
     protected statusHelper = new StatusHelper()
     protected metadataHelper = new MetadataHelper()
     protected functionCache = getEntry('function')
+    protected usageHelper = new UsageHelper()
+
     public parse(message) {
         if(typeof(message.method) === 'undefined') { return }
         if(typeof(message.params) === 'undefined') { return }
@@ -17,6 +20,10 @@ export class SubscriptionNotification {
         if(message.method !== 'notify_status_update') { return }
 
         updateData('state', param)
+
+        this.usageHelper.updateMemoryUsage()
+        this.usageHelper.updateKlipperLoad()
+        this.usageHelper.updateSystemLoad()
 
         if(typeof param.print_stats !== 'undefined') {
             void this.parsePrintStats(param.print_stats)

@@ -23,7 +23,7 @@ export class MetadataHelper {
     }
 
     public async getMetaData(filename: string) {
-        const metaData = await this.moonrakerClient.send(`{"jsonrpc": "2.0", "method": "server.files.metadata", "params": {"filename": "${filename}"}}`)
+        const metaData = await this.moonrakerClient.send({"method": "server.files.metadata", "params": {filename}})
 
         return metaData.result
     }
