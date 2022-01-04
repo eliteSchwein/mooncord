@@ -47,7 +47,7 @@
         "botadmins": {
             "_comment": "this Section is managed by the /admin command",
             "users": [],
-            "guilds": {}
+            "roles": []
         },
         "selections": {
             "printlist_view_printjob": {
@@ -180,6 +180,12 @@
             }
         },
         "commands": {
+            "admin": {
+                "botadmin": false,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
             "dump": {
                 "botadmin": true,
                 "guildadmin": false,

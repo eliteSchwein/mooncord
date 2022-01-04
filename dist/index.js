@@ -34145,7 +34145,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 2613:
+/***/ 98:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -34495,17 +34495,25 @@ function formatDate(seconds) {
 
 const args = process.argv.slice(2);
 class ConfigHelper {
+    constructor() {
+        this.configPath = `${args[0]}/mooncord.json`;
+    }
     loadCache() {
         logRegular("load Config Cache...");
-        const configPath = `${args[0]}/mooncord.json`;
-        const configRaw = (0,external_fs_namespaceObject.readFileSync)(configPath, { encoding: 'utf8' });
         const defaultConfig = (0,external_fs_namespaceObject.readFileSync)(__nccwpck_require__.ab + "mooncord_full.json", { encoding: 'utf8' });
         const config = JSON.parse(defaultConfig);
-        mergeDeep(config, JSON.parse(configRaw));
+        mergeDeep(config, this.getUserConfig());
         setData('config', config);
     }
     getConfig() {
         return getEntry('config');
+    }
+    getUserConfig() {
+        return JSON.parse((0,external_fs_namespaceObject.readFileSync)(this.configPath, { encoding: 'utf8' }));
+    }
+    writeUserConfig(modifiedConfig) {
+        updateData('config', modifiedConfig);
+        (0,external_fs_namespaceObject.writeFileSync)(this.configPath, JSON.stringify(modifiedConfig, null, 4), { encoding: 'utf8', flag: 'w+' });
     }
     getPermissions() {
         return this.getConfig().permission;
@@ -38555,7 +38563,51 @@ class SystemInfoCommand {
     }
 }
 
+;// CONCATENATED MODULE: ./src/events/discord/interactions/commands/AdminCommand.ts
+
+
+
+class AdminCommand {
+    constructor(interaction, commandId) {
+        this.localeHelper = new LocaleHelper();
+        this.syntaxLocale = this.localeHelper.getSyntaxLocale();
+        this.locale = this.localeHelper.getLocale();
+        this.configHelper = new ConfigHelper();
+        if (commandId !== 'admin') {
+            return;
+        }
+        this.execute(interaction);
+    }
+    async execute(interaction) {
+        const role = interaction.options.getRole(this.syntaxLocale.commands.admin.options.role.options.role.name);
+        const user = interaction.options.getUser(this.syntaxLocale.commands.admin.options.user.options.user.name);
+        const permissions = this.configHelper.getPermissions();
+        const botAdmins = permissions.botadmins;
+        const userConfig = this.configHelper.getUserConfig();
+        const section = (role === null) ? 'users' : 'roles';
+        const id = (role === null) ? user.id : role.id;
+        const mention = (role === null) ? user.tag : role.name;
+        if (botAdmins[section].includes(id)) {
+            removeFromArray(botAdmins[section], id);
+            const message = this.locale.messages.answers.admin.removed
+                .replace(/(\${username})/g, interaction.user.tag)
+                .replace(/(\${mention})/g, mention);
+            await interaction.reply(message);
+        }
+        else {
+            botAdmins[section].push(id);
+            const message = this.locale.messages.answers.admin.added
+                .replace(/(\${username})/g, interaction.user.tag)
+                .replace(/(\${mention})/g, mention);
+            await interaction.reply(message);
+        }
+        userConfig.permission.botadmins = botAdmins;
+        this.configHelper.writeUserConfig(userConfig);
+    }
+}
+
 ;// CONCATENATED MODULE: ./src/events/discord/interactions/CommandInteraction.ts
+
 
 
 
@@ -38606,6 +38658,7 @@ class CommandInteraction {
             logWarn(`${interaction.user.tag} doesnt have the permission for: ${interaction.commandName} (${commandId})`);
             return;
         }
+        void new AdminCommand(interaction, commandId);
         void new FileInfoCommand(interaction, commandId);
         void new InfoCommand(interaction, commandId);
         void new DumpCommand(interaction, commandId);
@@ -40809,7 +40862,7 @@ return new B(c,{type:"multipart/form-data; boundary="+b})}
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(2613);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(98);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()

@@ -1,26 +1,35 @@
-import {readFileSync} from 'fs'
+import {readFileSync, writeFileSync} from 'fs'
 import path from "path";
 import {mergeDeep} from "./DataHelper";
-import {getEntry, setData} from "../utils/CacheUtil";
+import {getEntry, setData, updateData} from "../utils/CacheUtil";
 import {logRegular} from "./LoggerHelper";
 
 const args = process.argv.slice(2)
 
 export class ConfigHelper {
+    protected configPath = `${args[0]}/mooncord.json`
 
     public loadCache() {
         logRegular("load Config Cache...")
-        const configPath = `${args[0]}/mooncord.json`
-        const configRaw = readFileSync(configPath, {encoding: 'utf8'})
         const defaultConfig = readFileSync(path.resolve(__dirname, '../../scripts/mooncord_full.json'), {encoding: 'utf8'})
 
         const config = JSON.parse(defaultConfig)
-        mergeDeep(config, JSON.parse(configRaw))
+        mergeDeep(config, this.getUserConfig())
         setData('config', config)
     }
 
     public getConfig() {
         return getEntry('config')
+    }
+
+    public getUserConfig() {
+        return JSON.parse(readFileSync(this.configPath, {encoding: 'utf8'}))
+    }
+
+    public writeUserConfig(modifiedConfig) {
+        updateData('config', modifiedConfig)
+
+        writeFileSync(this.configPath, JSON.stringify(modifiedConfig, null, 4), {encoding: 'utf8', flag: 'w+'})
     }
     
     public getPermissions() {

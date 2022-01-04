@@ -20,6 +20,7 @@ import {FileListCommand} from "./commands/FileListCommand";
 import {FileInfoCommand} from "./commands/FileInfoCommand";
 import {PrintjobCommand} from "./commands/PrintjobCommand";
 import {SystemInfoCommand} from "./commands/SystemInfoCommand";
+import {AdminCommand} from "./commands/AdminCommand";
 
 export class CommandInteraction {
     protected config = new ConfigHelper()
@@ -53,6 +54,7 @@ export class CommandInteraction {
             return;
         }
 
+        void new AdminCommand(interaction, commandId)
         void new FileInfoCommand(interaction, commandId)
         void new InfoCommand(interaction, commandId)
         void new DumpCommand(interaction, commandId)
