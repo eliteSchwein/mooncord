@@ -34145,7 +34145,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 98:
+/***/ 679:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -39540,7 +39540,72 @@ class PrintProgressNotification {
     }
 }
 
+;// CONCATENATED MODULE: ./src/events/moonraker/messages/ThrottleNotification.ts
+
+
+
+
+
+
+
+class ThrottleNotification {
+    constructor() {
+        this.localeHelper = new LocaleHelper();
+        this.locale = this.localeHelper.getLocale();
+        this.configHelper = new ConfigHelper();
+        this.discordClient = getDiscordClient();
+        this.notificationHelper = new NotificationHelper();
+        this.embedHelper = new EmbedHelper();
+        this.validFlags = [
+            'Under-Voltage Detected',
+            'Temperature Limit Active',
+            'Frequency Capped'
+        ];
+        this.cooldownValue = 120 * 4;
+    }
+    parse(message) {
+        if (typeof (message.method) === 'undefined') {
+            return;
+        }
+        if (typeof (message.params) === 'undefined') {
+            return;
+        }
+        if (message.method !== 'notify_cpu_throttled') {
+            return;
+        }
+        if (!this.configHelper.notifyOnMoonrakerThrottle()) {
+            return;
+        }
+        const { flags } = message.params[0];
+        const currentThrottleState = getEntry('throttle');
+        for (const flag of flags) {
+            if (currentThrottleState.throttle_states.includes(flag)
+                && currentThrottleState.cooldown !== 0) {
+                currentThrottleState.cooldown = this.cooldownValue;
+                setData('throttle', currentThrottleState);
+                continue;
+            }
+            this.broadcastThrottle(flag, currentThrottleState);
+        }
+    }
+    async broadcastThrottle(flag, currentThrottleState) {
+        if (!this.validFlags.includes(flag)) {
+            return;
+        }
+        logWarn(`A Throttle occured: ${flag}`);
+        currentThrottleState.cooldown = this.cooldownValue;
+        currentThrottleState.throttle_states.push(flag);
+        const localeKey = flag
+            .toLowerCase()
+            .replace(/( |-)/g, '_');
+        setData('throttle', currentThrottleState);
+        const embed = await this.embedHelper.generateEmbed(`throttle_${localeKey}`);
+        this.notificationHelper.broadcastMessage(embed.embed);
+    }
+}
+
 ;// CONCATENATED MODULE: ./src/events/moonraker/MessageHandler.ts
+
 
 
 
@@ -39552,13 +39617,6 @@ class PrintProgressNotification {
 
 class MessageHandler {
     constructor(websocket) {
-        this.procStatsNotification = new ProcStatsNotification();
-        this.subscriptionNotification = new SubscriptionNotification();
-        this.updateNotification = new UpdateNotification();
-        this.fileEditNotification = new FileEditNotification();
-        this.stateUpdateNotification = new StateUpdateNotification();
-        this.gcodeResponseNotification = new GcodeResponseNotification();
-        this.printProgressNotification = new PrintProgressNotification();
         this.websocket = websocket;
         websocket.addEventListener(lib.WebsocketEvents.message, ((instance, ev) => {
             const messageData = JSON.parse(ev.data);
@@ -39569,13 +39627,14 @@ class MessageHandler {
                 'event_count': websocket.underlyingWebsocket['_eventsCount']
             });
             // console.log(messageData)
-            this.procStatsNotification.parse(messageData);
-            this.subscriptionNotification.parse(messageData);
-            this.updateNotification.parse(messageData);
-            this.fileEditNotification.parse(messageData);
-            this.stateUpdateNotification.parse(messageData);
-            this.gcodeResponseNotification.parse(messageData);
-            this.printProgressNotification.parse(messageData);
+            void new ProcStatsNotification().parse(messageData);
+            void new SubscriptionNotification().parse(messageData);
+            void new UpdateNotification().parse(messageData);
+            void new FileEditNotification().parse(messageData);
+            void new StateUpdateNotification().parse(messageData);
+            void new GcodeResponseNotification().parse(messageData);
+            void new PrintProgressNotification().parse(messageData);
+            void new ThrottleNotification().parse(messageData);
         }));
     }
 }
@@ -39879,6 +39938,7 @@ class SchedulerHelper {
             if (this.functionCache.poll_printer_info) {
                 void this.pollServerInfo();
             }
+            this.updateThrottleCooldown();
         }, 250);
     }
     scheduleModerate() {
@@ -39897,6 +39957,16 @@ class SchedulerHelper {
                 this.postPrintProgress();
             }
         }, this.getStatusInterval());
+    }
+    updateThrottleCooldown() {
+        const currentThrottleState = getEntry('throttle');
+        if (currentThrottleState.cooldown === 0) {
+            currentThrottleState.throttle_states = [];
+        }
+        else {
+            currentThrottleState.cooldown--;
+        }
+        setData('throttle', currentThrottleState);
     }
     postPrintProgress() {
         if (this.functionCache.current_status !== 'printing') {
@@ -40043,6 +40113,11 @@ function initCache() {
     setData('layers', {
         'top': 0,
         'current': 0
+    });
+    logRegular('init Throttle Cache...');
+    setData('throttle', {
+        'cooldown': 0,
+        'throttle_states': []
     });
     configHelper.loadCache();
     localeHelper.loadCache();
@@ -40862,7 +40937,7 @@ return new B(c,{type:"multipart/form-data; boundary="+b})}
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(98);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(679);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()

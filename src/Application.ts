@@ -113,6 +113,12 @@ function initCache() {
         'current': 0
     })
 
+    logRegular('init Throttle Cache...')
+    setData('throttle', {
+        'cooldown': 0,
+        'throttle_states': []
+    })
+
     configHelper.loadCache()
     localeHelper.loadCache()
     embedHelper.loadCache()

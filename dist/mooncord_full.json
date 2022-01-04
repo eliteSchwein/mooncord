@@ -688,7 +688,18 @@
         },
         "wait": {},
         "system_warning": {},
-        "throttle": {},
+        "throttle_under_voltage_detected": {
+            "color": "#c90000",
+            "thumbnail": "warning.png"
+        },
+        "throttle_temperature_limit_active": {
+            "color": "#c90000",
+            "thumbnail": "warning.png"
+        },
+        "throttle_frequency_capped": {
+            "color": "#c90000",
+            "thumbnail": "warning.png"
+        },
         "system_update": {
             "color": "#fbff00",
             "thumbnail": "update.png",

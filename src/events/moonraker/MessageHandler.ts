@@ -7,17 +7,10 @@ import {FileEditNotification} from "./messages/FileEditNotification";
 import {StateUpdateNotification} from "./messages/StateUpdateNotification";
 import {GcodeResponseNotification} from "./messages/GcodeResponseNotification";
 import { PrintProgressNotification } from "./messages/PrintProgressNotification";
+import {ThrottleNotification} from "./messages/ThrottleNotification";
 
 export class MessageHandler {
     protected websocket: Websocket
-
-    protected procStatsNotification = new ProcStatsNotification()
-    protected subscriptionNotification = new SubscriptionNotification()
-    protected updateNotification = new UpdateNotification()
-    protected fileEditNotification = new FileEditNotification()
-    protected stateUpdateNotification = new StateUpdateNotification()
-    protected gcodeResponseNotification = new GcodeResponseNotification()
-    protected printProgressNotification = new PrintProgressNotification()
 
     public constructor(websocket: Websocket) {
         this.websocket = websocket
@@ -33,13 +26,14 @@ export class MessageHandler {
 
             // console.log(messageData)
 
-            this.procStatsNotification.parse(messageData)
-            this.subscriptionNotification.parse(messageData)
-            this.updateNotification.parse(messageData)
-            this.fileEditNotification.parse(messageData)
-            this.stateUpdateNotification.parse(messageData)
-            this.gcodeResponseNotification.parse(messageData)
-            this.printProgressNotification.parse(messageData)
+            void new ProcStatsNotification().parse(messageData)
+            void new SubscriptionNotification().parse(messageData)
+            void new UpdateNotification().parse(messageData)
+            void new FileEditNotification().parse(messageData)
+            void new StateUpdateNotification().parse(messageData)
+            void new GcodeResponseNotification().parse(messageData)
+            void new PrintProgressNotification().parse(messageData)
+            void new ThrottleNotification().parse(messageData)
         }))
     }
 }

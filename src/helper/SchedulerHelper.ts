@@ -42,9 +42,12 @@ export class SchedulerHelper {
             updateData('moonraker_client', {
                 'event_count': this.moonrakerClient.getWebsocket().underlyingWebsocket['_eventsCount']
             })
+
             if(this.functionCache.poll_printer_info) {
                 void this.pollServerInfo()
             }
+
+            this.updateThrottleCooldown()
         }, 250)
     }
 
@@ -66,6 +69,18 @@ export class SchedulerHelper {
                 this.postPrintProgress()
             }
         }, this.getStatusInterval())
+    }
+
+    protected updateThrottleCooldown() {
+        const currentThrottleState = getEntry('throttle')
+
+        if(currentThrottleState.cooldown === 0) {
+            currentThrottleState.throttle_states = []
+        } else {
+            currentThrottleState.cooldown --
+        }
+
+        setData('throttle', currentThrottleState)
     }
 
     protected postPrintProgress() {

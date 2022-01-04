@@ -96,13 +96,17 @@
             "title": "",
             "description": "⏰ Please Wait till the current Task is completed!"
         },
-        "system_warning": {
-            "title": "System Warning",
-            "description": "There is currently a System Warning because of ${reason}!"
-        },
-        "throttle": {
+        "throttle_temperature_limit_active": {
             "title": "Throttle occured!",
-            "description": "The System is currently throttled because of ${reason}!"
+            "description": "The System is currently throttled because of `Temperature Throttle`!\nCurrent Temperature: `${proc_stats.cpu_temp} °C`\nPlease check your cooling Solution."
+        },
+        "throttle_under_voltage_detected": {
+            "title": "Throttle occured!",
+            "description": "The System is currently throttled because of `Under Voltage`!\nPlease check your Power Delivery."
+        },
+        "throttle_frequency_capped": {
+            "title": "Throttle occured!",
+            "description": "The System is currently throttled because of `Frequency Capped`!\nPlease check your cooling Solution or/and your Power Delivery.."
         },
         "system_update": {
             "title": "System Updates"
@@ -219,36 +223,6 @@
             "log_too_large": "The Log for `${service}` is too big!",
             "log_failed": "The Download of the `${service}` Log failed: `${reason}`!",
             "log_not_found": "There is currently no Log for `${service}`"
-        }
-    },
-    "suggestions": {
-        "high_cpu_load": {
-            "name": "High CPU Load",
-            "suggestion": "Please check what causes the High CPU Usage."
-        },
-        "high_cpu_temp": {
-            "name": "High CPU Temp",
-            "suggestion": "Please check your cooling Solution."
-        },
-        "high_ram_usage": {
-            "name": "High Ram Usage",
-            "suggestion": "Please check what causes the High Ram Usage."
-        },
-        "high_partition_usage": {
-            "name": "High Partition Usage",
-            "suggestion": "Remove some Files from ${component_section}."
-        },
-        "under_voltage_detected": {
-            "name": "Under Voltage",
-            "suggestion": "Please check your Power Delivery."
-        },
-        "temperature_limit_active": {
-            "name": "Temperature Throttle",
-            "suggestion": "Please check your cooling Solution."
-        },
-        "frequency_capped": {
-            "name": "Temperature Throttle",
-            "suggestion": "Please check your cooling Solution."
         }
     },
     "buttons": {
