@@ -41,12 +41,6 @@
     }
   },
   "emergency_stop": {},
-  "execute": {
-    "gcode": {
-      "type": "string",
-      "required": true
-    }
-  },
   "fileinfo": {
     "file": {
       "type": "string",
@@ -107,6 +101,5 @@
   },
   "status": {},
   "systeminfo": {},
-  "temp": {},
-  "timelapse": {}
+  "temp": {}
 }
