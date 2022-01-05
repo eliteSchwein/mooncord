@@ -34145,7 +34145,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 679:
+/***/ 590:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -39486,7 +39486,47 @@ class StateUpdateNotification {
     }
 }
 
+;// CONCATENATED MODULE: ./src/events/moonraker/gcode-messages/InviteMessage.ts
+
+
+
+class InviteMessage {
+    constructor() {
+        this.moonrakerClient = getMoonrakerClient();
+    }
+    async execute(message) {
+        if (!message.startsWith('mooncord.invite')) {
+            return;
+        }
+        const inviteUrl = getEntry('invite_url');
+        logRegular('Send Invite URL to Klipper Console...');
+        await this.moonrakerClient.send({ "method": "printer.gcode.script", "params": { "script": `RESPOND PREFIX=mooncord.response MSG=${inviteUrl}` } });
+    }
+}
+
+;// CONCATENATED MODULE: ./src/events/moonraker/gcode-messages/BroadcastMessage.ts
+
+
+
+class BroadcastMessage {
+    constructor() {
+        this.embedHelper = new EmbedHelper();
+        this.notificationHelper = new NotificationHelper();
+    }
+    async execute(message) {
+        if (!message.startsWith('mooncord.broadcast')) {
+            return;
+        }
+        const notificationMessage = message.slice(19);
+        logRegular(`Broadcast Message: ${notificationMessage}`);
+        const embed = await this.embedHelper.generateEmbed('notification', { 'message': notificationMessage });
+        this.notificationHelper.broadcastMessage(embed.embed);
+    }
+}
+
 ;// CONCATENATED MODULE: ./src/events/moonraker/messages/GcodeResponseNotification.ts
+
+
 
 
 
@@ -39512,6 +39552,8 @@ class GcodeResponseNotification {
         if (param === '// action:cancel') {
             this.statusHelper.update('stop');
         }
+        void new InviteMessage().execute(param);
+        void new BroadcastMessage().execute(param);
     }
 }
 
@@ -40937,7 +40979,7 @@ return new B(c,{type:"multipart/form-data; boundary="+b})}
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(679);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(590);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()

@@ -361,6 +361,11 @@
             "color": "#0099ff",
             "thumbnail": "logo.png"
         },
+        "notification": {
+            "color": "#03f4fc",
+            "thumbnail": "notification.png",
+            "description": "${message}"
+        },
         "printjob_start_request": {
             "author": "${filename}",
             "color": "#0099ff",
@@ -686,8 +691,6 @@
             "color": "#0099ff",
             "buttons": []
         },
-        "wait": {},
-        "system_warning": {},
         "throttle_under_voltage_detected": {
             "color": "#c90000",
             "thumbnail": "warning.png"

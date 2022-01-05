@@ -33,6 +33,9 @@
             "title": "Informations",
             "description": "Version: ${package_config.version}\nAuthor: ${package_config.author}\nHomepage: ${package_config.homepage}\n${config.custom_info}"
         },
+        "notification": {
+            "title": "Notification"
+        },
         "printjob_start_request": {
             "title": "Start Print Job?",
             "description": "Print Time: ${estimated_time}\nSlicer: ${slicer}\nSlicer Version: ${slicer_version}\nHeight: ${object_height}mm"
