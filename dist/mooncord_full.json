@@ -826,7 +826,9 @@
             "update_system": {
                 "style":"SECONDARY",
                 "function_mapping": {
-
+                    "update_system": true,
+                    "message": "${locale.messages.answers.update_request}",
+                    "message_as_follow_up": true
                 }
             },
             "printjob_request_accept": {

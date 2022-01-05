@@ -29,9 +29,10 @@ export class VersionHelper {
         const fields = []
         for (const component in versionData) {
             if (component !== 'system') {
+                const remoteVersion = (versionData[component].version !== versionData[component].remote_version) ? `\n🆕 ${versionData[component].remote_version}` : ''
                 fields.push({
                     name:component,
-                    value:`${versionData[component].version} \n🆕 ${versionData[component].remote_version}`
+                    value:`${versionData[component].version} ${remoteVersion}`
                 })
             } else {
                 fields.push({

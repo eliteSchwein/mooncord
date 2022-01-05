@@ -34145,7 +34145,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 590:
+/***/ 136:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -37000,9 +37000,10 @@ class VersionHelper {
         const fields = [];
         for (const component in versionData) {
             if (component !== 'system') {
+                const remoteVersion = (versionData[component].version !== versionData[component].remote_version) ? `\n🆕 ${versionData[component].remote_version}` : '';
                 fields.push({
                     name: component,
-                    value: `${versionData[component].version} \n🆕 ${versionData[component].remote_version}`
+                    value: `${versionData[component].version} ${remoteVersion}`
                 });
             }
             else {
@@ -37940,6 +37941,10 @@ class MessageButton {
             await interaction.followUp(message);
         }
         else {
+            if (buttonData.function_mapping.message_as_follow_up) {
+                await interaction.reply(message);
+                return;
+            }
             await currentMessage.edit({ components: null, embeds: null });
             await currentMessage.removeAttachments();
             await interaction.update({ content: message, components: [], embeds: [] });
@@ -37958,7 +37963,22 @@ class ReconnectButton {
     }
 }
 
+;// CONCATENATED MODULE: ./src/events/discord/interactions/buttons/UpdateButton.ts
+
+class UpdateButton {
+    constructor() {
+        this.moonrakerClient = getMoonrakerClient();
+    }
+    async execute(interaction, buttonData) {
+        if (!buttonData.function_mapping.update_system) {
+            return;
+        }
+        await this.moonrakerClient.send({ 'method': 'machine.update.full' }, Number.POSITIVE_INFINITY);
+    }
+}
+
 ;// CONCATENATED MODULE: ./src/events/discord/interactions/ButtonInteraction.ts
+
 
 
 
@@ -38020,6 +38040,7 @@ class ButtonInteraction {
         await new PageButton().execute(interaction, buttonData);
         await new PrintJobStartButton().execute(interaction, buttonData);
         await new MacroButton().execute(interaction, buttonData);
+        await new UpdateButton().execute(interaction, buttonData);
         await sleep(2000);
         if (interaction.replied || interaction.deferred) {
             return;
@@ -40979,7 +41000,7 @@ return new B(c,{type:"multipart/form-data; boundary="+b})}
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(590);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(136);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()

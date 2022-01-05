@@ -14,6 +14,7 @@ import {DeleteButton} from "./buttons/DeleteButton";
 import {PrintJobStartButton} from "./buttons/PrintJobStartButton";
 import {MessageButton} from "./buttons/MessageButton";
 import {ReconnectButton} from "./buttons/ReconnectButton";
+import {UpdateButton} from "./buttons/UpdateButton";
 
 export class ButtonInteraction {
     protected config = new ConfigHelper()
@@ -67,6 +68,7 @@ export class ButtonInteraction {
         await new PageButton().execute(interaction, buttonData)
         await new PrintJobStartButton().execute(interaction, buttonData)
         await new MacroButton().execute(interaction, buttonData)
+        await new UpdateButton().execute(interaction, buttonData)
 
         await sleep(2000)
 

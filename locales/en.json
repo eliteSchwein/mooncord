@@ -160,6 +160,7 @@
     },
     "messages": {
         "answers": {
+            "update_request": "System Update requested, `${username}`!",
             "restart_successful": "The Restart for `${service}` was successful!",
             "firmware_restart_successful": "The Firmware is restarting!",
             "for_gcode": "Timelapse for `${state.print_stats.filename}`",

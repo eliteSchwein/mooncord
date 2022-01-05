@@ -36,6 +36,10 @@ export class MessageButton {
         if(interaction.replied) {
             await interaction.followUp(message)
         } else {
+            if(buttonData.function_mapping.message_as_follow_up) {
+                await interaction.reply(message)
+                return
+            }
             await currentMessage.edit({components: null, embeds: null})
             await currentMessage.removeAttachments()
 
