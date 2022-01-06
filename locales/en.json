@@ -163,7 +163,7 @@
             "update_request": "System Update requested, `${username}`!",
             "restart_successful": "The Restart for `${service}` was successful!",
             "firmware_restart_successful": "The Firmware is restarting!",
-            "for_gcode": "Timelapse for `${state.print_stats.filename}`",
+            "timelapse": "Timelapse for `${printfile}`",
             "admin": {
                 "added": "${mention} is now a Bot Admin, `${username}`!",
                 "removed": "${mention} is not longer a Bot Admin, `${username}`!"
@@ -219,7 +219,6 @@
             "restart_failed": "The Restart for `${service}` failed: `${reason}`",
             "no_files_found": "There are currently no Files!",
             "no_permission": "You dont have the Permissions, `${username}`",
-            "no_timelapse": "There is no Timelapse available!",
             "not_ready": "This Command is not ready, `${username}`!",
             "not_textchannel": "`${channel}` is not a Text Channel, `${username}`!",
             "execute_error": "Error: `${gcode_feedback}`",

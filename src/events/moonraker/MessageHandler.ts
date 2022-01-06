@@ -8,6 +8,7 @@ import {StateUpdateNotification} from "./messages/StateUpdateNotification";
 import {GcodeResponseNotification} from "./messages/GcodeResponseNotification";
 import { PrintProgressNotification } from "./messages/PrintProgressNotification";
 import {ThrottleNotification} from "./messages/ThrottleNotification";
+import {TimelapseNotification} from "./messages/TimelapseNotification";
 
 export class MessageHandler {
     protected websocket: Websocket
@@ -24,8 +25,6 @@ export class MessageHandler {
                 'event_count': websocket.underlyingWebsocket['_eventsCount']
             })
 
-            // console.log(messageData)
-
             void new ProcStatsNotification().parse(messageData)
             void new SubscriptionNotification().parse(messageData)
             void new UpdateNotification().parse(messageData)
@@ -34,6 +33,7 @@ export class MessageHandler {
             void new GcodeResponseNotification().parse(messageData)
             void new PrintProgressNotification().parse(messageData)
             void new ThrottleNotification().parse(messageData)
+            void new TimelapseNotification().parse(messageData)
         }))
     }
 }

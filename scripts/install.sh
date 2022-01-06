@@ -26,16 +26,16 @@ install_packages()
 
     if ! command -v node -v >/dev/null 2>&1
     then
-        status_msg "Download Node 16.6.1"
-        wget https://nodejs.org/download/release/v16.6.1/node-v16.6.1-linux-armv7l.tar.gz
+        status_msg "Download Node 16.13.1"
+        wget https://nodejs.org/download/release/v16.13.1/node-v16.13.1-linux-armv7l.tar.gz
 
-        status_msg "Install Node 16.6.1"
-        tar -xvf node-v16.6.1-linux-armv7l.tar.gz >/dev/null 2>&1 
-        sudo cp -R node-v16.6.1-linux-armv7l/* /usr/local/ >/dev/null 2>&1 
+        status_msg "Install Node 16.13.1"
+        tar -xvf node-v16.13.1-linux-armv7l.tar.gz >/dev/null 2>&1
+        sudo cp -R node-v16.13.1-linux-armv7l/* /usr/local/ >/dev/null 2>&1
 
         status_msg "Remove Node File and Folder"
-        rm -rf node-v16.6.1-linux-armv7l.tar.gz
-        rm -rf node-v16.6.1-linux-armv7l
+        rm -rf node-v16.13.1-linux-armv7l.tar.gz
+        rm -rf node-v16.13.1-linux-armv7l
     fi
 
     status_msg "Install Dependencies"

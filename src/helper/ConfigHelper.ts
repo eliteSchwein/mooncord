@@ -121,7 +121,7 @@ export class ConfigHelper {
     }
 
     public notifyOnMoonrakerThrottle() {
-        return this.getConfig().system_notifications.moonraker_throttle
+        return this.getConfig().notifications.moonraker_throttle
     }
 
     public dumpCacheOnStart() {
@@ -182,5 +182,9 @@ export class ConfigHelper {
 
     public getMoonrakerRetryInterval() {
         return this.getConfig().connection.moonraker_retry_interval
+    }
+
+    public notifyOnTimelapseFinish() {
+        return this.getConfig().notifications.timelapse
     }
 }

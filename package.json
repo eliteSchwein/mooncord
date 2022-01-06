@@ -8,8 +8,8 @@
     "debugstart": "node --trace_gc --trace-deprecation --trace-warnings --trace-uncaught --track-heap-objects dist/index.js",
     "checkcodestyle": "npx eslint ./**",
     "autofixcodestyle": "npx eslint ./** --fix",
-    "build": "ncc build -m -d -e discord.js -e sharp src/Application.ts -o dist",
-    "watch": "ncc build -w -d -e discord.js -e sharp src/Application.ts -o dist"
+    "build": "ncc build -m -d -e discord.js -e @ffmpeg-installer/ffmpeg -e sharp src/Application.ts -o dist",
+    "watch": "ncc build -w -d -e discord.js -e @ffmpeg-installer/ffmpeg -e sharp src/Application.ts -o dist"
   },
   "repository": {
     "type": "git",
@@ -23,19 +23,21 @@
   },
   "homepage": "https://github.com/eliteSchwein/mooncord#readme",
   "devDependencies": {
-    "bytes": "^3.1.1",
-    "@types/node": "^17.0.6",
+    "@types/fluent-ffmpeg": "^2.1.20",
+    "@types/node": "^17.0.8",
     "@types/sharp": "^0.29.5",
     "@vercel/ncc": "^0.33.1",
-    "async-wait-until": "2.0.6",
+    "async-wait-until": "2.0.12",
     "axios": "^0.24.0",
+    "bytes": "^3.1.1",
     "colorts": "^0.1.63",
     "eslint": "^8.6.0",
-    "eslint-config-galex": "^3.5.4",
+    "eslint-config-galex": "^3.5.5",
     "eslint-config-standard": "^16.0.3",
-    "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^6.0.0",
+    "fluent-ffmpeg": "^2.1.2",
     "form-data": "^4.0.0",
     "lodash": "^4.17.21",
     "node-fetch": "^3.1.0",
@@ -46,6 +48,7 @@
     "ws": "^8.4.0"
   },
   "dependencies": {
+    "@ffmpeg-installer/ffmpeg": "^1.1.0",
     "discord.js": "^13.5.0",
     "sharp": "^0.29.3"
   }

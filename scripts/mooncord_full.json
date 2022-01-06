@@ -56,6 +56,13 @@
                 "guildadmin": false,
                 "users": [],
                 "roles": []
+            },
+            "systeminfo_select": {
+                "command_assign": "systeminfo",
+                "botadmin": true,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
             }
         },
         "buttons": {
@@ -326,8 +333,9 @@
         "ffmpeg_codec": "libx264",
         "ffmpeg_arguments": "-pix_fmt yuv420p -preset slower -crf 30"
     },
-    "system_notifications": {
-        "moonraker_throttle": true
+    "notifications": {
+        "moonraker_throttle": true,
+        "timelapse": true
     },
     "development": {
         "dump_cache_on_start": true,
