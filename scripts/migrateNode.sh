@@ -21,4 +21,4 @@ echo "Update NPM"
 sudo npm install -g npm@latest node-gyp@latest
 
 echo "Install Dependencies"
-npm ci
+npm ci --only=prod
