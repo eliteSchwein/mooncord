@@ -60,7 +60,7 @@ install_systemd_service()
 
     echo "$SERVICE" | sudo tee /etc/systemd/system/$MCSERVICENAME.service > /dev/null
     sudo systemctl daemon-reload
-    sudo systemctl enable MoonCord
+    sudo systemctl enable $MCSERVICENAME.service
 }
 
 modify_user()
@@ -97,7 +97,7 @@ open_config() {
 
 start_MoonCord() {
     ok_msg "Start MoonCord, please make sure you configured the Bot correctly!"
-    sudo systemctl start MoonCord
+    sudo systemctl start $MCSERVICENAME.service
 }
 
 warn_msg(){
