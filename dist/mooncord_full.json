@@ -325,13 +325,6 @@
         "greyscale": false,
         "sepia": false
     },
-    "timelapse": {
-        "enable": false,
-        "framerate": 10,
-        "post_at_print_end": false,
-        "ffmpeg_codec": "libx264",
-        "ffmpeg_arguments": "-pix_fmt yuv420p -preset slower -crf 30"
-    },
     "notifications": {
         "moonraker_throttle": true,
         "timelapse": true
