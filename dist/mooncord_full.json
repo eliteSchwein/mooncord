@@ -143,28 +143,28 @@
                 "roles": []
             },
             "reconnect_moonraker": {
-                "command_assign": "service_restart",
+                "command_assign": "restart",
                 "botadmin": true,
                 "guildadmin": true,
                 "users": [],
                 "roles": []
             },
             "klipper_restart": {
-                "command_assign": "service_restart",
+                "command_assign": "restart",
                 "botadmin": true,
                 "guildadmin": true,
                 "users": [],
                 "roles": []
             },
             "update_system": {
-                "command_assign": "service_restart",
+                "command_assign": "restart",
                 "botadmin": true,
                 "guildadmin": true,
                 "users": [],
                 "roles": []
             },
             "reconnect": {
-                "command_assign": "service_restart",
+                "command_assign": "restart",
                 "botadmin": true,
                 "guildadmin": true,
                 "users": [],
@@ -276,12 +276,6 @@
                 "users": [],
                 "roles": []
             },
-            "service_restart": {
-                "botadmin": true,
-                "guildadmin": true,
-                "users": [],
-                "roles": []
-            },
             "status": {
                 "botadmin": true,
                 "guildadmin": true,
@@ -295,18 +289,6 @@
                 "roles": []
             },
             "temp": {
-                "botadmin": true,
-                "guildadmin": false,
-                "users": [],
-                "roles": []
-            },
-            "timelapse": {
-                "botadmin": true,
-                "guildadmin": false,
-                "users": [],
-                "roles": []
-            },
-            "update_system": {
                 "botadmin": true,
                 "guildadmin": false,
                 "users": [],
