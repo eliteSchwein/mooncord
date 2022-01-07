@@ -62,7 +62,7 @@
         },
         "printjob_stop":{
             "title": "Print stopped",
-            "activity": "Print stop"
+            "activity": "Print stopped"
         },
         "temperatures": {
             "title": "Temperatures"
@@ -94,10 +94,6 @@
         "startup":{
             "title": "Printer starting",
             "activity": "Printer start"
-        },
-        "wait": {
-            "title": "",
-            "description": "⏰ Please Wait till the current Task is completed!"
         },
         "throttle_temperature_limit_active": {
             "title": "Throttle occured!",
@@ -340,7 +336,7 @@
             }
         },
         "dump": {
-            "description": "dump cache.",
+            "description": "dump data.",
             "command": "dump",
             "options": {
                 "section": {
@@ -431,13 +427,7 @@
         },
         "systeminfo": {
             "description": "Get the current System Informations.",
-            "command": "systeminfo",
-            "options": {
-                "component": {
-                    "name": "component",
-                    "description": "Select the component you want to know the information about."
-                }
-            }
+            "command": "systeminfo"
         },
         "notify": {
             "description": "Should i DM you with the current print status?",
@@ -478,10 +468,6 @@
         "temp": {
             "description": "Get the current Temperatures from Klipper.",
             "command": "temp"
-        },
-        "timelapse": {
-            "description": "Get the latest Timelapse.",
-            "command": "timelapse"
         }
     }
 }
