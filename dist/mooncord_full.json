@@ -18,12 +18,12 @@
         "before": {
             "enable": false,
             "delay": 0,
-            "execute": {}
+            "execute": []
         },
         "after": {
             "enable": false,
             "delay": 0,
-            "execute": {}
+            "execute": []
         }
     },
     "messages": {
@@ -338,8 +338,8 @@
         "timelapse": true
     },
     "development": {
-        "dump_cache_on_start": true,
-        "trace_on_web_error": true
+        "dump_cache_on_start": false,
+        "trace_on_web_error": false
     },
     "discord": {
         "request_timeout": 30
