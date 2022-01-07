@@ -18,12 +18,12 @@
         "before": {
             "enable": false,
             "delay": 0,
-            "execute": {}
+            "execute": []
         },
         "after": {
             "enable": false,
             "delay": 0,
-            "execute": {}
+            "execute": []
         }
     },
     "messages": {
