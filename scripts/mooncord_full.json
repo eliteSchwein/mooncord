@@ -29,7 +29,6 @@
     "messages": {
         "show_no_permission_private": true,
         "icon_set": "acryl",
-        "snapshot_error_alternate_background": false,
         "entries_per_page": 8
     },
     "custom_info": "Thanks for installing MoonCord and Happy Printing ❤",
