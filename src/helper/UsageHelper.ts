@@ -62,6 +62,8 @@ export class UsageHelper {
 
         const diskUsageRaw = directoryInformation.result.disk_usage
 
+        if(typeof diskUsageRaw === 'undefined') { return }
+
         const totalDisk = (diskUsageRaw.total / (1024 ** 3))
             .toFixed(2)
 

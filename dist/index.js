@@ -49760,6 +49760,9 @@ class UsageHelper {
     async updateDiskUsage() {
         const directoryInformation = await this.moonrakerClient.send({ "method": "server.files.get_directory" });
         const diskUsageRaw = directoryInformation.result.disk_usage;
+        if (typeof diskUsageRaw === 'undefined') {
+            return;
+        }
         const totalDisk = (diskUsageRaw.total / (1024 ** 3))
             .toFixed(2);
         const freeDisk = (diskUsageRaw.free / (1024 ** 3))
