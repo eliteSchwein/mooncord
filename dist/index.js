@@ -47438,6 +47438,23 @@ class VersionHelper {
         }
         return fields;
     }
+    updateAvailable() {
+        const versionData = findValue('updates.version_info');
+        let updateAvailable = false;
+        for (const component in versionData) {
+            if (component !== 'system') {
+                if (versionData[component].version !== versionData[component].remote_version) {
+                    updateAvailable = true;
+                }
+            }
+            else {
+                if (versionData[component].package_count > 0) {
+                    updateAvailable = true;
+                }
+            }
+        }
+        return updateAvailable;
+    }
 }
 
 ;// CONCATENATED MODULE: ./src/helper/TempHelper.ts
@@ -49828,10 +49845,13 @@ class SubscriptionNotification {
 
 
 
+
+
 class UpdateNotification {
     constructor() {
         this.embedHelper = new EmbedHelper();
         this.notificationHelper = new NotificationHelper();
+        this.versionHelper = new VersionHelper();
     }
     async parse(message) {
         if (typeof (message.method) === 'undefined') {
@@ -49840,10 +49860,14 @@ class UpdateNotification {
         if (typeof (message.params) === 'undefined') {
             return;
         }
-        if (message.method !== 'notify_update_response') {
+        if (message.method !== 'notify_update_refreshed') {
             return;
         }
         updateData('updates', message.params[0]);
+        if (!this.versionHelper.updateAvailable()) {
+            return;
+        }
+        logRegular('There are some Updates available...');
         const embed = await this.embedHelper.generateEmbed('system_update');
         void this.notificationHelper.broadcastMessage(embed.embed);
     }

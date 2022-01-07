@@ -43,4 +43,23 @@ export class VersionHelper {
         }
         return fields
     }
+
+    public updateAvailable() {
+        const versionData = findValue('updates.version_info')
+        let updateAvailable = false
+
+        for (const component in versionData) {
+            if (component !== 'system') {
+                if(versionData[component].version !== versionData[component].remote_version) {
+                    updateAvailable = true
+                }
+            } else {
+                if(versionData[component].package_count > 0) {
+                    updateAvailable = true
+                }
+            }
+        }
+
+        return updateAvailable
+    }
 }
