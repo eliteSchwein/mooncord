@@ -76,7 +76,7 @@
             "activity": "wait for Moonraker"
         },
         "error":{
-            "title": "A Error occured!",
+            "title": "An Error occured!",
             "activity": "wait for User"
         },
         "offline":{
@@ -97,15 +97,15 @@
         },
         "throttle_temperature_limit_active": {
             "title": "Throttle occured!",
-            "description": "The System is currently throttled because of `Temperature Throttle`!\nCurrent Temperature: `${proc_stats.cpu_temp} °C`\nPlease check your cooling Solution."
+            "description": "The system is currently throttled because it has reached the `Temperature Limit`!\nCurrent Temperature: `${proc_stats.cpu_temp} °C`\nPlease check your cooling solution."
         },
         "throttle_under_voltage_detected": {
             "title": "Throttle occured!",
-            "description": "The System is currently throttled because of `Under Voltage`!\nPlease check your Power Delivery."
+            "description": "The system is currently throttled due to an `Under Voltage`!\nPlease check your power source."
         },
         "throttle_frequency_capped": {
             "title": "Throttle occured!",
-            "description": "The System is currently throttled because of `Frequency Capped`!\nPlease check your cooling Solution or/and your Power Delivery.."
+            "description": "The system is currently throttled because it has been`Frequency Capped`!\nPlease check your cooling solution or/and your power supply.."
         },
         "system_update": {
             "title": "System Updates"
@@ -157,19 +157,19 @@
     "messages": {
         "answers": {
             "update_request": "System Update requested, `${username}`!",
-            "restart_successful": "The Restart for `${service}` was successful!",
+            "restart_successful": "The Restart of `${service}` was successful!",
             "firmware_restart_successful": "The Firmware is restarting!",
             "timelapse": "Timelapse for `${printfile}`",
             "admin": {
                 "added": "${mention} is now a Bot Admin, `${username}`!",
-                "removed": "${mention} is not longer a Bot Admin, `${username}`!"
+                "removed": "${mention} is no longer a Bot Admin, `${username}`!"
             },
-            "macros_executed": "The Macros for `${button_label}` got executed, `${username}`!",
+            "macros_executed": "The Macros for `${button_label}` have been executed, `${username}`!",
             "status_update": "Please wait the Status is refreshing, `${username}`",
             "file_deleted": "The file `${root}/${filename}` was successfully removed",
             "broadcast_channel": {
                 "activated": "`${channel}` is now a Broadcast Channel, `${username}`!",
-                "deactivated": "`${channel}` is not longer a Broadcast Channel, `${username}`!"
+                "deactivated": "`${channel}` is no longer a Broadcast Channel, `${username}`!"
             },
             "execute_success": "Command Executed!",
             "log_retrieved": "Here is the current Log for `${service}`",
@@ -182,26 +182,26 @@
                 "deactivated": "I will no longer notify you of the print status via DM, `${username}`!"
             },
             "emergency_stop": "Emergency Stop executed, `${username}`!",
-            "reset_database": "Database got wiped",
+            "reset_database": "Database has been wiped",
             "printjob_resume": {
-                "status_not_valid": "`${username}` the Print Job isn`t currently Pausing!",
-                "status_valid": "`${username}` you resumed the Print Job!",
-                "status_same": "`${username}` the Print Job is running!"
+                "status_not_valid": "`${username}` the Print Job isn`t currently paused!",
+                "status_valid": "`${username}` the Print Job has been resumed!",
+                "status_same": "`${username}` the Print Job is already running!"
             },
             "printjob_cancel": {
-                "status_not_valid": "`${username}` there isn`t currently any active Print Job!",
-                "status_valid": "`${username}` you aborted the Print Job!",
+                "status_not_valid": "`${username}` there isn`t currently any active Print Jobs!",
+                "status_valid": "`${username}` the Print Job has been aborted!",
                 "status_same": ""
             },
             "printjob_pause": {
-                "status_not_valid": "`${username}` there isn`t currently any active Print Job!",
-                "status_valid": "`${username}` you paused the Print Job!",
-                "status_same": "`${username}` the current Print Job is already Paused!"
+                "status_not_valid": "`${username}` there isn`t currently any active Print Jobs!",
+                "status_valid": "`${username}` the Print Job has been paused!",
+                "status_same": "`${username}` the current Print Job is already paused!"
             },
-            "printjob_clear": "The current Print Job got cleared, `${username}`!",
+            "printjob_clear": "The current Print Job has been cleared, `${username}`!",
             "printjob_request_abort": "Print Job request for `${embed_author}` aborted, `${username}`!",
-            "printjob_delete_abort": "Print Job Deletion request for `${embed_author}` aborted, `${username}`!",
-            "printjob_executed": "Print Job request executed, `${username}`!",
+            "printjob_delete_abort": "Print Job deletion request for `${embed_author}` aborted, `${username}`!",
+            "printjob_executed": "Print Job request executed, `${gusername}`!",
             "reconnect": "MoonCord will reconnect to Moonraker and Discord, `${username}`!"
         },
         "errors": {
@@ -210,11 +210,11 @@
             "command_failed": "An Error occured!",
             "command_timeout": "Command execution failed!",
             "file_not_found": "File not Found!",
-            "guild_only": "This Command is only aviable on a Guild, `${username}`",
+            "guild_only": "This Command is only aviable in a Guild, `${username}`",
             "no_data": "There was no Data found for `${component}`!",
-            "restart_failed": "The Restart for `${service}` failed: `${reason}`",
+            "restart_failed": "The Restart of `${service}` failed: `${reason}`",
             "no_files_found": "There are currently no Files!",
-            "no_permission": "You dont have the Permissions, `${username}`",
+            "no_permission": "You dont have Permission, `${username}`",
             "not_ready": "This Command is not ready, `${username}`!",
             "not_textchannel": "`${channel}` is not a Text Channel, `${username}`!",
             "execute_error": "Error: `${gcode_feedback}`",
@@ -378,7 +378,7 @@
             }
         },
         "fileinfo": {
-            "description": "Shows Informations about a Print File.",
+            "description": "Shows Information about a Print File.",
             "command": "fileinfo",
             "options": {
                 "file": {
@@ -418,7 +418,7 @@
             }
         },
         "info": {
-            "description": "Send a Description about me.",
+            "description": "Get a Description of me.",
             "command": "info"
         },
         "listfiles": {
@@ -426,11 +426,11 @@
             "command": "listfiles"
         },
         "systeminfo": {
-            "description": "Get the current System Informations.",
+            "description": "Get the current System Information.",
             "command": "systeminfo"
         },
         "notify": {
-            "description": "Should i DM you with the current print status?",
+            "description": "Should I DM you with the current print status?",
             "command": "notifyme"
         },
         "printjob": {
