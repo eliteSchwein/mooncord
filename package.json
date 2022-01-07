@@ -4,8 +4,8 @@
   "description": "Moonraker Discord Bot based on Discord.js",
   "main": "index.js",
   "scripts": {
-    "start": "node dist/index.js",
-    "debugstart": "node --trace_gc --trace-deprecation --trace-warnings --trace-uncaught --track-heap-objects dist/index.js",
+    "start": "node dist/index.js --expose-gc",
+    "debugstart": "node --trace_gc --expose-gc --trace-deprecation --trace-warnings --trace-uncaught --track-heap-objects dist/index.js",
     "checkcodestyle": "npx eslint ./**",
     "autofixcodestyle": "npx eslint ./** --fix",
     "build": "ncc build -m -d -e discord.js -e @ffmpeg-installer/ffmpeg -e sharp src/Application.ts -o dist",

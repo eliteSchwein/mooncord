@@ -64,6 +64,11 @@ export class TimelapseNotification {
         const attachment = new MessageAttachment(timelapseRaw, param.filename)
 
         await this.notificationHelper.broadcastMessage({'content': timelapseMessage, 'files': [attachment]})
+
+
+        if (global.gc) {
+            global.gc()
+        }
     }
 
     protected async compressTimelapse(timelapseBuffer: Buffer, timelapseName: string) {
