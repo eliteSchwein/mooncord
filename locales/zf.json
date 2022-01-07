@@ -1,419 +1,473 @@
 {
-    "buttons": {
-        "printjob_pause": "暫停",
-        "printjob_cancel": "停止",
-        "printjob_resume": "恢復",
-        "printjob_refresh": "刷新",
-        "printjob_start": "推压",
-        "printjob_start_yes": "是",
-        "printjob_start_no": "否",
-        "klipper_restart": "重啟韌體",
-        "update_system": "更新",
-        "next_page": "下一頁",
-        "last_page": "上一頁",
-        "to_printlist": "列出"
+    "pages": {
+        "list_files": {
+            "entry_label": "${data.path}"
+        }
     },
-    "selection": {
-        "printlist_more_details": {
-          "placeholder": "點擊了解更多詳情",
-          "description": "解更多${gcode_file}的詳情"
+    "embeds": {
+        "systeminfo_cpu": {
+            "title": "CPU Information"
+        },
+        "systeminfo_memory": {
+            "title": "Memory Information"
+        },
+        "systeminfo_system": {
+            "title": "System Information"
+        },
+        "systeminfo_mcu": {
+            "title": "${mcu_name} Information"
+        },
+        "systeminfo_update": {
+            "title": "System Updates"
+        },
+        "fileinfo": {
+            "title": "File Informations",
+            "description": "Print Time: ${estimated_time}\nSlicer: ${slicer}\nSlicer Version: ${slicer_version}\nHeight: ${object_height}mm"
+        },
+        "list_files": {
+            "title": "Print Files",
+            "description": "${page_entries}",
+            "footer": "Page ${pages}"
+        },
+        "info": {
+            "title": "Informations",
+            "description": "Version: ${package_config.version}\nAuthor: ${package_config.author}\nHomepage: ${package_config.homepage}\n${config.custom_info}"
+        },
+        "notification": {
+            "title": "Notification"
+        },
+        "printjob_start_request": {
+            "title": "Start Print Job?",
+            "description": "Print Time: ${estimated_time}\nSlicer: ${slicer}\nSlicer Version: ${slicer_version}\nHeight: ${object_height}mm"
+        },
+        "printjob_delete_request": {
+            "title": "Delete Print Job?",
+            "description": "Print Time: ${estimated_time}\nSlicer: ${slicer}\nSlicer Version: ${slicer_version}\nHeight: ${object_height}mm"
+        },
+        "printjob_start":{
+            "title": "Print started",
+            "activity": "start ${state.print_stats.filename}"
+        },
+        "printjob_complete":{
+            "title": "Print Complete",
+            "activity": "Finished Print"
+        },
+        "printjob_pause":{
+            "title": "列印暫停",
+            "activity": "休息一下"
+        },
+        "printjob_printing":{
+            "title": "Printing",
+            "activity": "Printing: ${percent:0:state.display_status.progress}%"
+        },
+        "printjob_stop":{
+            "title": "Print stopped",
+            "activity": "Print stopped"
+        },
+        "temperatures": {
+            "title": "Temperatures"
+        },
+        "disconnected":{
+            "title": "Printer Disconnected!",
+            "activity": "wait for Klipper"
+        },
+        "moonraker_disconnected":{
+            "title": "Moonraker Connection lost!",
+            "activity": "wait for Moonraker"
+        },
+        "error":{
+            "title": "A Error occured!",
+            "activity": "wait for User"
+        },
+        "offline":{
+            "title": "Connection Lost!",
+            "activity": "wait for Moonraker"
+        },
+        "shutdown":{
+            "title": "Klipper Shutdown",
+            "activity": "wait for Klipper"
+        },
+        "ready":{
+            "title": "Printer Ready",
+            "activity": "for GCODE File..."
+        },
+        "startup":{
+            "title": "Printer starting",
+            "activity": "Printer start"
+        },
+        "throttle_temperature_limit_active": {
+            "title": "Throttle occured!",
+            "description": "The System is currently throttled because of `Temperature Throttle`!\nCurrent Temperature: `${proc_stats.cpu_temp} °C`\nPlease check your cooling Solution."
+        },
+        "throttle_under_voltage_detected": {
+            "title": "Throttle occured!",
+            "description": "The System is currently throttled because of `Under Voltage`!\nPlease check your Power Delivery."
+        },
+        "throttle_frequency_capped": {
+            "title": "Throttle occured!",
+            "description": "The System is currently throttled because of `Frequency Capped`!\nPlease check your cooling Solution or/and your Power Delivery.."
+        },
+        "system_update": {
+            "title": "System Updates"
+        },
+        "fields": {
+            "system": "System",
+            "packages": "Packages",
+            "chipset": "Chipset",
+            "version": "Version",
+            "load": "Load",
+            "awake_time": "Awake Time",
+            "frequency": "Freq",
+            "current": "Current",
+            "target": "Target",
+            "speed": "Speed",
+            "power": "Power",
+            "print_time": "Print Time",
+            "eta_print_time": "ETA Print Time",
+            "print_left_time": "Print Time left",
+            "print_progress": "Progress",
+            "print_layers": "Layer",
+            "slicer": "Slicer",
+            "slicer_version": "Slicer version",
+            "height": "Height",
+            "min_temp": "Min Temp",
+            "max_temp": "Max Temp",
+            "temp": "Temp",
+            "cores": "Cores",
+            "arch": "Architecture",
+            "bits": "Bits",
+            "model": "Model",
+            "desc": "Description",
+            "manufacturer": "Manufacturer",
+            "manufactured": "Manufactured",
+            "total_ram": "Total RAM",
+            "free_ram": "Free RAM",
+            "used_ram": "Used RAM",
+            "total_disk": "Total Disk",
+            "used_disk": "Used Disk",
+            "free_disk": "Free Disk",
+            "system_load": "System Load",
+            "moonraker_load": "Moonraker Load",
+            "klipper_load": "Klipper Load",
+            "distribution": "Distribution",
+            "distribution_like": "Distribution Like",
+            "codename": "Codename"
+        }
+    },
+    "messages": {
+        "answers": {
+            "update_request": "System Update requested, `${username}`!",
+            "restart_successful": "The Restart for `${service}` was successful!",
+            "firmware_restart_successful": "The Firmware is restarting!",
+            "timelapse": "Timelapse for `${printfile}`",
+            "admin": {
+                "added": "${mention} is now a Bot Admin, `${username}`!",
+                "removed": "${mention} is not longer a Bot Admin, `${username}`!"
+            },
+            "macros_executed": "The Macros for `${button_label}` got executed, `${username}`!",
+            "status_update": "Please wait the Status is refreshing, `${username}`",
+            "file_deleted": "The file `${root}/${filename}` was successfully removed",
+            "broadcast_channel": {
+                "activated": "`${channel}` is now a Broadcast Channel, `${username}`!",
+                "deactivated": "`${channel}` is not longer a Broadcast Channel, `${username}`!"
+            },
+            "execute_success": "Command Executed!",
+            "log_retrieved": "Here is the current Log for `${service}`",
+            "user_id": {
+                "own_id": "Your id is `${id}`",
+                "other_id": "`${username}`'s id is `${id}`"
+            },
+            "notify": {
+                "activated": "I will notify you of the print status via DM, `${username}`!",
+                "deactivated": "I will no longer notify you of the print status via DM, `${username}`!"
+            },
+            "emergency_stop": "Emergency Stop executed, `${username}`!",
+            "reset_database": "Database got wiped",
+            "printjob_resume": {
+                "status_not_valid": "`${username}` the Print Job isn`t currently Pausing!",
+                "status_valid": "`${username}` you resumed the Print Job!",
+                "status_same": "`${username}` the Print Job is running!"
+            },
+            "printjob_cancel": {
+                "status_not_valid": "`${username}` there isn`t currently any active Print Job!",
+                "status_valid": "`${username}` you aborted the Print Job!",
+                "status_same": ""
+            },
+            "printjob_pause": {
+                "status_not_valid": "`${username}` there isn`t currently any active Print Job!",
+                "status_valid": "`${username}` you paused the Print Job!",
+                "status_same": "`${username}` the current Print Job is already Paused!"
+            },
+            "printjob_clear": "The current Print Job got cleared, `${username}`!",
+            "printjob_request_abort": "Print Job request for `${embed_author}` aborted, `${username}`!",
+            "printjob_delete_abort": "Print Job Deletion request for `${embed_author}` aborted, `${username}`!",
+            "printjob_executed": "Print Job request executed, `${username}`!",
+            "reconnect": "MoonCord will reconnect to Moonraker and Discord, `${username}`!"
+        },
+        "errors": {
+            "check_console": "Please Check the Console!",
+            "command_disabled": "The Command is disabled!",
+            "command_failed": "An Error occured!",
+            "command_timeout": "Command execution failed!",
+            "file_not_found": "File not Found!",
+            "guild_only": "This Command is only aviable on a Guild, `${username}`",
+            "no_data": "There was no Data found for `${component}`!",
+            "restart_failed": "The Restart for `${service}` failed: `${reason}`",
+            "no_files_found": "There are currently no Files!",
+            "no_permission": "You dont have the Permissions, `${username}`",
+            "not_ready": "This Command is not ready, `${username}`!",
+            "not_textchannel": "`${channel}` is not a Text Channel, `${username}`!",
+            "execute_error": "Error: `${gcode_feedback}`",
+            "execute_unknown": "Unknown GCode Command: `${gcode_feedback}`",
+            "log_too_large": "The Log for `${service}` is too big!",
+            "log_failed": "The Download of the `${service}` Log failed: `${reason}`!",
+            "log_not_found": "There is currently no Log for `${service}`"
+        }
+    },
+    "buttons": {
+        "printjob_pause": {
+            "label": "Pause"
+        },
+        "printjob_cancel": {
+            "label": "Cancel"
+        },
+        "printjob_resume": {
+            "label": "Resume"
+        },
+        "printjob_refresh": {
+            "label": "Refresh"
+        },
+        "printjob_start": {
+            "label": "Print"
+        },
+        "printjob_request_accept": {
+            "label": "Yes"
+        },
+        "printjob_request_deny": {
+            "label": "No"
+        },
+        "klipper_restart": {
+            "label": "Restart Firmware"
+        },
+        "reconnect": {
+            "label": "Reconnect"
+        },
+        "update_system": {
+            "label": "Update"
+        },
+        "next_page_printlist":  {
+            "label": "Next Page"
+        },
+        "last_page_printlist":  {
+            "label": "Last Page"
+        },
+        "to_printlist": {
+            "label": "to List"
+        },
+        "clear_file": {
+            "label": "Clear File"
+        },
+        "printjob_delete_request": {
+            "label": "Delete"
+        },
+        "printjob_delete_accept": {
+            "label": "Yes"
+        },
+        "printjob_delete_deny": {
+            "label": "No"
+        }
+    },
+    "selections": {
+        "printlist_view_printjob": {
+            "label": "Select a File...",
+            "option_label": "${data.path}",
+            "option_description": "Click for more Details"
+        },
+        "systeminfo_select": {
+            "label": "Select a Component...",
+            "option_label": "${data.label}",
+            "option_description": "Click for more Details",
+            "mcu_options": true,
+            "options": [
+                {
+                    "label": "CPU",
+                    "value": "cpu"
+                },
+                {
+                    "label": "Memory",
+                    "value": "memory"
+                },
+                {
+                    "label": "System",
+                    "value": "system"
+                },
+                {
+                    "label": "Updates",
+                    "value": "update"
+                }
+            ]
         }
     },
     "commands": {
         "admin": {
-            "description": "更改管理員或用戶。",
-            "command": "管理員",
+            "description": "Manage Admin Role or User.",
+            "command": "admin",
             "options": {
                 "role": {
-                    "name": "身份組",
-                    "description": "更改身份組。",
+                    "name": "role",
+                    "description": "Modify Role.",
                     "options": {
                         "role": {
-                            "name": "身份組",
-                            "description": "選擇身份組。"
+                            "name": "role",
+                            "description": "Select a Role."
                         }
                     }
                 },
                 "user": {
-                    "name": "使用者",
-                    "description": "更改使用者。",
+                    "name": "user",
+                    "description": "Modify a User.",
                     "options": {
                         "user": {
-                            "name": "使用者",
-                            "description": "選擇使用者。"
+                            "name": "user",
+                            "description": "Select a User."
                         }
                     }
                 }
-            },
-            "answer": {
-                "added": "${mention} 現在是管理員， ${username}!",
-                "removed": "${mention} 不在是管理員， ${username}!"
             }
+        },
+        "dump": {
+            "description": "dump data.",
+            "command": "dump",
+            "options": {
+                "section": {
+                    "name": "section",
+                    "description": "Select the Section to dump.",
+                    "choices": {
+                        "cache": "Cache",
+                        "database": "Database"
+                    }
+                }
+            }
+        },
+        "reset_database": {
+            "description": "clear the Database.",
+            "command": "reset"
         },
         "editchannel": {
-            "description": "添加或刪除廣播頻道。",
-            "command": "更改頻道",
+            "description": "Add or Remove broadcast channel.",
+            "command": "editchannel",
             "options": {
                 "channel": {
-                    "name": "頻道",
-                    "description": "選擇添加或刪除一個頻道為廣播頻道。"
-                } 
-            },
-            "answer": {
-                "not_textchannel": "${channel} 不是語音頻道， ${username}!",
-                "activated": "${channel} 已被設為廣播頻道， ${username}!",
-                "deactivated": "${channel} 不再是廣播頻道， ${username}!"
+                    "name": "channel",
+                    "description": "Select a Channel to add/remove it as Broadcast channel."
+                }
             }
         },
+        "emergency_stop": {
+            "description": "Emergency Stop the Printer?",
+            "command": "emergencystop"
+        },
         "execute": {
-            "description": "執行一個GCode指令。",
-            "command": "執行",
+            "description": "Execute a GCode Command.",
+            "command": "execute",
             "options": {
                 "gcode": {
                     "name": "gcode",
-                    "description": "你想要執行的GCode。"
+                    "description": "GCode that you want to execute."
                 }
-            },
-            "answer": {
-                "success": "指令成功執行！",
-                "error": "錯誤： `${gcode_feedback}`",
-                "unknown": "未知的GCode指令： `${gcode_feedback}`"
             }
         },
         "fileinfo": {
-            "description": "顯示列印檔案資訊。",
-            "command": "檔案資訊",
+            "description": "Shows Informations about a Print File.",
+            "command": "fileinfo",
             "options": {
                 "file": {
-                    "name": "檔案",
-                    "description": "指定一個列印檔案。"
+                    "name": "file",
+                    "description": "Specifies a Print File."
+                }
+            }
+        },
+        "get_log": {
+            "description": "Retrieve a Log.",
+            "command": "getlog",
+            "options": {
+                "log_file": {
+                    "name": "logfile",
+                    "description": "Specifies the Log File."
+                }
+            }
+        },
+        "get_user_id": {
+            "description": "Retrieve the User ID.",
+            "command": "getuserid",
+            "options": {
+                "user": {
+                    "name": "user",
+                    "description": "Specifies a User."
+                }
+            }
+        },
+        "restart": {
+            "description": "Restart a Service.",
+            "command": "restart",
+            "options": {
+                "service": {
+                    "name": "service",
+                    "description": "Specifies a Service."
                 }
             }
         },
         "info": {
-            "description": "發送關於我的描述。",
-            "command": "資訊",
-            "embed": {
-                "title": "資訊",
-                "description": "版本： ${version}\n作者： ${author}\n首頁： ${homepage}"
-            }
+            "description": "Send a Description about me.",
+            "command": "info"
         },
         "listfiles": {
-            "description": "顯示所有列印檔案。",
-            "command": "顯示檔案",
-            "embed": {
-                "title": "列印檔案"
-            }
+            "description": "List all Print Files.",
+            "command": "listfiles"
         },
-        "loadinfo": {
-            "description": "取得當前的硬體和軟體資訊。",
-            "command": "加載資訊",
-            "options": {
-                "component": {
-                    "name": "零件",
-                    "description": "選擇你想獲得資訊的零件。"
-                }
-            }
-        },
-        "emergencyStop": {
-            "description": "緊急停止列印機？",
-            "command": "緊急停止",
-            "answer": {
-                "activated": "執行緊急停止，${username}！"
-            }
-        },
-        "get_log": {
-            "description": "檢索紀錄檔案。",
-            "command": "檢索紀錄",
-            "options": {
-                "log_file": {
-                    "name": "紀錄檔案",
-                    "description": "指定紀錄檔案。"
-                }
-            },
-            "answer": {
-                "too_large": "${service}的日誌檔案太大了！ ",
-                "retrieved": "這是當前${service}的紀錄檔案",
-                "not_found": "當前沒有${service}的紀錄檔案"
-            }
+        "systeminfo": {
+            "description": "Get the current System Informations.",
+            "command": "systeminfo"
         },
         "notify": {
-            "description": "需要我私訊你當前的列印狀態？",
-            "command": "通知我",
-            "answer": {
-                "activated": "我會私訊你當前的列印狀態， ${username}!",
-                "deactivated": "我不會在私訊你當前的列印狀態， ${username}!"
-            }
+            "description": "Should i DM you with the current print status?",
+            "command": "notifyme"
         },
         "printjob": {
-            "description": "管理或開始一個列印工作。",
-            "command": "列印工作",
+            "description": "Control or start a Print Job.",
+            "command": "printjob",
             "options": {
                 "pause": {
-                    "name": "暫停",
-                    "description": "暫停列印工作"
+                    "name": "pause",
+                    "description": "Pause Print Job"
                 },
                 "cancel": {
-                    "name": "取消",
-                    "description": "取消列印工作"
+                    "name": "cancel",
+                    "description": "Cancel Print Job"
                 },
                 "resume": {
-                    "name": "恢復",
-                    "description": "恢復列印工作"
+                    "name": "resume",
+                    "description": "Resume Print Job"
                 },
                 "start": {
-                    "name": "開始",
-                    "description": "開始新的列印工作",
+                    "name": "start",
+                    "description": "Start new Print Job",
                     "options": {
                         "file": {
-                            "name": "檔案",
-                            "description": "選擇列印檔案。"
+                            "name": "file",
+                            "description": "Select a Print File."
                         }
                     }
                 }
-            },
-            "answer": {
-                "file_not_found": "未找到檔案！",
-                "resume": {
-                    "status_not_valid": "${username} 當前列印狀態不是暫停！",
-                    "status_valid": "${username} 恢復了列印工作！",
-                    "status_same": "${username} 列印工作正在運行！"
-                },
-                "cancel": {
-                    "status_not_valid": "${username} 沒有正在運行的列印工作！",
-                    "status_valid": "${username} 你取消了列印工作！",
-                    "status_same": ""
-                },
-                "pause": {
-                    "status_not_valid": "${username} 沒有正在運行的列印工作！",
-                    "status_valid": "${username} 你暫停了列印工作！",
-                    "status_same": "${username} 列印狀態已暫停！"
-                },
-                "abort": "請求取消列印工作， ${username}!",
-                "executed": "執行選擇的列印工作， ${username}!"
-            },
-            "embed": {
-                "title": "開始列印工作？"
             }
         },
         "status": {
-            "description": "取得當前的列印狀態。",
-            "command": "狀態"
+            "description": "Get the current Print Status.",
+            "command": "status"
         },
         "temp": {
-            "description": "從Klipper取得當前溫度。",
-            "command": "溫度",
-            "embed": {
-                "title": "溫度",
-                "fields": {
-                    "current_temp": "當前",
-                    "target_temp": "目標",
-                    "current_speed": "速度",
-                    "current_power": "功率"
-                }
-            }
-        },
-        "timelapse": {
-            "description": "取得最新縮時攝影",
-            "command": "縮時攝影"
-        },
-        "get_user_id": {
-            "description": "檢索使用者ID。",
-            "command": "獲取使用者ID",
-            "options": {
-                "user": {
-                    "name": "使用者",
-                    "description": "指定使用者。 "
-                }
-            },
-            "answer": {
-                "own_id": "您的ID是${id}",
-                "other_id": "${username}的ID是${id}"
-            }
-        }
-    },
-    "misc": {
-        "please_wait": "請等待!",
-        "wait_related": "與 ${relation} 相關"
-    },
-    "errors": {
-        "admin_only": "你沒有權限， ${username}",
-        "check_console": "請查看控制台！",
-        "command_disabled": "命令被禁用！",
-        "command_failed": "發生錯誤！",
-        "command_timeout": "命令執行失敗！",
-        "controller_only": "你沒有權限， ${username}",
-        "file_not_found": "未找到檔案！",
-        "guild_only": "這個指令只能在伺服器上執行， ${username}",
-        "no_data": "沒有找到關於${component}的數據！",
-        "no_files_found": "沒有找到任何檔案！",
-        "no_timelapse": "沒有找到延時攝影！",
-        "not_ready": "這個命令還沒有準備好， ${username}!"
-    },
-    "fileinfo": {
-        "title": "檔案信息",
-        "print_time": "列印時間",
-        "slicer": "切片軟體",
-        "slicer_version": "切片軟體版本",
-        "height": "高度"
-    },
-    "events": {
-        "print_job_start": {
-            "answer":{
-                "abort": "取消請求列印工作， ${username}!",
-                "executed": "執行請求列印工作， ${username}!"
-            }
-        }
-    },
-    "loadinfo": {
-        "cpu": {
-            "title": "CPU",
-            "model": "型號",
-            "manufacturer": "製造商",
-            "usage": "使用率",
-            "cores": "核心",
-            "threads": "執行緒",
-            "temperature": "溫度",
-            "frequency": "頻率",
-            "max_frequency": "最高頻率"
-        },
-        "disk": {
-            "title": "磁盤",
-            "name": "磁盤 ${disk_index} 名稱",
-            "type": "磁盤 ${disk_index} 類型",
-            "model": "磁盤 ${disk_index} 型號",
-            "vendor": "磁盤 ${disk_index} 發售商",
-            "Size": "磁盤 ${disk_index} 容量"
-        },
-        "os": {
-            "title": "操作系統 ",
-            "platform": "平台",
-            "logofile": "Logofile",
-            "distro": "发行版",
-            "release": "發布版本",
-            "kernel": "内核",
-            "arch": "架構",
-            "hostname": "主機名稱"
-        },
-        "partitions": {
-            "title": "磁盤分區",
-            "name": "磁盤分區 ${partition_index} 名稱",
-            "type": "磁盤分區 ${partition_index} 類型",
-            "mount": "磁盤分區 ${partition_index} 挂载",
-            "size": "磁盤分區 ${partition_index} 容量",
-            "used": "磁盤分區 ${partition_index} 使用中"
-        },
-        "ram": {
-            "title": "內存",
-            "total": "共計",
-            "used": "使用中",
-            "swap_total": "交換分區大小",
-            "swap_used": "交換分區使用大小"
-        },
-        "mcu": {
-            "chipset": "芯片組",
-            "version": "版本",
-            "load": "負荷",
-            "awake": "喚醒",
-            "frequency": "頻率"
-        }
-    },
-    "loadthrottle": {
-        "title": "系統警告",
-        "sentence": "目前有一個系統警告，因為${reason}！",
-        "high_cpu_load": {
-            "name": "CPU超載",
-            "suggestion": "請檢查導致CPU超載的原因。"
-        },
-        "high_cpu_temp": {
-            "name": "CPU過熱",
-            "suggestion": "請檢查您的散熱系統。"
-        },
-        "high_ram_usage": {
-            "name": "記憶體不足",
-            "suggestion": "請檢查導致記憶體不足的原因。"
-        },
-        "high_partition_usage": {
-            "name": "儲存空間不足",
-            "suggestion": "請從${component_section}刪除一些文件。"
-        }
-    },
-    "status": {
-        "disconnected":{
-            "title": "列印機離線！",
-            "activity": "正在等待Klipper"
-        },
-        "error":{
-            "title": "發生錯誤！",
-            "activity": "等待使用者"
-        },
-        "offline":{
-            "title": "連線中斷！",
-            "activity": "正在等待Moonraker"
-        },
-        "shutdown":{
-            "title": "關閉Klipper",
-            "activity": "正在等待Klipper"
-        },
-        "stop":{
-            "title": "列印暫停",
-            "activity": "列印暫停"
-        },
-        "ready":{
-            "title": "列印機就緒",
-            "activity": "取GCODE文件。。。"
-        },
-        "startup":{
-            "title": "列印機開始中",
-            "activity": "列印機開始"
-        },
-        "start":{
-            "title": "列印機啟動",
-            "activity": "開始${gcode_file}"
-        },
-        "done":{
-            "title": "列印完成",
-            "activity": "完成列印"
-        },
-        "pause":{
-            "title": "列印暫停",
-            "activity": "休息一下"
-        },
-        "printing":{
-            "title": "列印進度",
-            "activity": "列印進度： ${value_print_progress}%"
-        },
-        "fields": {
-            "print_time": "列印時間",
-            "eta_print_time": "預計列印時間",
-            "print_progress": "進度",
-            "print_layers": "層"
-        }
-    },
-    "timelapse": {
-        "for_gcode": "${gcode_file}的縮時攝影"
-    },
-    "update": {
-        "title": "系統更新",
-        "system": "系統",
-        "packages": "軟體包"
-    },
-    "throttle": {
-        "title": "功率限制！",
-        "sentence": "應為${reason}，所以功率正在被限制！",
-        "reasons": {
-            "under_voltage_detected": {
-            "name": "欠電壓",
-            "suggestion": "請檢查您的供電系統。"
-            },
-            "frequency_capped": {
-            "name": "溫控調頻",
-            "suggestion": "請檢查您的散熱系統。"
-            },
-            "temperature_limit_active": {
-            "name": "溫控調頻",
-            "suggestion": "請檢查您的散熱系統。"
-            }
+            "description": "Get the current Temperatures from Klipper.",
+            "command": "temp"
         }
     }
 }

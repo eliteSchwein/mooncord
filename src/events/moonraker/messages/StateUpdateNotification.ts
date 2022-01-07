@@ -1,0 +1,36 @@
+import {updateData} from "../../../utils/CacheUtil";
+import {getMoonrakerClient, restartBot} from "../../../Application";
+import {StatusHelper} from "../../../helper/StatusHelper";
+import { logEmpty, logSuccess } from "../../../helper/LoggerHelper";
+
+export class StateUpdateNotification {
+    protected moonrakerClient = getMoonrakerClient()
+    protected statusHelper = new StatusHelper()
+
+    public async parse(message) {
+        if(typeof(message.method) === 'undefined') { return }
+
+        if(message.method === 'notify_klippy_disconnected') {
+            this.statusHelper.update('disconnected')
+            updateData('function', {
+                'poll_printer_info': true
+            })
+        }
+
+        if(message.method === 'notify_klippy_shutdown') {
+            this.statusHelper.update('shutdown')
+            updateData('function', {
+                'poll_printer_info': true
+            })
+        }
+
+        if(message.method === 'notify_klippy_ready') {
+            updateData('function', {
+                'poll_printer_info': false
+            })
+            logEmpty()
+            logSuccess('klipper is ready...')
+            await restartBot()
+        }
+    }
+}

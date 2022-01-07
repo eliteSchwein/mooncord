@@ -1,22 +1,311 @@
-{   
-    "buttons": {
-        "printjob_pause": "Pause",
-        "printjob_cancel": "Stop",
-        "printjob_resume": "Reprendre",
-        "printjob_refresh": "Rafraîchir",
-        "printjob_start": "Imprimer",
-        "printjob_start_yes": "Oui",
-        "printjob_start_no": "Non",
-        "klipper_restart": "Redémarrer le système",
-        "update_system": "Mise à jour",
-        "next_page": "Page suivante",
-        "last_page": "Page précédente",
-        "to_printlist": "à la liste"
+{
+    "pages": {
+        "list_files": {
+            "entry_label": "${data.path}"
+        }
     },
-    "selection": {
-        "printlist_more_details": {
-            "placeholder": "Cliquez pour plus de détails",
-            "description": "Plus de détails pour ${gcode_file}"
+    "embeds": {
+        "systeminfo_cpu": {
+            "title": "CPU Information"
+        },
+        "systeminfo_memory": {
+            "title": "Memory Information"
+        },
+        "systeminfo_system": {
+            "title": "System Information"
+        },
+        "systeminfo_mcu": {
+            "title": "${mcu_name} Information"
+        },
+        "systeminfo_update": {
+            "title": "Mises à jour du système"
+        },
+        "fileinfo": {
+            "title": "File Informations",
+            "description": "Print Time: ${estimated_time}\nSlicer: ${slicer}\nSlicer Version: ${slicer_version}\nHeight: ${object_height}mm"
+        },
+        "list_files": {
+            "title": "Fichier d'impression",
+            "description": "${page_entries}",
+            "footer": "Page ${pages}"
+        },
+        "info": {
+            "title": "Informations",
+            "description": "Version: ${package_config.version}\nAuthor: ${package_config.author}\nHomepage: ${package_config.homepage}\n${config.custom_info}"
+        },
+        "notification": {
+            "title": "Notification"
+        },
+        "printjob_start_request": {
+            "title": "Start Print Job?",
+            "description": "Print Time: ${estimated_time}\nSlicer: ${slicer}\nSlicer Version: ${slicer_version}\nHeight: ${object_height}mm"
+        },
+        "printjob_delete_request": {
+            "title": "Delete Print Job?",
+            "description": "Print Time: ${estimated_time}\nSlicer: ${slicer}\nSlicer Version: ${slicer_version}\nHeight: ${object_height}mm"
+        },
+        "printjob_start":{
+            "title": "Print started",
+            "activity": "start ${state.print_stats.filename}"
+        },
+        "printjob_complete":{
+            "title": "Print Complete",
+            "activity": "Finished Print"
+        },
+        "printjob_pause":{
+            "title": "Impression en pause",
+            "activity": "Une pause ? Apéro 🍾 !!"
+        },
+        "printjob_printing":{
+            "title": "Printing",
+            "activity": "Printing: ${percent:0:state.display_status.progress}%"
+        },
+        "printjob_stop":{
+            "title": "Print stopped",
+            "activity": "Print stopped"
+        },
+        "temperatures": {
+            "title": "Temperatures"
+        },
+        "disconnected":{
+            "title": "Printer Disconnected!",
+            "activity": "wait for Klipper"
+        },
+        "moonraker_disconnected":{
+            "title": "Moonraker Connection lost!",
+            "activity": "wait for Moonraker"
+        },
+        "error":{
+            "title": "A Error occured!",
+            "activity": "wait for User"
+        },
+        "offline":{
+            "title": "Connection Lost!",
+            "activity": "wait for Moonraker"
+        },
+        "shutdown":{
+            "title": "Klipper Shutdown",
+            "activity": "wait for Klipper"
+        },
+        "ready":{
+            "title": "Printer Ready",
+            "activity": "for GCODE File..."
+        },
+        "startup":{
+            "title": "Printer starting",
+            "activity": "Printer start"
+        },
+        "throttle_temperature_limit_active": {
+            "title": "Throttle occured!",
+            "description": "The System is currently throttled because of `Temperature Throttle`!\nCurrent Temperature: `${proc_stats.cpu_temp} °C`\nPlease check your cooling Solution."
+        },
+        "throttle_under_voltage_detected": {
+            "title": "Throttle occured!",
+            "description": "The System is currently throttled because of `Under Voltage`!\nPlease check your Power Delivery."
+        },
+        "throttle_frequency_capped": {
+            "title": "Throttle occured!",
+            "description": "The System is currently throttled because of `Frequency Capped`!\nPlease check your cooling Solution or/and your Power Delivery.."
+        },
+        "system_update": {
+            "title": "Mises à jour du système"
+        },
+        "fields": {
+            "system": "System",
+            "packages": "Packages",
+            "chipset": "Chipset",
+            "version": "Version",
+            "load": "Load",
+            "awake_time": "Awake Time",
+            "frequency": "Freq",
+            "current": "Current",
+            "target": "Target",
+            "speed": "Speed",
+            "power": "Power",
+            "print_time": "Print Time",
+            "eta_print_time": "ETA Print Time",
+            "print_left_time": "Print Time left",
+            "print_progress": "Progress",
+            "print_layers": "Layer",
+            "slicer": "Slicer",
+            "slicer_version": "Slicer version",
+            "height": "Height",
+            "min_temp": "Min Temp",
+            "max_temp": "Max Temp",
+            "temp": "Temp",
+            "cores": "Cores",
+            "arch": "Architecture",
+            "bits": "Bits",
+            "model": "Model",
+            "desc": "Description",
+            "manufacturer": "Manufacturer",
+            "manufactured": "Manufactured",
+            "total_ram": "Total RAM",
+            "free_ram": "Free RAM",
+            "used_ram": "Used RAM",
+            "total_disk": "Total Disk",
+            "used_disk": "Used Disk",
+            "free_disk": "Free Disk",
+            "system_load": "System Load",
+            "moonraker_load": "Moonraker Load",
+            "klipper_load": "Klipper Load",
+            "distribution": "Distribution",
+            "distribution_like": "Distribution Like",
+            "codename": "Codename"
+        }
+    },
+    "messages": {
+        "answers": {
+            "update_request": "System Update requested, `${username}`!",
+            "restart_successful": "The Restart for `${service}` was successful!",
+            "firmware_restart_successful": "The Firmware is restarting!",
+            "timelapse": "Timelapse for `${printfile}`",
+            "admin": {
+                "added": "${mention} est maintenant administrateur, `${username}`!",
+                "removed": "${mention} n'est plus administrateur, `${username}`!"
+            },
+            "macros_executed": "The Macros for `${button_label}` got executed, `${username}`!",
+            "status_update": "Please wait the Status is refreshing, `${username}`",
+            "file_deleted": "The file `${root}/${filename}` was successfully removed",
+            "broadcast_channel": {
+                "activated": "`${channel}` est maintenant un canal de diffusion, `${username}`!",
+                "deactivated": "`${channel}` n'est plus un canal de diffusion, `${username}`!"
+            },
+            "execute_success": "Commande exécutée !",
+            "log_retrieved": "Voici le log pour `${service}`",
+            "user_id": {
+                "own_id": "Votre ID es `${id}`",
+                "other_id": "L'ID de `${username}` est `${id}`"
+            },
+            "notify": {
+                "activated": "I will notify you of the print status via DM, `${username}`!",
+                "deactivated": "I will no longer notify you of the print status via DM, `${username}`!"
+            },
+            "emergency_stop": "Arrêter d'urgence exécuté, `${username}`!",
+            "reset_database": "Database got wiped",
+            "printjob_resume": {
+                "status_not_valid": "`${username}` the Print Job isn`t currently Pausing!",
+                "status_valid": "`${username}` you resumed the Print Job!",
+                "status_same": "`${username}` the Print Job is running!"
+            },
+            "printjob_cancel": {
+                "status_not_valid": "`${username}` there isn`t currently any active Print Job!",
+                "status_valid": "`${username}` you aborted the Print Job!",
+                "status_same": ""
+            },
+            "printjob_pause": {
+                "status_not_valid": "`${username}` there isn`t currently any active Print Job!",
+                "status_valid": "`${username}` you paused the Print Job!",
+                "status_same": "`${username}` the current Print Job is already Paused!"
+            },
+            "printjob_clear": "The current Print Job got cleared, `${username}`!",
+            "printjob_request_abort": "Print Job request for `${embed_author}` aborted, `${username}`!",
+            "printjob_delete_abort": "Print Job Deletion request for `${embed_author}` aborted, `${username}`!",
+            "printjob_executed": "Print Job request executed, `${username}`!",
+            "reconnect": "MoonCord will reconnect to Moonraker and Discord, `${username}`!"
+        },
+        "errors": {
+            "check_console": "Please Check the Console!",
+            "command_disabled": "The Command is disabled!",
+            "command_failed": "An Error occured!",
+            "command_timeout": "Command execution failed!",
+            "file_not_found": "File not Found!",
+            "guild_only": "This Command is only aviable on a Guild, `${username}`",
+            "no_data": "There was no Data found for `${component}`!",
+            "restart_failed": "The Restart for `${service}` failed: `${reason}`",
+            "no_files_found": "There are currently no Files!",
+            "no_permission": "You dont have the Permissions, `${username}`",
+            "not_ready": "This Command is not ready, `${username}`!",
+            "not_textchannel": "`${channel}` n'est pas un canal texte, `${username}`!",
+            "execute_error": "Erreur: `${gcode_feedback}`",
+            "execute_unknown": "Commande GCode inconnue: `${gcode_feedback}`",
+            "log_too_large": "The Log for `${service}` is too big!",
+            "log_failed": "The Download of the `${service}` Log failed: `${reason}`!",
+            "log_not_found": "Il n'y a aucun log pour `${service}`"
+        }
+    },
+    "buttons": {
+        "printjob_pause": {
+            "label": "Pause"
+        },
+        "printjob_cancel": {
+            "label": "Stop"
+        },
+        "printjob_resume": {
+            "label": "Reprendre"
+        },
+        "printjob_refresh": {
+            "label": "Rafraîchir"
+        },
+        "printjob_start": {
+            "label": "Imprimer"
+        },
+        "printjob_request_accept": {
+            "label": "Oui"
+        },
+        "printjob_request_deny": {
+            "label": "Non"
+        },
+        "klipper_restart": {
+            "label": "Redémarrer le système"
+        },
+        "reconnect": {
+            "label": "Reconnect"
+        },
+        "update_system": {
+            "label": "Mise à jour"
+        },
+        "next_page_printlist":  {
+            "label": "Page suivante"
+        },
+        "last_page_printlist":  {
+            "label": "Page précédente"
+        },
+        "to_printlist": {
+            "label": "à la liste"
+        },
+        "clear_file": {
+            "label": "Clear File"
+        },
+        "printjob_delete_request": {
+            "label": "Delete"
+        },
+        "printjob_delete_accept": {
+            "label": "Oui"
+        },
+        "printjob_delete_deny": {
+            "label": "Non"
+        }
+    },
+    "selections": {
+        "printlist_view_printjob": {
+            "label": "Select a File...",
+            "option_label": "${data.path}",
+            "option_description": "Cliquez pour plus de détails"
+        },
+        "systeminfo_select": {
+            "label": "Select a Component...",
+            "option_label": "${data.label}",
+            "option_description": "Cliquez pour plus de détails",
+            "mcu_options": true,
+            "options": [
+                {
+                    "label": "CPU",
+                    "value": "cpu"
+                },
+                {
+                    "label": "Memory",
+                    "value": "memory"
+                },
+                {
+                    "label": "System",
+                    "value": "system"
+                },
+                {
+                    "label": "Updates",
+                    "value": "update"
+                }
+            ]
         }
     },
     "commands": {
@@ -44,11 +333,25 @@
                         }
                     }
                 }
-            },
-            "answer": {
-                "added": "${mention} est maintenant administrateur, ${username}!",
-                "removed": "${mention} n'est plus administrateur, ${username}!"
             }
+        },
+        "dump": {
+            "description": "dump data.",
+            "command": "dump",
+            "options": {
+                "section": {
+                    "name": "section",
+                    "description": "Select the Section to dump.",
+                    "choices": {
+                        "cache": "Cache",
+                        "database": "Database"
+                    }
+                }
+            }
+        },
+        "reset_database": {
+            "description": "clear the Database.",
+            "command": "reset"
         },
         "editchannel": {
             "description": "Ajouter ou supprimer la diffusion d'un canal.",
@@ -57,20 +360,12 @@
                 "channel": {
                     "name": "canal",
                     "description": "Sélectionnez un canal pour l'ajouter/supprimer en tant que canal de diffusion."
-                } 
-            },
-            "answer": {
-                "not_textchannel": "${channel} n'est pas un canal texte, ${username}!",
-                "activated": "${channel} est maintenant un canal de diffusion, ${username}!",
-                "deactivated": "${channel} n'est plus un canal de diffusion, ${username}!"
+                }
             }
         },
         "emergency_stop": {
             "description": "Arrêter l'imprimante d'urgence ?",
-            "command": "urgencestop",
-            "answer": {
-                "executed": "Arrêter d'urgence exécuté, ${username}!"
-            }
+            "command": "urgencestop"
         },
         "execute": {
             "description": "Exécuter une commande GCode.",
@@ -80,11 +375,6 @@
                     "name": "gcode",
                     "description": "Vous voulez exécuter GCode."
                 }
-            },
-            "answer": {
-                "success": "Commande exécutée !",
-                "error": "Erreur: `${gcode_feedback}`",
-                "unknown": "Commande GCode inconnue: `${gcode_feedback}`"
             }
         },
         "fileinfo": {
@@ -105,10 +395,6 @@
                     "name": "Fichier du log",
                     "description": "Spécifiez le fichier du log."
                 }
-            },
-            "answer": {
-                "retrieved": "Voici le log pour ${service}",
-                "not_found": "Il n'y a aucun log pour ${service}"
             }
         },
         "get_user_id": {
@@ -119,300 +405,69 @@
                     "name": "utilisateur",
                     "description": "Spécifier un utilisateur."
                 }
-            },
-            "answer": {
-                "own_id": "Votre ID est ${id}",
-                "other_id": "L'ID de ${username} est ${id}"
+            }
+        },
+        "restart": {
+            "description": "Restart a Service.",
+            "command": "restart",
+            "options": {
+                "service": {
+                    "name": "service",
+                    "description": "Specifies a Service."
+                }
             }
         },
         "info": {
             "description": "Envoyer une description de moi.",
-            "command": "info",
-            "embed": {
-                "title": "Informations",
-                "description": "Version: ${version}\nAuthor: ${author}\nHomepage: ${homepage}"
-            }
+            "command": "info"
         },
         "listfiles": {
             "description": "Liste tous les fichiers d'impression.",
-            "command": "listefichier",
-            "embed": {
-                "title": "Fichier d'impression"
-            }
+            "command": "listefichier"
         },
-        "loadinfo": {
-            "description": "Obtenir les informations actuelles sur le matériel et les logiciels.",
-            "command": "chargerinfo",
-            "options": {
-                "component": {
-                    "name": "composant",
-                    "description": "Sélectionnez le composent sur lequel vous voulez des informations."
-                }
-            }
-        },
-        "loadthrottle": {
-            "title": "Avertissement système",
-            "sentence": "Il y a un avertissement système a cause de ${reason}!",
-            "high_cpu_load": {
-                "name": "Charge CPU importante",
-                "suggestion": "Veuillez vérifier les causes de l'utilisation importante du processeur."
-            },
-            "high_cpu_temp": {
-                "name": "Température CPU élevé",
-                "suggestion": "Veuillez vérifier votre système de refroidissement."
-            },
-            "high_ram_usage": {
-                "name": "Utilisation importante de la RAM",
-                "suggestion": "Veuillez vérifier les causes de l'utilisation importante de la RAM."
-            },
-            "high_partition_usage": {
-                "name": "Utilisation élevée des partitions",
-                "suggestion": "Supprimer des fichiers de ${component_section}."
-            }
+        "systeminfo": {
+            "description": "Get the current System Informations.",
+            "command": "systeminfo"
         },
         "notify": {
-            "description": "Puis-je vous envoyer un MP avec l'état de l'impression en cours ?",
-            "command": "notifiemoi",
-            "answer": {
-                "activated": "Je vous informerai de l'état de l'impression en cours via MP, ${username}!",
-                "deactivated": "Je ne vous informerai pas de l'état de l'impression en cours via MP, ${username}!"
-            }
+            "description": "Should i DM you with the current print status?",
+            "command": "notifyme"
         },
         "printjob": {
-            "description": "Contrôler ou démarrer une impression.",
-            "command": "impressionjob",
+            "description": "Control or start a Print Job.",
+            "command": "printjob",
             "options": {
                 "pause": {
                     "name": "pause",
-                    "description": "Impression en pause"
+                    "description": "Pause Print Job"
                 },
                 "cancel": {
-                    "name": "annuler",
-                    "description": "Impression annulée"
+                    "name": "cancel",
+                    "description": "Cancel Print Job"
                 },
                 "resume": {
-                    "name": "reprendre",
-                    "description": "Reprendre le travail d'impression"
+                    "name": "resume",
+                    "description": "Resume Print Job"
                 },
                 "start": {
-                    "name": "debuter",
-                    "description": "Débuter une impression",
+                    "name": "start",
+                    "description": "Start new Print Job",
                     "options": {
                         "file": {
-                            "name": "fichier",
-                            "description": "Sélectionnez un fichier d'impression."
+                            "name": "file",
+                            "description": "Select a Print File."
                         }
                     }
                 }
-            },
-            "answer": {
-                "file_not_found": "Fichier non trouvé !",
-                "resume": {
-                    "status_not_valid": "${username} l'impression n'est actuellement pas en pause !",
-                    "status_valid": "${username} l'impression reprend !",
-                    "status_same": "${username} l'impression est en cours !"
-                },
-                "cancel": {
-                    "status_not_valid": "${username} aucune impression en cours !",
-                    "status_valid": "${username} l'impression a été annuler !",
-                    "status_same": ""
-                },
-                "pause": {
-                    "status_not_valid": "${username} il n'y a actuellement aucune impression en cours !",
-                    "status_valid": "${username} l'impression est en pause !",
-                    "status_same": "${username} l'impression actuelle est déja en pause !"
-                },
-                "abort": "Demande d'impression annuler, ${username}!",
-                "executed": "Demande d'impression effectuée, ${username}!"
-            },
-            "embed": {
-                "title": "Débuter l'impression ?"
             }
         },
         "status": {
-            "description": "Obtenir l'état d'impression actuel",
-            "command": "etat"
+            "description": "Get the current Print Status.",
+            "command": "status"
         },
         "temp": {
-            "description": "Obtenir les températures actuelles de Klipper.",
-            "command": "temperatures",
-            "embed": {
-                "title": "Températures",
-                "fields": {
-                    "current_temp": "Actuelle",
-                    "target_temp": "Cible",
-                    "current_speed": "Vitesse",
-                    "current_power": "Puissance"
-                }
-            }
-        },
-        "timelapse": {
-            "description": "Obtenir le dernier Time Lapse.",
-            "command": "timelapse"
-        }
-    },
-    "misc": {
-        "please_wait": "Attendez s'il vous plaît !",
-        "wait_related": "Concernant ${relation}"
-    },
-    "errors": {
-        "admin_only": "Vous n'avez pas les permissions, ${username}",
-        "check_console": "Veuillez vérifier la console !",
-        "command_disabled": "La commande est désactivé !",
-        "command_failed": "Une erreur s'est produite !",
-        "command_timeout": "L'exécution de la commande a échoué !",
-        "controller_only": "Vous n'avez pas les permissions, ${username}",
-        "file_not_found": "Fichier non trouvé !",
-        "guild_only": "Cette commande n'est disponible que sur la guilde, ${username}",
-        "no_data": "Aucune donnée n'a été trouvée pour ${component}!",
-        "no_files_found": "Il n'y a actuellement aucun fichier !",
-        "no_timelapse": "Aucun Timelapse disponible !",
-        "not_ready": "Cette commande n'est pas prête, ${username}!"
-    },
-    "fileinfo": {
-        "title": "Informations sur le fichier",
-        "print_time": "Temps d'impression",
-        "slicer": "Découpeur",
-        "slicer_version": "Version du découpeur",
-        "height": "Hauteur"
-    },
-    "events": {
-        "print_job_start": {
-            "answer":{
-                "abort": "Demande d'impression annuler, ${username}!",
-                "executed": "Demande d'impression effectuée, ${username}!"
-            }
-        }
-    },
-    "loadinfo": {
-        "cpu": {
-            "title": "CPU",
-            "model": "Modèle",
-            "manufacturer": "Fabricant",
-            "usage": "Utilisation",
-            "cores": "Cores",
-            "threads": "Threads",
-            "temperature": "Température",
-            "frequency": "Fréquance",
-            "max_frequency": "Fréquance Max"
-        },
-        "disk": {
-            "title": "Disques",
-            "name": "Disque ${disk_index} Nom",
-            "type": "Disque ${disk_index} Type",
-            "model": "Disque ${disk_index} Modèle",
-            "vendor": "Disque ${disk_index} Vendeur",
-            "size": "Disque ${disk_index} Taille"
-        },
-        "os": {
-            "title": "Système d'exploitation",
-            "platform": "Plate-forme",
-            "logofile": "Logo de fichier",
-            "distro": "Distribution",
-            "release": "Parution",
-            "kernel": "Noyau",
-            "arch": "Architecture",
-            "hostname": "Nom de l'hôte"
-        },
-        "partitions": {
-            "title": "Partitions",
-            "name": "Partition ${partition_index} Nom",
-            "type": "Partition ${partition_index} Type",
-            "mount": "Partition ${partition_index} Monture",
-            "size": "Partition ${partition_index} Taille",
-            "used": "Partition ${partition_index} Utilisation"
-        },
-        "ram": {
-            "title": "RAM",
-            "total": "Total",
-            "used": "Utilisation",
-            "swap_total": "Échanges totaux",
-            "swap_used": "Échanges effectués"
-        },
-        "mcu": {
-            "chipset": "Puce",
-            "version": "Version",
-            "load": "Charge",
-            "awake": "Éveille",
-            "frequency": "Fréquence"
-        }
-    },
-    "status": {
-        "disconnected":{
-            "title": "Imprimante déconnectée !",
-            "activity": "En attente de Klipper"
-        },
-        "error":{
-            "title": "Une erreur s'est produite !",
-            "activity": "En attente de l'utilisateur"
-        },
-        "offline":{
-            "title": "Connexion perdue !",
-            "activity": "En attente de Moonraker"
-        },
-        "shutdown":{
-            "title": "Klipper s'est arrêté",
-            "activity": "En attente de Klipper"
-        },
-        "stop":{
-            "title": "L'impression s'est arrêté",
-            "activity": "Impression arrêtée"
-        },
-        "ready":{
-            "title": "Imprimante prête",
-            "activity": "pour le fichier GCODE..."
-        },
-        "startup":{
-            "title": "Démarrage de l'imprimante",
-            "activity": "Imprimante démarrée"
-        },
-        "start":{
-            "title": "Démarrage de l'impression",
-            "activity": "Démarrage de ${gcode_file}"
-        },
-        "done":{
-            "title": "Impression terminée",
-            "activity": "Impression finie"
-        },
-        "pause":{
-            "title": "Impression en pause",
-            "activity": "Une pause ? Apéro 🍾 !!"
-        },
-        "printing":{
-            "title": "Impression en cours",
-            "activity": "Impression: ${value_print_progress}%"
-        },
-        "fields": {
-            "print_time": "Temps d'impression",
-            "eta_print_time": "Temps d'impression restant",
-            "print_progress": "Progression",
-            "print_layers": "Couche"
-        }
-    },
-    "timelapse": {
-        "for_gcode": "Time lapse pour ${gcode_file}"
-    },
-    "update": {
-        "title": "Mises à jour du système",
-        "system": "Système",
-        "packages": "Paquets"
-    },
-    "throttle": {
-        "title": "Une surchauffe s'est produit !",
-        "sentence": "Le système est actuellement en surchauffe à cause de ${reason}!",
-        "reasons": {
-            "under_voltage_detected": {
-                "name": "Réduction du voltage",
-                "suggestion": "Vérifiez la puissance délivrée."
-            },
-            "frequency_capped": {
-                "name": "Température limite",
-                "suggestion": "Vérifiez le système de refroidissement."
-            },
-            "temperature_limit_active": {
-                "name": "Température limite",
-                "suggestion": "Vérifiez le système de refroidissement."
-            }
+            "description": "Get the current Temperatures from Klipper.",
+            "command": "temp"
         }
     }
 }

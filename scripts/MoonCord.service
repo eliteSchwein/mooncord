@@ -1,5 +1,6 @@
 [Unit]
 Description=MoonCord
+Requires=moonraker.service
 After=moonraker.service
 StartLimitIntervalSec=0
 

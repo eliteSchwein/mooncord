@@ -1,0 +1,1108 @@
+{
+    "connection": {
+        "moonraker_socket_url": "ws://127.0.0.1/websocket",
+        "moonraker_url": "http://127.0.0.1",
+        "moonraker_token": "",
+        "moonraker_retry_interval": 2,
+        "bot_token": ""
+    },
+    "logger": {
+        "disable_file": false,
+        "path": ""
+    },
+    "tmp_path": "../temp",
+    "status": {
+        "update_interval": 10,
+        "use_percent": true,
+        "min_interval": 15,
+        "before": {
+            "enable": false,
+            "delay": 0,
+            "execute": []
+        },
+        "after": {
+            "enable": false,
+            "delay": 0,
+            "execute": []
+        }
+    },
+    "messages": {
+        "show_no_permission_private": true,
+        "icon_set": "acryl",
+        "entries_per_page": 8
+    },
+    "custom_info": "Thanks for installing MoonCord and Happy Printing ❤",
+    "language": {
+        "date_locale": "de-DE",
+        "messages": "en",
+        "command_syntax": "en",
+        "buttons_use_syntax_locale": false
+    },
+    "permission": {
+        "controllers": {
+            "roles": "",
+            "users": ""
+        },
+        "botadmins": {
+            "_comment": "this Section is managed by the /admin command",
+            "users": [],
+            "roles": []
+        },
+        "selections": {
+            "printlist_view_printjob": {
+                "command_assign": "fileinfo",
+                "botadmin": true,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
+            "systeminfo_select": {
+                "command_assign": "systeminfo",
+                "botadmin": true,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            }
+        },
+        "buttons": {
+            "printjob_refresh": {
+                "command_assign": "status",
+                "botadmin": true,
+                "guildadmin": true,
+                "users": "*",
+                "roles": []
+            },
+            "next_page_printlist": {
+                "command_assign": "listfiles",
+                "botadmin": true,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
+            "last_page_printlist": {
+                "command_assign": "listfiles",
+                "botadmin": true,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
+            "printjob_resume": {
+                "command_assign": "printjob",
+                "botadmin": true,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
+            "clear_file": {
+                "command_assign": "printjob",
+                "botadmin": true,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
+            "printjob_cancel": {
+                "command_assign": "printjob",
+                "botadmin": true,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
+            "printjob_pause": {
+                "command_assign": "printjob",
+                "botadmin": true,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
+            "printjob_start": {
+                "command_assign": "printjob_start",
+                "botadmin": false,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
+            "printjob_delete_request": {
+                "command_assign": "fileinfo",
+                "botadmin": true,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
+            "printjob_delete_accept": {
+                "command_assign": "fileinfo",
+                "botadmin": true,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
+            "printjob_delete_deny": {
+                "command_assign": "fileinfo",
+                "botadmin": true,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
+            "reconnect_moonraker": {
+                "command_assign": "restart",
+                "botadmin": true,
+                "guildadmin": true,
+                "users": [],
+                "roles": []
+            },
+            "klipper_restart": {
+                "command_assign": "restart",
+                "botadmin": true,
+                "guildadmin": true,
+                "users": [],
+                "roles": []
+            },
+            "update_system": {
+                "command_assign": "restart",
+                "botadmin": true,
+                "guildadmin": true,
+                "users": [],
+                "roles": []
+            },
+            "reconnect": {
+                "command_assign": "restart",
+                "botadmin": true,
+                "guildadmin": true,
+                "users": [],
+                "roles": []
+            },
+            "printjob_request_accept": {
+                "command_assign": "printjob",
+                "botadmin": true,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
+            "printjob_request_deny": {
+                "command_assign": "printjob",
+                "botadmin": true,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            }
+        },
+        "commands": {
+            "admin": {
+                "botadmin": false,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
+            "dump": {
+                "botadmin": true,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
+            "reset_database": {
+                "botadmin": true,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
+            "editchannel": {
+                "botadmin": true,
+                "guildadmin": true,
+                "users": [],
+                "roles": []
+            },
+            "emergency_stop": {
+                "botadmin": true,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
+            "restart": {
+                "botadmin": true,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
+            "execute": {
+                "botadmin": false,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
+            "fileinfo": {
+                "botadmin": true,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
+            "get_user_id": {
+                "botadmin": true,
+                "guildadmin": true,
+                "users": "*",
+                "roles": []
+            },
+            "get_log": {
+                "botadmin": true,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
+            "info": {
+                "botadmin": true,
+                "guildadmin": true,
+                "users": "*",
+                "roles": []
+            },
+            "listfiles": {
+                "botadmin": true,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
+            "notify": {
+                "botadmin": true,
+                "guildadmin": true,
+                "users": [],
+                "roles": []
+            },
+            "printjob": {
+                "botadmin": true,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
+            "printjob_start": {
+                "botadmin": false,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
+            "status": {
+                "botadmin": true,
+                "guildadmin": true,
+                "users": "*",
+                "roles": []
+            },
+            "systeminfo": {
+                "botadmin": true,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
+            "temp": {
+                "botadmin": true,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            }
+        }
+    },
+    "webcam": {
+        "url": "http://127.0.0.1/webcam/?action=snapshot",
+        "quality": 80,
+        "rotation": 0,
+        "brightness": 0,
+        "contrast": 0,
+        "vertical_mirror": false,
+        "horizontal_mirror": false,
+        "greyscale": false,
+        "sepia": false
+    },
+    "notifications": {
+        "moonraker_throttle": true,
+        "timelapse": true
+    },
+    "development": {
+        "dump_cache_on_start": false,
+        "trace_on_web_error": false
+    },
+    "discord": {
+        "request_timeout": 30
+    },
+    "embed_meta": {
+        "fileinfo": {
+            "author": "${filename}",
+            "color": "#0099ff",
+            "buttons": [
+                "printjob_start",
+                "printjob_delete_request",
+                "to_printlist"
+            ]
+        },
+        "list_files": {
+            "color": "#0099ff",
+            "thumbnail": "printlist.png",
+            "buttons": [
+                "last_page_printlist",
+                "next_page_printlist"],
+            "selection": {
+                "id": "printlist_view_printjob",
+                "data": "${raw_entries}"
+            }
+        },
+        "info": {
+            "color": "#0099ff",
+            "thumbnail": "logo.png"
+        },
+        "notification": {
+            "color": "#03f4fc",
+            "thumbnail": "notification.png",
+            "description": "${message}"
+        },
+        "printjob_start_request": {
+            "author": "${filename}",
+            "color": "#0099ff",
+            "buttons": [
+                "printjob_request_accept",
+                "printjob_request_deny",
+                "to_printlist"]
+        },
+        "printjob_delete_request": {
+            "author": "${filename}",
+            "color": "#c90000",
+            "buttons": [
+                "printjob_delete_deny",
+                "printjob_delete_accept",
+                "to_printlist"]
+        },
+        "printjob_start":{
+            "color": "#25db00",
+            "author": "${state.print_stats.filename}",
+            "thumbnail": "thumbnail",
+            "image": "webcam",
+            "buttons": [],
+            "fields": [
+                {
+                    "name": "${embeds.fields.print_left_time}",
+                    "value": "${formatTime:time.left}"
+                },
+                {
+                    "name": "${embeds.fields.eta_print_time}",
+                    "value": "${formatDate:time.eta}"
+                }
+            ]
+        },
+        "printjob_complete":{
+            "color": "#25db00",
+            "author": "${state.print_stats.filename}",
+            "thumbnail": "thumbnail",
+            "image": "webcam",
+            "buttons": ["clear_file"],
+            "fields": [
+                {
+                    "name": "${embeds.fields.print_time}",
+                    "value": "${formatTime:time.duration}"
+                }
+            ]
+        },
+        "printjob_pause":{
+            "color": "#dbd400",
+            "author": "${state.print_stats.filename}",
+            "thumbnail": "thumbnail",
+            "image": "webcam",
+            "buttons": ["printjob_resume","printjob_cancel"],
+            "fields": [
+                {
+                    "name": "${embeds.fields.print_time}",
+                    "value": "${formatTime:time.duration}"
+                },
+                {
+                    "name": "${embeds.fields.print_left_time}",
+                    "value": "${formatTime:time.left}"
+                },
+                {
+                    "name": "${embeds.fields.print_progress}",
+                    "value": "${percent:0:state.display_status.progress}%"
+                },
+                {
+                    "name": "${embeds.fields.print_layers}",
+                    "value": "${layers.current}/${layers.top}"
+                }
+            ]
+        },
+        "printjob_printing":{
+            "color": "#0099ff",
+            "author": "${state.print_stats.filename}",
+            "thumbnail": "thumbnail",
+            "image": "webcam",
+            "buttons": [
+                "printjob_pause",
+                "printjob_cancel",
+                "printjob_refresh"],
+            "fields": [
+                {
+                    "name": "${embeds.fields.print_time}",
+                    "value": "${formatTime:time.duration}"
+                },
+                {
+                    "name": "${embeds.fields.print_left_time}",
+                    "value": "${formatTime:time.left}"
+                },
+                {
+                    "name": "${embeds.fields.eta_print_time}",
+                    "value": "${formatDate:time.eta}"
+                },
+                {
+                    "name": "${embeds.fields.print_progress}",
+                    "value": "${percent:0:state.display_status.progress}%"
+                },
+                {
+                    "name": "${embeds.fields.print_layers}",
+                    "value": "${layers.current}/${layers.top}"
+                }
+            ]
+        },
+        "printjob_stop":{
+            "color": "#c90000",
+            "author": "${state.print_stats.filename}",
+            "thumbnail": "thumbnail",
+            "image": "webcam",
+            "buttons": [],
+            "fields": [
+                {
+                    "name": "${embeds.fields.print_time}",
+                    "value": "${formatTime:time.duration}"
+                },
+                {
+                    "name": "${embeds.fields.print_progress}",
+                    "value": "${percent:0:state.display_status.progress}%"
+                },
+                {
+                    "name": "${embeds.fields.print_layers}",
+                    "value": "${layers.current}/${layers.top}"
+                }
+            ]
+        },
+        "temperatures": {
+            "color": "#0099ff",
+            "thumbnail": "temps.png",
+            "buttons": [],
+            "fields": [],
+            "show_temps": true
+        },
+        "disconnected":{
+            "color": "#c90000",
+            "image": "webcam",
+            "buttons": ["klipper_restart"]
+        },
+        "moonraker_disconnected":{
+            "color": "#c90000",
+            "buttons": ["reconnect"]
+        },
+        "error":{
+            "description": "```${state_message}```",
+            "color": "#c90000",
+            "buttons": ["klipper_restart"]
+        },
+        "offline":{
+            "color": "#c90000",
+            "buttons": []
+        },
+        "shutdown":{
+            "color": "#c90000",
+            "image": "webcam",
+            "description": "```${state_message}```",
+            "buttons": ["klipper_restart"]
+        },
+        "systeminfo_cpu": {
+            "color": "#0099ff",
+            "thumbnail": "cpu.png",
+            "selection": {
+                "id": "systeminfo_select",
+                "data": "${raw_entries}"
+            },
+            "fields": [
+                {
+                    "name": "${embeds.fields.cores}",
+                    "value": "${machine_info.system_info.cpu_info.cpu_count}"
+                },
+                {
+                    "name": "${embeds.fields.arch}",
+                    "value": "${machine_info.system_info.cpu_info.processor}"
+                },
+                {
+                    "name": "${embeds.fields.model}",
+                    "value": "${machine_info.system_info.cpu_info.model}"
+                },
+                {
+                    "name": "${embeds.fields.desc}",
+                    "value": "${machine_info.system_info.cpu_info.cpu_desc}"
+                },
+                {
+                    "name": "${embeds.fields.chipset}",
+                    "value": "${machine_info.system_info.cpu_info.hardware_desc}"
+                },
+                {
+                    "name": "${embeds.fields.bits}",
+                    "value": "${machine_info.system_info.cpu_info.bits}"
+                },
+                {
+                    "name": "${embeds.fields.temp}",
+                    "value": "${proc_stats.cpu_temp} °C"
+                }
+            ]
+        },
+        "systeminfo_memory": {
+            "color": "#0099ff",
+            "thumbnail": "memory.png",
+            "selection": {
+                "id": "systeminfo_select",
+                "data": "${raw_entries}"
+            },
+            "fields": [
+                {
+                    "name": "${embeds.fields.total_ram}",
+                    "value": "${usage.total_ram} GB"
+                },
+                {
+                    "name": "${embeds.fields.used_ram}",
+                    "value": "${usage.used_ram} GB"
+                },
+                {
+                    "name": "${embeds.fields.free_ram}",
+                    "value": "${usage.free_ram} GB"
+                },
+                {
+                    "name": "${embeds.fields.manufacturer}",
+                    "value": "${machine_info.system_info.sd_info.manufacturer}"
+                },
+                {
+                    "name": "${embeds.fields.manufactured}",
+                    "value": "${machine_info.system_info.sd_info.manufacturer_date}"
+                },
+                {
+                    "name": "${embeds.fields.model}",
+                    "value": "${machine_info.system_info.sd_info.product_name} ${machine_info.system_info.sd_info.product_revision}"
+                },
+                {
+                    "name": "${embeds.fields.total_disk}",
+                    "value": "${usage.total_disk} GB"
+                },
+                {
+                    "name": "${embeds.fields.used_disk}",
+                    "value": "${usage.used_disk} GB"
+                },
+                {
+                    "name": "${embeds.fields.free_disk}",
+                    "value": "${usage.free_disk} GB"
+                }
+            ]
+        },
+        "systeminfo_system": {
+            "color": "#0099ff",
+            "thumbnail": "system.png",
+            "selection": {
+                "id": "systeminfo_select",
+                "data": "${raw_entries}"
+            },
+            "fields": [
+                {
+                    "name": "${embeds.fields.system_load}",
+                    "value": "${usage.system_load} %"
+                },
+                {
+                    "name": "${embeds.fields.moonraker_load}",
+                    "value": "${proc_stats.moonraker_stats.cpu_usage} %"
+                },
+                {
+                    "name": "${embeds.fields.klipper_load}",
+                    "value": "${usage.klipper_load} %"
+                },
+                {
+                    "name": "${embeds.fields.distribution}",
+                    "value": "${machine_info.system_info.distribution.name}"
+                },
+                {
+                    "name": "${embeds.fields.codename}",
+                    "value": "${machine_info.system_info.distribution.codename}"
+                },
+                {
+                    "name": "${embeds.fields.distribution_like}",
+                    "value": "${machine_info.system_info.distribution.like}"
+                }
+            ]
+        },
+        "systeminfo_mcu": {
+            "color": "#0099ff",
+            "thumbnail": "mcu.png",
+            "selection": {
+                "id": "systeminfo_select",
+                "data": "${raw_entries}"
+            },
+            "fields": [
+                {
+                    "name": "${embeds.fields.chipset}",
+                    "value": "${mcu_chipset}"
+                },
+                {
+                    "name": "${embeds.fields.load}",
+                    "value": "${mcu_load} %"
+                },
+                {
+                    "name": "${embeds.fields.awake_time}",
+                    "value": "${mcu_awake} s"
+                },
+                {
+                    "name": "${embeds.fields.frequency}",
+                    "value": "${mcu_freq} MHz"
+                },
+                {
+                    "name": "${embeds.fields.version}",
+                    "value": "${mcu_version}"
+                }
+            ]
+        },
+        "systeminfo_update": {
+            "color": "#fbff00",
+            "thumbnail": "update.png",
+            "selection": {
+                "id": "systeminfo_select",
+                "data": "${raw_entries}"
+            },
+            "buttons": ["update_system"],
+            "fields": [],
+            "show_updates": true
+        },
+        "ready":{
+            "color": "#0099ff",
+            "image": "webcam",
+            "buttons": [],
+            "fields": [],
+            "show_versions": true
+        },
+        "startup":{
+            "color": "#0099ff",
+            "buttons": []
+        },
+        "throttle_under_voltage_detected": {
+            "color": "#c90000",
+            "thumbnail": "warning.png"
+        },
+        "throttle_temperature_limit_active": {
+            "color": "#c90000",
+            "thumbnail": "warning.png"
+        },
+        "throttle_frequency_capped": {
+            "color": "#c90000",
+            "thumbnail": "warning.png"
+        },
+        "system_update": {
+            "color": "#fbff00",
+            "thumbnail": "update.png",
+            "buttons": ["update_system"],
+            "fields": [],
+            "show_updates": true
+        }
+    },
+    "input_meta": {
+        "buttons": {
+            "next_page_printlist": {
+                "emoji": "➡️",
+                "style":"SECONDARY",
+                "permission_mapping": "listfiles",
+                "function_mapping": {
+                    "page_up": true
+                }
+            },
+            "last_page_printlist": {
+                "emoji": "⬅️",
+                "style":"SECONDARY",
+                "permission_mapping": "listfiles",
+                "function_mapping": {
+                    "page_down": true
+                }
+            },
+            "printjob_resume": {
+                "emoji": "▶️",
+                "style":"PRIMARY",
+                "function_mapping": {
+                    "required_states" : ["pause"],
+                    "macros": ["RESUME"],
+                    "message": "${locale.messages.answers.printjob_resume.status_valid}"
+                }
+            },
+            "printjob_cancel": {
+                "emoji": "⛔",
+                "style":"DANGER",
+                "function_mapping": {
+                    "required_states" : ["pause", "printing"],
+                    "macros": ["CANCEL_PRINT"],
+                    "message": "${locale.messages.answers.printjob_cancel.status_valid}"
+                }
+            },
+            "printjob_pause": {
+                "emoji": "☕",
+                "style":"SECONDARY",
+                "function_mapping": {
+                    "required_states" : ["printing"],
+                    "macros": ["PAUSE"],
+                    "message": "${locale.messages.answers.printjob_pause.status_valid}"
+                }
+            },
+            "clear_file": {
+                "emoji": "🧹",
+                "style":"SECONDARY",
+                "function_mapping": {
+                    "required_states" : ["complete"],
+                    "macros": ["SDCARD_RESET_FILE"],
+                    "message": "${locale.messages.answers.printjob_clear}"
+                }
+            },
+            "printjob_refresh": {
+                "emoji": "🔄",
+                "style":"PRIMARY",
+                "function_mapping": {
+                    "refresh_status": true
+                }
+            },
+            "to_printlist": {
+                "emoji": "📘",
+                "style":"SECONDARY",
+                "function_mapping": {
+                    "show_printlist": true
+                }
+            },
+            "printjob_delete_accept": {
+                "style": "DANGER",
+                "function_mapping": {
+                    "delete": true,
+                    "root_path": "gcodes"
+                }
+            },
+            "printjob_delete_deny": {
+                "style":"SUCCESS",
+                "function_mapping": {
+                    "message": "${locale.messages.answers.printjob_delete_abort}"
+                }
+            },
+            "printjob_start": {
+                "emoji": "🖨️",
+                "style":"SECONDARY",
+                "function_mapping": {
+                    "request_printjob": true
+                }
+            },
+            "printjob_delete_request": {
+                "emoji": "🪣",
+                "style":"DANGER",
+                "function_mapping": {
+                    "request_printjob": true,
+                    "request_embed": "printjob_delete_request"
+                }
+            },
+            "reconnect": {
+                "emoji": "🔄",
+                "style":"PRIMARY",
+                "function_mapping": {
+                    "reconnect": true,
+                    "message": "${locale.messages.answers.reconnect}"
+                }
+            },
+            "klipper_restart": {
+                "emoji": "🔄",
+                "style":"PRIMARY",
+                "function_mapping": {
+                    "macros": ["FIRMWARE_RESTART"],
+                    "message": "${locale.messages.answers.firmware_restart_successful}"
+                }
+            },
+            "update_system": {
+                "style":"SECONDARY",
+                "function_mapping": {
+                    "update_system": true,
+                    "message": "${locale.messages.answers.update_request}",
+                    "message_as_follow_up": true
+                }
+            },
+            "printjob_request_accept": {
+                "style":"SUCCESS",
+                "required_states" : ["ready"],
+                "function_mapping": {
+                    "start_print": true,
+                    "message": "${locale.messages.answers.printjob_executed}"
+                }
+            },
+            "printjob_request_deny": {
+                "style":"DANGER",
+                "function_mapping": {
+                    "message": "${locale.messages.answers.printjob_request_abort}"
+                }
+            }
+        },
+        "selections": {
+            "printlist_view_printjob": {
+                "min_value": 1,
+                "max_value": 1,
+                "option_value": "${data.path}"
+            },
+            "systeminfo_select": {
+                "min_value": 1,
+                "max_value": 1,
+                "option_value": "${data.value}",
+                "mcu_options": true
+            }
+        }
+    },
+    "status_meta": {
+        "disconnected":{
+            "embed_id": "disconnected",
+            "meta_data": {
+                "allow_same": false,
+                "prevent": []
+            },
+            "activity": {
+                "status": "dnd",
+                "type": "LISTENING"
+            }
+        },
+        "moonraker_disconnected":{
+            "embed_id": "moonraker_disconnected",
+            "meta_data": {
+                "allow_same": false,
+                "prevent": []
+            },
+            "activity": {
+                "status": "dnd",
+                "type": "LISTENING"
+            }
+        },
+        "error":{
+            "embed_id": "error",
+            "meta_data": {
+                "allow_same": false,
+                "prevent": []
+            },
+            "activity": {
+                "status": "dnd",
+                "type": "LISTENING"
+            }
+        },
+        "offline":{
+            "embed_id": "offline",
+            "meta_data": {
+                "allow_same": false,
+                "prevent": []
+            },
+            "activity": {
+                "status": "dnd",
+                "type": "LISTENING"
+            }
+        },
+        "shutdown":{
+            "embed_id": "shutdown",
+            "meta_data": {
+                "allow_same": false,
+                "prevent": ["pause"]
+            },
+            "activity": {
+                "status": "dnd",
+                "type": "LISTENING"
+            }
+        },
+        "stop":{
+            "embed_id": "printjob_stop",
+            "meta_data": {
+                "allow_same": false,
+                "prevent": []
+            },
+            "activity": {
+                "status": "idle",
+                "type": "LISTENING"
+            }
+        },
+        "botstart": {
+            "embed_id": "startup",
+            "meta_data": {
+                "allow_same": false,
+                "prevent": []
+            },
+            "activity": {
+                "status": "idle",
+                "type": "LISTENING"
+            }
+        },
+        "ready":{
+            "embed_id": "ready",
+            "meta_data": {
+                "allow_same": false,
+                "prevent": ["startup"]
+            },
+            "activity": {
+                "status": "idle",
+                "type": "LISTENING"
+            }
+        },
+        "startup":{
+            "embed_id": "startup",
+            "meta_data": {
+                "allow_same": false,
+                "prevent": ["disconnected"]
+            },
+            "activity": {
+                "status": "idle",
+                "type": "WATCHING"
+            }
+        },
+        "start":{
+            "embed_id": "printjob_start",
+            "meta_data": {
+                "allow_same": false,
+                "prevent": []
+            },
+            "activity": {
+                "status": "online",
+                "type": "LISTENING"
+            }
+        },
+        "complete":{
+            "embed_id": "printjob_complete",
+            "meta_data": {
+                "allow_same": false,
+                "prevent": []
+            },
+            "activity": {
+                "status": "idle",
+                "type": "WATCHING"
+            }
+        },
+        "pause":{
+            "embed_id": "printjob_pause",
+            "meta_data": {
+                "allow_same": false,
+                "prevent": []
+            },
+            "activity": {
+                "status": "idle",
+                "type": "PLAYING"
+            }
+        },
+        "printing":{
+            "embed_id": "printjob_printing",
+            "meta_data": {
+                "allow_same": true,
+                "prevent": []
+            },
+            "activity": {
+                "status": "online",
+                "type": "WATCHING"
+            }
+        }
+    },
+    "temp_meta": {
+        "cold_meta": {
+            "icon": "❄",
+            "hot_temp": 50
+        },
+        "slow_fan_meta": {
+            "icon": "\uD83D\uDD06",
+            "fast_fan": 1
+        },
+        "fan_types": [
+            "temperature_fan",
+            "controller_fan",
+            "heater_fan",
+            "fan_generic",
+            "fan"
+        ],
+        "heater_types": [
+            "temperature_fan",
+            "heater_generic",
+            "heater_bed",
+            "heater",
+            "extruder"
+        ],
+        "hide_types": [
+            "temperature_sensor",
+            "temperature_fan",
+            "controller_fan",
+            "fan_generic"
+        ],
+        "supported_sensors": [
+            "heater_generic",
+            "heater_bed",
+            "heater",
+            "extruder",
+            "fan_generic",
+            "heater_fan",
+            "controller_fan",
+            "temperature_sensor",
+            "temperature_fan",
+            "fan"
+        ],
+        "alliases": {
+            "heater_generic": "heater",
+            "heater_bed": "heater",
+            "extruder": "heater",
+            "fan_generic": "fan",
+            "heater_fan": "fan",
+            "controller_fan": "fan"
+        },
+        "temperature_sensor": {
+            "icon": "🌡",
+            "fields": {
+                "temperature": {
+                    "label": "${embeds.fields.current}",
+                    "suffix": "°C"
+                },
+                "measured_min_temp": {
+                    "label": "${embeds.fields.min_temp}",
+                    "suffix": "°C"
+                },
+                "measured_max_temp": {
+                    "label": "${embeds.fields.max_temp}",
+                    "suffix": "°C"
+                }
+            }
+        },
+        "temperature_fan": {
+            "icon": "♨",
+            "fields": {
+                "power": {
+                    "label": "${embeds.fields.power}",
+                    "suffix": "%"
+                },
+                "target": {
+                    "label": "${embeds.fields.target}",
+                    "suffix": "°C"
+                },
+                "temperature": {
+                    "label": "${embeds.fields.current}",
+                    "suffix": "°C"
+                },
+                "rpm": {
+                    "label": "${embeds.fields.speed}",
+                    "suffix": "rpm"
+                }
+            }
+        },
+        "heater": {
+            "icon": "♨",
+            "fields": {
+                "power": {
+                    "label": "${embeds.fields.power}",
+                    "suffix": "%"
+                },
+                "target": {
+                    "label": "${embeds.fields.target}",
+                    "suffix": "°C"
+                },
+                "temperature": {
+                    "label": "${embeds.fields.current}",
+                    "suffix": "°C"
+                }
+            }
+        },
+        "fan": {
+            "icon": "\uD83C\uDF00",
+            "fields": {
+                "speed": {
+                    "label": "${embeds.fields.power}",
+                    "suffix": "%"
+                },
+                "rpm": {
+                    "label": "${embeds.fields.speed}",
+                    "suffix": "rpm"
+                }
+            }
+        }
+    }
+}

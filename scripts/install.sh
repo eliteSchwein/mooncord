@@ -26,16 +26,16 @@ install_packages()
 
     if ! command -v node -v >/dev/null 2>&1
     then
-        status_msg "Download Node 16.6.1"
-        wget https://nodejs.org/download/release/v16.6.1/node-v16.6.1-linux-armv7l.tar.gz
+        status_msg "Download Node 16.13.1"
+        wget https://nodejs.org/download/release/v16.13.1/node-v16.13.1-linux-armv7l.tar.gz
 
-        status_msg "Install Node 16.6.1"
-        tar -xvf node-v16.6.1-linux-armv7l.tar.gz >/dev/null 2>&1 
-        sudo cp -R node-v16.6.1-linux-armv7l/* /usr/local/ >/dev/null 2>&1 
+        status_msg "Install Node 16.13.1"
+        tar -xvf node-v16.13.1-linux-armv7l.tar.gz >/dev/null 2>&1
+        sudo cp -R node-v16.13.1-linux-armv7l/* /usr/local/ >/dev/null 2>&1
 
         status_msg "Remove Node File and Folder"
-        rm -rf node-v16.6.1-linux-armv7l.tar.gz
-        rm -rf node-v16.6.1-linux-armv7l
+        rm -rf node-v16.13.1-linux-armv7l.tar.gz
+        rm -rf node-v16.13.1-linux-armv7l
     fi
 
     status_msg "Install Dependencies"
@@ -60,7 +60,7 @@ install_systemd_service()
 
     echo "$SERVICE" | sudo tee /etc/systemd/system/$MCSERVICENAME.service > /dev/null
     sudo systemctl daemon-reload
-    sudo systemctl enable MoonCord
+    sudo systemctl enable $MCSERVICENAME.service
 }
 
 modify_user()
@@ -84,9 +84,9 @@ locate_config()
 }
 
 generate_config() {
-    status_msg "Generate Configs"
+    status_msg "Generate Config"
     cp $SCRIPTPATH/mooncord.json $MCCONFIGPATH/mooncord.json
-    cp $SCRIPTPATH/database.json $MCPATH/database.json
+    sed "s/MC_SERVICE/$MCSERVICENAME/g" $MCCONFIGPATH/mooncord.json
 }
 
 open_config() {
@@ -97,7 +97,7 @@ open_config() {
 
 start_MoonCord() {
     ok_msg "Start MoonCord, please make sure you configured the Bot correctly!"
-    sudo systemctl start MoonCord
+    sudo systemctl start $MCSERVICENAME.service
 }
 
 warn_msg(){
