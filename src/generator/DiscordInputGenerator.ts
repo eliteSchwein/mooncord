@@ -1,5 +1,5 @@
 import {ConfigHelper} from "../helper/ConfigHelper";
-import {mergeDeep, parsePageData} from "../helper/DataHelper";
+import {limitString, mergeDeep, parsePageData} from "../helper/DataHelper";
 
 import {setData, getEntry} from "../utils/CacheUtil";
 import {MessageActionRow, MessageButton, MessageSelectMenu} from "discord.js";
@@ -76,9 +76,9 @@ export class DiscordInputGenerator {
             const selectionMetaParsed = JSON.parse(parsePageData(selectionMetaRaw, data))
 
             selection.addOptions([{
-                label: selectionMetaParsed.option_label,
-                description: selectionMetaParsed.option_description,
-                value: selectionMetaParsed.option_value
+                label: limitString(selectionMetaParsed.option_label, 100),
+                description: limitString(selectionMetaParsed.option_description, 100),
+                value: limitString(selectionMetaParsed.option_value, 100)
             }])
         }
 
