@@ -58,7 +58,7 @@
         },
         "printjob_printing":{
             "title": "Druck Fortschritt",
-            "activity": "Druckfortschritt: ${value_print_progress}%"
+            "activity": "Druckfortschritt: ${percent:0:state.display_status.progress}%"
         },
         "printjob_stop":{
             "title": "Druck angehalten",
