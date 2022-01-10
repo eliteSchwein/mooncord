@@ -48473,6 +48473,7 @@ class ButtonInteraction {
                 return;
             }
         }
+        await new PrintJobStartButton().execute(interaction, buttonData);
         await new MessageButton().execute(interaction, buttonData);
         await new DeleteButton().execute(interaction, buttonData);
         await new ReconnectButton().execute(interaction, buttonData);
@@ -48480,7 +48481,6 @@ class ButtonInteraction {
         await new PrintRequestButton().execute(interaction, buttonData);
         await new PrintlistButton().execute(interaction, buttonData);
         await new PageButton().execute(interaction, buttonData);
-        await new PrintJobStartButton().execute(interaction, buttonData);
         await new MacroButton().execute(interaction, buttonData);
         await new UpdateButton().execute(interaction, buttonData);
         await sleep(2000);
@@ -49468,6 +49468,7 @@ class StatusHelper {
         let functionCache = getEntry('function');
         const serverInfo = getEntry('server_info');
         const stateCache = getEntry('state');
+        const timelapseMacro = getEntry('state')['gcode_macro TIMELAPSE_TAKE_FRAME'];
         const klipperStatus = stateCache.print_stats.state;
         if (typeof serverInfo === 'undefined') {
             return;
@@ -49480,6 +49481,9 @@ class StatusHelper {
                 status = klipperStatus;
             }
         }
+        if (timelapseMacro.is_paused && status === 'paused') {
+            return;
+        }
         if (status === 'standby') {
             status = 'ready';
         }
@@ -49490,6 +49494,12 @@ class StatusHelper {
             return;
         }
         const currentStatus = functionCache.current_status;
+        if (status === 'start' && currentStatus === 'pause') {
+            status = 'printing';
+        }
+        if (status === 'ready' && currentStatus === 'printing') {
+            await this.update('stop');
+        }
         if (status === 'printing' && currentStatus === 'startup') {
             await this.update('start');
         }
