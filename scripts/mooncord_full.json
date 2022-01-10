@@ -453,7 +453,7 @@
         },
         "printjob_stop":{
             "color": "#c90000",
-            "author": "${state.print_stats.filename}",
+            "author": "${meta_data.filename}",
             "thumbnail": "thumbnail",
             "image": "webcam",
             "buttons": [],

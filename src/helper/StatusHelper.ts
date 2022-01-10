@@ -55,6 +55,10 @@ export class StatusHelper {
             status = 'printing'
         }
 
+        if(status === 'ready' && currentStatus === 'printing') {
+            await this.update('stop')
+        }
+
         if(status === 'printing' && currentStatus === 'startup') {
             await this.update('start')
         }
