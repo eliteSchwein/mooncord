@@ -15,6 +15,6 @@
 
 ## Discord Community Server
 
-[![Discord](https://img.shields.io/discord/865168027652456448)](https://discord.gg/TdxUZFZtVa)
+[![Discord](https://discord.com/api/guilds/865168027652456448/widget.png?style=banner2)](https://discord.gg/TdxUZFZtVa)
 
 ## Please go into the Wiki Tab for the Guides
