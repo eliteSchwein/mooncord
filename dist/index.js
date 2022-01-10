@@ -50574,7 +50574,7 @@ class SchedulerHelper {
         }, 60000);
     }
     scheduleStatus() {
-        setInterval(async () => {
+        this.statusScheduler = setInterval(async () => {
             if (this.configHelper.isStatusPerPercent()) {
                 this.updateStatusCooldown();
             }
@@ -50597,7 +50597,7 @@ class SchedulerHelper {
         if (this.functionCache.current_status !== 'printing') {
             return;
         }
-        this.statusHelper.update();
+        this.statusHelper.update('printing');
     }
     updateStatusCooldown() {
         const statusCooldown = this.functionCache.status_cooldown;
