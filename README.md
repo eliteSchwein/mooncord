@@ -8,6 +8,7 @@
 [![Issues](https://img.shields.io/github/issues/eliteschwein/mooncord)](https://github.com/eliteSchwein/mooncord/issues)
 ####Tested:
 ![Tested](https://img.shields.io/badge/rpi-4-brightgreen)
+![Tested](https://img.shields.io/badge/rpi-3-brightgreen)
 ![Tested](https://img.shields.io/badge/rpi-Zero%202W-brightgreen)
 ![Tested](https://img.shields.io/badge/odroid-c4-brightgreen)
 
