@@ -59,6 +59,7 @@ export class ButtonInteraction {
             }
         }
 
+        await new PrintJobStartButton().execute(interaction, buttonData)
         await new MessageButton().execute(interaction, buttonData)
         await new DeleteButton().execute(interaction, buttonData)
         await new ReconnectButton().execute(interaction, buttonData)
@@ -66,7 +67,6 @@ export class ButtonInteraction {
         await new PrintRequestButton().execute(interaction, buttonData)
         await new PrintlistButton().execute(interaction, buttonData)
         await new PageButton().execute(interaction, buttonData)
-        await new PrintJobStartButton().execute(interaction, buttonData)
         await new MacroButton().execute(interaction, buttonData)
         await new UpdateButton().execute(interaction, buttonData)
 
