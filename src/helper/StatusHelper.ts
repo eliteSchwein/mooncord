@@ -51,6 +51,10 @@ export class StatusHelper {
 
         const currentStatus = functionCache.current_status
 
+        if(status === 'start' && currentStatus === 'pause') {
+            status = 'printing'
+        }
+
         if(status === 'printing' && currentStatus === 'startup') {
             await this.update('start')
         }
