@@ -44848,6 +44848,19 @@ async function sleep(delay) {
 function formatPercent(percent, digits) {
     return (percent * 100).toFixed(digits);
 }
+function findValueByPartial(data, partial, key) {
+    for (const dataFragment of data) {
+        if (dataFragment[key].includes(partial)) {
+            return dataFragment[key];
+        }
+    }
+}
+function limitString(input, length) {
+    if (input.length < length) {
+        return input;
+    }
+    return input.slice(0, length);
+}
 function parsePageData(rawData, data) {
     const parsedData = rawData.replace(/(\${data).*?(})/g, (match) => {
         const dataProperty = match
@@ -45253,9 +45266,9 @@ class DiscordInputGenerator {
             const selectionMetaRaw = JSON.stringify(selectionMeta);
             const selectionMetaParsed = JSON.parse(parsePageData(selectionMetaRaw, data));
             selection.addOptions([{
-                    label: selectionMetaParsed.option_label,
-                    description: selectionMetaParsed.option_description,
-                    value: selectionMetaParsed.option_value
+                    label: limitString(selectionMetaParsed.option_label, 100),
+                    description: limitString(selectionMetaParsed.option_description, 100),
+                    value: limitString(selectionMetaParsed.option_value, 100)
                 }]);
         }
         row.addComponents(selection);
@@ -49184,6 +49197,7 @@ class CommandInteraction {
 
 
 
+
 class ViewPrintJobSelection {
     constructor(interaction, selectionId) {
         this.databaseUtil = getDatabase();
@@ -49200,14 +49214,15 @@ class ViewPrintJobSelection {
     }
     async execute(interaction) {
         await interaction.deferReply();
-        const metadata = await this.metadataHelper.getMetaData(interaction.values[0]);
+        const gcodeFile = findValueByPartial(getEntry('gcode_files'), interaction.values[0], 'path');
+        const metadata = await this.metadataHelper.getMetaData(gcodeFile);
         if (typeof metadata === 'undefined') {
             await interaction.editReply(this.locale.messages.errors.file_not_found);
             return;
         }
-        const thumbnail = await this.metadataHelper.getThumbnail(interaction.values[0]);
+        const thumbnail = await this.metadataHelper.getThumbnail(gcodeFile);
         metadata.estimated_time = formatTime(metadata.estimated_time);
-        metadata.filename = interaction.values[0];
+        metadata.filename = gcodeFile;
         const embedData = await this.embedHelper.generateEmbed('fileinfo', metadata);
         const embed = embedData.embed.embeds[0];
         embed.setThumbnail(`attachment://${thumbnail.name}`);
