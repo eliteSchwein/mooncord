@@ -49481,6 +49481,7 @@ class StatusHelper {
         this.configHelper = new ConfigHelper();
         this.localeHelper = new LocaleHelper();
         this.statusMeta = this.configHelper.getStatusMeta();
+        this.bypassChecks = false;
         this.notificationHelper = new NotificationHelper();
     }
     async update(status = null, discordClient = null) {
@@ -49518,7 +49519,7 @@ class StatusHelper {
         }
         const currentStatus = functionCache.current_status;
         if (status === 'start' && currentStatus === 'pause') {
-            updateData('function', { 'current_percent': -1 });
+            this.bypassChecks = true;
             status = 'printing';
         }
         if (status === 'ready' && currentStatus === 'printing') {
@@ -49572,6 +49573,7 @@ class StatusHelper {
             status !== 'printing') {
             this.notificationHelper.broadcastMessage(statusEmbed.embed);
         }
+        this.bypassChecks = false;
         updateData('function', {
             'status_in_query': false
         });
@@ -49585,6 +49587,9 @@ class StatusHelper {
     checkPercentSame() {
         const progress = findValue('state.display_status.progress').toFixed(2);
         const currentProgress = findValue('function.current_percent');
+        if (this.bypassChecks) {
+            return true;
+        }
         if (progress === currentProgress) {
             return false;
         }
@@ -49593,6 +49598,9 @@ class StatusHelper {
     checkPercentMatch() {
         let progress = findValue('state.display_status.progress').toFixed(2);
         progress = (progress * 100).toFixed(2);
+        if (this.bypassChecks) {
+            return true;
+        }
         if (!this.configHelper.isStatusPerPercent()) {
             return true;
         }

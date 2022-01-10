@@ -13,6 +13,7 @@ export class StatusHelper {
     protected configHelper = new ConfigHelper()
     protected localeHelper = new LocaleHelper()
     protected statusMeta = this.configHelper.getStatusMeta()
+    protected bypassChecks = false
     protected discordClient: DiscordClient
     protected notificationHelper = new NotificationHelper()
 
@@ -52,7 +53,7 @@ export class StatusHelper {
         const currentStatus = functionCache.current_status
 
         if(status === 'start' && currentStatus === 'pause') {
-            updateData('function', {'current_percent': -1})
+            this.bypassChecks = true
             status = 'printing'
         }
 
@@ -114,6 +115,8 @@ export class StatusHelper {
             this.notificationHelper.broadcastMessage(statusEmbed.embed)
         }
 
+        this.bypassChecks = false
+
         updateData('function', {
             'status_in_query': false
         })
@@ -134,6 +137,10 @@ export class StatusHelper {
         const progress = findValue('state.display_status.progress').toFixed(2)
         const currentProgress = findValue('function.current_percent')
 
+        if(this.bypassChecks) {
+            return true
+        }
+
         if(progress === currentProgress) {
             return false
         }
@@ -144,6 +151,10 @@ export class StatusHelper {
     protected checkPercentMatch() {
         let progress = findValue('state.display_status.progress').toFixed(2)
         progress = (progress*100).toFixed(2)
+
+        if(this.bypassChecks) {
+            return true
+        }
 
         if(!this.configHelper.isStatusPerPercent()) {
             return true
