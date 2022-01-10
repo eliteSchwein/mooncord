@@ -24,6 +24,7 @@ export class StatusHelper {
         let functionCache = getEntry('function')
         const serverInfo  = getEntry('server_info')
         const stateCache = getEntry('state')
+        const timelapseMacro = getEntry('state')['gcode_macro TIMELAPSE_TAKE_FRAME']
         const klipperStatus = stateCache.print_stats.state
 
         if(typeof serverInfo === 'undefined') { return }
@@ -35,6 +36,8 @@ export class StatusHelper {
                 status = klipperStatus
             }
         }
+
+        if(timelapseMacro.is_paused && status === 'paused') { return }
 
         if(status === 'standby') {
             status = 'ready'
