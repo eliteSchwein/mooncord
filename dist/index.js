@@ -44600,6 +44600,7 @@ var string = __nccwpck_require__(692);
 
 
 
+
 let tempLog = '';
 let log_file;
 const log_stdout = process.stdout;
@@ -44638,6 +44639,7 @@ function hookProcess() {
 function changeTempPath(tempPath) {
     log_file = external_fs_.createWriteStream(external_path_.resolve(__dirname, `${tempPath}/log.log`), { flags: 'w' });
     log_file.write(tempLog);
+    updateData('function', { 'log_path': external_path_.resolve(__dirname, `${tempPath}/log.log`) });
     hookLogFile();
 }
 function changePath(directory) {
@@ -44662,6 +44664,7 @@ function changePath(directory) {
     }
     log_file = external_fs_.createWriteStream(external_path_.resolve(directory, 'mooncord.log'), { flags: 'w' });
     log_file.write(current);
+    updateData('function', { 'log_path': external_path_.resolve(directory, 'mooncord.log') });
     hookLogFile();
 }
 function logError(message) {
@@ -45055,7 +45058,7 @@ class ConfigHelper {
 }
 
 ;// CONCATENATED MODULE: ./src/meta/command_structure.json
-const command_structure_namespaceObject = JSON.parse('{"admin":{"role":{"type":"subcommand","options":{"role":{"type":"role","required":true}}},"user":{"type":"subcommand","options":{"user":{"type":"user","required":true}}}},"dump":{"section":{"type":"string","required":true,"choices":[{"value":"database"},{"value":"cache"}]}},"reset_database":{},"editchannel":{"channel":{"type":"channel","required":false}},"emergency_stop":{},"fileinfo":{"file":{"type":"string","required":true}},"get_user_id":{"user":{"type":"user","required":false}},"restart":{"service":{"type":"string","required":true,"choices":"${serviceChoices}"}},"get_log":{"log_file":{"type":"string","required":true,"choices":[{"name":"Klipper","value":"klippy"},{"name":"Moonraker","value":"moonraker"}]}},"info":{},"listfiles":{},"notify":{},"printjob":{"pause":{"type":"subcommand"},"cancel":{"type":"subcommand"},"resume":{"type":"subcommand"},"start":{"type":"subcommand","options":{"file":{"type":"string","required":true}}}},"status":{},"systeminfo":{},"temp":{}}');
+const command_structure_namespaceObject = JSON.parse('{"admin":{"role":{"type":"subcommand","options":{"role":{"type":"role","required":true}}},"user":{"type":"subcommand","options":{"user":{"type":"user","required":true}}}},"dump":{"section":{"type":"string","required":true,"choices":[{"value":"database"},{"value":"cache"}]}},"reset_database":{},"editchannel":{"channel":{"type":"channel","required":false}},"emergency_stop":{},"fileinfo":{"file":{"type":"string","required":true}},"get_user_id":{"user":{"type":"user","required":false}},"restart":{"service":{"type":"string","required":true,"choices":"${serviceChoices}"}},"get_log":{"log_file":{"type":"string","required":true,"choices":[{"name":"Klipper","value":"klippy"},{"name":"Moonraker","value":"moonraker"},{"name":"MoonCord","value":"mooncord"}]}},"info":{},"listfiles":{},"notify":{},"printjob":{"pause":{"type":"subcommand"},"cancel":{"type":"subcommand"},"resume":{"type":"subcommand"},"start":{"type":"subcommand","options":{"file":{"type":"string","required":true}}}},"status":{},"systeminfo":{},"temp":{}}');
 ;// CONCATENATED MODULE: ./src/meta/command_option_types.json
 const command_option_types_namespaceObject = JSON.parse('{"subcommand":1,"subcommand_group":2,"string":3,"integer":4,"boolean":5,"user":6,"channel":7,"role":8,"mentionable":9,"number":10}');
 ;// CONCATENATED MODULE: ./src/generator/DiscordCommandGenerator.ts
@@ -48605,6 +48608,7 @@ class RestartCommand {
 
 
 
+
 class GetLodCommand {
     constructor(interaction, commandId) {
         this.config = new ConfigHelper();
@@ -48619,10 +48623,29 @@ class GetLodCommand {
     async execute(interaction) {
         await interaction.deferReply({ ephemeral: true });
         const service = interaction.options.getString(this.syntaxLocale.commands.get_log.options.log_file.name);
-        const request = await this.retrieveLog(service);
+        let request;
+        if (service === 'mooncord') {
+            request = await this.readMoonCordLog();
+        }
+        else {
+            request = await this.retrieveServiceLog(service);
+        }
         await interaction.editReply(request);
     }
-    async retrieveLog(service) {
+    async readMoonCordLog() {
+        try {
+            const logPath = getEntry('function').log_path;
+            const attachment = new external_discord_js_namespaceObject.MessageAttachment(logPath, 'mooncord.log');
+            logSuccess(`MoonCord Log read successful!`);
+            return { files: [attachment] };
+        }
+        catch (e) {
+            return this.locale.messages.errors.log_failed
+                .replace(/(\${service})/g, 'MoonCord')
+                .replace(/(\${reason})/g, `${e}`);
+        }
+    }
+    async retrieveServiceLog(service) {
         try {
             const result = await axios_default().get(`${this.config.getMoonrakerUrl()}/server/files/${service}.log`, {
                 responseType: 'arraybuffer',
@@ -50704,7 +50727,8 @@ function initCache() {
         'server_info_in_query': false,
         'poll_printer_info': false,
         'current_percent': -1,
-        'status_cooldown': 0
+        'status_cooldown': 0,
+        'log_path': ''
     });
     logRegular('init Memory Cache...');
     setData('usage', {
