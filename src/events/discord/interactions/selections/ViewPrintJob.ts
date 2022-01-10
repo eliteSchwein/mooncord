@@ -6,7 +6,7 @@ import {ConfigHelper} from "../../../../helper/ConfigHelper";
 import {LocaleHelper} from "../../../../helper/LocaleHelper";
 import {logNotice} from "../../../../helper/LoggerHelper";
 import {MetadataHelper} from "../../../../helper/MetadataHelper";
-import {formatTime} from "../../../../helper/DataHelper";
+import {findValueByPartial, formatTime} from "../../../../helper/DataHelper";
 
 export class ViewPrintJobSelection {
     protected databaseUtil = getDatabase()
@@ -26,17 +26,19 @@ export class ViewPrintJobSelection {
     protected async execute(interaction: SelectMenuInteraction) {
         await interaction.deferReply()
 
-        const metadata = await this.metadataHelper.getMetaData(interaction.values[0])
+        const gcodeFile = findValueByPartial(getEntry('gcode_files'), interaction.values[0], 'path')
+
+        const metadata = await this.metadataHelper.getMetaData(gcodeFile)
 
         if(typeof metadata === 'undefined') {
             await interaction.editReply(this.locale.messages.errors.file_not_found)
             return
         }
 
-        const thumbnail = await this.metadataHelper.getThumbnail(interaction.values[0])
+        const thumbnail = await this.metadataHelper.getThumbnail(gcodeFile)
 
         metadata.estimated_time = formatTime(metadata.estimated_time)
-        metadata.filename = interaction.values[0]
+        metadata.filename = gcodeFile
         
         const embedData = await this.embedHelper.generateEmbed('fileinfo', metadata)
         const embed = embedData.embed.embeds[0] as MessageEmbed

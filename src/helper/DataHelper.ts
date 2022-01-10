@@ -39,6 +39,21 @@ export function formatPercent(percent, digits) {
     return (percent*100).toFixed(digits)
 }
 
+export function findValueByPartial(data, partial: string, key: string) {
+    for(const dataFragment of data) {
+        if(dataFragment[key].includes(partial)) {
+            return dataFragment[key]
+        }
+    }
+}
+
+export function limitString(input:string, length: number) {
+    if(input.length < length) {
+        return input
+    }
+    return input.slice(0, length)
+}
+
 export function parsePageData(rawData: string, data) {
     const parsedData = rawData.replace(/(\${data).*?(})/g, (match) => {
         const dataProperty = match
