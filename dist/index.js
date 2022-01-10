@@ -48034,8 +48034,7 @@ class PermissionHelper {
         if (typeof member === 'undefined') {
             return;
         }
-        const roles = this.botAdmins.guilds[guild.id];
-        return member.roles.cache.some((role) => roles.includes(role.id));
+        return member.roles.cache.some((role) => this.botAdmins.roles.includes(role.id));
     }
     isController(user, guild) {
         const member = this.getMember(user, guild);
