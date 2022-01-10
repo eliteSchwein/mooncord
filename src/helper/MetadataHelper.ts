@@ -43,6 +43,8 @@ export class MetadataHelper {
 
     public async getThumbnail(filename: string) {
         const metaData = await this.getMetaData(filename)
+        const pathFragments = filename.split('/').slice(0, -1)
+        const rootPath = (pathFragments.length > 0) ? `${pathFragments.join('/')}/` : ''
         const placeholderPath = path.resolve(__dirname, `../assets/icon-sets/${this.configHelper.getIconSet()}/thumbnail_not_found.png`)
         const placeholder = new MessageAttachment(placeholderPath, 'thumbnail_not_found.png')
         const url = this.configHelper.getMoonrakerUrl()
@@ -50,8 +52,8 @@ export class MetadataHelper {
         if(typeof metaData === 'undefined') { return placeholder }
 
         const thumbnailFile = metaData.thumbnails.reduce((prev, current) => { return (prev.size > current.size) ? prev : current})
-        const relativePath = thumbnailFile.relative_path
-        const thumbnailURL = encodeURI(`${url}/server/files/gcodes/${relativePath}`)
+        const thumbnailPath = thumbnailFile.relative_path
+        const thumbnailURL = encodeURI(`${url}/server/files/gcodes/${rootPath}${thumbnailPath}`)
         let thumbnail: string
         try {
             thumbnail = await this.getBase64(thumbnailURL)

@@ -44581,7 +44581,7 @@ __nccwpck_require__.d(__webpack_exports__, {
 });
 
 ;// CONCATENATED MODULE: ./package.json
-const package_namespaceObject = JSON.parse('{"name":"mooncord","version":"0.0.5","description":"Moonraker Discord Bot based on Discord.js","main":"index.js","scripts":{"start":"node dist/index.js --expose-gc","debugstart":"node --trace_gc --expose-gc --trace-deprecation --trace-warnings --trace-uncaught --track-heap-objects dist/index.js","checkcodestyle":"npx eslint ./**","autofixcodestyle":"npx eslint ./** --fix","build":"ncc build -m -d -e discord.js -e @ffmpeg-installer/ffmpeg -e sharp src/Application.ts -o dist","watch":"ncc build -w -d -e discord.js -e @ffmpeg-installer/ffmpeg -e sharp src/Application.ts -o dist"},"repository":{"type":"git","url":"git+https://github.com/eliteSchwein/mooncord.git"},"keywords":[],"author":"eliteSCHW31N","license":"ISC","bugs":{"url":"https://github.com/eliteSchwein/mooncord/issues"},"homepage":"https://github.com/eliteSchwein/mooncord#readme","devDependencies":{"@types/fluent-ffmpeg":"^2.1.20","@types/node":"^17.0.8","@types/sharp":"^0.29.5","@vercel/ncc":"^0.33.1","async-wait-until":"2.0.12","axios":"^0.24.0","bytes":"^3.1.1","colorts":"^0.1.63","eslint":"^8.6.0","eslint-config-galex":"^3.5.5","eslint-config-standard":"^16.0.3","eslint-plugin-import":"^2.25.4","eslint-plugin-node":"^11.1.0","eslint-plugin-promise":"^6.0.0","fluent-ffmpeg":"^2.1.2","form-data":"^4.0.0","lodash":"^4.17.21","node-fetch":"^3.1.0","shelljs":"^0.8.4","stacktrace-js":"^2.0.2","typescript":"^4.5.4","websocket-ts":"^1.1.1","ws":"^8.4.0"},"dependencies":{"@ffmpeg-installer/ffmpeg":"^1.1.0","discord.js":"^13.5.0","sharp":"^0.29.3"}}');
+const package_namespaceObject = JSON.parse('{"name":"mooncord","version":"0.0.5","description":"Moonraker Discord Bot based on Discord.js","main":"index.js","scripts":{"start":"node --expose-gc dist/index.js","debugstart":"node --trace_gc --expose-gc --trace-deprecation --trace-warnings --trace-uncaught --track-heap-objects dist/index.js","checkcodestyle":"npx eslint ./**","autofixcodestyle":"npx eslint ./** --fix","build":"ncc build -m -d -e discord.js -e @ffmpeg-installer/ffmpeg -e sharp src/Application.ts -o dist","watch":"ncc build -w -d -e discord.js -e @ffmpeg-installer/ffmpeg -e sharp src/Application.ts -o dist"},"repository":{"type":"git","url":"git+https://github.com/eliteSchwein/mooncord.git"},"keywords":[],"author":"eliteSCHW31N","license":"ISC","bugs":{"url":"https://github.com/eliteSchwein/mooncord/issues"},"homepage":"https://github.com/eliteSchwein/mooncord#readme","devDependencies":{"@types/fluent-ffmpeg":"^2.1.20","@types/node":"^17.0.8","@types/sharp":"^0.29.5","@vercel/ncc":"^0.33.1","async-wait-until":"2.0.12","axios":"^0.24.0","bytes":"^3.1.1","colorts":"^0.1.63","eslint":"^8.6.0","eslint-config-galex":"^3.5.5","eslint-config-standard":"^16.0.3","eslint-plugin-import":"^2.25.4","eslint-plugin-node":"^11.1.0","eslint-plugin-promise":"^6.0.0","fluent-ffmpeg":"^2.1.2","form-data":"^4.0.0","lodash":"^4.17.21","node-fetch":"^3.1.0","shelljs":"^0.8.4","stacktrace-js":"^2.0.2","typescript":"^4.5.4","websocket-ts":"^1.1.1","ws":"^8.4.0"},"dependencies":{"@ffmpeg-installer/ffmpeg":"^1.1.0","discord.js":"^13.4.0","sharp":"^0.29.3"}}');
 var package_namespaceObject_0 = /*#__PURE__*/__nccwpck_require__.t(package_namespaceObject, 2);
 // EXTERNAL MODULE: external "util"
 var external_util_ = __nccwpck_require__(3837);
@@ -47634,6 +47634,8 @@ class MetadataHelper {
     }
     async getThumbnail(filename) {
         const metaData = await this.getMetaData(filename);
+        const pathFragments = filename.split('/').slice(0, -1);
+        const rootPath = (pathFragments.length > 0) ? `${pathFragments.join('/')}/` : '';
         const placeholderPath = external_path_default().resolve(__dirname, `../assets/icon-sets/${this.configHelper.getIconSet()}/thumbnail_not_found.png`);
         const placeholder = new external_discord_js_namespaceObject.MessageAttachment(placeholderPath, 'thumbnail_not_found.png');
         const url = this.configHelper.getMoonrakerUrl();
@@ -47641,8 +47643,8 @@ class MetadataHelper {
             return placeholder;
         }
         const thumbnailFile = metaData.thumbnails.reduce((prev, current) => { return (prev.size > current.size) ? prev : current; });
-        const relativePath = thumbnailFile.relative_path;
-        const thumbnailURL = encodeURI(`${url}/server/files/gcodes/${relativePath}`);
+        const thumbnailPath = thumbnailFile.relative_path;
+        const thumbnailURL = encodeURI(`${url}/server/files/gcodes/${rootPath}${thumbnailPath}`);
         let thumbnail;
         try {
             thumbnail = await this.getBase64(thumbnailURL);
