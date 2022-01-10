@@ -49518,6 +49518,7 @@ class StatusHelper {
         }
         const currentStatus = functionCache.current_status;
         if (status === 'start' && currentStatus === 'pause') {
+            updateData('function', { 'current_percent': -1 });
             status = 'printing';
         }
         if (status === 'ready' && currentStatus === 'printing') {
