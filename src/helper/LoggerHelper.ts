@@ -3,6 +3,7 @@ import * as util from 'util'
 import * as fs from 'fs'
 import * as path from 'path'
 import {stripAnsi} from "./DataHelper";
+import {updateData} from "../utils/CacheUtil";
 
 let tempLog = ''
 let log_file: fs.WriteStream
@@ -54,6 +55,7 @@ export function hookProcess() {
 export function changeTempPath(tempPath: string) {
     log_file = fs.createWriteStream(path.resolve(__dirname, `${tempPath}/log.log`), {flags : 'w'})
     log_file.write(tempLog)
+    updateData('function', {'log_path': path.resolve(__dirname, `${tempPath}/log.log`)})
     hookLogFile()
 }
 
@@ -82,6 +84,8 @@ export function changePath(directory: string) {
     log_file = fs.createWriteStream(path.resolve(directory, 'mooncord.log'), {flags : 'w'})
 
     log_file.write(current)
+
+    updateData('function', {'log_path': path.resolve(directory, 'mooncord.log')})
 
     hookLogFile()
 }

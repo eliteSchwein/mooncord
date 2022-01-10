@@ -72,6 +72,10 @@
         {
           "name": "Moonraker",
           "value": "moonraker"
+        },
+        {
+          "name": "MoonCord",
+          "value": "mooncord"
         }
       ]
     }

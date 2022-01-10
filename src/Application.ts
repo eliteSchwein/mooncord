@@ -84,7 +84,8 @@ function initCache() {
         'server_info_in_query': false,
         'poll_printer_info': false,
         'current_percent': -1,
-        'status_cooldown': 0
+        'status_cooldown': 0,
+        'log_path': ''
     })
 
     logRegular('init Memory Cache...')

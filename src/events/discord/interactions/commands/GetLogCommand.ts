@@ -3,6 +3,8 @@ import { ConfigHelper } from "../../../../helper/ConfigHelper";
 import axios from "axios";
 import { LocaleHelper } from "../../../../helper/LocaleHelper";
 import {logError, logSuccess} from "../../../../helper/LoggerHelper";
+import {readFileSync} from "fs";
+import {getEntry} from "../../../../utils/CacheUtil";
 
 export class GetLodCommand {
     protected config = new ConfigHelper()
@@ -21,12 +23,34 @@ export class GetLodCommand {
 
         const service = interaction.options.getString(this.syntaxLocale.commands.get_log.options.log_file.name)
 
-        const request = await this.retrieveLog(service)
+        let request: any
+
+        if(service === 'mooncord') {
+            request = await this.readMoonCordLog()
+        } else {
+            request = await this.retrieveServiceLog(service)
+        }
 
         await interaction.editReply(request)
     }
 
-    protected async retrieveLog(service: string) {
+    protected async readMoonCordLog() {
+        try {
+            const logPath = getEntry('function').log_path
+
+            const attachment = new MessageAttachment(logPath, 'mooncord.log')
+
+            logSuccess(`MoonCord Log read successful!`)
+
+            return { files: [attachment] }
+        } catch (e) {
+            return this.locale.messages.errors.log_failed
+                .replace(/(\${service})/g, 'MoonCord')
+                .replace(/(\${reason})/g, `${e}`)
+        }
+    }
+
+    protected async retrieveServiceLog(service: string) {
         try {
             const result = await axios.get(`${this.config.getMoonrakerUrl()}/server/files/${service}.log`,{
                 responseType: 'arraybuffer',
