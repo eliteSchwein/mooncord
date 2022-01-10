@@ -146,6 +146,8 @@ export class EmbedHelper {
             embedData.fields.forEach(field => {
                 if(field.name === '') {field.name = 'N/A'}
                 if(field.value === '') {field.value = 'N/A'}
+                if(field.name === ' ') {field.name = 'N/A'}
+                if(field.value === ' ') {field.value = 'N/A'}
                 embed.addField(field.name, field.value, true)
             })
         }

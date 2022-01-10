@@ -44565,7 +44565,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 384:
+/***/ 1384:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -47808,6 +47808,12 @@ class EmbedHelper {
                     field.name = 'N/A';
                 }
                 if (field.value === '') {
+                    field.value = 'N/A';
+                }
+                if (field.name === ' ') {
+                    field.name = 'N/A';
+                }
+                if (field.value === ' ') {
                     field.value = 'N/A';
                 }
                 embed.addField(field.name, field.value, true);
@@ -51668,7 +51674,7 @@ return new B(c,{type:"multipart/form-data; boundary="+b})}
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(384);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(1384);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()
