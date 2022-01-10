@@ -38,7 +38,7 @@ export class StatusHelper {
             }
         }
 
-        if(timelapseMacro.is_paused && status === 'paused') { return }
+        if(typeof timelapseMacro !== 'undefined' && timelapseMacro.is_paused && status === 'paused') { return }
 
         if(status === 'standby') {
             status = 'ready'

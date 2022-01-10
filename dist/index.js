@@ -49529,7 +49529,7 @@ class StatusHelper {
                 status = klipperStatus;
             }
         }
-        if (timelapseMacro.is_paused && status === 'paused') {
+        if (typeof timelapseMacro !== 'undefined' && timelapseMacro.is_paused && status === 'paused') {
             return;
         }
         if (status === 'standby') {
