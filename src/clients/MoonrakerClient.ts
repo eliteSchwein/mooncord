@@ -68,17 +68,16 @@ export class MoonrakerClient {
         logSuccess('Connected to MoonRaker')
 
         this.alreadyRunning = true
-
         this.registerEvents()
-
         await this.sendInitCommands()
-
         this.changeLogPath()
     }
 
     private async reconnectHandler(instance, event) {
         if (!this.alreadyRunning) { return }
         if (typeof this.reconnectScheduler === 'undefined') { return }
+
+        const statusHelper = new StatusHelper()
 
         logSuccess('Reconnected to MoonRaker')
 
@@ -89,6 +88,11 @@ export class MoonrakerClient {
         await this.sendInitCommands()
 
         this.changeLogPath()
+
+        App.reloadCache()
+        await App.reconnectDiscord()
+        await App.reloadCache()
+        await statusHelper.update()
     }
 
     public async connect() {

@@ -60,7 +60,36 @@ async function init() {
 
     schedulerHelper.init(moonrakerClient)
 
-    await statusHelper.update('ready', discordClient)
+    await statusHelper.update(null, discordClient)
+}
+
+export function reloadCache() {
+    logEmpty()
+    logSuccess('reload Cache...')
+
+    initCache()
+}
+
+export async function reconnectDiscord() {
+    logEmpty()
+    logSuccess('reconnect Discord...')
+    await discordClient.connect()
+}
+
+export async function restartScheduler() {
+    logEmpty()
+    logSuccess('restart Scheduler...')
+    schedulerHelper.clear()
+    schedulerHelper.init(moonrakerClient)
+}
+
+export async function reconnectMoonraker() {
+    logEmpty()
+    logSuccess('reconnect Moonraker...')
+    schedulerHelper.clear()
+    moonrakerClient.close()
+
+    await moonrakerClient.connect()
 }
 
 export async function restartBot() {

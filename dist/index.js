@@ -44577,7 +44577,11 @@ __nccwpck_require__.d(__webpack_exports__, {
   "getDatabase": () => (/* binding */ getDatabase),
   "getDiscordClient": () => (/* binding */ getDiscordClient),
   "getMoonrakerClient": () => (/* binding */ getMoonrakerClient),
-  "restartBot": () => (/* binding */ restartBot)
+  "reconnectDiscord": () => (/* binding */ reconnectDiscord),
+  "reconnectMoonraker": () => (/* binding */ reconnectMoonraker),
+  "reloadCache": () => (/* binding */ reloadCache),
+  "restartBot": () => (/* binding */ restartBot),
+  "restartScheduler": () => (/* binding */ restartScheduler)
 });
 
 ;// CONCATENATED MODULE: ./package.json
@@ -48404,7 +48408,7 @@ class ReconnectButton {
         if (!buttonData.function_mapping.reconnect) {
             return;
         }
-        await restartBot();
+        await reconnectMoonraker();
     }
 }
 
@@ -50307,6 +50311,7 @@ class MessageHandler {
 
 
 
+
 const requests = {};
 let messageHandler;
 class MoonrakerClient {
@@ -50364,11 +50369,16 @@ class MoonrakerClient {
         if (typeof this.reconnectScheduler === 'undefined') {
             return;
         }
+        const statusHelper = new StatusHelper();
         logSuccess('Reconnected to MoonRaker');
         this.reconnectAttempt = 1;
         this.registerEvents();
         await this.sendInitCommands();
         this.changeLogPath();
+        reloadCache();
+        await reconnectDiscord();
+        await reloadCache();
+        await statusHelper.update();
     }
     async connect() {
         logSuccess('Connect to MoonRaker...');
@@ -50727,7 +50737,30 @@ async function init() {
     }
     logRegular('Register Scheduler...');
     schedulerHelper.init(moonrakerClient);
-    await statusHelper.update('ready', discordClient);
+    await statusHelper.update(null, discordClient);
+}
+function reloadCache() {
+    logEmpty();
+    logSuccess('reload Cache...');
+    initCache();
+}
+async function reconnectDiscord() {
+    logEmpty();
+    logSuccess('reconnect Discord...');
+    await discordClient.connect();
+}
+async function restartScheduler() {
+    logEmpty();
+    logSuccess('restart Scheduler...');
+    schedulerHelper.clear();
+    schedulerHelper.init(moonrakerClient);
+}
+async function reconnectMoonraker() {
+    logEmpty();
+    logSuccess('reconnect Moonraker...');
+    schedulerHelper.clear();
+    moonrakerClient.close();
+    await moonrakerClient.connect();
 }
 async function restartBot() {
     logEmpty();
