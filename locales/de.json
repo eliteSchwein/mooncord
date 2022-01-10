@@ -46,7 +46,7 @@
         },
         "printjob_start":{
             "title": "Druck gestartet",
-            "activity": "starte ${gcode_file}"
+            "activity": "starte ${state.print_stats.filename}"
         },
         "printjob_complete":{
             "title": "Druck abgeschlossen",
