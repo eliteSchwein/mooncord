@@ -2,7 +2,6 @@ import {MoonrakerClient} from "../clients/MoonrakerClient";
 import {ConfigHelper} from "./ConfigHelper";
 import {findValue, getEntry, setData, updateData} from "../utils/CacheUtil";
 import {StatusHelper} from "./StatusHelper";
-import {logRegular} from "./LoggerHelper";
 import {UsageHelper} from "./UsageHelper";
 
 export class SchedulerHelper {
@@ -62,7 +61,7 @@ export class SchedulerHelper {
     }
 
     protected scheduleStatus() {
-        setInterval(async () => {
+        this.statusScheduler = setInterval(async () => {
             if(this.configHelper.isStatusPerPercent()) {
                 this.updateStatusCooldown()
             } else {
@@ -86,7 +85,7 @@ export class SchedulerHelper {
     protected postPrintProgress() {
         if(this.functionCache.current_status !== 'printing') { return }
 
-        this.statusHelper.update()
+        this.statusHelper.update('printing')
     }
 
     protected updateStatusCooldown() {

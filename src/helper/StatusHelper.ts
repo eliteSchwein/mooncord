@@ -24,6 +24,7 @@ export class StatusHelper {
         let functionCache = getEntry('function')
         const serverInfo  = getEntry('server_info')
         const stateCache = getEntry('state')
+        const timelapseMacro = getEntry('state')['gcode_macro TIMELAPSE_TAKE_FRAME']
         const klipperStatus = stateCache.print_stats.state
 
         if(typeof serverInfo === 'undefined') { return }
@@ -36,6 +37,8 @@ export class StatusHelper {
             }
         }
 
+        if(timelapseMacro.is_paused && status === 'paused') { return }
+
         if(status === 'standby') {
             status = 'ready'
         }
@@ -47,6 +50,14 @@ export class StatusHelper {
         if(typeof status === 'undefined') { return }
 
         const currentStatus = functionCache.current_status
+
+        if(status === 'start' && currentStatus === 'pause') {
+            status = 'printing'
+        }
+
+        if(status === 'ready' && currentStatus === 'printing') {
+            await this.update('stop')
+        }
 
         if(status === 'printing' && currentStatus === 'startup') {
             await this.update('start')

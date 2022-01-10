@@ -46,7 +46,7 @@
         },
         "printjob_start":{
             "title": "Druck gestartet",
-            "activity": "starte ${gcode_file}"
+            "activity": "starte ${state.print_stats.filename}"
         },
         "printjob_complete":{
             "title": "Druck abgeschlossen",
@@ -58,7 +58,7 @@
         },
         "printjob_printing":{
             "title": "Druck Fortschritt",
-            "activity": "Druckfortschritt: ${value_print_progress}%"
+            "activity": "Druckfortschritt: ${percent:0:state.display_status.progress}%"
         },
         "printjob_stop":{
             "title": "Druck angehalten",
