@@ -26,7 +26,7 @@ export class UsageHelper {
         const coreCount = findValue('machine_info.system_info.cpu_info.cpu_count')
         const systemLoad = findValue('state.system_stats.sysload')
 
-        const percent = ((100 * systemLoad) / coreCount).toFixed(2)
+        const percent = ((systemLoad / coreCount) * 100).toFixed(2)
 
         updateData('usage', {
             'system_load': percent

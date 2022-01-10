@@ -21,10 +21,6 @@ export class SubscriptionNotification {
 
         updateData('state', param)
 
-        this.usageHelper.updateMemoryUsage()
-        this.usageHelper.updateKlipperLoad()
-        this.usageHelper.updateSystemLoad()
-
         if(typeof param.print_stats !== 'undefined') {
             void this.parsePrintStats(param.print_stats)
         }

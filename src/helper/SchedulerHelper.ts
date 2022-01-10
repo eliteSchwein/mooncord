@@ -3,6 +3,7 @@ import {ConfigHelper} from "./ConfigHelper";
 import {findValue, getEntry, setData, updateData} from "../utils/CacheUtil";
 import {StatusHelper} from "./StatusHelper";
 import {UsageHelper} from "./UsageHelper";
+import {clearInterval} from "timers";
 
 export class SchedulerHelper {
     protected configHelper = new ConfigHelper()
@@ -12,6 +13,7 @@ export class SchedulerHelper {
     protected highScheduler: NodeJS.Timer
     protected moderateScheduler: NodeJS.Timer
     protected statusScheduler: NodeJS.Timer
+    protected loadScheduler: NodeJS.Timer
     protected usageHelper = new UsageHelper()
 
     public init(moonrakerClient: MoonrakerClient) {
@@ -19,6 +21,7 @@ export class SchedulerHelper {
 
         this.scheduleModerate()
         this.scheduleHigh()
+        this.scheduleLoad()
         this.scheduleStatus()
 
         this.usageHelper.updateDiskUsage()
@@ -28,6 +31,7 @@ export class SchedulerHelper {
         clearInterval(this.highScheduler)
         clearInterval(this.moderateScheduler)
         clearInterval(this.statusScheduler)
+        clearInterval(this.loadScheduler)
     }
 
     protected scheduleHigh() {
@@ -45,9 +49,17 @@ export class SchedulerHelper {
             if(this.functionCache.poll_printer_info) {
                 void this.pollServerInfo()
             }
+        }, 250)
+    }
+
+    protected scheduleLoad() {
+        this.loadScheduler = setInterval(() => {
+            this.usageHelper.updateMemoryUsage()
+            this.usageHelper.updateKlipperLoad()
+            this.usageHelper.updateSystemLoad()
 
             this.updateThrottleCooldown()
-        }, 250)
+        }, 1000)
     }
 
     protected scheduleModerate() {

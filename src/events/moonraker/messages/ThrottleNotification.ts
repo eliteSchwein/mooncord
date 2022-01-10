@@ -18,7 +18,7 @@ export class ThrottleNotification {
         'Temperature Limit Active',
         'Frequency Capped'
     ]
-    protected cooldownValue = 120 * 4
+    protected cooldownValue = 120
 
     public parse(message) {
         if(typeof(message.method) === 'undefined') { return }
