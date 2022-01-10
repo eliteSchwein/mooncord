@@ -28,6 +28,8 @@ export class UsageHelper {
 
         const percent = ((100 * systemLoad) / coreCount).toFixed(2)
 
+        console.log(percent)
+
         updateData('usage', {
             'system_load': percent
         })

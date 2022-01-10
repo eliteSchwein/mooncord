@@ -44565,7 +44565,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 4783:
+/***/ 384:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -49755,6 +49755,7 @@ class UsageHelper {
         const coreCount = findValue('machine_info.system_info.cpu_info.cpu_count');
         const systemLoad = findValue('state.system_stats.sysload');
         const percent = ((100 * systemLoad) / coreCount).toFixed(2);
+        console.log(percent);
         updateData('usage', {
             'system_load': percent
         });
@@ -49820,9 +49821,6 @@ class SubscriptionNotification {
             return;
         }
         updateData('state', param);
-        this.usageHelper.updateMemoryUsage();
-        this.usageHelper.updateKlipperLoad();
-        this.usageHelper.updateSystemLoad();
         if (typeof param.print_stats !== 'undefined') {
             void this.parsePrintStats(param.print_stats);
         }
@@ -50076,7 +50074,7 @@ class ThrottleNotification {
             'Temperature Limit Active',
             'Frequency Capped'
         ];
-        this.cooldownValue = 120 * 4;
+        this.cooldownValue = 120;
     }
     parse(message) {
         if (typeof (message.method) === 'undefined') {
@@ -50517,7 +50515,10 @@ class DatabaseUtil {
     }
 }
 
+;// CONCATENATED MODULE: external "timers"
+const external_timers_namespaceObject = require("timers");
 ;// CONCATENATED MODULE: ./src/helper/SchedulerHelper.ts
+
 
 
 
@@ -50533,13 +50534,15 @@ class SchedulerHelper {
         this.moonrakerClient = moonrakerClient;
         this.scheduleModerate();
         this.scheduleHigh();
+        this.scheduleLoad();
         this.scheduleStatus();
         this.usageHelper.updateDiskUsage();
     }
     clear() {
-        clearInterval(this.highScheduler);
-        clearInterval(this.moderateScheduler);
-        clearInterval(this.statusScheduler);
+        (0,external_timers_namespaceObject.clearInterval)(this.highScheduler);
+        (0,external_timers_namespaceObject.clearInterval)(this.moderateScheduler);
+        (0,external_timers_namespaceObject.clearInterval)(this.statusScheduler);
+        (0,external_timers_namespaceObject.clearInterval)(this.loadScheduler);
     }
     scheduleHigh() {
         this.highScheduler = setInterval(() => {
@@ -50553,8 +50556,15 @@ class SchedulerHelper {
             if (this.functionCache.poll_printer_info) {
                 void this.pollServerInfo();
             }
-            this.updateThrottleCooldown();
         }, 250);
+    }
+    scheduleLoad() {
+        this.loadScheduler = setInterval(() => {
+            this.usageHelper.updateMemoryUsage();
+            this.usageHelper.updateKlipperLoad();
+            this.usageHelper.updateSystemLoad();
+            this.updateThrottleCooldown();
+        }, 1000);
     }
     scheduleModerate() {
         this.moderateScheduler = setInterval(async () => {
@@ -51584,7 +51594,7 @@ return new B(c,{type:"multipart/form-data; boundary="+b})}
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(4783);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(384);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()
