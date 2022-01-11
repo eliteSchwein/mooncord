@@ -98,7 +98,7 @@ export class StatusHelper {
 
         functionCache = getEntry('function')
         
-        await waitUntil(() => !functionCache.status_in_query, { timeout: 20_000, intervalBetweenAttempts: 500 })
+        await waitUntil(() => !functionCache.status_in_query, { timeout: 40_000, intervalBetweenAttempts: 500 })
 
         updateData('function', {
             'status_in_query': true

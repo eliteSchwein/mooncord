@@ -49585,7 +49585,7 @@ class StatusHelper {
             logRegular(`klipper status changed to ${status}...`);
         }
         functionCache = getEntry('function');
-        await (0,async_wait_until_dist.waitUntil)(() => !functionCache.status_in_query, { timeout: 20000, intervalBetweenAttempts: 500 });
+        await (0,async_wait_until_dist.waitUntil)(() => !functionCache.status_in_query, { timeout: 40000, intervalBetweenAttempts: 500 });
         updateData('function', {
             'status_in_query': true
         });
