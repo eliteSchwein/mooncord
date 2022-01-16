@@ -48152,7 +48152,7 @@ class PageHelper {
         let entries = '';
         const max = this.configHelper.getEntriesPerPage() - 1;
         const rawEntries = [];
-        for (let i = (page * max) + page; i <= max + (page * max) + page; i++) {
+        for (let i = (page * max) + page; i <= Math.min(this.data.length - 1, max + (page * max) + page); i++) {
             const entry = this.data[i];
             rawEntries.push(entry);
             const label = parsePageData(this.pageLocale.entry_label, entry);
@@ -48161,7 +48161,7 @@ class PageHelper {
         return { 'entries': entries, 'raw_entries': rawEntries };
     }
     getLastPage() {
-        return Math.floor(this.data.length / this.configHelper.getEntriesPerPage());
+        return Math.ceil(this.data.length / this.configHelper.getEntriesPerPage());
     }
     getNewPage(pageUp, currentPage) {
         const lastPage = this.getLastPage();
