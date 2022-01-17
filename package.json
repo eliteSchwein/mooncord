@@ -32,7 +32,7 @@
     "bytes": "^3.1.1",
     "colorts": "^0.1.63",
     "eslint": "^8.6.0",
-    "eslint-config-galex": "^3.5.5",
+    "eslint-config-galex": "^3.6.1",
     "eslint-config-standard": "^16.0.3",
     "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-node": "^11.1.0",
