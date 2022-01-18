@@ -60,7 +60,7 @@ async function init() {
 
     schedulerHelper.init(moonrakerClient)
 
-    await statusHelper.update(null, discordClient)
+    await statusHelper.update(null, true, discordClient)
 }
 
 export function reloadCache() {
