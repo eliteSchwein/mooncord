@@ -28,7 +28,7 @@
     "@types/sharp": "^0.29.5",
     "@vercel/ncc": "^0.33.1",
     "async-wait-until": "2.0.12",
-    "axios": "^0.24.0",
+    "axios": "^0.25.0",
     "bytes": "^3.1.1",
     "colorts": "^0.1.63",
     "eslint": "^8.6.0",
