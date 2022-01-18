@@ -377,7 +377,7 @@
                 },
                 {
                     "name": "${embeds.fields.eta_print_time}",
-                    "value": "${formatDate:time.eta}"
+                    "value": "${timestamp:time.eta}"
                 }
             ]
         },
@@ -439,7 +439,7 @@
                 },
                 {
                     "name": "${embeds.fields.eta_print_time}",
-                    "value": "${formatDate:time.eta}"
+                    "value": "${timestamp:time.eta}"
                 },
                 {
                     "name": "${embeds.fields.print_progress}",

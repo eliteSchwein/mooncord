@@ -44889,9 +44889,25 @@ function parseCalculatedPlaceholder(fragments) {
     if (fragments[0] === 'formatTime') {
         return formatTime(findValue(fragments[1]));
     }
+    if (fragments[0] === 'timestamp') {
+        return formatTimestamp(findValue(fragments[1]));
+    }
 }
 function getObjectValue(obj, key) {
     return obj[key];
+}
+function formatTimestamp(seconds) {
+    if (isNaN(Number(seconds)) || !isFinite(seconds)) {
+        return 'N/A';
+    }
+    seconds = seconds.toFixed(0);
+    const currentDate = new Date();
+    const deltaStamp = (seconds * 1000) - currentDate.getTime();
+    const deltaHours = deltaStamp / (1000 * 3600);
+    if (deltaHours > 24) {
+        return `<t:${seconds}:f>`;
+    }
+    return `<t:${seconds}:t>`;
 }
 function formatTime(seconds) {
     if (isNaN(Number(seconds)) || !isFinite(seconds)) {
@@ -48136,7 +48152,7 @@ class PageHelper {
         let entries = '';
         const max = this.configHelper.getEntriesPerPage() - 1;
         const rawEntries = [];
-        for (let i = (page * max) + page; i <= max + (page * max) + page; i++) {
+        for (let i = (page * max) + page; i <= Math.min(this.data.length - 1, max + (page * max) + page); i++) {
             const entry = this.data[i];
             rawEntries.push(entry);
             const label = parsePageData(this.pageLocale.entry_label, entry);
@@ -48145,7 +48161,7 @@ class PageHelper {
         return { 'entries': entries, 'raw_entries': rawEntries };
     }
     getLastPage() {
-        return Math.floor(this.data.length / this.configHelper.getEntriesPerPage());
+        return Math.ceil(this.data.length / this.configHelper.getEntriesPerPage());
     }
     getNewPage(pageUp, currentPage) {
         const lastPage = this.getLastPage();
@@ -49585,7 +49601,7 @@ class StatusHelper {
             logRegular(`klipper status changed to ${status}...`);
         }
         functionCache = getEntry('function');
-        await (0,async_wait_until_dist.waitUntil)(() => !functionCache.status_in_query, { timeout: 20000, intervalBetweenAttempts: 500 });
+        await (0,async_wait_until_dist.waitUntil)(() => !functionCache.status_in_query, { timeout: 40000, intervalBetweenAttempts: 500 });
         updateData('function', {
             'status_in_query': true
         });

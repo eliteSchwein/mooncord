@@ -30,7 +30,7 @@ export class PageHelper {
         const max = this.configHelper.getEntriesPerPage() - 1
         const rawEntries = []
         for (let i = (page * max) + page;
-             i <= max + (page * max) + page;
+             i <= Math.min(this.data.length - 1, max + (page * max) + page);
              i++) {
             const entry = this.data[i]
             rawEntries.push(entry)
@@ -42,7 +42,7 @@ export class PageHelper {
     }
 
     protected getLastPage() {
-        return Math.floor(this.data.length / this.configHelper.getEntriesPerPage())
+        return Math.ceil(this.data.length / this.configHelper.getEntriesPerPage())
     }
 
     protected getNewPage(pageUp: boolean, currentPage: number) {

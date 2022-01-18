@@ -86,10 +86,31 @@ export function parseCalculatedPlaceholder(fragments) {
     if(fragments[0] === 'formatTime') {
         return formatTime(findValue(fragments[1]))
     }
+    if(fragments[0] === 'timestamp') {
+        return formatTimestamp(findValue(fragments[1]))
+    }
 }
 export function getObjectValue<T, K extends keyof T>(obj: T, key: K): T[K] {
     return obj[key];
 }
+
+export function formatTimestamp(seconds) {
+    if (isNaN(Number(seconds)) || !isFinite(seconds)) { return 'N/A' }
+
+    seconds = seconds.toFixed(0)
+
+    const currentDate = new Date()
+
+    const deltaStamp = (seconds * 1000) - currentDate.getTime()
+    const deltaHours = deltaStamp / (1000 * 3600)
+
+    if(deltaHours > 24) {
+        return `<t:${seconds}:f>`
+    }
+
+    return `<t:${seconds}:t>`
+}
+
 export function formatTime(seconds) {
     if (isNaN(Number(seconds)) || !isFinite(seconds)) {seconds = 0}
     let isNeg = false
