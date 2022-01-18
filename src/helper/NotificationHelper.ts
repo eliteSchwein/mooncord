@@ -81,8 +81,7 @@ export class NotificationHelper {
 
         try{
             await lastMessage.delete()
-        } catch (e) {
-            console.error(e)
+        } catch {
             return
         }
     }
