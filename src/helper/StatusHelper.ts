@@ -17,10 +17,11 @@ export class StatusHelper {
     protected discordClient: DiscordClient
     protected notificationHelper = new NotificationHelper()
 
-    public async update(status: string = null, discordClient: DiscordClient = null) {
+    public async update(status: string = null, bypassChecks: boolean = false, discordClient: DiscordClient = null) {
         if(typeof discordClient === null) {
             discordClient = app.getDiscordClient()
         }
+        this.bypassChecks = bypassChecks
         this.discordClient = discordClient
         let functionCache = getEntry('function')
         const serverInfo  = getEntry('server_info')
