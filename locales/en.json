@@ -309,6 +309,26 @@
         }
     },
     "commands": {
+        "preheat": {
+            "description": "Manage Admin Role or User.",
+            "command": "preheat",
+            "options": {
+                "profile": {
+                    "name": "profile",
+                    "description": "Preheat Profile.",
+                    "options": {
+                        "profile": {
+                            "name": "profile",
+                            "description": "Select a Profile."
+                        }
+                    }
+                },
+                "manual": {
+                    "name": "manual",
+                    "description": "Manual Select Temps."
+                }
+            }
+        },
         "admin": {
             "description": "Manage Admin Role or User.",
             "command": "admin",

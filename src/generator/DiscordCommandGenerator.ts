@@ -1,6 +1,6 @@
 import commandStructure from '../meta/command_structure.json'
 import commandOptionsTypes from '../meta/command_option_types.json'
-import {getEntry, getServiceChoices, setData} from "../utils/CacheUtil";
+import {getEntry, getHeaterArguments, getPreheatProfileChoices, getServiceChoices, setData} from "../utils/CacheUtil";
 import {LocaleHelper} from "../helper/LocaleHelper";
 
 export class DiscordCommandGenerator {
@@ -72,8 +72,15 @@ export class DiscordCommandGenerator {
 
         const optionMeta = meta[option]
 
+        console.log(optionMeta)
+
         if (typeof(optionMeta) === 'undefined') { return }
         if (Object.keys(optionMeta).length === 0) { return }
+
+        if(optionMeta === '${heaterArguments}') {
+            builder.options.push(getHeaterArguments())
+            return
+        }
 
         const optionBuilder = {
             type: commandOptionsTypes[optionMeta.type],
@@ -91,6 +98,8 @@ export class DiscordCommandGenerator {
                 optionBuilder.choices = this.localeHelper.getSystemComponents()
             } else if (optionMeta.choices === '${serviceChoices}') {
                 optionBuilder.choices = getServiceChoices()
+            } else if (optionMeta.choices === '${preheatProfileChoices}') {
+                optionBuilder.choices = getPreheatProfileChoices()
             } else {
                 optionBuilder.choices = this.buildChoices(optionMeta.choices, syntaxMeta.options[option].choices)
             }

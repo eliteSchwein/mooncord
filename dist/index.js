@@ -46325,6 +46325,16 @@ function getEntry(key) {
 function findValue(key) {
     return (0,lodash.get)(cacheData, key);
 }
+function getPreheatProfileChoices() {
+    const choices = [];
+    for (const profile in cacheData.config.presets) {
+        choices.push({
+            "name": profile,
+            "value": profile
+        });
+    }
+    return choices;
+}
 function getServiceChoices() {
     const localeHelper = new LocaleHelper();
     const choices = [];
@@ -46631,7 +46641,7 @@ class ConfigHelper {
 }
 
 ;// CONCATENATED MODULE: ./src/meta/command_structure.json
-const command_structure_namespaceObject = JSON.parse('{"admin":{"role":{"type":"subcommand","options":{"role":{"type":"role","required":true}}},"user":{"type":"subcommand","options":{"user":{"type":"user","required":true}}}},"dump":{"section":{"type":"string","required":true,"choices":[{"value":"database"},{"value":"cache"}]}},"reset_database":{},"editchannel":{"channel":{"type":"channel","required":false}},"emergency_stop":{},"fileinfo":{"file":{"type":"string","required":true}},"get_user_id":{"user":{"type":"user","required":false}},"restart":{"service":{"type":"string","required":true,"choices":"${serviceChoices}"}},"get_log":{"log_file":{"type":"string","required":true,"choices":[{"name":"Klipper","value":"klippy"},{"name":"Moonraker","value":"moonraker"},{"name":"MoonCord","value":"mooncord"}]}},"info":{},"listfiles":{},"notify":{},"printjob":{"pause":{"type":"subcommand"},"cancel":{"type":"subcommand"},"resume":{"type":"subcommand"},"start":{"type":"subcommand","options":{"file":{"type":"string","required":true}}}},"status":{},"systeminfo":{},"temp":{}}');
+const command_structure_namespaceObject = JSON.parse('{"preheat":{"profile":{"type":"subcommand","options":{"profile":{"type":"string","required":true,"choices":"${preheatProfileChoices}"}}},"manual":{"type":"subcommand","options":"${heaterArguments}"}},"admin":{"role":{"type":"subcommand","options":{"role":{"type":"role","required":true}}},"user":{"type":"subcommand","options":{"user":{"type":"user","required":true}}}},"dump":{"section":{"type":"string","required":true,"choices":[{"value":"database"},{"value":"cache"}]}},"reset_database":{},"editchannel":{"channel":{"type":"channel","required":false}},"emergency_stop":{},"fileinfo":{"file":{"type":"string","required":true}},"get_user_id":{"user":{"type":"user","required":false}},"restart":{"service":{"type":"string","required":true,"choices":"${serviceChoices}"}},"get_log":{"log_file":{"type":"string","required":true,"choices":[{"name":"Klipper","value":"klippy"},{"name":"Moonraker","value":"moonraker"},{"name":"MoonCord","value":"mooncord"}]}},"info":{},"listfiles":{},"notify":{},"printjob":{"pause":{"type":"subcommand"},"cancel":{"type":"subcommand"},"resume":{"type":"subcommand"},"start":{"type":"subcommand","options":{"file":{"type":"string","required":true}}}},"status":{},"systeminfo":{},"temp":{}}');
 ;// CONCATENATED MODULE: ./src/meta/command_option_types.json
 const command_option_types_namespaceObject = JSON.parse('{"subcommand":1,"subcommand_group":2,"string":3,"integer":4,"boolean":5,"user":6,"channel":7,"role":8,"mentionable":9,"number":10}');
 ;// CONCATENATED MODULE: ./src/generator/DiscordCommandGenerator.ts
@@ -46692,6 +46702,7 @@ class DiscordCommandGenerator {
             return;
         }
         const optionMeta = meta[option];
+        console.log(optionMeta);
         if (typeof (optionMeta) === 'undefined') {
             return;
         }
@@ -46713,6 +46724,9 @@ class DiscordCommandGenerator {
             }
             else if (optionMeta.choices === '${serviceChoices}') {
                 optionBuilder.choices = getServiceChoices();
+            }
+            else if (optionMeta.choices === '${preheatProfileChoices}') {
+                optionBuilder.choices = getPreheatProfileChoices();
             }
             else {
                 optionBuilder.choices = this.buildChoices(optionMeta.choices, syntaxMeta.options[option].choices);

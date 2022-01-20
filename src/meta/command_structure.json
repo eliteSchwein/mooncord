@@ -1,4 +1,20 @@
 {
+  "preheat": {
+    "profile": {
+      "type": "subcommand",
+      "options": {
+        "profile": {
+          "type": "string",
+          "required": true,
+          "choices": "${preheatProfileChoices}"
+        }
+      }
+    },
+    "manual": {
+      "type": "subcommand",
+      "options": "${heaterArguments}"
+    }
+  },
   "admin": {
     "role": {
       "type": "subcommand",

@@ -5,6 +5,7 @@ import * as util from "util";
 import {mergeDeep} from "../helper/DataHelper";
 import {get} from 'lodash'
 import { LocaleHelper } from "../helper/LocaleHelper";
+import {cache} from "sharp";
 
 const cacheData:any = {}
 const writeFile = util.promisify(fs.writeFile)
@@ -23,6 +24,22 @@ export function getEntry(key:string) {
 
 export function findValue(key:string) {
     return get(cacheData, key)
+}
+
+export function getHeaterArguments() {
+
+}
+
+export function getPreheatProfileChoices() {
+    const choices = []
+
+    for(const profile in cacheData.config.presets) {
+        choices.push({
+            "name": profile,
+            "value": profile
+        })
+    }
+    return choices
 }
 
 export function getServiceChoices() {

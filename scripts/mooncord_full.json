@@ -299,6 +299,12 @@
                 "guildadmin": false,
                 "users": [],
                 "roles": []
+            },
+            "preheat": {
+                "botadmin": false,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
             }
         }
     },
@@ -323,6 +329,18 @@
     },
     "discord": {
         "request_timeout": 30
+    },
+    "presets": {
+        "ABS": {
+            "extruder": 260,
+            "heater_bed": 100,
+            "gcode": []
+        },
+        "PLA": {
+            "extruder": 180,
+            "heater_bed": 60,
+            "gcode": []
+        }
     },
     "embed_meta": {
         "fileinfo": {
