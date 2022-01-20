@@ -293,6 +293,12 @@
                 "guildadmin": false,
                 "users": [],
                 "roles": []
+            },
+            "gcode_upload": {
+                "botadmin": false,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
             }
         }
     },

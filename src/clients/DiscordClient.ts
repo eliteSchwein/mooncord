@@ -17,9 +17,11 @@ import {StatusHelper} from "../helper/StatusHelper";
 import {MetadataHelper} from "../helper/MetadataHelper";
 import {updateTimes} from "../helper/TimeHelper";
 import {updateLayers} from "../helper/LayerHelper";
+import {GCodeUploadHandler} from "../events/discord/GCodeUploadHandler";
 
 let interactionHandler: InteractionHandler
 let debugHandler: DebugHandler
+let gcodeUploadHandler: GCodeUploadHandler
 
 export class DiscordClient {
     protected config = new ConfigHelper()
@@ -109,6 +111,7 @@ export class DiscordClient {
         logRegular('Register Events...')
         interactionHandler = new InteractionHandler(this.discordClient)
         debugHandler = new DebugHandler(this.discordClient)
+        gcodeUploadHandler = new GCodeUploadHandler(this.discordClient)
     }
 
     public generateCaches() {
