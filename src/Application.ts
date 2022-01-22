@@ -149,6 +149,11 @@ function initCache() {
         'throttle_states': []
     })
 
+    logRegular('init MetaData Cache...')
+    setData('meta_data', {
+        'filename': ''
+    })
+
     configHelper.loadCache()
     localeHelper.loadCache()
     embedHelper.loadCache()
