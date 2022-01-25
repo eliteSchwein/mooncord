@@ -15,8 +15,6 @@ import {DiscordStatusGenerator} from "../generator/DiscordStatusGenerator";
 import {LocaleHelper} from "../helper/LocaleHelper";
 import {StatusHelper} from "../helper/StatusHelper";
 import {MetadataHelper} from "../helper/MetadataHelper";
-import {updateTimes} from "../helper/TimeHelper";
-import {updateLayers} from "../helper/LayerHelper";
 import {GCodeUploadHandler} from "../events/discord/GCodeUploadHandler";
 
 let interactionHandler: InteractionHandler

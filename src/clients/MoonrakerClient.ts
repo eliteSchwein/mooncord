@@ -85,13 +85,14 @@ export class MoonrakerClient {
 
         this.registerEvents()
 
+        App.reloadCache()
+
         await this.sendInitCommands()
 
         this.changeLogPath()
 
-        App.reloadCache()
         await App.reconnectDiscord()
-        await App.reloadCache()
+        await App.restartScheduler()
         await statusHelper.update()
     }
 

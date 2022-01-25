@@ -46189,7 +46189,6 @@ __nccwpck_require__.d(__webpack_exports__, {
   "reconnectDiscord": () => (/* binding */ reconnectDiscord),
   "reconnectMoonraker": () => (/* binding */ reconnectMoonraker),
   "reloadCache": () => (/* binding */ reloadCache),
-  "restartBot": () => (/* binding */ restartBot),
   "restartScheduler": () => (/* binding */ restartScheduler)
 });
 
@@ -51815,7 +51814,11 @@ class StateUpdateNotification {
             });
             logEmpty();
             logSuccess('klipper is ready...');
-            await restartBot();
+            reloadCache();
+            await this.moonrakerClient.sendInitCommands();
+            await reconnectDiscord();
+            await restartScheduler();
+            await this.statusHelper.update();
         }
     }
 }
@@ -52188,11 +52191,11 @@ class MoonrakerClient {
         logSuccess('Reconnected to MoonRaker');
         this.reconnectAttempt = 1;
         this.registerEvents();
+        reloadCache();
         await this.sendInitCommands();
         this.changeLogPath();
-        reloadCache();
         await reconnectDiscord();
-        await reloadCache();
+        await restartScheduler();
         await statusHelper.update();
     }
     async connect() {
@@ -52588,13 +52591,6 @@ async function reconnectMoonraker() {
     schedulerHelper.clear();
     moonrakerClient.close();
     await moonrakerClient.connect();
-}
-async function restartBot() {
-    logEmpty();
-    logSuccess('restart Bot...');
-    schedulerHelper.clear();
-    moonrakerClient.close();
-    await init();
 }
 function initCache() {
     logRegular('load Package Cache...');
