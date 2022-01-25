@@ -92,16 +92,6 @@ export async function reconnectMoonraker() {
     await moonrakerClient.connect()
 }
 
-export async function restartBot() {
-    logEmpty()
-    logSuccess('restart Bot...')
-
-    schedulerHelper.clear()
-    moonrakerClient.close()
-
-    await init()
-}
-
 function initCache() {
     logRegular('load Package Cache...')
     setData('package_config', packageConfig)
