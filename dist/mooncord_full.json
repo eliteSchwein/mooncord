@@ -293,6 +293,12 @@
                 "guildadmin": false,
                 "users": [],
                 "roles": []
+            },
+            "gcode_upload": {
+                "botadmin": false,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
             }
         }
     },
@@ -377,7 +383,7 @@
                 },
                 {
                     "name": "${embeds.fields.eta_print_time}",
-                    "value": "${formatDate:time.eta}"
+                    "value": "${timestamp:time.eta}"
                 }
             ]
         },
@@ -439,7 +445,7 @@
                 },
                 {
                     "name": "${embeds.fields.eta_print_time}",
-                    "value": "${formatDate:time.eta}"
+                    "value": "${timestamp:time.eta}"
                 },
                 {
                     "name": "${embeds.fields.print_progress}",

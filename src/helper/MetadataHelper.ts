@@ -1,6 +1,6 @@
 import { getMoonrakerClient } from "../Application";
 import { MoonrakerClient } from "../clients/MoonrakerClient";
-import { setData } from "../utils/CacheUtil";
+import {getEntry, setData, updateData} from "../utils/CacheUtil";
 import {ConfigHelper} from "./ConfigHelper";
 import path from "path";
 import {MessageAttachment} from "discord.js";
@@ -36,12 +36,23 @@ export class MetadataHelper {
         const metaData = await this.getMetaData(filename)
 
         setData('meta_data', metaData)
+        updateData('meta_data', filename)
 
         updateTimes()
         updateLayers()
     }
 
     public async getThumbnail(filename: string) {
+        const metaDataCache = getEntry('meta_data')
+
+        if(metaDataCache.filename === filename &&
+            typeof metaDataCache.thumbnail !== 'undefined') {
+
+            const thumbnailBuffer = Buffer.from(metaDataCache.thumbnail, 'base64')
+
+            return new MessageAttachment(thumbnailBuffer, 'thumbnail.png')
+        }
+
         const metaData = await this.getMetaData(filename)
         const pathFragments = filename.split('/').slice(0, -1)
         const rootPath = (pathFragments.length > 0) ? `${pathFragments.join('/')}/` : ''
@@ -50,6 +61,7 @@ export class MetadataHelper {
         const url = this.configHelper.getMoonrakerUrl()
 
         if(typeof metaData === 'undefined') { return placeholder }
+        if(typeof metaData.thumbnails === 'undefined') { return placeholder }
 
         const thumbnailFile = metaData.thumbnails.reduce((prev, current) => { return (prev.size > current.size) ? prev : current})
         const thumbnailPath = thumbnailFile.relative_path
@@ -57,6 +69,7 @@ export class MetadataHelper {
         let thumbnail: string
         try {
             thumbnail = await this.getBase64(thumbnailURL)
+            updateData('meta_data', {thumbnail})
             logRegular(`retrieved Thumbnail for ${filename}`)
         } catch (error) {
             const reason = error as string

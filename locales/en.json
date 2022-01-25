@@ -214,7 +214,7 @@
             "no_data": "There was no Data found for `${component}`!",
             "restart_failed": "The Restart of `${service}` failed: `${reason}`",
             "no_files_found": "There are currently no Files!",
-            "no_permission": "You dont have Permission, `${username}`",
+            "no_permission": "You dont have the Permission for this Action, `${username}`",
             "not_ready": "This Command is not ready, `${username}`!",
             "not_textchannel": "`${channel}` is not a Text Channel, `${username}`!",
             "execute_error": "Error: `${gcode_feedback}`",

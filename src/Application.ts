@@ -60,7 +60,7 @@ async function init() {
 
     schedulerHelper.init(moonrakerClient)
 
-    await statusHelper.update(null, discordClient)
+    await statusHelper.update(null, true, discordClient)
 }
 
 export function reloadCache() {
@@ -90,16 +90,6 @@ export async function reconnectMoonraker() {
     moonrakerClient.close()
 
     await moonrakerClient.connect()
-}
-
-export async function restartBot() {
-    logEmpty()
-    logSuccess('restart Bot...')
-
-    schedulerHelper.clear()
-    moonrakerClient.close()
-
-    await init()
 }
 
 function initCache() {
@@ -147,6 +137,11 @@ function initCache() {
     setData('throttle', {
         'cooldown': 0,
         'throttle_states': []
+    })
+
+    logRegular('init MetaData Cache...')
+    setData('meta_data', {
+        'filename': ''
     })
 
     configHelper.loadCache()

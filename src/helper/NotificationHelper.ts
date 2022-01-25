@@ -74,8 +74,7 @@ export class NotificationHelper {
         const lastMessage = messages.first()
 
         if (typeof this.locale === 'undefined') { return }
-        if (lastMessage.author.id === this.discordClient.getClient().user.id) { return }
-        if (lastMessage.deleted) { return }
+        if (lastMessage.author.id !== this.discordClient.getClient().user.id) { return }
         if (lastMessage.embeds.length === 0) { return }
         if (typeof(lastMessage.embeds[0]) === 'undefined') { return }
         if (lastMessage.embeds[0].title !== this.locale.embeds.printjob_printing.title) { return }

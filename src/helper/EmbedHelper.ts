@@ -127,11 +127,11 @@ export class EmbedHelper {
         }
 
         if(typeof embedData.author !== 'undefined') {
-            embed.setAuthor(embedData.author)
+            embed.setAuthor({'name': embedData.author})
         }
 
         if(typeof embedData.footer !== 'undefined') {
-            embed.setFooter(embedData.footer)
+            embed.setFooter({'text': embedData.footer})
         }
 
         if(typeof thumbnail !== 'undefined') {
