@@ -31,7 +31,7 @@
     "axios": "^0.25.0",
     "bytes": "^3.1.1",
     "colorts": "^0.1.63",
-    "eslint": "^8.7.0",
+    "eslint": "^8.9.0",
     "eslint-config-galex": "^3.6.2",
     "eslint-config-standard": "^16.0.3",
     "eslint-plugin-import": "^2.25.4",
