@@ -16,28 +16,6 @@ MCPATH="$( pwd -P )"
 MCCONFIGPATH="/home/$(whoami)/klipper_config"
 MCSERVICENAME="MoonCord"
 
-install_packages()
-{
-    status_msg "Update package data"
-    sudo apt update
-
-    status_msg "Install needed packages"
-    sudo apt-get -y install nano git
-
-    if ! command -v node -v >/dev/null 2>&1
-    then
-        status_msg "Add NodeJS 16.x Repo"
-        curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
-
-        status_msg "Install NodeJS 16.X"
-        sudo apt-get install -y nodejs
-    fi
-
-    status_msg "Install Dependencies"
-    sudo npm i -g npm@latest
-    npm ci --only=prod
-}
-
 install_systemd_service()
 {
     status_msg "Installing MoonCord unit file"
@@ -65,7 +43,6 @@ modify_user()
 
 setup(){
     locate_config
-    generate_config
 }
 
 
@@ -78,21 +55,9 @@ locate_config()
     fi
 }
 
-generate_config() {
-    status_msg "Generate Config"
-    cp $SCRIPTPATH/mooncord.json $MCCONFIGPATH/mooncord.json
-    sed "s/MC_SERVICE/$MCSERVICENAME/g" $MCCONFIGPATH/mooncord.json
-}
-
-open_config() {
-    status_msg "Open Config"
-    sleep 1
-    nano $MCCONFIGPATH/mooncord.json
-}
-
-start_MoonCord() {
-    ok_msg "Start MoonCord, please make sure you configured the Bot correctly!"
-    sudo systemctl start $MCSERVICENAME.service
+restart_MoonCord() {
+    ok_msg "Restart MoonCord!"
+    sudo systemctl restart $MCSERVICENAME.service
 }
 
 warn_msg(){
@@ -154,9 +119,6 @@ do
     esac    
 done
 
-install_packages
-modify_user
 setup
-open_config
 install_systemd_service
-start_MoonCord
+restart_MoonCord
