@@ -24,7 +24,7 @@
   "homepage": "https://github.com/eliteSchwein/mooncord#readme",
   "devDependencies": {
     "@types/fluent-ffmpeg": "^2.1.20",
-    "@types/node": "^17.0.10",
+    "@types/node": "^17.0.21",
     "@types/sharp": "^0.29.5",
     "@vercel/ncc": "^0.33.1",
     "async-wait-until": "2.0.12",
