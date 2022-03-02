@@ -50,6 +50,6 @@
   "dependencies": {
     "@ffmpeg-installer/ffmpeg": "^1.1.0",
     "discord.js": "13.5.0",
-    "sharp": "^0.29.3"
+    "sharp": "^0.30.2"
   }
 }
