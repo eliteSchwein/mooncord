@@ -29,7 +29,7 @@ curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
 status_msg "Install NodeJS 16.X"
 sudo apt-get install -y nodejs
 
-status_msg "Rebuild NPM"
+status_msg "Rebuild NPM, this will take some time please wait....."
 npm rebuild
 sudo npm rebuild
 sudo npm rebuild -g
@@ -37,7 +37,7 @@ sudo npm rebuild -g
 status_msg "Update NPM"
 sudo npm install -g npm@latest node-gyp@latest
 
-status_msg "Install Dependencies"
+status_msg "Install Dependencies, this will take some time please wait....."
 npm ci --only=prod
 
 ok_msg "Please regenerate the Service with bash scripts/generateService.sh, if you used a custom path or service suffix, the arguments from the install script work also on the generate Service script"

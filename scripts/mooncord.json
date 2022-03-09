@@ -6,10 +6,13 @@
     },
     "permission": {
         "controllers": {
-            "users": "MC_CONTROLLER"
+            "users": ""
         }
     },
     "webcam": {
         "url": "MC_WEBCAM_URL"
+    },
+    "tmp": {
+        "controller_tag": "MC_CONTROLLER"
     }
 }
