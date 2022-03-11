@@ -16,10 +16,12 @@ import {LocaleHelper} from "../helper/LocaleHelper";
 import {StatusHelper} from "../helper/StatusHelper";
 import {MetadataHelper} from "../helper/MetadataHelper";
 import {GCodeUploadHandler} from "../events/discord/GCodeUploadHandler";
+import {VerifyHandler} from "../events/discord/VerifyHandler";
 
 let interactionHandler: InteractionHandler
 let debugHandler: DebugHandler
 let gcodeUploadHandler: GCodeUploadHandler
+let verifyHandler: VerifyHandler
 
 export class DiscordClient {
     protected config = new ConfigHelper()
@@ -110,6 +112,7 @@ export class DiscordClient {
         interactionHandler = new InteractionHandler(this.discordClient)
         debugHandler = new DebugHandler(this.discordClient)
         gcodeUploadHandler = new GCodeUploadHandler(this.discordClient)
+        verifyHandler = new VerifyHandler(this.discordClient)
     }
 
     public generateCaches() {

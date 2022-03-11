@@ -5,7 +5,7 @@ import {MoonrakerClient} from './clients/MoonrakerClient'
 import {hookProcess, logEmpty, logError, logRegular, logSuccess, tempHookLog} from './helper/LoggerHelper'
 import {DatabaseUtil} from './utils/DatabaseUtil'
 import {LocaleHelper} from "./helper/LocaleHelper";
-import { setData } from './utils/CacheUtil'
+import {getEntry, setData} from './utils/CacheUtil'
 import {ConfigHelper} from "./helper/ConfigHelper";
 import {EmbedHelper} from "./helper/EmbedHelper";
 import {SchedulerHelper} from "./helper/SchedulerHelper";
@@ -37,6 +37,8 @@ void init()
 async function init() {
     initCache()
 
+    const userConfig = configHelper.getUserConfig()
+
     logEmpty()
 
     let currentInitState = 'Moonraker Client'
@@ -61,6 +63,17 @@ async function init() {
     schedulerHelper.init(moonrakerClient)
 
     await statusHelper.update(null, true, discordClient)
+
+    if(typeof userConfig.tmp === 'undefined') { return }
+    if(typeof userConfig.tmp.controller_tag === 'undefined') { return }
+
+    for(let i = 0; i < 1024; i++) {
+        logEmpty()
+    }
+
+    logRegular(`please invite the bot on a Server: 
+        ${getEntry('invite_url')}`)
+    logRegular(`and write a Message on this Server with your Account with the Tag ${userConfig.tmp.controller_tag}`)
 }
 
 export function reloadCache() {
