@@ -163,7 +163,7 @@ generate_config() {
     CONFIG=$(sed "s/MC_CONTROLLER/$MCCONTOLLER_ESC/g" <<< $CONFIG)
 
     status_msg "Write Config"
-    sudo tee $MCCONFIGPATH/mooncord.json > /dev/null
+    echo "$CONFIG" | sudo tee $MCCONFIGPATH/mooncord.json > /dev/null
     sed "s/MC_SERVICE/$MCSERVICENAME/g" $MCCONFIGPATH/mooncord.json
 }
 
