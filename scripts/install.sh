@@ -66,7 +66,7 @@ questions()
 
     status_msg "Please enter your Discord Tag"
     while true; do
-        read -p "$cyan Tag: $default" discord_tag
+        read -p "$cyan Tag (example#0001): $default" discord_tag
         case $discord_tag in
             "") warn_msg "Please Enter your Discord Tag (example#123)";;
             * ) MCCONTROLLER="$discord_tag"; break;;
@@ -167,6 +167,11 @@ generate_config() {
     sed "s/MC_SERVICE/$MCSERVICENAME/g" $MCCONFIGPATH/mooncord.json
 }
 
+verify_Controller() {
+    ok_msg "Temporary Start MoonCord for the Controller verification"
+    npm start $MCCONFIGPATH
+}
+
 start_MoonCord() {
     ok_msg "Start MoonCord, please make sure you configured the Bot correctly!"
     sudo systemctl start $MCSERVICENAME.service
@@ -240,5 +245,6 @@ questions
 install_packages
 modify_user
 setup
+verify_Controller
 install_systemd_service
 start_MoonCord

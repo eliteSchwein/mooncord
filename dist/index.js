@@ -46234,7 +46234,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 1667:
+/***/ 170:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -51492,7 +51492,61 @@ class GCodeUploadHandler {
     }
 }
 
+;// CONCATENATED MODULE: ./src/events/discord/VerifyHandler.ts
+
+
+class VerifyHandler {
+    constructor(discordClient) {
+        this.configHelper = new ConfigHelper();
+        this.userConfig = this.configHelper.getUserConfig();
+        discordClient.on("messageCreate", async (message) => {
+            if (message.author.id === discordClient.user.id) {
+                return;
+            }
+            if (typeof this.userConfig.tmp === 'undefined') {
+                return;
+            }
+            if (typeof this.userConfig.tmp.controller_tag === 'undefined') {
+                return;
+            }
+            const controllerTag = this.userConfig.tmp.controller_tag;
+            if (message.author.tag !== controllerTag) {
+                logError(`${message.author.tag} is not matching the Controller Tag ${controllerTag}!!!`);
+                return;
+            }
+            const controllerId = message.author.id;
+            if (this.userConfig.permission.controllers.users === controllerId ||
+                this.userConfig.permission.controllers.users.includes(controllerId)) {
+                logError(`${message.author.tag} is already a Controller!!!`);
+                await message.reply('You are already a Controller');
+                this.writeConfig();
+                return;
+            }
+            if (this.userConfig.permission.controllers.users === '') {
+                logRegular(`write ${message.author.tag}'s ID as Controller (${controllerId})...`);
+                this.userConfig.permission.controllers.users = controllerId;
+            }
+            else {
+                logRegular(`add ${message.author.tag}'s ID into the Controller List (${controllerId})...`);
+                const oldControllerId = this.userConfig.permission.controllers.users;
+                this.userConfig.permission.controllers.users = [oldControllerId];
+                this.userConfig.permission.controllers.users.push(controllerId);
+            }
+            await message.reply('You have now the Controller Permission over me');
+            this.writeConfig();
+        });
+    }
+    writeConfig() {
+        delete this.userConfig.tmp;
+        logRegular('writing User Config...');
+        this.configHelper.writeUserConfig(this.userConfig);
+        logSuccess('stopping MoonCord...');
+        process.exit(0);
+    }
+}
+
 ;// CONCATENATED MODULE: ./src/clients/DiscordClient.ts
+
 
 
 
@@ -51510,6 +51564,7 @@ class GCodeUploadHandler {
 let interactionHandler;
 let debugHandler;
 let gcodeUploadHandler;
+let verifyHandler;
 class DiscordClient {
     constructor() {
         this.config = new ConfigHelper();
@@ -51577,6 +51632,7 @@ class DiscordClient {
         interactionHandler = new InteractionHandler(this.discordClient);
         debugHandler = new DebugHandler(this.discordClient);
         gcodeUploadHandler = new GCodeUploadHandler(this.discordClient);
+        verifyHandler = new VerifyHandler(this.discordClient);
     }
     generateCaches() {
         logRegular('Generate Caches...');
@@ -52615,6 +52671,7 @@ const statusHelper = new StatusHelper();
 void init();
 async function init() {
     initCache();
+    const userConfig = configHelper.getUserConfig();
     logEmpty();
     let currentInitState = 'Moonraker Client';
     try {
@@ -52633,6 +52690,18 @@ async function init() {
     logRegular('Register Scheduler...');
     schedulerHelper.init(moonrakerClient);
     await statusHelper.update(null, true, discordClient);
+    if (typeof userConfig.tmp === 'undefined') {
+        return;
+    }
+    if (typeof userConfig.tmp.controller_tag === 'undefined') {
+        return;
+    }
+    for (let i = 0; i < 1024; i++) {
+        logEmpty();
+    }
+    logRegular(`please invite the bot on a Server: 
+        ${getEntry('invite_url')}`);
+    logRegular(`and write a Message on this Server with your Account with the Tag ${userConfig.tmp.controller_tag}`);
 }
 function reloadCache() {
     logEmpty();
@@ -53675,7 +53744,7 @@ module.exports = JSON.parse('{"application/1d-interleaved-parityfec":{"source":"
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(1667);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(170);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()
