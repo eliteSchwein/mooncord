@@ -100,7 +100,7 @@ install_packages()
             read -p "$cyan[Y/N]: $default" yn
             case $yn in
                 [Yy]* ) bash scripts/migrateNode.sh; break;;
-                [Nn]* ) break;;
+                [Nn]* ) status_msg "Install Dependencies, this will take some time please wait.....";npm ci --only=prod;break;;
                 * ) warn_msg "Please answer [Y/y] for yes and [N/n] for no.";;
             esac
         done
