@@ -165,6 +165,7 @@ generate_config() {
     status_msg "Write Config"
     echo "$CONFIG" | sudo tee $MCCONFIGPATH/mooncord.json > /dev/null
     sed "s/MC_SERVICE/$MCSERVICENAME/g" $MCCONFIGPATH/mooncord.json
+    sudo chown $(whoami) $MCCONFIGPATH/mooncord.json
 }
 
 verify_Controller() {
