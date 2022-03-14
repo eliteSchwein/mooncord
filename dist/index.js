@@ -49490,7 +49490,7 @@ class EmbedHelper {
         }
         return embed.title;
     }
-    async generateEmbed(embedID, providedPlaceholders = null, providedFields = null) {
+    async generateEmbed(embedID, providedPlaceholders = null, providedFields = null, providedValues = null) {
         const embed = new external_discord_js_namespaceObject.MessageEmbed();
         const embedDataUnformatted = { ...this.getEmbeds()[embedID] };
         if (embedDataUnformatted.show_versions) {
@@ -49504,6 +49504,9 @@ class EmbedHelper {
         }
         if (providedFields !== null) {
             mergeDeep(embedDataUnformatted, { fields: providedFields });
+        }
+        if (providedValues !== null) {
+            mergeDeep(embedDataUnformatted, providedValues);
         }
         let embedRaw = JSON.stringify(embedDataUnformatted);
         const placeholders = embedRaw.matchAll(/(\${).*?}/g);
@@ -51845,6 +51848,7 @@ class InviteMessage {
 
 
 
+
 class BroadcastMessage {
     constructor() {
         this.embedHelper = new EmbedHelper();
@@ -51854,9 +51858,13 @@ class BroadcastMessage {
         if (!message.startsWith('mooncord.broadcast')) {
             return;
         }
-        const notificationMessage = message.slice(19);
+        const defaultColor = findValue('embeds.notification.color');
+        const notificationMessageRaw = message.slice(19);
+        const notificationMessageFragments = notificationMessageRaw.split('COLOR:');
+        const notificationMessage = notificationMessageFragments[0];
+        const color = ((notificationMessageFragments.length > 1) ? `#${notificationMessageFragments[1]}` : defaultColor);
         logRegular(`Broadcast Message: ${notificationMessage}`);
-        const embed = await this.embedHelper.generateEmbed('notification', { 'message': notificationMessage });
+        const embed = await this.embedHelper.generateEmbed('notification', { 'message': notificationMessage }, null, { color });
         this.notificationHelper.broadcastMessage(embed.embed);
     }
 }
