@@ -72,14 +72,14 @@ export class DiscordCommandGenerator {
 
         const optionMeta = meta[option]
 
-        console.log(optionMeta)
-
         if (typeof(optionMeta) === 'undefined') { return }
         if (Object.keys(optionMeta).length === 0) { return }
 
-        if(optionMeta === '${heaterArguments}') {
-            builder.options.push(getHeaterArguments())
-            return
+        if(optionMeta.options === '${heaterArguments}') {
+            syntaxMeta.options[option].options = getHeaterArguments()
+            messageMeta.options[option].options = getHeaterArguments()
+            meta[option].options = getHeaterArguments()
+            optionMeta.options = getHeaterArguments()
         }
 
         const optionBuilder = {
@@ -88,7 +88,9 @@ export class DiscordCommandGenerator {
             description: messageMeta.options[option].description,
             options: [],
             required: false,
-            choices: []
+            choices: [],
+            min_value: syntaxMeta.options[option].min_value,
+            max_value: syntaxMeta.options[option].max_value
         }
 
         optionBuilder.required = optionMeta.required

@@ -1,6 +1,6 @@
 import * as fs from "fs";
 import * as path from "path";
-import {logSuccess} from "../helper/LoggerHelper";
+import {logRegular, logSuccess} from "../helper/LoggerHelper";
 import * as util from "util";
 import {mergeDeep} from "../helper/DataHelper";
 import {get} from 'lodash'
@@ -27,7 +27,31 @@ export function findValue(key:string) {
 }
 
 export function getHeaterArguments() {
+    const heaters = cacheData.state.heaters.available_heaters
+    const options = {}
+    let {heater} = cacheData.locale.commands.preheat.options.manual.options
 
+    if(typeof heater === 'undefined') { heater = {'description': '${heater}'}}
+
+    const {description} = heater
+
+    for(const heater of heaters) {
+        const heaterData = cacheData.state.configfile.config[heater]
+        const heaterMaxTemp = Number(heaterData.max_temp)
+        const heaterMinTemp = Number(heaterData.min_temp)
+        options[heater] = {
+            'type': 'integer',
+            'name': heater,
+            'description': description.replace(/(\${heater})/g, heater),
+            'required': false,
+            'choices': [],
+            'options': [],
+            'min_value': heaterMinTemp,
+            'max_value': heaterMaxTemp
+        }
+    }
+
+    return options
 }
 
 export function getPreheatProfileChoices() {

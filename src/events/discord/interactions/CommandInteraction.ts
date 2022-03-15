@@ -21,6 +21,7 @@ import {FileInfoCommand} from "./commands/FileInfoCommand";
 import {PrintjobCommand} from "./commands/PrintjobCommand";
 import {SystemInfoCommand} from "./commands/SystemInfoCommand";
 import {AdminCommand} from "./commands/AdminCommand";
+import {PreheatCommand} from "./commands/PreheatCommand";
 
 export class CommandInteraction {
     protected config = new ConfigHelper()
@@ -70,6 +71,7 @@ export class CommandInteraction {
         void new FileListCommand(interaction, commandId)
         void new PrintjobCommand(interaction, commandId)
         void new SystemInfoCommand(interaction, commandId)
+        void new PreheatCommand(interaction, commandId)
 
         await sleep(2000)
 
