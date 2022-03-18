@@ -305,6 +305,12 @@
                 "guildadmin": false,
                 "users": [],
                 "roles": []
+            },
+            "pidtune": {
+                "botadmin": false,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
             }
         }
     },

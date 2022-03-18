@@ -156,6 +156,8 @@
     },
     "messages": {
         "answers": {
+            "pidtune_done": "PID Tune for `${heater}` finished, `${username}`!",
+            "pidtune_start": "Starting PID Tune for `${heater}` at `${temp}°C`, `${username}`!",
             "preheat_preset": "Preheating Preset `${preset}` now, `${username}`!",
             "preheat_manual": "Heating up: `${heater_list}`, `${username}`!",
             "update_request": "System Update requested, `${username}`!",
@@ -207,6 +209,7 @@
             "reconnect": "MoonCord will reconnect to Moonraker and Discord, `${username}`!"
         },
         "errors": {
+            "pidtune_fail": "PID Tune failed for `${heater}`, `${username}`!\nReason:\n```${reason}```",
             "preheat_below_min": "Target Heater Temp `${temp}C°` is below the minimum Temperature `${min_temp}C°`, `${username}`!",
             "preheat_over_max": "Target Heater Temp `${temp}C°` is over the maximum Temperature `${max_temp}C°`, `${username}`!",
             "preheat_missing_arguments": "Heater Arguments missing, please add atleast one Heater Argument, `${username}`!",
@@ -314,6 +317,20 @@
         }
     },
     "commands": {
+        "pidtune": {
+            "description": "start a PID Tune for a Heater.",
+            "command": "pidtune",
+            "options": {
+                "heater": {
+                    "name": "heater",
+                    "description": "Specifies the Heater."
+                },
+                "temperature": {
+                    "name": "temperature",
+                    "description": "Set the Tune Temperature."
+                }
+            }
+        },
         "preheat": {
             "description": "Manage Admin Role or User.",
             "command": "preheat",

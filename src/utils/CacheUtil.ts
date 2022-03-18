@@ -54,6 +54,19 @@ export function getHeaterArguments() {
     return options
 }
 
+export function getHeaterChoices() {
+    const choices = []
+    const heaters = cacheData.state.heaters.available_heaters
+
+    for(const heater of heaters) {
+        choices.push({
+            "name": heater,
+            "value": heater
+        })
+    }
+    return choices
+}
+
 export function getPreheatProfileChoices() {
     const choices = []
 

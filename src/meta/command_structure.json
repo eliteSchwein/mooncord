@@ -35,6 +35,17 @@
       "options": "${heaterArguments}"
     }
   },
+  "pidtune": {
+    "heater": {
+      "type": "string",
+      "required": true,
+      "choices": "${heaterChoices}"
+    },
+    "temperature": {
+      "type": "integer",
+      "required": true
+    }
+  },
   "dump": {
     "section": {
       "type": "string",

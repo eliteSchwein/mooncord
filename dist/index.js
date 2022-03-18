@@ -46174,7 +46174,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 149:
+/***/ 660:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -46418,6 +46418,17 @@ function getHeaterArguments() {
         };
     }
     return options;
+}
+function getHeaterChoices() {
+    const choices = [];
+    const heaters = cacheData.state.heaters.available_heaters;
+    for (const heater of heaters) {
+        choices.push({
+            "name": heater,
+            "value": heater
+        });
+    }
+    return choices;
 }
 function getPreheatProfileChoices() {
     const choices = [];
@@ -46735,7 +46746,7 @@ class ConfigHelper {
 }
 
 ;// CONCATENATED MODULE: ./src/meta/command_structure.json
-const command_structure_namespaceObject = JSON.parse('{"admin":{"role":{"type":"subcommand","options":{"role":{"type":"role","required":true}}},"user":{"type":"subcommand","options":{"user":{"type":"user","required":true}}}},"preheat":{"preset":{"type":"subcommand","options":{"preset":{"type":"string","required":true,"choices":"${preheatProfileChoices}"}}},"manual":{"type":"subcommand","options":"${heaterArguments}"}},"dump":{"section":{"type":"string","required":true,"choices":[{"value":"database"},{"value":"cache"}]}},"reset_database":{},"editchannel":{"channel":{"type":"channel","required":false}},"emergency_stop":{},"fileinfo":{"file":{"type":"string","required":true}},"get_user_id":{"user":{"type":"user","required":false}},"restart":{"service":{"type":"string","required":true,"choices":"${serviceChoices}"}},"get_log":{"log_file":{"type":"string","required":true,"choices":[{"name":"Klipper","value":"klippy"},{"name":"Moonraker","value":"moonraker"},{"name":"MoonCord","value":"mooncord"}]}},"info":{},"listfiles":{},"notify":{},"printjob":{"pause":{"type":"subcommand"},"cancel":{"type":"subcommand"},"resume":{"type":"subcommand"},"start":{"type":"subcommand","options":{"file":{"type":"string","required":true}}}},"status":{},"systeminfo":{},"temp":{}}');
+const command_structure_namespaceObject = JSON.parse('{"admin":{"role":{"type":"subcommand","options":{"role":{"type":"role","required":true}}},"user":{"type":"subcommand","options":{"user":{"type":"user","required":true}}}},"preheat":{"preset":{"type":"subcommand","options":{"preset":{"type":"string","required":true,"choices":"${preheatProfileChoices}"}}},"manual":{"type":"subcommand","options":"${heaterArguments}"}},"pidtune":{"heater":{"type":"string","required":true,"choices":"${heaterChoices}"},"temperature":{"type":"integer","required":true}},"dump":{"section":{"type":"string","required":true,"choices":[{"value":"database"},{"value":"cache"}]}},"reset_database":{},"editchannel":{"channel":{"type":"channel","required":false}},"emergency_stop":{},"fileinfo":{"file":{"type":"string","required":true}},"get_user_id":{"user":{"type":"user","required":false}},"restart":{"service":{"type":"string","required":true,"choices":"${serviceChoices}"}},"get_log":{"log_file":{"type":"string","required":true,"choices":[{"name":"Klipper","value":"klippy"},{"name":"Moonraker","value":"moonraker"},{"name":"MoonCord","value":"mooncord"}]}},"info":{},"listfiles":{},"notify":{},"printjob":{"pause":{"type":"subcommand"},"cancel":{"type":"subcommand"},"resume":{"type":"subcommand"},"start":{"type":"subcommand","options":{"file":{"type":"string","required":true}}}},"status":{},"systeminfo":{},"temp":{}}');
 ;// CONCATENATED MODULE: ./src/meta/command_option_types.json
 const command_option_types_namespaceObject = JSON.parse('{"subcommand":1,"subcommand_group":2,"string":3,"integer":4,"boolean":5,"user":6,"channel":7,"role":8,"mentionable":9,"number":10}');
 ;// CONCATENATED MODULE: ./src/generator/DiscordCommandGenerator.ts
@@ -46828,6 +46839,9 @@ class DiscordCommandGenerator {
             }
             else if (optionMeta.choices === '${preheatProfileChoices}') {
                 optionBuilder.choices = getPreheatProfileChoices();
+            }
+            else if (optionMeta.choices === '${heaterChoices}') {
+                optionBuilder.choices = getHeaterChoices();
             }
             else {
                 optionBuilder.choices = this.buildChoices(optionMeta.choices, syntaxMeta.options[option].choices);
@@ -50994,7 +51008,44 @@ class PreheatCommand {
     }
 }
 
+;// CONCATENATED MODULE: ./src/events/discord/interactions/commands/PidtuneCommand.ts
+
+
+class PidtuneCommand {
+    constructor(interaction, commandId) {
+        this.databaseUtil = getDatabase();
+        this.localeHelper = new LocaleHelper();
+        this.syntaxLocale = this.localeHelper.getSyntaxLocale();
+        this.locale = this.localeHelper.getLocale();
+        this.moonrakerClient = getMoonrakerClient();
+        if (commandId !== 'pidtune') {
+            return;
+        }
+        this.execute(interaction);
+    }
+    async execute(interaction) {
+        const temp = interaction.options.getInteger(this.syntaxLocale.commands.pidtune.options.temperature.name);
+        const heater = interaction.options.getString(this.syntaxLocale.commands.pidtune.options.heater.name);
+        await interaction.reply(this.locale.messages.answers.pidtune_start
+            .replace(/(\${heater})/g, heater)
+            .replace(/(\${temp})/g, temp)
+            .replace(/(\${username})/g, interaction.user.tag));
+        const gcodeResponse = await this.moonrakerClient.send({ "method": "printer.gcode.script", "params": { "script": `PID_CALIBRATE HEATER=${heater} TARGET=${temp}` } });
+        if (typeof gcodeResponse.error !== 'undefined') {
+            await interaction.editReply(this.locale.messages.errors.pidtune_fail
+                .replace(/(\${heater})/g, heater)
+                .replace(/(\${reason})/g, gcodeResponse.error.message)
+                .replace(/(\${username})/g, interaction.user.tag));
+            return;
+        }
+        await interaction.reply(this.locale.messages.answers.pidtune_done
+            .replace(/(\${heater})/g, heater)
+            .replace(/(\${username})/g, interaction.user.tag));
+    }
+}
+
 ;// CONCATENATED MODULE: ./src/events/discord/interactions/CommandInteraction.ts
+
 
 
 
@@ -51064,6 +51115,7 @@ class CommandInteraction {
         void new PrintjobCommand(interaction, commandId);
         void new SystemInfoCommand(interaction, commandId);
         void new PreheatCommand(interaction, commandId);
+        void new PidtuneCommand(interaction, commandId);
         await sleep(2000);
         if (interaction.replied || interaction.deferred) {
             return;
@@ -53753,7 +53805,7 @@ module.exports = JSON.parse('{"application/1d-interleaved-parityfec":{"source":"
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(149);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(660);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()

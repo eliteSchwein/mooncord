@@ -22,6 +22,7 @@ import {PrintjobCommand} from "./commands/PrintjobCommand";
 import {SystemInfoCommand} from "./commands/SystemInfoCommand";
 import {AdminCommand} from "./commands/AdminCommand";
 import {PreheatCommand} from "./commands/PreheatCommand";
+import {PidtuneCommand} from "./commands/PidtuneCommand";
 
 export class CommandInteraction {
     protected config = new ConfigHelper()
@@ -72,6 +73,7 @@ export class CommandInteraction {
         void new PrintjobCommand(interaction, commandId)
         void new SystemInfoCommand(interaction, commandId)
         void new PreheatCommand(interaction, commandId)
+        void new PidtuneCommand(interaction, commandId)
 
         await sleep(2000)
 
