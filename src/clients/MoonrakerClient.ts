@@ -148,7 +148,8 @@ export class MoonrakerClient {
         logRegular('Retrieve Subscribable MoonRaker Objects...')
         const objects = await this.send({"method": "printer.objects.list"})
 
-        await this.fileListHelper.retrieveFiles()
+        await this.fileListHelper.retrieveGcodeFiles()
+        await this.fileListHelper.retrieveConfigFiles()
 
         const subscriptionObjects: any = {}
 

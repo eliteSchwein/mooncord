@@ -9,11 +9,18 @@ export class FileListHelper {
         this.moonrakerClient = moonrakerClient
     }
 
-    public async retrieveFiles() {
+    public async retrieveGcodeFiles() {
         logRegular('Retrieve current GCode Files...')
         const currentFiles = await this.moonrakerClient.send({"method": "server.files.list", "params": {"root": "gcodes"}})
 
         setData('gcode_files', currentFiles.result)
+    }
+
+    public async retrieveConfigFiles() {
+        logRegular('Retrieve Config Files...')
+        const currentFiles = await this.moonrakerClient.send({"method": "server.files.list", "params": {"root": "config"}})
+
+        setData('config_files', currentFiles.result)
     }
 
     public getCurrentFiles() {
