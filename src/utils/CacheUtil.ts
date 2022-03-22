@@ -73,8 +73,8 @@ export function getConfigChoices() {
 
     for(const config of configs) {
         choices.push({
-            "name": config,
-            "value": config
+            "name": config.path,
+            "value": config.path
         })
     }
     return choices

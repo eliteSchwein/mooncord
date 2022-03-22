@@ -229,7 +229,10 @@
             "execute_unknown": "Unknown GCode Command: `${gcode_feedback}`",
             "log_too_large": "The Log for `${service}` is too big!",
             "log_failed": "The Download of the `${service}` Log failed: `${reason}`!",
-            "log_not_found": "There is currently no Log for `${service}`"
+            "log_not_found": "There is currently no Log for `${service}`",
+            "config_too_large": "Configuration `${config}` is too big!",
+            "config_not_found": "Configuration `${config}` not found",
+            "config_failed": "The Download of the Configuration `${config}` failed: `${reason}`!"
         }
     },
     "buttons": {
