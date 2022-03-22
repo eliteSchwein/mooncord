@@ -46105,7 +46105,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 6649:
+/***/ 854:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -50886,7 +50886,29 @@ class PidtuneCommand {
     }
 }
 
+;// CONCATENATED MODULE: ./src/events/discord/interactions/commands/GetConfigCommand.ts
+
+
+
+class GetConfigCommand {
+    constructor(interaction, commandId) {
+        this.databaseUtil = getDatabase();
+        this.localeHelper = new LocaleHelper();
+        this.syntaxLocale = this.localeHelper.getSyntaxLocale();
+        if (commandId !== 'getconfig') {
+            return;
+        }
+        this.execute(interaction);
+    }
+    async execute(interaction) {
+        await interaction.deferReply({ ephemeral: true });
+        const configArgument = interaction.options.getString(this.syntaxLocale.commands.getconfig.options.section.name);
+        console.log(getConfigChoices());
+    }
+}
+
 ;// CONCATENATED MODULE: ./src/events/discord/interactions/CommandInteraction.ts
+
 
 
 
@@ -50958,6 +50980,7 @@ class CommandInteraction {
         void new SystemInfoCommand(interaction, commandId);
         void new PreheatCommand(interaction, commandId);
         void new PidtuneCommand(interaction, commandId);
+        void new GetConfigCommand(interaction, commandId);
         await sleep(2000);
         if (interaction.replied || interaction.deferred) {
             return;
@@ -53541,7 +53564,7 @@ module.exports = JSON.parse('{"application/1d-interleaved-parityfec":{"source":"
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(6649);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(854);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()
