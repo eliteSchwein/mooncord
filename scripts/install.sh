@@ -25,42 +25,66 @@ questions()
 {
     title_msg "Welcome to the MoonCord Installer, as soon as you finished the answers the Installation will start."
 
-    status_msg "Please enter your Klipper Config Path"
-    read -p "$cyan Path (leave empty if $MCCONFIGPATH is valid): $default" klipper_config
-    if [ "$klipper_config" != "" ];
+    if [ "$MCCONFIGPATH" == "/home/$(whoami)/klipper_config" ];
     then
-        MCCONFIGPATH="$klipper_config"
+        status_msg "Please enter your Klipper Config Path"
+        while true; do
+            read -p "$cyan Path (leave empty if $MCCONFIGPATH is valid): $default" klipper_config
+            case $klipper_config in
+                "") break;;
+                * ) MCCONFIGPATH="$klipper_config"; break;;
+            esac
+        done
     fi
     ok_msg "Klipper Config Path set: $MCCONFIGPATH"
 
-    status_msg "Please enter your Discord Token"
-    while true; do
-        read -p "$cyan Token: $default" discord_token
-        case $discord_token in
-            "") warn_msg "Please Enter your Discord Bot Token, you can get one from https://discord.com/developers/applications.";;
-            * ) MCTOKEN="$discord_token"; break;;
-        esac
-    done
+
+    if [ "$MCTOKEN" == "" ];
+    then
+        status_msg "Please enter your Discord Token"
+        while true; do
+            read -p "$cyan Token: $default" discord_token
+            case $discord_token in
+                "") warn_msg "Please Enter your Discord Bot Token, you can get one from https://discord.com/developers/applications";;
+                * ) MCTOKEN="$discord_token"; break;;
+            esac
+        done
+    fi
     ok_msg "Discord Token set: $MCTOKEN"
 
-    status_msg "Please enter your Moonraker Token (optional)"
-    read -p "$cyan Token: $default" moonraker_token
-    MCWEBTOKEN="$moonraker_token"
-    ok_msg "Moonraker Token set: $MCWEBTOKEN"
 
-    status_msg "Please enter your Webinterface URL"
-    read -p "$cyan URL (leave empty if $MCURL is valid): $default" moonraker_url
-    if [ "$MCURL" != "http://127.0.0.1" ];
+
+    if [ "$MCWEBTOKEN" == "" ];
     then
-        MCURL="$moonraker_url"
+        status_msg "Please enter your Moonraker Token (optional)"
+        read -p "$cyan Token: $default" moonraker_token
+        MCWEBTOKEN="$moonraker_token"
+        ok_msg "Moonraker Token set: $MCWEBTOKEN"
+    fi
+
+    if [ "$MCURL" == "http://127.0.0.1" ];
+    then
+        status_msg "Please enter your Webinterface URL"
+        while true; do
+            read -p "$cyan URL (leave empty if $MCURL is valid): $default" moonraker_url
+            case $moonraker_url in
+                "") break;;
+                * ) MCURL="$moonraker_url"; break;;
+            esac
+        done
     fi
     ok_msg "Moonraker URL set: $MCURL"
 
-    status_msg "Please enter your Snapshot URL"
-    read -p "$cyan URL (leave empty if $MCCAMURL is valid): $default" snapshot_url
-    if [ "$MCCAMURL" != "http://127.0.0.1/webcam/?action=snapshot" ];
+    if [ "$MCCAMURL" == "http://127.0.0.1/webcam/?action=snapshot" ];
     then
-        MCCAMURL="$snapshot_url"
+        status_msg "Please enter your Snapshot URL"
+        while true; do
+            read -p "$cyan URL (leave empty if $MCCAMURL is valid): $default" snapshot_url
+            case snapshot_url in
+                "") break;;
+                * ) MCCAMURL="$snapshot_url"; break;;
+            esac
+        done
     fi
     ok_msg "Snapshot URL set: $MCCAMURL"
 
