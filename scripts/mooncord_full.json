@@ -311,6 +311,12 @@
                 "guildadmin": false,
                 "users": [],
                 "roles": []
+            },
+            "getconfig": {
+                "botadmin": false,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
             }
         }
     },

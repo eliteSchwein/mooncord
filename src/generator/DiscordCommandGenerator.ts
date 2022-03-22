@@ -1,6 +1,7 @@
 import commandStructure from '../meta/command_structure.json'
 import commandOptionsTypes from '../meta/command_option_types.json'
 import {
+    getConfigChoices,
     getEntry,
     getHeaterArguments,
     getHeaterChoices,
@@ -111,6 +112,8 @@ export class DiscordCommandGenerator {
                 optionBuilder.choices = getPreheatProfileChoices()
             } else if (optionMeta.choices === '${heaterChoices}') {
                 optionBuilder.choices = getHeaterChoices()
+            } else if (optionMeta.choices === '${configChoices}') {
+                optionBuilder.choices = getConfigChoices()
             } else {
                 optionBuilder.choices = this.buildChoices(optionMeta.choices, syntaxMeta.options[option].choices)
             }

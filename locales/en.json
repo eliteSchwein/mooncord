@@ -331,6 +331,16 @@
                 }
             }
         },
+        "getconfig": {
+            "description": "Retrieve a Configuration",
+            "command": "getconfig",
+            "options": {
+                "file": {
+                    "name": "file",
+                    "description": "Specifies a Configuration File."
+                }
+            }
+        },
         "preheat": {
             "description": "Manage Admin Role or User.",
             "command": "preheat",

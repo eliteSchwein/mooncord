@@ -46,6 +46,13 @@
       "required": true
     }
   },
+  "getconfig": {
+    "file": {
+      "type": "string",
+      "required": true,
+      "choices": "${configChoices}"
+    }
+  },
   "dump": {
     "section": {
       "type": "string",

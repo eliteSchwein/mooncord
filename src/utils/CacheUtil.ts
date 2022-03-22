@@ -67,6 +67,19 @@ export function getHeaterChoices() {
     return choices
 }
 
+export function getConfigChoices() {
+    const choices = []
+    const configs = cacheData.config_files
+
+    for(const config of configs) {
+        choices.push({
+            "name": config,
+            "value": config
+        })
+    }
+    return choices
+}
+
 export function getPreheatProfileChoices() {
     const choices = []
 
