@@ -50902,7 +50902,7 @@ class GetConfigCommand {
     }
     async execute(interaction) {
         await interaction.deferReply({ ephemeral: true });
-        const configArgument = interaction.options.getString(this.syntaxLocale.commands.getconfig.options.section.name);
+        const configArgument = interaction.options.getString(this.syntaxLocale.commands.getconfig.options.file.name);
         console.log(getConfigChoices());
     }
 }
