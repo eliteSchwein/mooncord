@@ -46174,7 +46174,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 632:
+/***/ 317:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -46757,7 +46757,7 @@ class ConfigHelper {
 }
 
 ;// CONCATENATED MODULE: ./src/meta/command_structure.json
-const command_structure_namespaceObject = JSON.parse('{"admin":{"role":{"type":"subcommand","options":{"role":{"type":"role","required":true}}},"user":{"type":"subcommand","options":{"user":{"type":"user","required":true}}}},"preheat":{"preset":{"type":"subcommand","options":{"preset":{"type":"string","required":true,"choices":"${preheatProfileChoices}"}}},"manual":{"type":"subcommand","options":"${heaterArguments}"}},"pidtune":{"heater":{"type":"string","required":true,"choices":"${heaterChoices}"},"temperature":{"type":"integer","required":true}},"getconfig":{"file":{"type":"string","required":true,"choices":"${configChoices}"}},"dump":{"section":{"type":"string","required":true,"choices":[{"value":"database"},{"value":"cache"}]}},"reset_database":{},"editchannel":{"channel":{"type":"channel","required":false}},"emergency_stop":{},"fileinfo":{"file":{"type":"string","required":true}},"get_user_id":{"user":{"type":"user","required":false}},"restart":{"service":{"type":"string","required":true,"choices":"${serviceChoices}"}},"get_log":{"log_file":{"type":"string","required":true,"choices":[{"name":"Klipper","value":"klippy"},{"name":"Moonraker","value":"moonraker"},{"name":"MoonCord","value":"mooncord"}]}},"info":{},"listfiles":{},"notify":{},"printjob":{"pause":{"type":"subcommand"},"cancel":{"type":"subcommand"},"resume":{"type":"subcommand"},"start":{"type":"subcommand","options":{"file":{"type":"string","required":true}}}},"status":{},"systeminfo":{},"temp":{}}');
+const command_structure_namespaceObject = JSON.parse('{"admin":{"role":{"type":"subcommand","options":{"role":{"type":"role","required":true}}},"user":{"type":"subcommand","options":{"user":{"type":"user","required":true}}}},"preheat":{"preset":{"type":"subcommand","options":{"preset":{"type":"string","required":true,"choices":"${preheatProfileChoices}"}}},"manual":{"type":"subcommand","options":"${heaterArguments}"}},"saveconfig":{},"pidtune":{"heater":{"type":"string","required":true,"choices":"${heaterChoices}"},"temperature":{"type":"integer","required":true}},"getconfig":{"file":{"type":"string","required":true,"choices":"${configChoices}"}},"dump":{"section":{"type":"string","required":true,"choices":[{"value":"database"},{"value":"cache"}]}},"reset_database":{},"editchannel":{"channel":{"type":"channel","required":false}},"emergency_stop":{},"fileinfo":{"file":{"type":"string","required":true}},"get_user_id":{"user":{"type":"user","required":false}},"restart":{"service":{"type":"string","required":true,"choices":"${serviceChoices}"}},"get_log":{"log_file":{"type":"string","required":true,"choices":[{"name":"Klipper","value":"klippy"},{"name":"Moonraker","value":"moonraker"},{"name":"MoonCord","value":"mooncord"}]}},"info":{},"listfiles":{},"notify":{},"printjob":{"pause":{"type":"subcommand"},"cancel":{"type":"subcommand"},"resume":{"type":"subcommand"},"start":{"type":"subcommand","options":{"file":{"type":"string","required":true}}}},"status":{},"systeminfo":{},"temp":{}}');
 ;// CONCATENATED MODULE: ./src/meta/command_option_types.json
 const command_option_types_namespaceObject = JSON.parse('{"subcommand":1,"subcommand_group":2,"string":3,"integer":4,"boolean":5,"user":6,"channel":7,"role":8,"mentionable":9,"number":10}');
 ;// CONCATENATED MODULE: ./src/generator/DiscordCommandGenerator.ts
@@ -51120,7 +51120,33 @@ class GetConfigCommand {
     }
 }
 
+;// CONCATENATED MODULE: ./src/events/discord/interactions/commands/SaveConfigCommand.ts
+
+
+
+class SaveConfigCommand {
+    constructor(interaction, commandId) {
+        this.databaseUtil = getDatabase();
+        this.localeHelper = new LocaleHelper();
+        this.syntaxLocale = this.localeHelper.getSyntaxLocale();
+        this.locale = this.localeHelper.getLocale();
+        this.moonrakerClient = getMoonrakerClient();
+        if (commandId !== 'saveconfig') {
+            return;
+        }
+        this.execute(interaction);
+    }
+    async execute(interaction) {
+        await interaction.deferReply();
+        logRegular('saving configuration...');
+        await this.moonrakerClient.send({ "method": "printer.gcode.script", "params": { "script": `SAVE_CONFIG` } });
+        await interaction.editReply(this.locale.messages.answers.config_save
+            .replace(/(\${username})/g, interaction.user.tag));
+    }
+}
+
 ;// CONCATENATED MODULE: ./src/events/discord/interactions/CommandInteraction.ts
+
 
 
 
@@ -51194,6 +51220,7 @@ class CommandInteraction {
         void new PreheatCommand(interaction, commandId);
         void new PidtuneCommand(interaction, commandId);
         void new GetConfigCommand(interaction, commandId);
+        void new SaveConfigCommand(interaction, commandId);
         await sleep(2000);
         if (interaction.replied || interaction.deferred) {
             return;
@@ -53892,7 +53919,7 @@ module.exports = JSON.parse('{"application/1d-interleaved-parityfec":{"source":"
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(632);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(317);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()

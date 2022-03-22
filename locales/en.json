@@ -206,7 +206,8 @@
             "printjob_request_abort": "Print Job request for `${embed_author}` aborted, `${username}`!",
             "printjob_delete_abort": "Print Job deletion request for `${embed_author}` aborted, `${username}`!",
             "printjob_executed": "Print Job request executed, `${username}`!",
-            "reconnect": "MoonCord will reconnect to Moonraker and Discord, `${username}`!"
+            "reconnect": "MoonCord will reconnect to Moonraker and Discord, `${username}`!",
+            "config_save": "Saving the Klipper Config, `${username}`!"
         },
         "errors": {
             "pidtune_fail": "PID Tune failed for `${heater}`, `${username}`!\nReason:\n```${reason}```",
@@ -320,6 +321,10 @@
         }
     },
     "commands": {
+        "saveconfig": {
+            "description": "save the current configuration.",
+            "command": "saveconfig"
+        },
         "pidtune": {
             "description": "start a PID Tune for a Heater.",
             "command": "pidtune",

@@ -24,6 +24,7 @@ import {AdminCommand} from "./commands/AdminCommand";
 import {PreheatCommand} from "./commands/PreheatCommand";
 import {PidtuneCommand} from "./commands/PidtuneCommand";
 import { GetConfigCommand } from "./commands/GetConfigCommand";
+import {SaveConfigCommand} from "./commands/SaveConfigCommand";
 
 export class CommandInteraction {
     protected config = new ConfigHelper()
@@ -76,6 +77,7 @@ export class CommandInteraction {
         void new PreheatCommand(interaction, commandId)
         void new PidtuneCommand(interaction, commandId)
         void new GetConfigCommand(interaction, commandId)
+        void new SaveConfigCommand(interaction, commandId)
 
         await sleep(2000)
 
