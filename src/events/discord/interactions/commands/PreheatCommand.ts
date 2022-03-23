@@ -81,7 +81,7 @@ export class PreheatCommand {
         }
 
         if(!argumentFound) {
-            await interaction.reply(this.locale.messages.errors.preheat_missing_arguments
+            await interaction.reply(this.locale.messages.errors.missing_heater_arguments
                 .replace(/(\${username})/g, interaction.user.tag))
             return
         }

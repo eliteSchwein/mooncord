@@ -35,6 +35,14 @@
       "options": "${heaterArguments}"
     }
   },
+  "tune": {
+    "speed": {
+      "type": "integer"
+    },
+    "flow": {
+      "type": "integer"
+    }
+  },
   "saveconfig": {},
   "pidtune": {
     "heater": {

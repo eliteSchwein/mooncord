@@ -213,7 +213,8 @@
             "pidtune_fail": "PID Tune failed for `${heater}`, `${username}`!\nReason:\n```${reason}```",
             "preheat_below_min": "Target Heater Temp `${temp}C°` is below the minimum Temperature `${min_temp}C°`, `${username}`!",
             "preheat_over_max": "Target Heater Temp `${temp}C°` is over the maximum Temperature `${max_temp}C°`, `${username}`!",
-            "preheat_missing_arguments": "Heater Arguments missing, please add atleast one Heater Argument, `${username}`!",
+            "missing_heater_arguments": "Heater Arguments missing, please add atleast one Heater Argument, `${username}`!",
+            "missing_arguments": "Arguments missing, please add atleast one Argument, `${username}`!",
             "check_console": "Please Check the Console!",
             "command_disabled": "The Command is disabled!",
             "command_failed": "An Error occured!",
@@ -321,6 +322,20 @@
         }
     },
     "commands": {
+        "tune": {
+            "description": "tune the current Printjob",
+            "command": "tune",
+            "options": {
+                "speed": {
+                    "name": "speed",
+                    "description": "tune your current Print Speed"
+                },
+                "flow":{
+                    "name": "flow",
+                    "description": "tune your current Filament Flow"
+                }
+            }
+        },
         "saveconfig": {
             "description": "save the current configuration.",
             "command": "saveconfig"
