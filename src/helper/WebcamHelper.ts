@@ -119,7 +119,8 @@ export class WebcamHelper {
                 const id = Math.floor(Math.random() * Number.parseInt("10_000")) + 1
                 await this.moonrakerClient
                     .send(
-                        {"method": "printer.gcode.script", "params": {"script": gcode}, id}
+                        {"method": "printer.gcode.script", "params": {"script": gcode}, id},
+                        this.configHelper.getGcodeExecuteTimeout() * 1000
                     )
             }
             if (execute.startsWith("website_post:")) {

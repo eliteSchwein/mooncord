@@ -187,4 +187,8 @@ export class ConfigHelper {
     public notifyOnTimelapseFinish() {
         return this.getConfig().notifications.timelapse
     }
+
+    public getGcodeExecuteTimeout() {
+        return this.getConfig().status.gcode_timeout
+    }
 }
