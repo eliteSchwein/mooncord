@@ -187,4 +187,8 @@ export class ConfigHelper {
     public notifyOnTimelapseFinish() {
         return this.getConfig().notifications.timelapse
     }
+
+    public useDevDatabase() {
+        return this.getConfig().development.dev_database
+    }
 }

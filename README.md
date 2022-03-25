@@ -17,4 +17,10 @@
 
 [![Discord](https://discord.com/api/guilds/865168027652456448/widget.png?style=banner2)](https://discord.gg/TdxUZFZtVa)
 
+## What is Mooncord?
+
+Mooncord is a Discord Bot for [Moonraker](https://github.com/Arksine/moonraker).
+It has basic Controls, example Start/Pause/Stop a Print, but also has a [Timelapse](https://github.com/mainsail-crew/moonraker-timelapse) integration.
+It will also send you via DM or/and in a Guide Text Channel automatically Status Messages.
+
 ## Please go into the Wiki Tab for the Guides

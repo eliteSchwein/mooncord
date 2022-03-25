@@ -61,6 +61,7 @@ export class MetadataHelper {
         const url = this.configHelper.getMoonrakerUrl()
 
         if(typeof metaData === 'undefined') { return placeholder }
+        if(typeof metaData.thumbnails === 'undefined') { return placeholder }
 
         const thumbnailFile = metaData.thumbnails.reduce((prev, current) => { return (prev.size > current.size) ? prev : current})
         const thumbnailPath = thumbnailFile.relative_path

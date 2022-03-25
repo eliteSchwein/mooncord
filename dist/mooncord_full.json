@@ -1,6 +1,6 @@
 {
     "connection": {
-        "moonraker_socket_url": "ws://127.0.0.1/websocket",
+        "moonraker_socket_url": "",
         "moonraker_url": "http://127.0.0.1",
         "moonraker_token": "",
         "moonraker_retry_interval": 2,
@@ -349,7 +349,8 @@
     },
     "development": {
         "dump_cache_on_start": false,
-        "trace_on_web_error": false
+        "trace_on_web_error": false,
+        "dev_database": false
     },
     "discord": {
         "request_timeout": 30

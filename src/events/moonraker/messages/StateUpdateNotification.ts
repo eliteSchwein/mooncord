@@ -1,5 +1,5 @@
 import {updateData} from "../../../utils/CacheUtil";
-import {getMoonrakerClient, restartBot} from "../../../Application";
+import {getMoonrakerClient, reconnectDiscord, reloadCache, restartScheduler} from "../../../Application";
 import {StatusHelper} from "../../../helper/StatusHelper";
 import { logEmpty, logSuccess } from "../../../helper/LoggerHelper";
 
@@ -30,7 +30,12 @@ export class StateUpdateNotification {
             })
             logEmpty()
             logSuccess('klipper is ready...')
-            await restartBot()
+
+            reloadCache()
+            await this.moonrakerClient.sendInitCommands()
+            await reconnectDiscord()
+            await restartScheduler()
+            await this.statusHelper.update()
         }
     }
 }

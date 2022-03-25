@@ -61,7 +61,7 @@ export class EmbedHelper {
         return embed.title
     }
 
-    public async generateEmbed(embedID: string,providedPlaceholders = null, providedFields = null) {
+    public async generateEmbed(embedID: string,providedPlaceholders = null, providedFields = null, providedValues = null) {
         const embed = new MessageEmbed()
         const embedDataUnformatted = { ...this.getEmbeds()[embedID]}
 
@@ -79,6 +79,10 @@ export class EmbedHelper {
 
         if(providedFields !== null) {
             mergeDeep(embedDataUnformatted, {fields: providedFields})
+        }
+
+        if(providedValues !== null) {
+            mergeDeep(embedDataUnformatted, providedValues)
         }
 
         let embedRaw = JSON.stringify(embedDataUnformatted)

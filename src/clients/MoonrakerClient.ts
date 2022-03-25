@@ -85,13 +85,14 @@ export class MoonrakerClient {
 
         this.registerEvents()
 
+        App.reloadCache()
+
         await this.sendInitCommands()
 
         this.changeLogPath()
 
-        App.reloadCache()
         await App.reconnectDiscord()
-        await App.reloadCache()
+        await App.restartScheduler()
         await statusHelper.update()
     }
 
@@ -101,7 +102,8 @@ export class MoonrakerClient {
         this.ready = false
 
         const oneShotToken = await this.apiKeyHelper.getOneShotToken()
-        const socketUrl = this.config.getMoonrakerSocketUrl()
+        let socketUrl = ((this.config.getMoonrakerSocketUrl() !== '' ? this.config.getMoonrakerSocketUrl() : `${this.config.getMoonrakerUrl()}/websocket`))
+        socketUrl = socketUrl.replace(/(http:\/\/)|(https:\/\/)/g, 'ws://')
 
         this.websocket = new WebsocketBuilder(`${socketUrl}?token=${oneShotToken}`)
             .build()
