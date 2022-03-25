@@ -207,9 +207,15 @@
             "printjob_delete_abort": "Print Job deletion request for `${embed_author}` aborted, `${username}`!",
             "printjob_executed": "Print Job request executed, `${username}`!",
             "reconnect": "MoonCord will reconnect to Moonraker and Discord, `${username}`!",
-            "config_save": "Saving the Klipper Config, `${username}`!"
+            "config_save": "Saving the Klipper Config, `${username}`!",
+            "tune": {
+                "speed": "Applied `${speed}`% Speed, `${username}`!",
+                "flow": "Applied `${flow}`% Flow, `${username}`!",
+                "speed_flow": "Applied `${speed}`% Speed and `${flow}`% Flow, `${username}`!"
+            }
         },
         "errors": {
+            "command_idle_only": "This Command is only Available when there is no active Printjob, `${username}`!",
             "pidtune_fail": "PID Tune failed for `${heater}`, `${username}`!\nReason:\n```${reason}```",
             "preheat_below_min": "Target Heater Temp `${temp}C°` is below the minimum Temperature `${min_temp}C°`, `${username}`!",
             "preheat_over_max": "Target Heater Temp `${temp}C°` is over the maximum Temperature `${max_temp}C°`, `${username}`!",

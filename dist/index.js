@@ -50773,7 +50773,7 @@ class PreheatCommand {
     async execute(interaction) {
         const subCommand = interaction.options.getSubcommand();
         if (this.functionCache.current_status !== 'ready') {
-            await interaction.reply(this.locale.messages.errors.not_ready
+            await interaction.reply(this.locale.messages.errors.command_idle_only
                 .replace(/(\${username})/g, interaction.user.tag));
             return;
         }
@@ -50853,6 +50853,7 @@ class PreheatCommand {
 ;// CONCATENATED MODULE: ./src/events/discord/interactions/commands/PidtuneCommand.ts
 
 
+
 class PidtuneCommand {
     constructor(interaction, commandId) {
         this.databaseUtil = getDatabase();
@@ -50860,6 +50861,7 @@ class PidtuneCommand {
         this.syntaxLocale = this.localeHelper.getSyntaxLocale();
         this.locale = this.localeHelper.getLocale();
         this.moonrakerClient = getMoonrakerClient();
+        this.functionCache = getEntry('function');
         if (commandId !== 'pidtune') {
             return;
         }
@@ -50868,6 +50870,11 @@ class PidtuneCommand {
     async execute(interaction) {
         const temp = interaction.options.getInteger(this.syntaxLocale.commands.pidtune.options.temperature.name);
         const heater = interaction.options.getString(this.syntaxLocale.commands.pidtune.options.heater.name);
+        if (this.functionCache.current_status !== 'ready') {
+            await interaction.reply(this.locale.messages.errors.command_idle_only
+                .replace(/(\${username})/g, interaction.user.tag));
+            return;
+        }
         await interaction.reply(this.locale.messages.answers.pidtune_start
             .replace(/(\${heater})/g, heater)
             .replace(/(\${temp})/g, temp)
@@ -50976,12 +50983,15 @@ class SaveConfigCommand {
 ;// CONCATENATED MODULE: ./src/events/discord/interactions/commands/TuneCommand.ts
 
 
+
 class TuneCommand {
     constructor(interaction, commandId) {
         this.databaseUtil = getDatabase();
         this.localeHelper = new LocaleHelper();
         this.syntaxLocale = this.localeHelper.getSyntaxLocale();
         this.locale = this.localeHelper.getLocale();
+        this.functionCache = getEntry('function');
+        this.moonrakerClient = getMoonrakerClient();
         if (commandId !== 'tune') {
             return;
         }
@@ -50990,11 +51000,34 @@ class TuneCommand {
     async execute(interaction) {
         const speed = interaction.options.getInteger(this.syntaxLocale.commands.tune.options.speed.name);
         const flow = interaction.options.getInteger(this.syntaxLocale.commands.tune.options.flow.name);
+        let message = '';
+        if (this.functionCache.current_status !== 'printing') {
+            const message = this.locale.messages.printjob_cancel.status_not_valid
+                .replace(/(\${username})/g, interaction.user.tag);
+            await interaction.reply(message);
+            return;
+        }
+        await interaction.deferReply();
         if (speed === null && flow === null) {
-            await interaction.reply(this.locale.messages.errors.missing_arguments
+            await interaction.editReply(this.locale.messages.errors.missing_arguments
                 .replace(/(\${username})/g, interaction.user.tag));
             return;
         }
+        if (speed !== null) {
+            await this.moonrakerClient.send({ "method": "printer.gcode.script", "params": { "script": `M220 S${speed}` } });
+            message = 'speed';
+        }
+        if (flow !== null) {
+            await this.moonrakerClient.send({ "method": "printer.gcode.script", "params": { "script": `M221 S${flow}` } });
+            message = 'flow';
+        }
+        if (flow !== null && speed !== null) {
+            message = 'speed_flow';
+        }
+        await interaction.editReply(this.locale.messages.answers.tune[message]
+            .replace(/(\${username})/g, interaction.user.tag)
+            .replace(/(\${speed})/g, speed)
+            .replace(/(\${flow})/g, flow));
     }
 }
 

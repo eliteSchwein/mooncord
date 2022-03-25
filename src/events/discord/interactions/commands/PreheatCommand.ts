@@ -24,7 +24,7 @@ export class PreheatCommand {
         const subCommand = interaction.options.getSubcommand()
 
         if(this.functionCache.current_status !== 'ready') {
-            await interaction.reply(this.locale.messages.errors.not_ready
+            await interaction.reply(this.locale.messages.errors.command_idle_only
                 .replace(/(\${username})/g, interaction.user.tag))
             return
         }
