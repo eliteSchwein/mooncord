@@ -48952,8 +48952,13 @@ class WebcamHelper {
             if (execute.startsWith("gcode:")) {
                 const gcode = execute.replace("gcode:", "");
                 const id = Math.floor(Math.random() * Number.parseInt("10_000")) + 1;
-                await this.moonrakerClient
-                    .send({ "method": "printer.gcode.script", "params": { "script": gcode }, id }, this.configHelper.getGcodeExecuteTimeout() * 1000);
+                try {
+                    await this.moonrakerClient
+                        .send({ "method": "printer.gcode.script", "params": { "script": gcode }, id }, this.configHelper.getGcodeExecuteTimeout() * 1000);
+                }
+                catch (error) {
+                    logError(error);
+                }
             }
             if (execute.startsWith("website_post:")) {
                 const url = execute.replace("website_post:", "");
