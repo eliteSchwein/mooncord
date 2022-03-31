@@ -9,6 +9,7 @@ import {GcodeResponseNotification} from "./messages/GcodeResponseNotification";
 import { PrintProgressNotification } from "./messages/PrintProgressNotification";
 import {ThrottleNotification} from "./messages/ThrottleNotification";
 import {TimelapseNotification} from "./messages/TimelapseNotification";
+import {DisplayUpdateNotification} from "./messages/DisplayUpdateNotification";
 
 export class MessageHandler {
     protected websocket: Websocket
@@ -34,6 +35,7 @@ export class MessageHandler {
             void new PrintProgressNotification().parse(messageData)
             void new ThrottleNotification().parse(messageData)
             void new TimelapseNotification().parse(messageData)
+            void new DisplayUpdateNotification().parse(messageData)
         }))
     }
 }

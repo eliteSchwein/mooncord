@@ -345,7 +345,8 @@
     },
     "notifications": {
         "moonraker_throttle": true,
-        "timelapse": true
+        "timelapse": true,
+        "show_m117_notification": true
     },
     "development": {
         "dump_cache_on_start": false,

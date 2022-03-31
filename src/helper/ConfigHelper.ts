@@ -191,4 +191,8 @@ export class ConfigHelper {
     public useDevDatabase() {
         return this.getConfig().development.dev_database
     }
+
+    public showM117Notifcation() {
+        return this.getConfig().notifications.show_m117_notification
+    }
 }
