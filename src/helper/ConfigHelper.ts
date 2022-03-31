@@ -195,4 +195,8 @@ export class ConfigHelper {
     public showM117Notifcation() {
         return this.getConfig().notifications.show_m117_notification
     }
+
+    public getGcodeExecuteTimeout() {
+        return this.getConfig().status.gcode_timeout
+    }
 }
