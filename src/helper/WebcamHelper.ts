@@ -22,8 +22,12 @@ export class WebcamHelper {
         await this.executePostProcess(beforeStatus)
 
         try {
-            const res = await fetch(this.configHelper.getWebcamUrl())
-            const buffer = await res.arrayBuffer()
+            const res = await axios({
+                method: 'get',
+                url: this.configHelper.getWebcamUrl(),
+                timeout: 2000
+            })
+            const buffer = await res.data.arrayBuffer()
 
             // Only run Jimp if they want the image modifed
             if (
