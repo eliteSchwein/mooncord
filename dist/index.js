@@ -6558,8 +6558,10 @@ module.exports = function httpAdapter(config) {
       done();
       resolvePromise(value);
     };
+    var rejected = false;
     var reject = function reject(value) {
       done();
+      rejected = true;
       rejectPromise(value);
     };
     var data = config.data;
@@ -6595,6 +6597,10 @@ module.exports = function httpAdapter(config) {
           'Data after transformation must be a string, an ArrayBuffer, a Buffer, or a Stream',
           config
         ));
+      }
+
+      if (config.maxBodyLength > -1 && data.length > config.maxBodyLength) {
+        return reject(createError('Request body larger than maxBodyLength limit', config));
       }
 
       // Add Content-Length header if data exists
@@ -6767,10 +6773,20 @@ module.exports = function httpAdapter(config) {
 
           // make sure the content length is not over the maxContentLength if specified
           if (config.maxContentLength > -1 && totalResponseBytes > config.maxContentLength) {
+            // stream.destoy() emit aborted event before calling reject() on Node.js v16
+            rejected = true;
             stream.destroy();
             reject(createError('maxContentLength size of ' + config.maxContentLength + ' exceeded',
               config, null, lastRequest));
           }
+        });
+
+        stream.on('aborted', function handlerStreamAborted() {
+          if (rejected) {
+            return;
+          }
+          stream.destroy();
+          reject(createError('error request aborted', config, 'ERR_REQUEST_ABORTED', lastRequest));
         });
 
         stream.on('error', function handleStreamError(err) {
@@ -6779,15 +6795,18 @@ module.exports = function httpAdapter(config) {
         });
 
         stream.on('end', function handleStreamEnd() {
-          var responseData = Buffer.concat(responseBuffer);
-          if (config.responseType !== 'arraybuffer') {
-            responseData = responseData.toString(config.responseEncoding);
-            if (!config.responseEncoding || config.responseEncoding === 'utf8') {
-              responseData = utils.stripBOM(responseData);
+          try {
+            var responseData = responseBuffer.length === 1 ? responseBuffer[0] : Buffer.concat(responseBuffer);
+            if (config.responseType !== 'arraybuffer') {
+              responseData = responseData.toString(config.responseEncoding);
+              if (!config.responseEncoding || config.responseEncoding === 'utf8') {
+                responseData = utils.stripBOM(responseData);
+              }
             }
+            response.data = responseData;
+          } catch (err) {
+            reject(enhanceError(err, config, err.code, response.request, response));
           }
-
-          response.data = responseData;
           settle(resolve, reject, response);
         });
       }
@@ -6797,6 +6816,12 @@ module.exports = function httpAdapter(config) {
     req.on('error', function handleRequestError(err) {
       if (req.aborted && err.code !== 'ERR_FR_TOO_MANY_REDIRECTS') return;
       reject(enhanceError(err, config, null, req));
+    });
+
+    // set tcp keep alive to prevent drop connection by peer
+    req.on('socket', function handleRequestSocket(socket) {
+      // default interval of sending ack packet is 1 minute
+      socket.setKeepAlive(true, 1000 * 60);
     });
 
     // Handle request timeout
@@ -7347,14 +7372,18 @@ function Axios(instanceConfig) {
  *
  * @param {Object} config The config specific for this request (merged with this.defaults)
  */
-Axios.prototype.request = function request(config) {
+Axios.prototype.request = function request(configOrUrl, config) {
   /*eslint no-param-reassign:0*/
   // Allow for axios('example/url'[, config]) a la fetch API
-  if (typeof config === 'string') {
-    config = arguments[1] || {};
-    config.url = arguments[0];
-  } else {
+  if (typeof configOrUrl === 'string') {
     config = config || {};
+    config.url = configOrUrl;
+  } else {
+    config = configOrUrl || {};
+  }
+
+  if (!config.url) {
+    throw new Error('Provided config url is not valid');
   }
 
   config = mergeConfig(this.defaults, config);
@@ -7439,6 +7468,9 @@ Axios.prototype.request = function request(config) {
 };
 
 Axios.prototype.getUri = function getUri(config) {
+  if (!config.url) {
+    throw new Error('Provided config url is not valid');
+  }
   config = mergeConfig(this.defaults, config);
   return buildURL(config.url, config.params, config.paramsSerializer).replace(/^\?/, '');
 };
@@ -8049,7 +8081,7 @@ module.exports = defaults;
 /***/ ((module) => {
 
 module.exports = {
-  "version": "0.24.0"
+  "version": "0.25.0"
 };
 
 /***/ }),
@@ -8250,17 +8282,19 @@ module.exports = function isAbsoluteURL(url) {
   // A URL is considered absolute if it begins with "<scheme>://" or "//" (protocol-relative URL).
   // RFC 3986 defines scheme name as a sequence of characters beginning with a letter and followed
   // by any combination of letters, digits, plus, period, or hyphen.
-  return /^([a-z][a-z\d\+\-\.]*:)?\/\//i.test(url);
+  return /^([a-z][a-z\d+\-.]*:)?\/\//i.test(url);
 };
 
 
 /***/ }),
 
 /***/ 650:
-/***/ ((module) => {
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
 "use strict";
 
+
+var utils = __nccwpck_require__(328);
 
 /**
  * Determines whether the payload is an error thrown by Axios
@@ -8269,7 +8303,7 @@ module.exports = function isAbsoluteURL(url) {
  * @returns {boolean} True if the payload is an error thrown by Axios, otherwise false
  */
 module.exports = function isAxiosError(payload) {
-  return (typeof payload === 'object') && (payload.isAxiosError === true);
+  return utils.isObject(payload) && (payload.isAxiosError === true);
 };
 
 
@@ -8576,7 +8610,7 @@ var toString = Object.prototype.toString;
  * @returns {boolean} True if value is an Array, otherwise false
  */
 function isArray(val) {
-  return toString.call(val) === '[object Array]';
+  return Array.isArray(val);
 }
 
 /**
@@ -8617,7 +8651,7 @@ function isArrayBuffer(val) {
  * @returns {boolean} True if value is an FormData, otherwise false
  */
 function isFormData(val) {
-  return (typeof FormData !== 'undefined') && (val instanceof FormData);
+  return toString.call(val) === '[object FormData]';
 }
 
 /**
@@ -8631,7 +8665,7 @@ function isArrayBufferView(val) {
   if ((typeof ArrayBuffer !== 'undefined') && (ArrayBuffer.isView)) {
     result = ArrayBuffer.isView(val);
   } else {
-    result = (val) && (val.buffer) && (val.buffer instanceof ArrayBuffer);
+    result = (val) && (val.buffer) && (isArrayBuffer(val.buffer));
   }
   return result;
 }
@@ -8738,7 +8772,7 @@ function isStream(val) {
  * @returns {boolean} True if value is a URLSearchParams object, otherwise false
  */
 function isURLSearchParams(val) {
-  return typeof URLSearchParams !== 'undefined' && val instanceof URLSearchParams;
+  return toString.call(val) === '[object URLSearchParams]';
 }
 
 /**
@@ -15433,9 +15467,9 @@ RedirectableRequest.prototype._processResponse = function (response) {
     var redirectUrlParts = url.parse(redirectUrl);
     Object.assign(this._options, redirectUrlParts);
 
-    // Drop the Authorization header if redirecting to another domain
+    // Drop the confidential headers when redirecting to another domain
     if (!(redirectUrlParts.host === currentHost || isSubdomainOf(redirectUrlParts.host, currentHost))) {
-      removeMatchingHeaders(/^authorization$/i, this._options.headers);
+      removeMatchingHeaders(/^(?:authorization|cookie)$/i, this._options.headers);
     }
 
     // Evaluate the beforeRedirect callback
@@ -38503,7 +38537,7 @@ class PerMessageDeflate {
   /**
    * Compress data. Concurrency limited.
    *
-   * @param {Buffer} data Data to compress
+   * @param {(Buffer|String)} data Data to compress
    * @param {Boolean} fin Specifies whether or not this is the last fragment
    * @param {Function} callback Callback
    * @public
@@ -38585,7 +38619,7 @@ class PerMessageDeflate {
   /**
    * Compress data.
    *
-   * @param {Buffer} data Data to compress
+   * @param {(Buffer|String)} data Data to compress
    * @param {Boolean} fin Specifies whether or not this is the last fragment
    * @param {Function} callback Callback
    * @private
@@ -39346,6 +39380,7 @@ const { EMPTY_BUFFER } = __nccwpck_require__(5949);
 const { isValidStatusCode } = __nccwpck_require__(6279);
 const { mask: applyMask, toBuffer } = __nccwpck_require__(9436);
 
+const kByteLength = Symbol('kByteLength');
 const maskBuffer = Buffer.alloc(4);
 
 /**
@@ -39381,7 +39416,7 @@ class Sender {
   /**
    * Frames a piece of data according to the HyBi WebSocket protocol.
    *
-   * @param {Buffer} data The data to frame
+   * @param {(Buffer|String)} data The data to frame
    * @param {Object} options Options object
    * @param {Boolean} [options.fin=false] Specifies whether or not to set the
    *     FIN bit
@@ -39396,7 +39431,7 @@ class Sender {
    *     modified
    * @param {Boolean} [options.rsv1=false] Specifies whether or not to set the
    *     RSV1 bit
-   * @return {Buffer[]} The framed data as a list of `Buffer` instances
+   * @return {(Buffer|String)[]} The framed data
    * @public
    */
   static frame(data, options) {
@@ -39415,22 +39450,37 @@ class Sender {
       }
 
       skipMasking = (mask[0] | mask[1] | mask[2] | mask[3]) === 0;
-      if (options.readOnly && !skipMasking) merge = true;
-
       offset = 6;
     }
 
-    let payloadLength = data.length;
+    let dataLength;
 
-    if (data.length >= 65536) {
+    if (typeof data === 'string') {
+      if (
+        (!options.mask || skipMasking) &&
+        options[kByteLength] !== undefined
+      ) {
+        dataLength = options[kByteLength];
+      } else {
+        data = Buffer.from(data);
+        dataLength = data.length;
+      }
+    } else {
+      dataLength = data.length;
+      merge = options.mask && options.readOnly && !skipMasking;
+    }
+
+    let payloadLength = dataLength;
+
+    if (dataLength >= 65536) {
       offset += 8;
       payloadLength = 127;
-    } else if (data.length > 125) {
+    } else if (dataLength > 125) {
       offset += 2;
       payloadLength = 126;
     }
 
-    const target = Buffer.allocUnsafe(merge ? data.length + offset : offset);
+    const target = Buffer.allocUnsafe(merge ? dataLength + offset : offset);
 
     target[0] = options.fin ? options.opcode | 0x80 : options.opcode;
     if (options.rsv1) target[0] |= 0x40;
@@ -39438,10 +39488,10 @@ class Sender {
     target[1] = payloadLength;
 
     if (payloadLength === 126) {
-      target.writeUInt16BE(data.length, 2);
+      target.writeUInt16BE(dataLength, 2);
     } else if (payloadLength === 127) {
       target[2] = target[3] = 0;
-      target.writeUIntBE(data.length, 4, 6);
+      target.writeUIntBE(dataLength, 4, 6);
     }
 
     if (!options.mask) return [target, data];
@@ -39455,11 +39505,11 @@ class Sender {
     if (skipMasking) return [target, data];
 
     if (merge) {
-      applyMask(data, mask, target, offset, data.length);
+      applyMask(data, mask, target, offset, dataLength);
       return [target];
     }
 
-    applyMask(data, mask, data, 0, data.length);
+    applyMask(data, mask, data, 0, dataLength);
     return [target, data];
   }
 
@@ -39499,34 +39549,22 @@ class Sender {
       }
     }
 
-    if (this._deflating) {
-      this.enqueue([this.doClose, buf, mask, cb]);
-    } else {
-      this.doClose(buf, mask, cb);
-    }
-  }
+    const options = {
+      [kByteLength]: buf.length,
+      fin: true,
+      generateMask: this._generateMask,
+      mask,
+      maskBuffer: this._maskBuffer,
+      opcode: 0x08,
+      readOnly: false,
+      rsv1: false
+    };
 
-  /**
-   * Frames and sends a close message.
-   *
-   * @param {Buffer} data The message to send
-   * @param {Boolean} [mask=false] Specifies whether or not to mask `data`
-   * @param {Function} [cb] Callback
-   * @private
-   */
-  doClose(data, mask, cb) {
-    this.sendFrame(
-      Sender.frame(data, {
-        fin: true,
-        rsv1: false,
-        opcode: 0x08,
-        mask,
-        maskBuffer: this._maskBuffer,
-        generateMask: this._generateMask,
-        readOnly: false
-      }),
-      cb
-    );
+    if (this._deflating) {
+      this.enqueue([this.dispatch, buf, false, options, cb]);
+    } else {
+      this.sendFrame(Sender.frame(buf, options), cb);
+    }
   }
 
   /**
@@ -39538,41 +39576,38 @@ class Sender {
    * @public
    */
   ping(data, mask, cb) {
-    const buf = toBuffer(data);
+    let byteLength;
+    let readOnly;
 
-    if (buf.length > 125) {
+    if (typeof data === 'string') {
+      byteLength = Buffer.byteLength(data);
+      readOnly = false;
+    } else {
+      data = toBuffer(data);
+      byteLength = data.length;
+      readOnly = toBuffer.readOnly;
+    }
+
+    if (byteLength > 125) {
       throw new RangeError('The data size must not be greater than 125 bytes');
     }
 
-    if (this._deflating) {
-      this.enqueue([this.doPing, buf, mask, toBuffer.readOnly, cb]);
-    } else {
-      this.doPing(buf, mask, toBuffer.readOnly, cb);
-    }
-  }
+    const options = {
+      [kByteLength]: byteLength,
+      fin: true,
+      generateMask: this._generateMask,
+      mask,
+      maskBuffer: this._maskBuffer,
+      opcode: 0x09,
+      readOnly,
+      rsv1: false
+    };
 
-  /**
-   * Frames and sends a ping message.
-   *
-   * @param {Buffer} data The message to send
-   * @param {Boolean} [mask=false] Specifies whether or not to mask `data`
-   * @param {Boolean} [readOnly=false] Specifies whether `data` can be modified
-   * @param {Function} [cb] Callback
-   * @private
-   */
-  doPing(data, mask, readOnly, cb) {
-    this.sendFrame(
-      Sender.frame(data, {
-        fin: true,
-        rsv1: false,
-        opcode: 0x09,
-        mask,
-        maskBuffer: this._maskBuffer,
-        generateMask: this._generateMask,
-        readOnly
-      }),
-      cb
-    );
+    if (this._deflating) {
+      this.enqueue([this.dispatch, data, false, options, cb]);
+    } else {
+      this.sendFrame(Sender.frame(data, options), cb);
+    }
   }
 
   /**
@@ -39584,41 +39619,38 @@ class Sender {
    * @public
    */
   pong(data, mask, cb) {
-    const buf = toBuffer(data);
+    let byteLength;
+    let readOnly;
 
-    if (buf.length > 125) {
+    if (typeof data === 'string') {
+      byteLength = Buffer.byteLength(data);
+      readOnly = false;
+    } else {
+      data = toBuffer(data);
+      byteLength = data.length;
+      readOnly = toBuffer.readOnly;
+    }
+
+    if (byteLength > 125) {
       throw new RangeError('The data size must not be greater than 125 bytes');
     }
 
-    if (this._deflating) {
-      this.enqueue([this.doPong, buf, mask, toBuffer.readOnly, cb]);
-    } else {
-      this.doPong(buf, mask, toBuffer.readOnly, cb);
-    }
-  }
+    const options = {
+      [kByteLength]: byteLength,
+      fin: true,
+      generateMask: this._generateMask,
+      mask,
+      maskBuffer: this._maskBuffer,
+      opcode: 0x0a,
+      readOnly,
+      rsv1: false
+    };
 
-  /**
-   * Frames and sends a pong message.
-   *
-   * @param {Buffer} data The message to send
-   * @param {Boolean} [mask=false] Specifies whether or not to mask `data`
-   * @param {Boolean} [readOnly=false] Specifies whether `data` can be modified
-   * @param {Function} [cb] Callback
-   * @private
-   */
-  doPong(data, mask, readOnly, cb) {
-    this.sendFrame(
-      Sender.frame(data, {
-        fin: true,
-        rsv1: false,
-        opcode: 0x0a,
-        mask,
-        maskBuffer: this._maskBuffer,
-        generateMask: this._generateMask,
-        readOnly
-      }),
-      cb
-    );
+    if (this._deflating) {
+      this.enqueue([this.dispatch, data, false, options, cb]);
+    } else {
+      this.sendFrame(Sender.frame(data, options), cb);
+    }
   }
 
   /**
@@ -39638,10 +39670,21 @@ class Sender {
    * @public
    */
   send(data, options, cb) {
-    const buf = toBuffer(data);
     const perMessageDeflate = this._extensions[PerMessageDeflate.extensionName];
     let opcode = options.binary ? 2 : 1;
     let rsv1 = options.compress;
+
+    let byteLength;
+    let readOnly;
+
+    if (typeof data === 'string') {
+      byteLength = Buffer.byteLength(data);
+      readOnly = false;
+    } else {
+      data = toBuffer(data);
+      byteLength = data.length;
+      readOnly = toBuffer.readOnly;
+    }
 
     if (this._firstFragment) {
       this._firstFragment = false;
@@ -39654,7 +39697,7 @@ class Sender {
             : 'client_no_context_takeover'
         ]
       ) {
-        rsv1 = buf.length >= perMessageDeflate._threshold;
+        rsv1 = byteLength >= perMessageDeflate._threshold;
       }
       this._compress = rsv1;
     } else {
@@ -39666,30 +39709,32 @@ class Sender {
 
     if (perMessageDeflate) {
       const opts = {
+        [kByteLength]: byteLength,
         fin: options.fin,
-        rsv1,
-        opcode,
+        generateMask: this._generateMask,
         mask: options.mask,
         maskBuffer: this._maskBuffer,
-        generateMask: this._generateMask,
-        readOnly: toBuffer.readOnly
+        opcode,
+        readOnly,
+        rsv1
       };
 
       if (this._deflating) {
-        this.enqueue([this.dispatch, buf, this._compress, opts, cb]);
+        this.enqueue([this.dispatch, data, this._compress, opts, cb]);
       } else {
-        this.dispatch(buf, this._compress, opts, cb);
+        this.dispatch(data, this._compress, opts, cb);
       }
     } else {
       this.sendFrame(
-        Sender.frame(buf, {
+        Sender.frame(data, {
+          [kByteLength]: byteLength,
           fin: options.fin,
-          rsv1: false,
-          opcode,
+          generateMask: this._generateMask,
           mask: options.mask,
           maskBuffer: this._maskBuffer,
-          generateMask: this._generateMask,
-          readOnly: toBuffer.readOnly
+          opcode,
+          readOnly,
+          rsv1: false
         }),
         cb
       );
@@ -39697,13 +39742,12 @@ class Sender {
   }
 
   /**
-   * Dispatches a data message.
+   * Dispatches a message.
    *
-   * @param {Buffer} data The message to send
+   * @param {(Buffer|String)} data The message to send
    * @param {Boolean} [compress=false] Specifies whether or not to compress
    *     `data`
    * @param {Object} options Options object
-   * @param {Number} options.opcode The opcode
    * @param {Boolean} [options.fin=false] Specifies whether or not to set the
    *     FIN bit
    * @param {Function} [options.generateMask] The function used to generate the
@@ -39712,6 +39756,7 @@ class Sender {
    *     `data`
    * @param {Buffer} [options.maskBuffer] The buffer used to store the masking
    *     key
+   * @param {Number} options.opcode The opcode
    * @param {Boolean} [options.readOnly=false] Specifies whether `data` can be
    *     modified
    * @param {Boolean} [options.rsv1=false] Specifies whether or not to set the
@@ -39727,7 +39772,7 @@ class Sender {
 
     const perMessageDeflate = this._extensions[PerMessageDeflate.extensionName];
 
-    this._bufferedBytes += data.length;
+    this._bufferedBytes += options[kByteLength];
     this._deflating = true;
     perMessageDeflate.compress(data, options.fin, (_, buf) => {
       if (this._socket.destroyed) {
@@ -39738,7 +39783,8 @@ class Sender {
         if (typeof cb === 'function') cb(err);
 
         for (let i = 0; i < this._queue.length; i++) {
-          const callback = this._queue[i][4];
+          const params = this._queue[i];
+          const callback = params[params.length - 1];
 
           if (typeof callback === 'function') callback(err);
         }
@@ -39746,7 +39792,7 @@ class Sender {
         return;
       }
 
-      this._bufferedBytes -= data.length;
+      this._bufferedBytes -= options[kByteLength];
       this._deflating = false;
       options.readOnly = false;
       this.sendFrame(Sender.frame(buf, options), cb);
@@ -39763,7 +39809,7 @@ class Sender {
     while (!this._deflating && this._queue.length) {
       const params = this._queue.shift();
 
-      this._bufferedBytes -= params[1].length;
+      this._bufferedBytes -= params[3][kByteLength];
       Reflect.apply(params[0], this, params.slice(1));
     }
   }
@@ -39775,7 +39821,7 @@ class Sender {
    * @private
    */
   enqueue(params) {
-    this._bufferedBytes += params[1].length;
+    this._bufferedBytes += params[3][kByteLength];
     this._queue.push(params);
   }
 
@@ -41898,7 +41944,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 196:
+/***/ 7571:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -41913,12 +41959,11 @@ __nccwpck_require__.d(__webpack_exports__, {
   "reconnectDiscord": () => (/* binding */ reconnectDiscord),
   "reconnectMoonraker": () => (/* binding */ reconnectMoonraker),
   "reloadCache": () => (/* binding */ reloadCache),
-  "restartBot": () => (/* binding */ restartBot),
   "restartScheduler": () => (/* binding */ restartScheduler)
 });
 
 ;// CONCATENATED MODULE: ./package.json
-const package_namespaceObject = JSON.parse('{"name":"mooncord","version":"0.0.5","description":"Moonraker Discord Bot based on Discord.js","main":"index.js","scripts":{"start":"node --expose-gc dist/index.js","debugstart":"node --trace_gc --expose-gc --trace-deprecation --trace-warnings --trace-uncaught --track-heap-objects dist/index.js","checkcodestyle":"npx eslint ./**","autofixcodestyle":"npx eslint ./** --fix","build":"ncc build -m -d -e discord.js -e @ffmpeg-installer/ffmpeg -e sharp src/Application.ts -o dist","watch":"ncc build -w -d -e discord.js -e @ffmpeg-installer/ffmpeg -e sharp src/Application.ts -o dist"},"repository":{"type":"git","url":"git+https://github.com/eliteSchwein/mooncord.git"},"keywords":[],"author":"eliteSCHW31N","license":"ISC","bugs":{"url":"https://github.com/eliteSchwein/mooncord/issues"},"homepage":"https://github.com/eliteSchwein/mooncord#readme","devDependencies":{"@types/fluent-ffmpeg":"^2.1.20","@types/node":"^17.0.8","@types/sharp":"^0.29.5","@vercel/ncc":"^0.33.1","async-wait-until":"2.0.12","axios":"^0.24.0","bytes":"^3.1.1","colorts":"^0.1.63","eslint":"^8.6.0","eslint-config-galex":"^3.5.5","eslint-config-standard":"^16.0.3","eslint-plugin-import":"^2.25.4","eslint-plugin-node":"^11.1.0","eslint-plugin-promise":"^6.0.0","fluent-ffmpeg":"^2.1.2","form-data":"^4.0.0","lodash":"^4.17.21","node-fetch":"^3.1.0","shelljs":"^0.8.4","stacktrace-js":"^2.0.2","typescript":"^4.5.4","websocket-ts":"^1.1.1","ws":"^8.4.0"},"dependencies":{"@ffmpeg-installer/ffmpeg":"^1.1.0","discord.js":"^13.4.0","sharp":"^0.29.3"}}');
+const package_namespaceObject = JSON.parse('{"name":"mooncord","version":"0.0.6","description":"Moonraker Discord Bot based on Discord.js","main":"index.js","scripts":{"start":"node --expose-gc dist/index.js","debugstart":"node --trace_gc --expose-gc --trace-deprecation --trace-warnings --trace-uncaught --track-heap-objects dist/index.js","checkcodestyle":"npx eslint ./**","autofixcodestyle":"npx eslint ./** --fix","build":"ncc build -m -d -e discord.js -e @ffmpeg-installer/ffmpeg -e sharp src/Application.ts -o dist","watch":"ncc build -w -d -e discord.js -e @ffmpeg-installer/ffmpeg -e sharp src/Application.ts -o dist"},"repository":{"type":"git","url":"git+https://github.com/eliteSchwein/mooncord.git"},"keywords":[],"author":"eliteSCHW31N","license":"ISC","bugs":{"url":"https://github.com/eliteSchwein/mooncord/issues"},"homepage":"https://github.com/eliteSchwein/mooncord#readme","devDependencies":{"@types/fluent-ffmpeg":"^2.1.20","@types/node":"^17.0.21","@types/sharp":"^0.29.5","@vercel/ncc":"^0.33.3","async-wait-until":"2.0.12","axios":"^0.26.0","bytes":"^3.1.2","colorts":"^0.1.63","eslint":"^8.10.0","eslint-config-galex":"^3.6.5","eslint-config-standard":"^16.0.3","eslint-plugin-import":"^2.25.4","eslint-plugin-node":"^11.1.0","eslint-plugin-promise":"^6.0.0","fluent-ffmpeg":"^2.1.2","form-data":"^4.0.0","lodash":"^4.17.21","node-fetch":"^3.2.2","shelljs":"^0.8.5","stacktrace-js":"^2.0.2","typescript":"^4.6.2","websocket-ts":"^1.1.1","ws":"^8.5.0"},"dependencies":{"@ffmpeg-installer/ffmpeg":"^1.1.0","discord.js":"13.6.0","sharp":"^0.30.2"}}');
 var package_namespaceObject_0 = /*#__PURE__*/__nccwpck_require__.t(package_namespaceObject, 2);
 // EXTERNAL MODULE: external "util"
 var external_util_ = __nccwpck_require__(3837);
@@ -42477,6 +42522,12 @@ class ConfigHelper {
     }
     notifyOnTimelapseFinish() {
         return this.getConfig().notifications.timelapse;
+    }
+    useDevDatabase() {
+        return this.getConfig().development.dev_database;
+    }
+    showM117Notifcation() {
+        return this.getConfig().notifications.show_m117_notification;
     }
 }
 
@@ -43091,6 +43142,9 @@ class MetadataHelper {
         if (typeof metaData === 'undefined') {
             return placeholder;
         }
+        if (typeof metaData.thumbnails === 'undefined') {
+            return placeholder;
+        }
         const thumbnailFile = metaData.thumbnails.reduce((prev, current) => { return (prev.size > current.size) ? prev : current; });
         const thumbnailPath = thumbnailFile.relative_path;
         const thumbnailURL = encodeURI(`${url}/server/files/gcodes/${rootPath}${thumbnailPath}`);
@@ -43182,7 +43236,7 @@ class EmbedHelper {
         }
         return embed.title;
     }
-    async generateEmbed(embedID, providedPlaceholders = null, providedFields = null) {
+    async generateEmbed(embedID, providedPlaceholders = null, providedFields = null, providedValues = null) {
         const embed = new external_discord_js_namespaceObject.MessageEmbed();
         const embedDataUnformatted = { ...this.getEmbeds()[embedID] };
         if (embedDataUnformatted.show_versions) {
@@ -43196,6 +43250,9 @@ class EmbedHelper {
         }
         if (providedFields !== null) {
             mergeDeep(embedDataUnformatted, { fields: providedFields });
+        }
+        if (providedValues !== null) {
+            mergeDeep(embedDataUnformatted, providedValues);
         }
         let embedRaw = JSON.stringify(embedDataUnformatted);
         const placeholders = embedRaw.matchAll(/(\${).*?}/g);
@@ -45410,7 +45467,61 @@ class GCodeUploadHandler {
     }
 }
 
+;// CONCATENATED MODULE: ./src/events/discord/VerifyHandler.ts
+
+
+class VerifyHandler {
+    constructor(discordClient) {
+        this.configHelper = new ConfigHelper();
+        this.userConfig = this.configHelper.getUserConfig();
+        discordClient.on("messageCreate", async (message) => {
+            if (message.author.id === discordClient.user.id) {
+                return;
+            }
+            if (typeof this.userConfig.tmp === 'undefined') {
+                return;
+            }
+            if (typeof this.userConfig.tmp.controller_tag === 'undefined') {
+                return;
+            }
+            const controllerTag = this.userConfig.tmp.controller_tag;
+            if (message.author.tag !== controllerTag) {
+                logError(`${message.author.tag} is not matching the Controller Tag ${controllerTag}!!!`);
+                return;
+            }
+            const controllerId = message.author.id;
+            if (this.userConfig.permission.controllers.users === controllerId ||
+                this.userConfig.permission.controllers.users.includes(controllerId)) {
+                logError(`${message.author.tag} is already a Controller!!!`);
+                await message.reply('You are already a Controller');
+                this.writeConfig();
+                return;
+            }
+            if (this.userConfig.permission.controllers.users === '') {
+                logRegular(`write ${message.author.tag}'s ID as Controller (${controllerId})...`);
+                this.userConfig.permission.controllers.users = controllerId;
+            }
+            else {
+                logRegular(`add ${message.author.tag}'s ID into the Controller List (${controllerId})...`);
+                const oldControllerId = this.userConfig.permission.controllers.users;
+                this.userConfig.permission.controllers.users = [oldControllerId];
+                this.userConfig.permission.controllers.users.push(controllerId);
+            }
+            await message.reply('You have now the Controller Permission over me');
+            this.writeConfig();
+        });
+    }
+    writeConfig() {
+        delete this.userConfig.tmp;
+        logRegular('writing User Config...');
+        this.configHelper.writeUserConfig(this.userConfig);
+        logSuccess('stopping MoonCord...');
+        process.exit(0);
+    }
+}
+
 ;// CONCATENATED MODULE: ./src/clients/DiscordClient.ts
+
 
 
 
@@ -45428,6 +45539,7 @@ class GCodeUploadHandler {
 let interactionHandler;
 let debugHandler;
 let gcodeUploadHandler;
+let verifyHandler;
 class DiscordClient {
     constructor() {
         this.config = new ConfigHelper();
@@ -45495,6 +45607,7 @@ class DiscordClient {
         interactionHandler = new InteractionHandler(this.discordClient);
         debugHandler = new DebugHandler(this.discordClient);
         gcodeUploadHandler = new GCodeUploadHandler(this.discordClient);
+        verifyHandler = new VerifyHandler(this.discordClient);
     }
     generateCaches() {
         logRegular('Generate Caches...');
@@ -45803,7 +45916,11 @@ class StateUpdateNotification {
             });
             logEmpty();
             logSuccess('klipper is ready...');
-            await restartBot();
+            reloadCache();
+            await this.moonrakerClient.sendInitCommands();
+            await reconnectDiscord();
+            await restartScheduler();
+            await this.statusHelper.update();
         }
     }
 }
@@ -45830,6 +45947,7 @@ class InviteMessage {
 
 
 
+
 class BroadcastMessage {
     constructor() {
         this.embedHelper = new EmbedHelper();
@@ -45839,9 +45957,13 @@ class BroadcastMessage {
         if (!message.startsWith('mooncord.broadcast')) {
             return;
         }
-        const notificationMessage = message.slice(19);
+        const defaultColor = findValue('embeds.notification.color');
+        const notificationMessageRaw = message.slice(19);
+        const notificationMessageFragments = notificationMessageRaw.split('COLOR:');
+        const notificationMessage = notificationMessageFragments[0];
+        const color = ((notificationMessageFragments.length > 1) ? `#${notificationMessageFragments[1]}` : defaultColor);
         logRegular(`Broadcast Message: ${notificationMessage}`);
-        const embed = await this.embedHelper.generateEmbed('notification', { 'message': notificationMessage });
+        const embed = await this.embedHelper.generateEmbed('notification', { 'message': notificationMessage }, null, { color });
         this.notificationHelper.broadcastMessage(embed.embed);
     }
 }
@@ -46067,7 +46189,49 @@ class TimelapseNotification {
     }
 }
 
+;// CONCATENATED MODULE: ./src/events/moonraker/messages/DisplayUpdateNotification.ts
+
+
+
+
+class DisplayUpdateNotification {
+    constructor() {
+        this.embedHelper = new EmbedHelper();
+        this.configHelper = new ConfigHelper();
+        this.notificationHelper = new NotificationHelper();
+    }
+    async parse(message) {
+        if (typeof (message.method) === 'undefined') {
+            return;
+        }
+        if (typeof (message.params) === 'undefined') {
+            return;
+        }
+        if (!this.configHelper.showM117Notifcation()) {
+            return;
+        }
+        const param = message.params[0];
+        if (message.method !== 'notify_status_update') {
+            return;
+        }
+        if (typeof param.display_status === 'undefined') {
+            return;
+        }
+        if (typeof param.display_status.message === 'undefined') {
+            return;
+        }
+        const displayMessage = param.display_status.message;
+        if (displayMessage === null) {
+            return;
+        }
+        logRegular(`Broadcast Message: ${displayMessage}`);
+        const embed = await this.embedHelper.generateEmbed('notification', { 'message': displayMessage });
+        this.notificationHelper.broadcastMessage(embed.embed);
+    }
+}
+
 ;// CONCATENATED MODULE: ./src/events/moonraker/MessageHandler.ts
+
 
 
 
@@ -46099,6 +46263,7 @@ class MessageHandler {
             void new PrintProgressNotification().parse(messageData);
             void new ThrottleNotification().parse(messageData);
             void new TimelapseNotification().parse(messageData);
+            void new DisplayUpdateNotification().parse(messageData);
         }));
     }
 }
@@ -46176,18 +46341,19 @@ class MoonrakerClient {
         logSuccess('Reconnected to MoonRaker');
         this.reconnectAttempt = 1;
         this.registerEvents();
+        reloadCache();
         await this.sendInitCommands();
         this.changeLogPath();
-        reloadCache();
         await reconnectDiscord();
-        await reloadCache();
+        await restartScheduler();
         await statusHelper.update();
     }
     async connect() {
         logSuccess('Connect to MoonRaker...');
         this.ready = false;
         const oneShotToken = await this.apiKeyHelper.getOneShotToken();
-        const socketUrl = this.config.getMoonrakerSocketUrl();
+        let socketUrl = ((this.config.getMoonrakerSocketUrl() !== '' ? this.config.getMoonrakerSocketUrl() : `${this.config.getMoonrakerUrl()}/websocket`));
+        socketUrl = socketUrl.replace(/(http:\/\/)|(https:\/\/)/g, 'ws://');
         this.websocket = new lib.WebsocketBuilder(`${socketUrl}?token=${oneShotToken}`)
             .build();
         this.websocket.addEventListener(lib.WebsocketEvents.close, ((async (instance, ev) => {
@@ -46221,11 +46387,15 @@ class MoonrakerClient {
         const objects = await this.send({ "method": "printer.objects.list" });
         await this.fileListHelper.retrieveGcodeFiles();
         await this.fileListHelper.retrieveConfigFiles();
-        const subscriptionObjects = {};
+        const subscriptionObjects = {
+            'webhooks.state': null,
+            'webhooks.state_message': null
+        };
         for (const index in objects.result.objects) {
             const object = objects.result.objects[index];
             subscriptionObjects[object] = null;
         }
+        delete subscriptionObjects.webhooks;
         logRegular('Subscribe to MoonRaker Objects...');
         const data = await this.send({ "method": "printer.objects.subscribe", "params": { "objects": subscriptionObjects } });
         this.ready = true;
@@ -46324,11 +46494,12 @@ class DatabaseUtil {
     constructor() {
         this.config = new ConfigHelper();
         this.moonrakerClient = getMoonrakerClient();
+        this.nameSpace = (this.config.useDevDatabase() ? 'mooncord_dev' : 'mooncord');
     }
     async retrieveDatabase() {
         logEmpty();
         logSuccess('Retrieve Database...');
-        const databaseRequest = await this.moonrakerClient.send({ "method": "server.database.get_item", "params": { "namespace": "mooncord", "key": "dataset" } });
+        const databaseRequest = await this.moonrakerClient.send({ "method": "server.database.get_item", "params": { "namespace": this.nameSpace, "key": "dataset" } });
         if (typeof databaseRequest.error !== 'undefined') {
             await this.handleDatabaseMissing();
             return;
@@ -46336,7 +46507,7 @@ class DatabaseUtil {
         database = databaseRequest.result.value;
     }
     async resetDatabase() {
-        void await this.moonrakerClient.send({ "method": "server.database.delete_item", "params": { "namespace": "mooncord", "key": "dataset" } });
+        void await this.moonrakerClient.send({ "method": "server.database.delete_item", "params": { "namespace": this.nameSpace, "key": "dataset" } });
         logWarn('Database wiped');
         void await this.handleDatabaseMissing();
     }
@@ -46346,7 +46517,7 @@ class DatabaseUtil {
         await this.updateDatabase();
     }
     async updateDatabase() {
-        const updateRequest = await this.moonrakerClient.send({ "method": "server.database.post_item", "params": { "namespace": "mooncord", "key": "dataset", "value": database } });
+        const updateRequest = await this.moonrakerClient.send({ "method": "server.database.post_item", "params": { "namespace": this.nameSpace, "key": "dataset", "value": database } });
         if (typeof updateRequest.error !== 'undefined') {
             logError(`Database Update failed: ${updateRequest.error.message}`);
             return;
@@ -46536,6 +46707,7 @@ const statusHelper = new StatusHelper();
 void init();
 async function init() {
     initCache();
+    const userConfig = configHelper.getUserConfig();
     logEmpty();
     let currentInitState = 'Moonraker Client';
     try {
@@ -46554,6 +46726,18 @@ async function init() {
     logRegular('Register Scheduler...');
     schedulerHelper.init(moonrakerClient);
     await statusHelper.update(null, true, discordClient);
+    if (typeof userConfig.tmp === 'undefined') {
+        return;
+    }
+    if (typeof userConfig.tmp.controller_tag === 'undefined') {
+        return;
+    }
+    for (let i = 0; i < 1024; i++) {
+        logEmpty();
+    }
+    logRegular(`please invite the bot on a Server: 
+        ${getEntry('invite_url')}`);
+    logRegular(`and write a Message on this Server with your Account with the Tag ${userConfig.tmp.controller_tag}`);
 }
 function reloadCache() {
     logEmpty();
@@ -46577,13 +46761,6 @@ async function reconnectMoonraker() {
     schedulerHelper.clear();
     moonrakerClient.close();
     await moonrakerClient.connect();
-}
-async function restartBot() {
-    logEmpty();
-    logSuccess('restart Bot...');
-    schedulerHelper.clear();
-    moonrakerClient.close();
-    await init();
 }
 function initCache() {
     logRegular('load Package Cache...');
@@ -46625,6 +46802,10 @@ function initCache() {
     setData('throttle', {
         'cooldown': 0,
         'throttle_states': []
+    });
+    logRegular('init MetaData Cache...');
+    setData('meta_data', {
+        'filename': ''
     });
     configHelper.loadCache();
     localeHelper.loadCache();
@@ -46935,7 +47116,7 @@ module.exports = JSON.parse('{"application/1d-interleaved-parityfec":{"source":"
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(196);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(7571);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()
