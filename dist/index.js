@@ -42529,6 +42529,9 @@ class ConfigHelper {
     showM117Notifcation() {
         return this.getConfig().notifications.show_m117_notification;
     }
+    getGcodeExecuteTimeout() {
+        return this.getConfig().status.gcode_timeout;
+    }
 }
 
 ;// CONCATENATED MODULE: ./src/meta/command_structure.json
@@ -42867,8 +42870,13 @@ class WebcamHelper {
             if (execute.startsWith("gcode:")) {
                 const gcode = execute.replace("gcode:", "");
                 const id = Math.floor(Math.random() * Number.parseInt("10_000")) + 1;
-                await this.moonrakerClient
-                    .send({ "method": "printer.gcode.script", "params": { "script": gcode }, id });
+                try {
+                    await this.moonrakerClient
+                        .send({ "method": "printer.gcode.script", "params": { "script": gcode }, id }, this.configHelper.getGcodeExecuteTimeout() * 1000);
+                }
+                catch (error) {
+                    logError(error);
+                }
             }
             if (execute.startsWith("website_post:")) {
                 const url = execute.replace("website_post:", "");
