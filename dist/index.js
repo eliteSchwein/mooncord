@@ -46174,7 +46174,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 5818:
+/***/ 2690:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -46193,7 +46193,7 @@ __nccwpck_require__.d(__webpack_exports__, {
 });
 
 ;// CONCATENATED MODULE: ./package.json
-const package_namespaceObject = JSON.parse('{"name":"mooncord","version":"0.0.5","description":"Moonraker Discord Bot based on Discord.js","main":"index.js","scripts":{"start":"node --expose-gc dist/index.js","debugstart":"node --trace_gc --expose-gc --trace-deprecation --trace-warnings --trace-uncaught --track-heap-objects dist/index.js","checkcodestyle":"npx eslint ./**","autofixcodestyle":"npx eslint ./** --fix","build":"ncc build -m -d -e discord.js -e @ffmpeg-installer/ffmpeg -e sharp src/Application.ts -o dist","watch":"ncc build -w -d -e discord.js -e @ffmpeg-installer/ffmpeg -e sharp src/Application.ts -o dist"},"repository":{"type":"git","url":"git+https://github.com/eliteSchwein/mooncord.git"},"keywords":[],"author":"eliteSCHW31N","license":"ISC","bugs":{"url":"https://github.com/eliteSchwein/mooncord/issues"},"homepage":"https://github.com/eliteSchwein/mooncord#readme","devDependencies":{"@types/fluent-ffmpeg":"^2.1.20","@types/node":"^17.0.10","@types/sharp":"^0.29.5","@vercel/ncc":"^0.33.1","async-wait-until":"2.0.12","axios":"^0.25.0","bytes":"^3.1.1","colorts":"^0.1.63","eslint":"^8.7.0","eslint-config-galex":"^3.6.2","eslint-config-standard":"^16.0.3","eslint-plugin-import":"^2.25.4","eslint-plugin-node":"^11.1.0","eslint-plugin-promise":"^6.0.0","fluent-ffmpeg":"^2.1.2","form-data":"^4.0.0","lodash":"^4.17.21","node-fetch":"^3.2.0","shelljs":"^0.8.5","stacktrace-js":"^2.0.2","typescript":"^4.5.5","websocket-ts":"^1.1.1","ws":"^8.4.2"},"dependencies":{"@ffmpeg-installer/ffmpeg":"^1.1.0","discord.js":"13.5.0","sharp":"^0.29.3"}}');
+const package_namespaceObject = JSON.parse('{"name":"mooncord","version":"0.0.6","description":"Moonraker Discord Bot based on Discord.js","main":"index.js","scripts":{"start":"node --expose-gc dist/index.js","debugstart":"node --trace_gc --expose-gc --trace-deprecation --trace-warnings --trace-uncaught --track-heap-objects dist/index.js","checkcodestyle":"npx eslint ./**","autofixcodestyle":"npx eslint ./** --fix","build":"ncc build -m -d -e discord.js -e @ffmpeg-installer/ffmpeg -e sharp src/Application.ts -o dist","watch":"ncc build -w -d -e discord.js -e @ffmpeg-installer/ffmpeg -e sharp src/Application.ts -o dist"},"repository":{"type":"git","url":"git+https://github.com/eliteSchwein/mooncord.git"},"keywords":[],"author":"eliteSCHW31N","license":"ISC","bugs":{"url":"https://github.com/eliteSchwein/mooncord/issues"},"homepage":"https://github.com/eliteSchwein/mooncord#readme","devDependencies":{"@types/fluent-ffmpeg":"^2.1.20","@types/node":"^17.0.21","@types/sharp":"^0.29.5","@vercel/ncc":"^0.33.3","async-wait-until":"2.0.12","axios":"^0.26.0","bytes":"^3.1.2","colorts":"^0.1.63","eslint":"^8.10.0","eslint-config-galex":"^3.6.5","eslint-config-standard":"^16.0.3","eslint-plugin-import":"^2.25.4","eslint-plugin-node":"^11.1.0","eslint-plugin-promise":"^6.0.0","fluent-ffmpeg":"^2.1.2","form-data":"^4.0.0","lodash":"^4.17.21","node-fetch":"^3.2.2","shelljs":"^0.8.5","stacktrace-js":"^2.0.2","typescript":"^4.6.2","websocket-ts":"^1.1.1","ws":"^8.5.0"},"dependencies":{"@ffmpeg-installer/ffmpeg":"^1.1.0","discord.js":"13.6.0","sharp":"^0.30.2"}}');
 var package_namespaceObject_0 = /*#__PURE__*/__nccwpck_require__.t(package_namespaceObject, 2);
 // EXTERNAL MODULE: external "util"
 var external_util_ = __nccwpck_require__(3837);
@@ -46392,6 +46392,63 @@ function getEntry(key) {
 }
 function findValue(key) {
     return (0,lodash.get)(cacheData, key);
+}
+function getHeaterArguments() {
+    const heaters = cacheData.state.heaters.available_heaters;
+    const options = {};
+    let { heater } = cacheData.locale.commands.preheat.options.manual.options;
+    if (typeof heater === 'undefined') {
+        heater = { 'description': '${heater}' };
+    }
+    const { description } = heater;
+    for (const heater of heaters) {
+        const heaterData = cacheData.state.configfile.config[heater];
+        const heaterMaxTemp = Number(heaterData.max_temp);
+        const heaterMinTemp = Number(heaterData.min_temp);
+        options[heater] = {
+            'type': 'integer',
+            'name': heater,
+            'description': description.replace(/(\${heater})/g, heater),
+            'required': false,
+            'choices': [],
+            'options': [],
+            'min_value': heaterMinTemp,
+            'max_value': heaterMaxTemp
+        };
+    }
+    return options;
+}
+function getHeaterChoices() {
+    const choices = [];
+    const heaters = cacheData.state.heaters.available_heaters;
+    for (const heater of heaters) {
+        choices.push({
+            "name": heater,
+            "value": heater
+        });
+    }
+    return choices;
+}
+function getConfigChoices() {
+    const choices = [];
+    const configs = cacheData.config_files;
+    for (const config of configs) {
+        choices.push({
+            "name": config.path,
+            "value": config.path
+        });
+    }
+    return choices;
+}
+function getPreheatProfileChoices() {
+    const choices = [];
+    for (const profile in cacheData.config.presets) {
+        choices.push({
+            "name": profile,
+            "value": profile
+        });
+    }
+    return choices;
 }
 function getServiceChoices() {
     const localeHelper = new LocaleHelper();
@@ -46696,13 +46753,16 @@ class ConfigHelper {
     notifyOnTimelapseFinish() {
         return this.getConfig().notifications.timelapse;
     }
+    useDevDatabase() {
+        return this.getConfig().development.dev_database;
+    }
     showM117Notifcation() {
         return this.getConfig().notifications.show_m117_notification;
     }
 }
 
 ;// CONCATENATED MODULE: ./src/meta/command_structure.json
-const command_structure_namespaceObject = JSON.parse('{"admin":{"role":{"type":"subcommand","options":{"role":{"type":"role","required":true}}},"user":{"type":"subcommand","options":{"user":{"type":"user","required":true}}}},"dump":{"section":{"type":"string","required":true,"choices":[{"value":"database"},{"value":"cache"}]}},"reset_database":{},"editchannel":{"channel":{"type":"channel","required":false}},"emergency_stop":{},"fileinfo":{"file":{"type":"string","required":true}},"get_user_id":{"user":{"type":"user","required":false}},"restart":{"service":{"type":"string","required":true,"choices":"${serviceChoices}"}},"get_log":{"log_file":{"type":"string","required":true,"choices":[{"name":"Klipper","value":"klippy"},{"name":"Moonraker","value":"moonraker"},{"name":"MoonCord","value":"mooncord"}]}},"info":{},"listfiles":{},"notify":{},"printjob":{"pause":{"type":"subcommand"},"cancel":{"type":"subcommand"},"resume":{"type":"subcommand"},"start":{"type":"subcommand","options":{"file":{"type":"string","required":true}}}},"status":{},"systeminfo":{},"temp":{}}');
+const command_structure_namespaceObject = JSON.parse('{"admin":{"role":{"type":"subcommand","options":{"role":{"type":"role","required":true}}},"user":{"type":"subcommand","options":{"user":{"type":"user","required":true}}}},"preheat":{"preset":{"type":"subcommand","options":{"preset":{"type":"string","required":true,"choices":"${preheatProfileChoices}"}}},"manual":{"type":"subcommand","options":"${heaterArguments}"}},"tune":{"speed":{"type":"integer"},"flow":{"type":"integer"}},"saveconfig":{},"pidtune":{"heater":{"type":"string","required":true,"choices":"${heaterChoices}"},"temperature":{"type":"integer","required":true}},"getconfig":{"file":{"type":"string","required":true,"choices":"${configChoices}"}},"dump":{"section":{"type":"string","required":true,"choices":[{"value":"database"},{"value":"cache"}]}},"reset_database":{},"editchannel":{"channel":{"type":"channel","required":false}},"emergency_stop":{},"fileinfo":{"file":{"type":"string","required":true}},"get_user_id":{"user":{"type":"user","required":false}},"restart":{"service":{"type":"string","required":true,"choices":"${serviceChoices}"}},"get_log":{"log_file":{"type":"string","required":true,"choices":[{"name":"Klipper","value":"klippy"},{"name":"Moonraker","value":"moonraker"},{"name":"MoonCord","value":"mooncord"}]}},"info":{},"listfiles":{},"notify":{},"printjob":{"pause":{"type":"subcommand"},"cancel":{"type":"subcommand"},"resume":{"type":"subcommand"},"start":{"type":"subcommand","options":{"file":{"type":"string","required":true}}}},"status":{},"systeminfo":{},"temp":{}}');
 ;// CONCATENATED MODULE: ./src/meta/command_option_types.json
 const command_option_types_namespaceObject = JSON.parse('{"subcommand":1,"subcommand_group":2,"string":3,"integer":4,"boolean":5,"user":6,"channel":7,"role":8,"mentionable":9,"number":10}');
 ;// CONCATENATED MODULE: ./src/generator/DiscordCommandGenerator.ts
@@ -46769,13 +46829,21 @@ class DiscordCommandGenerator {
         if (Object.keys(optionMeta).length === 0) {
             return;
         }
+        if (optionMeta.options === '${heaterArguments}') {
+            syntaxMeta.options[option].options = getHeaterArguments();
+            messageMeta.options[option].options = getHeaterArguments();
+            meta[option].options = getHeaterArguments();
+            optionMeta.options = getHeaterArguments();
+        }
         const optionBuilder = {
             type: command_option_types_namespaceObject[optionMeta.type],
             name: syntaxMeta.options[option].name,
             description: messageMeta.options[option].description,
             options: [],
             required: false,
-            choices: []
+            choices: [],
+            min_value: syntaxMeta.options[option].min_value,
+            max_value: syntaxMeta.options[option].max_value
         };
         optionBuilder.required = optionMeta.required;
         if (typeof (optionMeta.choices) !== 'undefined') {
@@ -46784,6 +46852,15 @@ class DiscordCommandGenerator {
             }
             else if (optionMeta.choices === '${serviceChoices}') {
                 optionBuilder.choices = getServiceChoices();
+            }
+            else if (optionMeta.choices === '${preheatProfileChoices}') {
+                optionBuilder.choices = getPreheatProfileChoices();
+            }
+            else if (optionMeta.choices === '${heaterChoices}') {
+                optionBuilder.choices = getHeaterChoices();
+            }
+            else if (optionMeta.choices === '${configChoices}') {
+                optionBuilder.choices = getConfigChoices();
             }
             else {
                 optionBuilder.choices = this.buildChoices(optionMeta.choices, syntaxMeta.options[option].choices);
@@ -49493,7 +49570,7 @@ class EmbedHelper {
         }
         return embed.title;
     }
-    async generateEmbed(embedID, providedPlaceholders = null, providedFields = null) {
+    async generateEmbed(embedID, providedPlaceholders = null, providedFields = null, providedValues = null) {
         const embed = new external_discord_js_namespaceObject.MessageEmbed();
         const embedDataUnformatted = { ...this.getEmbeds()[embedID] };
         if (embedDataUnformatted.show_versions) {
@@ -49507,6 +49584,9 @@ class EmbedHelper {
         }
         if (providedFields !== null) {
             mergeDeep(embedDataUnformatted, { fields: providedFields });
+        }
+        if (providedValues !== null) {
+            mergeDeep(embedDataUnformatted, providedValues);
         }
         let embedRaw = JSON.stringify(embedDataUnformatted);
         const placeholders = embedRaw.matchAll(/(\${).*?}/g);
@@ -50855,7 +50935,291 @@ class AdminCommand {
     }
 }
 
+;// CONCATENATED MODULE: ./src/events/discord/interactions/commands/PreheatCommand.ts
+
+
+
+
+class PreheatCommand {
+    constructor(interaction, commandId) {
+        this.databaseUtil = getDatabase();
+        this.localeHelper = new LocaleHelper();
+        this.syntaxLocale = this.localeHelper.getSyntaxLocale();
+        this.locale = this.localeHelper.getLocale();
+        this.moonrakerClient = getMoonrakerClient();
+        this.functionCache = getEntry('function');
+        if (commandId !== 'preheat') {
+            return;
+        }
+        this.execute(interaction);
+    }
+    async execute(interaction) {
+        const subCommand = interaction.options.getSubcommand();
+        if (this.functionCache.current_status !== 'ready') {
+            await interaction.reply(this.locale.messages.errors.command_idle_only
+                .replace(/(\${username})/g, interaction.user.tag));
+            return;
+        }
+        switch (subCommand) {
+            case this.syntaxLocale.commands.preheat.options.preset.name: {
+                const preset = interaction.options.getString(this.syntaxLocale.commands.preheat.options.preset.options.preset.name);
+                await this.heatProfile(preset);
+                await interaction.reply(this.locale.messages.answers.preheat_preset
+                    .replace(/(\${preset})/g, preset)
+                    .replace(/(\${username})/g, interaction.user.tag));
+                break;
+            }
+            case this.syntaxLocale.commands.preheat.options.manual.name: {
+                await this.heatManual(interaction);
+                break;
+            }
+        }
+    }
+    async heatManual(interaction) {
+        const aviableHeaters = findValue('state.heaters.available_heaters');
+        let argumentFound = false;
+        let heaterList = '';
+        for (const heater of aviableHeaters) {
+            const heaterTemp = interaction.options.getInteger(heater);
+            const heaterData = findValue(`state.configfile.config.${heater}`);
+            const heaterMaxTemp = Number(heaterData.max_temp);
+            const heaterMinTemp = Number(heaterData.min_temp);
+            if (heaterTemp === null) {
+                continue;
+            }
+            if (heaterTemp > heaterMaxTemp) {
+                await interaction.reply(this.locale.messages.errors.preheat_over_max
+                    .replace(/(\${max_temp})/g, heaterMaxTemp)
+                    .replace(/(\${temp})/g, heaterTemp)
+                    .replace(/(\${username})/g, interaction.user.tag));
+                return;
+            }
+            if (heaterTemp < heaterMinTemp) {
+                await interaction.reply(this.locale.messages.errors.preheat_below_min
+                    .replace(/(\${min_temp})/g, heaterMinTemp)
+                    .replace(/(\${temp})/g, heaterTemp)
+                    .replace(/(\${username})/g, interaction.user.tag));
+                return;
+            }
+            argumentFound = true;
+            heaterList = `${heater}: ${heaterTemp}C°, ${heaterList}`;
+            await this.heatHeater(heater, heaterTemp);
+        }
+        if (!argumentFound) {
+            await interaction.reply(this.locale.messages.errors.missing_heater_arguments
+                .replace(/(\${username})/g, interaction.user.tag));
+            return;
+        }
+        heaterList = heaterList.slice(0, Math.max(0, heaterList.length - 2));
+        await interaction.reply(this.locale.messages.answers.preheat_manual
+            .replace(/(\${heater_list})/g, heaterList)
+            .replace(/(\${username})/g, interaction.user.tag));
+    }
+    async heatHeater(heater, temp) {
+        logRegular(`set Temperatur of ${heater} to ${temp}C°...`);
+        await this.moonrakerClient.send({ "method": "printer.gcode.script", "params": { "script": `SET_HEATER_TEMPERATURE HEATER=${heater} TARGET=${temp}` } });
+    }
+    async heatProfile(profileName) {
+        const preset = Object.assign({}, findValue(`config.presets.${profileName}`));
+        for (const gcode in preset.gcode) {
+            logRegular(`execute ${gcode}...`);
+            await this.moonrakerClient.send({ "method": "printer.gcode.script", "params": { "script": gcode } });
+        }
+        delete preset.gcode;
+        for (const heater in preset) {
+            const heaterTemp = preset[heater];
+            await this.heatHeater(heater, heaterTemp);
+        }
+    }
+}
+
+;// CONCATENATED MODULE: ./src/events/discord/interactions/commands/PidtuneCommand.ts
+
+
+
+class PidtuneCommand {
+    constructor(interaction, commandId) {
+        this.databaseUtil = getDatabase();
+        this.localeHelper = new LocaleHelper();
+        this.syntaxLocale = this.localeHelper.getSyntaxLocale();
+        this.locale = this.localeHelper.getLocale();
+        this.moonrakerClient = getMoonrakerClient();
+        this.functionCache = getEntry('function');
+        if (commandId !== 'pidtune') {
+            return;
+        }
+        this.execute(interaction);
+    }
+    async execute(interaction) {
+        const temp = interaction.options.getInteger(this.syntaxLocale.commands.pidtune.options.temperature.name);
+        const heater = interaction.options.getString(this.syntaxLocale.commands.pidtune.options.heater.name);
+        if (this.functionCache.current_status !== 'ready') {
+            await interaction.reply(this.locale.messages.errors.command_idle_only
+                .replace(/(\${username})/g, interaction.user.tag));
+            return;
+        }
+        await interaction.reply(this.locale.messages.answers.pidtune_start
+            .replace(/(\${heater})/g, heater)
+            .replace(/(\${temp})/g, temp)
+            .replace(/(\${username})/g, interaction.user.tag));
+        const gcodeResponse = await this.moonrakerClient.send({ "method": "printer.gcode.script", "params": { "script": `PID_CALIBRATE HEATER=${heater} TARGET=${temp}` } });
+        if (typeof gcodeResponse.error !== 'undefined') {
+            await interaction.editReply(this.locale.messages.errors.pidtune_fail
+                .replace(/(\${heater})/g, heater)
+                .replace(/(\${reason})/g, gcodeResponse.error.message)
+                .replace(/(\${username})/g, interaction.user.tag));
+            return;
+        }
+        await interaction.reply(this.locale.messages.answers.pidtune_done
+            .replace(/(\${heater})/g, heater)
+            .replace(/(\${username})/g, interaction.user.tag));
+    }
+}
+
+;// CONCATENATED MODULE: ./src/events/discord/interactions/commands/GetConfigCommand.ts
+
+
+
+
+
+
+class GetConfigCommand {
+    constructor(interaction, commandId) {
+        this.databaseUtil = getDatabase();
+        this.localeHelper = new LocaleHelper();
+        this.syntaxLocale = this.localeHelper.getSyntaxLocale();
+        this.locale = this.localeHelper.getLocale();
+        this.config = new ConfigHelper();
+        if (commandId !== 'getconfig') {
+            return;
+        }
+        this.execute(interaction);
+    }
+    async execute(interaction) {
+        await interaction.deferReply({ ephemeral: true });
+        const configArgument = interaction.options.getString(this.syntaxLocale.commands.getconfig.options.file.name);
+        await interaction.editReply(await this.retrieveConfig(configArgument));
+    }
+    async retrieveConfig(config) {
+        logRegular(`downloading config for ${config}...`);
+        try {
+            const result = await axios_default().get(`${this.config.getMoonrakerUrl()}/server/files/config/${config}`, {
+                responseType: 'arraybuffer',
+                headers: {
+                    'X-Api-Key': this.config.getMoonrakerApiKey()
+                }
+            });
+            const bufferSize = Buffer.byteLength(result.data);
+            if (bufferSize > Number.parseInt('8000000')) {
+                logError(`Configuration ${config} to big, Configfile: ${bufferSize}byte Limit: 8000000byte`);
+                return this.locale.messages.errors.config_too_large
+                    .replace(/(\${config})/g, `\`${config}\``);
+            }
+            const attachment = new external_discord_js_namespaceObject.MessageAttachment(result.data, `${config}`);
+            logSuccess(`Configuration ${config} Download successful!`);
+            return { files: [attachment] };
+        }
+        catch (error) {
+            if (typeof error.code !== 'undefined') {
+                logError(`${config} Config Download failed: ${error.config.url}: ${error.code}`);
+                return this.locale.messages.errors.config_failed
+                    .replace(/(\${config})/g, config)
+                    .replace(/(\${reason})/g, `${error.code}`);
+            }
+            logError(`${config} Config Download failed: ${error.config.url}: ${error.response.status} ${error.response.statusText}`);
+            if (error.response.status === 404) {
+                return this.locale.messages.errors.config_not_found
+                    .replace(/(\${config})/g, config);
+            }
+            return this.locale.messages.errors.config_failed
+                .replace(/(\${config})/g, config)
+                .replace(/(\${reason})/g, `${error.response.status} ${error.response.statusText}`);
+        }
+    }
+}
+
+;// CONCATENATED MODULE: ./src/events/discord/interactions/commands/SaveConfigCommand.ts
+
+
+
+class SaveConfigCommand {
+    constructor(interaction, commandId) {
+        this.databaseUtil = getDatabase();
+        this.localeHelper = new LocaleHelper();
+        this.syntaxLocale = this.localeHelper.getSyntaxLocale();
+        this.locale = this.localeHelper.getLocale();
+        this.moonrakerClient = getMoonrakerClient();
+        if (commandId !== 'saveconfig') {
+            return;
+        }
+        this.execute(interaction);
+    }
+    async execute(interaction) {
+        await interaction.deferReply();
+        logRegular('saving configuration...');
+        await this.moonrakerClient.send({ "method": "printer.gcode.script", "params": { "script": `SAVE_CONFIG` } });
+        await interaction.editReply(this.locale.messages.answers.config_save
+            .replace(/(\${username})/g, interaction.user.tag));
+    }
+}
+
+;// CONCATENATED MODULE: ./src/events/discord/interactions/commands/TuneCommand.ts
+
+
+
+class TuneCommand {
+    constructor(interaction, commandId) {
+        this.databaseUtil = getDatabase();
+        this.localeHelper = new LocaleHelper();
+        this.syntaxLocale = this.localeHelper.getSyntaxLocale();
+        this.locale = this.localeHelper.getLocale();
+        this.functionCache = getEntry('function');
+        this.moonrakerClient = getMoonrakerClient();
+        if (commandId !== 'tune') {
+            return;
+        }
+        this.execute(interaction);
+    }
+    async execute(interaction) {
+        const speed = interaction.options.getInteger(this.syntaxLocale.commands.tune.options.speed.name);
+        const flow = interaction.options.getInteger(this.syntaxLocale.commands.tune.options.flow.name);
+        let message = '';
+        if (this.functionCache.current_status !== 'printing') {
+            const message = this.locale.messages.printjob_cancel.status_not_valid
+                .replace(/(\${username})/g, interaction.user.tag);
+            await interaction.reply(message);
+            return;
+        }
+        await interaction.deferReply();
+        if (speed === null && flow === null) {
+            await interaction.editReply(this.locale.messages.errors.missing_arguments
+                .replace(/(\${username})/g, interaction.user.tag));
+            return;
+        }
+        if (speed !== null) {
+            await this.moonrakerClient.send({ "method": "printer.gcode.script", "params": { "script": `M220 S${speed}` } });
+            message = 'speed';
+        }
+        if (flow !== null) {
+            await this.moonrakerClient.send({ "method": "printer.gcode.script", "params": { "script": `M221 S${flow}` } });
+            message = 'flow';
+        }
+        if (flow !== null && speed !== null) {
+            message = 'speed_flow';
+        }
+        await interaction.editReply(this.locale.messages.answers.tune[message]
+            .replace(/(\${username})/g, interaction.user.tag)
+            .replace(/(\${speed})/g, speed)
+            .replace(/(\${flow})/g, flow));
+    }
+}
+
 ;// CONCATENATED MODULE: ./src/events/discord/interactions/CommandInteraction.ts
+
+
+
+
+
 
 
 
@@ -50923,6 +51287,11 @@ class CommandInteraction {
         void new FileListCommand(interaction, commandId);
         void new PrintjobCommand(interaction, commandId);
         void new SystemInfoCommand(interaction, commandId);
+        void new PreheatCommand(interaction, commandId);
+        void new PidtuneCommand(interaction, commandId);
+        void new GetConfigCommand(interaction, commandId);
+        void new SaveConfigCommand(interaction, commandId);
+        void new TuneCommand(interaction, commandId);
         await sleep(2000);
         if (interaction.replied || interaction.deferred) {
             return;
@@ -51432,7 +51801,61 @@ class GCodeUploadHandler {
     }
 }
 
+;// CONCATENATED MODULE: ./src/events/discord/VerifyHandler.ts
+
+
+class VerifyHandler {
+    constructor(discordClient) {
+        this.configHelper = new ConfigHelper();
+        this.userConfig = this.configHelper.getUserConfig();
+        discordClient.on("messageCreate", async (message) => {
+            if (message.author.id === discordClient.user.id) {
+                return;
+            }
+            if (typeof this.userConfig.tmp === 'undefined') {
+                return;
+            }
+            if (typeof this.userConfig.tmp.controller_tag === 'undefined') {
+                return;
+            }
+            const controllerTag = this.userConfig.tmp.controller_tag;
+            if (message.author.tag !== controllerTag) {
+                logError(`${message.author.tag} is not matching the Controller Tag ${controllerTag}!!!`);
+                return;
+            }
+            const controllerId = message.author.id;
+            if (this.userConfig.permission.controllers.users === controllerId ||
+                this.userConfig.permission.controllers.users.includes(controllerId)) {
+                logError(`${message.author.tag} is already a Controller!!!`);
+                await message.reply('You are already a Controller');
+                this.writeConfig();
+                return;
+            }
+            if (this.userConfig.permission.controllers.users === '') {
+                logRegular(`write ${message.author.tag}'s ID as Controller (${controllerId})...`);
+                this.userConfig.permission.controllers.users = controllerId;
+            }
+            else {
+                logRegular(`add ${message.author.tag}'s ID into the Controller List (${controllerId})...`);
+                const oldControllerId = this.userConfig.permission.controllers.users;
+                this.userConfig.permission.controllers.users = [oldControllerId];
+                this.userConfig.permission.controllers.users.push(controllerId);
+            }
+            await message.reply('You have now the Controller Permission over me');
+            this.writeConfig();
+        });
+    }
+    writeConfig() {
+        delete this.userConfig.tmp;
+        logRegular('writing User Config...');
+        this.configHelper.writeUserConfig(this.userConfig);
+        logSuccess('stopping MoonCord...');
+        process.exit(0);
+    }
+}
+
 ;// CONCATENATED MODULE: ./src/clients/DiscordClient.ts
+
 
 
 
@@ -51450,6 +51873,7 @@ class GCodeUploadHandler {
 let interactionHandler;
 let debugHandler;
 let gcodeUploadHandler;
+let verifyHandler;
 class DiscordClient {
     constructor() {
         this.config = new ConfigHelper();
@@ -51517,6 +51941,7 @@ class DiscordClient {
         interactionHandler = new InteractionHandler(this.discordClient);
         debugHandler = new DebugHandler(this.discordClient);
         gcodeUploadHandler = new GCodeUploadHandler(this.discordClient);
+        verifyHandler = new VerifyHandler(this.discordClient);
     }
     generateCaches() {
         logRegular('Generate Caches...');
@@ -51745,10 +52170,15 @@ class FileListHelper {
     constructor(moonrakerClient) {
         this.moonrakerClient = moonrakerClient;
     }
-    async retrieveFiles() {
+    async retrieveGcodeFiles() {
         logRegular('Retrieve current GCode Files...');
         const currentFiles = await this.moonrakerClient.send({ "method": "server.files.list", "params": { "root": "gcodes" } });
         setData('gcode_files', currentFiles.result);
+    }
+    async retrieveConfigFiles() {
+        logRegular('Retrieve Config Files...');
+        const currentFiles = await this.moonrakerClient.send({ "method": "server.files.list", "params": { "root": "config" } });
+        setData('config_files', currentFiles.result);
     }
     getCurrentFiles() {
         return getEntry('gcode_files');
@@ -51780,7 +52210,10 @@ class FileEditNotification {
             logNotice(`Source File: ${fileData.source_item.path}`);
         }
         if (fileData.item.path.endsWith('.gcode')) {
-            void this.fileListHelper.retrieveFiles();
+            void this.fileListHelper.retrieveGcodeFiles();
+        }
+        if (fileData.item.path.endsWith('.conf') || fileData.item.path.endsWith('.json')) {
+            void this.fileListHelper.retrieveConfigFiles();
         }
     }
 }
@@ -51848,6 +52281,7 @@ class InviteMessage {
 
 
 
+
 class BroadcastMessage {
     constructor() {
         this.embedHelper = new EmbedHelper();
@@ -51857,9 +52291,13 @@ class BroadcastMessage {
         if (!message.startsWith('mooncord.broadcast')) {
             return;
         }
-        const notificationMessage = message.slice(19);
+        const defaultColor = findValue('embeds.notification.color');
+        const notificationMessageRaw = message.slice(19);
+        const notificationMessageFragments = notificationMessageRaw.split('COLOR:');
+        const notificationMessage = notificationMessageFragments[0];
+        const color = ((notificationMessageFragments.length > 1) ? `#${notificationMessageFragments[1]}` : defaultColor);
         logRegular(`Broadcast Message: ${notificationMessage}`);
-        const embed = await this.embedHelper.generateEmbed('notification', { 'message': notificationMessage });
+        const embed = await this.embedHelper.generateEmbed('notification', { 'message': notificationMessage }, null, { color });
         this.notificationHelper.broadcastMessage(embed.embed);
     }
 }
@@ -52248,7 +52686,8 @@ class MoonrakerClient {
         logSuccess('Connect to MoonRaker...');
         this.ready = false;
         const oneShotToken = await this.apiKeyHelper.getOneShotToken();
-        const socketUrl = this.config.getMoonrakerSocketUrl();
+        let socketUrl = ((this.config.getMoonrakerSocketUrl() !== '' ? this.config.getMoonrakerSocketUrl() : `${this.config.getMoonrakerUrl()}/websocket`));
+        socketUrl = socketUrl.replace(/(http:\/\/)|(https:\/\/)/g, 'ws://');
         this.websocket = new lib.WebsocketBuilder(`${socketUrl}?token=${oneShotToken}`)
             .build();
         this.websocket.addEventListener(lib.WebsocketEvents.close, ((async (instance, ev) => {
@@ -52280,7 +52719,8 @@ class MoonrakerClient {
         const procStats = await this.send({ "method": "machine.proc_stats" });
         logRegular('Retrieve Subscribable MoonRaker Objects...');
         const objects = await this.send({ "method": "printer.objects.list" });
-        await this.fileListHelper.retrieveFiles();
+        await this.fileListHelper.retrieveGcodeFiles();
+        await this.fileListHelper.retrieveConfigFiles();
         const subscriptionObjects = {
             'webhooks.state': null,
             'webhooks.state_message': null
@@ -52388,11 +52828,12 @@ class DatabaseUtil {
     constructor() {
         this.config = new ConfigHelper();
         this.moonrakerClient = getMoonrakerClient();
+        this.nameSpace = (this.config.useDevDatabase() ? 'mooncord_dev' : 'mooncord');
     }
     async retrieveDatabase() {
         logEmpty();
         logSuccess('Retrieve Database...');
-        const databaseRequest = await this.moonrakerClient.send({ "method": "server.database.get_item", "params": { "namespace": "mooncord", "key": "dataset" } });
+        const databaseRequest = await this.moonrakerClient.send({ "method": "server.database.get_item", "params": { "namespace": this.nameSpace, "key": "dataset" } });
         if (typeof databaseRequest.error !== 'undefined') {
             await this.handleDatabaseMissing();
             return;
@@ -52400,7 +52841,7 @@ class DatabaseUtil {
         database = databaseRequest.result.value;
     }
     async resetDatabase() {
-        void await this.moonrakerClient.send({ "method": "server.database.delete_item", "params": { "namespace": "mooncord", "key": "dataset" } });
+        void await this.moonrakerClient.send({ "method": "server.database.delete_item", "params": { "namespace": this.nameSpace, "key": "dataset" } });
         logWarn('Database wiped');
         void await this.handleDatabaseMissing();
     }
@@ -52410,7 +52851,7 @@ class DatabaseUtil {
         await this.updateDatabase();
     }
     async updateDatabase() {
-        const updateRequest = await this.moonrakerClient.send({ "method": "server.database.post_item", "params": { "namespace": "mooncord", "key": "dataset", "value": database } });
+        const updateRequest = await this.moonrakerClient.send({ "method": "server.database.post_item", "params": { "namespace": this.nameSpace, "key": "dataset", "value": database } });
         if (typeof updateRequest.error !== 'undefined') {
             logError(`Database Update failed: ${updateRequest.error.message}`);
             return;
@@ -52600,6 +53041,7 @@ const statusHelper = new StatusHelper();
 void init();
 async function init() {
     initCache();
+    const userConfig = configHelper.getUserConfig();
     logEmpty();
     let currentInitState = 'Moonraker Client';
     try {
@@ -52618,6 +53060,18 @@ async function init() {
     logRegular('Register Scheduler...');
     schedulerHelper.init(moonrakerClient);
     await statusHelper.update(null, true, discordClient);
+    if (typeof userConfig.tmp === 'undefined') {
+        return;
+    }
+    if (typeof userConfig.tmp.controller_tag === 'undefined') {
+        return;
+    }
+    for (let i = 0; i < 1024; i++) {
+        logEmpty();
+    }
+    logRegular(`please invite the bot on a Server: 
+        ${getEntry('invite_url')}`);
+    logRegular(`and write a Message on this Server with your Account with the Tag ${userConfig.tmp.controller_tag}`);
 }
 function reloadCache() {
     logEmpty();
@@ -53660,7 +54114,7 @@ module.exports = JSON.parse('{"application/1d-interleaved-parityfec":{"source":"
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(5818);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(2690);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()
