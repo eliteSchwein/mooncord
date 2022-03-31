@@ -4,7 +4,6 @@ import {getEntry} from "../../../utils/CacheUtil";
 import { StatusHelper } from "../../../helper/StatusHelper";
 import {InviteMessage} from "../gcode-messages/InviteMessage";
 import {BroadcastMessage} from "../gcode-messages/BroadcastMessage";
-import {M117Message} from "../gcode-messages/M117Message";
 
 export class GcodeResponseNotification {
     protected moonrakerClient = getMoonrakerClient()
@@ -25,6 +24,5 @@ export class GcodeResponseNotification {
 
         void new InviteMessage().execute(param)
         void new BroadcastMessage().execute(param)
-        void new M117Message().execute(param)
     }
 }

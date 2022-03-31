@@ -151,12 +151,17 @@ export class MoonrakerClient {
 
         await this.fileListHelper.retrieveFiles()
 
-        const subscriptionObjects: any = {}
+        const subscriptionObjects: any = {
+            'webhooks.state': null,
+            'webhooks.state_message': null
+        }
 
         for (const index in objects.result.objects) {
             const object = objects.result.objects[index]
             subscriptionObjects[object] = null
         }
+
+        delete subscriptionObjects.webhooks
 
         logRegular('Subscribe to MoonRaker Objects...')
         const data = await this.send({"method": "printer.objects.subscribe", "params": { "objects": subscriptionObjects}})

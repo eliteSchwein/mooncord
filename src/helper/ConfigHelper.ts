@@ -187,4 +187,8 @@ export class ConfigHelper {
     public notifyOnTimelapseFinish() {
         return this.getConfig().notifications.timelapse
     }
+
+    public showM117Notifcation() {
+        return this.getConfig().notifications.show_m117_notification
+    }
 }
