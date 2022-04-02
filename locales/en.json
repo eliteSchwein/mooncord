@@ -469,5 +469,10 @@
             "description": "Get the current Temperatures from Klipper.",
             "command": "temp"
         }
+    },
+    "graph": {
+        "temp_history": {
+            "title": "Temp History"
+        }
     }
 }

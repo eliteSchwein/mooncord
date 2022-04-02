@@ -191,4 +191,8 @@ export class ConfigHelper {
     public getGcodeExecuteTimeout() {
         return this.getConfig().status.gcode_timeout
     }
+
+    public getGraphConfig(graph: string) {
+        return this.getConfig().graph_meta[graph]
+    }
 }
