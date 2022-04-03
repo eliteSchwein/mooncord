@@ -45,11 +45,13 @@ export class MeshViewCommand {
         }
 
         const embedData = await this.embedHelper.generateEmbed('mesh_view',{'mesh_view': meshView})
+        const files = embedData.embed['files'] as [MessageAttachment]
         const meshPicture = await this.graphHelper.getMeshGraph(mesh)
         const embed = embedData.embed.embeds[0] as MessageEmbed
 
         embed.setImage(`attachment://${meshPicture.name}`)
+        files.push(meshPicture)
 
-        await interaction.editReply({embeds: [embed], files: [meshPicture]})
+        await interaction.editReply({embeds: [embed], files})
     }
 }

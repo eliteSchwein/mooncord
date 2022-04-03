@@ -51241,10 +51241,12 @@ class MeshViewCommand {
             meshView = profile;
         }
         const embedData = await this.embedHelper.generateEmbed('mesh_view', { 'mesh_view': meshView });
+        const files = embedData.embed['files'];
         const meshPicture = await this.graphHelper.getMeshGraph(mesh);
         const embed = embedData.embed.embeds[0];
         embed.setImage(`attachment://${meshPicture.name}`);
-        await interaction.editReply({ embeds: [embed], files: [meshPicture] });
+        files.push(meshPicture);
+        await interaction.editReply({ embeds: [embed], files });
     }
 }
 
