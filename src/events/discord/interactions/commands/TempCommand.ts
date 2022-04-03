@@ -12,9 +12,11 @@ export class TempCommand {
     }
 
     protected async execute(interaction: CommandInteraction) {
+        await interaction.deferReply()
+
         const message = await this.embedHelper.generateEmbed('temperatures')
 
-        void interaction.reply(message.embed)
+        await interaction.editReply(message.embed)
     }
 
 }

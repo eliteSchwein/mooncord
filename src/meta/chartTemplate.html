@@ -1,0 +1,16 @@
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <script src="https://cdn.jsdelivr.net/npm/echarts@latest/dist/echarts.min.js"></script>
+    </head>
+    <body style="margin:0;">
+        <div id="chart" style="width: 100%; height: 100%;"></div>
+        <script type="application/javascript">
+            const chart = echarts.init(document.getElementById('chart'))
+
+            const option = ${echartOptions}
+
+            chart.setOption(option)
+        </script>
+    </body>
+</html>

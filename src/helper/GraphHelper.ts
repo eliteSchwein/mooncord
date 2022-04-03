@@ -1,40 +1,102 @@
 import * as quickChart from 'quickchart-js';
-import * as App from "../Application";
-import path from "path";
-import {ConfigHelper} from "./ConfigHelper";
-import {MessageAttachment} from "discord.js";
-import QuickChart from "quickchart-js";
-import axios from "axios";
-import {LocaleHelper} from "./LocaleHelper";
+import * as App from '../Application';
+import path from 'path';
+import {ConfigHelper} from './ConfigHelper';
+import {MessageAttachment} from 'discord.js';
+import axios from 'axios';
+import {LocaleHelper} from './LocaleHelper';
+import {ChartUtil} from '../utils/ChartUtil';
 
 export class GraphHelper {
     protected configHelper = new ConfigHelper()
     protected localeHelper = new LocaleHelper()
+    protected chartUtil = new ChartUtil()
     protected locale = this.localeHelper.getLocale()
     protected tempValueLimit = 0
     protected colorIndex = 0
 
     public async getTempGraph() {
         const moonrakerClient = App.getMoonrakerClient()
-        const chart = new QuickChart()
         const chartConfigSection = this.configHelper.getGraphConfig('temp_history')
 
         this.tempValueLimit = chartConfigSection.value_limit
 
-        const tempHistoryRequest = await moonrakerClient.send({"method": "server.temperature_store"})
+        const tempHistoryRequest = await moonrakerClient.send({'method': 'server.temperature_store'})
 
         const chartConfig = {
-            'type': 'line',
-            'data': {
-                'labels': [],
-                'datasets': []
+            'darkMode': true,
+            'backgroundColor': 'rgb(0,0,0)',
+            'title': {
+                'text':this.locale.graph.temp_history.title
             },
-            'options': {
-                'title': {
-                    'display': true,
-                    'text': this.locale.graph.temp_history.title
+            'legend': {
+                'data': [],
+                'textStyle': {
+                    'color': 'rgb(255,255,255)',
+                    'fontSize': '20px'
+                },
+                'icon': 'pin'
+            },
+            'type': 'line',
+            'xAxis': {
+                'type': 'category',
+                'data': [],
+                'splitLine': {
+                    'show': true,
+                    'lineStyle': {
+                        'color': 'rgba(255, 255, 255, 0)',
+                    },
+                },
+                'axisTick': {
+                    'show': false
+                },
+                'axisLabel':{
+                    'show':false
                 }
-            }
+            },
+            'yAxis': [
+                {
+                    'type': 'value',
+                    'min': 0,
+                    'splitLine': {
+                        'show': true,
+                        'lineStyle': {
+                            'color': 'rgba(255, 255, 255, 0.26)',
+                        },
+                    },
+                    'axisLabel': {
+                        'color': 'rgba(255,255,255,0.78)',
+                        'fontSize': '20px'
+                    },
+                    'minInterval': 20,
+                    'maxInterval': 100
+                }
+            ],
+            'series': [],
+            'media': [
+                {
+                    'query': {
+                        'minWidth': 500,
+                    },
+                    'option': {
+                        'grid': {
+                            'right': 15,
+                            'left': 50,
+                            'bottom': 15
+                        },
+                        'yAxis': [
+                            {
+                                'maxInterval': 50,
+                                'axisLabel': {
+                                    'showMinLabel': true,
+                                    'showMaxLabel': true,
+                                    'rotate': 0,
+                                },
+                            }
+                        ],
+                    },
+                },
+            ],
         }
 
         if(typeof tempHistoryRequest.error !== 'undefined') {
@@ -45,11 +107,13 @@ export class GraphHelper {
             const tempSensor = rawTempSensor.replace(/(temperature_sensor )|(temperature_fan )|(heater_generic )/g, '')
             const tempValues = this.getTempValues(tempHistoryRequest.result[rawTempSensor].temperatures)
 
-            chartConfig.data.datasets.push({
-                'label': tempSensor,
-                'fill': false,
+            chartConfig.legend.data.push(tempSensor)
+
+            chartConfig.series.push({
+                'name': tempSensor,
+                'type': 'line',
+                'color': chartConfigSection.colors[this.colorIndex],
                 'backgroundColor': chartConfigSection.colors[this.colorIndex],
-                'borderColor': chartConfigSection.colors[this.colorIndex],
                 'data': tempValues
             })
 
@@ -57,32 +121,21 @@ export class GraphHelper {
         }
 
         for(let i = 0; i < this.tempValueLimit; i++) {
-            chartConfig.data.labels.push('')
+            chartConfig.xAxis.data.push('')
         }
 
-        chart
-            .setConfig(chartConfig)
-            .setWidth(800)
-            .setHeight(400)
+        const chart = await this.chartUtil.getChart(chartConfig, 800, 400)
 
-        const webRequest = await axios.get(chart.getUrl(), {
-            responseType: 'arraybuffer'
-        })
-
-        return new MessageAttachment(Buffer.from(webRequest.data, 'base64'), 'tempGraph.png')
+        return new MessageAttachment(chart, 'tempGraph.png')
     }
 
     private getTempValues(tempValues: []) {
         if(tempValues.length < this.tempValueLimit) {
-            return tempValues.map((value: number) => {
-                return Math.round(value);
-            })
+            return tempValues
         }
 
         const limitStart = tempValues.length - this.tempValueLimit
 
-        return tempValues.slice(limitStart).map((value: number) => {
-            return Math.round(value);
-        })
+        return tempValues.slice(limitStart)
     }
 }
