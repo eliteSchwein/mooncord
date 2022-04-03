@@ -217,6 +217,7 @@ export class GraphHelper {
         for(const rawTempSensor in tempHistoryRequest.result) {
             const tempSensor = rawTempSensor.replace(/(temperature_sensor )|(temperature_fan )|(heater_generic )/g, '')
             const tempValues = this.getTempValues(tempHistoryRequest.result[rawTempSensor].temperatures)
+            const tempTargets = this.getTempValues(tempHistoryRequest.result[rawTempSensor].targets)
 
             chartConfig.legend.data.push(tempSensor)
 
@@ -224,8 +225,30 @@ export class GraphHelper {
                 'name': tempSensor,
                 'type': 'line',
                 'color': chartConfigSection.colors[this.colorIndex],
-                'backgroundColor': chartConfigSection.colors[this.colorIndex],
                 'data': tempValues
+            })
+
+            chartConfig.series.push({
+                'name': `${tempSensor}_target`,
+                'type': 'line',
+                'lineStyle': {
+                    'width': 0
+                },
+                'areaStyle': {
+                    'color': chartConfigSection.colors[this.colorIndex],
+                    'opacity': 0.2
+                },
+                'emphasis': {
+                    'areaStyle': {
+                        'color': chartConfigSection.colors[this.colorIndex],
+                        'opacity': 0.2
+                    },
+                    'lineStyle': {
+                        'width': 0
+                    }
+                },
+                'color': chartConfigSection.colors[this.colorIndex],
+                'data': tempTargets
             })
 
             this.colorIndex++
@@ -241,6 +264,10 @@ export class GraphHelper {
     }
 
     private getTempValues(tempValues: []) {
+        if(typeof tempValues === 'undefined') {
+            return []
+        }
+
         if(tempValues.length < this.tempValueLimit) {
             return tempValues
         }

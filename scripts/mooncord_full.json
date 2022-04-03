@@ -1128,7 +1128,7 @@
     "graph_meta": {
         "temp_history": {
             "value_limit": 1000,
-            "colors": []
+            "colors": ["#F44336", "#8e379d", "#03DAC5", "#3F51B5", "#ffde03", "#009688", "#E91E63"]
         }
     }
 }
