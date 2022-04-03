@@ -105,5 +105,22 @@
   },
   "status": {},
   "systeminfo": {},
-  "temp": {}
+  "temp": {},
+  "mesh": {
+    "mode": {
+      "type": "string",
+      "choices": [
+        {
+          "value": "probed_matrix"
+        },
+        {
+          "value": "mesh_matrix"
+        }
+      ]
+    },
+    "profile": {
+      "type": "string",
+      "choices": "${meshProfileChoices}"
+    }
+  }
 }

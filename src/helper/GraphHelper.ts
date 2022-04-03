@@ -6,6 +6,7 @@ import {MessageAttachment} from 'discord.js';
 import axios from 'axios';
 import {LocaleHelper} from './LocaleHelper';
 import {ChartUtil} from '../utils/ChartUtil';
+import {findValue} from '../utils/CacheUtil';
 
 export class GraphHelper {
     protected configHelper = new ConfigHelper()
@@ -14,6 +15,116 @@ export class GraphHelper {
     protected locale = this.localeHelper.getLocale()
     protected tempValueLimit = 0
     protected colorIndex = 0
+
+    public async getMeshGraph(mesh) {
+        const meshCache = findValue('state.bed_mesh')
+        const maxRow = mesh.map((row) => { return Math.max.apply(Math, row) })
+        const minRow = mesh.map((row) => { return Math.min.apply(Math, row) })
+        const axisMinimum = findValue('state.toolhead.axis_minimum')
+        const axisMaximum = findValue('state.toolhead.axis_maximum')
+        const meshHeight = Math.max.apply(null, maxRow).toFixed(1)
+
+        const chartConfig = {
+            'tooltip': {
+                'show': false
+            },
+            'darkMode': true,
+            'backgroundColor': 'rgb(0,0,0)',
+            'visualMap': {
+                'show': false,
+                'dimension': 2,
+                'min': Math.min.apply(null, minRow),
+                'max': Math.max.apply(null, maxRow),
+                'inRange': {
+                    'color': [
+                        '#313695',
+                        '#4575b4',
+                        '#74add1',
+                        '#abd9e9',
+                        '#e0f3f8',
+                        '#ffffbf',
+                        '#fee090',
+                        '#fdae61',
+                        '#f46d43',
+                        '#d73027',
+                        '#a50026',
+                    ],
+                },
+            },
+            'xAxis3D': {
+                'type': 'value',
+                'min': axisMinimum[0],
+                'max': axisMaximum[0],
+                'minInterval': 1,
+                'axisLabel': {
+                    'color':'rgb(255,255,255)',
+                    'fontSize': '20px'
+                }
+            },
+            'yAxis3D': {
+                'type': 'value',
+                'min': axisMinimum[1],
+                'max': axisMaximum[1],
+                'axisLabel': {
+                    'color':'rgb(255,255,255)',
+                    'fontSize': '20px'
+                }
+            },
+            'zAxis3D': {
+                'type': 'value',
+                'min': meshHeight * -1,
+                'max': meshHeight,
+                'axisLabel': {
+                    'color':'rgb(255,255,255)',
+                    'fontSize': '20px'
+                }
+            },
+            'grid3D': {
+                'viewControl': {
+                    'distance': 220,
+                    'alpha': 20,
+                    'beta': -45
+                }
+            },
+            'series': []
+        }
+
+
+        const xCount = mesh[0].length
+        const yCount = mesh.length
+        const xMin = meshCache.mesh_min[0]
+        const xMax = meshCache.mesh_max[1]
+        const yMin = meshCache.mesh_min[0]
+        const yMax = meshCache.mesh_max[1]
+        const xStep = (xMax - xMin) / (xCount - 1)
+        const yStep = (yMax - yMin) / (yCount - 1)
+
+        const data: any[] = []
+
+        let yPoint = 0
+
+        mesh.forEach((meshRow: number[]) => {
+            let xPoint = 0
+            meshRow.forEach((value: number) => {
+                data.push([xMin + xStep * xPoint, yMin + yStep * yPoint, value])
+                xPoint++
+            })
+            yPoint++
+        })
+
+        const series = {
+            'type': 'surface',
+            'name': 'mesh',
+            'data': data,
+            'dataShape': [yCount, xCount]
+        }
+
+        chartConfig.series.push(series)
+
+        const chart = await this.chartUtil.getChart(chartConfig, 800, 600)
+
+        return new MessageAttachment(chart, 'meshGraph.png')
+    }
 
     public async getTempGraph() {
         const moonrakerClient = App.getMoonrakerClient()

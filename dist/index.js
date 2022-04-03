@@ -46216,7 +46216,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 499:
+/***/ 452:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -46434,6 +46434,16 @@ function getEntry(key) {
 }
 function findValue(key) {
     return (0,lodash.get)(cacheData, key);
+}
+function getMeshProfileChoices() {
+    const choices = [];
+    for (const profile in cacheData.state.bed_mesh.profiles) {
+        choices.push({
+            "name": profile,
+            "value": profile
+        });
+    }
+    return choices;
 }
 function getServiceChoices() {
     const localeHelper = new LocaleHelper();
@@ -46747,7 +46757,7 @@ class ConfigHelper {
 }
 
 ;// CONCATENATED MODULE: ./src/meta/command_structure.json
-const command_structure_namespaceObject = JSON.parse('{"admin":{"role":{"type":"subcommand","options":{"role":{"type":"role","required":true}}},"user":{"type":"subcommand","options":{"user":{"type":"user","required":true}}}},"dump":{"section":{"type":"string","required":true,"choices":[{"value":"database"},{"value":"cache"}]}},"reset_database":{},"editchannel":{"channel":{"type":"channel","required":false}},"emergency_stop":{},"fileinfo":{"file":{"type":"string","required":true}},"get_user_id":{"user":{"type":"user","required":false}},"restart":{"service":{"type":"string","required":true,"choices":"${serviceChoices}"}},"get_log":{"log_file":{"type":"string","required":true,"choices":[{"name":"Klipper","value":"klippy"},{"name":"Moonraker","value":"moonraker"},{"name":"MoonCord","value":"mooncord"}]}},"info":{},"listfiles":{},"notify":{},"printjob":{"pause":{"type":"subcommand"},"cancel":{"type":"subcommand"},"resume":{"type":"subcommand"},"start":{"type":"subcommand","options":{"file":{"type":"string","required":true}}}},"status":{},"systeminfo":{},"temp":{}}');
+const command_structure_namespaceObject = JSON.parse('{"admin":{"role":{"type":"subcommand","options":{"role":{"type":"role","required":true}}},"user":{"type":"subcommand","options":{"user":{"type":"user","required":true}}}},"dump":{"section":{"type":"string","required":true,"choices":[{"value":"database"},{"value":"cache"}]}},"reset_database":{},"editchannel":{"channel":{"type":"channel","required":false}},"emergency_stop":{},"fileinfo":{"file":{"type":"string","required":true}},"get_user_id":{"user":{"type":"user","required":false}},"restart":{"service":{"type":"string","required":true,"choices":"${serviceChoices}"}},"get_log":{"log_file":{"type":"string","required":true,"choices":[{"name":"Klipper","value":"klippy"},{"name":"Moonraker","value":"moonraker"},{"name":"MoonCord","value":"mooncord"}]}},"info":{},"listfiles":{},"notify":{},"printjob":{"pause":{"type":"subcommand"},"cancel":{"type":"subcommand"},"resume":{"type":"subcommand"},"start":{"type":"subcommand","options":{"file":{"type":"string","required":true}}}},"status":{},"systeminfo":{},"temp":{},"mesh":{"mode":{"type":"string","choices":[{"value":"probed_matrix"},{"value":"mesh_matrix"}]},"profile":{"type":"string","choices":"${meshProfileChoices}"}}}');
 ;// CONCATENATED MODULE: ./src/meta/command_option_types.json
 const command_option_types_namespaceObject = JSON.parse('{"subcommand":1,"subcommand_group":2,"string":3,"integer":4,"boolean":5,"user":6,"channel":7,"role":8,"mentionable":9,"number":10}');
 ;// CONCATENATED MODULE: ./src/generator/DiscordCommandGenerator.ts
@@ -46829,6 +46839,9 @@ class DiscordCommandGenerator {
             }
             else if (optionMeta.choices === '${serviceChoices}') {
                 optionBuilder.choices = getServiceChoices();
+            }
+            else if (optionMeta.choices === '${meshProfileChoices}') {
+                optionBuilder.choices = getMeshProfileChoices();
             }
             else {
                 optionBuilder.choices = this.buildChoices(optionMeta.choices, syntaxMeta.options[option].choices);
@@ -49518,6 +49531,7 @@ class ChartUtil {
 
 
 
+
 class GraphHelper {
     constructor() {
         this.configHelper = new ConfigHelper();
@@ -49526,6 +49540,105 @@ class GraphHelper {
         this.locale = this.localeHelper.getLocale();
         this.tempValueLimit = 0;
         this.colorIndex = 0;
+    }
+    async getMeshGraph(mesh) {
+        const meshCache = findValue('state.bed_mesh');
+        const maxRow = mesh.map((row) => { return Math.max.apply(Math, row); });
+        const minRow = mesh.map((row) => { return Math.min.apply(Math, row); });
+        const axisMinimum = findValue('state.toolhead.axis_minimum');
+        const axisMaximum = findValue('state.toolhead.axis_maximum');
+        const meshHeight = Math.max.apply(null, maxRow).toFixed(1);
+        const chartConfig = {
+            'tooltip': {
+                'show': false
+            },
+            'darkMode': true,
+            'backgroundColor': 'rgb(0,0,0)',
+            'visualMap': {
+                'show': false,
+                'dimension': 2,
+                'min': Math.min.apply(null, minRow),
+                'max': Math.max.apply(null, maxRow),
+                'inRange': {
+                    'color': [
+                        '#313695',
+                        '#4575b4',
+                        '#74add1',
+                        '#abd9e9',
+                        '#e0f3f8',
+                        '#ffffbf',
+                        '#fee090',
+                        '#fdae61',
+                        '#f46d43',
+                        '#d73027',
+                        '#a50026',
+                    ],
+                },
+            },
+            'xAxis3D': {
+                'type': 'value',
+                'min': axisMinimum[0],
+                'max': axisMaximum[0],
+                'minInterval': 1,
+                'axisLabel': {
+                    'color': 'rgb(255,255,255)',
+                    'fontSize': '20px'
+                }
+            },
+            'yAxis3D': {
+                'type': 'value',
+                'min': axisMinimum[1],
+                'max': axisMaximum[1],
+                'axisLabel': {
+                    'color': 'rgb(255,255,255)',
+                    'fontSize': '20px'
+                }
+            },
+            'zAxis3D': {
+                'type': 'value',
+                'min': meshHeight * -1,
+                'max': meshHeight,
+                'axisLabel': {
+                    'color': 'rgb(255,255,255)',
+                    'fontSize': '20px'
+                }
+            },
+            'grid3D': {
+                'viewControl': {
+                    'distance': 220,
+                    'alpha': 20,
+                    'beta': -45
+                }
+            },
+            'series': []
+        };
+        const xCount = mesh[0].length;
+        const yCount = mesh.length;
+        const xMin = meshCache.mesh_min[0];
+        const xMax = meshCache.mesh_max[1];
+        const yMin = meshCache.mesh_min[0];
+        const yMax = meshCache.mesh_max[1];
+        const xStep = (xMax - xMin) / (xCount - 1);
+        const yStep = (yMax - yMin) / (yCount - 1);
+        const data = [];
+        let yPoint = 0;
+        mesh.forEach((meshRow) => {
+            let xPoint = 0;
+            meshRow.forEach((value) => {
+                data.push([xMin + xStep * xPoint, yMin + yStep * yPoint, value]);
+                xPoint++;
+            });
+            yPoint++;
+        });
+        const series = {
+            'type': 'surface',
+            'name': 'mesh',
+            'data': data,
+            'dataShape': [yCount, xCount]
+        };
+        chartConfig.series.push(series);
+        const chart = await this.chartUtil.getChart(chartConfig, 800, 600);
+        return new external_discord_js_namespaceObject.MessageAttachment(chart, 'meshGraph.png');
     }
     async getTempGraph() {
         const moonrakerClient = getMoonrakerClient();
@@ -51064,7 +51177,54 @@ class AdminCommand {
     }
 }
 
+;// CONCATENATED MODULE: ./src/events/discord/interactions/commands/MeshViewCommand.ts
+
+
+
+
+
+class MeshViewCommand {
+    constructor(interaction, commandId) {
+        this.databaseUtil = getDatabase();
+        this.embedHelper = new EmbedHelper();
+        this.localeHelper = new LocaleHelper();
+        this.graphHelper = new GraphHelper();
+        this.locale = this.localeHelper.getLocale();
+        this.syntaxLocale = this.localeHelper.getSyntaxLocale();
+        if (commandId !== 'mesh') {
+            return;
+        }
+        this.execute(interaction);
+    }
+    async execute(interaction) {
+        await interaction.deferReply();
+        const modeArgument = interaction.options.getString(this.syntaxLocale.commands.mesh.options.mode.name);
+        const profileArgument = interaction.options.getString(this.syntaxLocale.commands.mesh.options.profile.name);
+        const meshCache = findValue('state.bed_mesh');
+        let mesh = [];
+        let profile = 'default';
+        let meshView = '';
+        if (profileArgument !== null) {
+            profile = profileArgument;
+        }
+        if (modeArgument !== null) {
+            mesh = meshCache[modeArgument];
+            meshView = modeArgument;
+        }
+        else {
+            mesh = meshCache.profiles[profile].points;
+            meshView = profile;
+        }
+        const embedData = await this.embedHelper.generateEmbed('mesh_view', { 'mesh_view': meshView });
+        const meshPicture = await this.graphHelper.getMeshGraph(mesh);
+        const embed = embedData.embed.embeds[0];
+        embed.setImage(`attachment://${meshPicture.name}`);
+        await interaction.editReply({ embeds: [embed], files: [meshPicture] });
+    }
+}
+
 ;// CONCATENATED MODULE: ./src/events/discord/interactions/CommandInteraction.ts
+
 
 
 
@@ -51132,6 +51292,7 @@ class CommandInteraction {
         void new FileListCommand(interaction, commandId);
         void new PrintjobCommand(interaction, commandId);
         void new SystemInfoCommand(interaction, commandId);
+        void new MeshViewCommand(interaction, commandId);
         await sleep(2000);
         if (interaction.replied || interaction.deferred) {
             return;
@@ -53822,7 +53983,7 @@ module.exports = JSON.parse('{"application/1d-interleaved-parityfec":{"source":"
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(499);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(452);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()

@@ -67,6 +67,9 @@
         "temperatures": {
             "title": "Temperatures"
         },
+        "mesh_view": {
+            "title": "Mesh for ${mesh_view}"
+        },
         "disconnected":{
             "title": "Printer Disconnected!",
             "activity": "wait for Klipper"
@@ -309,6 +312,24 @@
         }
     },
     "commands": {
+        "mesh": {
+            "description": "Show the Bed Mesh.",
+            "command": "mesh",
+            "options": {
+                "mode": {
+                    "name": "mode",
+                    "description": "Select a Mode for the Viewer.",
+                    "choices": {
+                        "probed_matrix": "Probed Mesh",
+                        "mesh_matrix": "Calculated Mesh"
+                    }
+                },
+                "profile": {
+                    "name": "profile",
+                    "description": "Select a Mesh Profile."
+                }
+            }
+        },
         "admin": {
             "description": "Manage Admin Role or User.",
             "command": "admin",

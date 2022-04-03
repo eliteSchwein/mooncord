@@ -25,6 +25,19 @@ export function findValue(key:string) {
     return get(cacheData, key)
 }
 
+export function getMeshProfileChoices() {
+    const choices = []
+
+    for(const profile in cacheData.state.bed_mesh.profiles) {
+        choices.push({
+            "name": profile,
+            "value": profile
+        })
+    }
+
+    return choices
+}
+
 export function getServiceChoices() {
     const localeHelper = new LocaleHelper()
     const choices = []

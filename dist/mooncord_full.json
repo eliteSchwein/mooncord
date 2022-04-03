@@ -295,6 +295,12 @@
                 "users": [],
                 "roles": []
             },
+            "mesh": {
+                "botadmin": true,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
             "gcode_upload": {
                 "botadmin": false,
                 "guildadmin": false,
@@ -486,6 +492,12 @@
             "buttons": [],
             "fields": [],
             "show_temps": true
+        },
+        "mesh_view": {
+            "color": "#0099ff",
+            "thumbnail": "mesh.png",
+            "buttons": [],
+            "fields": []
         },
         "disconnected":{
             "color": "#c90000",
