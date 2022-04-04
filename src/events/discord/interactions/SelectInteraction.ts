@@ -8,6 +8,7 @@ import {ConfigHelper} from "../../../helper/ConfigHelper";
 import * as util from "util"
 import {ViewPrintJobSelection} from "./selections/ViewPrintJob";
 import {ViewSystemInfo} from "./selections/ViewSystemInfo";
+import {ShowMeshSelection} from "./selections/ShowMesh";
 
 export class SelectInteraction {
     protected permissionHelper = new PermissionHelper()
@@ -46,6 +47,7 @@ export class SelectInteraction {
 
         new ViewPrintJobSelection(interaction, selectId)
         new ViewSystemInfo(interaction, selectId)
+        new ShowMeshSelection(interaction, selectId)
 
         await sleep(2000)
 

@@ -31,7 +31,7 @@ export function getMeshOptions() {
     for(const profile in cacheData.state.bed_mesh.profiles) {
         choices.push({
             "name": profile,
-            "value": `profile_${profile}`
+            "value": profile
         })
     }
 

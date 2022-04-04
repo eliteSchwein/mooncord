@@ -46216,7 +46216,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 1452:
+/***/ 102:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -46440,7 +46440,7 @@ function getMeshOptions() {
     for (const profile in cacheData.state.bed_mesh.profiles) {
         choices.push({
             "name": profile,
-            "value": `profile_${profile}`
+            "value": profile
         });
     }
     return choices;
@@ -51233,12 +51233,16 @@ class MeshViewCommand {
         const mesh = meshCache['mesh_matrix'];
         const meshView = 'Mesh Matrix';
         const embedData = await this.embedHelper.generateEmbed('mesh_view', { 'mesh_view': meshView });
-        const files = embedData.embed['files'];
         const meshPicture = await this.graphHelper.getMeshGraph(mesh);
         const embed = embedData.embed.embeds[0];
+        const components = embedData.embed['components'];
+        let files = [];
+        if (typeof embedData.embed['files'] !== 'undefined') {
+            files = [...files, ...embedData.embed['files']];
+        }
         embed.setImage(`attachment://${meshPicture.name}`);
         files.push(meshPicture);
-        await interaction.editReply({ embeds: [embed], files });
+        await interaction.editReply({ embeds: [embed], files, components });
     }
 }
 
@@ -51407,7 +51411,67 @@ class ViewSystemInfo {
     }
 }
 
+;// CONCATENATED MODULE: ./src/events/discord/interactions/selections/ShowMesh.ts
+
+
+
+
+
+
+
+class ShowMeshSelection {
+    constructor(interaction, selectionId) {
+        this.databaseUtil = getDatabase();
+        this.embedHelper = new EmbedHelper();
+        this.configHelper = new ConfigHelper();
+        this.moonrakerClient = getMoonrakerClient();
+        this.graphHelper = new GraphHelper();
+        this.localeHelper = new LocaleHelper();
+        this.locale = this.localeHelper.getLocale();
+        this.syntaxLocale = this.localeHelper.getSyntaxLocale();
+        this.metadataHelper = new MetadataHelper();
+        if (selectionId !== 'show_mesh') {
+            return;
+        }
+        void this.execute(interaction);
+    }
+    async execute(interaction) {
+        await interaction.deferReply();
+        const meshCache = findValue('state.bed_mesh');
+        const meshValue = interaction.values[0];
+        let meshOptions = getMeshOptions();
+        let mesh = meshCache[meshValue];
+        if (this.configHelper.isButtonSyntaxLocale()) {
+            meshOptions = [...meshOptions, ...this.syntaxLocale.selections.show_mesh.options];
+        }
+        else {
+            meshOptions = [...meshOptions, ...this.locale.selections.show_mesh.options];
+        }
+        const meshOption = meshOptions.find(o => o.value === meshValue);
+        const meshView = meshOption.name;
+        if (typeof mesh === 'undefined') {
+            mesh = meshCache.profiles[meshValue].points;
+        }
+        const embedData = await this.embedHelper.generateEmbed('mesh_view', { 'mesh_view': meshView });
+        const meshPicture = await this.graphHelper.getMeshGraph(mesh);
+        const embed = embedData.embed.embeds[0];
+        const components = embedData.embed['components'];
+        let files = [];
+        if (typeof embedData.embed['files'] !== 'undefined') {
+            files = [...files, ...embedData.embed['files']];
+        }
+        embed.setImage(`attachment://${meshPicture.name}`);
+        files.push(meshPicture);
+        const currentMessage = interaction.message;
+        await currentMessage.edit({ components: null });
+        await currentMessage.removeAttachments();
+        await currentMessage.edit({ embeds: [embed], files, components });
+        await interaction.deleteReply();
+    }
+}
+
 ;// CONCATENATED MODULE: ./src/events/discord/interactions/SelectInteraction.ts
+
 
 
 
@@ -51451,6 +51515,7 @@ class SelectInteraction {
         }
         new ViewPrintJobSelection(interaction, selectId);
         new ViewSystemInfo(interaction, selectId);
+        new ShowMeshSelection(interaction, selectId);
         await sleep(2000);
         if (interaction.replied || interaction.deferred) {
             return;
@@ -54002,7 +54067,7 @@ module.exports = JSON.parse('{"application/1d-interleaved-parityfec":{"source":"
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(1452);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(102);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()

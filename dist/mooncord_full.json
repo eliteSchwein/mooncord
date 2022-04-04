@@ -50,6 +50,13 @@
             "roles": []
         },
         "selections": {
+            "show_mesh": {
+                "command_assign": "mesh",
+                "botadmin": true,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
             "printlist_view_printjob": {
                 "command_assign": "fileinfo",
                 "botadmin": true,

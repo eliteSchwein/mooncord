@@ -38,13 +38,18 @@ export class MeshViewCommand {
         const meshView = 'Mesh Matrix'
 
         const embedData = await this.embedHelper.generateEmbed('mesh_view',{'mesh_view': meshView})
-        const files = embedData.embed['files'] as [MessageAttachment]
         const meshPicture = await this.graphHelper.getMeshGraph(mesh)
         const embed = embedData.embed.embeds[0] as MessageEmbed
+        const components = embedData.embed['components']
+        let files = []
+
+        if(typeof embedData.embed['files'] !== 'undefined') {
+            files = [...files, ...embedData.embed['files']]
+        }
 
         embed.setImage(`attachment://${meshPicture.name}`)
         files.push(meshPicture)
 
-        await interaction.editReply({embeds: [embed], files})
+        await interaction.editReply({embeds: [embed], files, components})
     }
 }
