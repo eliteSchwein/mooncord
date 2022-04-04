@@ -121,7 +121,7 @@
             "load": "Load",
             "awake_time": "Awake Time",
             "frequency": "Freq",
-            "current": "Current",
+            "current": "Temp",
             "target": "Target",
             "speed": "Speed",
             "power": "Power",
@@ -133,8 +133,8 @@
             "slicer": "Slicer",
             "slicer_version": "Slicer version",
             "height": "Height",
-            "min_temp": "Min",
-            "max_temp": "Max",
+            "min": "Min",
+            "max": "Max",
             "temp": "Temp",
             "cores": "Cores",
             "arch": "Architecture",
@@ -217,6 +217,7 @@
             "no_data": "There was no Data found for `${component}`!",
             "restart_failed": "The Restart of `${service}` failed: `${reason}`",
             "no_files_found": "There are currently no Files!",
+            "no_mesh_found": "You currently dont have the Mesh Feature enabled, `${username}`!",
             "no_permission": "You dont have the Permission for this Action, `${username}`",
             "not_ready": "This Command is not ready, `${username}`!",
             "not_textchannel": "`${channel}` is not a Text Channel, `${username}`!",
@@ -281,6 +282,21 @@
         }
     },
     "selections": {
+        "show_mesh": {
+            "label": "Select a Mesh...",
+            "option_label": "${data.name}",
+            "option_description": "Click for rendering Mesh",
+            "options": [
+                {
+                    "name": "Calculated Mesh",
+                    "value": "mesh_matrix"
+                },
+                {
+                    "name": "Probed Mesh",
+                    "value": "probed_matrix"
+                }
+            ]
+        },
         "printlist_view_printjob": {
             "label": "Select a File...",
             "option_label": "${data.path}",
@@ -314,21 +330,7 @@
     "commands": {
         "mesh": {
             "description": "Show the Bed Mesh.",
-            "command": "mesh",
-            "options": {
-                "mode": {
-                    "name": "mode",
-                    "description": "Select a Mode for the Viewer.",
-                    "choices": {
-                        "probed_matrix": "Probed Mesh",
-                        "mesh_matrix": "Calculated Mesh"
-                    }
-                },
-                "profile": {
-                    "name": "profile",
-                    "description": "Select a Mesh Profile."
-                }
-            }
+            "command": "mesh"
         },
         "admin": {
             "description": "Manage Admin Role or User.",

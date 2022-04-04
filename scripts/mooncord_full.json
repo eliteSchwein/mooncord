@@ -495,9 +495,12 @@
         },
         "mesh_view": {
             "color": "#0099ff",
-            "thumbnail": "mesh.png",
             "buttons": [],
-            "fields": []
+            "fields": [],
+            "selection": {
+                "id": "show_mesh",
+                "data": "${raw_entries}"
+            }
         },
         "disconnected":{
             "color": "#c90000",
@@ -859,6 +862,12 @@
                 "max_value": 1,
                 "option_value": "${data.value}",
                 "mcu_options": true
+            },
+            "show_mesh": {
+                "min_value": 1,
+                "max_value": 1,
+                "option_value": "${data.value}",
+                "mesh_profile_options": true
             }
         }
     },
@@ -1064,11 +1073,11 @@
                     "suffix": "°C"
                 },
                 "measured_min_temp": {
-                    "label": "${embeds.fields.min_temp}",
+                    "label": "${embeds.fields.min}",
                     "suffix": "°C"
                 },
                 "measured_max_temp": {
-                    "label": "${embeds.fields.max_temp}",
+                    "label": "${embeds.fields.max}",
                     "suffix": "°C"
                 }
             }

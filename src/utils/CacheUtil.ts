@@ -25,13 +25,13 @@ export function findValue(key:string) {
     return get(cacheData, key)
 }
 
-export function getMeshProfileChoices() {
+export function getMeshOptions() {
     const choices = []
 
     for(const profile in cacheData.state.bed_mesh.profiles) {
         choices.push({
             "name": profile,
-            "value": profile
+            "value": `profile_${profile}`
         })
     }
 

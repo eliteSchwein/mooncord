@@ -23,26 +23,19 @@ export class MeshViewCommand {
 
     protected async execute(interaction: CommandInteraction) {
         await interaction.deferReply()
-
-        const modeArgument = interaction.options.getString(this.syntaxLocale.commands.mesh.options.mode.name)
-        const profileArgument = interaction.options.getString(this.syntaxLocale.commands.mesh.options.profile.name)
         const meshCache = findValue('state.bed_mesh')
 
-        let mesh = []
-        let profile = 'default'
-        let meshView = ''
+        if(typeof meshCache === 'undefined') {
+            const message = this.locale.messages.errors.no_mesh_found
+                .replace(/(\${username})/g, interaction.user.tag)
 
-        if(profileArgument !== null) {
-            profile = profileArgument
+            await interaction.editReply(message)
+
+            return
         }
 
-        if(modeArgument !== null) {
-            mesh = meshCache[modeArgument]
-            meshView = modeArgument
-        } else {
-            mesh = meshCache.profiles[profile].points
-            meshView = profile
-        }
+        const mesh = meshCache['mesh_matrix']
+        const meshView = 'Mesh Matrix'
 
         const embedData = await this.embedHelper.generateEmbed('mesh_view',{'mesh_view': meshView})
         const files = embedData.embed['files'] as [MessageAttachment]

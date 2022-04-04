@@ -36975,7 +36975,7 @@ module.exports = {
 
 /***/ }),
 
-/***/ 1452:
+/***/ 2865:
 /***/ (function(__unused_webpack_module, exports) {
 
 /**
@@ -46216,7 +46216,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 452:
+/***/ 1452:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -46435,12 +46435,12 @@ function getEntry(key) {
 function findValue(key) {
     return (0,lodash.get)(cacheData, key);
 }
-function getMeshProfileChoices() {
+function getMeshOptions() {
     const choices = [];
     for (const profile in cacheData.state.bed_mesh.profiles) {
         choices.push({
             "name": profile,
-            "value": profile
+            "value": `profile_${profile}`
         });
     }
     return choices;
@@ -46757,7 +46757,7 @@ class ConfigHelper {
 }
 
 ;// CONCATENATED MODULE: ./src/meta/command_structure.json
-const command_structure_namespaceObject = JSON.parse('{"admin":{"role":{"type":"subcommand","options":{"role":{"type":"role","required":true}}},"user":{"type":"subcommand","options":{"user":{"type":"user","required":true}}}},"dump":{"section":{"type":"string","required":true,"choices":[{"value":"database"},{"value":"cache"}]}},"reset_database":{},"editchannel":{"channel":{"type":"channel","required":false}},"emergency_stop":{},"fileinfo":{"file":{"type":"string","required":true}},"get_user_id":{"user":{"type":"user","required":false}},"restart":{"service":{"type":"string","required":true,"choices":"${serviceChoices}"}},"get_log":{"log_file":{"type":"string","required":true,"choices":[{"name":"Klipper","value":"klippy"},{"name":"Moonraker","value":"moonraker"},{"name":"MoonCord","value":"mooncord"}]}},"info":{},"listfiles":{},"notify":{},"printjob":{"pause":{"type":"subcommand"},"cancel":{"type":"subcommand"},"resume":{"type":"subcommand"},"start":{"type":"subcommand","options":{"file":{"type":"string","required":true}}}},"status":{},"systeminfo":{},"temp":{},"mesh":{"mode":{"type":"string","choices":[{"value":"probed_matrix"},{"value":"mesh_matrix"}]},"profile":{"type":"string","choices":"${meshProfileChoices}"}}}');
+const command_structure_namespaceObject = JSON.parse('{"admin":{"role":{"type":"subcommand","options":{"role":{"type":"role","required":true}}},"user":{"type":"subcommand","options":{"user":{"type":"user","required":true}}}},"dump":{"section":{"type":"string","required":true,"choices":[{"value":"database"},{"value":"cache"}]}},"reset_database":{},"editchannel":{"channel":{"type":"channel","required":false}},"emergency_stop":{},"fileinfo":{"file":{"type":"string","required":true}},"get_user_id":{"user":{"type":"user","required":false}},"restart":{"service":{"type":"string","required":true,"choices":"${serviceChoices}"}},"get_log":{"log_file":{"type":"string","required":true,"choices":[{"name":"Klipper","value":"klippy"},{"name":"Moonraker","value":"moonraker"},{"name":"MoonCord","value":"mooncord"}]}},"info":{},"listfiles":{},"notify":{},"printjob":{"pause":{"type":"subcommand"},"cancel":{"type":"subcommand"},"resume":{"type":"subcommand"},"start":{"type":"subcommand","options":{"file":{"type":"string","required":true}}}},"status":{},"systeminfo":{},"temp":{},"mesh":{}}');
 ;// CONCATENATED MODULE: ./src/meta/command_option_types.json
 const command_option_types_namespaceObject = JSON.parse('{"subcommand":1,"subcommand_group":2,"string":3,"integer":4,"boolean":5,"user":6,"channel":7,"role":8,"mentionable":9,"number":10}');
 ;// CONCATENATED MODULE: ./src/generator/DiscordCommandGenerator.ts
@@ -46839,9 +46839,6 @@ class DiscordCommandGenerator {
             }
             else if (optionMeta.choices === '${serviceChoices}') {
                 optionBuilder.choices = getServiceChoices();
-            }
-            else if (optionMeta.choices === '${meshProfileChoices}') {
-                optionBuilder.choices = getMeshProfileChoices();
             }
             else {
                 optionBuilder.choices = this.buildChoices(optionMeta.choices, syntaxMeta.options[option].choices);
@@ -46943,6 +46940,9 @@ class DiscordInputGenerator {
             .setMaxValues(selectionMeta.max_value);
         if (typeof selectionMeta.options !== 'undefined') {
             selectionData.data = selectionMeta.options;
+        }
+        if (selectionMeta.mesh_profile_options) {
+            selectionData.data = [...selectionData.data, ...getMeshOptions()];
         }
         if (selectionMeta.mcu_options) {
             selectionData.data = [...selectionData.data, ...this.mcuHelper.getMCUOptions()];
@@ -51223,23 +51223,15 @@ class MeshViewCommand {
     }
     async execute(interaction) {
         await interaction.deferReply();
-        const modeArgument = interaction.options.getString(this.syntaxLocale.commands.mesh.options.mode.name);
-        const profileArgument = interaction.options.getString(this.syntaxLocale.commands.mesh.options.profile.name);
         const meshCache = findValue('state.bed_mesh');
-        let mesh = [];
-        let profile = 'default';
-        let meshView = '';
-        if (profileArgument !== null) {
-            profile = profileArgument;
+        if (typeof meshCache === 'undefined') {
+            const message = this.locale.messages.errors.no_mesh_found
+                .replace(/(\${username})/g, interaction.user.tag);
+            await interaction.editReply(message);
+            return;
         }
-        if (modeArgument !== null) {
-            mesh = meshCache[modeArgument];
-            meshView = modeArgument;
-        }
-        else {
-            mesh = meshCache.profiles[profile].points;
-            meshView = profile;
-        }
+        const mesh = meshCache['mesh_matrix'];
+        const meshView = 'Mesh Matrix';
         const embedData = await this.embedHelper.generateEmbed('mesh_view', { 'mesh_view': meshView });
         const files = embedData.embed['files'];
         const meshPicture = await this.graphHelper.getMeshGraph(mesh);
@@ -53270,7 +53262,7 @@ if (!globalThis.ReadableStream) {
     }
   } catch (error) {
     // fallback to polyfill implementation
-    Object.assign(globalThis, __nccwpck_require__(1452))
+    Object.assign(globalThis, __nccwpck_require__(2865))
   }
 }
 
@@ -54010,7 +54002,7 @@ module.exports = JSON.parse('{"application/1d-interleaved-parityfec":{"source":"
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(452);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(1452);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()
