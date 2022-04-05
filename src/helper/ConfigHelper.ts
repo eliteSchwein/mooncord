@@ -199,4 +199,20 @@ export class ConfigHelper {
     public getGcodeExecuteTimeout() {
         return this.getConfig().status.gcode_timeout
     }
+
+    public getGraphConfig(graph: string) {
+        return this.getConfig().graph_meta[graph]
+    }
+
+    public isGraphEnabled() {
+        return this.getConfig().graph.enable
+    }
+
+    public isGraphEnabledWhilePrinting() {
+        return this.getConfig().graph.enable_while_printing
+    }
+
+    public getGraphService() {
+        return this.getConfig().graph.service
+    }
 }

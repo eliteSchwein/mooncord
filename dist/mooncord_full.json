@@ -10,6 +10,11 @@
         "disable_file": false,
         "path": ""
     },
+    "graph": {
+        "enable": true,
+        "enable_while_printing": false,
+        "service": "https://echart.eliteschw31n.de"
+    },
     "tmp_path": "../temp",
     "status": {
         "update_interval": 10,
@@ -50,6 +55,13 @@
             "roles": []
         },
         "selections": {
+            "show_mesh": {
+                "command_assign": "mesh",
+                "botadmin": true,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
             "printlist_view_printjob": {
                 "command_assign": "fileinfo",
                 "botadmin": true,
@@ -295,6 +307,12 @@
                 "users": [],
                 "roles": []
             },
+            "mesh": {
+                "botadmin": true,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
             "gcode_upload": {
                 "botadmin": false,
                 "guildadmin": false,
@@ -526,9 +544,19 @@
         "temperatures": {
             "color": "#0099ff",
             "thumbnail": "temps.png",
+            "image": "tempGraph",
             "buttons": [],
             "fields": [],
             "show_temps": true
+        },
+        "mesh_view": {
+            "color": "#0099ff",
+            "buttons": [],
+            "fields": [],
+            "selection": {
+                "id": "show_mesh",
+                "data": "${raw_entries}"
+            }
         },
         "disconnected":{
             "color": "#c90000",
@@ -890,6 +918,12 @@
                 "max_value": 1,
                 "option_value": "${data.value}",
                 "mcu_options": true
+            },
+            "show_mesh": {
+                "min_value": 1,
+                "max_value": 1,
+                "option_value": "${data.value}",
+                "mesh_profile_options": true
             }
         }
     },
@@ -1095,11 +1129,11 @@
                     "suffix": "°C"
                 },
                 "measured_min_temp": {
-                    "label": "${embeds.fields.min_temp}",
+                    "label": "${embeds.fields.min}",
                     "suffix": "°C"
                 },
                 "measured_max_temp": {
-                    "label": "${embeds.fields.max_temp}",
+                    "label": "${embeds.fields.max}",
                     "suffix": "°C"
                 }
             }
@@ -1154,6 +1188,12 @@
                     "suffix": "rpm"
                 }
             }
+        }
+    },
+    "graph_meta": {
+        "temp_history": {
+            "value_limit": 1000,
+            "colors": ["#F44336", "#8e379d", "#03DAC5", "#3F51B5", "#ffde03", "#009688", "#E91E63"]
         }
     }
 }

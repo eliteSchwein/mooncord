@@ -26,6 +26,7 @@ import {PidtuneCommand} from "./commands/PidtuneCommand";
 import { GetConfigCommand } from "./commands/GetConfigCommand";
 import {SaveConfigCommand} from "./commands/SaveConfigCommand";
 import {TuneCommand} from "./commands/TuneCommand";
+import {MeshViewCommand} from "./commands/MeshViewCommand";
 
 export class CommandInteraction {
     protected config = new ConfigHelper()
@@ -75,6 +76,7 @@ export class CommandInteraction {
         void new FileListCommand(interaction, commandId)
         void new PrintjobCommand(interaction, commandId)
         void new SystemInfoCommand(interaction, commandId)
+        void new MeshViewCommand(interaction, commandId)
         void new PreheatCommand(interaction, commandId)
         void new PidtuneCommand(interaction, commandId)
         void new GetConfigCommand(interaction, commandId)

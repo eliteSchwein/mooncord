@@ -1,11 +1,10 @@
 import * as fs from "fs";
 import * as path from "path";
-import {logRegular, logSuccess} from "../helper/LoggerHelper";
+import {logSuccess} from "../helper/LoggerHelper";
 import * as util from "util";
 import {mergeDeep} from "../helper/DataHelper";
 import {get} from 'lodash'
 import { LocaleHelper } from "../helper/LocaleHelper";
-import {cache} from "sharp";
 
 const cacheData:any = {}
 const writeFile = util.promisify(fs.writeFile)
@@ -24,6 +23,19 @@ export function getEntry(key:string) {
 
 export function findValue(key:string) {
     return get(cacheData, key)
+}
+
+export function getMeshOptions() {
+    const choices = []
+
+    for(const profile in cacheData.state.bed_mesh.profiles) {
+        choices.push({
+            "name": profile,
+            "value": profile
+        })
+    }
+
+    return choices
 }
 
 export function getHeaterArguments() {

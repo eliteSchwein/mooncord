@@ -11,6 +11,7 @@ import {WebcamHelper} from "./WebcamHelper";
 import { VersionHelper } from "./VersionHelper";
 import { TempHelper } from "./TempHelper";
 import {MetadataHelper} from "./MetadataHelper";
+import {GraphHelper} from "./GraphHelper";
 
 export class EmbedHelper {
     protected localeHelper = new LocaleHelper()
@@ -20,6 +21,7 @@ export class EmbedHelper {
     protected embedMeta = this.configHelper.getEmbedMeta()
     protected tempHelper = new TempHelper()
     protected versionHelper = new VersionHelper()
+    protected graphHelper = new GraphHelper()
 
     public loadCache() {
         logRegular("load Embeds Cache...")
@@ -178,6 +180,10 @@ export class EmbedHelper {
         
         if(imageID === 'thumbnail') {
             return metadataHelper.getThumbnail(findValue('state.print_stats.filename'))
+        }
+
+        if(imageID === 'tempGraph') {
+            return await this.graphHelper.getTempGraph()
         }
 
         const imagePath = path.resolve(__dirname, `../assets/icon-sets/${this.configHelper.getIconSet()}/${imageID}`)
