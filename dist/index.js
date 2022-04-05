@@ -36975,7 +36975,7 @@ module.exports = {
 
 /***/ }),
 
-/***/ 2865:
+/***/ 1452:
 /***/ (function(__unused_webpack_module, exports) {
 
 /**
@@ -46216,7 +46216,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 102:
+/***/ 9102:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -46753,6 +46753,15 @@ class ConfigHelper {
     }
     getGraphConfig(graph) {
         return this.getConfig().graph_meta[graph];
+    }
+    isGraphEnabled() {
+        return this.getConfig().graph.enable;
+    }
+    isGraphEnabledWhilePrinting() {
+        return this.getConfig().graph.enable_while_printing;
+    }
+    getGraphService() {
+        return this.getConfig().graph.service;
     }
 }
 
@@ -49508,7 +49517,11 @@ var external_puppeteer_default = /*#__PURE__*/__nccwpck_require__.n(external_pup
 class ChartUtil {
     async getChart(chartOptions, width, height) {
         let template = (0,external_fs_.readFileSync)(`${__dirname}/../src/meta/chartTemplate.html`, 'utf8').toString();
-        const browser = await external_puppeteer_default().launch({ defaultViewport: null });
+        const browser = await external_puppeteer_default().launch({
+            defaultViewport: null,
+            args: ['--no-sandbox', '--incognito'],
+            headless: true
+        });
         const page = await browser.newPage();
         chartOptions.animation = false;
         await page.setViewport({
@@ -49532,6 +49545,8 @@ class ChartUtil {
 
 
 
+
+
 class GraphHelper {
     constructor() {
         this.configHelper = new ConfigHelper();
@@ -49540,6 +49555,7 @@ class GraphHelper {
         this.locale = this.localeHelper.getLocale();
         this.tempValueLimit = 0;
         this.colorIndex = 0;
+        this.functionCache = getEntry('function');
     }
     async getMeshGraph(mesh) {
         const meshCache = findValue('state.bed_mesh');
@@ -49637,10 +49653,16 @@ class GraphHelper {
             'dataShape': [yCount, xCount]
         };
         chartConfig.series.push(series);
-        const chart = await this.chartUtil.getChart(chartConfig, 800, 600);
+        const chart = await this.renderChart(chartConfig, 800, 600, 'mesh');
         return new external_discord_js_namespaceObject.MessageAttachment(chart, 'meshGraph.png');
     }
     async getTempGraph() {
+        if (!this.configHelper.isGraphEnabled()) {
+            return;
+        }
+        if (!this.configHelper.isGraphEnabledWhilePrinting() && this.functionCache.current_status === 'printing') {
+            return;
+        }
         const moonrakerClient = getMoonrakerClient();
         const chartConfigSection = this.configHelper.getGraphConfig('temp_history');
         this.tempValueLimit = chartConfigSection.value_limit;
@@ -49761,8 +49783,36 @@ class GraphHelper {
         for (let i = 0; i < this.tempValueLimit; i++) {
             chartConfig.xAxis.data.push('');
         }
-        const chart = await this.chartUtil.getChart(chartConfig, 800, 400);
+        const chart = await this.renderChart(chartConfig, 800, 400, 'temp');
         return new external_discord_js_namespaceObject.MessageAttachment(chart, 'tempGraph.png');
+    }
+    async renderChart(chartConfig, width, height, chartName) {
+        const service = this.configHelper.getGraphService();
+        if (service === 'internal') {
+            logRegular(`Render the Chart for ${chartName} internal...`);
+            return this.chartUtil.getChart(chartConfig, width, height);
+        }
+        logRegular(`Render the Chart for ${chartName} with ${service}...`);
+        try {
+            const serviceRequest = await axios_default()({
+                method: 'post',
+                url: service,
+                responseType: 'arraybuffer',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                data: {
+                    'resolution': {
+                        width, height
+                    },
+                    'chart_options': chartConfig
+                }
+            });
+            return Buffer.from(serviceRequest.data, 'binary');
+        }
+        catch (error) {
+            logError(error);
+        }
     }
     getTempValues(tempValues) {
         if (typeof tempValues === 'undefined') {
@@ -51208,14 +51258,17 @@ class AdminCommand {
 
 
 
+
 class MeshViewCommand {
     constructor(interaction, commandId) {
         this.databaseUtil = getDatabase();
         this.embedHelper = new EmbedHelper();
         this.localeHelper = new LocaleHelper();
         this.graphHelper = new GraphHelper();
+        this.configHelper = new ConfigHelper();
         this.locale = this.localeHelper.getLocale();
         this.syntaxLocale = this.localeHelper.getSyntaxLocale();
+        this.functionCache = getEntry('function');
         if (commandId !== 'mesh') {
             return;
         }
@@ -51223,6 +51276,18 @@ class MeshViewCommand {
     }
     async execute(interaction) {
         await interaction.deferReply();
+        if (!this.configHelper.isGraphEnabled()) {
+            const message = this.locale.messages.errors.command_disabled
+                .replace(/(\${username})/g, interaction.user.tag);
+            await interaction.editReply(message);
+            return;
+        }
+        if (!this.configHelper.isGraphEnabledWhilePrinting() && this.functionCache.current_status === 'printing') {
+            const message = this.locale.messages.errors.not_ready
+                .replace(/(\${username})/g, interaction.user.tag);
+            await interaction.editReply(message);
+            return;
+        }
         const meshCache = findValue('state.bed_mesh');
         if (typeof meshCache === 'undefined') {
             const message = this.locale.messages.errors.no_mesh_found
@@ -51430,6 +51495,7 @@ class ShowMeshSelection {
         this.locale = this.localeHelper.getLocale();
         this.syntaxLocale = this.localeHelper.getSyntaxLocale();
         this.metadataHelper = new MetadataHelper();
+        this.functionCache = getEntry('function');
         if (selectionId !== 'show_mesh') {
             return;
         }
@@ -51437,6 +51503,18 @@ class ShowMeshSelection {
     }
     async execute(interaction) {
         await interaction.deferReply();
+        if (!this.configHelper.isGraphEnabled()) {
+            const message = this.locale.messages.errors.command_disabled
+                .replace(/(\${username})/g, interaction.user.tag);
+            await interaction.editReply(message);
+            return;
+        }
+        if (!this.configHelper.isGraphEnabledWhilePrinting() && this.functionCache.current_status === 'printing') {
+            const message = this.locale.messages.errors.not_ready
+                .replace(/(\${username})/g, interaction.user.tag);
+            await interaction.editReply(message);
+            return;
+        }
         const meshCache = findValue('state.bed_mesh');
         const meshValue = interaction.values[0];
         let meshOptions = getMeshOptions();
@@ -53327,7 +53405,7 @@ if (!globalThis.ReadableStream) {
     }
   } catch (error) {
     // fallback to polyfill implementation
-    Object.assign(globalThis, __nccwpck_require__(2865))
+    Object.assign(globalThis, __nccwpck_require__(1452))
   }
 }
 
@@ -54067,7 +54145,7 @@ module.exports = JSON.parse('{"application/1d-interleaved-parityfec":{"source":"
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(102);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(9102);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()

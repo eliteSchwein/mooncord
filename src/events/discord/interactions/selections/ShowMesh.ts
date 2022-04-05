@@ -21,6 +21,7 @@ export class ShowMeshSelection {
     protected locale = this.localeHelper.getLocale()
     protected syntaxLocale = this.localeHelper.getSyntaxLocale()
     protected metadataHelper = new MetadataHelper()
+    protected functionCache = getEntry('function')
 
     public constructor(interaction: SelectMenuInteraction, selectionId: string) {
         if(selectionId !== 'show_mesh') { return }
@@ -30,6 +31,23 @@ export class ShowMeshSelection {
 
     protected async execute(interaction: SelectMenuInteraction) {
         await interaction.deferReply()
+
+        if(!this.configHelper.isGraphEnabled()) {
+            const message = this.locale.messages.errors.command_disabled
+                .replace(/(\${username})/g, interaction.user.tag)
+
+            await interaction.editReply(message)
+            return
+        }
+
+        if(!this.configHelper.isGraphEnabledWhilePrinting() && this.functionCache.current_status === 'printing') {
+            const message = this.locale.messages.errors.not_ready
+                .replace(/(\${username})/g, interaction.user.tag)
+
+            await interaction.editReply(message)
+            return
+        }
+
         const meshCache = findValue('state.bed_mesh')
         const meshValue = interaction.values[0]
         

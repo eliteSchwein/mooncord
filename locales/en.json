@@ -219,7 +219,7 @@
             "no_files_found": "There are currently no Files!",
             "no_mesh_found": "You currently dont have the Mesh Feature enabled, `${username}`!",
             "no_permission": "You dont have the Permission for this Action, `${username}`",
-            "not_ready": "This Command is not ready, `${username}`!",
+            "not_ready": "The Command is not ready, `${username}`!",
             "not_textchannel": "`${channel}` is not a Text Channel, `${username}`!",
             "execute_error": "Error: `${gcode_feedback}`",
             "execute_unknown": "Unknown GCode Command: `${gcode_feedback}`",

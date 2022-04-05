@@ -6,7 +6,8 @@ import {MessageAttachment} from 'discord.js';
 import axios from 'axios';
 import {LocaleHelper} from './LocaleHelper';
 import {ChartUtil} from '../utils/ChartUtil';
-import {findValue} from '../utils/CacheUtil';
+import {findValue, getEntry} from '../utils/CacheUtil';
+import {logError, logRegular} from "./LoggerHelper";
 
 export class GraphHelper {
     protected configHelper = new ConfigHelper()
@@ -15,6 +16,7 @@ export class GraphHelper {
     protected locale = this.localeHelper.getLocale()
     protected tempValueLimit = 0
     protected colorIndex = 0
+    protected functionCache = getEntry('function')
 
     public async getMeshGraph(mesh) {
         const meshCache = findValue('state.bed_mesh')
@@ -121,12 +123,20 @@ export class GraphHelper {
 
         chartConfig.series.push(series)
 
-        const chart = await this.chartUtil.getChart(chartConfig, 800, 600)
+        const chart = await this.renderChart(chartConfig, 800, 600, 'mesh')
 
         return new MessageAttachment(chart, 'meshGraph.png')
     }
 
     public async getTempGraph() {
+        if(!this.configHelper.isGraphEnabled()) {
+            return
+        }
+
+        if(!this.configHelper.isGraphEnabledWhilePrinting() && this.functionCache.current_status === 'printing') {
+            return
+        }
+
         const moonrakerClient = App.getMoonrakerClient()
         const chartConfigSection = this.configHelper.getGraphConfig('temp_history')
 
@@ -258,9 +268,40 @@ export class GraphHelper {
             chartConfig.xAxis.data.push('')
         }
 
-        const chart = await this.chartUtil.getChart(chartConfig, 800, 400)
+        const chart = await this.renderChart(chartConfig, 800, 400, 'temp')
 
         return new MessageAttachment(chart, 'tempGraph.png')
+    }
+
+    private async renderChart(chartConfig, width: number, height: number, chartName: string) {
+        const service = this.configHelper.getGraphService()
+
+        if(service === 'internal') {
+            logRegular(`Render the Chart for ${chartName} internal...`)
+            return this.chartUtil.getChart(chartConfig, width, height)
+        }
+
+        logRegular(`Render the Chart for ${chartName} with ${service}...`)
+        try {
+            const serviceRequest = await axios({
+                method: 'post',
+                url: service,
+                responseType: 'arraybuffer',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                data: {
+                    'resolution': {
+                        width, height
+                    },
+                    'chart_options': chartConfig
+                }
+            })
+
+            return Buffer.from(serviceRequest.data, 'binary')
+        } catch (error) {
+            logError(error)
+        }
     }
 
     private getTempValues(tempValues: []) {

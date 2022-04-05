@@ -10,6 +10,11 @@
         "disable_file": false,
         "path": ""
     },
+    "graph": {
+        "enable": true,
+        "enable_while_printing": false,
+        "service": "https://echart.eliteschw31n.de"
+    },
     "tmp_path": "../temp",
     "status": {
         "update_interval": 10,

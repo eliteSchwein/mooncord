@@ -4,16 +4,19 @@ import * as path from "path";
 import {getDatabase} from "../../../../Application";
 import {LocaleHelper} from "../../../../helper/LocaleHelper";
 import {EmbedHelper} from "../../../../helper/EmbedHelper";
-import {findValue} from "../../../../utils/CacheUtil";
+import {findValue, getEntry} from "../../../../utils/CacheUtil";
 import {GraphHelper} from "../../../../helper/GraphHelper";
+import {ConfigHelper} from "../../../../helper/ConfigHelper";
 
 export class MeshViewCommand {
     protected databaseUtil = getDatabase()
     protected embedHelper = new EmbedHelper()
     protected localeHelper = new LocaleHelper()
     protected graphHelper = new GraphHelper()
+    protected configHelper = new ConfigHelper()
     protected locale = this.localeHelper.getLocale()
     protected syntaxLocale = this.localeHelper.getSyntaxLocale()
+    protected functionCache = getEntry('function')
 
     public constructor(interaction: CommandInteraction, commandId: string) {
         if(commandId !== 'mesh') { return }
@@ -23,6 +26,23 @@ export class MeshViewCommand {
 
     protected async execute(interaction: CommandInteraction) {
         await interaction.deferReply()
+
+        if(!this.configHelper.isGraphEnabled()) {
+            const message = this.locale.messages.errors.command_disabled
+                .replace(/(\${username})/g, interaction.user.tag)
+
+            await interaction.editReply(message)
+            return
+        }
+
+        if(!this.configHelper.isGraphEnabledWhilePrinting() && this.functionCache.current_status === 'printing') {
+            const message = this.locale.messages.errors.not_ready
+                .replace(/(\${username})/g, interaction.user.tag)
+
+            await interaction.editReply(message)
+            return
+        }
+
         const meshCache = findValue('state.bed_mesh')
 
         if(typeof meshCache === 'undefined') {

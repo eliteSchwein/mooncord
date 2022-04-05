@@ -5,7 +5,11 @@ import {sleep} from "../helper/DataHelper";
 export class ChartUtil {
     public async getChart(chartOptions: any, width: number, height: number) {
         let template = readFileSync(`${__dirname}/../src/meta/chartTemplate.html`, 'utf8').toString()
-        const browser = await Puppeteer.launch({defaultViewport: null})
+        const browser = await Puppeteer.launch({
+            defaultViewport: null,
+            args: ['--no-sandbox', '--incognito'],
+            headless: true
+        })
         const page = await browser.newPage()
 
         chartOptions.animation = false
