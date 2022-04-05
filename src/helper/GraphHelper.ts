@@ -1,4 +1,3 @@
-import * as quickChart from 'quickchart-js';
 import * as App from '../Application';
 import path from 'path';
 import {ConfigHelper} from './ConfigHelper';
@@ -124,6 +123,10 @@ export class GraphHelper {
         chartConfig.series.push(series)
 
         const chart = await this.renderChart(chartConfig, 800, 600, 'mesh')
+
+        if(typeof chart === 'undefined') {
+            return
+        }
 
         return new MessageAttachment(chart, 'meshGraph.png')
     }
@@ -269,6 +272,10 @@ export class GraphHelper {
         }
 
         const chart = await this.renderChart(chartConfig, 800, 400, 'temp')
+
+        if(typeof chart === 'undefined') {
+            return
+        }
 
         return new MessageAttachment(chart, 'tempGraph.png')
     }

@@ -1125,7 +1125,7 @@
             "icon": "🌡",
             "fields": {
                 "temperature": {
-                    "label": "${embeds.fields.current}",
+                    "label": "${embeds.fields.temp}",
                     "suffix": "°C"
                 },
                 "measured_min_temp": {

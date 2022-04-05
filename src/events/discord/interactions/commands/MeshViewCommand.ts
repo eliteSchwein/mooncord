@@ -59,6 +59,15 @@ export class MeshViewCommand {
 
         const embedData = await this.embedHelper.generateEmbed('mesh_view',{'mesh_view': meshView})
         const meshPicture = await this.graphHelper.getMeshGraph(mesh)
+
+        if(typeof meshPicture === 'undefined') {
+            const message = this.locale.messages.errors.command_failed
+                .replace(/(\${username})/g, interaction.user.tag)
+
+            await interaction.editReply(message)
+            return
+        }
+
         const embed = embedData.embed.embeds[0] as MessageEmbed
         const components = embedData.embed['components']
         let files = []

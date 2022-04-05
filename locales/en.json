@@ -121,7 +121,6 @@
             "load": "Load",
             "awake_time": "Awake Time",
             "frequency": "Freq",
-            "current": "Current",
             "target": "Target",
             "speed": "Speed",
             "power": "Power",
@@ -133,8 +132,8 @@
             "slicer": "Slicer",
             "slicer_version": "Slicer version",
             "height": "Height",
-            "min_temp": "Min Temp",
-            "max_temp": "Max Temp",
+            "max": "Max",
+            "min": "Min",
             "temp": "Temp",
             "cores": "Cores",
             "arch": "Architecture",
@@ -217,6 +216,7 @@
             "no_data": "There was no Data found for `${component}`!",
             "restart_failed": "The Restart of `${service}` failed: `${reason}`",
             "no_files_found": "There are currently no Files!",
+            "no_mesh_found": "You currently dont have the Mesh Feature enabled, `${username}`!",
             "no_permission": "You dont have the Permission for this Action, `${username}`",
             "not_ready": "This Command is not ready, `${username}`!",
             "not_textchannel": "`${channel}` is not a Text Channel, `${username}`!",
@@ -557,6 +557,11 @@
         "temp": {
             "description": "Get the current Temperatures from Klipper.",
             "command": "temp"
+        }
+    },
+    "graph": {
+        "temp_history": {
+            "title": "Temp History"
         }
     }
 }
