@@ -1,16 +1,14 @@
 import {readFileSync} from "fs";
-import Puppeteer from 'puppeteer'
 import {sleep} from "../helper/DataHelper";
+import {getBrowser} from "../Application";
 
 export class ChartUtil {
+    protected browserClient = getBrowser()
+
     public async getChart(chartOptions: any, width: number, height: number) {
         let template = readFileSync(`${__dirname}/../src/meta/chartTemplate.html`, 'utf8').toString()
-        const browser = await Puppeteer.launch({
-            defaultViewport: null,
-            args: ['--no-sandbox', '--incognito'],
-            headless: true
-        })
-        const page = await browser.newPage()
+
+        const page = await this.browserClient.addPage()
 
         chartOptions.animation = false
 
@@ -24,11 +22,11 @@ export class ChartUtil {
 
         await page.setContent(template)
 
-        await sleep(500)
+        await sleep(250)
 
         const screenShot = await page.screenshot()
 
-        await browser.close()
+        await page.close()
 
         return screenShot
     }

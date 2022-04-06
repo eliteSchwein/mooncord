@@ -77324,7 +77324,7 @@ function defaultCallback(err) {
 
 /***/ }),
 
-/***/ 6172:
+/***/ 418:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -77333,6 +77333,7 @@ __nccwpck_require__.r(__webpack_exports__);
 
 // EXPORTS
 __nccwpck_require__.d(__webpack_exports__, {
+  "getBrowser": () => (/* binding */ getBrowser),
   "getDatabase": () => (/* binding */ getDatabase),
   "getDiscordClient": () => (/* binding */ getDiscordClient),
   "getMoonrakerClient": () => (/* binding */ getMoonrakerClient),
@@ -78592,22 +78593,17 @@ class MetadataHelper {
     }
 }
 
-// EXTERNAL MODULE: ./node_modules/puppeteer/cjs-entry.js
-var cjs_entry = __nccwpck_require__(9014);
-var cjs_entry_default = /*#__PURE__*/__nccwpck_require__.n(cjs_entry);
 ;// CONCATENATED MODULE: ./src/utils/ChartUtil.ts
 
 
 
 class ChartUtil {
+    constructor() {
+        this.browserClient = getBrowser();
+    }
     async getChart(chartOptions, width, height) {
         let template = (0,external_fs_.readFileSync)(`${__dirname}/../src/meta/chartTemplate.html`, 'utf8').toString();
-        const browser = await cjs_entry_default().launch({
-            defaultViewport: null,
-            args: ['--no-sandbox', '--incognito'],
-            headless: true
-        });
-        const page = await browser.newPage();
+        const page = await this.browserClient.addPage();
         chartOptions.animation = false;
         await page.setViewport({
             width,
@@ -78616,9 +78612,9 @@ class ChartUtil {
         template = template
             .replace(/(\${echartOptions})/g, JSON.stringify(chartOptions));
         await page.setContent(template);
-        await sleep(500);
+        await sleep(250);
         const screenShot = await page.screenshot();
-        await browser.close();
+        await page.close();
         return screenShot;
     }
 }
@@ -82563,7 +82559,29 @@ class SchedulerHelper {
     }
 }
 
+// EXTERNAL MODULE: ./node_modules/puppeteer/cjs-entry.js
+var cjs_entry = __nccwpck_require__(9014);
+var cjs_entry_default = /*#__PURE__*/__nccwpck_require__.n(cjs_entry);
+;// CONCATENATED MODULE: ./src/clients/BrowserClient.ts
+
+class BrowserClient {
+    async initBrowser() {
+        this.browser = await cjs_entry_default().launch({
+            defaultViewport: null,
+            args: ['--no-sandbox', '--incognito'],
+            headless: true
+        });
+    }
+    async addPage() {
+        return await this.browser.newPage();
+    }
+    async closeBrowser() {
+        await this.browser.close();
+    }
+}
+
 ;// CONCATENATED MODULE: ./src/Application.ts
+
 
 
 
@@ -82588,6 +82606,7 @@ const embedHelper = new EmbedHelper();
 const moonrakerClient = new MoonrakerClient();
 const Application_database = new DatabaseUtil();
 const discordClient = new DiscordClient();
+const browserClient = new BrowserClient();
 const schedulerHelper = new SchedulerHelper();
 const statusHelper = new StatusHelper();
 void init();
@@ -82605,6 +82624,9 @@ async function init() {
         currentInitState = 'Discord Client';
         await discordClient.connect();
         await (0,dist.waitUntil)(() => discordClient.isConnected(), { timeout: 10000, intervalBetweenAttempts: 500 });
+        if (configHelper.isGraphEnabled() && configHelper.getGraphService() === 'internal') {
+            await browserClient.initBrowser();
+        }
     }
     catch (error) {
         logError(`couldn't load ${currentInitState} in Time! Reason: ${external_util_.format(error)}`);
@@ -82705,6 +82727,9 @@ function getDiscordClient() {
 }
 function getDatabase() {
     return Application_database;
+}
+function getBrowser() {
+    return browserClient;
 }
 
 
@@ -83066,7 +83091,7 @@ module.exports = JSON.parse('[[[0,44],"disallowed_STD3_valid"],[[45,46],"valid"]
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(6172);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(418);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()

@@ -13,7 +13,7 @@
     "graph": {
         "enable": true,
         "enable_while_printing": false,
-        "service": "https://echart.eliteschw31n.de"
+        "service": "internal"
     },
     "tmp_path": "../temp",
     "status": {
