@@ -17269,7 +17269,7 @@ const getStream = __nccwpck_require__(1766)
 const path = __nccwpck_require__(1017)
 const { promisify } = __nccwpck_require__(3837)
 const stream = __nccwpck_require__(2781)
-const yauzl = __nccwpck_require__(8781)
+const yauzl = __nccwpck_require__(4026)
 
 const openZip = promisify(yauzl.open)
 const pipeline = promisify(stream.pipeline)
@@ -18859,7 +18859,7 @@ FfmpegCommand.prototype.clone = function() {
 
 /* Add methods from options submodules */
 
-__nccwpck_require__(7413)(FfmpegCommand.prototype);
+__nccwpck_require__(8781)(FfmpegCommand.prototype);
 __nccwpck_require__(8117)(FfmpegCommand.prototype);
 __nccwpck_require__(7215)(FfmpegCommand.prototype);
 __nccwpck_require__(4773)(FfmpegCommand.prototype);
@@ -19332,7 +19332,7 @@ module.exports = function(proto) {
 
 /***/ }),
 
-/***/ 7413:
+/***/ 8781:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
 "use strict";
@@ -76521,7 +76521,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 8781:
+/***/ 4026:
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 var fs = __nccwpck_require__(7147);

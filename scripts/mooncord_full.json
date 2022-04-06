@@ -11,7 +11,7 @@
         "path": ""
     },
     "graph": {
-        "enable": true,
+        "enable": false,
         "enable_while_printing": false,
         "service": "internal"
     },
