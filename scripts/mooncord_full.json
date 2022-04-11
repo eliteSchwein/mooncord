@@ -62,6 +62,13 @@
                 "users": [],
                 "roles": []
             },
+            "show_temp": {
+                "command_assign": "preheat",
+                "botadmin": false,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
             "printlist_view_printjob": {
                 "command_assign": "fileinfo",
                 "botadmin": true,
@@ -546,6 +553,21 @@
             "thumbnail": "temps.png",
             "image": "tempGraph",
             "buttons": [],
+            "selection": {
+                "id": "show_temp",
+                "data": "${raw_entries}"
+            },
+            "fields": [],
+            "show_temps": true
+        },
+        "single_temperature": {
+            "color": "#0099ff",
+            "thumbnail": "temps.png",
+            "buttons": ["to_temps"],
+            "inputs": {
+                "id": "temp_input",
+                "value": 0
+            },
             "fields": [],
             "show_temps": true
         },
@@ -773,6 +795,9 @@
         }
     },
     "input_meta": {
+        "inputs": {
+            "temp_input": {}
+        },
         "buttons": {
             "next_page_printlist": {
                 "emoji": "➡️",
@@ -838,6 +863,13 @@
                 "style":"SECONDARY",
                 "function_mapping": {
                     "show_printlist": true
+                }
+            },
+            "to_temps": {
+                "emoji": "🌡️",
+                "style":"SECONDARY",
+                "function_mapping": {
+                    "show_embed": "temperatures"
                 }
             },
             "printjob_delete_accept": {
@@ -924,6 +956,12 @@
                 "max_value": 1,
                 "option_value": "${data.value}",
                 "mesh_profile_options": true
+            },
+            "show_temp": {
+                "min_value": 1,
+                "max_value": 1,
+                "option_value": "${data.value}",
+                "heater_options": true
             }
         }
     },

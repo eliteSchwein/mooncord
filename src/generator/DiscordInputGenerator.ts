@@ -1,7 +1,7 @@
 import {ConfigHelper} from "../helper/ConfigHelper";
 import {limitString, mergeDeep, parsePageData} from "../helper/DataHelper";
 
-import {setData, getEntry, getMeshOptions} from "../utils/CacheUtil";
+import {setData, getEntry, getMeshOptions, getHeaterChoices} from "../utils/CacheUtil";
 import {MessageActionRow, MessageButton, MessageSelectMenu} from "discord.js";
 import {LocaleHelper} from "../helper/LocaleHelper";
 import {MCUHelper} from "../helper/MCUHelper";
@@ -70,6 +70,10 @@ export class DiscordInputGenerator {
             selectionData.data = [...selectionData.data, ...getMeshOptions()]
         }
 
+        if(selectionMeta.heater_options) {
+            selectionData.data = [...selectionData.data, ...getHeaterChoices()]
+        }
+
         if(selectionMeta.mcu_options) {
             selectionData.data = [...selectionData.data, ...this.mcuHelper.getMCUOptions()]
         }
@@ -87,6 +91,20 @@ export class DiscordInputGenerator {
         }
 
         row.addComponents(selection)
+
+        return row
+    }
+
+    public generateInputs(inputData) {
+        if(typeof inputData === 'undefined') {
+            return
+        }
+
+        const cache = getEntry('inputs')
+        const selectionMeta = cache[inputData.id]
+        const row = new MessageActionRow()
+
+        //row.addComponents(selection)
 
         return row
     }

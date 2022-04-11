@@ -67,6 +67,9 @@
         "temperatures": {
             "title": "Temperatures"
         },
+        "single_temperature": {
+            "title": "Temperature for ${heater}"
+        },
         "mesh_view": {
             "title": "Mesh for ${mesh_view}"
         },
@@ -267,6 +270,9 @@
         "to_printlist": {
             "label": "to List"
         },
+        "to_temps": {
+            "label": "to Temps"
+        },
         "clear_file": {
             "label": "Clear File"
         },
@@ -295,6 +301,12 @@
                     "value": "probed_matrix"
                 }
             ]
+        },
+        "show_temp": {
+            "label": "Select a Heater...",
+            "option_label": "${data.name}",
+            "option_description": "Set the temperature for this heater...",
+            "options": []
         },
         "printlist_view_printjob": {
             "label": "Select a File...",
@@ -563,5 +575,8 @@
         "temp_history": {
             "title": "Temp History"
         }
+    },
+    "inputs": {
+        "temp_input": {}
     }
 }

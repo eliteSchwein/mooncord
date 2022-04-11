@@ -9,6 +9,7 @@ import * as util from "util"
 import {ViewPrintJobSelection} from "./selections/ViewPrintJob";
 import {ViewSystemInfo} from "./selections/ViewSystemInfo";
 import {ShowMeshSelection} from "./selections/ShowMesh";
+import {ShowTempSelection} from "./selections/ShowTemp";
 
 export class SelectInteraction {
     protected permissionHelper = new PermissionHelper()
@@ -48,6 +49,7 @@ export class SelectInteraction {
         new ViewPrintJobSelection(interaction, selectId)
         new ViewSystemInfo(interaction, selectId)
         new ShowMeshSelection(interaction, selectId)
+        new ShowTempSelection(interaction, selectId)
 
         await sleep(2000)
 

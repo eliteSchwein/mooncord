@@ -42016,7 +42016,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 7788:
+/***/ 580:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -42834,6 +42834,9 @@ class DiscordInputGenerator {
         if (selectionMeta.mesh_profile_options) {
             selectionData.data = [...selectionData.data, ...getMeshOptions()];
         }
+        if (selectionMeta.heater_options) {
+            selectionData.data = [...selectionData.data, ...getHeaterChoices()];
+        }
         if (selectionMeta.mcu_options) {
             selectionData.data = [...selectionData.data, ...this.mcuHelper.getMCUOptions()];
         }
@@ -42847,6 +42850,16 @@ class DiscordInputGenerator {
                 }]);
         }
         row.addComponents(selection);
+        return row;
+    }
+    generateInputs(inputData) {
+        if (typeof inputData === 'undefined') {
+            return;
+        }
+        const cache = getEntry('inputs');
+        const selectionMeta = cache[inputData.id];
+        const row = new external_discord_js_namespaceObject.MessageActionRow();
+        //row.addComponents(selection)
         return row;
     }
     generateButton(buttonId) {
@@ -43707,9 +43720,11 @@ class EmbedHelper {
         const image = await this.parseImage(embedData.image);
         const buttons = this.inputGenerator.generateButtons(embedData.buttons);
         const selection = this.inputGenerator.generateSelection(embedData.selection);
+        const inputs = this.inputGenerator.generateInputs(embedData.inputs);
         files.push(thumbnail, image);
         components.push(selection);
         components.push(buttons);
+        components.push(inputs);
         files = files.filter((element) => { return element != null; });
         components = components.filter((element) => { return element != null; });
         embed.setTitle(embedData.title);
@@ -44361,7 +44376,35 @@ class UpdateButton {
     }
 }
 
+;// CONCATENATED MODULE: ./src/events/discord/interactions/buttons/EmbedButton.ts
+
+class EmbedButton {
+    constructor() {
+        this.embedHelper = new EmbedHelper();
+    }
+    async execute(interaction, buttonData) {
+        if (typeof buttonData.function_mapping.show_embed === 'undefined') {
+            return;
+        }
+        const currentMessage = interaction.message;
+        const embed = await this.embedHelper.generateEmbed(buttonData.function_mapping.show_embed);
+        if (interaction.replied) {
+            await interaction.followUp(embed.embed);
+        }
+        else {
+            if (buttonData.function_mapping.message_as_follow_up) {
+                await interaction.reply(embed.embed);
+                return;
+            }
+            await currentMessage.edit({ components: null, embeds: null });
+            await currentMessage.removeAttachments();
+            await interaction.update(embed.embed);
+        }
+    }
+}
+
 ;// CONCATENATED MODULE: ./src/events/discord/interactions/ButtonInteraction.ts
+
 
 
 
@@ -44417,6 +44460,7 @@ class ButtonInteraction {
         }
         await new PrintJobStartButton().execute(interaction, buttonData);
         await new MessageButton().execute(interaction, buttonData);
+        await new EmbedButton().execute(interaction, buttonData);
         await new DeleteButton().execute(interaction, buttonData);
         await new ReconnectButton().execute(interaction, buttonData);
         await new RefreshButton().execute(interaction, buttonData);
@@ -45623,7 +45667,64 @@ class ShowMeshSelection {
     }
 }
 
+;// CONCATENATED MODULE: ./src/events/discord/interactions/selections/ShowTemp.ts
+
+
+
+
+
+
+
+
+class ShowTempSelection {
+    constructor(interaction, selectionId) {
+        this.databaseUtil = getDatabase();
+        this.embedHelper = new EmbedHelper();
+        this.configHelper = new ConfigHelper();
+        this.moonrakerClient = getMoonrakerClient();
+        this.graphHelper = new GraphHelper();
+        this.localeHelper = new LocaleHelper();
+        this.locale = this.localeHelper.getLocale();
+        this.syntaxLocale = this.localeHelper.getSyntaxLocale();
+        this.metadataHelper = new MetadataHelper();
+        this.functionCache = getEntry('function');
+        this.tempHelper = new TempHelper();
+        if (selectionId !== 'show_temp') {
+            return;
+        }
+        void this.execute(interaction);
+    }
+    async execute(interaction) {
+        await interaction.deferReply();
+        const heater = interaction.values[0];
+        const temps = this.tempHelper.parseFields().fields;
+        let tempField = {};
+        for (const temp of temps) {
+            if (temp.name.endsWith(heater)) {
+                tempField = temp;
+            }
+        }
+        const embedData = await this.embedHelper.generateEmbed('single_temperature', { heater }, [tempField]);
+        //const meshPicture = await this.graphHelper.getMeshGraph(mesh)
+        //const embed = embedData.embed.embeds[0] as MessageEmbed
+        //const components = embedData.embed['components']
+        //let files = []
+        //if(typeof embedData.embed['files'] !== 'undefined') {
+        //    files = [...files, ...embedData.embed['files']]
+        //}
+        //embed.setImage(`attachment://${meshPicture.name}`)
+        //files.push(meshPicture)
+        const currentMessage = interaction.message;
+        await currentMessage.edit({ components: null });
+        await currentMessage.removeAttachments();
+        await currentMessage.edit(embedData.embed);
+        //await currentMessage.edit({embeds: [embed], files, components})
+        await interaction.deleteReply();
+    }
+}
+
 ;// CONCATENATED MODULE: ./src/events/discord/interactions/SelectInteraction.ts
+
 
 
 
@@ -45669,6 +45770,7 @@ class SelectInteraction {
         new ViewPrintJobSelection(interaction, selectId);
         new ViewSystemInfo(interaction, selectId);
         new ShowMeshSelection(interaction, selectId);
+        new ShowTempSelection(interaction, selectId);
         await sleep(2000);
         if (interaction.replied || interaction.deferred) {
             return;
@@ -47719,7 +47821,7 @@ module.exports = JSON.parse('{"application/1d-interleaved-parityfec":{"source":"
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(7788);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(580);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()

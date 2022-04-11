@@ -15,6 +15,7 @@ import {PrintJobStartButton} from "./buttons/PrintJobStartButton";
 import {MessageButton} from "./buttons/MessageButton";
 import {ReconnectButton} from "./buttons/ReconnectButton";
 import {UpdateButton} from "./buttons/UpdateButton";
+import {EmbedButton} from "./buttons/EmbedButton";
 
 export class ButtonInteraction {
     protected config = new ConfigHelper()
@@ -61,6 +62,7 @@ export class ButtonInteraction {
 
         await new PrintJobStartButton().execute(interaction, buttonData)
         await new MessageButton().execute(interaction, buttonData)
+        await new EmbedButton().execute(interaction, buttonData)
         await new DeleteButton().execute(interaction, buttonData)
         await new ReconnectButton().execute(interaction, buttonData)
         await new RefreshButton().execute(interaction, buttonData)
