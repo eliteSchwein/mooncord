@@ -26,10 +26,10 @@ configHelper.loadCache()
 const localeHelper = new LocaleHelper()
 const embedHelper = new EmbedHelper()
 
+const browserClient = new BrowserClient()
 const moonrakerClient = new MoonrakerClient()
 const database = new DatabaseUtil()
 const discordClient = new DiscordClient()
-const browserClient = new BrowserClient()
 
 const schedulerHelper = new SchedulerHelper()
 const statusHelper = new StatusHelper()

@@ -1,14 +1,14 @@
 import {readFileSync} from "fs";
 import {sleep} from "../helper/DataHelper";
-import {getBrowser} from "../Application";
+import * as App from "../Application";
 
 export class ChartUtil {
-    protected browserClient = getBrowser()
-
     public async getChart(chartOptions: any, width: number, height: number) {
         let template = readFileSync(`${__dirname}/../src/meta/chartTemplate.html`, 'utf8').toString()
 
-        const page = await this.browserClient.addPage()
+        const browser = App.getBrowser()
+
+        const page = await browser.addPage()
 
         chartOptions.animation = false
 

@@ -78598,12 +78598,10 @@ class MetadataHelper {
 
 
 class ChartUtil {
-    constructor() {
-        this.browserClient = getBrowser();
-    }
     async getChart(chartOptions, width, height) {
         let template = (0,external_fs_.readFileSync)(`${__dirname}/../src/meta/chartTemplate.html`, 'utf8').toString();
-        const page = await this.browserClient.addPage();
+        const browser = getBrowser();
+        const page = await browser.addPage();
         chartOptions.animation = false;
         await page.setViewport({
             width,
@@ -82603,10 +82601,10 @@ const configHelper = new ConfigHelper();
 configHelper.loadCache();
 const localeHelper = new LocaleHelper();
 const embedHelper = new EmbedHelper();
+const browserClient = new BrowserClient();
 const moonrakerClient = new MoonrakerClient();
 const Application_database = new DatabaseUtil();
 const discordClient = new DiscordClient();
-const browserClient = new BrowserClient();
 const schedulerHelper = new SchedulerHelper();
 const statusHelper = new StatusHelper();
 void init();
