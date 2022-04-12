@@ -42036,7 +42036,7 @@ __nccwpck_require__.d(__webpack_exports__, {
 });
 
 ;// CONCATENATED MODULE: ./package.json
-const package_namespaceObject = JSON.parse('{"name":"mooncord","version":"0.0.5","description":"Moonraker Discord Bot based on Discord.js","main":"index.js","scripts":{"start":"node --expose-gc dist/index.js","debugstart":"node --trace_gc --expose-gc --trace-deprecation --trace-warnings --trace-uncaught --track-heap-objects dist/index.js","checkcodestyle":"npx eslint ./**","autofixcodestyle":"npx eslint ./** --fix","build":"ncc build -m -d -e discord.js -e @ffmpeg-installer/ffmpeg -e puppeteer -e sharp src/Application.ts -o dist","watch":"ncc build -w -d -e discord.js -e @ffmpeg-installer/ffmpeg -e puppeteer -e sharp src/Application.ts -o dist"},"repository":{"type":"git","url":"git+https://github.com/eliteSchwein/mooncord.git"},"keywords":[],"author":"eliteSCHW31N","license":"ISC","bugs":{"url":"https://github.com/eliteSchwein/mooncord/issues"},"homepage":"https://github.com/eliteSchwein/mooncord#readme","devDependencies":{"@types/fluent-ffmpeg":"^2.1.20","@types/node":"^17.0.23","@types/sharp":"^0.30.1","@vercel/ncc":"^0.33.3","async-wait-until":"2.0.12","axios":"^0.26.1","bytes":"^3.1.2","colorts":"^0.1.63","eslint":"^8.12.0","eslint-plugin-import":"^2.26.0","eslint-plugin-node":"^11.1.0","eslint-plugin-promise":"^6.0.0","fluent-ffmpeg":"^2.1.2","form-data":"^4.0.0","lodash":"^4.17.21","node-fetch":"^3.2.3","shelljs":"^0.8.5","stacktrace-js":"^2.0.2","typescript":"^4.6.3","websocket-ts":"^1.1.1","ws":"^8.5.0"},"dependencies":{"@ffmpeg-installer/ffmpeg":"^1.1.0","discord.js":"13.6.0","sharp":"^0.30.3","puppeteer":"^13.5.2"}}');
+const package_namespaceObject = JSON.parse('{"name":"mooncord","version":"0.0.5","description":"Moonraker Discord Bot based on Discord.js","main":"index.js","scripts":{"start":"node --expose-gc dist/index.js","debugstart":"node --trace_gc --expose-gc --trace-deprecation --trace-warnings --trace-uncaught --track-heap-objects dist/index.js","checkcodestyle":"npx eslint ./**","autofixcodestyle":"npx eslint ./** --fix","build":"ncc build -m -d -e discord.js -e @ffmpeg-installer/ffmpeg -e puppeteer -e sharp src/Application.ts -o dist","watch":"ncc build -w -d -e discord.js -e @ffmpeg-installer/ffmpeg -e puppeteer -e sharp src/Application.ts -o dist"},"repository":{"type":"git","url":"git+https://github.com/eliteSchwein/mooncord.git"},"keywords":[],"author":"eliteSCHW31N","license":"ISC","bugs":{"url":"https://github.com/eliteSchwein/mooncord/issues"},"homepage":"https://github.com/eliteSchwein/mooncord#readme","devDependencies":{"@types/fluent-ffmpeg":"^2.1.20","@types/node":"^17.0.23","@types/sharp":"^0.30.1","@vercel/ncc":"^0.33.3","async-wait-until":"2.0.12","axios":"^0.26.1","bytes":"^3.1.2","colorts":"^0.1.63","eslint":"^8.12.0","eslint-plugin-import":"^2.26.0","eslint-plugin-node":"^11.1.0","eslint-plugin-promise":"^6.0.0","fluent-ffmpeg":"^2.1.2","form-data":"^4.0.0","lodash":"^4.17.21","node-fetch":"^3.2.3","shelljs":"^0.8.5","stacktrace-js":"^2.0.2","typescript":"^4.6.3","websocket-ts":"^1.1.1","ws":"^8.5.0"},"dependencies":{"@ffmpeg-installer/ffmpeg":"^1.1.0","discord.js":"^13.6.0","puppeteer":"^13.5.2","sharp":"^0.30.3"}}');
 var package_namespaceObject_0 = /*#__PURE__*/__nccwpck_require__.t(package_namespaceObject, 2);
 // EXTERNAL MODULE: external "util"
 var external_util_ = __nccwpck_require__(3837);
@@ -42793,6 +42793,7 @@ class DiscordInputGenerator {
     generateInputCache() {
         this.generateCacheForSection('buttons');
         this.generateCacheForSection('selections');
+        this.generateCacheForSection('inputs');
     }
     generateCacheForSection(section) {
         let sectionConfig = this.localeHelper.getLocale()[section];
@@ -42857,7 +42858,7 @@ class DiscordInputGenerator {
             return;
         }
         const cache = getEntry('inputs');
-        const selectionMeta = cache[inputData.id];
+        const inputMeta = cache[inputData.id];
         const row = new external_discord_js_namespaceObject.MessageActionRow();
         //row.addComponents(selection)
         return row;
@@ -43443,7 +43444,7 @@ class GraphHelper {
         }
         return new external_discord_js_namespaceObject.MessageAttachment(chart, 'meshGraph.png');
     }
-    async getTempGraph() {
+    async getTempGraph(sensor = undefined) {
         if (!this.configHelper.isGraphEnabled()) {
             return;
         }
@@ -43534,8 +43535,12 @@ class GraphHelper {
         }
         for (const rawTempSensor in tempHistoryRequest.result) {
             const tempSensor = rawTempSensor.replace(/(temperature_sensor )|(temperature_fan )|(heater_generic )/g, '');
+            if (typeof sensor !== 'undefined' && tempSensor !== sensor) {
+                continue;
+            }
             const tempValues = this.getTempValues(tempHistoryRequest.result[rawTempSensor].temperatures);
             const tempTargets = this.getTempValues(tempHistoryRequest.result[rawTempSensor].targets);
+            const tempPowers = this.getTempValues(tempHistoryRequest.result[rawTempSensor].powers);
             chartConfig.legend.data.push(tempSensor);
             chartConfig.series.push({
                 'name': tempSensor,
@@ -43543,6 +43548,18 @@ class GraphHelper {
                 'color': chartConfigSection.colors[this.colorIndex],
                 'data': tempValues
             });
+            if (typeof sensor !== 'undefined') {
+                chartConfig.legend.data.push(`${tempSensor} Power`);
+                chartConfig.series.push({
+                    'name': `${tempSensor}_power`,
+                    'type': 'line',
+                    'lineStyle': {
+                        'type': 'dashed'
+                    },
+                    'color': chartConfigSection.colors[this.colorIndex],
+                    'data': tempPowers
+                });
+            }
             chartConfig.series.push({
                 'name': `${tempSensor}_target`,
                 'type': 'line',
@@ -43720,11 +43737,11 @@ class EmbedHelper {
         const image = await this.parseImage(embedData.image);
         const buttons = this.inputGenerator.generateButtons(embedData.buttons);
         const selection = this.inputGenerator.generateSelection(embedData.selection);
-        const inputs = this.inputGenerator.generateInputs(embedData.inputs);
+        //const inputs = this.inputGenerator.generateInputs(embedData.inputs)
         files.push(thumbnail, image);
         components.push(selection);
         components.push(buttons);
-        components.push(inputs);
+        //components.push(inputs)
         files = files.filter((element) => { return element != null; });
         components = components.filter((element) => { return element != null; });
         embed.setTitle(embedData.title);
@@ -44386,20 +44403,18 @@ class EmbedButton {
         if (typeof buttonData.function_mapping.show_embed === 'undefined') {
             return;
         }
+        if (!interaction.replied) {
+            await interaction.deferReply();
+        }
         const currentMessage = interaction.message;
+        await currentMessage.edit({ components: null, embeds: null });
+        await currentMessage.removeAttachments();
         const embed = await this.embedHelper.generateEmbed(buttonData.function_mapping.show_embed);
-        if (interaction.replied) {
-            await interaction.followUp(embed.embed);
+        await currentMessage.edit(embed.embed);
+        if (!interaction.deferred) {
+            return;
         }
-        else {
-            if (buttonData.function_mapping.message_as_follow_up) {
-                await interaction.reply(embed.embed);
-                return;
-            }
-            await currentMessage.edit({ components: null, embeds: null });
-            await currentMessage.removeAttachments();
-            await interaction.update(embed.embed);
-        }
+        await interaction.deleteReply();
     }
 }
 
@@ -45705,20 +45720,19 @@ class ShowTempSelection {
             }
         }
         const embedData = await this.embedHelper.generateEmbed('single_temperature', { heater }, [tempField]);
-        //const meshPicture = await this.graphHelper.getMeshGraph(mesh)
-        //const embed = embedData.embed.embeds[0] as MessageEmbed
-        //const components = embedData.embed['components']
-        //let files = []
-        //if(typeof embedData.embed['files'] !== 'undefined') {
-        //    files = [...files, ...embedData.embed['files']]
-        //}
-        //embed.setImage(`attachment://${meshPicture.name}`)
-        //files.push(meshPicture)
+        const tempGraph = await this.graphHelper.getTempGraph(heater);
+        const embed = embedData.embed.embeds[0];
+        const components = embedData.embed['components'];
+        let files = [];
+        if (typeof embedData.embed['files'] !== 'undefined') {
+            files = [...files, ...embedData.embed['files']];
+        }
+        embed.setImage(`attachment://${tempGraph.name}`);
+        files.push(tempGraph);
         const currentMessage = interaction.message;
         await currentMessage.edit({ components: null });
         await currentMessage.removeAttachments();
-        await currentMessage.edit(embedData.embed);
-        //await currentMessage.edit({embeds: [embed], files, components})
+        await currentMessage.edit({ embeds: [embed], files, components });
         await interaction.deleteReply();
     }
 }
@@ -46236,6 +46250,13 @@ class DiscordClient {
                 external_discord_js_namespaceObject.Intents.FLAGS.GUILD_MESSAGES,
                 external_discord_js_namespaceObject.Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
                 external_discord_js_namespaceObject.Intents.FLAGS.GUILD_INTEGRATIONS
+            ],
+            partials: [
+                'MESSAGE',
+                'CHANNEL',
+                'REACTION',
+                'GUILD_MEMBER',
+                'USER'
             ],
             restRequestTimeout: this.config.getDiscordRequestTimeout() * 1000 });
         logRegular('Connect to Discord...');

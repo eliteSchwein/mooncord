@@ -131,7 +131,7 @@ export class GraphHelper {
         return new MessageAttachment(chart, 'meshGraph.png')
     }
 
-    public async getTempGraph() {
+    public async getTempGraph(sensor = undefined) {
         if(!this.configHelper.isGraphEnabled()) {
             return
         }
@@ -229,8 +229,12 @@ export class GraphHelper {
 
         for(const rawTempSensor in tempHistoryRequest.result) {
             const tempSensor = rawTempSensor.replace(/(temperature_sensor )|(temperature_fan )|(heater_generic )/g, '')
+
+            if(typeof sensor !== 'undefined' && tempSensor !== sensor) { continue }
+
             const tempValues = this.getTempValues(tempHistoryRequest.result[rawTempSensor].temperatures)
             const tempTargets = this.getTempValues(tempHistoryRequest.result[rawTempSensor].targets)
+            const tempPowers =  this.getTempValues(tempHistoryRequest.result[rawTempSensor].powers)
 
             chartConfig.legend.data.push(tempSensor)
 
@@ -240,6 +244,19 @@ export class GraphHelper {
                 'color': chartConfigSection.colors[this.colorIndex],
                 'data': tempValues
             })
+
+            if(typeof sensor !== 'undefined') {
+                chartConfig.legend.data.push(`${tempSensor} Power`)
+                chartConfig.series.push({
+                    'name': `${tempSensor}_power`,
+                    'type': 'line',
+                    'lineStyle': {
+                        'type': 'dashed'
+                    },
+                    'color': chartConfigSection.colors[this.colorIndex],
+                    'data': tempPowers
+                })
+            }
 
             chartConfig.series.push({
                 'name': `${tempSensor}_target`,

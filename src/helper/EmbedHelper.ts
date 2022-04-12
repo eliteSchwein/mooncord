@@ -116,13 +116,13 @@ export class EmbedHelper {
         const image = await this.parseImage(embedData.image)
         const buttons = this.inputGenerator.generateButtons(embedData.buttons)
         const selection = this.inputGenerator.generateSelection(embedData.selection)
-        const inputs = this.inputGenerator.generateInputs(embedData.inputs)
+        //const inputs = this.inputGenerator.generateInputs(embedData.inputs)
 
         files.push(thumbnail, image)
 
         components.push(selection)
         components.push(buttons)
-        components.push(inputs)
+        //components.push(inputs)
 
         files = files.filter((element) => { return element != null})
         components = components.filter((element) => { return element != null})

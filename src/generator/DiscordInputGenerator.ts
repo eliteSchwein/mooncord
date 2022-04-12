@@ -15,6 +15,7 @@ export class DiscordInputGenerator {
     public generateInputCache() {
         this.generateCacheForSection('buttons');
         this.generateCacheForSection('selections');
+        this.generateCacheForSection('inputs');
     }
 
     protected generateCacheForSection(section: string) {
@@ -101,7 +102,7 @@ export class DiscordInputGenerator {
         }
 
         const cache = getEntry('inputs')
-        const selectionMeta = cache[inputData.id]
+        const inputMeta = cache[inputData.id]
         const row = new MessageActionRow()
 
         //row.addComponents(selection)

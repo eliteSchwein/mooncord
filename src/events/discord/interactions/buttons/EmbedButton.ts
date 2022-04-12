@@ -8,21 +8,19 @@ export class EmbedButton {
     public async execute(interaction: ButtonInteraction, buttonData) {
         if(typeof buttonData.function_mapping.show_embed === 'undefined') { return }
 
+        if(!interaction.replied) { await interaction.deferReply() }
+
         const currentMessage = interaction.message as Message
+
+        await currentMessage.edit({components: null, embeds: null})
+        await currentMessage.removeAttachments()
 
         const embed = await this.embedHelper.generateEmbed(buttonData.function_mapping.show_embed)
 
-        if(interaction.replied) {
-            await interaction.followUp(embed.embed)
-        } else {
-            if(buttonData.function_mapping.message_as_follow_up) {
-                await interaction.reply(embed.embed)
-                return
-            }
-            await currentMessage.edit({components: null, embeds: null})
-            await currentMessage.removeAttachments()
+        await currentMessage.edit(embed.embed)
 
-            await interaction.update(embed.embed)
-        }
+        if(!interaction.deferred) { return }
+
+        await interaction.deleteReply()
     }
 }

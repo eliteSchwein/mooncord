@@ -1,4 +1,4 @@
-import type { Message, SelectMenuInteraction} from "discord.js";
+import type {Message, SelectMenuInteraction} from "discord.js";
 import {ButtonInteraction, MessageEmbed} from "discord.js";
 
 import {getDatabase, getMoonrakerClient} from "../../../../Application";
@@ -45,26 +45,23 @@ export class ShowTempSelection {
         }
 
         const embedData = await this.embedHelper.generateEmbed('single_temperature',{heater}, [tempField])
-        //const meshPicture = await this.graphHelper.getMeshGraph(mesh)
-        //const embed = embedData.embed.embeds[0] as MessageEmbed
-        //const components = embedData.embed['components']
-        //let files = []
+        const tempGraph = await this.graphHelper.getTempGraph(heater)
+        const embed = embedData.embed.embeds[0] as MessageEmbed
+        const components = embedData.embed['components']
+        let files = []
 
-        //if(typeof embedData.embed['files'] !== 'undefined') {
-        //    files = [...files, ...embedData.embed['files']]
-        //}
+        if(typeof embedData.embed['files'] !== 'undefined') {
+            files = [...files, ...embedData.embed['files']]
+        }
 
-        //embed.setImage(`attachment://${meshPicture.name}`)
-        //files.push(meshPicture)
+        embed.setImage(`attachment://${tempGraph.name}`)
+        files.push(tempGraph)
 
         const currentMessage = interaction.message as Message
-
         await currentMessage.edit({components: null})
         await currentMessage.removeAttachments()
 
-        await currentMessage.edit(embedData.embed)
-
-        //await currentMessage.edit({embeds: [embed], files, components})
+        await currentMessage.edit({embeds: [embed], files, components})
 
         await interaction.deleteReply()
     }
