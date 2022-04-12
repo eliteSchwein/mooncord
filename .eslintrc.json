@@ -4,8 +4,7 @@
         "node": true
     },
     "extends": [
-        "eslint:recommended",
-        "galex"
+        "eslint:recommended"
     ],
     "parserOptions": {
         "ecmaVersion": 12,
