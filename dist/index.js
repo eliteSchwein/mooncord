@@ -43549,7 +43549,53 @@ class GraphHelper {
                 'data': tempValues
             });
             if (typeof sensor !== 'undefined') {
-                chartConfig.legend.data.push(`${tempSensor} Power`);
+                chartConfig.legend.data.push({
+                    'name': `${tempSensor}_power`,
+                    'itemStyle': {
+                        'color': {
+                            'type': 'linear',
+                            'x': 0,
+                            'y': 0,
+                            'x2': 1,
+                            'y2': 0,
+                            'colorStops': [
+                                {
+                                    'offset': 0,
+                                    'color': chartConfigSection.colors[this.colorIndex]
+                                },
+                                {
+                                    'offset': 0.15,
+                                    'color': 'black'
+                                },
+                                {
+                                    'offset': 0.25,
+                                    'color': chartConfigSection.colors[this.colorIndex]
+                                },
+                                {
+                                    'offset': 0.45,
+                                    'color': 'black'
+                                },
+                                {
+                                    'offset': 0.5,
+                                    'color': chartConfigSection.colors[this.colorIndex]
+                                },
+                                {
+                                    'offset': 0.65,
+                                    'color': 'black'
+                                },
+                                {
+                                    'offset': 0.75,
+                                    'color': chartConfigSection.colors[this.colorIndex]
+                                },
+                                {
+                                    'offset': 1,
+                                    'color': 'black'
+                                }
+                            ],
+                            'global': false
+                        }
+                    }
+                });
                 chartConfig.series.push({
                     'name': `${tempSensor}_power`,
                     'type': 'line',
