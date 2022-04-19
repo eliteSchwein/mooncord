@@ -20,6 +20,7 @@ MCWEBTOKEN=""
 MCURL="http://127.0.0.1"
 MCCAMURL="http://127.0.0.1/webcam/?action=snapshot"
 MCCONTROLLER=""
+WRITECONFIG=true
 
 questions()
 {
@@ -38,6 +39,18 @@ questions()
     fi
     ok_msg "Klipper Config Path set: $MCCONFIGPATH"
 
+    if [ -f "$MCCONFIGPATH/mooncord.json" ];
+    then
+        status_msg "MoonCord config found, do you want to overwrite it?"
+        while true; do
+            read -p "$cyan[Y/N]: $default" yn
+            case $yn in
+                [Yy]* ) status_msg "Continue Questions..."; break;;
+                [Nn]* ) status_msg "Skip Questions and Config overwrite...";WRITECONFIG=false;return;break;;
+                * ) warn_msg "Please answer [Y/y] for yes and [N/n] for no.";;
+            esac
+        done
+    fi
 
     if [ "$MCTOKEN" == "" ];
     then
@@ -51,8 +64,6 @@ questions()
         done
     fi
     ok_msg "Discord Token set: $MCTOKEN"
-
-
 
     if [ "$MCWEBTOKEN" == "" ];
     then
@@ -170,6 +181,10 @@ locate_config()
 }
 
 generate_config() {
+    if [ "$WRITECONFIG" = false ];
+    then
+        return
+    fi
     status_msg "Generate Config"
 
     CONFIG=$(<$SCRIPTPATH/mooncord.json)
