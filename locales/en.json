@@ -161,6 +161,10 @@
     },
     "messages": {
         "answers": {
+            "preheat_preset": {
+                "preset": "Preheating for `${preset}`, `${username}`!",
+                "manual": "Preheating `${preheat_settings}`, `${username}`!"
+            },
             "update_request": "System Update requested, `${username}`!",
             "restart_successful": "The Restart of `${service}` was successful!",
             "firmware_restart_successful": "The Firmware is restarting!",
@@ -214,8 +218,9 @@
             "command_disabled": "The Command is disabled!",
             "command_failed": "An Error occured!",
             "command_timeout": "Command execution failed!",
+            "command_idle_only": "The Command is only im idle state available, `${username}`!",
             "file_not_found": "File not Found!",
-            "guild_only": "This Command is only aviable in a Guild, `${username}`",
+            "guild_only": "This Command is only available in a Guild, `${username}`",
             "no_data": "There was no Data found for `${component}`!",
             "restart_failed": "The Restart of `${service}` failed: `${reason}`",
             "no_files_found": "There are currently no Files!",

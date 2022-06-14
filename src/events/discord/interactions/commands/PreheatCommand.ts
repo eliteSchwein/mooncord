@@ -34,7 +34,7 @@ export class PreheatCommand {
                 const preset = interaction.options.getString(this.syntaxLocale.commands.preheat.options.preset.options.preset.name)
                 await this.heatProfile(preset)
 
-                await interaction.reply(this.locale.messages.answers.preheat_preset
+                await interaction.reply(this.locale.messages.answers.preheat_preset.preset
                     .replace(/(\${preset})/g, preset)
                     .replace(/(\${username})/g, interaction.user.tag))
                 break
