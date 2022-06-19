@@ -2,6 +2,7 @@ import { Collection, Message, MessagePayload, TextChannel } from "discord.js"
 import * as app from "../Application"
 import { DiscordClient } from "../clients/DiscordClient"
 import { LocaleHelper } from "./LocaleHelper"
+import {logWarn} from "./LoggerHelper";
 
 export class NotificationHelper {
     protected databaseUtil = app.getDatabase()
@@ -47,12 +48,21 @@ export class NotificationHelper {
     protected async broadcastGuilds(message) {
         for(const guildId in this.broadcastList) {
             const guildMeta = this.broadcastList[guildId]
-            const guild = await this.discordClient.getClient().guilds.fetch(guildId)
+            try {
+                const guild = await this.discordClient.getClient().guilds.fetch(guildId)
 
-            const channels = guild.channels.cache.filter(
-                (channel) => {return guildMeta.broadcast_channels.includes(channel.id)})
+                const channels = guild.channels.cache.filter(
+                    (channel) => {return guildMeta.broadcast_channels.includes(channel.id)})
 
-            this.broadcastChannels(channels, message)
+                this.broadcastChannels(channels, message)
+            } catch (error) {
+                logWarn(`Delete Data for the Guild with the ID: ${guildId} because Bot isnt on this Guild anymore`)
+                const guildData = this.databaseUtil.getDatabaseEntry('guilds')
+
+                delete guildData[guildId]
+
+                this.databaseUtil.updateDatabaseEntry('guilds', guildData)
+            }
         }
     }
 

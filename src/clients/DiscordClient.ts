@@ -45,6 +45,7 @@ export class DiscordClient {
                 Intents.FLAGS.DIRECT_MESSAGE_REACTIONS,
                 Intents.FLAGS.GUILDS,
                 Intents.FLAGS.GUILD_MESSAGES,
+                Intents.FLAGS.GUILD_WEBHOOKS,
                 Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
                 Intents.FLAGS.GUILD_INTEGRATIONS
             ],
@@ -67,9 +68,11 @@ export class DiscordClient {
 
         this.generateCaches()
 
-        this.database.updateDatabaseEntry('invite_url', `https://discord.com/oauth2/authorize?client_id=${this.discordClient.user.id}&permissions=3422944320&scope=bot%20applications.commands`)
+        const inviteUrl = `https://discord.com/oauth2/authorize?client_id=${this.discordClient.user.id}&permissions=3422944320&scope=bot%20applications.commands`
 
-        setData('invite_url', `https://discord.com/oauth2/authorize?client_id=${this.discordClient.user.id}&permissions=3422944320&scope=bot%20applications.commands`)
+        this.database.updateDatabaseEntry('invite_url', inviteUrl)
+
+        setData('invite_url', inviteUrl)
         setData('discord_client', {
             'readySince': new Date(),
             'applicationId': this.discordClient.application.id,
