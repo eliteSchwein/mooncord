@@ -71,6 +71,7 @@ export class GraphHelper {
                             'position': 'left',
                             'color': 'rgba(255, 255, 255, 0)',
                             'ticks': {
+                                'min': 0,
                                 'stepSize': 0.5,
                                 'fontSize': 15,
                                 'maxTicksLimit': 12
