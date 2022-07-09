@@ -78,7 +78,7 @@ export class GraphHelper {
                             'scaleLabel': {
                                 'fontSize': 15,
                                 'display': true,
-                                'labelString': 'Temp'
+                                'labelString': this.locale.graph.temp_history.temperature
                             }
                         }
                     ]
@@ -122,7 +122,7 @@ export class GraphHelper {
                     'scaleLabel': {
                         'fontSize': 15,
                         'display': true,
-                        'labelString': 'Power'
+                        'labelString': this.locale.graph.temp_history.power
                     }
                 })
 

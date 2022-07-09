@@ -555,7 +555,9 @@
     },
     "graph": {
         "temp_history": {
-            "title": "Temp History"
+            "title": "Temp History",
+            "temperature": "Temperature",
+            "power": "Power"
         }
     },
     "inputs": {
