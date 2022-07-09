@@ -50161,7 +50161,7 @@ class PreheatCommand {
                 return;
             }
             argumentFound = true;
-            heaterList = `${heater}: ${heaterTemp}C°, ${heaterList}`;
+            heaterList = `\`${heater}: ${heaterTemp}C°\`, ${heaterList}`;
             await this.heatHeater(heater, heaterTemp);
         }
         if (!argumentFound) {
@@ -50170,7 +50170,7 @@ class PreheatCommand {
             return;
         }
         heaterList = heaterList.slice(0, Math.max(0, heaterList.length - 2));
-        await interaction.reply(this.locale.messages.answers.preheat_manual
+        await interaction.reply(this.locale.messages.answers.preheat_preset.manual
             .replace(/(\${heater_list})/g, heaterList)
             .replace(/(\${username})/g, interaction.user.tag));
     }

@@ -379,6 +379,11 @@
             "extruder": 180,
             "heater_bed": 60,
             "gcode": []
+        },
+        "Cooldown": {
+            "extruder": 0,
+            "heater_bed": 0,
+            "gcode": []
         }
     },
     "embed_meta": {
