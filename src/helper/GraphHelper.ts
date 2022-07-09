@@ -127,6 +127,12 @@ export class GraphHelper {
                     }
                 })
 
+                const parsedTempPowers = []
+
+                for(let i = 0; i < tempPowers.length; i++) {
+                    parsedTempPowers.push(tempPowers[i] * 100)
+                }
+
                 chartConfig.data.datasets.push({
                     'label': `${tempSensor}_power`,
                     'lineStyle': {
@@ -134,7 +140,7 @@ export class GraphHelper {
                     },
                     'borderColor': chartConfigSection.colors[this.colorIndex],
                     'backgroundColor': 'rgba(0,0,0,0)',
-                    'data': tempPowers,
+                    'data': parsedTempPowers,
                     'borderDash': [5,10],
                     'yAxisID': 'power'
                 })
