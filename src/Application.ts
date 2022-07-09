@@ -11,7 +11,6 @@ import {EmbedHelper} from "./helper/EmbedHelper";
 import {SchedulerHelper} from "./helper/SchedulerHelper";
 import {StatusHelper} from "./helper/StatusHelper";
 import {waitUntil} from "async-wait-until";
-import {BrowserClient} from "./clients/BrowserClient";
 
 Object.assign(global, { WebSocket: require('ws') })
 
@@ -26,7 +25,6 @@ configHelper.loadCache()
 const localeHelper = new LocaleHelper()
 const embedHelper = new EmbedHelper()
 
-const browserClient = new BrowserClient()
 const moonrakerClient = new MoonrakerClient()
 const database = new DatabaseUtil()
 const discordClient = new DiscordClient()
@@ -56,10 +54,6 @@ async function init() {
         currentInitState = 'Discord Client'
         await discordClient.connect()
         await waitUntil(() => discordClient.isConnected(), { timeout: 10_000, intervalBetweenAttempts: 500 })
-
-        if(configHelper.isGraphEnabled() && configHelper.getGraphService() === 'internal') {
-            await browserClient.initBrowser()
-        }
     } catch (error) {
         logError(`couldn't load ${currentInitState} in Time! Reason: ${util.format(error)}`)
     }
@@ -178,8 +172,4 @@ export function getDiscordClient() {
 
 export function getDatabase() {
     return database
-}
-
-export function getBrowser() {
-    return browserClient
 }

@@ -55,13 +55,6 @@
             "roles": []
         },
         "selections": {
-            "show_mesh": {
-                "command_assign": "mesh",
-                "botadmin": true,
-                "guildadmin": false,
-                "users": [],
-                "roles": []
-            },
             "show_temp": {
                 "command_assign": "preheat",
                 "botadmin": false,
@@ -309,12 +302,6 @@
                 "roles": []
             },
             "temp": {
-                "botadmin": true,
-                "guildadmin": false,
-                "users": [],
-                "roles": []
-            },
-            "mesh": {
                 "botadmin": true,
                 "guildadmin": false,
                 "users": [],
@@ -570,15 +557,6 @@
             },
             "fields": [],
             "show_temps": true
-        },
-        "mesh_view": {
-            "color": "#0099ff",
-            "buttons": [],
-            "fields": [],
-            "selection": {
-                "id": "show_mesh",
-                "data": "${raw_entries}"
-            }
         },
         "disconnected":{
             "color": "#c90000",
@@ -951,12 +929,6 @@
                 "option_value": "${data.value}",
                 "mcu_options": true
             },
-            "show_mesh": {
-                "min_value": 1,
-                "max_value": 1,
-                "option_value": "${data.value}",
-                "mesh_profile_options": true
-            },
             "show_temp": {
                 "min_value": 1,
                 "max_value": 1,
@@ -1230,7 +1202,7 @@
     },
     "graph_meta": {
         "temp_history": {
-            "value_limit": 1000,
+            "value_limit": 200,
             "colors": ["#F44336", "#8e379d", "#03DAC5", "#3F51B5", "#ffde03", "#009688", "#E91E63"]
         }
     }

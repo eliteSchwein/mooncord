@@ -25,19 +25,6 @@ export function findValue(key:string) {
     return get(cacheData, key)
 }
 
-export function getMeshOptions() {
-    const choices = []
-
-    for(const profile in cacheData.state.bed_mesh.profiles) {
-        choices.push({
-            "name": profile,
-            "value": profile
-        })
-    }
-
-    return choices
-}
-
 export function getHeaterArguments() {
     const heaters = cacheData.state.heaters.available_heaters
     const options = {}

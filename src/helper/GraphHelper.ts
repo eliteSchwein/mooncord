@@ -1,135 +1,18 @@
 import * as App from '../Application';
-import path from 'path';
 import {ConfigHelper} from './ConfigHelper';
-import {MessageAttachment} from 'discord.js';
-import axios from 'axios';
 import {LocaleHelper} from './LocaleHelper';
-import {ChartUtil} from '../utils/ChartUtil';
-import {findValue, getEntry} from '../utils/CacheUtil';
-import {logError, logRegular} from './LoggerHelper';
+import {getEntry} from '../utils/CacheUtil';
+import {logRegular} from './LoggerHelper';
+import QuickChart from "quickchart-js";
+import {sleep} from "./DataHelper";
 
 export class GraphHelper {
     protected configHelper = new ConfigHelper()
     protected localeHelper = new LocaleHelper()
-    protected chartUtil = new ChartUtil()
     protected locale = this.localeHelper.getLocale()
     protected tempValueLimit = 0
     protected colorIndex = 0
     protected functionCache = getEntry('function')
-
-    public async getMeshGraph(mesh) {
-        const meshCache = findValue('state.bed_mesh')
-        const maxRow = mesh.map((row) => { return Math.max.apply(Math, row) })
-        const minRow = mesh.map((row) => { return Math.min.apply(Math, row) })
-        const axisMinimum = findValue('state.toolhead.axis_minimum')
-        const axisMaximum = findValue('state.toolhead.axis_maximum')
-        const meshHeight = Math.max.apply(null, maxRow).toFixed(1)
-
-        const chartConfig = {
-            'tooltip': {
-                'show': false
-            },
-            'darkMode': true,
-            'backgroundColor': 'rgb(0,0,0)',
-            'visualMap': {
-                'show': false,
-                'dimension': 2,
-                'min': Math.min.apply(null, minRow),
-                'max': Math.max.apply(null, maxRow),
-                'inRange': {
-                    'color': [
-                        '#313695',
-                        '#4575b4',
-                        '#74add1',
-                        '#abd9e9',
-                        '#e0f3f8',
-                        '#ffffbf',
-                        '#fee090',
-                        '#fdae61',
-                        '#f46d43',
-                        '#d73027',
-                        '#a50026',
-                    ],
-                },
-            },
-            'xAxis3D': {
-                'type': 'value',
-                'min': axisMinimum[0],
-                'max': axisMaximum[0],
-                'minInterval': 1,
-                'axisLabel': {
-                    'color':'rgb(255,255,255)',
-                    'fontSize': '20px'
-                }
-            },
-            'yAxis3D': {
-                'type': 'value',
-                'min': axisMinimum[1],
-                'max': axisMaximum[1],
-                'axisLabel': {
-                    'color':'rgb(255,255,255)',
-                    'fontSize': '20px'
-                }
-            },
-            'zAxis3D': {
-                'type': 'value',
-                'min': meshHeight * -1,
-                'max': meshHeight,
-                'axisLabel': {
-                    'color':'rgb(255,255,255)',
-                    'fontSize': '20px'
-                }
-            },
-            'grid3D': {
-                'viewControl': {
-                    'distance': 220,
-                    'alpha': 20,
-                    'beta': -45
-                }
-            },
-            'series': []
-        }
-
-
-        const xCount = mesh[0].length
-        const yCount = mesh.length
-        const xMin = meshCache.mesh_min[0]
-        const xMax = meshCache.mesh_max[1]
-        const yMin = meshCache.mesh_min[0]
-        const yMax = meshCache.mesh_max[1]
-        const xStep = (xMax - xMin) / (xCount - 1)
-        const yStep = (yMax - yMin) / (yCount - 1)
-
-        const data: any[] = []
-
-        let yPoint = 0
-
-        mesh.forEach((meshRow: number[]) => {
-            let xPoint = 0
-            meshRow.forEach((value: number) => {
-                data.push([xMin + xStep * xPoint, yMin + yStep * yPoint, value])
-                xPoint++
-            })
-            yPoint++
-        })
-
-        const series = {
-            'type': 'surface',
-            'name': 'mesh',
-            'data': data,
-            'dataShape': [yCount, xCount]
-        }
-
-        chartConfig.series.push(series)
-
-        const chart = await this.renderChart(chartConfig, 800, 600, 'mesh')
-
-        if(typeof chart === 'undefined') {
-            return
-        }
-
-        return new MessageAttachment(chart, 'meshGraph.png')
-    }
 
     public async getTempGraph(sensor = undefined) {
         if(!this.configHelper.isGraphEnabled()) {
@@ -148,79 +31,67 @@ export class GraphHelper {
         const tempHistoryRequest = await moonrakerClient.send({'method': 'server.temperature_store'})
 
         const chartConfig = {
-            'darkMode': true,
-            'backgroundColor': 'rgb(0,0,0)',
-            'title': {
-                'text':this.locale.graph.temp_history.title
-            },
-            'legend': {
-                'data': [],
-                'textStyle': {
-                    'color': 'rgb(255,255,255)',
-                    'fontSize': '20px'
-                },
-                'icon': 'pin'
-            },
             'type': 'line',
-            'xAxis': {
-                'type': 'category',
-                'data': [],
-                'splitLine': {
-                    'show': true,
-                    'lineStyle': {
-                        'color': 'rgba(255, 255, 255, 0)',
-                    },
-                },
-                'axisTick': {
-                    'show': false
-                },
-                'axisLabel':{
-                    'show':false
-                }
+            'data': {
+                'datasets': [],
+                'labels': []
             },
-            'yAxis': [
-                {
-                    'type': 'value',
-                    'min': 0,
-                    'splitLine': {
-                        'show': true,
-                        'lineStyle': {
-                            'color': 'rgba(255, 255, 255, 0.26)',
-                        },
-                    },
-                    'axisLabel': {
-                        'color': 'rgba(255,255,255,0.78)',
-                        'fontSize': '20px'
-                    },
-                    'minInterval': 20,
-                    'maxInterval': 100
-                }
-            ],
-            'series': [],
-            'media': [
-                {
-                    'query': {
-                        'minWidth': 500,
-                    },
-                    'option': {
-                        'grid': {
-                            'right': 15,
-                            'left': 50,
-                            'bottom': 15
-                        },
-                        'yAxis': [
-                            {
-                                'maxInterval': 50,
-                                'axisLabel': {
-                                    'showMinLabel': true,
-                                    'showMaxLabel': true,
-                                    'rotate': 0,
-                                },
-                            }
-                        ],
-                    },
+            'options': {
+                'layout': {
+                    'padding': {
+                        'right': 10
+                    }
                 },
-            ],
+                'elements': {
+                    'point':{
+                        'radius': 0
+                    }
+                },
+                'legend': {
+                    'display': true,
+                    'labels': {
+                        'fontSize': 14,
+                        'fontColor': 'rgb(255,255,255)'
+                    }
+                },
+                'title': {
+                    'text':this.locale.graph.temp_history.title,
+                    'display': true
+                },
+                'animation': {
+                    'duration': 0
+                },
+                'hover': {
+                    'animationDuration': 0
+                },
+                'responsiveAnimationDuration': 0,
+                'scales': {
+                    'xAxes': [
+                        {
+                            'drawTicks': false,
+                            'color': 'rgba(255, 255, 255, 0)'
+                        }
+                    ],
+                    'yAxes': [
+                        {
+                            'id': 'temp',
+                            'type': 'linear',
+                            'position': 'left',
+                            'color': 'rgba(255, 255, 255, 0)',
+                            'ticks': {
+                                'stepSize': 0.5,
+                                'fontSize': 15,
+                                'maxTicksLimit': 12
+                            },
+                            'scaleLabel': {
+                                'fontSize': 15,
+                                'display': true,
+                                'labelString': 'Temp'
+                            }
+                        }
+                    ]
+                }
+            }
         }
 
         if(typeof tempHistoryRequest.error !== 'undefined') {
@@ -236,103 +107,59 @@ export class GraphHelper {
             const tempTargets = this.getTempValues(tempHistoryRequest.result[rawTempSensor].targets)
             const tempPowers =  this.getTempValues(tempHistoryRequest.result[rawTempSensor].powers)
 
-            chartConfig.legend.data.push(tempSensor)
-
-            chartConfig.series.push({
-                'name': tempSensor,
-                'type': 'line',
-                'color': chartConfigSection.colors[this.colorIndex],
-                'data': tempValues
+            chartConfig.data.datasets.push({
+                'label': tempSensor,
+                'borderColor': chartConfigSection.colors[this.colorIndex],
+                'fill': false,
+                'data': tempValues,
+                'yAxisID': 'temp'
             })
 
             if(typeof sensor !== 'undefined') {
-                chartConfig.legend.data.push({
-                    'name':`${tempSensor}_power`,
-                    'itemStyle':{
-                        'color':{
-                            'type':'linear',
-                            'x':0,
-                            'y':0,
-                            'x2':1,
-                            'y2':0,
-                            'colorStops':[
-                                {
-                                    'offset':0,
-                                    'color':chartConfigSection.colors[this.colorIndex]
-                                },
-                                {
-                                    'offset':0.15,
-                                    'color':'black'
-                                },
-                                {
-                                    'offset':0.25,
-                                    'color':chartConfigSection.colors[this.colorIndex]
-                                },
-                                {
-                                    'offset':0.45,
-                                    'color':'black'
-                                },
-                                {
-                                    'offset':0.5,
-                                    'color':chartConfigSection.colors[this.colorIndex]
-                                },
-                                {
-                                    'offset':0.65,
-                                    'color':'black'
-                                },
-                                {
-                                    'offset':0.75,
-                                    'color':chartConfigSection.colors[this.colorIndex]
-                                },
-                                {
-                                    'offset':1,
-                                    'color':'black'
-                                }
-                            ],
-                            'global':false
-                        }
+                chartConfig.options.scales.yAxes.push({
+                    'id': 'power',
+                    'color': 'rgba(255, 255, 255, 0)',
+                    'type': 'linear',
+                    'position': 'right',
+                    'ticks': {
+                        // @ts-ignore
+                        'max': 100,
+                        'min': 0,
+                        'fontSize': 15
+                    },
+                    'scaleLabel': {
+                        'fontSize': 15,
+                        'display': true,
+                        'labelString': 'Power'
                     }
                 })
 
-                chartConfig.series.push({
-                    'name': `${tempSensor}_power`,
-                    'type': 'line',
+                chartConfig.data.datasets.push({
+                    'label': `${tempSensor}_power`,
                     'lineStyle': {
                         'type': 'dashed'
                     },
-                    'color': chartConfigSection.colors[this.colorIndex],
-                    'data': tempPowers
+                    'borderColor': chartConfigSection.colors[this.colorIndex],
+                    'backgroundColor': 'rgba(0,0,0,0)',
+                    'data': tempPowers,
+                    'borderDash': [5,10],
+                    'yAxisID': 'power'
                 })
             }
 
-            chartConfig.series.push({
-                'name': `${tempSensor}_target`,
-                'type': 'line',
-                'lineStyle': {
-                    'width': 0
-                },
-                'areaStyle': {
-                    'color': chartConfigSection.colors[this.colorIndex],
-                    'opacity': 0.2
-                },
-                'emphasis': {
-                    'areaStyle': {
-                        'color': chartConfigSection.colors[this.colorIndex],
-                        'opacity': 0.2
-                    },
-                    'lineStyle': {
-                        'width': 0
-                    }
-                },
-                'color': chartConfigSection.colors[this.colorIndex],
-                'data': tempTargets
+            chartConfig.data.datasets.push({
+                'label': `${tempSensor}_target`,
+                'backgroundColor': chartConfigSection.colors[this.colorIndex]+'35',
+                'borderColor': chartConfigSection.colors[this.colorIndex]+'00',
+                'data': tempTargets,
+                'yAxisID': 'temp'
             })
 
             this.colorIndex++
         }
 
         for(let i = 0; i < this.tempValueLimit; i++) {
-            chartConfig.xAxis.data.push('')
+           chartConfig.data.labels.push('')
         }
 
         const chart = await this.renderChart(chartConfig, 800, 400, 'temp')
@@ -341,38 +168,24 @@ export class GraphHelper {
             return
         }
 
-        return new MessageAttachment(chart, 'tempGraph.png')
+        return chart
     }
 
     private async renderChart(chartConfig, width: number, height: number, chartName: string) {
-        const service = this.configHelper.getGraphService()
+        logRegular(`Render the Chart for ${chartName}...`)
+        const quickChart = new QuickChart()
 
-        if(service === 'internal') {
-            logRegular(`Render the Chart for ${chartName} internal...`)
-            return this.chartUtil.getChart(chartConfig, width, height)
-        }
+        quickChart
+            .setConfig(chartConfig)
+            .setHeight(height)
+            .setWidth(width)
+            .setBackgroundColor('#000000')
 
-        logRegular(`Render the Chart for ${chartName} with ${service}...`)
-        try {
-            const serviceRequest = await axios({
-                method: 'post',
-                url: service,
-                responseType: 'arraybuffer',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                data: {
-                    'resolution': {
-                        width, height
-                    },
-                    'chart_options': chartConfig
-                }
-            })
+        const url = await quickChart.getShortUrl()
 
-            return Buffer.from(serviceRequest.data, 'binary')
-        } catch (error) {
-            logError(error)
-        }
+        await sleep(1000)
+
+        return url
     }
 
     private getTempValues(tempValues: []) {

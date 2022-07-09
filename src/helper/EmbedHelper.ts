@@ -118,8 +118,6 @@ export class EmbedHelper {
         const selection = this.inputGenerator.generateSelection(embedData.selection)
         //const inputs = this.inputGenerator.generateInputs(embedData.inputs)
 
-        files.push(thumbnail, image)
-
         components.push(selection)
         components.push(buttons)
         //components.push(inputs)
@@ -142,12 +140,22 @@ export class EmbedHelper {
             embed.setFooter({'text': embedData.footer})
         }
 
-        if(typeof thumbnail !== 'undefined') {
+        if(typeof thumbnail === 'object') {
+            files.push(thumbnail)
             embed.setThumbnail(`attachment://${thumbnail.name}`)
         }
 
-        if(typeof image !== 'undefined') {
+        if(typeof image === 'object') {
+            files.push(image)
             embed.setImage(`attachment://${image.name}`)
+        }
+
+        if(typeof thumbnail === 'string') {
+            embed.setThumbnail(thumbnail)
+        }
+
+        if(typeof image === 'string') {
+            embed.setImage(image)
         }
 
         if(typeof embedData.fields !== 'undefined') {

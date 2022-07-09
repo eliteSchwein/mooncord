@@ -70,9 +70,6 @@
         "single_temperature": {
             "title": "Temperature for ${heater}"
         },
-        "mesh_view": {
-            "title": "Mesh for ${mesh_view}"
-        },
         "disconnected":{
             "title": "Printer Disconnected!",
             "activity": "wait for Klipper"
@@ -224,7 +221,6 @@
             "no_data": "There was no Data found for `${component}`!",
             "restart_failed": "The Restart of `${service}` failed: `${reason}`",
             "no_files_found": "There are currently no Files!",
-            "no_mesh_found": "You currently dont have the Mesh Feature enabled, `${username}`!",
             "no_permission": "You dont have the Permission for this Action, `${username}`",
             "not_ready": "This Command is not ready, `${username}`!",
             "not_textchannel": "`${channel}` is not a Text Channel, `${username}`!",
@@ -292,21 +288,6 @@
         }
     },
     "selections": {
-        "show_mesh": {
-            "label": "Select a Mesh...",
-            "option_label": "${data.name}",
-            "option_description": "Click for rendering Mesh",
-            "options": [
-                {
-                    "name": "Calculated Mesh",
-                    "value": "mesh_matrix"
-                },
-                {
-                    "name": "Probed Mesh",
-                    "value": "probed_matrix"
-                }
-            ]
-        },
         "show_temp": {
             "label": "Select a Heater...",
             "option_label": "${data.name}",
@@ -344,10 +325,6 @@
         }
     },
     "commands": {
-        "mesh": {
-            "description": "Show the Bed Mesh.",
-            "command": "mesh"
-        },
         "tune": {
             "description": "tune the current Printjob",
             "command": "tune",

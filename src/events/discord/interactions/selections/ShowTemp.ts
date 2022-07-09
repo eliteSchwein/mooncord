@@ -8,7 +8,7 @@ import {EmbedHelper} from "../../../../helper/EmbedHelper";
 import {LocaleHelper} from "../../../../helper/LocaleHelper";
 import {logNotice} from "../../../../helper/LoggerHelper";
 import {MetadataHelper} from "../../../../helper/MetadataHelper";
-import {findValue, getEntry, getMeshOptions} from "../../../../utils/CacheUtil";
+import {findValue, getEntry} from "../../../../utils/CacheUtil";
 import {GraphHelper} from "../../../../helper/GraphHelper";
 import {TempHelper} from "../../../../helper/TempHelper";
 
@@ -54,8 +54,7 @@ export class ShowTempSelection {
             files = [...files, ...embedData.embed['files']]
         }
 
-        embed.setImage(`attachment://${tempGraph.name}`)
-        files.push(tempGraph)
+        embed.setImage(tempGraph)
 
         const currentMessage = interaction.message as Message
         await currentMessage.edit({components: null})
