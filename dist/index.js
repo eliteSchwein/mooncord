@@ -48484,7 +48484,7 @@ class GraphHelper {
             'options': {
                 'layout': {
                     'padding': {
-                        'right': 10
+                        'right': 1
                     }
                 },
                 'elements': {
