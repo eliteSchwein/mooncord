@@ -16,7 +16,7 @@ import {EmergencyStopCommand} from "./commands/EmergencyStopCommand";
 import {StatusCommand} from "./commands/StatusCommand";
 import {sleep} from "../../../helper/DataHelper";
 import {EditChannelCommand} from "./commands/EditChannelCommand";
-import {FileListCommand} from "./commands/FileListCommand";
+import {GcodeListCommand} from "./commands/GcodeListCommand";
 import {FileInfoCommand} from "./commands/FileInfoCommand";
 import {PrintjobCommand} from "./commands/PrintjobCommand";
 import {SystemInfoCommand} from "./commands/SystemInfoCommand";
@@ -72,7 +72,7 @@ export class CommandInteraction {
         void new EmergencyStopCommand(interaction, commandId)
         void new StatusCommand(interaction, commandId)
         void new EditChannelCommand(interaction, commandId)
-        void new FileListCommand(interaction, commandId)
+        void new GcodeListCommand(interaction, commandId)
         void new PrintjobCommand(interaction, commandId)
         void new SystemInfoCommand(interaction, commandId)
         void new PreheatCommand(interaction, commandId)

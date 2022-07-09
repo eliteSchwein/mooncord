@@ -124,7 +124,7 @@
     }
   },
   "info": {},
-  "listfiles": {},
+  "listgcodes": {},
   "notify": {},
   "printjob": {
     "pause": {

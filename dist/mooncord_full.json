@@ -86,14 +86,14 @@
                 "roles": []
             },
             "next_page_printlist": {
-                "command_assign": "listfiles",
+                "command_assign": "listgcodes",
                 "botadmin": true,
                 "guildadmin": false,
                 "users": [],
                 "roles": []
             },
             "last_page_printlist": {
-                "command_assign": "listfiles",
+                "command_assign": "listgcodes",
                 "botadmin": true,
                 "guildadmin": false,
                 "users": [],
@@ -265,7 +265,7 @@
                 "users": "*",
                 "roles": []
             },
-            "listfiles": {
+            "listgcodes": {
                 "botadmin": true,
                 "guildadmin": false,
                 "users": [],
@@ -396,7 +396,7 @@
                 "to_printlist"
             ]
         },
-        "list_files": {
+        "gcode_files": {
             "color": "#0099ff",
             "thumbnail": "printlist.png",
             "buttons": [
@@ -785,7 +785,7 @@
             "next_page_printlist": {
                 "emoji": "➡️",
                 "style":"SECONDARY",
-                "permission_mapping": "listfiles",
+                "permission_mapping": "listgcodes",
                 "function_mapping": {
                     "page_up": true
                 }
@@ -793,7 +793,7 @@
             "last_page_printlist": {
                 "emoji": "⬅️",
                 "style":"SECONDARY",
-                "permission_mapping": "listfiles",
+                "permission_mapping": "listgcodes",
                 "function_mapping": {
                     "page_down": true
                 }

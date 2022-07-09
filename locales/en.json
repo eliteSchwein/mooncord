@@ -1,6 +1,6 @@
 {
     "pages": {
-        "list_files": {
+        "gcode_files": {
             "entry_label": "${data.path}"
         }
     },
@@ -24,8 +24,8 @@
             "title": "File Informations",
             "description": "Print Time: ${estimated_time}\nSlicer: ${slicer}\nSlicer Version: ${slicer_version}\nHeight: ${object_height}mm"
         },
-        "list_files": {
-            "title": "Print Files",
+        "gcode_files": {
+            "title": "Gcode Files",
             "description": "${page_entries}",
             "footer": "Page ${pages}"
         },
@@ -504,9 +504,9 @@
             "description": "Get a Description of me.",
             "command": "info"
         },
-        "listfiles": {
+        "listgcodes": {
             "description": "List all Print Files.",
-            "command": "listfiles"
+            "command": "listgcodes"
         },
         "systeminfo": {
             "description": "Get the current System Information.",

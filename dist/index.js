@@ -46974,7 +46974,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 9558:
+/***/ 951:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -47577,7 +47577,7 @@ class ConfigHelper {
 }
 
 ;// CONCATENATED MODULE: ./src/meta/command_structure.json
-const command_structure_namespaceObject = JSON.parse('{"admin":{"role":{"type":"subcommand","options":{"role":{"type":"role","required":true}}},"user":{"type":"subcommand","options":{"user":{"type":"user","required":true}}}},"preheat":{"preset":{"type":"subcommand","options":{"preset":{"type":"string","required":true,"choices":"${preheatProfileChoices}"}}},"manual":{"type":"subcommand","options":"${heaterArguments}"}},"tune":{"speed":{"type":"integer"},"flow":{"type":"integer"}},"saveconfig":{},"pidtune":{"heater":{"type":"string","required":true,"choices":"${heaterChoices}"},"temperature":{"type":"integer","required":true}},"getconfig":{"file":{"type":"string","required":true,"choices":"${configChoices}"}},"dump":{"section":{"type":"string","required":true,"choices":[{"value":"database"},{"value":"cache"}]}},"reset_database":{},"editchannel":{"channel":{"type":"channel","required":false}},"emergency_stop":{},"fileinfo":{"file":{"type":"string","required":true}},"get_user_id":{"user":{"type":"user","required":false}},"restart":{"service":{"type":"string","required":true,"choices":"${serviceChoices}"}},"get_log":{"log_file":{"type":"string","required":true,"choices":[{"name":"Klipper","value":"klippy"},{"name":"Moonraker","value":"moonraker"},{"name":"MoonCord","value":"mooncord"}]}},"info":{},"listfiles":{},"notify":{},"printjob":{"pause":{"type":"subcommand"},"cancel":{"type":"subcommand"},"resume":{"type":"subcommand"},"start":{"type":"subcommand","options":{"file":{"type":"string","required":true}}}},"status":{},"systeminfo":{},"temp":{}}');
+const command_structure_namespaceObject = JSON.parse('{"admin":{"role":{"type":"subcommand","options":{"role":{"type":"role","required":true}}},"user":{"type":"subcommand","options":{"user":{"type":"user","required":true}}}},"preheat":{"preset":{"type":"subcommand","options":{"preset":{"type":"string","required":true,"choices":"${preheatProfileChoices}"}}},"manual":{"type":"subcommand","options":"${heaterArguments}"}},"tune":{"speed":{"type":"integer"},"flow":{"type":"integer"}},"saveconfig":{},"pidtune":{"heater":{"type":"string","required":true,"choices":"${heaterChoices}"},"temperature":{"type":"integer","required":true}},"getconfig":{"file":{"type":"string","required":true,"choices":"${configChoices}"}},"dump":{"section":{"type":"string","required":true,"choices":[{"value":"database"},{"value":"cache"}]}},"reset_database":{},"editchannel":{"channel":{"type":"channel","required":false}},"emergency_stop":{},"fileinfo":{"file":{"type":"string","required":true}},"get_user_id":{"user":{"type":"user","required":false}},"restart":{"service":{"type":"string","required":true,"choices":"${serviceChoices}"}},"get_log":{"log_file":{"type":"string","required":true,"choices":[{"name":"Klipper","value":"klippy"},{"name":"Moonraker","value":"moonraker"},{"name":"MoonCord","value":"mooncord"}]}},"info":{},"listgcodes":{},"notify":{},"printjob":{"pause":{"type":"subcommand"},"cancel":{"type":"subcommand"},"resume":{"type":"subcommand"},"start":{"type":"subcommand","options":{"file":{"type":"string","required":true}}}},"status":{},"systeminfo":{},"temp":{}}');
 ;// CONCATENATED MODULE: ./src/meta/command_option_types.json
 const command_option_types_namespaceObject = JSON.parse('{"subcommand":1,"subcommand_group":2,"string":3,"integer":4,"boolean":5,"user":6,"channel":7,"role":8,"mentionable":9,"number":10}');
 ;// CONCATENATED MODULE: ./src/generator/DiscordCommandGenerator.ts
@@ -49191,9 +49191,9 @@ class PrintlistButton {
             !interaction.deferred) {
             await interaction.deferReply();
         }
-        const pageHelper = new PageHelper(getEntry('gcode_files'), 'list_files');
+        const pageHelper = new PageHelper(getEntry('gcode_files'), 'gcode_files');
         const pageData = pageHelper.getPage(false, 1);
-        const answer = await this.embedHelper.generateEmbed('list_files', pageData);
+        const answer = await this.embedHelper.generateEmbed('gcode_files', pageData);
         const currentMessage = interaction.message;
         await currentMessage.edit({ components: null });
         await currentMessage.removeAttachments();
@@ -49866,28 +49866,28 @@ class EditChannelCommand {
     }
 }
 
-;// CONCATENATED MODULE: ./src/events/discord/interactions/commands/FileListCommand.ts
+;// CONCATENATED MODULE: ./src/events/discord/interactions/commands/GcodeListCommand.ts
 
 
 
 
 
-class FileListCommand {
+class GcodeListCommand {
     constructor(interaction, commandId) {
         this.databaseUtil = getDatabase();
         this.localeHelper = new LocaleHelper();
         this.syntaxLocale = this.localeHelper.getSyntaxLocale();
         this.embedHelper = new EmbedHelper();
-        if (commandId !== 'listfiles') {
+        if (commandId !== 'listgcodes') {
             return;
         }
         this.execute(interaction);
     }
     async execute(interaction) {
         await interaction.deferReply();
-        const pageHelper = new PageHelper(getEntry('gcode_files'), 'list_files');
+        const pageHelper = new PageHelper(getEntry('gcode_files'), 'gcode_files');
         const pageData = pageHelper.getPage(false, 1);
-        const embed = await this.embedHelper.generateEmbed('list_files', pageData);
+        const embed = await this.embedHelper.generateEmbed('gcode_files', pageData);
         await interaction.editReply(embed.embed);
     }
 }
@@ -50443,7 +50443,7 @@ class CommandInteraction {
         void new EmergencyStopCommand(interaction, commandId);
         void new StatusCommand(interaction, commandId);
         void new EditChannelCommand(interaction, commandId);
-        void new FileListCommand(interaction, commandId);
+        void new GcodeListCommand(interaction, commandId);
         void new PrintjobCommand(interaction, commandId);
         void new SystemInfoCommand(interaction, commandId);
         void new PreheatCommand(interaction, commandId);
@@ -52707,7 +52707,7 @@ module.exports = JSON.parse('[[[0,44],"disallowed_STD3_valid"],[[45,46],"valid"]
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(9558);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(951);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()
