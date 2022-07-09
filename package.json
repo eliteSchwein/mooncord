@@ -8,8 +8,8 @@
     "debugstart": "node --trace_gc --expose-gc --trace-deprecation --trace-warnings --trace-uncaught --track-heap-objects dist/index.js",
     "checkcodestyle": "npx eslint ./**",
     "autofixcodestyle": "npx eslint ./** --fix",
-    "build": "ncc build -m -d -e discord.js -e @ffmpeg-installer/ffmpeg -e puppeteer -e sharp src/Application.ts -o dist",
-    "watch": "ncc build -w -d -e discord.js -e @ffmpeg-installer/ffmpeg -e puppeteer -e sharp src/Application.ts -o dist"
+    "build": "ncc build -m -d -e discord.js -e @ffmpeg-installer/ffmpeg -e sharp src/Application.ts -o dist",
+    "watch": "ncc build -w -d -e discord.js -e @ffmpeg-installer/ffmpeg -e sharp src/Application.ts -o dist"
   },
   "repository": {
     "type": "git",

@@ -15,14 +15,6 @@ export class GraphHelper {
     protected functionCache = getEntry('function')
 
     public async getTempGraph(sensor = undefined) {
-        if(!this.configHelper.isGraphEnabled()) {
-            return
-        }
-
-        if(!this.configHelper.isGraphEnabledWhilePrinting() && this.functionCache.current_status === 'printing') {
-            return
-        }
-
         const moonrakerClient = App.getMoonrakerClient()
         const chartConfigSection = this.configHelper.getGraphConfig('temp_history')
 
