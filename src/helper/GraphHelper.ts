@@ -138,7 +138,7 @@ export class GraphHelper {
                     'lineStyle': {
                         'type': 'dashed'
                     },
-                    'borderColor': chartConfigSection.colors[this.colorIndex],
+                    'borderColor': chartConfigSection.colors[this.colorIndex].color,
                     'backgroundColor': 'rgba(0,0,0,0)',
                     'data': parsedTempPowers,
                     'borderDash': [5,10],
@@ -148,8 +148,8 @@ export class GraphHelper {
 
             chartConfig.data.datasets.push({
                 'label': `${tempSensor}_target`,
-                'backgroundColor': chartConfigSection.colors[this.colorIndex]+'35',
-                'borderColor': chartConfigSection.colors[this.colorIndex]+'00',
+                'backgroundColor': chartConfigSection.colors[this.colorIndex].color+'35',
+                'borderColor': chartConfigSection.colors[this.colorIndex].color+'00',
                 'data': tempTargets,
                 'yAxisID': 'temp'
             })
