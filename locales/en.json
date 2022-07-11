@@ -117,6 +117,7 @@
             "system": "System",
             "packages": "Packages",
             "chipset": "Chipset",
+            "color": "Color",
             "version": "Version",
             "load": "Load",
             "awake_time": "Awake Time",
@@ -289,18 +290,18 @@
     },
     "selections": {
         "show_temp": {
-            "label": "Select a Heater...",
+            "label": "Select a Heater",
             "option_label": "${data.name}",
-            "option_description": "Set the temperature for this heater...",
+            "option_description": "Click for more Details",
             "options": []
         },
         "printlist_view_printjob": {
-            "label": "Select a File...",
+            "label": "Select a File",
             "option_label": "${data.path}",
             "option_description": "Click for more Details"
         },
         "systeminfo_select": {
-            "label": "Select a Component...",
+            "label": "Select a Component",
             "option_label": "${data.label}",
             "option_description": "Click for more Details",
             "mcu_options": true,

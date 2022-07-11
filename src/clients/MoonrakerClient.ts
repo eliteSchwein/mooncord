@@ -13,7 +13,7 @@ import {
     logWarn,
     unhookTempLog
 } from '../helper/LoggerHelper'
-import {findValue, getLogPath, setData} from '../utils/CacheUtil'
+import {findValue, getEntry, getLogPath, setData} from '../utils/CacheUtil'
 import {MessageHandler} from "../events/moonraker/MessageHandler";
 import {FileListHelper} from "../helper/FileListHelper";
 import {MetadataHelper} from "../helper/MetadataHelper";
@@ -21,6 +21,7 @@ import {SchedulerHelper} from "../helper/SchedulerHelper";
 import { getObjectValue } from '../helper/DataHelper'
 import * as App from '../Application'
 import {StatusHelper} from "../helper/StatusHelper";
+import {TempHelper} from "../helper/TempHelper";
 
 const requests: any = {}
 let messageHandler: MessageHandler
@@ -29,6 +30,7 @@ export class MoonrakerClient {
     protected fileListHelper = new FileListHelper(this)
     protected config = new ConfigHelper()
     protected apiKeyHelper = new APIKeyHelper()
+    protected tempHelper = new TempHelper()
     protected ready = false
     protected metadataHelper = new MetadataHelper(this)
     protected websocket: Websocket
@@ -191,6 +193,8 @@ export class MoonrakerClient {
             'readySince': new Date(),
             'event_count': this.websocket.underlyingWebsocket['_eventsCount']
         })
+
+        this.tempHelper.generateColors(data.result.status)
     }
 
     public changeLogPath() {

@@ -48013,11 +48013,39 @@ class VersionHelper {
 
 
 
+
 class TempHelper {
     constructor() {
         this.cache = getEntry('state');
         this.configHelper = new ConfigHelper();
         this.tempMeta = this.configHelper.getTempMeta();
+        this.chartConfigSection = this.configHelper.getGraphConfig('temp_history');
+        this.tempCache = getEntry('temps');
+        this.colorIndex = 0;
+    }
+    generateColors(cache) {
+        this.cache = cache;
+        logRegular("Generate Sensor Colors...");
+        const colorCache = {};
+        const temperatureSensors = this.tempMeta.temperature_sensors;
+        for (const cacheKey in this.cache) {
+            const cacheKeySplit = cacheKey.split(' ');
+            if (!temperatureSensors.includes(cacheKeySplit[0])) {
+                continue;
+            }
+            const sensorTitle = this.parseFieldTitle(cacheKey);
+            colorCache[sensorTitle] = {
+                icon: this.chartConfigSection.colors[this.colorIndex].icon,
+                color: this.chartConfigSection.colors[this.colorIndex].color
+            };
+            this.colorIndex++;
+            if (this.colorIndex === this.chartConfigSection.colors.length) {
+                this.colorIndex = 0;
+            }
+        }
+        updateData('temps', {
+            'colors': colorCache
+        });
     }
     parseFields() {
         const result = {
@@ -48037,6 +48065,9 @@ class TempHelper {
     parseFieldTitle(key) {
         const hideList = this.tempMeta.hide_types;
         hideList.some(hideType => key = key.replace(hideType, ''));
+        if (key.startsWith(' ')) {
+            key = key.substring(1);
+        }
         return key;
     }
     isCold(temperature) {
@@ -48055,11 +48086,19 @@ class TempHelper {
         const fields = [];
         const cacheIds = [];
         for (const cacheKey in cacheData) {
+            const title = this.parseFieldTitle(cacheKey);
             const keyData = {
-                name: `${mappingData.icon} ${this.parseFieldTitle(cacheKey)}`,
+                name: `${mappingData.icon} ${title}`,
                 value: '',
                 inline: true
             };
+            if (typeof cacheData[cacheKey].temperature !== 'undefined' &&
+                this.tempMeta.temperature_sensors.includes(key)) {
+                mappingData.fields.color = {
+                    label: '${embeds.fields.color}',
+                    icon: this.tempCache.colors[title].icon
+                };
+            }
             if (typeof cacheData[cacheKey].temperature !== 'undefined' &&
                 this.tempMeta.heater_types.includes(key)) {
                 if (this.isCold(cacheData[cacheKey].temperature)) {
@@ -48074,6 +48113,10 @@ class TempHelper {
             }
             for (const fieldKey in mappingData.fields) {
                 const fieldData = mappingData.fields[fieldKey];
+                if (fieldKey === 'color') {
+                    keyData.value = `${keyData.value}\n\`${fieldData.label}\` ${fieldData.icon}`;
+                    continue;
+                }
                 if (typeof cacheData[cacheKey][fieldKey] === 'undefined') {
                     continue;
                 }
@@ -48081,12 +48124,10 @@ class TempHelper {
                     continue;
                 }
                 if (fieldData.suffix === '%') {
-                    keyData.value = `${keyData.value}
-                       \`${fieldData.label}:\`${formatPercent(cacheData[cacheKey][fieldKey], 0)}${fieldData.suffix}`;
+                    keyData.value = `${keyData.value}\n\`${fieldData.label}\` ${formatPercent(cacheData[cacheKey][fieldKey], 0)}${fieldData.suffix}`;
                     continue;
                 }
-                keyData.value = `${keyData.value}
-                    \`${fieldData.label}:\`${cacheData[cacheKey][fieldKey]}${fieldData.suffix}`;
+                keyData.value = `${keyData.value}\n\`${fieldData.label}\` ${cacheData[cacheKey][fieldKey]}${fieldData.suffix}`;
             }
             fields.push(keyData);
             cacheIds.push(cacheData[cacheKey]);
@@ -48455,7 +48496,7 @@ class GraphHelper {
         this.localeHelper = new LocaleHelper();
         this.locale = this.localeHelper.getLocale();
         this.tempValueLimit = 0;
-        this.colorIndex = 0;
+        this.tempCache = getEntry('temps');
         this.functionCache = getEntry('function');
     }
     async getTempGraph(sensor = undefined) {
@@ -48481,15 +48522,14 @@ class GraphHelper {
                     }
                 },
                 'legend': {
-                    'display': true,
+                    'display': false,
                     'labels': {
                         'fontSize': 14,
                         'fontColor': 'rgb(255,255,255)'
                     }
                 },
                 'title': {
-                    'text': this.locale.graph.temp_history.title,
-                    'display': true
+                    'display': false
                 },
                 'animation': {
                     'duration': 0
@@ -48540,12 +48580,13 @@ class GraphHelper {
             const tempPowers = this.getTempValues(tempHistoryRequest.result[rawTempSensor].powers);
             chartConfig.data.datasets.push({
                 'label': tempSensor,
-                'borderColor': chartConfigSection.colors[this.colorIndex],
+                'borderColor': this.tempCache.colors[tempSensor].color,
                 'fill': false,
                 'data': tempValues,
                 'yAxisID': 'temp'
             });
             if (typeof sensor !== 'undefined') {
+                chartConfig.options.legend.display = true;
                 chartConfig.options.scales.yAxes.push({
                     'id': 'power',
                     'color': 'rgba(255, 255, 255, 0)',
@@ -48572,7 +48613,7 @@ class GraphHelper {
                     'lineStyle': {
                         'type': 'dashed'
                     },
-                    'borderColor': chartConfigSection.colors[this.colorIndex].color,
+                    'borderColor': this.tempCache.colors[tempSensor].color,
                     'backgroundColor': 'rgba(0,0,0,0)',
                     'data': parsedTempPowers,
                     'borderDash': [5, 10],
@@ -48581,12 +48622,11 @@ class GraphHelper {
             }
             chartConfig.data.datasets.push({
                 'label': `${tempSensor}_target`,
-                'backgroundColor': chartConfigSection.colors[this.colorIndex].color + '35',
-                'borderColor': chartConfigSection.colors[this.colorIndex].color + '00',
+                'backgroundColor': this.tempCache.colors[tempSensor].color + '35',
+                'borderColor': this.tempCache.colors[tempSensor].color + '00',
                 'data': tempTargets,
                 'yAxisID': 'temp'
             });
-            this.colorIndex++;
         }
         for (let i = 0; i < this.tempValueLimit; i++) {
             chartConfig.data.labels.push('');
@@ -48606,7 +48646,7 @@ class GraphHelper {
             .setWidth(width)
             .setBackgroundColor('#000000');
         const url = await quickChart.getShortUrl();
-        await sleep(1000);
+        await sleep(500);
         return url;
     }
     getTempValues(tempValues) {
@@ -51840,6 +51880,7 @@ class MessageHandler {
 
 
 
+
 const requests = {};
 let messageHandler;
 class MoonrakerClient {
@@ -51847,6 +51888,7 @@ class MoonrakerClient {
         this.fileListHelper = new FileListHelper(this);
         this.config = new ConfigHelper();
         this.apiKeyHelper = new APIKeyHelper();
+        this.tempHelper = new TempHelper();
         this.ready = false;
         this.metadataHelper = new MetadataHelper(this);
         this.alreadyRunning = false;
@@ -51978,6 +52020,7 @@ class MoonrakerClient {
             'readySince': new Date(),
             'event_count': this.websocket.underlyingWebsocket['_eventsCount']
         });
+        this.tempHelper.generateColors(data.result.status);
     }
     changeLogPath() {
         if (this.config.isLogFileDisabled()) {
@@ -52366,6 +52409,10 @@ function initCache() {
     logRegular('init MetaData Cache...');
     setData('meta_data', {
         'filename': ''
+    });
+    logRegular('init Temp Cache...');
+    setData('temps', {
+        'colors': {}
     });
     configHelper.loadCache();
     localeHelper.loadCache();

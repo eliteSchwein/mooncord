@@ -11,7 +11,7 @@ export class GraphHelper {
     protected localeHelper = new LocaleHelper()
     protected locale = this.localeHelper.getLocale()
     protected tempValueLimit = 0
-    protected colorIndex = 0
+    protected tempCache = getEntry('temps')
     protected functionCache = getEntry('function')
 
     public async getTempGraph(sensor = undefined) {
@@ -40,15 +40,14 @@ export class GraphHelper {
                     }
                 },
                 'legend': {
-                    'display': true,
+                    'display': false,
                     'labels': {
                         'fontSize': 14,
                         'fontColor': 'rgb(255,255,255)'
                     }
                 },
                 'title': {
-                    'text':this.locale.graph.temp_history.title,
-                    'display': true
+                    'display': false
                 },
                 'animation': {
                     'duration': 0
@@ -102,13 +101,15 @@ export class GraphHelper {
 
             chartConfig.data.datasets.push({
                 'label': tempSensor,
-                'borderColor': chartConfigSection.colors[this.colorIndex],
+                'borderColor': this.tempCache.colors[tempSensor].color,
                 'fill': false,
                 'data': tempValues,
                 'yAxisID': 'temp'
             })
 
             if(typeof sensor !== 'undefined') {
+                chartConfig.options.legend.display = true
+
                 chartConfig.options.scales.yAxes.push({
                     'id': 'power',
                     'color': 'rgba(255, 255, 255, 0)',
@@ -138,7 +139,7 @@ export class GraphHelper {
                     'lineStyle': {
                         'type': 'dashed'
                     },
-                    'borderColor': chartConfigSection.colors[this.colorIndex].color,
+                    'borderColor': this.tempCache.colors[tempSensor].color,
                     'backgroundColor': 'rgba(0,0,0,0)',
                     'data': parsedTempPowers,
                     'borderDash': [5,10],
@@ -148,13 +149,11 @@ export class GraphHelper {
 
             chartConfig.data.datasets.push({
                 'label': `${tempSensor}_target`,
-                'backgroundColor': chartConfigSection.colors[this.colorIndex].color+'35',
-                'borderColor': chartConfigSection.colors[this.colorIndex].color+'00',
+                'backgroundColor': this.tempCache.colors[tempSensor].color+'35',
+                'borderColor': this.tempCache.colors[tempSensor].color+'00',
                 'data': tempTargets,
                 'yAxisID': 'temp'
             })
-
-            this.colorIndex++
         }
 
         for(let i = 0; i < this.tempValueLimit; i++) {
@@ -182,7 +181,7 @@ export class GraphHelper {
 
         const url = await quickChart.getShortUrl()
 
-        await sleep(1000)
+        await sleep(500)
 
         return url
     }

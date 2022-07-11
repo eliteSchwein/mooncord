@@ -1,11 +1,48 @@
-import { getEntry } from "../utils/CacheUtil";
+import {getEntry, setData, updateData} from "../utils/CacheUtil";
 import {formatPercent} from "./DataHelper";
 import {ConfigHelper} from "./ConfigHelper";
+import {logRegular} from "./LoggerHelper";
 
 export class TempHelper {
     protected cache = getEntry('state')
     protected configHelper = new ConfigHelper()
     protected tempMeta = this.configHelper.getTempMeta()
+    protected chartConfigSection = this.configHelper.getGraphConfig('temp_history')
+    protected tempCache = getEntry('temps')
+    protected colorIndex = 0
+
+    public generateColors(cache: any) {
+        this.cache = cache
+        logRegular("Generate Sensor Colors...")
+
+        const colorCache = {}
+        const temperatureSensors = this.tempMeta.temperature_sensors
+
+        for(const cacheKey in this.cache) {
+            const cacheKeySplit = cacheKey.split(' ')
+
+            if(!temperatureSensors.includes(cacheKeySplit[0])) {
+                continue
+            }
+
+            const sensorTitle = this.parseFieldTitle(cacheKey)
+
+            colorCache[sensorTitle] = {
+                icon: this.chartConfigSection.colors[this.colorIndex].icon,
+                color: this.chartConfigSection.colors[this.colorIndex].color
+            }
+
+            this.colorIndex++
+
+            if(this.colorIndex === this.chartConfigSection.colors.length) {
+                this.colorIndex = 0
+            }
+        }
+
+        updateData('temps', {
+            'colors': colorCache
+        })
+    }
 
     public parseFields() {
         const result = {
@@ -31,6 +68,10 @@ export class TempHelper {
 
         hideList.some(hideType => key = key.replace(hideType, ''))
 
+        if(key.startsWith(' ')) {
+            key = key.substring(1)
+        }
+
         return key
     }
 
@@ -54,40 +95,62 @@ export class TempHelper {
         const cacheIds = []
 
         for(const cacheKey in cacheData) {
+            const title = this.parseFieldTitle(cacheKey)
+
             const keyData = {
-                name: `${mappingData.icon} ${this.parseFieldTitle(cacheKey)}`,
+                name: `${mappingData.icon} ${title}`,
                 value: '',
                 inline: true
             }
+
+            if(typeof cacheData[cacheKey].temperature !== 'undefined' &&
+                this.tempMeta.temperature_sensors.includes(key)) {
+
+                mappingData.fields.color = {
+                    label: '${embeds.fields.color}',
+                    icon: this.tempCache.colors[title].icon
+                }
+            }
+
             if(typeof cacheData[cacheKey].temperature !== 'undefined' &&
                 this.tempMeta.heater_types.includes(key)) {
                 if(this.isCold(cacheData[cacheKey].temperature)) {
                     keyData.name = `${this.tempMeta.cold_meta.icon} ${this.parseFieldTitle(cacheKey)}`
                 }
             }
+
             if(typeof cacheData[cacheKey].speed !== 'undefined' &&
                 this.tempMeta.fan_types.includes(key)) {
                 if(this.isSlowFan(cacheData[cacheKey].speed)) {
                     keyData.name = `${this.tempMeta.slow_fan_meta.icon} ${this.parseFieldTitle(cacheKey)}`
                 }
             }
+
             for(const fieldKey in mappingData.fields) {
                 const fieldData = mappingData.fields[fieldKey]
+
+                if(fieldKey === 'color') {
+                    keyData.value = `${keyData.value}\n\`${fieldData.label}\` ${fieldData.icon}`
+                    continue
+                }
+
                 if(typeof cacheData[cacheKey][fieldKey] === 'undefined') {
                     continue
                 }
+
                 if(cacheData[cacheKey][fieldKey] === null) {
                     continue
                 }
+
                 if(fieldData.suffix === '%') {
-                    keyData.value = `${keyData.value}
-                       \`${fieldData.label}:\`${formatPercent(cacheData[cacheKey][fieldKey], 0)}${fieldData.suffix}`
+                    keyData.value = `${keyData.value}\n\`${fieldData.label}\` ${formatPercent(cacheData[cacheKey][fieldKey], 0)}${fieldData.suffix}`
                     continue
                 }
-                keyData.value = `${keyData.value}
-                    \`${fieldData.label}:\`${cacheData[cacheKey][fieldKey]}${fieldData.suffix}`
+
+                keyData.value = `${keyData.value}\n\`${fieldData.label}\` ${cacheData[cacheKey][fieldKey]}${fieldData.suffix}`
                 
             }
+
             fields.push(keyData)
             cacheIds.push(cacheData[cacheKey])
         }

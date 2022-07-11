@@ -11,6 +11,7 @@ import {EmbedHelper} from "./helper/EmbedHelper";
 import {SchedulerHelper} from "./helper/SchedulerHelper";
 import {StatusHelper} from "./helper/StatusHelper";
 import {waitUntil} from "async-wait-until";
+import {TempHelper} from "./helper/TempHelper";
 
 Object.assign(global, { WebSocket: require('ws') })
 
@@ -155,6 +156,11 @@ function initCache() {
     logRegular('init MetaData Cache...')
     setData('meta_data', {
         'filename': ''
+    })
+
+    logRegular('init Temp Cache...')
+    setData('temps', {
+        'colors': {}
     })
 
     configHelper.loadCache()
