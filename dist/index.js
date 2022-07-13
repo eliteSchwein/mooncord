@@ -48554,11 +48554,11 @@ class GraphHelper {
                             'ticks': {
                                 'min': 0,
                                 'stepSize': 0.5,
-                                'fontSize': 15,
+                                'fontSize': 20,
                                 'maxTicksLimit': 12
                             },
                             'scaleLabel': {
-                                'fontSize': 15,
+                                'fontSize': 20,
                                 'display': true,
                                 'labelString': this.locale.graph.temp_history.temperature
                             }
@@ -48596,10 +48596,10 @@ class GraphHelper {
                         // @ts-ignore
                         'max': 100,
                         'min': 0,
-                        'fontSize': 15
+                        'fontSize': 20
                     },
                     'scaleLabel': {
-                        'fontSize': 15,
+                        'fontSize': 20,
                         'display': true,
                         'labelString': this.locale.graph.temp_history.power
                     }
