@@ -209,7 +209,15 @@
             "printjob_request_abort": "Print Job request for `${embed_author}` aborted, `${username}`!",
             "printjob_delete_abort": "Print Job deletion request for `${embed_author}` aborted, `${username}`!",
             "printjob_executed": "Print Job request executed, `${username}`!",
-            "reconnect": "MoonCord will reconnect to Moonraker and Discord, `${username}`!"
+            "reconnect": "MoonCord will reconnect to Moonraker and Discord, `${username}`!",
+            "pidtune_start": "Starting PID Tuning at `${temp}°C` for `${heater}`, `${username}`!",
+            "pidtune_done": "PID Tuning finished for `${heater}`, `${username}`!",
+            "config_save": "Klipper Config saved, `${username}`!",
+            "tune": {
+                "speed": "New speed factor is `${speed}%`, `${username}`!",
+                "flow": "New flow factor is `${flow}%`, `${username}`!",
+                "speed_flow": "New speed factor is `${speed}%` and flow factor is `${flow}%`, `${username}`!"
+            }
         },
         "errors": {
             "check_console": "Please Check the Console!",
@@ -229,7 +237,9 @@
             "execute_unknown": "Unknown GCode Command: `${gcode_feedback}`",
             "log_too_large": "The Log for `${service}` is too big!",
             "log_failed": "The Download of the `${service}` Log failed: `${reason}`!",
-            "log_not_found": "There is currently no Log for `${service}`"
+            "log_not_found": "There is currently no Log for `${service}`",
+            "pidtune_fail": "PID Tuning failed for `${heater}`, `${username}`!\nReason:\n```\n${reason}```",
+            "missing_arguments": "The Command is missing Arguments, `${username}`!"
         }
     },
     "buttons": {
@@ -562,6 +572,8 @@
         }
     },
     "inputs": {
-        "temp_input": {}
+        "temp_input": {
+            "label": "Set a Temp for ${heater}"
+        }
     }
 }

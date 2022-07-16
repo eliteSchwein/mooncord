@@ -338,6 +338,15 @@
                 "users": [],
                 "roles": []
             }
+        },
+        "inputs": {
+            "temp_input": {
+                "command_assign": "temp",
+                "botadmin": true,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            }
         }
     },
     "webcam": {
@@ -774,7 +783,10 @@
     },
     "input_meta": {
         "inputs": {
-            "temp_input": {}
+            "temp_input": {
+                "style": "SHORT",
+                "permission_mapping": "temp"
+            }
         },
         "buttons": {
             "next_page_printlist": {

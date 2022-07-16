@@ -2,7 +2,7 @@ import {ConfigHelper} from "../helper/ConfigHelper";
 import {limitString, mergeDeep, parsePageData} from "../helper/DataHelper";
 
 import {setData, getEntry, getHeaterChoices} from "../utils/CacheUtil";
-import {MessageActionRow, MessageButton, MessageSelectMenu} from "discord.js";
+import {MessageActionRow, MessageButton, MessageSelectMenu, TextInputComponent} from "discord.js";
 import {LocaleHelper} from "../helper/LocaleHelper";
 import {MCUHelper} from "../helper/MCUHelper";
 
@@ -15,7 +15,7 @@ export class DiscordInputGenerator {
     public generateInputCache() {
         this.generateCacheForSection('buttons');
         this.generateCacheForSection('selections');
-        this.generateCacheForSection('inputs');
+        //this.generateCacheForSection('inputs');
     }
 
     protected generateCacheForSection(section: string) {
@@ -101,7 +101,13 @@ export class DiscordInputGenerator {
         const inputMeta = cache[inputData.id]
         const row = new MessageActionRow()
 
-        //row.addComponents(selection)
+        const input = new TextInputComponent()
+            .setCustomId(inputData.id)
+            .setLabel(inputMeta.label)
+            .setStyle(inputMeta.style)
+            .setValue(String(inputMeta.value))
+
+        row.addComponents(input)
 
         return row
     }

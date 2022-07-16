@@ -47734,7 +47734,7 @@ class DiscordInputGenerator {
     generateInputCache() {
         this.generateCacheForSection('buttons');
         this.generateCacheForSection('selections');
-        this.generateCacheForSection('inputs');
+        //this.generateCacheForSection('inputs');
     }
     generateCacheForSection(section) {
         let sectionConfig = this.localeHelper.getLocale()[section];
@@ -47798,7 +47798,12 @@ class DiscordInputGenerator {
         const cache = getEntry('inputs');
         const inputMeta = cache[inputData.id];
         const row = new external_discord_js_namespaceObject.MessageActionRow();
-        //row.addComponents(selection)
+        const input = new external_discord_js_namespaceObject.TextInputComponent()
+            .setCustomId(inputData.id)
+            .setLabel(inputMeta.label)
+            .setStyle(inputMeta.style)
+            .setValue(String(inputMeta.value));
+        row.addComponents(input);
         return row;
     }
     generateButton(buttonId) {
@@ -50254,7 +50259,7 @@ class PidtuneCommand {
             .replace(/(\${heater})/g, heater)
             .replace(/(\${temp})/g, temp)
             .replace(/(\${username})/g, interaction.user.tag));
-        const gcodeResponse = await this.moonrakerClient.send({ "method": "printer.gcode.script", "params": { "script": `PID_CALIBRATE HEATER=${heater} TARGET=${temp}` } });
+        const gcodeResponse = await this.moonrakerClient.send({ "method": "printer.gcode.script", "params": { "script": `PID_CALIBRATE HEATER=${heater} TARGET=${temp}` } }, Number.POSITIVE_INFINITY);
         if (typeof gcodeResponse.error !== 'undefined') {
             await interaction.editReply(this.locale.messages.errors.pidtune_fail
                 .replace(/(\${heater})/g, heater)
@@ -50377,7 +50382,7 @@ class TuneCommand {
         const flow = interaction.options.getInteger(this.syntaxLocale.commands.tune.options.flow.name);
         let message = '';
         if (this.functionCache.current_status !== 'printing') {
-            const message = this.locale.messages.printjob_cancel.status_not_valid
+            const message = this.locale.messages.answers.printjob_pause.status_not_valid
                 .replace(/(\${username})/g, interaction.user.tag);
             await interaction.reply(message);
             return;

@@ -34,7 +34,7 @@ export class PidtuneCommand {
             .replace(/(\${temp})/g, temp)
             .replace(/(\${username})/g, interaction.user.tag))
 
-        const gcodeResponse = await this.moonrakerClient.send({"method": "printer.gcode.script", "params": {"script": `PID_CALIBRATE HEATER=${heater} TARGET=${temp}`}})
+        const gcodeResponse = await this.moonrakerClient.send({"method": "printer.gcode.script", "params": {"script": `PID_CALIBRATE HEATER=${heater} TARGET=${temp}`}}, Number.POSITIVE_INFINITY)
 
         if(typeof gcodeResponse.error !== 'undefined') {
             await interaction.editReply(this.locale.messages.errors.pidtune_fail

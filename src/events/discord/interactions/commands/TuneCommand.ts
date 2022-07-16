@@ -25,7 +25,7 @@ export class TuneCommand {
         let message = ''
 
         if(this.functionCache.current_status !== 'printing') {
-            const message = this.locale.messages.printjob_cancel.status_not_valid
+            const message = this.locale.messages.answers.printjob_pause.status_not_valid
                 .replace(/(\${username})/g, interaction.user.tag)
 
             await interaction.reply(message)
