@@ -116,7 +116,7 @@ install_packages()
     sudo apt update
 
     status_msg "Install needed packages"
-    sudo apt-get -y install --no-install-recommends git libgbm1 libxkbcommon0 chromium-browser
+    sudo apt-get -y install --no-install-recommends git
 
     if ! command -v node -v >/dev/null 2>&1
     then
