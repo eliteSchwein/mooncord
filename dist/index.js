@@ -47233,6 +47233,9 @@ function getConfigChoices() {
     const choices = [];
     const configs = cacheData.config_files;
     for (const config of configs) {
+        if (/^printer-.*\.cfg|^\./g.test(config.path)) {
+            continue;
+        }
         choices.push({
             "name": config.path,
             "value": config.path
