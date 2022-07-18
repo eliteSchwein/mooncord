@@ -19,6 +19,39 @@
       }
     }
   },
+  "config": {
+    "save": {
+      "type": "subcommand"
+    },
+    "upload": {
+      "type": "subcommand",
+      "options": {
+        "file": {
+          "type": "attachment"
+        }
+      }
+    },
+    "edit": {
+      "type": "subcommand",
+      "options": {
+        "file": {
+          "type": "string",
+          "required": true,
+          "choices": "${configChoices}"
+        }
+      }
+    },
+    "get": {
+      "type": "subcommand",
+      "options": {
+        "file": {
+          "type": "string",
+          "required": true,
+          "choices": "${configChoices}"
+        }
+      }
+    }
+  },
   "preheat": {
     "preset": {
       "type": "subcommand",
@@ -43,7 +76,6 @@
       "type": "integer"
     }
   },
-  "saveconfig": {},
   "pidtune": {
     "heater": {
       "type": "string",
@@ -53,13 +85,6 @@
     "temperature": {
       "type": "integer",
       "required": true
-    }
-  },
-  "getconfig": {
-    "file": {
-      "type": "string",
-      "required": true,
-      "choices": "${configChoices}"
     }
   },
   "dump": {

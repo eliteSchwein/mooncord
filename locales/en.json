@@ -350,9 +350,45 @@
                 }
             }
         },
-        "saveconfig": {
-            "description": "save the current configuration.",
-            "command": "saveconfig"
+        "config": {
+            "description": "Save,Modify, Up- or Download a configuration",
+            "command": "config",
+            "options": {
+                "save": {
+                    "name": "save",
+                    "description": "Save current Klipper configuration"
+                },
+                "upload":{
+                    "name": "upload",
+                    "description": "Upload a configuration file",
+                    "options": {
+                        "file": {
+                            "name": "file",
+                            "description": "Attach a configuration file."
+                        }
+                    }
+                },
+                "edit": {
+                    "name": "edit",
+                    "description": "Modify a configuration file",
+                    "options": {
+                        "file": {
+                            "name": "file",
+                            "description": "Specifies a Configuration File."
+                        }
+                    }
+                },
+                "get": {
+                    "name": "get",
+                    "description": "Download a configuration file",
+                    "options": {
+                        "file": {
+                            "name": "file",
+                            "description": "Specifies a Configuration File."
+                        }
+                    }
+                }
+            }
         },
         "pidtune": {
             "description": "start a PID Tune for a Heater.",
