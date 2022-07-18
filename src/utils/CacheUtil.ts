@@ -71,7 +71,7 @@ export function getConfigChoices() {
     const configs = cacheData.config_files
 
     for(const config of configs) {
-        if(/^printer-.*\.cfg|^\./g.test(config.path)) {
+        if(/^printer-.*\.cfg|^\.|\//g.test(config.path)) {
             continue
         }
         choices.push({
