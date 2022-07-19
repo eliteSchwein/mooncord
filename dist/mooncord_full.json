@@ -394,6 +394,18 @@
                 "to_printlist"
             ]
         },
+        "configs_download" : {
+            "color": "#00FF00",
+            "thumbnail": "download.png",
+            "buttons": [
+                "last_page_configs_download",
+                "next_page_configs_download"
+            ],
+            "selection": {
+                "id": "config_file_download",
+                "data": "${raw_entries}"
+            }
+        },
         "gcode_files": {
             "color": "#0099ff",
             "thumbnail": "printlist.png",

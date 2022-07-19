@@ -32,24 +32,10 @@
       }
     },
     "edit": {
-      "type": "subcommand",
-      "options": {
-        "file": {
-          "type": "string",
-          "required": true,
-          "choices": "${configChoices}"
-        }
-      }
+      "type": "subcommand"
     },
     "get": {
-      "type": "subcommand",
-      "options": {
-        "file": {
-          "type": "string",
-          "required": true,
-          "choices": "${configChoices}"
-        }
-      }
+      "type": "subcommand"
     }
   },
   "preheat": {

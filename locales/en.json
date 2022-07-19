@@ -2,9 +2,17 @@
     "pages": {
         "gcode_files": {
             "entry_label": "${data.path}"
+        },
+        "configs_download": {
+            "entry_label": "${data.name}"
         }
     },
     "embeds": {
+        "configs_download": {
+            "title": "Download config file",
+            "description": "${page_entries}",
+            "footer": "Page ${pages}"
+        },
         "systeminfo_cpu": {
             "title": "CPU Information"
         },
@@ -370,23 +378,11 @@
                 },
                 "edit": {
                     "name": "edit",
-                    "description": "Modify a configuration file",
-                    "options": {
-                        "file": {
-                            "name": "file",
-                            "description": "Specifies a Configuration File."
-                        }
-                    }
+                    "description": "Modify a configuration file"
                 },
                 "get": {
                     "name": "get",
-                    "description": "Download a configuration file",
-                    "options": {
-                        "file": {
-                            "name": "file",
-                            "description": "Specifies a Configuration File."
-                        }
-                    }
+                    "description": "Download a configuration file"
                 }
             }
         },
