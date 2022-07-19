@@ -46974,7 +46974,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 951:
+/***/ 843:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -49101,12 +49101,13 @@ class MacroButton {
 
 
 
+
 class PageHelper {
-    constructor(pageData, pageId) {
+    constructor(pageId) {
         this.configHelper = new ConfigHelper();
         this.localeHelper = new LocaleHelper();
         this.locale = this.localeHelper.getLocale();
-        this.data = pageData;
+        this.data = this.getValuesForPageId(pageId);
         this.pageLocale = this.locale.pages[pageId];
     }
     getPage(pageUp, currentPage) {
@@ -49131,6 +49132,7 @@ class PageHelper {
         return { 'entries': entries, 'raw_entries': rawEntries };
     }
     getLastPage() {
+        console.log(this.data);
         return Math.ceil(this.data.length / this.configHelper.getEntriesPerPage());
     }
     getNewPage(pageUp, currentPage) {
@@ -49146,10 +49148,17 @@ class PageHelper {
         }
         return { calcPage: page, labelPage: (page + 1) };
     }
+    getValuesForPageId(pageId) {
+        if (pageId === 'gcodes_files') {
+            return getEntry('gcode_files');
+        }
+        if (pageId === 'configs_download') {
+            return getConfigFiles();
+        }
+    }
 }
 
 ;// CONCATENATED MODULE: ./src/events/discord/interactions/buttons/PageButton.ts
-
 
 
 
@@ -49188,7 +49197,7 @@ class PageButton {
         const filterFooter = embedData.embedData.footer.replace(/(\${pages})/g, '');
         const pages = embed.footer.text.replace(filterFooter, '').split('/');
         const currentPage = Number.parseInt(pages[0]);
-        const pageHelper = new PageHelper(getEntry('gcode_files'), embedData.embedID);
+        const pageHelper = new PageHelper(embedData.embedID);
         const pageData = pageHelper.getPage(functionMap.page_up, currentPage);
         logNotice(`select Page ${pageData.pages} for ${embedData.embedID}`);
         const answer = await this.embedHelper.generateEmbed(embedData.embedID, pageData);
@@ -49203,7 +49212,6 @@ class PageButton {
 }
 
 ;// CONCATENATED MODULE: ./src/events/discord/interactions/buttons/PrintlistButton.ts
-
 
 
 
@@ -49226,7 +49234,7 @@ class PrintlistButton {
             !interaction.deferred) {
             await interaction.deferReply();
         }
-        const pageHelper = new PageHelper(getEntry('gcode_files'), 'gcode_files');
+        const pageHelper = new PageHelper('gcode_files');
         const pageData = pageHelper.getPage(false, 1);
         const answer = await this.embedHelper.generateEmbed('gcode_files', pageData);
         const currentMessage = interaction.message;
@@ -49906,7 +49914,6 @@ class EditChannelCommand {
 
 
 
-
 class GcodeListCommand {
     constructor(interaction, commandId) {
         this.databaseUtil = getDatabase();
@@ -49920,7 +49927,7 @@ class GcodeListCommand {
     }
     async execute(interaction) {
         await interaction.deferReply();
-        const pageHelper = new PageHelper(getEntry('gcode_files'), 'gcode_files');
+        const pageHelper = new PageHelper('gcode_files');
         const pageData = pageHelper.getPage(false, 1);
         const embed = await this.embedHelper.generateEmbed('gcode_files', pageData);
         await interaction.editReply(embed.embed);
@@ -50408,7 +50415,37 @@ class TuneCommand {
     }
 }
 
+;// CONCATENATED MODULE: ./src/events/discord/interactions/commands/ConfigCommand.ts
+
+
+
+
+class ConfigCommand {
+    constructor(interaction, commandId) {
+        this.databaseUtil = getDatabase();
+        this.localeHelper = new LocaleHelper();
+        this.syntaxLocale = this.localeHelper.getSyntaxLocale();
+        this.embedHelper = new EmbedHelper();
+        if (commandId !== 'config') {
+            return;
+        }
+        this.execute(interaction);
+    }
+    async execute(interaction) {
+        await interaction.deferReply();
+        if (interaction.options.getSubcommand(this.syntaxLocale.commands.config.options.get.name)) {
+            // @ts-ignore
+            const pageHelper = new PageHelper('configs_download');
+            const pageData = pageHelper.getPage(false, 1);
+            const embed = await this.embedHelper.generateEmbed('configs_download', pageData);
+            await interaction.editReply(embed.embed);
+            return;
+        }
+    }
+}
+
 ;// CONCATENATED MODULE: ./src/events/discord/interactions/CommandInteraction.ts
+
 
 
 
@@ -50486,6 +50523,7 @@ class CommandInteraction {
         void new GetConfigCommand(interaction, commandId);
         void new SaveConfigCommand(interaction, commandId);
         void new TuneCommand(interaction, commandId);
+        void new ConfigCommand(interaction, commandId);
         await sleep(2000);
         if (interaction.replied || interaction.deferred) {
             return;
@@ -51479,10 +51517,9 @@ class FileEditNotification {
         }
         if (fileData.item.path.endsWith('.gcode')) {
             void this.fileListHelper.retrieveGcodeFiles();
+            return;
         }
-        if (fileData.item.path.endsWith('.conf') || fileData.item.path.endsWith('.json')) {
-            void this.fileListHelper.retrieveConfigFiles();
-        }
+        void this.fileListHelper.retrieveConfigFiles();
     }
 }
 
@@ -52749,7 +52786,7 @@ module.exports = JSON.parse('[[[0,44],"disallowed_STD3_valid"],[[45,46],"valid"]
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(951);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(843);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()

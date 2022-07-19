@@ -795,6 +795,22 @@
             }
         },
         "buttons": {
+            "next_page_configs_download": {
+                "emoji": "➡️",
+                "style":"SECONDARY",
+                "permission_mapping": "config",
+                "function_mapping": {
+                    "page_up": true
+                }
+            },
+            "last_page_configs_download": {
+                "emoji": "⬅️",
+                "style":"SECONDARY",
+                "permission_mapping": "config",
+                "function_mapping": {
+                    "page_down": true
+                }
+            },
             "next_page_printlist": {
                 "emoji": "➡️",
                 "style":"SECONDARY",
@@ -936,6 +952,11 @@
             }
         },
         "selections": {
+            "config_file_download": {
+                "min_value": 1,
+                "max_value": 1,
+                "option_value": "${data.name}"
+            },
             "printlist_view_printjob": {
                 "min_value": 1,
                 "max_value": 1,

@@ -37,7 +37,7 @@ export class PageButton {
         
         const pages = embed.footer.text.replace(filterFooter, '').split('/')
         const currentPage = Number.parseInt(pages[0])
-        const pageHelper = new PageHelper(getEntry('gcode_files'), embedData.embedID)
+        const pageHelper = new PageHelper(embedData.embedID)
 
         const pageData = pageHelper.getPage(functionMap.page_up, currentPage)
 

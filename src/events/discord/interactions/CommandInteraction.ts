@@ -26,6 +26,7 @@ import {PidtuneCommand} from "./commands/PidtuneCommand";
 import { GetConfigCommand } from "./commands/GetConfigCommand";
 import {SaveConfigCommand} from "./commands/SaveConfigCommand";
 import {TuneCommand} from "./commands/TuneCommand";
+import {ConfigCommand} from "./commands/ConfigCommand";
 
 export class CommandInteraction {
     protected config = new ConfigHelper()
@@ -80,6 +81,7 @@ export class CommandInteraction {
         void new GetConfigCommand(interaction, commandId)
         void new SaveConfigCommand(interaction, commandId)
         void new TuneCommand(interaction, commandId)
+        void new ConfigCommand(interaction, commandId)
 
         await sleep(2000)
 
