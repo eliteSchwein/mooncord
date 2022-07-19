@@ -172,8 +172,8 @@
                 "manual": "Preheating ${heater_list}, `${username}`!"
             },
             "update_request": "System Update requested, `${username}`!",
-            "restart_successful": "The Restart of `${service}` was successful!",
-            "firmware_restart_successful": "The Firmware is restarting!",
+            "restart_successful": "The Restart of `${service}` was successful, `${username}`!",
+            "firmware_restart_successful": "The Firmware is restarting, `${username}`!",
             "timelapse": "Timelapse for `${printfile}`",
             "admin": {
                 "added": "${mention} is now a Bot Admin, `${username}`!",
@@ -221,6 +221,7 @@
             "pidtune_start": "Starting PID Tuning at `${temp}°C` for `${heater}`, `${username}`!",
             "pidtune_done": "PID Tuning finished for `${heater}`, `${username}`!",
             "config_save": "Klipper Config saved, `${username}`!",
+            "upload_successful": "The Upload for `${filename}` was successful, `${username}`!",
             "tune": {
                 "speed": "New speed factor is `${speed}%`, `${username}`!",
                 "flow": "New flow factor is `${flow}%`, `${username}`!",
@@ -236,7 +237,7 @@
             "file_not_found": "File not Found!",
             "guild_only": "This Command is only available in a Guild, `${username}`",
             "no_data": "There was no Data found for `${component}`!",
-            "restart_failed": "The Restart of `${service}` failed: `${reason}`",
+            "restart_failed": "The Restart of `${service}` failed: `${reason}`, `${username}`",
             "no_files_found": "There are currently no Files!",
             "no_permission": "You dont have the Permission for this Action, `${username}`",
             "not_ready": "This Command is not ready, `${username}`!",
@@ -247,7 +248,8 @@
             "log_failed": "The Download of the `${service}` Log failed: `${reason}`!",
             "log_not_found": "There is currently no Log for `${service}`",
             "pidtune_fail": "PID Tuning failed for `${heater}`, `${username}`!\nReason:\n```\n${reason}```",
-            "missing_arguments": "The Command is missing Arguments, `${username}`!"
+            "missing_arguments": "The Command is missing Arguments, `${username}`!",
+            "upload_failed": "The Upload for `${filename}` failed, `${username}`!"
         }
     },
     "buttons": {
@@ -381,6 +383,10 @@
                     "name": "upload",
                     "description": "Upload a configuration file",
                     "options": {
+                        "directory": {
+                            "name": "directory",
+                            "description": "Select a target directory."
+                        },
                         "file": {
                             "name": "file",
                             "description": "Attach a configuration file."
@@ -408,16 +414,6 @@
                 "temperature": {
                     "name": "temperature",
                     "description": "Set the Tune Temperature."
-                }
-            }
-        },
-        "getconfig": {
-            "description": "Retrieve a Configuration",
-            "command": "getconfig",
-            "options": {
-                "file": {
-                    "name": "file",
-                    "description": "Specifies a Configuration File."
                 }
             }
         },

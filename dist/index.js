@@ -46974,7 +46974,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 257:
+/***/ 945:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -47277,7 +47277,16 @@ async function writeDump() {
     logSuccess('Dumped Cache!');
 }
 
+// EXTERNAL MODULE: ./node_modules/axios/index.js
+var axios = __nccwpck_require__(6545);
+var axios_default = /*#__PURE__*/__nccwpck_require__.n(axios);
+// EXTERNAL MODULE: ./node_modules/form-data/lib/form_data.js
+var form_data = __nccwpck_require__(4334);
+var form_data_default = /*#__PURE__*/__nccwpck_require__.n(form_data);
 ;// CONCATENATED MODULE: ./src/helper/DataHelper.ts
+
+
+
 
 
 function isObject(item) {
@@ -47406,6 +47415,31 @@ function formatDate(seconds) {
         hour: '2-digit',
         minute: '2-digit',
         second: '2-digit' });
+}
+async function uploadAttachment(attachment, fileRoot = 'gcodes', filePath = '') {
+    try {
+        logNotice(`Upload for ${attachment.name} started`);
+        const attachmentData = await axios_default().get(attachment.url, { responseType: 'arraybuffer' });
+        const formData = new (form_data_default())();
+        const configHelper = new ConfigHelper();
+        formData.append('file', attachmentData.data, attachment.name);
+        formData.append('root', fileRoot);
+        formData.append('path', filePath);
+        await axios_default().post(`${configHelper.getMoonrakerUrl()}/server/files/upload`, formData, {
+            'maxContentLength': Infinity,
+            'maxBodyLength': Infinity,
+            headers: {
+                'X-Api-Key': configHelper.getMoonrakerApiKey(),
+                'Content-Type': `multipart/form-data; boundary=${formData['_boundary']}`
+            }
+        });
+        return true;
+    }
+    catch (error) {
+        logError(`Upload for ${attachment.name} failed:`);
+        logError(error);
+        return false;
+    }
 }
 
 ;// CONCATENATED MODULE: ./src/helper/ConfigHelper.ts
@@ -47571,7 +47605,7 @@ class ConfigHelper {
 }
 
 ;// CONCATENATED MODULE: ./src/meta/command_structure.json
-const command_structure_namespaceObject = JSON.parse('{"admin":{"role":{"type":"subcommand","options":{"role":{"type":"role","required":true}}},"user":{"type":"subcommand","options":{"user":{"type":"user","required":true}}}},"config":{"save":{"type":"subcommand"},"upload":{"type":"subcommand","options":{"file":{"type":"attachment"}}},"edit":{"type":"subcommand"},"get":{"type":"subcommand"}},"preheat":{"preset":{"type":"subcommand","options":{"preset":{"type":"string","required":true,"choices":"${preheatProfileChoices}"}}},"manual":{"type":"subcommand","options":"${heaterArguments}"}},"tune":{"speed":{"type":"integer"},"flow":{"type":"integer"}},"pidtune":{"heater":{"type":"string","required":true,"choices":"${heaterChoices}"},"temperature":{"type":"integer","required":true}},"dump":{"section":{"type":"string","required":true,"choices":[{"value":"database"},{"value":"cache"}]}},"reset_database":{},"editchannel":{"channel":{"type":"channel","required":false}},"emergency_stop":{},"fileinfo":{"file":{"type":"string","required":true}},"get_user_id":{"user":{"type":"user","required":false}},"restart":{"service":{"type":"string","required":true,"choices":"${serviceChoices}"}},"get_log":{"log_file":{"type":"string","required":true,"choices":[{"name":"Klipper","value":"klippy"},{"name":"Moonraker","value":"moonraker"},{"name":"MoonCord","value":"mooncord"}]}},"info":{},"listgcodes":{},"notify":{},"printjob":{"pause":{"type":"subcommand"},"cancel":{"type":"subcommand"},"resume":{"type":"subcommand"},"start":{"type":"subcommand","options":{"file":{"type":"string","required":true}}}},"status":{},"systeminfo":{},"temp":{}}');
+const command_structure_namespaceObject = JSON.parse('{"admin":{"role":{"type":"subcommand","options":{"role":{"type":"role","required":true}}},"user":{"type":"subcommand","options":{"user":{"type":"user","required":true}}}},"config":{"save":{"type":"subcommand"},"upload":{"type":"subcommand","options":{"file":{"type":"attachment","required":true},"directory":{"type":"string","required":false}}},"edit":{"type":"subcommand"},"get":{"type":"subcommand"}},"preheat":{"preset":{"type":"subcommand","options":{"preset":{"type":"string","required":true,"choices":"${preheatProfileChoices}"}}},"manual":{"type":"subcommand","options":"${heaterArguments}"}},"tune":{"speed":{"type":"integer"},"flow":{"type":"integer"}},"pidtune":{"heater":{"type":"string","required":true,"choices":"${heaterChoices}"},"temperature":{"type":"integer","required":true}},"dump":{"section":{"type":"string","required":true,"choices":[{"value":"database"},{"value":"cache"}]}},"reset_database":{},"editchannel":{"channel":{"type":"channel","required":false}},"emergency_stop":{},"fileinfo":{"file":{"type":"string","required":true}},"get_user_id":{"user":{"type":"user","required":false}},"restart":{"service":{"type":"string","required":true,"choices":"${serviceChoices}"}},"get_log":{"log_file":{"type":"string","required":true,"choices":[{"name":"Klipper","value":"klippy"},{"name":"Moonraker","value":"moonraker"},{"name":"MoonCord","value":"mooncord"}]}},"info":{},"listgcodes":{},"notify":{},"printjob":{"pause":{"type":"subcommand"},"cancel":{"type":"subcommand"},"resume":{"type":"subcommand"},"start":{"type":"subcommand","options":{"file":{"type":"string","required":true}}}},"status":{},"systeminfo":{},"temp":{}}');
 ;// CONCATENATED MODULE: ./src/meta/command_option_types.json
 const command_option_types_namespaceObject = JSON.parse('{"subcommand":1,"subcommand_group":2,"string":3,"integer":4,"boolean":5,"user":6,"channel":7,"role":8,"mentionable":9,"number":10,"attachment":11}');
 ;// CONCATENATED MODULE: ./src/generator/DiscordCommandGenerator.ts
@@ -47817,9 +47851,6 @@ class DiscordInputGenerator {
     }
 }
 
-// EXTERNAL MODULE: ./node_modules/axios/index.js
-var axios = __nccwpck_require__(6545);
-var axios_default = /*#__PURE__*/__nccwpck_require__.n(axios);
 ;// CONCATENATED MODULE: external "sharp"
 const external_sharp_namespaceObject = require("sharp");
 var external_sharp_default = /*#__PURE__*/__nccwpck_require__.n(external_sharp_namespaceObject);
@@ -49619,6 +49650,7 @@ class RestartCommand {
     async execute(interaction) {
         const service = interaction.options.getString(this.syntaxLocale.commands.restart.options.service.name);
         await interaction.deferReply();
+        this.user = interaction.user;
         let result;
         if (service === 'FirmwareRestart') {
             result = await this.restartFirmware();
@@ -49631,18 +49663,19 @@ class RestartCommand {
     async restartService(service) {
         const result = await this.moonrakerClient.send({ "method": "machine.services.restart", "params": { service } });
         if (typeof result.error !== 'undefined') {
-            const reply = this.locale.messages.errors.restart_failed
+            return this.locale.messages.errors.restart_failed
                 .replace(/(\${service})/g, service)
-                .replace(/(\${reason})/g, result.error.message);
-            return reply;
+                .replace(/(\${reason})/g, result.error.message)
+                .replace(/(\${username})/g, this.user.tag);
         }
-        const reply = this.locale.messages.answers.restart_successful
-            .replace(/(\${service})/g, service);
-        return reply;
+        return this.locale.messages.answers.restart_successful
+            .replace(/(\${service})/g, service)
+            .replace(/(\${username})/g, this.user.tag);
     }
     async restartFirmware() {
         void await this.moonrakerClient.send({ "method": "printer.firmware_restart" });
-        return this.locale.messages.answers.firmware_restart_successful;
+        return this.locale.messages.answers.firmware_restart_successful
+            .replace(/(\${username})/g, this.user.tag);
     }
 }
 
@@ -50353,7 +50386,43 @@ class TuneCommand {
     }
 }
 
+;// CONCATENATED MODULE: ./src/meta/services.json
+const services_namespaceObject = JSON.parse('{"mooncord.json":"MoonCord","crowsnest.conf":"crowsnest","KlipperScreen.conf":"KlipperScreen","moonraker.conf":"moonraker"}');
+;// CONCATENATED MODULE: ./src/helper/ServiceHelper.ts
+
+
+
+
+class ServiceHelper {
+    constructor() {
+        this.moonrakerClient = getMoonrakerClient();
+        this.functionCache = getEntry('function');
+        this.currentStatus = this.functionCache.current_status;
+    }
+    async restartServiceByFile(fileName) {
+        if (/^(.*\.(?!(cfg|conf|json)$))?[^.]*$/g.test(fileName)) {
+            return false;
+        }
+        let service = services_namespaceObject[fileName];
+        if (typeof service === 'undefined') {
+            service = 'klipper';
+        }
+        if (this.currentStatus !== 'ready') {
+            logWarn(`Service Restart for ${service} failed because the Print Status is ${this.currentStatus}`);
+            return false;
+        }
+        const serviceRestartRequest = await this.moonrakerClient.send({ "method": "machine.services.restart", "params": { "service": service } }, Number.POSITIVE_INFINITY);
+        if (typeof serviceRestartRequest.result !== 'undefined') {
+            return service;
+        }
+        return false;
+    }
+}
+
 ;// CONCATENATED MODULE: ./src/events/discord/interactions/commands/ConfigCommand.ts
+
+
+
 
 
 
@@ -50361,9 +50430,12 @@ class TuneCommand {
 class ConfigCommand {
     constructor(interaction, commandId) {
         this.databaseUtil = getDatabase();
+        this.configHelper = new ConfigHelper();
         this.localeHelper = new LocaleHelper();
+        this.locale = this.localeHelper.getLocale();
         this.syntaxLocale = this.localeHelper.getSyntaxLocale();
         this.embedHelper = new EmbedHelper();
+        this.serviceHelper = new ServiceHelper();
         if (commandId !== 'config') {
             return;
         }
@@ -50371,14 +50443,40 @@ class ConfigCommand {
     }
     async execute(interaction) {
         await interaction.deferReply();
-        if (interaction.options.getSubcommand(this.syntaxLocale.commands.config.options.get.name)) {
-            // @ts-ignore
+        if (interaction.options.getSubcommand() === this.syntaxLocale.commands.config.options.get.name) {
             const pageHelper = new PageHelper('configs_download');
             const pageData = pageHelper.getPage(false, 1);
             const embed = await this.embedHelper.generateEmbed('configs_download', pageData);
             await interaction.editReply(embed.embed);
             return;
         }
+        if (interaction.options.getSubcommand() === this.syntaxLocale.commands.config.options.upload.name) {
+            await this.uploadConfiguration(interaction);
+            return;
+        }
+    }
+    async uploadConfiguration(interaction) {
+        const attachment = interaction.options.getAttachment(this.syntaxLocale.commands.config.options.upload.options.file.name);
+        let directory = interaction.options.getString(this.syntaxLocale.commands.config.options.upload.options.directory.name);
+        if (directory === null) {
+            directory = '';
+        }
+        const uploadRequest = await uploadAttachment(attachment, 'config', directory);
+        if (uploadRequest) {
+            await interaction.editReply(this.locale.messages.answers.upload_successful
+                .replace(/(\${filename})/g, attachment.name)
+                .replace(/(\${username})/g, interaction.user.tag));
+            const serviceRestart = await this.serviceHelper.restartServiceByFile(attachment.name);
+            if (serviceRestart) {
+                await interaction.followUp(this.locale.messages.answers.restart_successful
+                    .replace(/(\${service})/g, serviceRestart)
+                    .replace(/(\${username})/g, interaction.user.tag));
+            }
+            return;
+        }
+        await interaction.editReply(this.locale.messages.errors.upload_failed
+            .replace(/(\${filename})/g, attachment.name)
+            .replace(/(\${username})/g, interaction.user.tag));
     }
 }
 
@@ -51040,11 +51138,7 @@ class StatusHelper {
     }
 }
 
-// EXTERNAL MODULE: ./node_modules/form-data/lib/form_data.js
-var form_data = __nccwpck_require__(4334);
-var form_data_default = /*#__PURE__*/__nccwpck_require__.n(form_data);
 ;// CONCATENATED MODULE: ./src/events/discord/GCodeUploadHandler.ts
-
 
 
 
@@ -51067,7 +51161,6 @@ class GCodeUploadHandler {
             }
             const attachment = message.attachments.at(0);
             const url = attachment.url;
-            const filename = attachment.name;
             if (!url.endsWith('.gcode')) {
                 return;
             }
@@ -51075,25 +51168,14 @@ class GCodeUploadHandler {
                 logWarn(`${message.author.tag} doesnt have the permission to upload gcode files!`);
                 return;
             }
-            try {
-                const gcodeData = await axios_default().get(url, { responseType: 'arraybuffer' });
-                const formData = new (form_data_default())();
-                formData.append('file', gcodeData.data, filename);
-                await axios_default().post(`${this.configHelper.getMoonrakerUrl()}/server/files/upload`, formData, {
-                    'maxContentLength': Infinity,
-                    'maxBodyLength': Infinity,
-                    headers: {
-                        'X-Api-Key': this.configHelper.getMoonrakerApiKey(),
-                        'Content-Type': `multipart/form-data; boundary=${formData['_boundary']}`
-                    }
-                });
+            const uploadRequest = await uploadAttachment(attachment);
+            if (uploadRequest) {
                 await message.react('✅');
+                return;
             }
-            catch (error) {
-                await message.reply({ content: this.locale.messages.errors.command_failed });
-                logError(`Upload for ${filename} failed:`);
-                logError(error);
-            }
+            await message.reply(this.locale.messages.errors.upload_failed
+                .replace(/(\${filename})/g, attachment.name)
+                .replace(/(\${username})/g, message.author.tag));
         });
     }
 }
@@ -52786,7 +52868,7 @@ module.exports = JSON.parse('[[[0,44],"disallowed_STD3_valid"],[[45,46],"valid"]
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(257);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(945);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()

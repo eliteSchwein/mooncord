@@ -91,7 +91,7 @@ questions()
         status_msg "Please enter your Snapshot URL"
         while true; do
             read -p "$cyan URL (leave empty if $MCCAMURL is valid): $default" snapshot_url
-            case snapshot_url in
+            case $snapshot_url in
                 "") break;;
                 * ) MCCAMURL="$snapshot_url"; break;;
             esac

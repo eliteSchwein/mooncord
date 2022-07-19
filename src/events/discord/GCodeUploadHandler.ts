@@ -6,6 +6,7 @@ import {ConfigHelper} from "../../helper/ConfigHelper";
 import {LocaleHelper} from "../../helper/LocaleHelper";
 import {logError, logWarn} from "../../helper/LoggerHelper";
 import {PermissionHelper} from "../../helper/PermissionHelper";
+import {uploadAttachment} from "../../helper/DataHelper";
 
 export class GCodeUploadHandler {
     protected moonrakerClient = getMoonrakerClient()
@@ -21,7 +22,6 @@ export class GCodeUploadHandler {
 
             const attachment = message.attachments.at(0)
             const url = attachment.url
-            const filename = attachment.name
 
             if(!url.endsWith('.gcode')) { return }
 
@@ -30,29 +30,16 @@ export class GCodeUploadHandler {
                 return;
             }
 
-            try {
-                const gcodeData = await axios.get(url,
-                {responseType: 'arraybuffer'})
+            const uploadRequest = await uploadAttachment(attachment)
 
-                const formData = new FormData()
-
-                formData.append('file', gcodeData.data, filename)
-
-                await axios.post(`${this.configHelper.getMoonrakerUrl()}/server/files/upload`,
-                    formData,
-                    {
-                        'maxContentLength': Infinity,
-                        'maxBodyLength': Infinity,
-                        headers: {
-                            'X-Api-Key': this.configHelper.getMoonrakerApiKey(),
-                            'Content-Type': `multipart/form-data; boundary=${formData['_boundary']}`
-                        }})
+            if(uploadRequest) {
                 await message.react('✅')
-            } catch (error) {
-                await message.reply({content: this.locale.messages.errors.command_failed})
-                logError(`Upload for ${filename} failed:`)
-                logError(error)
+                return
             }
+
+            await message.reply(this.locale.messages.errors.upload_failed
+                .replace(/(\${filename})/g, attachment.name)
+                .replace(/(\${username})/g, message.author.tag))
         })
     }
 }

@@ -27,7 +27,12 @@
       "type": "subcommand",
       "options": {
         "file": {
-          "type": "attachment"
+          "type": "attachment",
+          "required": true
+        },
+        "directory": {
+          "type": "string",
+          "required": false
         }
       }
     },
