@@ -70,6 +70,13 @@
                 "guildadmin": false,
                 "users": [],
                 "roles": []
+            },
+            "config_file_download": {
+                "command_assign": "config",
+                "botadmin": false,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
             }
         },
         "buttons": {
@@ -83,6 +90,20 @@
             "next_page_printlist": {
                 "command_assign": "listgcodes",
                 "botadmin": true,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
+            "last_page_configs_download": {
+                "command_assign": "config",
+                "botadmin": false,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
+            "next_page_configs_download": {
+                "command_assign": "config",
+                "botadmin": false,
                 "guildadmin": false,
                 "users": [],
                 "roles": []

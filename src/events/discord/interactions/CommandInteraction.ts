@@ -23,7 +23,6 @@ import {SystemInfoCommand} from "./commands/SystemInfoCommand";
 import {AdminCommand} from "./commands/AdminCommand";
 import {PreheatCommand} from "./commands/PreheatCommand";
 import {PidtuneCommand} from "./commands/PidtuneCommand";
-import { GetConfigCommand } from "./commands/GetConfigCommand";
 import {SaveConfigCommand} from "./commands/SaveConfigCommand";
 import {TuneCommand} from "./commands/TuneCommand";
 import {ConfigCommand} from "./commands/ConfigCommand";
@@ -78,7 +77,6 @@ export class CommandInteraction {
         void new SystemInfoCommand(interaction, commandId)
         void new PreheatCommand(interaction, commandId)
         void new PidtuneCommand(interaction, commandId)
-        void new GetConfigCommand(interaction, commandId)
         void new SaveConfigCommand(interaction, commandId)
         void new TuneCommand(interaction, commandId)
         void new ConfigCommand(interaction, commandId)

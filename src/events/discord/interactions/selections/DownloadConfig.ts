@@ -1,31 +1,29 @@
-import {CommandInteraction, MessageAttachment} from "discord.js";
-import * as CacheUtil from "../../../../utils/CacheUtil";
-import * as path from "path";
-import {getDatabase} from "../../../../Application";
-import {LocaleHelper} from "../../../../helper/LocaleHelper";
+import {MessageAttachment, SelectMenuInteraction} from "discord.js";
 import {logError, logRegular, logSuccess} from "../../../../helper/LoggerHelper";
 import axios from "axios";
 import {ConfigHelper} from "../../../../helper/ConfigHelper";
+import {getDatabase} from "../../../../Application";
+import {LocaleHelper} from "../../../../helper/LocaleHelper";
 
-export class GetConfigCommand {
+export class DownloadConfig {
     protected databaseUtil = getDatabase()
     protected localeHelper = new LocaleHelper()
     protected syntaxLocale = this.localeHelper.getSyntaxLocale()
     protected locale = this.localeHelper.getLocale()
     protected config = new ConfigHelper()
 
-    public constructor(interaction: CommandInteraction, commandId: string) {
-        if(commandId !== 'getconfig') { return }
+    public constructor(interaction: SelectMenuInteraction, selectionId: string) {
+        if(selectionId !== 'config_file_download') { return }
 
-        this.execute(interaction)
+        void this.execute(interaction)
     }
 
-    protected async execute(interaction: CommandInteraction) {
+    protected async execute(interaction: SelectMenuInteraction) {
         await interaction.deferReply({ephemeral: true})
 
-        const configArgument = interaction.options.getString(this.syntaxLocale.commands.getconfig.options.file.name)
+        const file = interaction.values[0]
 
-        await interaction.editReply(await this.retrieveConfig(configArgument))
+        await interaction.editReply(await this.retrieveConfig(file))
     }
 
     private async retrieveConfig(config: string) {

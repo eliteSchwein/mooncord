@@ -46974,7 +46974,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 843:
+/***/ 257:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -49132,7 +49132,6 @@ class PageHelper {
         return { 'entries': entries, 'raw_entries': rawEntries };
     }
     getLastPage() {
-        console.log(this.data);
         return Math.ceil(this.data.length / this.configHelper.getEntriesPerPage());
     }
     getNewPage(pageUp, currentPage) {
@@ -49149,12 +49148,13 @@ class PageHelper {
         return { calcPage: page, labelPage: (page + 1) };
     }
     getValuesForPageId(pageId) {
-        if (pageId === 'gcodes_files') {
+        if (pageId === 'gcode_files') {
             return getEntry('gcode_files');
         }
         if (pageId === 'configs_download') {
             return getConfigFiles();
         }
+        return [];
     }
 }
 
@@ -50277,68 +50277,6 @@ class PidtuneCommand {
     }
 }
 
-;// CONCATENATED MODULE: ./src/events/discord/interactions/commands/GetConfigCommand.ts
-
-
-
-
-
-
-class GetConfigCommand {
-    constructor(interaction, commandId) {
-        this.databaseUtil = getDatabase();
-        this.localeHelper = new LocaleHelper();
-        this.syntaxLocale = this.localeHelper.getSyntaxLocale();
-        this.locale = this.localeHelper.getLocale();
-        this.config = new ConfigHelper();
-        if (commandId !== 'getconfig') {
-            return;
-        }
-        this.execute(interaction);
-    }
-    async execute(interaction) {
-        await interaction.deferReply({ ephemeral: true });
-        const configArgument = interaction.options.getString(this.syntaxLocale.commands.getconfig.options.file.name);
-        await interaction.editReply(await this.retrieveConfig(configArgument));
-    }
-    async retrieveConfig(config) {
-        logRegular(`downloading config for ${config}...`);
-        try {
-            const result = await axios_default().get(`${this.config.getMoonrakerUrl()}/server/files/config/${config}`, {
-                responseType: 'arraybuffer',
-                headers: {
-                    'X-Api-Key': this.config.getMoonrakerApiKey()
-                }
-            });
-            const bufferSize = Buffer.byteLength(result.data);
-            if (bufferSize > Number.parseInt('8000000')) {
-                logError(`Configuration ${config} to big, Configfile: ${bufferSize}byte Limit: 8000000byte`);
-                return this.locale.messages.errors.config_too_large
-                    .replace(/(\${config})/g, `\`${config}\``);
-            }
-            const attachment = new external_discord_js_namespaceObject.MessageAttachment(result.data, `${config}`);
-            logSuccess(`Configuration ${config} Download successful!`);
-            return { files: [attachment] };
-        }
-        catch (error) {
-            if (typeof error.code !== 'undefined') {
-                logError(`${config} Config Download failed: ${error.config.url}: ${error.code}`);
-                return this.locale.messages.errors.config_failed
-                    .replace(/(\${config})/g, config)
-                    .replace(/(\${reason})/g, `${error.code}`);
-            }
-            logError(`${config} Config Download failed: ${error.config.url}: ${error.response.status} ${error.response.statusText}`);
-            if (error.response.status === 404) {
-                return this.locale.messages.errors.config_not_found
-                    .replace(/(\${config})/g, config);
-            }
-            return this.locale.messages.errors.config_failed
-                .replace(/(\${config})/g, config)
-                .replace(/(\${reason})/g, `${error.response.status} ${error.response.statusText}`);
-        }
-    }
-}
-
 ;// CONCATENATED MODULE: ./src/events/discord/interactions/commands/SaveConfigCommand.ts
 
 
@@ -50472,7 +50410,6 @@ class ConfigCommand {
 
 
 
-
 class CommandInteraction {
     constructor(interaction) {
         this.config = new ConfigHelper();
@@ -50520,7 +50457,6 @@ class CommandInteraction {
         void new SystemInfoCommand(interaction, commandId);
         void new PreheatCommand(interaction, commandId);
         void new PidtuneCommand(interaction, commandId);
-        void new GetConfigCommand(interaction, commandId);
         void new SaveConfigCommand(interaction, commandId);
         void new TuneCommand(interaction, commandId);
         void new ConfigCommand(interaction, commandId);
@@ -50673,7 +50609,70 @@ class ShowTempSelection {
     }
 }
 
+;// CONCATENATED MODULE: ./src/events/discord/interactions/selections/DownloadConfig.ts
+
+
+
+
+
+
+class DownloadConfig {
+    constructor(interaction, selectionId) {
+        this.databaseUtil = getDatabase();
+        this.localeHelper = new LocaleHelper();
+        this.syntaxLocale = this.localeHelper.getSyntaxLocale();
+        this.locale = this.localeHelper.getLocale();
+        this.config = new ConfigHelper();
+        if (selectionId !== 'config_file_download') {
+            return;
+        }
+        void this.execute(interaction);
+    }
+    async execute(interaction) {
+        await interaction.deferReply({ ephemeral: true });
+        const file = interaction.values[0];
+        await interaction.editReply(await this.retrieveConfig(file));
+    }
+    async retrieveConfig(config) {
+        logRegular(`downloading config for ${config}...`);
+        try {
+            const result = await axios_default().get(`${this.config.getMoonrakerUrl()}/server/files/config/${config}`, {
+                responseType: 'arraybuffer',
+                headers: {
+                    'X-Api-Key': this.config.getMoonrakerApiKey()
+                }
+            });
+            const bufferSize = Buffer.byteLength(result.data);
+            if (bufferSize > Number.parseInt('8000000')) {
+                logError(`Configuration ${config} to big, Configfile: ${bufferSize}byte Limit: 8000000byte`);
+                return this.locale.messages.errors.config_too_large
+                    .replace(/(\${config})/g, `\`${config}\``);
+            }
+            const attachment = new external_discord_js_namespaceObject.MessageAttachment(result.data, `${config}`);
+            logSuccess(`Configuration ${config} Download successful!`);
+            return { files: [attachment] };
+        }
+        catch (error) {
+            if (typeof error.code !== 'undefined') {
+                logError(`${config} Config Download failed: ${error.config.url}: ${error.code}`);
+                return this.locale.messages.errors.config_failed
+                    .replace(/(\${config})/g, config)
+                    .replace(/(\${reason})/g, `${error.code}`);
+            }
+            logError(`${config} Config Download failed: ${error.config.url}: ${error.response.status} ${error.response.statusText}`);
+            if (error.response.status === 404) {
+                return this.locale.messages.errors.config_not_found
+                    .replace(/(\${config})/g, config);
+            }
+            return this.locale.messages.errors.config_failed
+                .replace(/(\${config})/g, config)
+                .replace(/(\${reason})/g, `${error.response.status} ${error.response.statusText}`);
+        }
+    }
+}
+
 ;// CONCATENATED MODULE: ./src/events/discord/interactions/SelectInteraction.ts
+
 
 
 
@@ -50716,9 +50715,10 @@ class SelectInteraction {
             logWarn(`${interaction.user.tag} doesnt have the permission for: ${interaction.customId}`);
             return;
         }
-        new ViewPrintJobSelection(interaction, selectId);
-        new ViewSystemInfo(interaction, selectId);
-        new ShowTempSelection(interaction, selectId);
+        void new ViewPrintJobSelection(interaction, selectId);
+        void new ViewSystemInfo(interaction, selectId);
+        void new ShowTempSelection(interaction, selectId);
+        void new DownloadConfig(interaction, selectId);
         await sleep(2000);
         if (interaction.replied || interaction.deferred) {
             return;
@@ -52786,7 +52786,7 @@ module.exports = JSON.parse('[[[0,44],"disallowed_STD3_valid"],[[45,46],"valid"]
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(843);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(257);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()

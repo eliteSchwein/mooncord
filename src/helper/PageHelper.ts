@@ -43,7 +43,6 @@ export class PageHelper {
     }
 
     protected getLastPage() {
-        console.log(this.data)
         return Math.ceil(this.data.length / this.configHelper.getEntriesPerPage())
     }
 
@@ -63,12 +62,14 @@ export class PageHelper {
     }
 
     protected getValuesForPageId(pageId: string) {
-        if(pageId === 'gcodes_files') {
+        if(pageId === 'gcode_files') {
             return getEntry('gcode_files')
         }
 
         if(pageId === 'configs_download')  {
             return getConfigFiles()
         }
+
+        return []
     }
 }

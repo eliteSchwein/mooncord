@@ -321,7 +321,7 @@
         },
         "config_file_download": {
             "label": "Select a File",
-            "option_label": "${data.path}",
+            "option_label": "${data.name}",
             "option_description": "Click for Download"
         },
         "printlist_view_printjob": {

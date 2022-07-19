@@ -9,6 +9,7 @@ import * as util from "util"
 import {ViewPrintJobSelection} from "./selections/ViewPrintJob";
 import {ViewSystemInfo} from "./selections/ViewSystemInfo";
 import {ShowTempSelection} from "./selections/ShowTemp";
+import {DownloadConfig} from "./selections/DownloadConfig";
 
 export class SelectInteraction {
     protected permissionHelper = new PermissionHelper()
@@ -45,9 +46,10 @@ export class SelectInteraction {
             return;
         }
 
-        new ViewPrintJobSelection(interaction, selectId)
-        new ViewSystemInfo(interaction, selectId)
-        new ShowTempSelection(interaction, selectId)
+        void new ViewPrintJobSelection(interaction, selectId)
+        void new ViewSystemInfo(interaction, selectId)
+        void new ShowTempSelection(interaction, selectId)
+        void new DownloadConfig(interaction, selectId)
 
         await sleep(2000)
 
