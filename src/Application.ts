@@ -12,6 +12,7 @@ import {SchedulerHelper} from "./helper/SchedulerHelper";
 import {StatusHelper} from "./helper/StatusHelper";
 import {waitUntil} from "async-wait-until";
 import {TempHelper} from "./helper/TempHelper";
+import {ModalHelper} from "./helper/ModalHelper";
 
 Object.assign(global, { WebSocket: require('ws') })
 
@@ -25,6 +26,7 @@ configHelper.loadCache()
 
 const localeHelper = new LocaleHelper()
 const embedHelper = new EmbedHelper()
+const modalHelper = new ModalHelper()
 
 const moonrakerClient = new MoonrakerClient()
 const database = new DatabaseUtil()
@@ -166,6 +168,7 @@ function initCache() {
     configHelper.loadCache()
     localeHelper.loadCache()
     embedHelper.loadCache()
+    modalHelper.loadCache()
 }
 
 export function getMoonrakerClient() {

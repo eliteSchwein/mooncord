@@ -60,6 +60,10 @@ export class LocaleHelper {
         return this.getLocale().embeds
     }
 
+    public getModals() {
+        return this.getLocale().modals
+    }
+
     public getSystemComponents() {
         const components = [
             {

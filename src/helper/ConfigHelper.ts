@@ -152,6 +152,10 @@ export class ConfigHelper {
         return this.getConfig().embed_meta
     }
 
+    public getModalMeta() {
+        return this.getConfig().modal_meta
+    }
+
     public getInputMeta() {
         return this.getConfig().input_meta
     }

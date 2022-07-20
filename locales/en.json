@@ -1,4 +1,9 @@
 {
+    "modals": {
+        "config_edit": {
+            "title": "Edit ${filename}"
+        }
+    },
     "pages": {
         "gcode_files": {
             "entry_label": "${data.path}"

@@ -46974,7 +46974,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 945:
+/***/ 909:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -47151,6 +47151,9 @@ class LocaleHelper {
     }
     getEmbeds() {
         return this.getLocale().embeds;
+    }
+    getModals() {
+        return this.getLocale().modals;
     }
     getSystemComponents() {
         const components = [
@@ -47559,6 +47562,9 @@ class ConfigHelper {
     }
     getEmbedMeta() {
         return this.getConfig().embed_meta;
+    }
+    getModalMeta() {
+        return this.getConfig().modal_meta;
     }
     getInputMeta() {
         return this.getConfig().input_meta;
@@ -52401,7 +52407,30 @@ class SchedulerHelper {
     }
 }
 
+;// CONCATENATED MODULE: ./src/helper/ModalHelper.ts
+
+
+
+
+
+
+class ModalHelper {
+    constructor() {
+        this.localeHelper = new LocaleHelper();
+        this.configHelper = new ConfigHelper();
+        this.inputGenerator = new DiscordInputGenerator();
+    }
+    loadCache() {
+        logRegular("load Modals Cache...");
+        const modals = this.configHelper.getModalMeta();
+        const modalsMeta = this.localeHelper.getModals();
+        mergeDeep(modals, modalsMeta);
+        setData('modals', modals);
+    }
+}
+
 ;// CONCATENATED MODULE: ./src/Application.ts
+
 
 
 
@@ -52423,6 +52452,7 @@ const configHelper = new ConfigHelper();
 configHelper.loadCache();
 const localeHelper = new LocaleHelper();
 const embedHelper = new EmbedHelper();
+const modalHelper = new ModalHelper();
 const moonrakerClient = new MoonrakerClient();
 const Application_database = new DatabaseUtil();
 const discordClient = new DiscordClient();
@@ -52538,6 +52568,7 @@ function initCache() {
     configHelper.loadCache();
     localeHelper.loadCache();
     embedHelper.loadCache();
+    modalHelper.loadCache();
 }
 function getMoonrakerClient() {
     return moonrakerClient;
@@ -52868,7 +52899,7 @@ module.exports = JSON.parse('[[[0,44],"disallowed_STD3_valid"],[[45,46],"valid"]
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(945);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(909);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()
