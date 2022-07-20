@@ -52427,6 +52427,9 @@ class ModalHelper {
         mergeDeep(modals, modalsMeta);
         setData('modals', modals);
     }
+    getModals() {
+        return getEntry('modals');
+    }
 }
 
 ;// CONCATENATED MODULE: ./src/Application.ts
