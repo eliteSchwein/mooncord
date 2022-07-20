@@ -3,7 +3,7 @@ import {LocaleHelper} from "./LocaleHelper";
 import {ConfigHelper} from "./ConfigHelper";
 import {DiscordInputGenerator} from "../generator/DiscordInputGenerator";
 import {mergeDeep} from "./DataHelper";
-import {setData} from "../utils/CacheUtil";
+import {getEntry, setData} from "../utils/CacheUtil";
 
 export class ModalHelper {
     protected localeHelper = new LocaleHelper()
@@ -18,5 +18,9 @@ export class ModalHelper {
         mergeDeep(modals, modalsMeta)
 
         setData('modals', modals)
+    }
+
+    public getModals() {
+        return getEntry('modals')
     }
 }
