@@ -1,14 +1,14 @@
 import {logRegular} from "./LoggerHelper";
 import {LocaleHelper} from "./LocaleHelper";
 import {ConfigHelper} from "./ConfigHelper";
-import {DiscordInputGenerator} from "../generator/DiscordInputGenerator";
 import {mergeDeep} from "./DataHelper";
 import {getEntry, setData} from "../utils/CacheUtil";
+import {TemplateHelper} from "./TemplateHelper";
 
 export class ModalHelper {
     protected localeHelper = new LocaleHelper()
     protected configHelper = new ConfigHelper()
-    protected inputGenerator = new DiscordInputGenerator()
+    protected templateHelper = new TemplateHelper()
 
     public loadCache() {
         logRegular("load Modals Cache...")
@@ -22,5 +22,8 @@ export class ModalHelper {
 
     public getModals() {
         return getEntry('modals')
+    }
+
+    public async generateModal(modalID: string, providedPlaceholders = null) {
     }
 }

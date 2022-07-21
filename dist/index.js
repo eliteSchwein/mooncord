@@ -46974,7 +46974,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 909:
+/***/ 52:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -47857,197 +47857,6 @@ class DiscordInputGenerator {
     }
 }
 
-;// CONCATENATED MODULE: external "sharp"
-const external_sharp_namespaceObject = require("sharp");
-var external_sharp_default = /*#__PURE__*/__nccwpck_require__.n(external_sharp_namespaceObject);
-// EXTERNAL MODULE: ./node_modules/stacktrace-js/stacktrace.js
-var stacktrace = __nccwpck_require__(638);
-var stacktrace_default = /*#__PURE__*/__nccwpck_require__.n(stacktrace);
-;// CONCATENATED MODULE: ./src/helper/WebcamHelper.ts
-
-
-
-
-
-
-
-
-class WebcamHelper {
-    constructor() {
-        this.configHelper = new ConfigHelper();
-    }
-    async retrieveWebcam(moonrakerClient) {
-        this.moonrakerClient = moonrakerClient;
-        const beforeStatus = this.configHelper.getStatusBeforeTasks();
-        const afterStatus = this.configHelper.getStatusAfterTasks();
-        await this.executePostProcess(beforeStatus);
-        try {
-            const res = await axios_default()({
-                method: 'get',
-                responseType: 'arraybuffer',
-                url: this.configHelper.getWebcamUrl(),
-                timeout: 2000
-            });
-            const buffer = Buffer.from(res.data, 'binary');
-            // Only run Jimp if they want the image modifed
-            if (this.configHelper.getWebcamBrightness() ||
-                this.configHelper.getWebcamContrast() ||
-                this.configHelper.isWebcamGreyscale() ||
-                this.configHelper.isWebcamHorizontalMirrored() ||
-                this.configHelper.getWebcamRotation() ||
-                this.configHelper.isWebcamSepia() ||
-                this.configHelper.isWebcamVerticalMirrored()) {
-                const image = external_sharp_default()(Buffer.from(buffer));
-                image
-                    .rotate(this.configHelper.getWebcamRotation())
-                    .flip(this.configHelper.isWebcamVerticalMirrored())
-                    .flop(this.configHelper.isWebcamHorizontalMirrored())
-                    .greyscale(this.configHelper.isWebcamGreyscale());
-                if (this.configHelper.getWebcamBrightness()) {
-                    image.modulate({
-                        brightness: (this.configHelper.getWebcamBrightness() + 1)
-                    });
-                }
-                if (this.configHelper.getWebcamContrast()) {
-                    image.linear(this.configHelper.getWebcamContrast() + 1, -(128 * (this.configHelper.getWebcamContrast() + 1)) + 128);
-                }
-                if (this.configHelper.isWebcamSepia()) {
-                    image.recomb([
-                        [0.3588, 0.7044, 0.1368],
-                        [0.299, 0.587, 0.114],
-                        [0.2392, 0.4696, 0.0912],
-                    ]);
-                }
-                image.png({
-                    quality: this.configHelper.getWebcamQuality()
-                });
-                const editBuffer = await image.toBuffer();
-                await this.executePostProcess(afterStatus);
-                return new external_discord_js_namespaceObject.MessageAttachment(editBuffer, "snapshot.png");
-            }
-            // Else just send the normal images
-            await this.executePostProcess(afterStatus);
-            return new external_discord_js_namespaceObject.MessageAttachment(Buffer.from(buffer), "snapshot.png");
-        }
-        catch (error) {
-            const reason = error;
-            const trace = await stacktrace_default().get();
-            logEmpty();
-            logError('Webcam Error:');
-            logError(`Url: ${this.configHelper.getWebcamUrl()}`);
-            logError(`Error: ${reason}`);
-            if (this.configHelper.traceOnWebErrors()) {
-                logError(trace);
-            }
-            return new external_discord_js_namespaceObject.MessageAttachment((0,external_path_.resolve)(__dirname, `../assets/icon-sets/${this.configHelper.getIconSet()}/snapshot-error.png`), 'snapshot-error.png');
-        }
-    }
-    async triggerWebsite(url, post) {
-        if (post) {
-            await axios_default().post(url);
-            return;
-        }
-        await axios_default().get(url);
-    }
-    async executePostProcess(config) {
-        if (!config.enable || config.execute.length === 0) {
-            return;
-        }
-        await sleep(config.delay);
-        let index = 0;
-        while (index < config.execute.length) {
-            const execute = config.execute[index];
-            if (execute.startsWith("gcode:")) {
-                const gcode = execute.replace("gcode:", "");
-                const id = Math.floor(Math.random() * Number.parseInt("10_000")) + 1;
-                try {
-                    await this.moonrakerClient
-                        .send({ "method": "printer.gcode.script", "params": { "script": gcode }, id }, this.configHelper.getGcodeExecuteTimeout() * 1000);
-                }
-                catch (error) {
-                    logError(error);
-                }
-            }
-            if (execute.startsWith("website_post:")) {
-                const url = execute.replace("website_post:", "");
-                await this.triggerWebsite(url, true);
-            }
-            if (execute.startsWith("website:")) {
-                const url = execute.replace("website:", "");
-                await this.triggerWebsite(url, false);
-            }
-            await sleep(config.delay);
-            index++;
-        }
-        await sleep(config.delay);
-    }
-}
-
-;// CONCATENATED MODULE: ./src/helper/VersionHelper.ts
-
-
-class VersionHelper {
-    constructor() {
-        this.localeHelper = new LocaleHelper();
-        this.locale = this.localeHelper.getLocale();
-    }
-    getFields() {
-        const versionData = findValue('updates.version_info');
-        const fields = [];
-        for (const component in versionData) {
-            if (component !== 'system') {
-                const componentdata = versionData[component];
-                let { version, remote_version } = componentdata;
-                if (version !== remote_version) {
-                    version = `${version} **(${remote_version})**`;
-                }
-                fields.push({
-                    name: component,
-                    value: version
-                });
-            }
-        }
-        return fields;
-    }
-    getUpdateFields() {
-        const versionData = findValue('updates.version_info');
-        const fields = [];
-        for (const component in versionData) {
-            if (component !== 'system') {
-                const remoteVersion = (versionData[component].version !== versionData[component].remote_version) ? `\n🆕 ${versionData[component].remote_version}` : '';
-                fields.push({
-                    name: component,
-                    value: `${versionData[component].version} ${remoteVersion}`
-                });
-            }
-            else {
-                fields.push({
-                    name: this.locale.embeds.fields.system,
-                    value: `${this.locale.embeds.fields.packages}: ${versionData[component].package_count}`
-                });
-            }
-        }
-        return fields;
-    }
-    updateAvailable() {
-        const versionData = findValue('updates.version_info');
-        let updateAvailable = false;
-        for (const component in versionData) {
-            if (component !== 'system') {
-                if (versionData[component].version !== versionData[component].remote_version) {
-                    updateAvailable = true;
-                }
-            }
-            else {
-                if (versionData[component].package_count > 0) {
-                    updateAvailable = true;
-                }
-            }
-        }
-        return updateAvailable;
-    }
-}
-
 ;// CONCATENATED MODULE: ./src/helper/TempHelper.ts
 
 
@@ -48185,135 +47994,68 @@ class TempHelper {
     }
 }
 
-;// CONCATENATED MODULE: ./src/helper/TimeHelper.ts
+;// CONCATENATED MODULE: ./src/helper/VersionHelper.ts
 
-function updateTimes() {
-    const stateCache = getEntry('state');
-    const metaDataCache = getEntry('meta_data');
-    const endTime = Math.floor(Date.now() / 1000);
-    const duration = stateCache.print_stats.print_duration;
-    let total = duration / stateCache.display_status.progress;
-    if (total === 0 ||
-        isNaN(total) ||
-        !isFinite(total)) {
-        total = metaDataCache.estimated_time;
+
+class VersionHelper {
+    constructor() {
+        this.localeHelper = new LocaleHelper();
+        this.locale = this.localeHelper.getLocale();
     }
-    const left = (total - duration) / stateCache.gcode_move.speed_factor || 1;
-    const end = endTime + (total - duration);
-    updateData('time', {
-        'total': total,
-        'duration': duration,
-        'left': left,
-        'eta': end
-    });
-}
-
-;// CONCATENATED MODULE: ./src/helper/LayerHelper.ts
-
-function updateLayers() {
-    const stateCache = getEntry('state');
-    const metaDataCache = getEntry('meta_data');
-    let top_layer = Math.ceil((metaDataCache.object_height - metaDataCache.first_layer_height) / metaDataCache.layer_height + 1);
-    top_layer = top_layer > 0 ? top_layer : 0;
-    let current_layer = Math.ceil((stateCache.gcode_move.gcode_position[2] - metaDataCache.first_layer_height) / metaDataCache.layer_height + 1);
-    current_layer = (current_layer <= top_layer) ? current_layer : top_layer;
-    current_layer = current_layer > 0 ? current_layer : 0;
-    updateData('layers', {
-        'top': top_layer,
-        'current': current_layer
-    });
-}
-
-;// CONCATENATED MODULE: ./src/helper/MetadataHelper.ts
-
-
-
-
-
-
-
-
-
-
-class MetadataHelper {
-    constructor(moonrakerClient = null) {
-        this.configHelper = new ConfigHelper();
-        if (moonrakerClient !== null) {
-            this.moonrakerClient = moonrakerClient;
-        }
-        else {
-            this.moonrakerClient = getMoonrakerClient();
-        }
-    }
-    async getMetaData(filename) {
-        const metaData = await this.moonrakerClient.send({ "method": "server.files.metadata", "params": { filename } });
-        return metaData.result;
-    }
-    async updateMetaData(filename) {
-        if (typeof filename === 'undefined') {
-            return;
-        }
-        if (filename === null) {
-            return;
-        }
-        if (filename === '') {
-            return;
-        }
-        const metaData = await this.getMetaData(filename);
-        setData('meta_data', metaData);
-        updateData('meta_data', filename);
-        updateTimes();
-        updateLayers();
-    }
-    async getThumbnail(filename) {
-        const metaDataCache = getEntry('meta_data');
-        if (metaDataCache.filename === filename &&
-            typeof metaDataCache.thumbnail !== 'undefined') {
-            const thumbnailBuffer = Buffer.from(metaDataCache.thumbnail, 'base64');
-            return new external_discord_js_namespaceObject.MessageAttachment(thumbnailBuffer, 'thumbnail.png');
-        }
-        const metaData = await this.getMetaData(filename);
-        const pathFragments = filename.split('/').slice(0, -1);
-        const rootPath = (pathFragments.length > 0) ? `${pathFragments.join('/')}/` : '';
-        const placeholderPath = external_path_default().resolve(__dirname, `../assets/icon-sets/${this.configHelper.getIconSet()}/thumbnail_not_found.png`);
-        const placeholder = new external_discord_js_namespaceObject.MessageAttachment(placeholderPath, 'thumbnail_not_found.png');
-        const url = this.configHelper.getMoonrakerUrl();
-        if (typeof metaData === 'undefined') {
-            return placeholder;
-        }
-        if (typeof metaData.thumbnails === 'undefined') {
-            return placeholder;
-        }
-        const thumbnailFile = metaData.thumbnails.reduce((prev, current) => { return (prev.size > current.size) ? prev : current; });
-        const thumbnailPath = thumbnailFile.relative_path;
-        const thumbnailURL = encodeURI(`${url}/server/files/gcodes/${rootPath}${thumbnailPath}`);
-        let thumbnail;
-        try {
-            thumbnail = await this.getBase64(thumbnailURL);
-            updateData('meta_data', { thumbnail });
-            logRegular(`retrieved Thumbnail for ${filename}`);
-        }
-        catch (error) {
-            const reason = error;
-            const trace = await stacktrace.get();
-            logEmpty();
-            logError('Thumbnail Error:');
-            logError(`Url: ${thumbnailURL}`);
-            logError(`Error: ${reason}`);
-            if (this.configHelper.traceOnWebErrors()) {
-                logError(trace);
+    getFields() {
+        const versionData = findValue('updates.version_info');
+        const fields = [];
+        for (const component in versionData) {
+            if (component !== 'system') {
+                const componentdata = versionData[component];
+                let { version, remote_version } = componentdata;
+                if (version !== remote_version) {
+                    version = `${version} **(${remote_version})**`;
+                }
+                fields.push({
+                    name: component,
+                    value: version
+                });
             }
-            return placeholder;
         }
-        const thumbnailBuffer = Buffer.from(thumbnail, 'base64');
-        return new external_discord_js_namespaceObject.MessageAttachment(thumbnailBuffer, 'thumbnail.png');
+        return fields;
     }
-    async getBase64(url) {
-        const response = await axios_default().get(url, { responseType: 'arraybuffer',
-            headers: {
-                'X-Api-Key': this.configHelper.getMoonrakerApiKey()
-            } });
-        return Buffer.from(response.data, 'binary').toString('base64');
+    getUpdateFields() {
+        const versionData = findValue('updates.version_info');
+        const fields = [];
+        for (const component in versionData) {
+            if (component !== 'system') {
+                const remoteVersion = (versionData[component].version !== versionData[component].remote_version) ? `\n🆕 ${versionData[component].remote_version}` : '';
+                fields.push({
+                    name: component,
+                    value: `${versionData[component].version} ${remoteVersion}`
+                });
+            }
+            else {
+                fields.push({
+                    name: this.locale.embeds.fields.system,
+                    value: `${this.locale.embeds.fields.packages}: ${versionData[component].package_count}`
+                });
+            }
+        }
+        return fields;
+    }
+    updateAvailable() {
+        const versionData = findValue('updates.version_info');
+        let updateAvailable = false;
+        for (const component in versionData) {
+            if (component !== 'system') {
+                if (versionData[component].version !== versionData[component].remote_version) {
+                    updateAvailable = true;
+                }
+            }
+            else {
+                if (versionData[component].package_count > 0) {
+                    updateAvailable = true;
+                }
+            }
+        }
+        return updateAvailable;
     }
 }
 
@@ -48700,7 +48442,265 @@ class GraphHelper {
     }
 }
 
-;// CONCATENATED MODULE: ./src/helper/EmbedHelper.ts
+;// CONCATENATED MODULE: ./src/helper/TimeHelper.ts
+
+function updateTimes() {
+    const stateCache = getEntry('state');
+    const metaDataCache = getEntry('meta_data');
+    const endTime = Math.floor(Date.now() / 1000);
+    const duration = stateCache.print_stats.print_duration;
+    let total = duration / stateCache.display_status.progress;
+    if (total === 0 ||
+        isNaN(total) ||
+        !isFinite(total)) {
+        total = metaDataCache.estimated_time;
+    }
+    const left = (total - duration) / stateCache.gcode_move.speed_factor || 1;
+    const end = endTime + (total - duration);
+    updateData('time', {
+        'total': total,
+        'duration': duration,
+        'left': left,
+        'eta': end
+    });
+}
+
+;// CONCATENATED MODULE: ./src/helper/LayerHelper.ts
+
+function updateLayers() {
+    const stateCache = getEntry('state');
+    const metaDataCache = getEntry('meta_data');
+    let top_layer = Math.ceil((metaDataCache.object_height - metaDataCache.first_layer_height) / metaDataCache.layer_height + 1);
+    top_layer = top_layer > 0 ? top_layer : 0;
+    let current_layer = Math.ceil((stateCache.gcode_move.gcode_position[2] - metaDataCache.first_layer_height) / metaDataCache.layer_height + 1);
+    current_layer = (current_layer <= top_layer) ? current_layer : top_layer;
+    current_layer = current_layer > 0 ? current_layer : 0;
+    updateData('layers', {
+        'top': top_layer,
+        'current': current_layer
+    });
+}
+
+// EXTERNAL MODULE: ./node_modules/stacktrace-js/stacktrace.js
+var stacktrace = __nccwpck_require__(638);
+var stacktrace_default = /*#__PURE__*/__nccwpck_require__.n(stacktrace);
+;// CONCATENATED MODULE: ./src/helper/MetadataHelper.ts
+
+
+
+
+
+
+
+
+
+
+class MetadataHelper {
+    constructor(moonrakerClient = null) {
+        this.configHelper = new ConfigHelper();
+        if (moonrakerClient !== null) {
+            this.moonrakerClient = moonrakerClient;
+        }
+        else {
+            this.moonrakerClient = getMoonrakerClient();
+        }
+    }
+    async getMetaData(filename) {
+        const metaData = await this.moonrakerClient.send({ "method": "server.files.metadata", "params": { filename } });
+        return metaData.result;
+    }
+    async updateMetaData(filename) {
+        if (typeof filename === 'undefined') {
+            return;
+        }
+        if (filename === null) {
+            return;
+        }
+        if (filename === '') {
+            return;
+        }
+        const metaData = await this.getMetaData(filename);
+        setData('meta_data', metaData);
+        updateData('meta_data', filename);
+        updateTimes();
+        updateLayers();
+    }
+    async getThumbnail(filename) {
+        const metaDataCache = getEntry('meta_data');
+        if (metaDataCache.filename === filename &&
+            typeof metaDataCache.thumbnail !== 'undefined') {
+            const thumbnailBuffer = Buffer.from(metaDataCache.thumbnail, 'base64');
+            return new external_discord_js_namespaceObject.MessageAttachment(thumbnailBuffer, 'thumbnail.png');
+        }
+        const metaData = await this.getMetaData(filename);
+        const pathFragments = filename.split('/').slice(0, -1);
+        const rootPath = (pathFragments.length > 0) ? `${pathFragments.join('/')}/` : '';
+        const placeholderPath = external_path_default().resolve(__dirname, `../assets/icon-sets/${this.configHelper.getIconSet()}/thumbnail_not_found.png`);
+        const placeholder = new external_discord_js_namespaceObject.MessageAttachment(placeholderPath, 'thumbnail_not_found.png');
+        const url = this.configHelper.getMoonrakerUrl();
+        if (typeof metaData === 'undefined') {
+            return placeholder;
+        }
+        if (typeof metaData.thumbnails === 'undefined') {
+            return placeholder;
+        }
+        const thumbnailFile = metaData.thumbnails.reduce((prev, current) => { return (prev.size > current.size) ? prev : current; });
+        const thumbnailPath = thumbnailFile.relative_path;
+        const thumbnailURL = encodeURI(`${url}/server/files/gcodes/${rootPath}${thumbnailPath}`);
+        let thumbnail;
+        try {
+            thumbnail = await this.getBase64(thumbnailURL);
+            updateData('meta_data', { thumbnail });
+            logRegular(`retrieved Thumbnail for ${filename}`);
+        }
+        catch (error) {
+            const reason = error;
+            const trace = await stacktrace.get();
+            logEmpty();
+            logError('Thumbnail Error:');
+            logError(`Url: ${thumbnailURL}`);
+            logError(`Error: ${reason}`);
+            if (this.configHelper.traceOnWebErrors()) {
+                logError(trace);
+            }
+            return placeholder;
+        }
+        const thumbnailBuffer = Buffer.from(thumbnail, 'base64');
+        return new external_discord_js_namespaceObject.MessageAttachment(thumbnailBuffer, 'thumbnail.png');
+    }
+    async getBase64(url) {
+        const response = await axios_default().get(url, { responseType: 'arraybuffer',
+            headers: {
+                'X-Api-Key': this.configHelper.getMoonrakerApiKey()
+            } });
+        return Buffer.from(response.data, 'binary').toString('base64');
+    }
+}
+
+;// CONCATENATED MODULE: external "sharp"
+const external_sharp_namespaceObject = require("sharp");
+var external_sharp_default = /*#__PURE__*/__nccwpck_require__.n(external_sharp_namespaceObject);
+;// CONCATENATED MODULE: ./src/helper/WebcamHelper.ts
+
+
+
+
+
+
+
+
+class WebcamHelper {
+    constructor() {
+        this.configHelper = new ConfigHelper();
+    }
+    async retrieveWebcam(moonrakerClient) {
+        this.moonrakerClient = moonrakerClient;
+        const beforeStatus = this.configHelper.getStatusBeforeTasks();
+        const afterStatus = this.configHelper.getStatusAfterTasks();
+        await this.executePostProcess(beforeStatus);
+        try {
+            const res = await axios_default()({
+                method: 'get',
+                responseType: 'arraybuffer',
+                url: this.configHelper.getWebcamUrl(),
+                timeout: 2000
+            });
+            const buffer = Buffer.from(res.data, 'binary');
+            // Only run Jimp if they want the image modifed
+            if (this.configHelper.getWebcamBrightness() ||
+                this.configHelper.getWebcamContrast() ||
+                this.configHelper.isWebcamGreyscale() ||
+                this.configHelper.isWebcamHorizontalMirrored() ||
+                this.configHelper.getWebcamRotation() ||
+                this.configHelper.isWebcamSepia() ||
+                this.configHelper.isWebcamVerticalMirrored()) {
+                const image = external_sharp_default()(Buffer.from(buffer));
+                image
+                    .rotate(this.configHelper.getWebcamRotation())
+                    .flip(this.configHelper.isWebcamVerticalMirrored())
+                    .flop(this.configHelper.isWebcamHorizontalMirrored())
+                    .greyscale(this.configHelper.isWebcamGreyscale());
+                if (this.configHelper.getWebcamBrightness()) {
+                    image.modulate({
+                        brightness: (this.configHelper.getWebcamBrightness() + 1)
+                    });
+                }
+                if (this.configHelper.getWebcamContrast()) {
+                    image.linear(this.configHelper.getWebcamContrast() + 1, -(128 * (this.configHelper.getWebcamContrast() + 1)) + 128);
+                }
+                if (this.configHelper.isWebcamSepia()) {
+                    image.recomb([
+                        [0.3588, 0.7044, 0.1368],
+                        [0.299, 0.587, 0.114],
+                        [0.2392, 0.4696, 0.0912],
+                    ]);
+                }
+                image.png({
+                    quality: this.configHelper.getWebcamQuality()
+                });
+                const editBuffer = await image.toBuffer();
+                await this.executePostProcess(afterStatus);
+                return new external_discord_js_namespaceObject.MessageAttachment(editBuffer, "snapshot.png");
+            }
+            // Else just send the normal images
+            await this.executePostProcess(afterStatus);
+            return new external_discord_js_namespaceObject.MessageAttachment(Buffer.from(buffer), "snapshot.png");
+        }
+        catch (error) {
+            const reason = error;
+            const trace = await stacktrace_default().get();
+            logEmpty();
+            logError('Webcam Error:');
+            logError(`Url: ${this.configHelper.getWebcamUrl()}`);
+            logError(`Error: ${reason}`);
+            if (this.configHelper.traceOnWebErrors()) {
+                logError(trace);
+            }
+            return new external_discord_js_namespaceObject.MessageAttachment((0,external_path_.resolve)(__dirname, `../assets/icon-sets/${this.configHelper.getIconSet()}/snapshot-error.png`), 'snapshot-error.png');
+        }
+    }
+    async triggerWebsite(url, post) {
+        if (post) {
+            await axios_default().post(url);
+            return;
+        }
+        await axios_default().get(url);
+    }
+    async executePostProcess(config) {
+        if (!config.enable || config.execute.length === 0) {
+            return;
+        }
+        await sleep(config.delay);
+        let index = 0;
+        while (index < config.execute.length) {
+            const execute = config.execute[index];
+            if (execute.startsWith("gcode:")) {
+                const gcode = execute.replace("gcode:", "");
+                const id = Math.floor(Math.random() * Number.parseInt("10_000")) + 1;
+                try {
+                    await this.moonrakerClient
+                        .send({ "method": "printer.gcode.script", "params": { "script": gcode }, id }, this.configHelper.getGcodeExecuteTimeout() * 1000);
+                }
+                catch (error) {
+                    logError(error);
+                }
+            }
+            if (execute.startsWith("website_post:")) {
+                const url = execute.replace("website_post:", "");
+                await this.triggerWebsite(url, true);
+            }
+            if (execute.startsWith("website:")) {
+                const url = execute.replace("website:", "");
+                await this.triggerWebsite(url, false);
+            }
+            await sleep(config.delay);
+            index++;
+        }
+        await sleep(config.delay);
+    }
+}
+
+;// CONCATENATED MODULE: ./src/helper/TemplateHelper.ts
 
 
 
@@ -48714,72 +48714,47 @@ class GraphHelper {
 
 
 
-
-class EmbedHelper {
+class TemplateHelper {
     constructor() {
         this.localeHelper = new LocaleHelper();
         this.configHelper = new ConfigHelper();
         this.inputGenerator = new DiscordInputGenerator();
-        this.webcamHelper = new WebcamHelper();
-        this.embedMeta = this.configHelper.getEmbedMeta();
         this.tempHelper = new TempHelper();
         this.versionHelper = new VersionHelper();
         this.graphHelper = new GraphHelper();
+        this.webcamHelper = new WebcamHelper();
     }
-    loadCache() {
-        logRegular("load Embeds Cache...");
-        const embeds = this.embedMeta;
-        const embedsLocale = this.localeHelper.getEmbeds();
-        mergeDeep(embeds, embedsLocale);
-        setData('embeds', embeds);
-    }
-    getEmbeds() {
-        return getEntry('embeds');
-    }
-    getFields() {
-        return getEntry('embeds').fields;
-    }
-    getRawEmbedByTitle(title) {
-        const embeds = this.getEmbeds();
-        for (const embedID in embeds) {
-            const embedData = embeds[embedID];
-            if (embedData.title === title) {
-                return { embedID, embedData };
-            }
+    async parseTemplate(type, id, providedPlaceholders = null, providedFields = null, providedValues = null) {
+        let messageObject = null;
+        switch (type) {
+            case 'modal':
+                messageObject = new external_discord_js_namespaceObject.Modal();
+                break;
+            case 'embed':
+                messageObject = new external_discord_js_namespaceObject.MessageEmbed();
+                break;
         }
-    }
-    getAuthorName(embed) {
-        if (embed.author === null) {
-            return '';
+        if (messageObject === null) {
+            return false;
         }
-        return embed.author.name;
-    }
-    getTitle(embed) {
-        if (embed.title === null) {
-            return '';
+        const unformattedData = getEntry(`${type}s`)[id];
+        if (unformattedData.show_versions) {
+            unformattedData.fields = [...unformattedData.fields, ...this.versionHelper.getFields()];
         }
-        return embed.title;
-    }
-    async generateEmbed(embedID, providedPlaceholders = null, providedFields = null, providedValues = null) {
-        const embed = new external_discord_js_namespaceObject.MessageEmbed();
-        const embedDataUnformatted = { ...this.getEmbeds()[embedID] };
-        if (embedDataUnformatted.show_versions) {
-            embedDataUnformatted.fields = [...embedDataUnformatted.fields, ...this.versionHelper.getFields()];
+        if (unformattedData.show_updates) {
+            unformattedData.fields = [...unformattedData.fields, ...this.versionHelper.getUpdateFields()];
         }
-        if (embedDataUnformatted.show_updates) {
-            embedDataUnformatted.fields = [...embedDataUnformatted.fields, ...this.versionHelper.getUpdateFields()];
-        }
-        if (embedDataUnformatted.show_temps) {
-            embedDataUnformatted.fields = [...embedDataUnformatted.fields, ...this.tempHelper.parseFields().fields];
+        if (unformattedData.show_temps) {
+            unformattedData.fields = [...unformattedData.fields, ...this.tempHelper.parseFields().fields];
         }
         if (providedFields !== null) {
-            mergeDeep(embedDataUnformatted, { fields: providedFields });
+            mergeDeep(unformattedData, { fields: providedFields });
         }
         if (providedValues !== null) {
-            mergeDeep(embedDataUnformatted, providedValues);
+            mergeDeep(unformattedData, providedValues);
         }
-        let embedRaw = JSON.stringify(embedDataUnformatted);
-        const placeholders = embedRaw.matchAll(/(\${).*?}/g);
+        let messageObjectRaw = JSON.stringify(unformattedData);
+        const placeholders = messageObjectRaw.matchAll(/(\${).*?}/g);
         let files = [];
         let components = [];
         const response = {
@@ -48790,53 +48765,53 @@ class EmbedHelper {
                 const placeholderContent = this.parsePlaceholder(placeholder[0], providedPlaceholders);
                 if (!placeholderContent.double_dash) {
                     const endPos = placeholder.index + placeholder[0].length;
-                    embedRaw = embedRaw.slice(0, placeholder.index - 1) +
+                    messageObjectRaw = messageObjectRaw.slice(0, placeholder.index - 1) +
                         placeholderContent.content +
-                        embedRaw.slice(endPos + 1);
+                        messageObjectRaw.slice(endPos + 1);
                 }
                 else {
-                    embedRaw = embedRaw.replace(placeholder[0], placeholderContent.content);
+                    messageObjectRaw = messageObjectRaw.replace(placeholder[0], placeholderContent.content);
                 }
             }
         }
-        const embedData = JSON.parse(embedRaw);
-        const thumbnail = await this.parseImage(embedData.thumbnail);
-        const image = await this.parseImage(embedData.image);
-        const buttons = this.inputGenerator.generateButtons(embedData.buttons);
-        const selection = this.inputGenerator.generateSelection(embedData.selection);
-        //const inputs = this.inputGenerator.generateInputs(embedData.inputs)
+        const messageObjectData = JSON.parse(messageObjectRaw);
+        const thumbnail = await this.parseImage(messageObjectData.thumbnail);
+        const image = await this.parseImage(messageObjectData.image);
+        const buttons = this.inputGenerator.generateButtons(messageObjectData.buttons);
+        const selection = this.inputGenerator.generateSelection(messageObjectData.selection);
+        const inputs = this.inputGenerator.generateInputs(messageObjectData.inputs);
         components.push(selection);
         components.push(buttons);
-        //components.push(inputs)
+        components.push(inputs);
         files = files.filter((element) => { return element != null; });
         components = components.filter((element) => { return element != null; });
-        embed.setTitle(embedData.title);
-        embed.setColor(embedData.color);
-        if (typeof embedData.description !== 'undefined') {
-            embed.setDescription(embedData.description);
+        messageObject.setTitle(messageObjectData.title);
+        messageObject.setColor(messageObjectData.color);
+        if (typeof messageObjectData.description !== 'undefined') {
+            messageObject.setDescription(messageObjectData.description);
         }
-        if (typeof embedData.author !== 'undefined') {
-            embed.setAuthor({ 'name': embedData.author });
+        if (typeof messageObjectData.author !== 'undefined') {
+            messageObject.setAuthor({ 'name': messageObjectData.author });
         }
-        if (typeof embedData.footer !== 'undefined') {
-            embed.setFooter({ 'text': embedData.footer });
+        if (typeof messageObjectData.footer !== 'undefined') {
+            messageObject.setFooter({ 'text': messageObjectData.footer });
         }
         if (typeof thumbnail === 'object') {
             files.push(thumbnail);
-            embed.setThumbnail(`attachment://${thumbnail.name}`);
+            messageObject.setThumbnail(`attachment://${thumbnail.name}`);
         }
         if (typeof image === 'object') {
             files.push(image);
-            embed.setImage(`attachment://${image.name}`);
+            messageObject.setImage(`attachment://${image.name}`);
         }
         if (typeof thumbnail === 'string') {
-            embed.setThumbnail(thumbnail);
+            messageObject.setThumbnail(thumbnail);
         }
         if (typeof image === 'string') {
-            embed.setImage(image);
+            messageObject.setImage(image);
         }
-        if (typeof embedData.fields !== 'undefined') {
-            embedData.fields.forEach(field => {
+        if (typeof messageObjectData.fields !== 'undefined') {
+            messageObjectData.fields.forEach(field => {
                 if (field.name === '') {
                     field.name = 'N/A';
                 }
@@ -48849,34 +48824,22 @@ class EmbedHelper {
                 if (field.value === ' ') {
                     field.value = 'N/A';
                 }
-                embed.addField(field.name, field.value, true);
+                messageObject.addField(field.name, field.value, true);
             });
         }
-        response.embeds = [embed];
+        response.embeds = [messageObject];
         if (components.length > 0) {
             response['components'] = components;
         }
         if (files.length > 0) {
             response['files'] = files;
         }
-        return { embed: response, activity: embedData.activity };
-    }
-    async parseImage(imageID) {
-        const metadataHelper = new MetadataHelper();
-        if (typeof imageID === 'undefined') {
-            return;
+        switch (type) {
+            case 'embed':
+                return { embed: response, activity: messageObjectData.activity };
+            case 'modal':
+                return messageObject;
         }
-        if (imageID === 'webcam') {
-            return this.webcamHelper.retrieveWebcam(getMoonrakerClient());
-        }
-        if (imageID === 'thumbnail') {
-            return metadataHelper.getThumbnail(findValue('state.print_stats.filename'));
-        }
-        if (imageID === 'tempGraph') {
-            return await this.graphHelper.getTempGraph();
-        }
-        const imagePath = external_path_.resolve(__dirname, `../assets/icon-sets/${this.configHelper.getIconSet()}/${imageID}`);
-        return new external_discord_js_namespaceObject.MessageAttachment(imagePath, imageID);
     }
     parsePlaceholder(placeholder, providedPlaceholders = null) {
         const placeholderId = placeholder
@@ -48936,6 +48899,76 @@ class EmbedHelper {
             return webhookStateMessage;
         }
         return printerInfoStateMessage;
+    }
+    async parseImage(imageID) {
+        const metadataHelper = new MetadataHelper();
+        if (typeof imageID === 'undefined') {
+            return;
+        }
+        if (imageID === 'webcam') {
+            return this.webcamHelper.retrieveWebcam(getMoonrakerClient());
+        }
+        if (imageID === 'thumbnail') {
+            return metadataHelper.getThumbnail(findValue('state.print_stats.filename'));
+        }
+        if (imageID === 'tempGraph') {
+            return await this.graphHelper.getTempGraph();
+        }
+        const imagePath = external_path_default().resolve(__dirname, `../assets/icon-sets/${this.configHelper.getIconSet()}/${imageID}`);
+        return new external_discord_js_namespaceObject.MessageAttachment(imagePath, imageID);
+    }
+}
+
+;// CONCATENATED MODULE: ./src/helper/EmbedHelper.ts
+
+
+
+
+
+
+class EmbedHelper {
+    constructor() {
+        this.localeHelper = new LocaleHelper();
+        this.configHelper = new ConfigHelper();
+        this.embedMeta = this.configHelper.getEmbedMeta();
+        this.templateHelper = new TemplateHelper();
+    }
+    loadCache() {
+        logRegular("load Embeds Cache...");
+        const embeds = this.embedMeta;
+        const embedsLocale = this.localeHelper.getEmbeds();
+        mergeDeep(embeds, embedsLocale);
+        setData('embeds', embeds);
+    }
+    getEmbeds() {
+        return getEntry('embeds');
+    }
+    getFields() {
+        return getEntry('embeds').fields;
+    }
+    getRawEmbedByTitle(title) {
+        const embeds = this.getEmbeds();
+        for (const embedID in embeds) {
+            const embedData = embeds[embedID];
+            if (embedData.title === title) {
+                return { embedID, embedData };
+            }
+        }
+    }
+    getAuthorName(embed) {
+        if (embed.author === null) {
+            return '';
+        }
+        return embed.author.name;
+    }
+    getTitle(embed) {
+        if (embed.title === null) {
+            return '';
+        }
+        return embed.title;
+    }
+    async generateEmbed(embedID, providedPlaceholders = null, providedFields = null, providedValues = null) {
+        return await this.templateHelper.parseTemplate('embed', embedID, providedPlaceholders, providedFields, providedValues);
     }
 }
 
@@ -52418,7 +52451,7 @@ class ModalHelper {
     constructor() {
         this.localeHelper = new LocaleHelper();
         this.configHelper = new ConfigHelper();
-        this.inputGenerator = new DiscordInputGenerator();
+        this.templateHelper = new TemplateHelper();
     }
     loadCache() {
         logRegular("load Modals Cache...");
@@ -52429,6 +52462,8 @@ class ModalHelper {
     }
     getModals() {
         return getEntry('modals');
+    }
+    async generateModal(modalID, providedPlaceholders = null) {
     }
 }
 
@@ -52902,7 +52937,7 @@ module.exports = JSON.parse('[[[0,44],"disallowed_STD3_valid"],[[45,46],"valid"]
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(909);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(52);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()
