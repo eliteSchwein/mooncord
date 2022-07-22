@@ -47828,20 +47828,31 @@ class DiscordInputGenerator {
         row.addComponents(selection);
         return row;
     }
-    generateInputs(inputData) {
-        if (typeof inputData === 'undefined') {
+    generateInputs(inputIDs) {
+        const row = new external_discord_js_namespaceObject.MessageActionRow();
+        if (typeof (inputIDs) === 'undefined') {
+            return;
+        }
+        for (const index in inputIDs) {
+            const inputId = inputIDs[index];
+            row.addComponents(this.generateInput(inputId));
+        }
+        if (row.components.length === 0) {
+            return;
+        }
+        return row;
+    }
+    generateInput(inputId) {
+        if (typeof inputId === 'undefined') {
             return;
         }
         const cache = getEntry('inputs');
-        const inputMeta = cache[inputData.id];
-        const row = new external_discord_js_namespaceObject.MessageActionRow();
-        const input = new external_discord_js_namespaceObject.TextInputComponent()
-            .setCustomId(inputData.id)
+        const inputMeta = cache[inputId];
+        return new external_discord_js_namespaceObject.TextInputComponent()
+            .setCustomId(inputId)
             .setLabel(inputMeta.label)
             .setStyle(inputMeta.style)
             .setValue(String(inputMeta.value));
-        row.addComponents(input);
-        return row;
     }
     generateButton(buttonId) {
         const cache = getEntry("buttons");
@@ -48786,7 +48797,9 @@ class TemplateHelper {
         files = files.filter((element) => { return element != null; });
         components = components.filter((element) => { return element != null; });
         messageObject.setTitle(messageObjectData.title);
-        messageObject.setColor(messageObjectData.color);
+        if (typeof messageObjectData.color !== 'undefined') {
+            messageObject.setColor(messageObjectData.color);
+        }
         if (typeof messageObjectData.description !== 'undefined') {
             messageObject.setDescription(messageObjectData.description);
         }
@@ -48838,6 +48851,8 @@ class TemplateHelper {
             case 'embed':
                 return { embed: response, activity: messageObjectData.activity };
             case 'modal':
+                messageObject.setCustomId(id);
+                messageObject.addComponents(components);
                 return messageObject;
         }
     }
@@ -50511,6 +50526,10 @@ class ConfigCommand {
         this.execute(interaction);
     }
     async execute(interaction) {
+        if (interaction.options.getSubcommand() === this.syntaxLocale.commands.config.options.edit.name) {
+            await interaction.showModal(await this.modalHelper.generateModal('config_edit'));
+            return;
+        }
         await interaction.deferReply();
         if (interaction.options.getSubcommand() === this.syntaxLocale.commands.config.options.get.name) {
             const pageHelper = new PageHelper('configs_download');
@@ -50521,10 +50540,6 @@ class ConfigCommand {
         }
         if (interaction.options.getSubcommand() === this.syntaxLocale.commands.config.options.upload.name) {
             await this.uploadConfiguration(interaction);
-            return;
-        }
-        if (interaction.options.getSubcommand() === this.syntaxLocale.commands.config.options.edit.name) {
-            await interaction.showModal(await this.modalHelper.generateModal('config_edit'));
             return;
         }
     }

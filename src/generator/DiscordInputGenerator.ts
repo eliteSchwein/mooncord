@@ -1,7 +1,7 @@
 import {ConfigHelper} from "../helper/ConfigHelper";
 import {limitString, mergeDeep, parsePageData} from "../helper/DataHelper";
 
-import {setData, getEntry, getHeaterChoices} from "../utils/CacheUtil";
+import {getEntry, getHeaterChoices, setData} from "../utils/CacheUtil";
 import {MessageActionRow, MessageButton, MessageSelectMenu, TextInputComponent} from "discord.js";
 import {LocaleHelper} from "../helper/LocaleHelper";
 import {MCUHelper} from "../helper/MCUHelper";
@@ -92,24 +92,37 @@ export class DiscordInputGenerator {
         return row
     }
 
-    public generateInputs(inputData) {
-        if(typeof inputData === 'undefined') {
+    public generateInputs(inputIDs: []) {
+        const row = new MessageActionRow()
+
+        if(typeof(inputIDs) === 'undefined') { return }
+
+        for(const index in inputIDs) {
+            const inputId = inputIDs[index]
+
+            row.addComponents(this.generateInput(inputId))
+        }
+
+        if(row.components.length === 0) {
+            return
+        }
+
+        return row
+    }
+
+    public generateInput(inputId) {
+        if(typeof inputId === 'undefined') {
             return
         }
 
         const cache = getEntry('inputs')
-        const inputMeta = cache[inputData.id]
-        const row = new MessageActionRow()
+        const inputMeta = cache[inputId]
 
-        const input = new TextInputComponent()
-            .setCustomId(inputData.id)
+        return new TextInputComponent()
+            .setCustomId(inputId)
             .setLabel(inputMeta.label)
             .setStyle(inputMeta.style)
             .setValue(String(inputMeta.value))
-
-        row.addComponents(input)
-
-        return row
     }
 
     public generateButton(buttonId: string) {

@@ -98,7 +98,10 @@ export class TemplateHelper {
         components = components.filter((element) => { return element != null})
 
         messageObject.setTitle(messageObjectData.title)
-        messageObject.setColor(messageObjectData.color)
+
+        if(typeof messageObjectData.color !== 'undefined') {
+            messageObject.setColor(messageObjectData.color)
+        }
 
         if(typeof messageObjectData.description !== 'undefined') {
             messageObject.setDescription(messageObjectData.description)
@@ -154,6 +157,8 @@ export class TemplateHelper {
             case 'embed':
                 return {embed: response, activity: messageObjectData.activity}
             case 'modal':
+                messageObject.setCustomId(id)
+                messageObject.addComponents(components)
                 return messageObject
         }
     }

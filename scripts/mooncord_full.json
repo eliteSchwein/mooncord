@@ -806,10 +806,9 @@
     },
     "modal_meta": {
         "config_edit": {
-            "inputs": {
-                "id": "temp_input",
-                "value": 0
-            }
+            "inputs": [
+                "temp_input"
+            ]
         }
     },
     "input_meta": {
