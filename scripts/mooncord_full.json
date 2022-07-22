@@ -587,10 +587,6 @@
             "color": "#0099ff",
             "thumbnail": "temps.png",
             "buttons": ["to_temps"],
-            "inputs": {
-                "id": "temp_input",
-                "value": 0
-            },
             "fields": [],
             "show_temps": true
         },

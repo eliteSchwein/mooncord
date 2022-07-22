@@ -25,5 +25,6 @@ export class ModalHelper {
     }
 
     public async generateModal(modalID: string, providedPlaceholders = null) {
+        return await this.templateHelper.parseTemplate('modal', modalID, providedPlaceholders)
     }
 }

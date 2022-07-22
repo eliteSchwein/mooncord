@@ -15,7 +15,7 @@ export class DiscordInputGenerator {
     public generateInputCache() {
         this.generateCacheForSection('buttons');
         this.generateCacheForSection('selections');
-        //this.generateCacheForSection('inputs');
+        this.generateCacheForSection('inputs');
     }
 
     protected generateCacheForSection(section: string) {

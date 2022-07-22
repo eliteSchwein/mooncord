@@ -47771,7 +47771,7 @@ class DiscordInputGenerator {
     generateInputCache() {
         this.generateCacheForSection('buttons');
         this.generateCacheForSection('selections');
-        //this.generateCacheForSection('inputs');
+        this.generateCacheForSection('inputs');
     }
     generateCacheForSection(section) {
         let sectionConfig = this.localeHelper.getLocale()[section];
@@ -50458,7 +50458,36 @@ class ServiceHelper {
     }
 }
 
+;// CONCATENATED MODULE: ./src/helper/ModalHelper.ts
+
+
+
+
+
+
+class ModalHelper {
+    constructor() {
+        this.localeHelper = new LocaleHelper();
+        this.configHelper = new ConfigHelper();
+        this.templateHelper = new TemplateHelper();
+    }
+    loadCache() {
+        logRegular("load Modals Cache...");
+        const modals = this.configHelper.getModalMeta();
+        const modalsMeta = this.localeHelper.getModals();
+        mergeDeep(modals, modalsMeta);
+        setData('modals', modals);
+    }
+    getModals() {
+        return getEntry('modals');
+    }
+    async generateModal(modalID, providedPlaceholders = null) {
+        return await this.templateHelper.parseTemplate('modal', modalID, providedPlaceholders);
+    }
+}
+
 ;// CONCATENATED MODULE: ./src/events/discord/interactions/commands/ConfigCommand.ts
+
 
 
 
@@ -50474,6 +50503,7 @@ class ConfigCommand {
         this.locale = this.localeHelper.getLocale();
         this.syntaxLocale = this.localeHelper.getSyntaxLocale();
         this.embedHelper = new EmbedHelper();
+        this.modalHelper = new ModalHelper();
         this.serviceHelper = new ServiceHelper();
         if (commandId !== 'config') {
             return;
@@ -50491,6 +50521,10 @@ class ConfigCommand {
         }
         if (interaction.options.getSubcommand() === this.syntaxLocale.commands.config.options.upload.name) {
             await this.uploadConfiguration(interaction);
+            return;
+        }
+        if (interaction.options.getSubcommand() === this.syntaxLocale.commands.config.options.edit.name) {
+            await interaction.showModal(await this.modalHelper.generateModal('config_edit'));
             return;
         }
     }
@@ -52437,33 +52471,6 @@ class SchedulerHelper {
     async requestPrintInfo() {
         const printerInfo = await this.moonrakerClient.send({ "method": "printer.info" });
         updateData('printer_info', printerInfo.result);
-    }
-}
-
-;// CONCATENATED MODULE: ./src/helper/ModalHelper.ts
-
-
-
-
-
-
-class ModalHelper {
-    constructor() {
-        this.localeHelper = new LocaleHelper();
-        this.configHelper = new ConfigHelper();
-        this.templateHelper = new TemplateHelper();
-    }
-    loadCache() {
-        logRegular("load Modals Cache...");
-        const modals = this.configHelper.getModalMeta();
-        const modalsMeta = this.localeHelper.getModals();
-        mergeDeep(modals, modalsMeta);
-        setData('modals', modals);
-    }
-    getModals() {
-        return getEntry('modals');
-    }
-    async generateModal(modalID, providedPlaceholders = null) {
     }
 }
 

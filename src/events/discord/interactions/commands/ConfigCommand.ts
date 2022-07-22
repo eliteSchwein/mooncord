@@ -12,6 +12,7 @@ import FormData from "form-data";
 import {ConfigHelper} from "../../../../helper/ConfigHelper";
 import {uploadAttachment} from "../../../../helper/DataHelper";
 import {ServiceHelper} from "../../../../helper/ServiceHelper";
+import {ModalHelper} from "../../../../helper/ModalHelper";
 
 export class ConfigCommand {
     protected databaseUtil = getDatabase()
@@ -20,6 +21,7 @@ export class ConfigCommand {
     protected locale = this.localeHelper.getLocale()
     protected syntaxLocale = this.localeHelper.getSyntaxLocale()
     protected embedHelper = new EmbedHelper()
+    protected modalHelper = new ModalHelper()
     protected serviceHelper = new ServiceHelper()
 
     public constructor(interaction: CommandInteraction, commandId: string) {
@@ -44,6 +46,11 @@ export class ConfigCommand {
 
         if(interaction.options.getSubcommand() === this.syntaxLocale.commands.config.options.upload.name) {
             await this.uploadConfiguration(interaction)
+            return
+        }
+
+        if(interaction.options.getSubcommand() === this.syntaxLocale.commands.config.options.edit.name) {
+            await interaction.showModal(await this.modalHelper.generateModal('config_edit'))
             return
         }
     }
