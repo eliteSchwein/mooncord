@@ -48372,7 +48372,7 @@ class GraphHelper {
             const tempPowers = this.getTempValues(tempHistoryRequest.result[rawTempSensor].powers);
             chartConfig.data.datasets.push({
                 'label': tempSensor,
-                'borderColor': this.tempCache.colors[tempSensor].color,
+                'borderColor': this.tempCache.colors[rawTempSensor].color,
                 'fill': false,
                 'data': tempValues,
                 'yAxisID': 'temp'
@@ -48414,8 +48414,8 @@ class GraphHelper {
             }
             chartConfig.data.datasets.push({
                 'label': `${tempSensor}_target`,
-                'backgroundColor': this.tempCache.colors[tempSensor].color + '35',
-                'borderColor': this.tempCache.colors[tempSensor].color + '00',
+                'backgroundColor': this.tempCache.colors[rawTempSensor].color + '35',
+                'borderColor': this.tempCache.colors[rawTempSensor].color + '00',
                 'data': tempTargets,
                 'yAxisID': 'temp'
             });
