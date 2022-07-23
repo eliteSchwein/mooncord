@@ -53,7 +53,7 @@ export class SelectInteraction {
 
         await sleep(2000)
 
-        if(interaction.replied || interaction.deferred) { return }
+        if(interaction.replied || interaction.deferred || interaction.isModalSubmit()) { return }
 
         await interaction.reply(this.localeHelper.getCommandNotReadyError(interaction.user.tag))
     }

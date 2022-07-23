@@ -25,9 +25,7 @@ export class TempHelper {
                 continue
             }
 
-            const sensorTitle = this.parseFieldTitle(cacheKey)
-
-            colorCache[sensorTitle] = {
+            colorCache[cacheKey] = {
                 icon: this.chartConfigSection.colors[this.colorIndex].icon,
                 color: this.chartConfigSection.colors[this.colorIndex].color
             }
@@ -108,7 +106,7 @@ export class TempHelper {
 
                 mappingData.fields.color = {
                     label: '${embeds.fields.color}',
-                    icon: this.tempCache.colors[title].icon
+                    icon: this.tempCache.colors[cacheKey].icon
                 }
             }
 

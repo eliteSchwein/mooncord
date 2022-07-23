@@ -36,9 +36,6 @@
         }
       }
     },
-    "edit": {
-      "type": "subcommand"
-    },
     "get": {
       "type": "subcommand"
     }

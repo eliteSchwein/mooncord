@@ -31,10 +31,6 @@ export class ConfigCommand {
     }
 
     protected async execute(interaction: CommandInteraction) {
-        if(interaction.options.getSubcommand() === this.syntaxLocale.commands.config.options.edit.name) {
-            await interaction.showModal(await this.modalHelper.generateModal('config_edit'))
-            return
-        }
 
         await interaction.deferReply()
 

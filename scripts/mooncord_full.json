@@ -355,13 +355,6 @@
             }
         },
         "inputs": {
-            "temp_input": {
-                "command_assign": "temp",
-                "botadmin": true,
-                "guildadmin": false,
-                "users": [],
-                "roles": []
-            }
         }
     },
     "webcam": {
@@ -422,10 +415,9 @@
                 "last_page_configs_download",
                 "next_page_configs_download"
             ],
-            "selection": {
-                "id": "config_file_download",
-                "data": "${raw_entries}"
-            }
+            "selections": [
+                "config_file_download"
+            ]
         },
         "gcode_files": {
             "color": "#0099ff",
@@ -433,10 +425,9 @@
             "buttons": [
                 "last_page_printlist",
                 "next_page_printlist"],
-            "selection": {
-                "id": "printlist_view_printjob",
-                "data": "${raw_entries}"
-            }
+            "selections": [
+                "printlist_view_printjob"
+            ]
         },
         "info": {
             "color": "#0099ff",
@@ -576,10 +567,9 @@
             "thumbnail": "temps.png",
             "image": "tempGraph",
             "buttons": [],
-            "selection": {
-                "id": "show_temp",
-                "data": "${raw_entries}"
-            },
+            "selections": [
+                "show_temp"
+            ],
             "fields": [],
             "show_temps": true
         },
@@ -617,10 +607,9 @@
         "systeminfo_cpu": {
             "color": "#0099ff",
             "thumbnail": "cpu.png",
-            "selection": {
-                "id": "systeminfo_select",
-                "data": "${raw_entries}"
-            },
+            "selections": [
+                "systeminfo_select"
+            ],
             "fields": [
                 {
                     "name": "${embeds.fields.cores}",
@@ -655,10 +644,9 @@
         "systeminfo_memory": {
             "color": "#0099ff",
             "thumbnail": "memory.png",
-            "selection": {
-                "id": "systeminfo_select",
-                "data": "${raw_entries}"
-            },
+            "selections": [
+                "systeminfo_select"
+            ],
             "fields": [
                 {
                     "name": "${embeds.fields.total_ram}",
@@ -701,10 +689,9 @@
         "systeminfo_system": {
             "color": "#0099ff",
             "thumbnail": "system.png",
-            "selection": {
-                "id": "systeminfo_select",
-                "data": "${raw_entries}"
-            },
+            "selections": [
+                "systeminfo_select"
+            ],
             "fields": [
                 {
                     "name": "${embeds.fields.system_load}",
@@ -735,10 +722,9 @@
         "systeminfo_mcu": {
             "color": "#0099ff",
             "thumbnail": "mcu.png",
-            "selection": {
-                "id": "systeminfo_select",
-                "data": "${raw_entries}"
-            },
+            "selections": [
+                "systeminfo_select"
+            ],
             "fields": [
                 {
                     "name": "${embeds.fields.chipset}",
@@ -765,10 +751,9 @@
         "systeminfo_update": {
             "color": "#fbff00",
             "thumbnail": "update.png",
-            "selection": {
-                "id": "systeminfo_select",
-                "data": "${raw_entries}"
-            },
+            "selections": [
+                "systeminfo_select"
+            ],
             "buttons": ["update_system"],
             "fields": [],
             "show_updates": true
@@ -805,18 +790,9 @@
         }
     },
     "modal_meta": {
-        "config_edit": {
-            "inputs": [
-                "temp_input"
-            ]
-        }
     },
     "input_meta": {
         "inputs": {
-            "temp_input": {
-                "style": "SHORT",
-                "permission_mapping": "temp"
-            }
         },
         "buttons": {
             "next_page_configs_download": {
@@ -979,24 +955,28 @@
             "config_file_download": {
                 "min_value": 1,
                 "max_value": 1,
-                "option_value": "${data.name}"
+                "option_value": "${data.name}",
+                "data": "${raw_entries}"
             },
             "printlist_view_printjob": {
                 "min_value": 1,
                 "max_value": 1,
-                "option_value": "${data.path}"
+                "option_value": "${data.path}",
+                "data": "${raw_entries}"
             },
             "systeminfo_select": {
                 "min_value": 1,
                 "max_value": 1,
                 "option_value": "${data.value}",
-                "mcu_options": true
+                "mcu_options": true,
+                "data": "${raw_entries}"
             },
             "show_temp": {
                 "min_value": 1,
                 "max_value": 1,
                 "option_value": "${data.value}",
-                "heater_options": true
+                "heater_options": true,
+                "data": "${raw_entries}"
             }
         }
     },

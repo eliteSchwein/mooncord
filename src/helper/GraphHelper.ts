@@ -139,7 +139,7 @@ export class GraphHelper {
                     'lineStyle': {
                         'type': 'dashed'
                     },
-                    'borderColor': this.tempCache.colors[tempSensor].color,
+                    'borderColor': this.tempCache.colors[rawTempSensor].color,
                     'backgroundColor': 'rgba(0,0,0,0)',
                     'data': parsedTempPowers,
                     'borderDash': [5,10],

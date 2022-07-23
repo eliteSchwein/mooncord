@@ -1,8 +1,5 @@
 {
     "modals": {
-        "config_edit": {
-            "title": "Edit ${filename}"
-        }
     },
     "pages": {
         "gcode_files": {
@@ -398,10 +395,6 @@
                         }
                     }
                 },
-                "edit": {
-                    "name": "edit",
-                    "description": "Modify a configuration file"
-                },
                 "get": {
                     "name": "get",
                     "description": "Download a configuration file"
@@ -616,8 +609,5 @@
         }
     },
     "inputs": {
-        "temp_input": {
-            "label": "Set a Temp for ${heater}"
-        }
     }
 }

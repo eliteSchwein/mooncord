@@ -37,7 +37,7 @@ export class TemplateHelper {
             return false
         }
 
-        const unformattedData = getEntry(`${type}s`)[id]
+        const unformattedData = Object.assign({}, getEntry(`${type}s`)[id])
 
         if(unformattedData.show_versions) {
             unformattedData.fields = [...unformattedData.fields, ...this.versionHelper.getFields()]
@@ -49,6 +49,18 @@ export class TemplateHelper {
 
         if(unformattedData.show_temps) {
             unformattedData.fields = [...unformattedData.fields, ...this.tempHelper.parseFields().fields]
+        }
+
+        if(unformattedData.buttons) {
+            unformattedData.buttons = this.getInputData('buttons', unformattedData.buttons)
+        }
+
+        if(unformattedData.selections) {
+            unformattedData.selections = this.getInputData('selections', unformattedData.selections)
+        }
+
+        if(unformattedData.inputs) {
+            unformattedData.inputs = this.getInputData('inputs', unformattedData.inputs)
         }
 
         if(providedFields !== null) {
@@ -70,14 +82,19 @@ export class TemplateHelper {
 
         if(placeholders !== null) {
             for(const placeholder of placeholders) {
-                const placeholderContent = this.parsePlaceholder(placeholder[0],providedPlaceholders)
+                const placeholderId = String(placeholder).match(/(\${).*?}/g)[0]
+                const placeholderContent = this.parsePlaceholder(placeholderId,providedPlaceholders)
+
+                if(placeholderContent.content === null || placeholderContent.content === '') { continue }
+
                 if(!placeholderContent.double_dash) {
-                    const endPos = placeholder.index + placeholder[0].length
-                    messageObjectRaw = messageObjectRaw.slice(0,placeholder.index-1) +
+                    const startPos = messageObjectRaw.indexOf(placeholderId)
+                    const endPos = startPos + placeholderId.length
+                    messageObjectRaw = messageObjectRaw.slice(0,startPos-1) +
                         placeholderContent.content +
                         messageObjectRaw.slice(endPos+1)
                 } else {
-                    messageObjectRaw = messageObjectRaw.replace(placeholder[0], placeholderContent.content)
+                    messageObjectRaw = messageObjectRaw.replace(placeholderId, placeholderContent.content)
                 }
             }
         }
@@ -87,10 +104,10 @@ export class TemplateHelper {
         const thumbnail = await this.parseImage(messageObjectData.thumbnail)
         const image = await this.parseImage(messageObjectData.image)
         const buttons = this.inputGenerator.generateButtons(messageObjectData.buttons)
-        const selection = this.inputGenerator.generateSelection(messageObjectData.selection)
+        const selections = this.inputGenerator.generateSelections(messageObjectData.selections)
         const inputs = this.inputGenerator.generateInputs(messageObjectData.inputs)
 
-        components.push(selection)
+        components.push(selections)
         components.push(buttons)
         components.push(inputs)
 
@@ -251,5 +268,18 @@ export class TemplateHelper {
 
         const imagePath = path.resolve(__dirname, `../assets/icon-sets/${this.configHelper.getIconSet()}/${imageID}`)
         return new MessageAttachment(imagePath, imageID)
+    }
+
+    protected getInputData(type: string, data: []) {
+        const inputData = []
+        const metaData = Object.assign({}, getEntry(type))
+
+        for(const inputId of data) {
+            const inputMetaData = metaData[inputId]
+            inputMetaData.id = inputId
+            inputData.push(inputMetaData)
+        }
+
+        return inputData
     }
 }

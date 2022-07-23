@@ -2,7 +2,7 @@ import {findValue} from "../utils/CacheUtil";
 import {ConfigHelper} from "./ConfigHelper";
 import axios from "axios";
 import FormData from "form-data";
-import {logError, logNotice, logRegular} from "./LoggerHelper";
+import {logError, logNotice} from "./LoggerHelper";
 import {MessageAttachment} from "discord.js";
 
 export function isObject(item) {
@@ -58,17 +58,16 @@ export function limitString(input:string, length: number) {
 }
 
 export function parsePageData(rawData: string, data) {
-    const parsedData = rawData.replace(/(\${data).*?(})/g, (match) => {
+    return rawData.replace(/(\${data).*?(})/g, (match) => {
         const dataProperty = match
             .replace(/(\${data.)/g, '')
             .replace(/(})/g, '')
 
-        if(typeof data[dataProperty] === 'undefined') {
+        if (typeof data[dataProperty] === 'undefined') {
             return match
         }
         return data[dataProperty]
     })
-    return parsedData
 }
 
 export function stripAnsi(input: string) {

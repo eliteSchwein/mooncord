@@ -47339,7 +47339,7 @@ function limitString(input, length) {
     return input.slice(0, length);
 }
 function parsePageData(rawData, data) {
-    const parsedData = rawData.replace(/(\${data).*?(})/g, (match) => {
+    return rawData.replace(/(\${data).*?(})/g, (match) => {
         const dataProperty = match
             .replace(/(\${data.)/g, '')
             .replace(/(})/g, '');
@@ -47348,7 +47348,6 @@ function parsePageData(rawData, data) {
         }
         return data[dataProperty];
     });
-    return parsedData;
 }
 function stripAnsi(input) {
     return input.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, '');
@@ -47611,7 +47610,7 @@ class ConfigHelper {
 }
 
 ;// CONCATENATED MODULE: ./src/meta/command_structure.json
-const command_structure_namespaceObject = JSON.parse('{"admin":{"role":{"type":"subcommand","options":{"role":{"type":"role","required":true}}},"user":{"type":"subcommand","options":{"user":{"type":"user","required":true}}}},"config":{"save":{"type":"subcommand"},"upload":{"type":"subcommand","options":{"file":{"type":"attachment","required":true},"directory":{"type":"string","required":false}}},"edit":{"type":"subcommand"},"get":{"type":"subcommand"}},"preheat":{"preset":{"type":"subcommand","options":{"preset":{"type":"string","required":true,"choices":"${preheatProfileChoices}"}}},"manual":{"type":"subcommand","options":"${heaterArguments}"}},"tune":{"speed":{"type":"integer"},"flow":{"type":"integer"}},"pidtune":{"heater":{"type":"string","required":true,"choices":"${heaterChoices}"},"temperature":{"type":"integer","required":true}},"dump":{"section":{"type":"string","required":true,"choices":[{"value":"database"},{"value":"cache"}]}},"reset_database":{},"editchannel":{"channel":{"type":"channel","required":false}},"emergency_stop":{},"fileinfo":{"file":{"type":"string","required":true}},"get_user_id":{"user":{"type":"user","required":false}},"restart":{"service":{"type":"string","required":true,"choices":"${serviceChoices}"}},"get_log":{"log_file":{"type":"string","required":true,"choices":[{"name":"Klipper","value":"klippy"},{"name":"Moonraker","value":"moonraker"},{"name":"MoonCord","value":"mooncord"}]}},"info":{},"listgcodes":{},"notify":{},"printjob":{"pause":{"type":"subcommand"},"cancel":{"type":"subcommand"},"resume":{"type":"subcommand"},"start":{"type":"subcommand","options":{"file":{"type":"string","required":true}}}},"status":{},"systeminfo":{},"temp":{}}');
+const command_structure_namespaceObject = JSON.parse('{"admin":{"role":{"type":"subcommand","options":{"role":{"type":"role","required":true}}},"user":{"type":"subcommand","options":{"user":{"type":"user","required":true}}}},"config":{"save":{"type":"subcommand"},"upload":{"type":"subcommand","options":{"file":{"type":"attachment","required":true},"directory":{"type":"string","required":false}}},"get":{"type":"subcommand"}},"preheat":{"preset":{"type":"subcommand","options":{"preset":{"type":"string","required":true,"choices":"${preheatProfileChoices}"}}},"manual":{"type":"subcommand","options":"${heaterArguments}"}},"tune":{"speed":{"type":"integer"},"flow":{"type":"integer"}},"pidtune":{"heater":{"type":"string","required":true,"choices":"${heaterChoices}"},"temperature":{"type":"integer","required":true}},"dump":{"section":{"type":"string","required":true,"choices":[{"value":"database"},{"value":"cache"}]}},"reset_database":{},"editchannel":{"channel":{"type":"channel","required":false}},"emergency_stop":{},"fileinfo":{"file":{"type":"string","required":true}},"get_user_id":{"user":{"type":"user","required":false}},"restart":{"service":{"type":"string","required":true,"choices":"${serviceChoices}"}},"get_log":{"log_file":{"type":"string","required":true,"choices":[{"name":"Klipper","value":"klippy"},{"name":"Moonraker","value":"moonraker"},{"name":"MoonCord","value":"mooncord"}]}},"info":{},"listgcodes":{},"notify":{},"printjob":{"pause":{"type":"subcommand"},"cancel":{"type":"subcommand"},"resume":{"type":"subcommand"},"start":{"type":"subcommand","options":{"file":{"type":"string","required":true}}}},"status":{},"systeminfo":{},"temp":{}}');
 ;// CONCATENATED MODULE: ./src/meta/command_option_types.json
 const command_option_types_namespaceObject = JSON.parse('{"subcommand":1,"subcommand_group":2,"string":3,"integer":4,"boolean":5,"user":6,"channel":7,"role":8,"mentionable":9,"number":10,"attachment":11}');
 ;// CONCATENATED MODULE: ./src/generator/DiscordCommandGenerator.ts
@@ -47781,90 +47780,78 @@ class DiscordInputGenerator {
         mergeDeep(sectionConfig, this.inputMeta[section]);
         setData(section, sectionConfig);
     }
-    generateButtons(buttonIDs) {
+    generateButtons(buttons) {
         const row = new external_discord_js_namespaceObject.MessageActionRow();
-        if (typeof (buttonIDs) === 'undefined') {
+        if (typeof (buttons) === 'undefined') {
             return;
         }
-        for (const index in buttonIDs) {
-            const buttonId = buttonIDs[index];
-            row.addComponents(this.generateButton(buttonId));
+        if (buttons.length === 0) {
+            return;
+        }
+        for (const buttonData of buttons) {
+            row.addComponents(new external_discord_js_namespaceObject.MessageButton()
+                .setCustomId(buttonData.id)
+                .setEmoji(buttonData.emoji)
+                .setLabel(buttonData.label)
+                .setStyle(buttonData.style));
         }
         if (row.components.length === 0) {
             return;
         }
         return row;
     }
-    generateSelection(selectionData) {
-        if (typeof selectionData === 'undefined') {
-            return;
-        }
-        const cache = getEntry('selections');
-        const selectionMeta = cache[selectionData.id];
+    generateSelections(selections) {
         const row = new external_discord_js_namespaceObject.MessageActionRow();
-        const selection = new external_discord_js_namespaceObject.MessageSelectMenu()
-            .setCustomId(selectionData.id)
-            .setPlaceholder(selectionMeta.label)
-            .setMinValues(selectionMeta.min_value)
-            .setMaxValues(selectionMeta.max_value);
-        if (typeof selectionMeta.options !== 'undefined') {
-            selectionData.data = selectionMeta.options;
-        }
-        if (selectionMeta.heater_options) {
-            selectionData.data = [...selectionData.data, ...getHeaterChoices()];
-        }
-        if (selectionMeta.mcu_options) {
-            selectionData.data = [...selectionData.data, ...this.mcuHelper.getMCUOptions()];
-        }
-        for (const data of selectionData.data) {
-            const selectionMetaRaw = JSON.stringify(selectionMeta);
-            const selectionMetaParsed = JSON.parse(parsePageData(selectionMetaRaw, data));
-            selection.addOptions([{
-                    label: limitString(selectionMetaParsed.option_label, 100),
-                    description: limitString(selectionMetaParsed.option_description, 100),
-                    value: limitString(selectionMetaParsed.option_value, 100)
-                }]);
-        }
-        row.addComponents(selection);
-        return row;
-    }
-    generateInputs(inputIDs) {
-        const row = new external_discord_js_namespaceObject.MessageActionRow();
-        if (typeof (inputIDs) === 'undefined') {
+        if (typeof selections === 'undefined') {
             return;
         }
-        for (const index in inputIDs) {
-            const inputId = inputIDs[index];
-            row.addComponents(this.generateInput(inputId));
-        }
-        if (row.components.length === 0) {
+        if (selections.length === 0) {
             return;
+        }
+        for (const selectionData of selections) {
+            const selection = new external_discord_js_namespaceObject.MessageSelectMenu();
+            selection.setCustomId(selectionData.id)
+                .setPlaceholder(String(selectionData.label))
+                .setMinValues(selectionData.min_value)
+                .setMaxValues(selectionData.max_value);
+            if (typeof selectionData.options !== 'undefined') {
+                selectionData.data = selectionData.options;
+            }
+            if (selectionData.heater_options) {
+                selectionData.data = [...selectionData.data, ...getHeaterChoices()];
+            }
+            if (selectionData.mcu_options) {
+                selectionData.data = [...selectionData.data, ...this.mcuHelper.getMCUOptions()];
+            }
+            for (const data of selectionData.data) {
+                const selectionMetaRaw = JSON.stringify(selectionData);
+                const selectionMetaParsed = JSON.parse(parsePageData(selectionMetaRaw, data));
+                selection.addOptions([{
+                        label: limitString(selectionMetaParsed.option_label, 100),
+                        description: limitString(selectionMetaParsed.option_description, 100),
+                        value: limitString(selectionMetaParsed.option_value, 100)
+                    }]);
+            }
+            row.addComponents(selection);
         }
         return row;
     }
-    generateInput(inputId) {
-        if (typeof inputId === 'undefined') {
+    generateInputs(inputs) {
+        const row = new external_discord_js_namespaceObject.MessageActionRow();
+        if (typeof (inputs) === 'undefined') {
             return;
         }
-        const cache = getEntry('inputs');
-        const inputMeta = cache[inputId];
-        return new external_discord_js_namespaceObject.TextInputComponent()
-            .setCustomId(inputId)
-            .setLabel(inputMeta.label)
-            .setStyle(inputMeta.style)
-            .setValue(String(inputMeta.value));
-    }
-    generateButton(buttonId) {
-        const cache = getEntry("buttons");
-        const buttonMeta = cache[buttonId];
-        const button = new external_discord_js_namespaceObject.MessageButton()
-            .setCustomId(buttonId)
-            .setLabel(buttonMeta.label)
-            .setStyle(buttonMeta.style);
-        if (typeof (buttonMeta.emoji) !== 'undefined') {
-            button.setEmoji(buttonMeta.emoji);
+        if (inputs.length === 0) {
+            return;
         }
-        return button;
+        for (const inputData of inputs) {
+            row.addComponents(new external_discord_js_namespaceObject.TextInputComponent()
+                .setCustomId(inputData.id)
+                .setLabel(inputData.label)
+                .setStyle(inputData.style)
+                .setValue(String(inputData.value)));
+        }
+        return row;
     }
 }
 
@@ -47892,8 +47879,7 @@ class TempHelper {
             if (!temperatureSensors.includes(cacheKeySplit[0])) {
                 continue;
             }
-            const sensorTitle = this.parseFieldTitle(cacheKey);
-            colorCache[sensorTitle] = {
+            colorCache[cacheKey] = {
                 icon: this.chartConfigSection.colors[this.colorIndex].icon,
                 color: this.chartConfigSection.colors[this.colorIndex].color
             };
@@ -47955,7 +47941,7 @@ class TempHelper {
                 this.tempMeta.temperature_sensors.includes(key)) {
                 mappingData.fields.color = {
                     label: '${embeds.fields.color}',
-                    icon: this.tempCache.colors[title].icon
+                    icon: this.tempCache.colors[cacheKey].icon
                 };
             }
             if (typeof cacheData[cacheKey].temperature !== 'undefined' &&
@@ -48405,7 +48391,7 @@ class GraphHelper {
                     'lineStyle': {
                         'type': 'dashed'
                     },
-                    'borderColor': this.tempCache.colors[tempSensor].color,
+                    'borderColor': this.tempCache.colors[rawTempSensor].color,
                     'backgroundColor': 'rgba(0,0,0,0)',
                     'data': parsedTempPowers,
                     'borderDash': [5, 10],
@@ -48748,7 +48734,7 @@ class TemplateHelper {
         if (messageObject === null) {
             return false;
         }
-        const unformattedData = getEntry(`${type}s`)[id];
+        const unformattedData = Object.assign({}, getEntry(`${type}s`)[id]);
         if (unformattedData.show_versions) {
             unformattedData.fields = [...unformattedData.fields, ...this.versionHelper.getFields()];
         }
@@ -48757,6 +48743,15 @@ class TemplateHelper {
         }
         if (unformattedData.show_temps) {
             unformattedData.fields = [...unformattedData.fields, ...this.tempHelper.parseFields().fields];
+        }
+        if (unformattedData.buttons) {
+            unformattedData.buttons = this.getInputData('buttons', unformattedData.buttons);
+        }
+        if (unformattedData.selections) {
+            unformattedData.selections = this.getInputData('selections', unformattedData.selections);
+        }
+        if (unformattedData.inputs) {
+            unformattedData.inputs = this.getInputData('inputs', unformattedData.inputs);
         }
         if (providedFields !== null) {
             mergeDeep(unformattedData, { fields: providedFields });
@@ -48773,15 +48768,20 @@ class TemplateHelper {
         };
         if (placeholders !== null) {
             for (const placeholder of placeholders) {
-                const placeholderContent = this.parsePlaceholder(placeholder[0], providedPlaceholders);
+                const placeholderId = String(placeholder).match(/(\${).*?}/g)[0];
+                const placeholderContent = this.parsePlaceholder(placeholderId, providedPlaceholders);
+                if (placeholderContent.content === null || placeholderContent.content === '') {
+                    continue;
+                }
                 if (!placeholderContent.double_dash) {
-                    const endPos = placeholder.index + placeholder[0].length;
-                    messageObjectRaw = messageObjectRaw.slice(0, placeholder.index - 1) +
+                    const startPos = messageObjectRaw.indexOf(placeholderId);
+                    const endPos = startPos + placeholderId.length;
+                    messageObjectRaw = messageObjectRaw.slice(0, startPos - 1) +
                         placeholderContent.content +
                         messageObjectRaw.slice(endPos + 1);
                 }
                 else {
-                    messageObjectRaw = messageObjectRaw.replace(placeholder[0], placeholderContent.content);
+                    messageObjectRaw = messageObjectRaw.replace(placeholderId, placeholderContent.content);
                 }
             }
         }
@@ -48789,9 +48789,9 @@ class TemplateHelper {
         const thumbnail = await this.parseImage(messageObjectData.thumbnail);
         const image = await this.parseImage(messageObjectData.image);
         const buttons = this.inputGenerator.generateButtons(messageObjectData.buttons);
-        const selection = this.inputGenerator.generateSelection(messageObjectData.selection);
+        const selections = this.inputGenerator.generateSelections(messageObjectData.selections);
         const inputs = this.inputGenerator.generateInputs(messageObjectData.inputs);
-        components.push(selection);
+        components.push(selections);
         components.push(buttons);
         components.push(inputs);
         files = files.filter((element) => { return element != null; });
@@ -48931,6 +48931,16 @@ class TemplateHelper {
         }
         const imagePath = external_path_default().resolve(__dirname, `../assets/icon-sets/${this.configHelper.getIconSet()}/${imageID}`);
         return new external_discord_js_namespaceObject.MessageAttachment(imagePath, imageID);
+    }
+    getInputData(type, data) {
+        const inputData = [];
+        const metaData = Object.assign({}, getEntry(type));
+        for (const inputId of data) {
+            const inputMetaData = metaData[inputId];
+            inputMetaData.id = inputId;
+            inputData.push(inputMetaData);
+        }
+        return inputData;
     }
 }
 
@@ -50526,10 +50536,6 @@ class ConfigCommand {
         this.execute(interaction);
     }
     async execute(interaction) {
-        if (interaction.options.getSubcommand() === this.syntaxLocale.commands.config.options.edit.name) {
-            await interaction.showModal(await this.modalHelper.generateModal('config_edit'));
-            return;
-        }
         await interaction.deferReply();
         if (interaction.options.getSubcommand() === this.syntaxLocale.commands.config.options.get.name) {
             const pageHelper = new PageHelper('configs_download');
@@ -50906,7 +50912,7 @@ class SelectInteraction {
         void new ShowTempSelection(interaction, selectId);
         void new DownloadConfig(interaction, selectId);
         await sleep(2000);
-        if (interaction.replied || interaction.deferred) {
+        if (interaction.replied || interaction.deferred || interaction.isModalSubmit()) {
             return;
         }
         await interaction.reply(this.localeHelper.getCommandNotReadyError(interaction.user.tag));

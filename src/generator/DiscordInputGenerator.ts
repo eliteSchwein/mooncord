@@ -1,10 +1,11 @@
 import {ConfigHelper} from "../helper/ConfigHelper";
 import {limitString, mergeDeep, parsePageData} from "../helper/DataHelper";
 
-import {getEntry, getHeaterChoices, setData} from "../utils/CacheUtil";
+import {getHeaterChoices, setData} from "../utils/CacheUtil";
 import {MessageActionRow, MessageButton, MessageSelectMenu, TextInputComponent} from "discord.js";
 import {LocaleHelper} from "../helper/LocaleHelper";
 import {MCUHelper} from "../helper/MCUHelper";
+import {TextInputStyles} from "discord.js/typings/enums";
 
 export class DiscordInputGenerator {
     protected config = new ConfigHelper()
@@ -30,15 +31,20 @@ export class DiscordInputGenerator {
         setData(section, sectionConfig)
     }
 
-    public generateButtons(buttonIDs: []) {
+    public generateButtons(buttons) {
         const row = new MessageActionRow()
 
-        if(typeof(buttonIDs) === 'undefined') { return }
+        if(typeof(buttons) === 'undefined') { return }
+        if(buttons.length === 0) { return }
 
-        for(const index in buttonIDs) {
-            const buttonId = buttonIDs[index]
-
-            row.addComponents(this.generateButton(buttonId))
+        for (const buttonData of buttons) {
+            row.addComponents(
+                new MessageButton()
+                    .setCustomId(buttonData.id)
+                    .setEmoji(buttonData.emoji)
+                    .setLabel(buttonData.label)
+                    .setStyle(buttonData.style)
+            )
         }
 
         if(row.components.length === 0) {
@@ -48,95 +54,65 @@ export class DiscordInputGenerator {
         return row
     }
 
-    public generateSelection(selectionData) {
-        if(typeof selectionData === 'undefined') {
-            return
-        }
-
-        const cache = getEntry('selections')
-        const selectionMeta = cache[selectionData.id]
+    public generateSelections(selections) {
         const row = new MessageActionRow()
 
-        const selection = new MessageSelectMenu()
-            .setCustomId(selectionData.id)
-            .setPlaceholder(selectionMeta.label)
-            .setMinValues(selectionMeta.min_value)
-            .setMaxValues(selectionMeta.max_value)
+        if(typeof selections === 'undefined') { return }
+        if(selections.length === 0) { return }
 
-        if(typeof selectionMeta.options !== 'undefined') {
-            selectionData.data = selectionMeta.options
-        }
+        for (const selectionData of selections) {
+            const selection = new MessageSelectMenu()
+            selection.setCustomId(selectionData.id)
+                .setPlaceholder(String(selectionData.label))
+                .setMinValues(selectionData.min_value)
+                .setMaxValues(selectionData.max_value)
 
-        if(selectionMeta.heater_options) {
-            selectionData.data = [...selectionData.data, ...getHeaterChoices()]
-        }
+            if(typeof selectionData.options !== 'undefined') {
+                selectionData.data = selectionData.options
+            }
 
-        if(selectionMeta.mcu_options) {
-            selectionData.data = [...selectionData.data, ...this.mcuHelper.getMCUOptions()]
-        }
+            if(selectionData.heater_options) {
+                selectionData.data = [...selectionData.data, ...getHeaterChoices()]
+            }
 
-        for(const data of selectionData.data) {
-            const selectionMetaRaw = JSON.stringify(selectionMeta)
+            if(selectionData.mcu_options) {
+                selectionData.data = [...selectionData.data, ...this.mcuHelper.getMCUOptions()]
+            }
 
-            const selectionMetaParsed = JSON.parse(parsePageData(selectionMetaRaw, data))
+            for(const data of selectionData.data) {
+                const selectionMetaRaw = JSON.stringify(selectionData)
 
-            selection.addOptions([{
-                label: limitString(selectionMetaParsed.option_label, 100),
-                description: limitString(selectionMetaParsed.option_description, 100),
-                value: limitString(selectionMetaParsed.option_value, 100)
-            }])
-        }
+                const selectionMetaParsed = JSON.parse(parsePageData(selectionMetaRaw, data))
 
-        row.addComponents(selection)
+                selection.addOptions([{
+                    label: limitString(selectionMetaParsed.option_label, 100),
+                    description: limitString(selectionMetaParsed.option_description, 100),
+                    value: limitString(selectionMetaParsed.option_value, 100)
+                }])
+            }
 
-        return row
-    }
-
-    public generateInputs(inputIDs: []) {
-        const row = new MessageActionRow()
-
-        if(typeof(inputIDs) === 'undefined') { return }
-
-        for(const index in inputIDs) {
-            const inputId = inputIDs[index]
-
-            row.addComponents(this.generateInput(inputId))
-        }
-
-        if(row.components.length === 0) {
-            return
+            row.addComponents(selection)
         }
 
         return row
     }
 
-    public generateInput(inputId) {
-        if(typeof inputId === 'undefined') {
-            return
+    public generateInputs(inputs) {
+        const row = new MessageActionRow()
+
+        if(typeof(inputs) === 'undefined') { return }
+        if(inputs.length === 0) { return }
+
+        for (const inputData of inputs) {
+            row.addComponents(
+                new TextInputComponent()
+                    .setCustomId(inputData.id)
+                    .setLabel(inputData.label)
+                    .setStyle(inputData.style)
+                    .setValue(String(inputData.value))
+            )
         }
 
-        const cache = getEntry('inputs')
-        const inputMeta = cache[inputId]
-
-        return new TextInputComponent()
-            .setCustomId(inputId)
-            .setLabel(inputMeta.label)
-            .setStyle(inputMeta.style)
-            .setValue(String(inputMeta.value))
-    }
-
-    public generateButton(buttonId: string) {
-        const cache = getEntry("buttons")
-        const buttonMeta = cache[buttonId]
-
-        const button = new MessageButton()
-            .setCustomId(buttonId)
-            .setLabel(buttonMeta.label)
-            .setStyle(buttonMeta.style)
-
-        if(typeof(buttonMeta.emoji) !== 'undefined') {
-            button.setEmoji(buttonMeta.emoji)
-        }
-        return button
+        return row
     }
 }
