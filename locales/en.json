@@ -1,5 +1,8 @@
 {
     "modals": {
+        "temp_target": {
+            "title": "Set Target Temperature for ${heater}"
+        }
     },
     "pages": {
         "gcode_files": {
@@ -296,6 +299,9 @@
         },
         "to_temps": {
             "label": "to Temps"
+        },
+        "change_temp": {
+            "label": "set Target"
         },
         "clear_file": {
             "label": "Clear File"
@@ -609,5 +615,8 @@
         }
     },
     "inputs": {
+        "temp_target_input": {
+            "label": "Target Temperature"
+        }
     }
 }

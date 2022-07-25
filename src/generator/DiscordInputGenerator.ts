@@ -5,7 +5,6 @@ import {getHeaterChoices, setData} from "../utils/CacheUtil";
 import {MessageActionRow, MessageButton, MessageSelectMenu, TextInputComponent} from "discord.js";
 import {LocaleHelper} from "../helper/LocaleHelper";
 import {MCUHelper} from "../helper/MCUHelper";
-import {TextInputStyles} from "discord.js/typings/enums";
 
 export class DiscordInputGenerator {
     protected config = new ConfigHelper()

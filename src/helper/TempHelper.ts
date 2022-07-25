@@ -20,8 +20,9 @@ export class TempHelper {
 
         for(const cacheKey in this.cache) {
             const cacheKeySplit = cacheKey.split(' ')
+            const keySearch = cacheKeySplit[0].replace(/\d/g,'')
 
-            if(!temperatureSensors.includes(cacheKeySplit[0])) {
+            if(!temperatureSensors.includes(keySearch)) {
                 continue
             }
 
@@ -161,8 +162,9 @@ export class TempHelper {
 
         for(const cacheKey in this.cache) {
             const cacheKeySplit = cacheKey.split(' ')
+            const keySearch = cacheKeySplit[0].replace(/\d/g,'')
 
-            if(cacheKeySplit[0] === key) {
+            if(keySearch === key) {
                 result[cacheKey] = this.cache[cacheKey]
             }
         }

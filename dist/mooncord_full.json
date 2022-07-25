@@ -212,6 +212,20 @@
                 "guildadmin": false,
                 "users": [],
                 "roles": []
+            },
+            "to_temp": {
+                "command_assign": "temp",
+                "botadmin": true,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
+            "change_temp": {
+                "command_assign": "temp",
+                "botadmin": true,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
             }
         },
         "commands": {
@@ -355,6 +369,13 @@
             }
         },
         "inputs": {
+            "temp_target_input": {
+                "command_assign": "temp",
+                "botadmin": true,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            }
         }
     },
     "webcam": {
@@ -576,7 +597,7 @@
         "single_temperature": {
             "color": "#0099ff",
             "thumbnail": "temps.png",
-            "buttons": ["to_temps"],
+            "buttons": ["to_temps", "change_temp"],
             "fields": [],
             "show_temps": true
         },
@@ -790,9 +811,18 @@
         }
     },
     "modal_meta": {
+        "temp_target": {
+            "inputs": [
+                "temp_target_input"
+            ]
+        }
     },
     "input_meta": {
         "inputs": {
+            "temp_target_input": {
+                "style": "SHORT",
+                "permission_mapping": "temp"
+            }
         },
         "buttons": {
             "next_page_configs_download": {
@@ -882,6 +912,14 @@
                 "style":"SECONDARY",
                 "function_mapping": {
                     "show_embed": "temperatures"
+                }
+            },
+            "change_temp": {
+                "emoji": "♨",
+                "style":"SECONDARY",
+                "function_mapping": {
+                    "show_modal": "temp_target",
+                    "modal_delete_message": false
                 }
             },
             "printjob_delete_accept": {

@@ -46974,7 +46974,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 52:
+/***/ 168:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -47876,7 +47876,8 @@ class TempHelper {
         const temperatureSensors = this.tempMeta.temperature_sensors;
         for (const cacheKey in this.cache) {
             const cacheKeySplit = cacheKey.split(' ');
-            if (!temperatureSensors.includes(cacheKeySplit[0])) {
+            const keySearch = cacheKeySplit[0].replace(/\d/g, '');
+            if (!temperatureSensors.includes(keySearch)) {
                 continue;
             }
             colorCache[cacheKey] = {
@@ -47983,7 +47984,8 @@ class TempHelper {
         const result = {};
         for (const cacheKey in this.cache) {
             const cacheKeySplit = cacheKey.split(' ');
-            if (cacheKeySplit[0] === key) {
+            const keySearch = cacheKeySplit[0].replace(/\d/g, '');
+            if (keySearch === key) {
                 result[cacheKey] = this.cache[cacheKey];
             }
         }
@@ -49558,7 +49560,57 @@ class EmbedButton {
     }
 }
 
+;// CONCATENATED MODULE: ./src/helper/ModalHelper.ts
+
+
+
+
+
+
+class ModalHelper {
+    constructor() {
+        this.localeHelper = new LocaleHelper();
+        this.configHelper = new ConfigHelper();
+        this.templateHelper = new TemplateHelper();
+    }
+    loadCache() {
+        logRegular("load Modals Cache...");
+        const modals = this.configHelper.getModalMeta();
+        const modalsMeta = this.localeHelper.getModals();
+        mergeDeep(modals, modalsMeta);
+        setData('modals', modals);
+    }
+    getModals() {
+        return getEntry('modals');
+    }
+    async generateModal(modalID, providedPlaceholders = null) {
+        return await this.templateHelper.parseTemplate('modal', modalID, providedPlaceholders);
+    }
+}
+
+;// CONCATENATED MODULE: ./src/events/discord/interactions/buttons/ModalButton.ts
+
+
+class ModalButton {
+    constructor() {
+        this.modalHelper = new ModalHelper();
+        this.templateHelper = new TemplateHelper();
+    }
+    async execute(interaction, buttonData) {
+        if (typeof buttonData.function_mapping.show_modal === 'undefined') {
+            return;
+        }
+        const modal = await this.modalHelper.generateModal(buttonData.function_mapping.show_modal);
+        const currentMessage = interaction.message;
+        if (buttonData.function_mapping.modal_delete_message) {
+            await currentMessage.delete();
+        }
+        await interaction.showModal(modal);
+    }
+}
+
 ;// CONCATENATED MODULE: ./src/events/discord/interactions/ButtonInteraction.ts
+
 
 
 
@@ -49613,6 +49665,7 @@ class ButtonInteraction {
                 return;
             }
         }
+        await new ModalButton().execute(interaction, buttonData);
         await new PrintJobStartButton().execute(interaction, buttonData);
         await new MessageButton().execute(interaction, buttonData);
         await new EmbedButton().execute(interaction, buttonData);
@@ -50480,34 +50533,6 @@ class ServiceHelper {
             return service;
         }
         return false;
-    }
-}
-
-;// CONCATENATED MODULE: ./src/helper/ModalHelper.ts
-
-
-
-
-
-
-class ModalHelper {
-    constructor() {
-        this.localeHelper = new LocaleHelper();
-        this.configHelper = new ConfigHelper();
-        this.templateHelper = new TemplateHelper();
-    }
-    loadCache() {
-        logRegular("load Modals Cache...");
-        const modals = this.configHelper.getModalMeta();
-        const modalsMeta = this.localeHelper.getModals();
-        mergeDeep(modals, modalsMeta);
-        setData('modals', modals);
-    }
-    getModals() {
-        return getEntry('modals');
-    }
-    async generateModal(modalID, providedPlaceholders = null) {
-        return await this.templateHelper.parseTemplate('modal', modalID, providedPlaceholders);
     }
 }
 
@@ -52965,7 +52990,7 @@ module.exports = JSON.parse('[[[0,44],"disallowed_STD3_valid"],[[45,46],"valid"]
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(52);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(168);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()
