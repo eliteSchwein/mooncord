@@ -1,2 +1,6 @@
 node_modules/
 .idea/
+dist/presets/
+temp/cache_dump.json
+temp/log.log
+temp/database_dump.json
