@@ -46974,7 +46974,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 168:
+/***/ 1168:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -48858,6 +48858,8 @@ class TemplateHelper {
                 return messageObject;
         }
     }
+    parsePlaceholdersFromTemplate(type, id, message) {
+    }
     parsePlaceholder(placeholder, providedPlaceholders = null) {
         const placeholderId = placeholder
             .replace(/(\${)/g, '')
@@ -48921,6 +48923,9 @@ class TemplateHelper {
         const metadataHelper = new MetadataHelper();
         if (typeof imageID === 'undefined') {
             return;
+        }
+        if (imageID.startsWith('http')) {
+            return imageID;
         }
         if (imageID === 'webcam') {
             return this.webcamHelper.retrieveWebcam(getMoonrakerClient());
@@ -52990,7 +52995,7 @@ module.exports = JSON.parse('[[[0,44],"disallowed_STD3_valid"],[[45,46],"valid"]
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(168);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(1168);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()

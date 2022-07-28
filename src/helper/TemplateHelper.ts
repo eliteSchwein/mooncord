@@ -1,7 +1,7 @@
 import {LocaleHelper} from "./LocaleHelper";
 import {ConfigHelper} from "./ConfigHelper";
 import {DiscordInputGenerator} from "../generator/DiscordInputGenerator";
-import {MessageAttachment, MessageEmbed, Modal} from "discord.js";
+import {Message, MessageAttachment, MessageEmbed, Modal} from "discord.js";
 import {findValue, getEntry} from "../utils/CacheUtil";
 import {mergeDeep, parseCalculatedPlaceholder} from "./DataHelper";
 import {TempHelper} from "./TempHelper";
@@ -180,6 +180,10 @@ export class TemplateHelper {
         }
     }
 
+    public parsePlaceholdersFromTemplate(type: string, id: string, message: Message) {
+
+    }
+
     protected parsePlaceholder(placeholder: string,providedPlaceholders = null) {
         const placeholderId = placeholder
             .replace(/(\${)/g,'')
@@ -253,6 +257,10 @@ export class TemplateHelper {
     protected async parseImage(imageID: string) {
         const metadataHelper = new MetadataHelper()
         if(typeof imageID === 'undefined') { return }
+
+        if(imageID.startsWith('http')) {
+            return imageID
+        }
 
         if(imageID === 'webcam') {
             return this.webcamHelper.retrieveWebcam(app.getMoonrakerClient())
