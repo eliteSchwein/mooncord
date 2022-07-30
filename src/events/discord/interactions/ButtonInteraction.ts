@@ -16,7 +16,7 @@ import {MessageButton} from "./buttons/MessageButton";
 import {ReconnectButton} from "./buttons/ReconnectButton";
 import {UpdateButton} from "./buttons/UpdateButton";
 import {EmbedButton} from "./buttons/EmbedButton";
-import {ModalButton} from "./buttons/ModalButton";
+import {TempModalButton} from "./buttons/TempModalButton";
 
 export class ButtonInteraction {
     protected config = new ConfigHelper()
@@ -61,7 +61,7 @@ export class ButtonInteraction {
             }
         }
 
-        await new ModalButton().execute(interaction, buttonData)
+        await new TempModalButton().execute(interaction, buttonData)
         await new PrintJobStartButton().execute(interaction, buttonData)
         await new MessageButton().execute(interaction, buttonData)
         await new EmbedButton().execute(interaction, buttonData)

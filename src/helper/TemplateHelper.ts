@@ -21,22 +21,7 @@ export class TemplateHelper {
     protected graphHelper = new GraphHelper()
     protected webcamHelper = new WebcamHelper()
 
-    public async parseTemplate(type: string, id: string,providedPlaceholders = null, providedFields = null, providedValues = null) {
-        let messageObject = null
-
-        switch (type) {
-            case 'modal':
-                messageObject = new Modal()
-                break
-            case 'embed':
-                messageObject = new MessageEmbed()
-                break
-        }
-
-        if(messageObject === null) {
-            return false
-        }
-
+    public parseRawTemplate(type: string, id: string) {
         const unformattedData = Object.assign({}, getEntry(`${type}s`)[id])
 
         if(unformattedData.show_versions) {
@@ -62,6 +47,27 @@ export class TemplateHelper {
         if(unformattedData.inputs) {
             unformattedData.inputs = this.getInputData('inputs', unformattedData.inputs)
         }
+
+        return unformattedData
+    }
+
+    public async parseTemplate(type: string, id: string,providedPlaceholders = null, providedFields = null, providedValues = null) {
+        let messageObject = null
+
+        switch (type) {
+            case 'modal':
+                messageObject = new Modal()
+                break
+            case 'embed':
+                messageObject = new MessageEmbed()
+                break
+        }
+
+        if(messageObject === null) {
+            return false
+        }
+
+        const unformattedData = this.parseRawTemplate(type, id)
 
         if(providedFields !== null) {
             mergeDeep(unformattedData, {fields: providedFields})
@@ -178,10 +184,6 @@ export class TemplateHelper {
                 messageObject.addComponents(components)
                 return messageObject
         }
-    }
-
-    public parsePlaceholdersFromTemplate(type: string, id: string, message: Message) {
-
     }
 
     protected parsePlaceholder(placeholder: string,providedPlaceholders = null) {

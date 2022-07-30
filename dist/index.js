@@ -46974,7 +46974,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 1168:
+/***/ 7279:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -47991,6 +47991,9 @@ class TempHelper {
         }
         return result;
     }
+    getTargetForSensor(sensor) {
+        console.log();
+    }
 }
 
 ;// CONCATENATED MODULE: ./src/helper/VersionHelper.ts
@@ -48723,19 +48726,7 @@ class TemplateHelper {
         this.graphHelper = new GraphHelper();
         this.webcamHelper = new WebcamHelper();
     }
-    async parseTemplate(type, id, providedPlaceholders = null, providedFields = null, providedValues = null) {
-        let messageObject = null;
-        switch (type) {
-            case 'modal':
-                messageObject = new external_discord_js_namespaceObject.Modal();
-                break;
-            case 'embed':
-                messageObject = new external_discord_js_namespaceObject.MessageEmbed();
-                break;
-        }
-        if (messageObject === null) {
-            return false;
-        }
+    parseRawTemplate(type, id) {
         const unformattedData = Object.assign({}, getEntry(`${type}s`)[id]);
         if (unformattedData.show_versions) {
             unformattedData.fields = [...unformattedData.fields, ...this.versionHelper.getFields()];
@@ -48755,6 +48746,22 @@ class TemplateHelper {
         if (unformattedData.inputs) {
             unformattedData.inputs = this.getInputData('inputs', unformattedData.inputs);
         }
+        return unformattedData;
+    }
+    async parseTemplate(type, id, providedPlaceholders = null, providedFields = null, providedValues = null) {
+        let messageObject = null;
+        switch (type) {
+            case 'modal':
+                messageObject = new external_discord_js_namespaceObject.Modal();
+                break;
+            case 'embed':
+                messageObject = new external_discord_js_namespaceObject.MessageEmbed();
+                break;
+        }
+        if (messageObject === null) {
+            return false;
+        }
+        const unformattedData = this.parseRawTemplate(type, id);
         if (providedFields !== null) {
             mergeDeep(unformattedData, { fields: providedFields });
         }
@@ -48857,8 +48864,6 @@ class TemplateHelper {
                 messageObject.addComponents(components);
                 return messageObject;
         }
-    }
-    parsePlaceholdersFromTemplate(type, id, message) {
     }
     parsePlaceholder(placeholder, providedPlaceholders = null) {
         const placeholderId = placeholder
@@ -49593,20 +49598,30 @@ class ModalHelper {
     }
 }
 
-;// CONCATENATED MODULE: ./src/events/discord/interactions/buttons/ModalButton.ts
+;// CONCATENATED MODULE: ./src/events/discord/interactions/buttons/TempModalButton.ts
 
 
-class ModalButton {
+
+
+class TempModalButton {
     constructor() {
         this.modalHelper = new ModalHelper();
+        this.embedHelper = new EmbedHelper();
         this.templateHelper = new TemplateHelper();
     }
     async execute(interaction, buttonData) {
-        if (typeof buttonData.function_mapping.show_modal === 'undefined') {
+        if (typeof buttonData.function_mapping.show_temp_modal === 'undefined') {
             return;
         }
-        const modal = await this.modalHelper.generateModal(buttonData.function_mapping.show_modal);
+        const rawEmbedTemplate = this.templateHelper.parseRawTemplate('embed', 'single_temperature');
+        const rawTitle = rawEmbedTemplate.title.replace(/(\${.*})/g, 'PLACEHOLDER').split('PLACEHOLDER');
         const currentMessage = interaction.message;
+        let tempSensor = currentMessage.embeds[0].title;
+        for (const rawTitlePartial of rawTitle) {
+            tempSensor = tempSensor.replace(rawTitlePartial, '');
+        }
+        const sensorTarget = getEntry('state')[tempSensor].target;
+        const modal = await this.modalHelper.generateModal('temp_target', { 'heater': tempSensor, 'target_temp': sensorTarget });
         if (buttonData.function_mapping.modal_delete_message) {
             await currentMessage.delete();
         }
@@ -49670,7 +49685,7 @@ class ButtonInteraction {
                 return;
             }
         }
-        await new ModalButton().execute(interaction, buttonData);
+        await new TempModalButton().execute(interaction, buttonData);
         await new PrintJobStartButton().execute(interaction, buttonData);
         await new MessageButton().execute(interaction, buttonData);
         await new EmbedButton().execute(interaction, buttonData);
@@ -52995,7 +53010,7 @@ module.exports = JSON.parse('[[[0,44],"disallowed_STD3_valid"],[[45,46],"valid"]
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(1168);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(7279);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()

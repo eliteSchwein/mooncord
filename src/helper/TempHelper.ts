@@ -171,4 +171,8 @@ export class TempHelper {
 
         return result
     }
+
+    public getTargetForSensor(sensor: string) {
+        console.log()
+    }
 }

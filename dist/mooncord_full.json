@@ -821,7 +821,8 @@
         "inputs": {
             "temp_target_input": {
                 "style": "SHORT",
-                "permission_mapping": "temp"
+                "permission_mapping": "temp",
+                "value": "${target_temp}"
             }
         },
         "buttons": {
@@ -918,7 +919,7 @@
                 "emoji": "♨",
                 "style":"SECONDARY",
                 "function_mapping": {
-                    "show_modal": "temp_target",
+                    "show_temp_modal": true,
                     "modal_delete_message": false
                 }
             },
