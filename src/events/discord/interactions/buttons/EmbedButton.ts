@@ -1,5 +1,4 @@
 import {ButtonInteraction, Message} from "discord.js";
-import {findValue} from "../../../../utils/CacheUtil";
 import {EmbedHelper} from "../../../../helper/EmbedHelper";
 
 export class EmbedButton {

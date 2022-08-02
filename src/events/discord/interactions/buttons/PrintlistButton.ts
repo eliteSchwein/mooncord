@@ -1,10 +1,8 @@
 import {ButtonInteraction, Message} from "discord.js";
-import {getEntry} from "../../../../utils/CacheUtil";
 import {getDatabase, getMoonrakerClient} from "../../../../Application";
 import {EmbedHelper} from "../../../../helper/EmbedHelper";
 import {ConfigHelper} from "../../../../helper/ConfigHelper";
 import {LocaleHelper} from "../../../../helper/LocaleHelper";
-import {logNotice} from "../../../../helper/LoggerHelper";
 import {PageHelper} from "../../../../helper/PageHelper";
 
 export class PrintlistButton {

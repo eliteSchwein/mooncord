@@ -1,13 +1,18 @@
-import {getEntry, setData, updateData} from "../utils/CacheUtil";
+import {findValue, getEntry, updateData} from "../utils/CacheUtil";
 import {formatPercent} from "./DataHelper";
 import {ConfigHelper} from "./ConfigHelper";
 import {logRegular} from "./LoggerHelper";
+import {CommandInteraction} from "discord.js";
+import * as App from "../Application"
+import {LocaleHelper} from "./LocaleHelper";
 
 export class TempHelper {
     protected cache = getEntry('state')
     protected configHelper = new ConfigHelper()
+    protected localeHelper = new LocaleHelper()
     protected tempMeta = this.configHelper.getTempMeta()
     protected chartConfigSection = this.configHelper.getGraphConfig('temp_history')
+    protected locale = this.localeHelper.getLocale()
     protected tempCache = getEntry('temps')
     protected colorIndex = 0
 
@@ -172,7 +177,31 @@ export class TempHelper {
         return result
     }
 
-    public getTargetForSensor(sensor: string) {
-        console.log()
+    public async setHeaterTemp(heater: string, heaterTemp: number) {
+        const heaterData = findValue(`state.configfile.config.${heater}`)
+        const heaterMaxTemp = Number(heaterData.max_temp)
+        const heaterMinTemp = Number(heaterData.min_temp)
+
+        if(heaterTemp === null) { return false }
+
+        if(heaterTemp > heaterMaxTemp) {
+            return this.locale.messages.errors.preheat_over_max
+                .replace(/(\${max_temp})/g, heaterMaxTemp)
+                .replace(/(\${temp})/g, heaterTemp)
+        }
+
+        if(heaterTemp < heaterMinTemp) {
+            return this.locale.messages.errors.preheat_below_min
+                .replace(/(\${min_temp})/g, heaterMinTemp)
+                .replace(/(\${temp})/g, heaterTemp)
+        }
+        await this.heatHeater(heater, heaterTemp)
+
+        return true
+    }
+
+    public async heatHeater(heater: string, temp: number) {
+        logRegular(`set Temperatur of ${heater} to ${temp}C°...`)
+        await App.getMoonrakerClient().send({"method": "printer.gcode.script", "params": {"script": `SET_HEATER_TEMPERATURE HEATER=${heater} TARGET=${temp}`}})
     }
 }

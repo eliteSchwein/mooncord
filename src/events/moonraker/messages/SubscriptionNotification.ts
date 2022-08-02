@@ -1,8 +1,6 @@
-import {findValue, getEntry, setData, updateData} from "../../../utils/CacheUtil";
+import {findValue, getEntry, updateData} from "../../../utils/CacheUtil";
 import {StatusHelper} from "../../../helper/StatusHelper";
-import { MetadataHelper } from "../../../helper/MetadataHelper";
-import { updateTimes } from "../../../helper/TimeHelper";
-import { updateLayers } from "../../../helper/LayerHelper";
+import {MetadataHelper} from "../../../helper/MetadataHelper";
 import {UsageHelper} from "../../../helper/UsageHelper";
 
 export class SubscriptionNotification {

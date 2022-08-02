@@ -1,8 +1,7 @@
 import {ConfigHelper} from '../helper/ConfigHelper'
-import {ConstantBackoff, LinearBackoff, Websocket, WebsocketBuilder, WebsocketEvents} from 'websocket-ts'
+import {Websocket, WebsocketBuilder, WebsocketEvents} from 'websocket-ts'
 import {APIKeyHelper} from '../helper/APIKeyHelper'
 import {waitUntil} from 'async-wait-until'
-import * as util from 'util'
 import {
     changePath,
     changeTempPath,
@@ -13,12 +12,10 @@ import {
     logWarn,
     unhookTempLog
 } from '../helper/LoggerHelper'
-import {findValue, getEntry, getLogPath, setData} from '../utils/CacheUtil'
+import {getLogPath, setData} from '../utils/CacheUtil'
 import {MessageHandler} from "../events/moonraker/MessageHandler";
 import {FileListHelper} from "../helper/FileListHelper";
 import {MetadataHelper} from "../helper/MetadataHelper";
-import {SchedulerHelper} from "../helper/SchedulerHelper";
-import { getObjectValue } from '../helper/DataHelper'
 import * as App from '../Application'
 import {StatusHelper} from "../helper/StatusHelper";
 import {TempHelper} from "../helper/TempHelper";

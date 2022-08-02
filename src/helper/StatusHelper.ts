@@ -5,7 +5,7 @@ import {LocaleHelper} from "./LocaleHelper";
 import {logRegular} from "./LoggerHelper";
 import {DiscordClient} from "../clients/DiscordClient";
 import {ConfigHelper} from "./ConfigHelper";
-import { NotificationHelper } from "./NotificationHelper";
+import {NotificationHelper} from "./NotificationHelper";
 import {waitUntil} from "async-wait-until";
 
 export class StatusHelper {

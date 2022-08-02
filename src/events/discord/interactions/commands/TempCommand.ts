@@ -1,6 +1,6 @@
 import {CommandInteraction} from "discord.js";
 import {EmbedHelper} from "../../../../helper/EmbedHelper";
-import { TempHelper } from "../../../../helper/TempHelper";
+import {TempHelper} from "../../../../helper/TempHelper";
 
 export class TempCommand {
     protected embedHelper = new EmbedHelper()

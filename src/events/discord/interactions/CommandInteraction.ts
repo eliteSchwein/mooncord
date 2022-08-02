@@ -1,14 +1,14 @@
 import {Interaction} from "discord.js";
 import {InfoCommand} from "./commands/InfoCommand";
 import {DiscordCommandGenerator} from "../../../generator/DiscordCommandGenerator";
-import { DumpCommand } from "./commands/DumpCommand";
+import {DumpCommand} from "./commands/DumpCommand";
 import {logNotice, logWarn} from "../../../helper/LoggerHelper";
 import {PermissionHelper} from "../../../helper/PermissionHelper";
 import {ConfigHelper} from "../../../helper/ConfigHelper";
 import {LocaleHelper} from "../../../helper/LocaleHelper";
-import { TempCommand } from "./commands/TempCommand";
-import { RestartCommand } from "./commands/RestartCommand";
-import { GetLodCommand } from "./commands/GetLogCommand";
+import {TempCommand} from "./commands/TempCommand";
+import {RestartCommand} from "./commands/RestartCommand";
+import {GetLodCommand} from "./commands/GetLogCommand";
 import {UserIdCommand} from "./commands/UserIdCommand";
 import {ResetDatabaseCommand} from "./commands/ResetDatabaseCommand";
 import {NotifyCommand} from "./commands/NotifyCommand";

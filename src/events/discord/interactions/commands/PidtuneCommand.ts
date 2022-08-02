@@ -1,9 +1,7 @@
-import {CommandInteraction, MessageAttachment} from "discord.js";
-import * as CacheUtil from "../../../../utils/CacheUtil";
-import * as path from "path";
+import {CommandInteraction} from "discord.js";
+import {getEntry} from "../../../../utils/CacheUtil";
 import {getDatabase, getMoonrakerClient} from "../../../../Application";
 import {LocaleHelper} from "../../../../helper/LocaleHelper";
-import {getEntry} from "../../../../utils/CacheUtil";
 
 export class PidtuneCommand {
     protected databaseUtil = getDatabase()

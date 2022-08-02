@@ -1,7 +1,7 @@
-import { Collection, Message, MessagePayload, TextChannel } from "discord.js"
+import {TextChannel} from "discord.js"
 import * as app from "../Application"
-import { DiscordClient } from "../clients/DiscordClient"
-import { LocaleHelper } from "./LocaleHelper"
+import {DiscordClient} from "../clients/DiscordClient"
+import {LocaleHelper} from "./LocaleHelper"
 import {logWarn} from "./LoggerHelper";
 
 export class NotificationHelper {

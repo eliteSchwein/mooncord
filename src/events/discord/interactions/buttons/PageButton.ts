@@ -1,11 +1,10 @@
 import {ButtonInteraction, Message} from "discord.js";
-import {getEntry} from "../../../../utils/CacheUtil";
 import {getDatabase} from "../../../../Application";
 import {EmbedHelper} from "../../../../helper/EmbedHelper";
 import {ConfigHelper} from "../../../../helper/ConfigHelper";
 import {LocaleHelper} from "../../../../helper/LocaleHelper";
-import { PageHelper } from "../../../../helper/PageHelper";
-import { logNotice } from "../../../../helper/LoggerHelper";
+import {PageHelper} from "../../../../helper/PageHelper";
+import {logNotice} from "../../../../helper/LoggerHelper";
 
 export class PageButton {
     protected databaseUtil = getDatabase()

@@ -4,7 +4,7 @@ import {logSuccess} from "../helper/LoggerHelper";
 import * as util from "util";
 import {mergeDeep} from "../helper/DataHelper";
 import {get} from 'lodash'
-import { LocaleHelper } from "../helper/LocaleHelper";
+import {LocaleHelper} from "../helper/LocaleHelper";
 
 const cacheData:any = {}
 const writeFile = util.promisify(fs.writeFile)

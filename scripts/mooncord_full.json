@@ -51,7 +51,7 @@
         },
         "selections": {
             "show_temp": {
-                "command_assign": "preheat",
+                "command_assign": "temp",
                 "botadmin": false,
                 "guildadmin": false,
                 "users": [],
@@ -376,6 +376,15 @@
                 "users": [],
                 "roles": []
             }
+        },
+        "modals": {
+            "temp_target": {
+                "command_assign": "temp",
+                "botadmin": true,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            }
         }
     },
     "webcam": {
@@ -587,7 +596,7 @@
             "color": "#0099ff",
             "thumbnail": "temps.png",
             "image": "tempGraph",
-            "buttons": [],
+            "buttons": ["change_temp"],
             "selections": [
                 "show_temp"
             ],
@@ -812,6 +821,9 @@
     },
     "modal_meta": {
         "temp_target": {
+            "selections": [
+                "show_temp"
+            ],
             "inputs": [
                 "temp_target_input"
             ]
@@ -822,7 +834,7 @@
             "temp_target_input": {
                 "style": "SHORT",
                 "permission_mapping": "temp",
-                "value": "${target_temp}"
+                "value": "0"
             }
         },
         "buttons": {

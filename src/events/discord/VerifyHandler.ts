@@ -1,11 +1,6 @@
 import {Client} from "discord.js";
-import {getMoonrakerClient} from "../../Application";
-import axios from "axios";
-import FormData from "form-data"
 import {ConfigHelper} from "../../helper/ConfigHelper";
-import {LocaleHelper} from "../../helper/LocaleHelper";
-import {logError, logRegular, logSuccess, logWarn} from "../../helper/LoggerHelper";
-import {PermissionHelper} from "../../helper/PermissionHelper";
+import {logError, logRegular, logSuccess} from "../../helper/LoggerHelper";
 
 export class VerifyHandler {
     protected configHelper = new ConfigHelper()

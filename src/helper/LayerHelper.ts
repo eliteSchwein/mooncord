@@ -1,4 +1,4 @@
-import { getEntry, updateData } from "../utils/CacheUtil"
+import {getEntry, updateData} from "../utils/CacheUtil"
 
 
 export function updateLayers() {

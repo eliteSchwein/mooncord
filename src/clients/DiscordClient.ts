@@ -1,5 +1,3 @@
-import {waitUntil} from 'async-wait-until'
-
 import {Client, Intents} from 'discord.js'
 
 import {getDatabase} from '../Application'

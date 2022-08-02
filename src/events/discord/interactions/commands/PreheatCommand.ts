@@ -1,16 +1,16 @@
-import {CommandInteraction, MessageAttachment} from "discord.js";
-import * as CacheUtil from "../../../../utils/CacheUtil";
-import * as path from "path";
+import {CommandInteraction} from "discord.js";
+import {findValue, getEntry} from "../../../../utils/CacheUtil";
 import {getDatabase, getMoonrakerClient} from "../../../../Application";
 import {LocaleHelper} from "../../../../helper/LocaleHelper";
-import {findValue, getEntry} from "../../../../utils/CacheUtil";
 import {logRegular} from "../../../../helper/LoggerHelper";
+import {TempHelper} from "../../../../helper/TempHelper";
 
 export class PreheatCommand {
     protected databaseUtil = getDatabase()
     protected localeHelper = new LocaleHelper()
     protected syntaxLocale = this.localeHelper.getSyntaxLocale()
     protected locale = this.localeHelper.getLocale()
+    protected tempHelper = new TempHelper()
     protected moonrakerClient = getMoonrakerClient()
     protected functionCache = getEntry('function')
 
@@ -77,7 +77,7 @@ export class PreheatCommand {
 
             argumentFound = true
             heaterList = `\`${heater}: ${heaterTemp}C°\`, ${heaterList}`
-            await this.heatHeater(heater, heaterTemp)
+            await this.tempHelper.heatHeater(heater, heaterTemp)
         }
 
         if(!argumentFound) {
@@ -93,11 +93,6 @@ export class PreheatCommand {
             .replace(/(\${username})/g, interaction.user.tag))
     }
 
-    protected async heatHeater(heater: string, temp: number) {
-        logRegular(`set Temperatur of ${heater} to ${temp}C°...`)
-        await this.moonrakerClient.send({"method": "printer.gcode.script", "params": {"script": `SET_HEATER_TEMPERATURE HEATER=${heater} TARGET=${temp}`}})
-    }
-
     protected async heatProfile(profileName: string) {
         const preset = Object.assign({}, findValue(`config.presets.${profileName}`))
 
@@ -110,7 +105,7 @@ export class PreheatCommand {
 
         for(const heater in preset) {
             const heaterTemp = preset[heater]
-            await this.heatHeater(heater, heaterTemp)
+            await this.tempHelper.heatHeater(heater, heaterTemp)
         }
     }
 }

@@ -1,9 +1,8 @@
 import {Client} from "discord.js";
-import {updateData} from "../../utils/CacheUtil";
-import {getDiscordClient} from "../../Application";
 import {ButtonInteraction} from "./interactions/ButtonInteraction";
 import {CommandInteraction} from "./interactions/CommandInteraction";
 import {SelectInteraction} from "./interactions/SelectInteraction";
+import {ModalInteraction} from "./interactions/ModalInteraction";
 
 export class InteractionHandler {
     public constructor(discordClient: Client) {
@@ -12,6 +11,7 @@ export class InteractionHandler {
             new ButtonInteraction(interaction);
             new CommandInteraction(interaction);
             new SelectInteraction(interaction);
+            new ModalInteraction(interaction)
         })
     }
 }

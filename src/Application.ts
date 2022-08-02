@@ -11,7 +11,6 @@ import {EmbedHelper} from "./helper/EmbedHelper";
 import {SchedulerHelper} from "./helper/SchedulerHelper";
 import {StatusHelper} from "./helper/StatusHelper";
 import {waitUntil} from "async-wait-until";
-import {TempHelper} from "./helper/TempHelper";
 import {ModalHelper} from "./helper/ModalHelper";
 
 Object.assign(global, { WebSocket: require('ws') })

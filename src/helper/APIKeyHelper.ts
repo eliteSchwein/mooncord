@@ -1,7 +1,7 @@
 import axios from 'axios'
 import * as StackTrace from 'stacktrace-js'
 import {ConfigHelper} from './ConfigHelper'
-import {logRegular, logError, logEmpty} from "./LoggerHelper"
+import {logEmpty, logError, logRegular} from "./LoggerHelper"
 
 export class APIKeyHelper {
     protected config = new ConfigHelper()

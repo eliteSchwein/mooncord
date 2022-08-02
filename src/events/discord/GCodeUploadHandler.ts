@@ -1,10 +1,8 @@
 import {Client} from "discord.js";
 import {getMoonrakerClient} from "../../Application";
-import axios from "axios";
-import FormData from "form-data"
 import {ConfigHelper} from "../../helper/ConfigHelper";
 import {LocaleHelper} from "../../helper/LocaleHelper";
-import {logError, logWarn} from "../../helper/LoggerHelper";
+import {logWarn} from "../../helper/LoggerHelper";
 import {PermissionHelper} from "../../helper/PermissionHelper";
 import {uploadAttachment} from "../../helper/DataHelper";
 

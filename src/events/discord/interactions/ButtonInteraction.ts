@@ -7,7 +7,7 @@ import {LocaleHelper} from "../../../helper/LocaleHelper";
 import {sleep} from "../../../helper/DataHelper";
 import {getEntry} from "../../../utils/CacheUtil";
 import {MacroButton} from "./buttons/MacroButton";
-import { PageButton } from "./buttons/PageButton";
+import {PageButton} from "./buttons/PageButton";
 import {PrintlistButton} from "./buttons/PrintlistButton";
 import {PrintRequestButton} from "./buttons/PrintRequestButton";
 import {DeleteButton} from "./buttons/DeleteButton";

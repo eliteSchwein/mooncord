@@ -1,6 +1,4 @@
-import {CommandInteraction, MessageAttachment} from "discord.js";
-import * as CacheUtil from "../../../../utils/CacheUtil";
-import * as path from "path";
+import {CommandInteraction} from "discord.js";
 import {getDatabase, getMoonrakerClient} from "../../../../Application";
 import {LocaleHelper} from "../../../../helper/LocaleHelper";
 import {logRegular} from "../../../../helper/LoggerHelper";

@@ -1,9 +1,8 @@
 import {CommandInteraction, MessageAttachment} from "discord.js";
-import { ConfigHelper } from "../../../../helper/ConfigHelper";
+import {ConfigHelper} from "../../../../helper/ConfigHelper";
 import axios from "axios";
-import { LocaleHelper } from "../../../../helper/LocaleHelper";
+import {LocaleHelper} from "../../../../helper/LocaleHelper";
 import {logError, logSuccess} from "../../../../helper/LoggerHelper";
-import {readFileSync} from "fs";
 import {getEntry} from "../../../../utils/CacheUtil";
 
 export class GetLodCommand {

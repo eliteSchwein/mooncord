@@ -1,5 +1,5 @@
-import { getMoonrakerClient } from "../Application";
-import { MoonrakerClient } from "../clients/MoonrakerClient";
+import {getMoonrakerClient} from "../Application";
+import {MoonrakerClient} from "../clients/MoonrakerClient";
 import {getEntry, setData, updateData} from "../utils/CacheUtil";
 import {ConfigHelper} from "./ConfigHelper";
 import path from "path";
@@ -8,7 +8,7 @@ import axios from "axios";
 import {updateTimes} from "./TimeHelper";
 import {updateLayers} from "./LayerHelper";
 import * as StackTrace from 'stacktrace-js'
-import {logRegular, logError, logEmpty} from "./LoggerHelper"
+import {logEmpty, logError, logRegular} from "./LoggerHelper"
 
 export class MetadataHelper {
     protected moonrakerClient: MoonrakerClient

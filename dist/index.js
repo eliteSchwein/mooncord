@@ -46389,11 +46389,11 @@ function initAsClient(websocket, address, protocols, options) {
     ? parsedUrl.hostname.slice(1, -1)
     : parsedUrl.hostname;
   opts.headers = {
+    ...opts.headers,
     'Sec-WebSocket-Version': opts.protocolVersion,
     'Sec-WebSocket-Key': key,
     Connection: 'Upgrade',
-    Upgrade: 'websocket',
-    ...opts.headers
+    Upgrade: 'websocket'
   };
   opts.path = parsedUrl.pathname + parsedUrl.search;
   opts.timeout = opts.handshakeTimeout;
@@ -46447,8 +46447,11 @@ function initAsClient(websocket, address, protocols, options) {
 
   if (opts.followRedirects) {
     if (websocket._redirects === 0) {
+      websocket._originalUnixSocket = isUnixSocket;
       websocket._originalSecure = isSecure;
-      websocket._originalHost = parsedUrl.host;
+      websocket._originalHostOrSocketPath = isUnixSocket
+        ? opts.socketPath
+        : parsedUrl.host;
 
       const headers = options && options.headers;
 
@@ -46464,7 +46467,13 @@ function initAsClient(websocket, address, protocols, options) {
         }
       }
     } else if (websocket.listenerCount('redirect') === 0) {
-      const isSameHost = parsedUrl.host === websocket._originalHost;
+      const isSameHost = isUnixSocket
+        ? websocket._originalUnixSocket
+          ? opts.socketPath === websocket._originalHostOrSocketPath
+          : false
+        : websocket._originalUnixSocket
+        ? false
+        : parsedUrl.host === websocket._originalHostOrSocketPath;
 
       if (!isSameHost || (websocket._originalSecure && !isSecure)) {
         //
@@ -46974,7 +46983,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 7279:
+/***/ 615:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -46993,7 +47002,7 @@ __nccwpck_require__.d(__webpack_exports__, {
 });
 
 ;// CONCATENATED MODULE: ./package.json
-const package_namespaceObject = JSON.parse('{"name":"mooncord","version":"0.0.5","description":"Moonraker Discord Bot based on Discord.js","main":"index.js","scripts":{"start":"node --expose-gc dist/index.js","debugstart":"node --trace_gc --expose-gc --trace-deprecation --trace-warnings --trace-uncaught --track-heap-objects dist/index.js","checkcodestyle":"npx eslint ./**","autofixcodestyle":"npx eslint ./** --fix","build":"ncc build -m -d -e discord.js -e @ffmpeg-installer/ffmpeg -e sharp src/Application.ts -o dist","watch":"ncc build -w -d -e discord.js -e @ffmpeg-installer/ffmpeg -e sharp src/Application.ts -o dist"},"repository":{"type":"git","url":"git+https://github.com/eliteSchwein/mooncord.git"},"keywords":[],"author":"eliteSCHW31N","license":"ISC","bugs":{"url":"https://github.com/eliteSchwein/mooncord/issues"},"homepage":"https://github.com/eliteSchwein/mooncord#readme","devDependencies":{"@types/fluent-ffmpeg":"^2.1.20","@types/node":"^18.0.3","@types/sharp":"^0.30.4","@vercel/ncc":"^0.34.0","async-wait-until":"2.0.12","axios":"^0.27.2","bytes":"^3.1.2","colorts":"^0.1.63","eslint":"^8.19.0","eslint-plugin-import":"^2.26.0","eslint-plugin-node":"^11.1.0","eslint-plugin-promise":"^6.0.0","fluent-ffmpeg":"^2.1.2","form-data":"^4.0.0","quickchart-js":"^3.0.1","lodash":"^4.17.21","node-fetch":"^3.2.6","shelljs":"^0.8.5","stacktrace-js":"^2.0.2","typescript":"^4.7.4","websocket-ts":"^1.1.1","ws":"^8.8.0"},"dependencies":{"@ffmpeg-installer/ffmpeg":"^1.1.0","discord.js":"^13.8.1","sharp":"^0.30.7"}}');
+const package_namespaceObject = JSON.parse('{"name":"mooncord","version":"0.0.5","description":"Moonraker Discord Bot based on Discord.js","main":"index.js","scripts":{"start":"node --expose-gc dist/index.js","debugstart":"node --trace_gc --expose-gc --trace-deprecation --trace-warnings --trace-uncaught --track-heap-objects dist/index.js","checkcodestyle":"npx eslint ./**","autofixcodestyle":"npx eslint ./** --fix","build":"ncc build -m -d -e discord.js -e @ffmpeg-installer/ffmpeg -e sharp src/Application.ts -o dist","watch":"ncc build -w -d -e discord.js -e @ffmpeg-installer/ffmpeg -e sharp src/Application.ts -o dist"},"repository":{"type":"git","url":"git+https://github.com/eliteSchwein/mooncord.git"},"keywords":[],"author":"eliteSCHW31N","license":"ISC","bugs":{"url":"https://github.com/eliteSchwein/mooncord/issues"},"homepage":"https://github.com/eliteSchwein/mooncord#readme","devDependencies":{"@types/fluent-ffmpeg":"^2.1.20","@types/node":"^18.6.3","@types/sharp":"^0.30.4","@vercel/ncc":"^0.34.0","async-wait-until":"2.0.12","axios":"^0.27.2","bytes":"^3.1.2","colorts":"^0.1.63","eslint":"^8.21.0","eslint-plugin-import":"^2.26.0","eslint-plugin-node":"^11.1.0","eslint-plugin-promise":"^6.0.0","fluent-ffmpeg":"^2.1.2","form-data":"^4.0.0","quickchart-js":"^3.0.2","lodash":"^4.17.21","node-fetch":"^3.2.10","shelljs":"^0.8.5","stacktrace-js":"^2.0.2","typescript":"^4.7.4","websocket-ts":"^1.1.1","ws":"^8.8.1"},"dependencies":{"@ffmpeg-installer/ffmpeg":"^1.1.0","discord.js":"^13.9.2","sharp":"^0.30.7"}}');
 var package_namespaceObject_0 = /*#__PURE__*/__nccwpck_require__.t(package_namespaceObject, 2);
 // EXTERNAL MODULE: external "util"
 var external_util_ = __nccwpck_require__(3837);
@@ -47860,12 +47869,16 @@ class DiscordInputGenerator {
 
 
 
+
+
 class TempHelper {
     constructor() {
         this.cache = getEntry('state');
         this.configHelper = new ConfigHelper();
+        this.localeHelper = new LocaleHelper();
         this.tempMeta = this.configHelper.getTempMeta();
         this.chartConfigSection = this.configHelper.getGraphConfig('temp_history');
+        this.locale = this.localeHelper.getLocale();
         this.tempCache = getEntry('temps');
         this.colorIndex = 0;
     }
@@ -47991,8 +48004,29 @@ class TempHelper {
         }
         return result;
     }
-    getTargetForSensor(sensor) {
-        console.log();
+    async setHeaterTemp(heater, heaterTemp) {
+        const heaterData = findValue(`state.configfile.config.${heater}`);
+        const heaterMaxTemp = Number(heaterData.max_temp);
+        const heaterMinTemp = Number(heaterData.min_temp);
+        if (heaterTemp === null) {
+            return false;
+        }
+        if (heaterTemp > heaterMaxTemp) {
+            return this.locale.messages.errors.preheat_over_max
+                .replace(/(\${max_temp})/g, heaterMaxTemp)
+                .replace(/(\${temp})/g, heaterTemp);
+        }
+        if (heaterTemp < heaterMinTemp) {
+            return this.locale.messages.errors.preheat_below_min
+                .replace(/(\${min_temp})/g, heaterMinTemp)
+                .replace(/(\${temp})/g, heaterTemp);
+        }
+        await this.heatHeater(heater, heaterTemp);
+        return true;
+    }
+    async heatHeater(heater, temp) {
+        logRegular(`set Temperatur of ${heater} to ${temp}C°...`);
+        await getMoonrakerClient().send({ "method": "printer.gcode.script", "params": { "script": `SET_HEATER_TEMPERATURE HEATER=${heater} TARGET=${temp}` } });
     }
 }
 
@@ -48066,6 +48100,7 @@ var node_ponyfill = __nccwpck_require__(9805);
 // EXTERNAL MODULE: ./node_modules/javascript-stringify/dist/index.js
 var dist = __nccwpck_require__(5816);
 ;// CONCATENATED MODULE: ./node_modules/quickchart-js/build/quickchart.mjs
+
 
 
 const SPECIAL_FUNCTION_REGEX = /['"]__BEGINFUNCTION__(.*?)__ENDFUNCTION__['"]/g;
@@ -48832,6 +48867,7 @@ class TemplateHelper {
         if (typeof image === 'string') {
             messageObject.setImage(image);
         }
+        const fields = [];
         if (typeof messageObjectData.fields !== 'undefined') {
             messageObjectData.fields.forEach(field => {
                 if (field.name === '') {
@@ -48846,8 +48882,15 @@ class TemplateHelper {
                 if (field.value === ' ') {
                     field.value = 'N/A';
                 }
-                messageObject.addField(field.name, field.value, true);
+                fields.push({
+                    'name': field.name,
+                    'value': field.value,
+                    'inline': true
+                });
             });
+        }
+        if (fields.length > 0) {
+            messageObject.addFields(fields);
         }
         response.embeds = [messageObject];
         if (components.length > 0) {
@@ -49069,6 +49112,7 @@ class PermissionHelper {
         let commandPermission = this.permissions.commands[command];
         const buttonPermission = this.permissions.buttons[command];
         const selectPermission = this.permissions.selections[command];
+        const modalPermission = this.permissions.modals[command];
         if (typeof buttonPermission !== 'undefined') {
             if (buttonPermission.users === "*") {
                 return true;
@@ -49080,6 +49124,12 @@ class PermissionHelper {
                 return true;
             }
             commandPermission = this.permissions.commands[selectPermission.command_assign];
+        }
+        if (typeof modalPermission !== 'undefined') {
+            if (modalPermission.users === "*") {
+                return true;
+            }
+            commandPermission = this.permissions.commands[modalPermission.command_assign];
         }
         if (typeof commandPermission !== 'undefined' && commandPermission.users === "*") {
             return true;
@@ -49094,6 +49144,9 @@ class PermissionHelper {
             return true;
         }
         if (this.hasSectionPermission(user, guild, selectPermission)) {
+            return true;
+        }
+        if (this.hasSectionPermission(user, guild, modalPermission)) {
             return true;
         }
         return false;
@@ -49602,7 +49655,6 @@ class ModalHelper {
 
 
 
-
 class TempModalButton {
     constructor() {
         this.modalHelper = new ModalHelper();
@@ -49613,15 +49665,8 @@ class TempModalButton {
         if (typeof buttonData.function_mapping.show_temp_modal === 'undefined') {
             return;
         }
-        const rawEmbedTemplate = this.templateHelper.parseRawTemplate('embed', 'single_temperature');
-        const rawTitle = rawEmbedTemplate.title.replace(/(\${.*})/g, 'PLACEHOLDER').split('PLACEHOLDER');
         const currentMessage = interaction.message;
-        let tempSensor = currentMessage.embeds[0].title;
-        for (const rawTitlePartial of rawTitle) {
-            tempSensor = tempSensor.replace(rawTitlePartial, '');
-        }
-        const sensorTarget = getEntry('state')[tempSensor].target;
-        const modal = await this.modalHelper.generateModal('temp_target', { 'heater': tempSensor, 'target_temp': sensorTarget });
+        const modal = await this.modalHelper.generateModal('temp_target');
         if (buttonData.function_mapping.modal_delete_message) {
             await currentMessage.delete();
         }
@@ -50311,12 +50356,14 @@ class AdminCommand {
 
 
 
+
 class PreheatCommand {
     constructor(interaction, commandId) {
         this.databaseUtil = getDatabase();
         this.localeHelper = new LocaleHelper();
         this.syntaxLocale = this.localeHelper.getSyntaxLocale();
         this.locale = this.localeHelper.getLocale();
+        this.tempHelper = new TempHelper();
         this.moonrakerClient = getMoonrakerClient();
         this.functionCache = getEntry('function');
         if (commandId !== 'preheat') {
@@ -50374,7 +50421,7 @@ class PreheatCommand {
             }
             argumentFound = true;
             heaterList = `\`${heater}: ${heaterTemp}C°\`, ${heaterList}`;
-            await this.heatHeater(heater, heaterTemp);
+            await this.tempHelper.heatHeater(heater, heaterTemp);
         }
         if (!argumentFound) {
             await interaction.reply(this.locale.messages.errors.missing_heater_arguments
@@ -50386,10 +50433,6 @@ class PreheatCommand {
             .replace(/(\${heater_list})/g, heaterList)
             .replace(/(\${username})/g, interaction.user.tag));
     }
-    async heatHeater(heater, temp) {
-        logRegular(`set Temperatur of ${heater} to ${temp}C°...`);
-        await this.moonrakerClient.send({ "method": "printer.gcode.script", "params": { "script": `SET_HEATER_TEMPERATURE HEATER=${heater} TARGET=${temp}` } });
-    }
     async heatProfile(profileName) {
         const preset = Object.assign({}, findValue(`config.presets.${profileName}`));
         for (const gcode in preset.gcode) {
@@ -50399,7 +50442,7 @@ class PreheatCommand {
         delete preset.gcode;
         for (const heater in preset) {
             const heaterTemp = preset[heater];
-            await this.heatHeater(heater, heaterTemp);
+            await this.tempHelper.heatHeater(heater, heaterTemp);
         }
     }
 }
@@ -50964,7 +51007,97 @@ class SelectInteraction {
     }
 }
 
+;// CONCATENATED MODULE: ./src/events/discord/interactions/modals/TempTargetModal.ts
+
+
+class TempTargetModal {
+    constructor(interaction, modalId) {
+        this.localeHelper = new LocaleHelper();
+        this.tempHelper = new TempHelper();
+        this.locale = this.localeHelper.getLocale();
+        this.syntaxLocale = this.localeHelper.getSyntaxLocale();
+        if (modalId !== 'temp_target') {
+            return;
+        }
+        this.execute(interaction);
+    }
+    async execute(interaction) {
+        const targetTemp = interaction.components[1].components[0].value;
+        const targetHeater = interaction.components[0].components[0].value;
+        console.log(JSON.stringify(interaction));
+        return;
+        if (isNaN(Number(targetTemp))) {
+            await interaction.reply(this.locale.messages.errors.input_not_a_number
+                .replace(/(\${input})/g, this.locale.inputs.temp_target_input.label)
+                .replace(/(\${username})/g, interaction.user.tag));
+            return;
+        }
+        const targetResult = await this.tempHelper.setHeaterTemp(targetHeater, Number(targetTemp));
+        if (targetResult === false) {
+            return;
+        }
+        if (typeof targetResult === 'string') {
+            await interaction.reply(targetResult
+                .replace(/(\${username})/g, interaction.user.tag));
+            return;
+        }
+        await interaction.reply(this.locale.messages.answers.preheat_preset.manual
+            .replace(/(\${heater_list})/g, `${targetHeater}`)
+            .replace(/(\${username})/g, interaction.user.tag));
+    }
+}
+
+;// CONCATENATED MODULE: ./src/events/discord/interactions/ModalInteraction.ts
+
+
+
+
+
+
+
+class ModalInteraction {
+    // @ts-ignore
+    constructor(interaction) {
+        this.config = new ConfigHelper();
+        this.localeHelper = new LocaleHelper();
+        this.permissionHelper = new PermissionHelper();
+        this.inputGenerator = new DiscordInputGenerator();
+        void this.execute(interaction);
+    }
+    async execute(interaction) {
+        if (!interaction.isModalSubmit()) {
+            return;
+        }
+        const modalId = interaction.customId;
+        if (typeof modalId === 'undefined') {
+            return;
+        }
+        let logFeedback = modalId;
+        for (const componentsRow of interaction.components) {
+            for (const component of componentsRow.components) {
+                logFeedback = `${logFeedback} ${component.customId}:${component.value}`;
+            }
+        }
+        logNotice(`${interaction.user.tag} submitted modal: ${logFeedback}`);
+        if (!this.permissionHelper.hasPermission(interaction.user, interaction.guild, modalId)) {
+            await interaction.reply({
+                content: this.localeHelper.getNoPermission(interaction.user.tag),
+                ephemeral: this.config.showNoPermissionPrivate()
+            });
+            logWarn(`${interaction.user.tag} doesnt have the permission for: ${modalId}`);
+            return;
+        }
+        void new TempTargetModal(interaction, modalId);
+        await sleep(2000);
+        if (interaction.replied || interaction.deferred) {
+            return;
+        }
+        await interaction.reply(this.localeHelper.getCommandNotReadyError(interaction.user.tag));
+    }
+}
+
 ;// CONCATENATED MODULE: ./src/events/discord/InteractionHandler.ts
+
 
 
 
@@ -50977,6 +51110,7 @@ class InteractionHandler {
             new ButtonInteraction(interaction);
             new CommandInteraction(interaction);
             new SelectInteraction(interaction);
+            new ModalInteraction(interaction);
         });
     }
 }
@@ -53010,7 +53144,7 @@ module.exports = JSON.parse('[[[0,44],"disallowed_STD3_valid"],[[45,46],"valid"]
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(7279);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(615);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()

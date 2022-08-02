@@ -1,7 +1,7 @@
 {
     "modals": {
         "temp_target": {
-            "title": "Set Target Temperature for ${heater}"
+            "title": "Set Target Temperature for a Heater"
         }
     },
     "pages": {
@@ -246,6 +246,7 @@
             "no_files_found": "There are currently no Files!",
             "no_permission": "You dont have the Permission for this Action, `${username}`",
             "not_ready": "This Command is not ready, `${username}`!",
+            "input_not_a_number": "The Input field `${input}` may only contain a number, `${username}`!",
             "not_textchannel": "`${channel}` is not a Text Channel, `${username}`!",
             "execute_error": "Error: `${gcode_feedback}`",
             "execute_unknown": "Unknown GCode Command: `${gcode_feedback}`",

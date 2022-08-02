@@ -6,7 +6,7 @@ import {updateData} from "../../utils/CacheUtil";
 import {FileEditNotification} from "./messages/FileEditNotification";
 import {StateUpdateNotification} from "./messages/StateUpdateNotification";
 import {GcodeResponseNotification} from "./messages/GcodeResponseNotification";
-import { PrintProgressNotification } from "./messages/PrintProgressNotification";
+import {PrintProgressNotification} from "./messages/PrintProgressNotification";
 import {ThrottleNotification} from "./messages/ThrottleNotification";
 import {TimelapseNotification} from "./messages/TimelapseNotification";
 import {DisplayUpdateNotification} from "./messages/DisplayUpdateNotification";

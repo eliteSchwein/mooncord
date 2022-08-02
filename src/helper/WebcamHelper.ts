@@ -6,7 +6,6 @@ import {MessageAttachment} from "discord.js";
 import {resolve} from "path"
 import {logEmpty, logError} from "./LoggerHelper";
 import {MoonrakerClient} from "../clients/MoonrakerClient";
-import fetch from "node-fetch";
 import StackTrace from "stacktrace-js";
 
 export class WebcamHelper {

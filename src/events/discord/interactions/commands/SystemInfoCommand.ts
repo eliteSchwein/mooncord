@@ -1,10 +1,6 @@
-import {CommandInteraction, MessageAttachment} from "discord.js";
-import * as CacheUtil from "../../../../utils/CacheUtil";
-import * as path from "path";
+import {CommandInteraction} from "discord.js";
 import {getDatabase} from "../../../../Application";
 import {LocaleHelper} from "../../../../helper/LocaleHelper";
-import {PageHelper} from "../../../../helper/PageHelper";
-import {getEntry} from "../../../../utils/CacheUtil";
 import {EmbedHelper} from "../../../../helper/EmbedHelper";
 
 export class SystemInfoCommand {

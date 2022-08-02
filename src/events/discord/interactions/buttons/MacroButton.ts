@@ -1,5 +1,4 @@
-import {ButtonInteraction, Message} from "discord.js";
-import {getEntry} from "../../../../utils/CacheUtil";
+import {ButtonInteraction} from "discord.js";
 import {getDatabase, getMoonrakerClient} from "../../../../Application";
 import {EmbedHelper} from "../../../../helper/EmbedHelper";
 import {ConfigHelper} from "../../../../helper/ConfigHelper";

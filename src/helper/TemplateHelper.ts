@@ -1,7 +1,7 @@
 import {LocaleHelper} from "./LocaleHelper";
 import {ConfigHelper} from "./ConfigHelper";
 import {DiscordInputGenerator} from "../generator/DiscordInputGenerator";
-import {Message, MessageAttachment, MessageEmbed, Modal} from "discord.js";
+import {MessageAttachment, MessageEmbed, Modal} from "discord.js";
 import {findValue, getEntry} from "../utils/CacheUtil";
 import {mergeDeep, parseCalculatedPlaceholder} from "./DataHelper";
 import {TempHelper} from "./TempHelper";
@@ -156,14 +156,24 @@ export class TemplateHelper {
             messageObject.setImage(image)
         }
 
+        const fields = []
+
         if(typeof messageObjectData.fields !== 'undefined') {
             messageObjectData.fields.forEach(field => {
                 if(field.name === '') {field.name = 'N/A'}
                 if(field.value === '') {field.value = 'N/A'}
                 if(field.name === ' ') {field.name = 'N/A'}
                 if(field.value === ' ') {field.value = 'N/A'}
-                messageObject.addField(field.name, field.value, true)
+                fields.push({
+                    'name': field.name,
+                    'value': field.value,
+                    'inline': true
+                })
             })
+        }
+
+        if(fields.length > 0) {
+            messageObject.addFields(fields)
         }
 
         response.embeds = [messageObject]
