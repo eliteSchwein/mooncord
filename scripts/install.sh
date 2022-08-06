@@ -51,7 +51,7 @@ questions()
             esac
         done
     fi
-    ok_msg "Klipper Config Path set: $MCLOGPATH"
+    ok_msg "Klipper Log Path set: $MCLOGPATH"
 
     if [ -f "$MCCONFIGPATH/mooncord.json" ];
     then
