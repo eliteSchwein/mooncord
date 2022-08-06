@@ -498,6 +498,14 @@
                 {
                     "name": "${embeds.fields.eta_print_time}",
                     "value": "${timestamp:time.eta}"
+                },
+                {
+                    "name": "${embeds.fields.speed}",
+                    "value": "${percent:0:state.gcode_move.speed_factor}%"
+                },
+                {
+                    "name": "${embeds.fields.flow}",
+                    "value": "${percent:0:state.gcode_move.extrude_factor}%"
                 }
             ]
         },
@@ -536,6 +544,14 @@
                 {
                     "name": "${embeds.fields.print_layers}",
                     "value": "${layers.current}/${layers.top}"
+                },
+                {
+                    "name": "${embeds.fields.speed}",
+                    "value": "${percent:0:state.gcode_move.speed_factor}%"
+                },
+                {
+                    "name": "${embeds.fields.flow}",
+                    "value": "${percent:0:state.gcode_move.extrude_factor}%"
                 }
             ]
         },
@@ -568,6 +584,14 @@
                 {
                     "name": "${embeds.fields.print_layers}",
                     "value": "${layers.current}/${layers.top}"
+                },
+                {
+                    "name": "${embeds.fields.speed}",
+                    "value": "${percent:0:state.gcode_move.speed_factor}%"
+                },
+                {
+                    "name": "${embeds.fields.flow}",
+                    "value": "${percent:0:state.gcode_move.extrude_factor}%"
                 }
             ]
         },

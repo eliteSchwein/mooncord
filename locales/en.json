@@ -127,6 +127,7 @@
             "title": "System Updates"
         },
         "fields": {
+            "flow": "Flow",
             "system": "System",
             "packages": "Packages",
             "chipset": "Chipset",
