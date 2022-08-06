@@ -14,5 +14,6 @@
     },
     "tmp": {
         "controller_tag": "MC_CONTROLLER"
-    }
+    },
+    "tmp_path": "/tmp/MC_SERVICE_NAME"
 }

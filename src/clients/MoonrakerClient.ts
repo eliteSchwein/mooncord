@@ -199,12 +199,10 @@ export class MoonrakerClient {
             logWarn('Log File is disabled!')
             unhookTempLog()
         } else if(this.config.getLogPath() !== '') {
-            changeTempPath(this.config.getTempPath())
             changePath(this.config.getLogPath())
-        } else {
-            changeTempPath(this.config.getTempPath())
-            changePath(getLogPath())
         }
+
+        changeTempPath(this.config.getTempPath())
 
         logSuccess('MoonRaker Client is ready')
     }

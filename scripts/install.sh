@@ -14,6 +14,7 @@ default=$(echo -en "\e[39m")
 SCRIPTPATH="$( cd "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 MCPATH="$( pwd -P )"
 MCCONFIGPATH="/home/$(whoami)/klipper_config"
+MCLOGPATH="/home/$(whoami)/klipper_logs"
 MCSERVICENAME="MoonCord"
 MCTOKEN=""
 MCWEBTOKEN=""
@@ -38,6 +39,19 @@ questions()
         done
     fi
     ok_msg "Klipper Config Path set: $MCCONFIGPATH"
+
+    if [ "$MCLOGPATH" == "/home/$(whoami)/klipper_logs" ];
+    then
+        status_msg "Please enter your Klipper Log Path"
+        while true; do
+            read -p "$cyan Path (leave empty if $MCLOGPATH is valid): $default" klipper_logs
+            case $klipper_logs in
+                "") break;;
+                * ) $MCLOGPATH="$klipper_logs"; break;;
+            esac
+        done
+    fi
+    ok_msg "Klipper Config Path set: $MCLOGPATH"
 
     if [ -f "$MCCONFIGPATH/mooncord.json" ];
     then
@@ -194,12 +208,20 @@ generate_config() {
     MCWEBTOKEN_ESC=$(sed "s/\//\\\\\//g" <<< $MCWEBTOKEN)
     MCCAMURL_ESC=$(sed "s/\//\\\\\//g" <<< $MCCAMURL)
     MCCONTOLLER_ESC=$(sed "s/\//\\\\\//g" <<< $MCCONTROLLER)
+    MCSERVICENAME_ESC=$(sed "s/\//\\\\\//g" <<< $MCSERVICENAME)
 
     CONFIG=$(sed "s/MC_URL/$MCURL_ESC/g" <<< $CONFIG)
     CONFIG=$(sed "s/MC_TOKEN/$MCTOKEN_ESC/g" <<< $CONFIG)
     CONFIG=$(sed "s/MC_WEB_TOKEN/$MCWEBTOKEN_ESC/g" <<< $CONFIG)
     CONFIG=$(sed "s/MC_WEBCAM_URL/$MCCAMURL_ESC/g" <<< $CONFIG)
     CONFIG=$(sed "s/MC_CONTROLLER/$MCCONTOLLER_ESC/g" <<< $CONFIG)
+    CONFIG=$(sed "s/MC_SERVICE_NAME/$MCSERVICENAME_ESC/g" <<< $CONFIG)
+    
+    mkdir "/tmp/$MCSERVICENAME_ESC"
+
+    touch "/tmp/$MCSERVICENAME_ESC/mooncord.log"
+
+    ln -s "/tmp/$MCSERVICENAME_ESC/mooncord.log" "$MCLOGPATH/mooncord.log"
 
     status_msg "Write Config"
     echo "$CONFIG" | sudo tee $MCCONFIGPATH/mooncord.json > /dev/null
@@ -271,6 +293,7 @@ do
     
     case "$KEY" in
             --config_path) MCCONFIGPATH=${VALUE} ;;
+            --log_path) MCLOGPATH=${VALUE} ;;
             --service_suffix) MCSERVICENAME="${MCSERVICENAME}_${VALUE}" ;;
             --discord_token) MCTOKEN=${VALUE};;
             --moonraker_token) MCWEBTOKEN=${VALUE};;

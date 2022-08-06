@@ -47058,9 +47058,9 @@ function hookProcess() {
     });
 }
 function changeTempPath(tempPath) {
-    log_file = external_fs_.createWriteStream(external_path_.resolve(__dirname, `${tempPath}/log.log`), { flags: 'w' });
+    log_file = external_fs_.createWriteStream(external_path_.resolve(__dirname, `${tempPath}/mooncord.log`), { flags: 'w' });
     log_file.write(tempLog);
-    updateData('function', { 'log_path': external_path_.resolve(__dirname, `${tempPath}/log.log`) });
+    updateData('function', { 'log_path': external_path_.resolve(__dirname, `${tempPath}/mooncord.log`) });
     hookLogFile();
 }
 function changePath(directory) {
@@ -52422,13 +52422,9 @@ class MoonrakerClient {
             unhookTempLog();
         }
         else if (this.config.getLogPath() !== '') {
-            changeTempPath(this.config.getTempPath());
             changePath(this.config.getLogPath());
         }
-        else {
-            changeTempPath(this.config.getTempPath());
-            changePath(getLogPath());
-        }
+        changeTempPath(this.config.getTempPath());
         logSuccess('MoonRaker Client is ready');
     }
     registerEvents() {
