@@ -1,4 +1,4 @@
-import {readFileSync, writeFileSync} from 'fs'
+import {existsSync, mkdirSync, readFileSync, writeFileSync} from 'fs'
 import path from "path";
 import {mergeDeep} from "./DataHelper";
 import {getEntry, setData, updateData} from "../utils/CacheUtil";
@@ -141,7 +141,13 @@ export class ConfigHelper {
     }
 
     public getTempPath() {
-        return this.getConfig().tmp_path
+        const temppath = this.getConfig().tmp_path
+
+        if(!existsSync(temppath)) {
+            mkdirSync(temppath)
+        }
+
+        return temppath
     }
 
     public getIconSet() {

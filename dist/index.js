@@ -47563,7 +47563,11 @@ class ConfigHelper {
         return this.getConfig().logger.disable_file;
     }
     getTempPath() {
-        return this.getConfig().tmp_path;
+        const temppath = this.getConfig().tmp_path;
+        if (!(0,external_fs_.existsSync)(temppath)) {
+            (0,external_fs_.mkdirSync)(temppath);
+        }
+        return temppath;
     }
     getIconSet() {
         return this.getConfig().messages.icon_set;
