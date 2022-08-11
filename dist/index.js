@@ -47083,9 +47083,9 @@ function changePath(directory) {
     catch {
         current = Buffer.from(tempLog, 'utf8');
     }
-    log_file = external_fs_.createWriteStream(external_path_.resolve(directory, 'mooncord.log'), { flags: 'w' });
+    log_file = external_fs_.createWriteStream(__nccwpck_require__.ab + "mooncord/" + directory + '/mooncord.log', { flags: 'w' });
     log_file.write(current);
-    updateData('function', { 'log_path': external_path_.resolve(directory, 'mooncord.log') });
+    updateData('function', { 'log_path': __nccwpck_require__.ab + "mooncord/" + directory + '/mooncord.log' });
     hookLogFile();
 }
 function logError(message) {
@@ -51209,7 +51209,7 @@ class NotificationHelper {
                 await user.send(message);
                 return;
             }
-            this.broadcastChannels([user.dmChannel], message);
+            await this.broadcastChannels([user.dmChannel], message);
         }
     }
     async broadcastGuilds(message) {
@@ -51218,7 +51218,7 @@ class NotificationHelper {
             try {
                 const guild = await this.discordClient.getClient().guilds.fetch(guildId);
                 const channels = guild.channels.cache.filter((channel) => { return guildMeta.broadcast_channels.includes(channel.id); });
-                this.broadcastChannels(channels, message);
+                await this.broadcastChannels(channels, message);
             }
             catch (error) {
                 logWarn(`Delete Data for the Guild with the ID: ${guildId} because Bot isnt on this Guild anymore`);
@@ -51255,7 +51255,8 @@ class NotificationHelper {
         if (typeof (lastMessage.embeds[0]) === 'undefined') {
             return;
         }
-        if (lastMessage.embeds[0].title !== this.locale.embeds.printjob_printing.title) {
+        if (lastMessage.embeds[0].title !== this.locale.embeds.printjob_printing.title &&
+            lastMessage.embeds[0].title !== this.locale.embeds.notification.title) {
             return;
         }
         try {

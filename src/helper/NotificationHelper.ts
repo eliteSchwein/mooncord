@@ -41,7 +41,7 @@ export class NotificationHelper {
                 return
             }
 
-            this.broadcastChannels([user.dmChannel], message)
+            await this.broadcastChannels([user.dmChannel], message)
         }
     }
 
@@ -54,7 +54,7 @@ export class NotificationHelper {
                 const channels = guild.channels.cache.filter(
                     (channel) => {return guildMeta.broadcast_channels.includes(channel.id)})
 
-                this.broadcastChannels(channels, message)
+                await this.broadcastChannels(channels, message)
             } catch (error) {
                 logWarn(`Delete Data for the Guild with the ID: ${guildId} because Bot isnt on this Guild anymore`)
                 const guildData = this.databaseUtil.getDatabaseEntry('guilds')
@@ -87,7 +87,8 @@ export class NotificationHelper {
         if (lastMessage.author.id !== this.discordClient.getClient().user.id) { return }
         if (lastMessage.embeds.length === 0) { return }
         if (typeof(lastMessage.embeds[0]) === 'undefined') { return }
-        if (lastMessage.embeds[0].title !== this.locale.embeds.printjob_printing.title) { return }
+        if (lastMessage.embeds[0].title !== this.locale.embeds.printjob_printing.title &&
+            lastMessage.embeds[0].title !== this.locale.embeds.notification.title) { return }
 
         try{
             await lastMessage.delete()
