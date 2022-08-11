@@ -47083,9 +47083,9 @@ function changePath(directory) {
     catch {
         current = Buffer.from(tempLog, 'utf8');
     }
-    log_file = external_fs_.createWriteStream(__nccwpck_require__.ab + "mooncord/" + directory + '/mooncord.log', { flags: 'w' });
+    log_file = external_fs_.createWriteStream(external_path_.resolve(directory, 'mooncord.log'), { flags: 'w' });
     log_file.write(current);
-    updateData('function', { 'log_path': __nccwpck_require__.ab + "mooncord/" + directory + '/mooncord.log' });
+    updateData('function', { 'log_path': external_path_.resolve(directory, 'mooncord.log') });
     hookLogFile();
 }
 function logError(message) {

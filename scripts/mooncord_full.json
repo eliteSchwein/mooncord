@@ -10,7 +10,7 @@
         "disable_file": false,
         "path": ""
     },
-    "tmp_path": "../temp",
+    "tmp_path": "/tmp/mooncord_fallback",
     "status": {
         "update_interval": 10,
         "use_percent": true,
