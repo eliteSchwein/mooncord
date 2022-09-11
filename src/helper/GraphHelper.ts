@@ -5,6 +5,8 @@ import {getEntry} from '../utils/CacheUtil';
 import {logRegular} from './LoggerHelper';
 import QuickChart from "quickchart-js";
 import {sleep} from "./DataHelper";
+import {MessageAttachment} from "discord.js";
+import sharp from "sharp";
 
 export class GraphHelper {
     protected configHelper = new ConfigHelper()
@@ -13,6 +15,39 @@ export class GraphHelper {
     protected tempValueLimit = 0
     protected tempCache = getEntry('temps')
     protected functionCache = getEntry('function')
+    protected stateCache = getEntry('state')
+
+    public async getExcludeGraph(currentObject: string) {
+        const excludeObjects = this.stateCache.exclude_object.objects
+        const axisMaximum = this.stateCache.toolhead.axis_maximum
+        const graphMeta = this.configHelper.getGraphConfig('exclude_graph')
+
+        logRegular('render exclude object graph...')
+
+        let svg = `<svg
+            version="1.1"
+            xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+            viewBox="0 0 ${axisMaximum[0]} ${axisMaximum[1]}">
+            <rect x="0" y="0" width="${axisMaximum[0]}" height="${axisMaximum[1]}" fill="${graphMeta.background}"/>
+        `
+
+        for(const excludeObject of excludeObjects) {
+            const polygons = excludeObject.polygon.join(' ')
+            const color = (excludeObject.name === currentObject) ? graphMeta.active_color : graphMeta.inactive_color
+            svg = `
+${svg}
+    <polygon points="${polygons}" fill="${color}" stroke="${color}"/>
+            `
+        }
+
+        svg = `
+${svg}
+</svg>
+`
+        const graphBuffer = await sharp(Buffer.from(svg)).png().toBuffer()
+        return new MessageAttachment(graphBuffer, 'excludeGraph.png')
+    }
 
     public async getTempGraph(sensor = undefined) {
         const moonrakerClient = App.getMoonrakerClient()

@@ -1,7 +1,7 @@
 import {ConfigHelper} from "../helper/ConfigHelper";
 import {limitString, mergeDeep, parsePageData} from "../helper/DataHelper";
 
-import {getHeaterChoices, setData} from "../utils/CacheUtil";
+import {getExcludeChoices, getHeaterChoices, setData} from "../utils/CacheUtil";
 import {MessageActionRow, MessageButton, MessageSelectMenu, TextInputComponent} from "discord.js";
 import {LocaleHelper} from "../helper/LocaleHelper";
 import {MCUHelper} from "../helper/MCUHelper";
@@ -72,6 +72,10 @@ export class DiscordInputGenerator {
 
             if(selectionData.heater_options) {
                 selectionData.data = [...selectionData.data, ...getHeaterChoices()]
+            }
+
+            if(selectionData.exclude_options) {
+                selectionData.data = [...selectionData.data, ...getExcludeChoices()]
             }
 
             if(selectionData.mcu_options) {

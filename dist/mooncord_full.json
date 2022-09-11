@@ -50,6 +50,13 @@
             "roles": []
         },
         "selections": {
+            "exclude_objects": {
+                "command_assign": "printjob",
+                "botadmin": true,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
             "show_temp": {
                 "command_assign": "temp",
                 "botadmin": false,
@@ -81,6 +88,13 @@
         },
         "buttons": {
             "printjob_refresh": {
+                "command_assign": "status",
+                "botadmin": true,
+                "guildadmin": true,
+                "users": "*",
+                "roles": []
+            },
+            "printjob_status": {
                 "command_assign": "status",
                 "botadmin": true,
                 "guildadmin": true,
@@ -130,6 +144,13 @@
                 "roles": []
             },
             "printjob_cancel": {
+                "command_assign": "printjob",
+                "botadmin": true,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
+            "printjob_exclude": {
                 "command_assign": "printjob",
                 "botadmin": true,
                 "guildadmin": false,
@@ -520,7 +541,11 @@
             "author": "${state.print_stats.filename}",
             "thumbnail": "thumbnail",
             "image": "webcam",
-            "buttons": ["printjob_resume","printjob_cancel"],
+            "buttons": [
+                "printjob_resume",
+                "printjob_cancel",
+                "printjob_exclude"
+            ],
             "fields": [
                 {
                     "name": "${embeds.fields.print_time}",
@@ -556,6 +581,7 @@
             "buttons": [
                 "printjob_pause",
                 "printjob_cancel",
+                "printjob_exclude",
                 "printjob_refresh"],
             "fields": [
                 {
@@ -608,6 +634,19 @@
                     "value": "${layers.current}/${layers.top}"
                 }
             ]
+        },
+        "exclude_overview": {
+            "color": "#0099ff",
+            "thumbnail": "exclude.png",
+            "image": "excludeGraph",
+            "selections": ["exclude_objects"],
+            "buttons": ["printjob_status"]
+        },
+        "exclude_detail": {
+            "color": "#0099ff",
+            "thumbnail": "exclude.png",
+            "selections": ["exclude_objects"],
+            "buttons": ["printjob_status"]
         },
         "temperatures": {
             "color": "#0099ff",
@@ -927,6 +966,12 @@
                     "refresh_status": true
                 }
             },
+            "printjob_status": {
+                "style":"PRIMARY",
+                "function_mapping": {
+                    "refresh_status": true
+                }
+            },
             "to_printlist": {
                 "emoji": "📘",
                 "style":"SECONDARY",
@@ -977,6 +1022,17 @@
                     "request_embed": "printjob_delete_request"
                 }
             },
+            "printjob_exclude": {
+                "emoji": "⏏",
+                "style":"PRIMARY",
+                "required_states" : [
+                    "printing",
+                    "pause"
+                ],
+                "function_mapping": {
+                    "show_embed": "exclude_overview"
+                }
+            },
             "reconnect": {
                 "emoji": "🔄",
                 "style":"PRIMARY",
@@ -1017,6 +1073,13 @@
             }
         },
         "selections": {
+            "exclude_objects": {
+                "min_value": 1,
+                "max_value": 1,
+                "option_value": "${data.value}",
+                "data": "${raw_entries}",
+                "exclude_options": true
+            },
             "config_file_download": {
                 "min_value": 1,
                 "max_value": 1,
@@ -1317,6 +1380,11 @@
         }
     },
     "graph_meta": {
+        "exclude_graph": {
+            "background": "#3e4147",
+            "active_color": "#0099ff",
+            "inactive_color": "#686d75"
+        },
         "temp_history": {
             "value_limit": 200,
             "colors": [

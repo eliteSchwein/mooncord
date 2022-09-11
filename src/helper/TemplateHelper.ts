@@ -259,6 +259,10 @@ export class TemplateHelper {
 
         cacheParser = String(cacheParser)
 
+        if(cacheParser === '') {
+            cacheParser = 'N/A'
+        }
+
         return {
             'content': cacheParser
                 .replace(/(")/g,'\'')
@@ -298,6 +302,10 @@ export class TemplateHelper {
 
         if(imageID === 'tempGraph') {
             return await this.graphHelper.getTempGraph()
+        }
+
+        if(imageID === 'excludeGraph') {
+            return await this.graphHelper.getExcludeGraph(undefined)
         }
 
         const imagePath = path.resolve(__dirname, `../assets/icon-sets/${this.configHelper.getIconSet()}/${imageID}`)

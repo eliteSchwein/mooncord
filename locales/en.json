@@ -33,6 +33,12 @@
         "systeminfo_update": {
             "title": "System Updates"
         },
+        "exclude_overview": {
+            "title": "Exclude Overview"
+        },
+        "exclude_detail": {
+            "title": "Do you want to exclude the Object?"
+        },
         "fileinfo": {
             "title": "File Informations",
             "description": "Print Time: ${estimated_time}\nSlicer: ${slicer}\nSlicer Version: ${slicer_version}\nHeight: ${object_height}mm"
@@ -272,8 +278,14 @@
         "printjob_refresh": {
             "label": "Refresh"
         },
+        "printjob_status": {
+            "label": "Status"
+        },
         "printjob_start": {
             "label": "Print"
+        },
+        "printjob_exclude": {
+            "label": "Exclude"
         },
         "printjob_request_accept": {
             "label": "Yes"
@@ -331,6 +343,12 @@
             "option_description": "Click for more Details",
             "options": []
         },
+        "exclude_objects": {
+            "label": "Select a Object",
+            "option_label": "${data.name}",
+            "option_description": "Click for Exclude",
+            "options": []
+        },
         "config_file_download": {
             "label": "Select a File",
             "option_label": "${data.name}",
@@ -345,7 +363,6 @@
             "label": "Select a Component",
             "option_label": "${data.label}",
             "option_description": "Click for more Details",
-            "mcu_options": true,
             "options": [
                 {
                     "label": "CPU",

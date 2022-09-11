@@ -46983,7 +46983,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 7615:
+/***/ 1946:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -47237,6 +47237,17 @@ function getHeaterChoices() {
         choices.push({
             "name": heater,
             "value": heater
+        });
+    }
+    return choices;
+}
+function getExcludeChoices() {
+    const choices = [];
+    const excludeObjects = cacheData.state.exclude_object.objects;
+    for (const excludeObject of excludeObjects) {
+        choices.push({
+            "name": excludeObject.name,
+            "value": excludeObject.name
         });
     }
     return choices;
@@ -47833,6 +47844,9 @@ class DiscordInputGenerator {
             if (selectionData.heater_options) {
                 selectionData.data = [...selectionData.data, ...getHeaterChoices()];
             }
+            if (selectionData.exclude_options) {
+                selectionData.data = [...selectionData.data, ...getExcludeChoices()];
+            }
             if (selectionData.mcu_options) {
                 selectionData.data = [...selectionData.data, ...this.mcuHelper.getMCUOptions()];
             }
@@ -48313,7 +48327,12 @@ var src_default = QuickChart;
 
 //# sourceMappingURL=quickchart.mjs.map
 
+;// CONCATENATED MODULE: external "sharp"
+const external_sharp_namespaceObject = require("sharp");
+var external_sharp_default = /*#__PURE__*/__nccwpck_require__.n(external_sharp_namespaceObject);
 ;// CONCATENATED MODULE: ./src/helper/GraphHelper.ts
+
+
 
 
 
@@ -48329,6 +48348,34 @@ class GraphHelper {
         this.tempValueLimit = 0;
         this.tempCache = getEntry('temps');
         this.functionCache = getEntry('function');
+        this.stateCache = getEntry('state');
+    }
+    async getExcludeGraph(currentObject) {
+        const excludeObjects = this.stateCache.exclude_object.objects;
+        const axisMaximum = this.stateCache.toolhead.axis_maximum;
+        const graphMeta = this.configHelper.getGraphConfig('exclude_graph');
+        logRegular('render exclude object graph...');
+        let svg = `<svg
+            version="1.1"
+            xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+            viewBox="0 0 ${axisMaximum[0]} ${axisMaximum[1]}">
+            <rect x="0" y="0" width="${axisMaximum[0]}" height="${axisMaximum[1]}" fill="${graphMeta.background}"/>
+        `;
+        for (const excludeObject of excludeObjects) {
+            const polygons = excludeObject.polygon.join(' ');
+            const color = (excludeObject.name === currentObject) ? graphMeta.active_color : graphMeta.inactive_color;
+            svg = `
+${svg}
+    <polygon points="${polygons}" fill="${color}" stroke="${color}"/>
+            `;
+        }
+        svg = `
+${svg}
+</svg>
+`;
+        const graphBuffer = await external_sharp_default()(Buffer.from(svg)).png().toBuffer();
+        return new external_discord_js_namespaceObject.MessageAttachment(graphBuffer, 'excludeGraph.png');
     }
     async getTempGraph(sensor = undefined) {
         const moonrakerClient = getMoonrakerClient();
@@ -48627,9 +48674,6 @@ class MetadataHelper {
     }
 }
 
-;// CONCATENATED MODULE: external "sharp"
-const external_sharp_namespaceObject = require("sharp");
-var external_sharp_default = /*#__PURE__*/__nccwpck_require__.n(external_sharp_namespaceObject);
 ;// CONCATENATED MODULE: ./src/helper/WebcamHelper.ts
 
 
@@ -48975,6 +49019,9 @@ class TemplateHelper {
             };
         }
         cacheParser = String(cacheParser);
+        if (cacheParser === '') {
+            cacheParser = 'N/A';
+        }
         return {
             'content': cacheParser
                 .replace(/(")/g, '\'')
@@ -49008,6 +49055,9 @@ class TemplateHelper {
         }
         if (imageID === 'tempGraph') {
             return await this.graphHelper.getTempGraph();
+        }
+        if (imageID === 'excludeGraph') {
+            return await this.graphHelper.getExcludeGraph(undefined);
         }
         const imagePath = external_path_default().resolve(__dirname, `../assets/icon-sets/${this.configHelper.getIconSet()}/${imageID}`);
         return new external_discord_js_namespaceObject.MessageAttachment(imagePath, imageID);
@@ -50978,7 +51028,61 @@ class DownloadConfig {
     }
 }
 
+;// CONCATENATED MODULE: ./src/events/discord/interactions/selections/ExcludeObjects.ts
+
+
+
+
+
+
+
+
+class ExcludeObjectsSelection {
+    constructor(interaction, selectionId) {
+        this.databaseUtil = getDatabase();
+        this.embedHelper = new EmbedHelper();
+        this.configHelper = new ConfigHelper();
+        this.moonrakerClient = getMoonrakerClient();
+        this.graphHelper = new GraphHelper();
+        this.localeHelper = new LocaleHelper();
+        this.locale = this.localeHelper.getLocale();
+        this.syntaxLocale = this.localeHelper.getSyntaxLocale();
+        this.metadataHelper = new MetadataHelper();
+        this.functionCache = getEntry('function');
+        this.tempHelper = new TempHelper();
+        if (selectionId !== 'exclude_objects') {
+            return;
+        }
+        void this.execute(interaction);
+    }
+    async execute(interaction) {
+        await interaction.deferReply();
+        const object = interaction.values[0];
+        const embedData = await this.embedHelper.generateEmbed('exclude_detail', { object });
+        const excludeGraph = await this.graphHelper.getExcludeGraph(object);
+        const embed = embedData.embed.embeds[0];
+        const components = embedData.embed['components'];
+        const selectMenu = components[0].components[0];
+        for (const selectMenuOption of selectMenu.options) {
+            if (selectMenuOption.value === object) {
+                selectMenuOption.default = true;
+            }
+        }
+        let files = [excludeGraph];
+        if (typeof embedData.embed['files'] !== 'undefined') {
+            files = [...files, ...embedData.embed['files']];
+        }
+        embed.setImage(`attachment://${excludeGraph.name}`);
+        const currentMessage = interaction.message;
+        await currentMessage.edit({ components: null });
+        await currentMessage.removeAttachments();
+        await currentMessage.edit({ embeds: [embed], files, components });
+        await interaction.deleteReply();
+    }
+}
+
 ;// CONCATENATED MODULE: ./src/events/discord/interactions/SelectInteraction.ts
+
 
 
 
@@ -51026,6 +51130,7 @@ class SelectInteraction {
         void new ViewSystemInfo(interaction, selectId);
         void new ShowTempSelection(interaction, selectId);
         void new DownloadConfig(interaction, selectId);
+        void new ExcludeObjectsSelection(interaction, selectId);
         await sleep(2000);
         if (interaction.replied || interaction.deferred || interaction.isModalSubmit()) {
             return;
@@ -53175,7 +53280,7 @@ module.exports = JSON.parse('[[[0,44],"disallowed_STD3_valid"],[[45,46],"valid"]
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(7615);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(1946);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()

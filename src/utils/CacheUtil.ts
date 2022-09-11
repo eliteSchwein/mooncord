@@ -66,6 +66,19 @@ export function getHeaterChoices() {
     return choices
 }
 
+export function getExcludeChoices() {
+    const choices = []
+    const excludeObjects = cacheData.state.exclude_object.objects
+
+    for(const excludeObject of excludeObjects) {
+        choices.push({
+            "name": excludeObject.name,
+            "value": excludeObject.name
+        })
+    }
+    return choices
+}
+
 export function getConfigFiles() {
     const choices = []
     const configs = cacheData.config_files
