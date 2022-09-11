@@ -14,34 +14,41 @@ export class TempTargetModal {
         this.execute(interaction)
     }
     private async execute(interaction: ModalSubmitInteraction) {
-        const targetTemp = interaction.components[1].components[0].value
-        const targetHeater = interaction.components[0].components[0].value
+        const componentRows = interaction.components
+        let heaterList = ''
 
-        console.log(JSON.stringify(interaction))
+        for(const componentRow of componentRows) {
+            const heaterInput = componentRow.components[0]
+            const heater = heaterInput.customId
+            const heaterTarget = heaterInput.value
 
-        return
+            if(isNaN(Number(heaterTarget))) {
+                await interaction.reply(this.locale.messages.errors.input_not_a_number
+                    .replace(/(\${input})/g, this.locale.inputs.temp_target_input.label
+                        .replace(/(\${heater})/g, heater))
+                    .replace(/(\${username})/g, interaction.user.tag))
+                continue
+            }
 
-        if(isNaN(Number(targetTemp))) {
-            await interaction.reply(this.locale.messages.errors.input_not_a_number
-                .replace(/(\${input})/g, this.locale.inputs.temp_target_input.label)
-                .replace(/(\${username})/g, interaction.user.tag))
-            return
+            const targetResult = await this.tempHelper.setHeaterTemp(heater, Number(heaterTarget))
+
+            if(targetResult === false) {
+                continue
+            }
+
+            heaterList = `\`${heater}: ${heaterTarget}C°\`, ${heaterList}`
         }
 
-        const targetResult = await this.tempHelper.setHeaterTemp(targetHeater, Number(targetTemp))
+        heaterList = heaterList.slice(0, Math.max(0, heaterList.length-2))
 
-        if(targetResult === false) {
-            return
+        const finalReply = this.locale.messages.answers.preheat_preset.manual
+            .replace(/(\${heater_list})/g, `${heaterList}`)
+            .replace(/(\${username})/g, interaction.user.tag)
+
+        if(!interaction.replied) {
+            await interaction.reply(finalReply)
+        } else {
+            await interaction.followUp(finalReply)
         }
-
-        if(typeof targetResult === 'string') {
-            await interaction.reply(targetResult
-                .replace(/(\${username})/g, interaction.user.tag))
-            return
-        }
-
-        await interaction.reply(this.locale.messages.answers.preheat_preset.manual
-            .replace(/(\${heater_list})/g, `${targetHeater}`)
-            .replace(/(\${username})/g, interaction.user.tag))
     }
 }

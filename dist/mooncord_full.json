@@ -369,13 +369,6 @@
             }
         },
         "inputs": {
-            "temp_target_input": {
-                "command_assign": "temp",
-                "botadmin": true,
-                "guildadmin": false,
-                "users": [],
-                "roles": []
-            }
         },
         "modals": {
             "temp_target": {
@@ -845,12 +838,8 @@
     },
     "modal_meta": {
         "temp_target": {
-            "selections": [
-                "show_temp"
-            ],
-            "inputs": [
-                "temp_target_input"
-            ]
+            "inputs": [],
+            "add_temp_inputs": true
         }
     },
     "input_meta": {
@@ -858,7 +847,8 @@
             "temp_target_input": {
                 "style": "SHORT",
                 "permission_mapping": "temp",
-                "value": "0"
+                "value": "0",
+                "required": true
             }
         },
         "buttons": {

@@ -1,7 +1,7 @@
 {
     "modals": {
         "temp_target": {
-            "title": "Set Target Temperature for a Heater"
+            "title": "Set Target Temperatures"
         }
     },
     "pages": {
@@ -618,7 +618,7 @@
     },
     "inputs": {
         "temp_target_input": {
-            "label": "Target Temperature"
+            "label": "Target for ${heater}"
         }
     }
 }

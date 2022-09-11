@@ -97,21 +97,26 @@ export class DiscordInputGenerator {
     }
 
     public generateInputs(inputs) {
-        const row = new MessageActionRow()
+        const componentRows = []
 
         if(typeof(inputs) === 'undefined') { return }
         if(inputs.length === 0) { return }
 
         for (const inputData of inputs) {
+            const row = new MessageActionRow()
+
             row.addComponents(
                 new TextInputComponent()
                     .setCustomId(inputData.id)
                     .setLabel(inputData.label)
                     .setStyle(inputData.style)
                     .setValue(String(inputData.value))
+                    .setRequired(inputData.required)
             )
+
+            componentRows.push(row)
         }
 
-        return row
+        return componentRows
     }
 }

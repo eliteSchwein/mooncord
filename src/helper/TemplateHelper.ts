@@ -48,6 +48,20 @@ export class TemplateHelper {
             unformattedData.inputs = this.getInputData('inputs', unformattedData.inputs)
         }
 
+        if(unformattedData.add_temp_inputs) {
+            // @ts-ignore
+            const rawTempInputData = this.getInputData('inputs', ['temp_target_input'])[0]
+            const heaters = this.tempHelper.getHeaters()
+
+            for(const heater of heaters) {
+                const heaterInput = Object.assign({}, rawTempInputData)
+                heaterInput.id = heater
+                heaterInput.value = this.tempHelper.getHeaterTarget(heater)
+                heaterInput.label = heaterInput.label.replace(/\${heater}/g, heater)
+                unformattedData.inputs.push(heaterInput)
+            }
+        }
+
         return unformattedData
     }
 

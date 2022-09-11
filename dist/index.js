@@ -47850,7 +47850,7 @@ class DiscordInputGenerator {
         return row;
     }
     generateInputs(inputs) {
-        const row = new external_discord_js_namespaceObject.MessageActionRow();
+        const componentRows = [];
         if (typeof (inputs) === 'undefined') {
             return;
         }
@@ -47858,13 +47858,16 @@ class DiscordInputGenerator {
             return;
         }
         for (const inputData of inputs) {
+            const row = new external_discord_js_namespaceObject.MessageActionRow();
             row.addComponents(new external_discord_js_namespaceObject.TextInputComponent()
                 .setCustomId(inputData.id)
                 .setLabel(inputData.label)
                 .setStyle(inputData.style)
-                .setValue(String(inputData.value)));
+                .setValue(String(inputData.value))
+                .setRequired(inputData.required));
+            componentRows.push(row);
         }
-        return row;
+        return componentRows;
     }
 }
 
@@ -48008,6 +48011,9 @@ class TempHelper {
         }
         return result;
     }
+    getHeaterTarget(heater) {
+        return this.cache[heater].target;
+    }
     async setHeaterTemp(heater, heaterTemp) {
         const heaterData = findValue(`state.configfile.config.${heater}`);
         const heaterMaxTemp = Number(heaterData.max_temp);
@@ -48031,6 +48037,9 @@ class TempHelper {
     async heatHeater(heater, temp) {
         logRegular(`set Temperatur of ${heater} to ${temp}C°...`);
         await getMoonrakerClient().send({ "method": "printer.gcode.script", "params": { "script": `SET_HEATER_TEMPERATURE HEATER=${heater} TARGET=${temp}` } });
+    }
+    getHeaters() {
+        return this.cache.heaters.available_heaters;
     }
 }
 
@@ -48784,6 +48793,18 @@ class TemplateHelper {
         }
         if (unformattedData.inputs) {
             unformattedData.inputs = this.getInputData('inputs', unformattedData.inputs);
+        }
+        if (unformattedData.add_temp_inputs) {
+            // @ts-ignore
+            const rawTempInputData = this.getInputData('inputs', ['temp_target_input'])[0];
+            const heaters = this.tempHelper.getHeaters();
+            for (const heater of heaters) {
+                const heaterInput = Object.assign({}, rawTempInputData);
+                heaterInput.id = heater;
+                heaterInput.value = this.tempHelper.getHeaterTarget(heater);
+                heaterInput.label = heaterInput.label.replace(/\${heater}/g, heater);
+                unformattedData.inputs.push(heaterInput);
+            }
         }
         return unformattedData;
     }
@@ -50361,8 +50382,10 @@ class AdminCommand {
 
 
 
+
 class PreheatCommand {
     constructor(interaction, commandId) {
+        this.modalHelper = new ModalHelper();
         this.databaseUtil = getDatabase();
         this.localeHelper = new LocaleHelper();
         this.syntaxLocale = this.localeHelper.getSyntaxLocale();
@@ -50428,8 +50451,8 @@ class PreheatCommand {
             await this.tempHelper.heatHeater(heater, heaterTemp);
         }
         if (!argumentFound) {
-            await interaction.reply(this.locale.messages.errors.missing_heater_arguments
-                .replace(/(\${username})/g, interaction.user.tag));
+            const modal = await this.modalHelper.generateModal('temp_target');
+            await interaction.showModal(modal);
             return;
         }
         heaterList = heaterList.slice(0, Math.max(0, heaterList.length - 2));
@@ -51026,28 +51049,35 @@ class TempTargetModal {
         this.execute(interaction);
     }
     async execute(interaction) {
-        const targetTemp = interaction.components[1].components[0].value;
-        const targetHeater = interaction.components[0].components[0].value;
-        console.log(JSON.stringify(interaction));
-        return;
-        if (isNaN(Number(targetTemp))) {
-            await interaction.reply(this.locale.messages.errors.input_not_a_number
-                .replace(/(\${input})/g, this.locale.inputs.temp_target_input.label)
-                .replace(/(\${username})/g, interaction.user.tag));
-            return;
+        const componentRows = interaction.components;
+        let heaterList = '';
+        for (const componentRow of componentRows) {
+            const heaterInput = componentRow.components[0];
+            const heater = heaterInput.customId;
+            const heaterTarget = heaterInput.value;
+            if (isNaN(Number(heaterTarget))) {
+                await interaction.reply(this.locale.messages.errors.input_not_a_number
+                    .replace(/(\${input})/g, this.locale.inputs.temp_target_input.label
+                    .replace(/(\${heater})/g, heater))
+                    .replace(/(\${username})/g, interaction.user.tag));
+                continue;
+            }
+            const targetResult = await this.tempHelper.setHeaterTemp(heater, Number(heaterTarget));
+            if (targetResult === false) {
+                continue;
+            }
+            heaterList = `\`${heater}: ${heaterTarget}C°\`, ${heaterList}`;
         }
-        const targetResult = await this.tempHelper.setHeaterTemp(targetHeater, Number(targetTemp));
-        if (targetResult === false) {
-            return;
+        heaterList = heaterList.slice(0, Math.max(0, heaterList.length - 2));
+        const finalReply = this.locale.messages.answers.preheat_preset.manual
+            .replace(/(\${heater_list})/g, `${heaterList}`)
+            .replace(/(\${username})/g, interaction.user.tag);
+        if (!interaction.replied) {
+            await interaction.reply(finalReply);
         }
-        if (typeof targetResult === 'string') {
-            await interaction.reply(targetResult
-                .replace(/(\${username})/g, interaction.user.tag));
-            return;
+        else {
+            await interaction.followUp(finalReply);
         }
-        await interaction.reply(this.locale.messages.answers.preheat_preset.manual
-            .replace(/(\${heater_list})/g, `${targetHeater}`)
-            .replace(/(\${username})/g, interaction.user.tag));
     }
 }
 

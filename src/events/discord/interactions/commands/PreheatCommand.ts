@@ -4,8 +4,10 @@ import {getDatabase, getMoonrakerClient} from "../../../../Application";
 import {LocaleHelper} from "../../../../helper/LocaleHelper";
 import {logRegular} from "../../../../helper/LoggerHelper";
 import {TempHelper} from "../../../../helper/TempHelper";
+import {ModalHelper} from "../../../../helper/ModalHelper";
 
 export class PreheatCommand {
+    protected modalHelper = new ModalHelper()
     protected databaseUtil = getDatabase()
     protected localeHelper = new LocaleHelper()
     protected syntaxLocale = this.localeHelper.getSyntaxLocale()
@@ -81,8 +83,8 @@ export class PreheatCommand {
         }
 
         if(!argumentFound) {
-            await interaction.reply(this.locale.messages.errors.missing_heater_arguments
-                .replace(/(\${username})/g, interaction.user.tag))
+            const modal = await this.modalHelper.generateModal('temp_target')
+            await interaction.showModal(modal)
             return
         }
 

@@ -5,6 +5,7 @@ import {logRegular} from "./LoggerHelper";
 import {CommandInteraction} from "discord.js";
 import * as App from "../Application"
 import {LocaleHelper} from "./LocaleHelper";
+import {cache} from "sharp";
 
 export class TempHelper {
     protected cache = getEntry('state')
@@ -177,6 +178,10 @@ export class TempHelper {
         return result
     }
 
+    public getHeaterTarget(heater: string) {
+        return this.cache[heater].target
+    }
+
     public async setHeaterTemp(heater: string, heaterTemp: number) {
         const heaterData = findValue(`state.configfile.config.${heater}`)
         const heaterMaxTemp = Number(heaterData.max_temp)
@@ -203,5 +208,9 @@ export class TempHelper {
     public async heatHeater(heater: string, temp: number) {
         logRegular(`set Temperatur of ${heater} to ${temp}C°...`)
         await App.getMoonrakerClient().send({"method": "printer.gcode.script", "params": {"script": `SET_HEATER_TEMPERATURE HEATER=${heater} TARGET=${temp}`}})
+    }
+
+    public getHeaters() {
+        return this.cache.heaters.available_heaters
     }
 }
