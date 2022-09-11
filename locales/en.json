@@ -382,13 +382,9 @@
             }
         },
         "config": {
-            "description": "Save,Modify, Up- or Download a configuration",
+            "description": "Up- or Download a configuration",
             "command": "config",
             "options": {
-                "save": {
-                    "name": "save",
-                    "description": "Save current Klipper configuration"
-                },
                 "upload":{
                     "name": "upload",
                     "description": "Upload a configuration file",
