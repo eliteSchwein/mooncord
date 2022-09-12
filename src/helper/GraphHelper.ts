@@ -19,6 +19,7 @@ export class GraphHelper {
 
     public async getExcludeGraph(currentObject: string) {
         const excludeObjects = this.stateCache.exclude_object.objects
+        const excludedObjects = this.stateCache.exclude_object.excluded_objects
         const axisMaximum = this.stateCache.toolhead.axis_maximum
         const graphMeta = this.configHelper.getGraphConfig('exclude_graph')
 
@@ -34,7 +35,15 @@ export class GraphHelper {
 
         for(const excludeObject of excludeObjects) {
             const polygons = excludeObject.polygon.join(' ')
-            const color = (excludeObject.name === currentObject) ? graphMeta.active_color : graphMeta.inactive_color
+            let color = graphMeta.inactive_color
+
+            if(excludedObjects.includes(excludeObject.name)) {
+                color = graphMeta.excluded_color
+            }
+            if(excludeObject.name === currentObject) {
+                color = graphMeta.active_color
+            }
+
             svg = `
 ${svg}
     <polygon points="${polygons}" fill="${color}" stroke="${color}"/>

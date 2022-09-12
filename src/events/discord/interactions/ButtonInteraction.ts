@@ -17,6 +17,7 @@ import {ReconnectButton} from "./buttons/ReconnectButton";
 import {UpdateButton} from "./buttons/UpdateButton";
 import {EmbedButton} from "./buttons/EmbedButton";
 import {TempModalButton} from "./buttons/TempModalButton";
+import {ExcludeConfirmButton} from "./buttons/ExcludeConfirmButton";
 
 export class ButtonInteraction {
     protected config = new ConfigHelper()
@@ -61,6 +62,7 @@ export class ButtonInteraction {
             }
         }
 
+        await new ExcludeConfirmButton().execute(interaction, buttonData)
         await new TempModalButton().execute(interaction, buttonData)
         await new PrintJobStartButton().execute(interaction, buttonData)
         await new MessageButton().execute(interaction, buttonData)

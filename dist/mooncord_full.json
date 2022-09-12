@@ -157,6 +157,13 @@
                 "users": [],
                 "roles": []
             },
+            "exclude_confirm": {
+                "command_assign": "printjob",
+                "botadmin": true,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
             "printjob_pause": {
                 "command_assign": "printjob",
                 "botadmin": true,
@@ -646,7 +653,10 @@
             "color": "#0099ff",
             "thumbnail": "exclude.png",
             "selections": ["exclude_objects"],
-            "buttons": ["printjob_status"]
+            "buttons": [
+                "exclude_confirm",
+                "printjob_status"
+            ]
         },
         "temperatures": {
             "color": "#0099ff",
@@ -967,6 +977,7 @@
                 }
             },
             "printjob_status": {
+                "emoji": "🖨️",
                 "style":"PRIMARY",
                 "function_mapping": {
                     "refresh_status": true
@@ -1031,6 +1042,18 @@
                 ],
                 "function_mapping": {
                     "show_embed": "exclude_overview"
+                }
+            },
+            "exclude_confirm": {
+                "emoji": "\uD83D\uDDD1",
+                "style":"DANGER",
+                "required_states" : [
+                    "printing",
+                    "pause"
+                ],
+                "function_mapping": {
+                    "refresh_status": true,
+                    "exclude_object": true
                 }
             },
             "reconnect": {
@@ -1383,7 +1406,8 @@
         "exclude_graph": {
             "background": "#3e4147",
             "active_color": "#0099ff",
-            "inactive_color": "#686d75"
+            "inactive_color": "#686d75",
+            "excluded_color": "#282a2e"
         },
         "temp_history": {
             "value_limit": 200,

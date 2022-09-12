@@ -238,7 +238,8 @@
                 "speed": "New speed factor is `${speed}%`, `${username}`!",
                 "flow": "New flow factor is `${flow}%`, `${username}`!",
                 "speed_flow": "New speed factor is `${speed}%` and flow factor is `${flow}%`, `${username}`!"
-            }
+            },
+            "excluded_object": "The Object `${object}` got excluded, `${username}`!"
         },
         "errors": {
             "check_console": "Please Check the Console!",
@@ -285,6 +286,9 @@
             "label": "Print"
         },
         "printjob_exclude": {
+            "label": "Exclude"
+        },
+        "exclude_confirm": {
             "label": "Exclude"
         },
         "printjob_request_accept": {

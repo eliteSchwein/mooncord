@@ -46983,7 +46983,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 1946:
+/***/ 350:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -47244,7 +47244,11 @@ function getHeaterChoices() {
 function getExcludeChoices() {
     const choices = [];
     const excludeObjects = cacheData.state.exclude_object.objects;
+    const excludedObjects = cacheData.state.exclude_object.excluded_objects;
     for (const excludeObject of excludeObjects) {
+        if (excludedObjects.includes(excludeObject.name)) {
+            continue;
+        }
         choices.push({
             "name": excludeObject.name,
             "value": excludeObject.name
@@ -48352,6 +48356,7 @@ class GraphHelper {
     }
     async getExcludeGraph(currentObject) {
         const excludeObjects = this.stateCache.exclude_object.objects;
+        const excludedObjects = this.stateCache.exclude_object.excluded_objects;
         const axisMaximum = this.stateCache.toolhead.axis_maximum;
         const graphMeta = this.configHelper.getGraphConfig('exclude_graph');
         logRegular('render exclude object graph...');
@@ -48364,7 +48369,13 @@ class GraphHelper {
         `;
         for (const excludeObject of excludeObjects) {
             const polygons = excludeObject.polygon.join(' ');
-            const color = (excludeObject.name === currentObject) ? graphMeta.active_color : graphMeta.inactive_color;
+            let color = graphMeta.inactive_color;
+            if (excludedObjects.includes(excludeObject.name)) {
+                color = graphMeta.excluded_color;
+            }
+            if (excludeObject.name === currentObject) {
+                color = graphMeta.active_color;
+            }
             svg = `
 ${svg}
     <polygon points="${polygons}" fill="${color}" stroke="${color}"/>
@@ -49749,7 +49760,44 @@ class TempModalButton {
     }
 }
 
+;// CONCATENATED MODULE: ./src/events/discord/interactions/buttons/ExcludeConfirmButton.ts
+
+
+class ExcludeConfirmButton {
+    constructor() {
+        this.moonrakerClient = getMoonrakerClient();
+        this.localeHelper = new LocaleHelper();
+        this.locale = this.localeHelper.getLocale();
+    }
+    async execute(interaction, buttonData) {
+        if (typeof buttonData.function_mapping.exclude_object === 'undefined') {
+            return;
+        }
+        if (!interaction.deferred && !interaction.replied) {
+            await interaction.deferReply();
+        }
+        const objectOptions = interaction.message.components[0].components[0]['options'];
+        let object = undefined;
+        for (const objectOption of objectOptions) {
+            if (objectOption.default) {
+                object = objectOption.value;
+            }
+        }
+        await this.moonrakerClient.send({ "method": "printer.gcode.script", "params": { "script": `EXCLUDE_OBJECT NAME=${object}` } }, Number.POSITIVE_INFINITY);
+        const answer = this.locale.messages.answers.excluded_object
+            .replace(/(\${object})/g, object)
+            .replace(/(\${username})/g, interaction.user.username);
+        if (!interaction.replied) {
+            await interaction.editReply(answer);
+        }
+        else {
+            await interaction.followUp(answer);
+        }
+    }
+}
+
 ;// CONCATENATED MODULE: ./src/events/discord/interactions/ButtonInteraction.ts
+
 
 
 
@@ -49805,6 +49853,7 @@ class ButtonInteraction {
                 return;
             }
         }
+        await new ExcludeConfirmButton().execute(interaction, buttonData);
         await new TempModalButton().execute(interaction, buttonData);
         await new PrintJobStartButton().execute(interaction, buttonData);
         await new MessageButton().execute(interaction, buttonData);
@@ -53280,7 +53329,7 @@ module.exports = JSON.parse('[[[0,44],"disallowed_STD3_valid"],[[45,46],"valid"]
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(1946);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(350);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()

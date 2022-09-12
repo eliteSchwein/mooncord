@@ -69,8 +69,13 @@ export function getHeaterChoices() {
 export function getExcludeChoices() {
     const choices = []
     const excludeObjects = cacheData.state.exclude_object.objects
+    const excludedObjects = cacheData.state.exclude_object.excluded_objects
 
     for(const excludeObject of excludeObjects) {
+        if(excludedObjects.includes(excludeObject.name)) {
+            continue
+        }
+
         choices.push({
             "name": excludeObject.name,
             "value": excludeObject.name
