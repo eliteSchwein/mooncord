@@ -1404,10 +1404,11 @@
     },
     "graph_meta": {
         "exclude_graph": {
-            "background": "#3e4147",
+            "background_color": "#3e4147",
             "active_color": "#0099ff",
             "inactive_color": "#686d75",
-            "excluded_color": "#282a2e"
+            "excluded_color": "#282a2e",
+            "border_color": "#000000"
         },
         "temp_history": {
             "value_limit": 200,

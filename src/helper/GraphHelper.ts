@@ -22,6 +22,7 @@ export class GraphHelper {
         const excludedObjects = this.stateCache.exclude_object.excluded_objects
         const axisMaximum = this.stateCache.toolhead.axis_maximum
         const graphMeta = this.configHelper.getGraphConfig('exclude_graph')
+        const borderColor = graphMeta.border_color
 
         logRegular('render exclude object graph...')
 
@@ -30,7 +31,7 @@ export class GraphHelper {
             xmlns="http://www.w3.org/2000/svg"
             xmlns:xlink="http://www.w3.org/1999/xlink"
             viewBox="0 0 ${axisMaximum[0]} ${axisMaximum[1]}">
-            <rect x="0" y="0" width="${axisMaximum[0]}" height="${axisMaximum[1]}" fill="${graphMeta.background}"/>
+            <rect x="0" y="0" width="${axisMaximum[0]}" height="${axisMaximum[1]}" fill="${graphMeta.background_color}"/>
         `
 
         for(const excludeObject of excludeObjects) {
@@ -46,7 +47,7 @@ export class GraphHelper {
 
             svg = `
 ${svg}
-    <polygon points="${polygons}" fill="${color}" stroke="${color}"/>
+    <polygon points="${polygons}" fill="${color}" stroke="${borderColor}"/>
             `
         }
 
