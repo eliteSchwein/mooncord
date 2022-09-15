@@ -975,7 +975,7 @@
             "embed_id": "printjob_pause",
             "meta_data": {
                 "allow_same": false,
-                "prevent": []
+                "prevent": ["start"]
             },
             "activity": {
                 "status": "idle",
