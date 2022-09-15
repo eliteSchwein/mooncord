@@ -19,6 +19,12 @@
       }
     }
   },
+  "execute": {
+    "gcode": {
+      "type": "string",
+      "required": false
+    }
+  },
   "config": {
     "upload": {
       "type": "subcommand",

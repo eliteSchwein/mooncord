@@ -269,6 +269,12 @@
                 "users": [],
                 "roles": []
             },
+            "execute": {
+                "botadmin": true,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
             "reset_database": {
                 "botadmin": true,
                 "guildadmin": false,
@@ -399,6 +405,13 @@
         "inputs": {
         },
         "modals": {
+            "execute_modal": {
+                "command_assign": "execute",
+                "botadmin": true,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
             "temp_target": {
                 "command_assign": "temp",
                 "botadmin": true,
@@ -886,6 +899,11 @@
         }
     },
     "modal_meta": {
+        "execute_modal": {
+            "inputs": [
+                "gcode_input"
+            ]
+        },
         "temp_target": {
             "inputs": [],
             "add_temp_inputs": true
@@ -893,6 +911,12 @@
     },
     "input_meta": {
         "inputs": {
+            "gcode_input": {
+                "style": "PARAGRAPH",
+                "permission_mapping": "execute",
+                "value": "",
+                "required": true
+            },
             "temp_target_input": {
                 "style": "SHORT",
                 "permission_mapping": "temp",

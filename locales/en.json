@@ -1,5 +1,8 @@
 {
     "modals": {
+        "execute_modal": {
+            "title": "Execute?"
+        },
         "temp_target": {
             "title": "Set Target Temperatures"
         }
@@ -524,12 +527,12 @@
             "command": "emergencystop"
         },
         "execute": {
-            "description": "Execute a GCode Command.",
+            "description": "Execute one or multiple Gcode Commands.",
             "command": "execute",
             "options": {
                 "gcode": {
                     "name": "gcode",
-                    "description": "GCode that you want to execute."
+                    "description": "Single Gcode Command that you want to execute."
                 }
             }
         },
@@ -634,6 +637,9 @@
         }
     },
     "inputs": {
+        "gcode_input": {
+            "label": "GCode Commands"
+        },
         "temp_target_input": {
             "label": "Target for ${heater}"
         }
