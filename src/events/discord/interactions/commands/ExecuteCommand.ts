@@ -7,6 +7,7 @@ import {ConfigHelper} from "../../../../helper/ConfigHelper";
 import {uploadAttachment} from "../../../../helper/DataHelper";
 import {ServiceHelper} from "../../../../helper/ServiceHelper";
 import {ModalHelper} from "../../../../helper/ModalHelper";
+import {ConsoleHelper} from "../../../../helper/ConsoleHelper";
 
 export class ExecuteCommand {
     protected databaseUtil = getDatabase()
@@ -17,6 +18,7 @@ export class ExecuteCommand {
     protected embedHelper = new EmbedHelper()
     protected modalHelper = new ModalHelper()
     protected serviceHelper = new ServiceHelper()
+    protected consoleHelper = new ConsoleHelper()
 
     public constructor(interaction: CommandInteraction, commandId: string) {
         if(commandId !== 'execute') { return }
@@ -33,6 +35,11 @@ export class ExecuteCommand {
             return
         }
 
-        await interaction.deferReply()
+        const answer = this.locale.messages.answers.gcodes_execute
+            .replace(/\${username}/g, interaction.user.tag)
+
+        await interaction.reply(answer)
+
+        await this.consoleHelper.executeGcodeCommands([gcodeArgument], interaction.channel)
     }
 }

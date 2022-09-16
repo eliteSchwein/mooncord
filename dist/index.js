@@ -46983,7 +46983,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 277:
+/***/ 380:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -50789,7 +50789,32 @@ class ConfigCommand {
     }
 }
 
+;// CONCATENATED MODULE: ./src/helper/ConsoleHelper.ts
+
+
+
+
+class ConsoleHelper {
+    constructor() {
+        this.moonrakerClient = getMoonrakerClient();
+        this.embedHelper = new EmbedHelper();
+        this.cache = getEntry('execute');
+    }
+    async executeGcodeCommands(gcodes, channel) {
+        if (gcodes.length === 0) {
+            return false;
+        }
+        for (const gcode of gcodes) {
+            logRegular(`execute gcode "${gcode}" now...`);
+            const response = await this.moonrakerClient.send({ "method": "printer.gcode.script", "params": { "script": gcode } }, 2000);
+            this.cache = getEntry('execute');
+            console.log(response);
+        }
+    }
+}
+
 ;// CONCATENATED MODULE: ./src/events/discord/interactions/commands/ExecuteCommand.ts
+
 
 
 
@@ -50806,6 +50831,7 @@ class ExecuteCommand {
         this.embedHelper = new EmbedHelper();
         this.modalHelper = new ModalHelper();
         this.serviceHelper = new ServiceHelper();
+        this.consoleHelper = new ConsoleHelper();
         if (commandId !== 'execute') {
             return;
         }
@@ -50818,7 +50844,10 @@ class ExecuteCommand {
             await interaction.showModal(modal);
             return;
         }
-        await interaction.deferReply();
+        const answer = this.locale.messages.answers.gcodes_execute
+            .replace(/\${username}/g, interaction.user.tag);
+        await interaction.reply(answer);
+        await this.consoleHelper.executeGcodeCommands([gcodeArgument], interaction.channel);
     }
 }
 
@@ -53031,6 +53060,12 @@ function initCache() {
     setData('temps', {
         'colors': {}
     });
+    logRegular('init execute Cache...');
+    setData('execute', {
+        'running': false,
+        'successful_commands': {},
+        'failed_commands': {}
+    });
     configHelper.loadCache();
     localeHelper.loadCache();
     embedHelper.loadCache();
@@ -53365,7 +53400,7 @@ module.exports = JSON.parse('[[[0,44],"disallowed_STD3_valid"],[[45,46],"valid"]
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(277);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(380);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()

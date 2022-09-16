@@ -164,6 +164,13 @@ function initCache() {
         'colors': {}
     })
 
+    logRegular('init execute Cache...')
+    setData('execute', {
+        'running': false,
+        'successful_commands': {},
+        'failed_commands': {}
+    })
+
     configHelper.loadCache()
     localeHelper.loadCache()
     embedHelper.loadCache()
