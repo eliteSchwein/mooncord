@@ -10,6 +10,7 @@ import {PrintProgressNotification} from "./messages/PrintProgressNotification";
 import {ThrottleNotification} from "./messages/ThrottleNotification";
 import {TimelapseNotification} from "./messages/TimelapseNotification";
 import {DisplayUpdateNotification} from "./messages/DisplayUpdateNotification";
+import {ConsoleMessageNotification} from "./messages/ConsoleMessageNotification";
 
 export class MessageHandler {
     protected websocket: Websocket
@@ -26,6 +27,7 @@ export class MessageHandler {
                 'event_count': websocket.underlyingWebsocket['_eventsCount']
             })
 
+            void new ConsoleMessageNotification().parse(messageData)
             void new ProcStatsNotification().parse(messageData)
             void new SubscriptionNotification().parse(messageData)
             void new UpdateNotification().parse(messageData)

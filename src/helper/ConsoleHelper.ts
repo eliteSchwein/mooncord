@@ -2,7 +2,7 @@ import {getMoonrakerClient} from "../Application";
 import {EmbedHelper} from "./EmbedHelper";
 import {GuildTextBasedChannel} from "discord.js";
 import {logRegular} from "./LoggerHelper";
-import {getEntry} from "../utils/CacheUtil";
+import {getEntry, setData} from "../utils/CacheUtil";
 
 export class ConsoleHelper {
     protected moonrakerClient = getMoonrakerClient()
@@ -14,11 +14,22 @@ export class ConsoleHelper {
             return false
         }
 
-        for(const gcode of gcodes) {
+        setData('execute', {
+            'running': false,
+            'to_execute_command': '',
+            'command_state': '',
+            'successful_commands': [],
+            'failed_commands': [],
+            'unknown_commands': []
+        })
+
+        for(let gcode of gcodes) {
+            gcode = gcode.toUpperCase()
             logRegular(`execute gcode "${gcode}" now...`)
-            const response = await this.moonrakerClient.send({"method": "printer.gcode.script", "params": {"script": gcode}}, 2_000)
+            this.cache.to_execute_command = gcode
+            setData('execute', this.cache)
+            await this.moonrakerClient.send({"method": "printer.gcode.script", "params": {"script": gcode}}, 2_000)
             this.cache = getEntry('execute')
-            console.log(response)
         }
     }
 }

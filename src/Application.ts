@@ -167,8 +167,11 @@ function initCache() {
     logRegular('init execute Cache...')
     setData('execute', {
         'running': false,
-        'successful_commands': {},
-        'failed_commands': {}
+        'to_execute_command': '',
+        'command_state': '',
+        'successful_commands': [],
+        'failed_commands': [],
+        'unknown_commands': []
     })
 
     configHelper.loadCache()

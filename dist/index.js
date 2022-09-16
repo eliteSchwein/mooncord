@@ -46983,7 +46983,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 380:
+/***/ 955:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -50804,11 +50804,21 @@ class ConsoleHelper {
         if (gcodes.length === 0) {
             return false;
         }
-        for (const gcode of gcodes) {
+        setData('execute', {
+            'running': false,
+            'to_execute_command': '',
+            'command_state': '',
+            'successful_commands': [],
+            'failed_commands': [],
+            'unknown_commands': []
+        });
+        for (let gcode of gcodes) {
+            gcode = gcode.toUpperCase();
             logRegular(`execute gcode "${gcode}" now...`);
-            const response = await this.moonrakerClient.send({ "method": "printer.gcode.script", "params": { "script": gcode } }, 2000);
+            this.cache.to_execute_command = gcode;
+            setData('execute', this.cache);
+            await this.moonrakerClient.send({ "method": "printer.gcode.script", "params": { "script": gcode } }, 2000);
             this.cache = getEntry('execute');
-            console.log(response);
         }
     }
 }
@@ -52478,7 +52488,35 @@ class DisplayUpdateNotification {
     }
 }
 
+;// CONCATENATED MODULE: ./src/events/moonraker/messages/ConsoleMessageNotification.ts
+
+
+class ConsoleMessageNotification {
+    constructor() {
+        this.cache = getEntry('execute');
+        this.consoleHelper = new ConsoleHelper();
+    }
+    async parse(message) {
+        if (typeof (message.method) === 'undefined') {
+            return;
+        }
+        if (typeof (message.params) === 'undefined') {
+            return;
+        }
+        if (message.method !== 'notify_gcode_response') {
+            return;
+        }
+        const gcodeResponse = message.params[0];
+        console.log(this.cache.to_execute_command);
+        console.log(gcodeResponse);
+        if (gcodeResponse.includes(this.cache.to_execute_command)) {
+            console.log(gcodeResponse);
+        }
+    }
+}
+
 ;// CONCATENATED MODULE: ./src/events/moonraker/MessageHandler.ts
+
 
 
 
@@ -52502,6 +52540,7 @@ class MessageHandler {
             updateData('moonraker_client', {
                 'event_count': websocket.underlyingWebsocket['_eventsCount']
             });
+            void new ConsoleMessageNotification().parse(messageData);
             void new ProcStatsNotification().parse(messageData);
             void new SubscriptionNotification().parse(messageData);
             void new UpdateNotification().parse(messageData);
@@ -53063,8 +53102,11 @@ function initCache() {
     logRegular('init execute Cache...');
     setData('execute', {
         'running': false,
-        'successful_commands': {},
-        'failed_commands': {}
+        'to_execute_command': '',
+        'command_state': '',
+        'successful_commands': [],
+        'failed_commands': [],
+        'unknown_commands': []
     });
     configHelper.loadCache();
     localeHelper.loadCache();
@@ -53400,7 +53442,7 @@ module.exports = JSON.parse('[[[0,44],"disallowed_STD3_valid"],[[45,46],"valid"]
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(380);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(955);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()
