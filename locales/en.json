@@ -190,6 +190,7 @@
     },
     "messages": {
         "answers": {
+            "execute_successful": "The Gcode Commands executed successful, `${username}`!",
             "preheat_preset": {
                 "preset": "Preheating for `${preset}`, `${username}`!",
                 "manual": "Preheating ${heater_list}, `${username}`!"
@@ -209,7 +210,6 @@
                 "activated": "`${channel}` is now a Broadcast Channel, `${username}`!",
                 "deactivated": "`${channel}` is no longer a Broadcast Channel, `${username}`!"
             },
-            "gcodes_execute": "GCode Commands are getting executed, `${username}`!",
             "log_retrieved": "Here is the current Log for `${service}`",
             "user_id": {
                 "own_id": "Your id is `${id}`",
@@ -253,6 +253,8 @@
             "excluded_object": "The Object `${object}` got excluded, `${username}`!"
         },
         "errors": {
+            "macros_failed": "The Macros for `${button_label}` failed, `${username}`!",
+            "execute_failed": "The Gcode Commands failed, `${username}`!",
             "check_console": "Please Check the Console!",
             "command_disabled": "The Command is disabled!",
             "command_failed": "An Error occured!",

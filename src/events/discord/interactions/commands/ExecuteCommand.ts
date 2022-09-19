@@ -35,11 +35,16 @@ export class ExecuteCommand {
             return
         }
 
-        const answer = this.locale.messages.answers.gcodes_execute
+        const gcodeValid = await this.consoleHelper.executeGcodeCommands([gcodeArgument], interaction.channel)
+
+        let answer = this.locale.messages.answers.execute_successful
             .replace(/\${username}/g, interaction.user.tag)
 
-        await interaction.reply(answer)
+        if(!gcodeValid) {
+            answer = this.locale.messages.errors.execute_failed
+                .replace(/\${username}/g, interaction.user.tag)
+        }
 
-        await this.consoleHelper.executeGcodeCommands([gcodeArgument], interaction.channel)
+        await interaction.reply(answer)
     }
 }

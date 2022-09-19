@@ -46983,7 +46983,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 3955:
+/***/ 3081:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -49299,6 +49299,60 @@ class PermissionHelper {
     }
 }
 
+;// CONCATENATED MODULE: ./src/helper/ConsoleHelper.ts
+
+
+
+
+
+class ConsoleHelper {
+    constructor() {
+        this.moonrakerClient = getMoonrakerClient();
+        this.embedHelper = new EmbedHelper();
+        this.cache = getEntry('execute');
+    }
+    async executeGcodeCommands(gcodes, channel) {
+        let valid = true;
+        if (gcodes.length === 0) {
+            return false;
+        }
+        setData('execute', {
+            'running': false,
+            'to_execute_command': '',
+            'command_state': '',
+            'successful_commands': [],
+            'failed_commands': [],
+            'unknown_commands': []
+        });
+        for (let gcode of gcodes) {
+            gcode = gcode.toUpperCase();
+            logRegular(`execute gcode "${gcode}" now...`);
+            this.cache.to_execute_command = gcode;
+            setData('execute', this.cache);
+            await this.moonrakerClient.send({ "method": "printer.gcode.script", "params": { "script": gcode } }, 2000);
+            await sleep(150);
+            this.cache = getEntry('execute');
+        }
+        if (this.cache.error_commands.length > 0) {
+            valid = false;
+            const failedDescription = `\`\`\`
+${this.cache.error_commands.join('\n')}
+            \`\`\``;
+            const failedEmbed = await this.embedHelper.generateEmbed('execute_error', { gcode_commands: failedDescription });
+            await channel.send(failedEmbed.embed);
+        }
+        if (this.cache.unknown_commands.length > 0) {
+            valid = false;
+            const unknownDescription = `\`\`\`
+${this.cache.unknown_commands.join('\n')}
+            \`\`\``;
+            const unknownEmbed = await this.embedHelper.generateEmbed('execute_unknown', { gcode_commands: unknownDescription });
+            await channel.send(unknownEmbed.embed);
+        }
+        return valid;
+    }
+}
+
 ;// CONCATENATED MODULE: ./src/events/discord/interactions/buttons/MacroButton.ts
 
 
@@ -49313,6 +49367,7 @@ class MacroButton {
         this.moonrakerClient = getMoonrakerClient();
         this.localeHelper = new LocaleHelper();
         this.locale = this.localeHelper.getLocale();
+        this.consoleHelper = new ConsoleHelper();
     }
     async execute(interaction, buttonData) {
         if (typeof buttonData.function_mapping.macros === 'undefined') {
@@ -49321,10 +49376,7 @@ class MacroButton {
         if (buttonData.function_mapping.macros.empty) {
             return;
         }
-        for (const macro of buttonData.function_mapping.macros) {
-            logNotice(`executing macro: ${macro}`);
-            void this.moonrakerClient.send({ "method": "printer.gcode.script", "params": { "script": macro } }, 60000);
-        }
+        const gcodeValid = await this.consoleHelper.executeGcodeCommands(buttonData.function_mapping.macros, interaction.channel);
         if (!buttonData.function_mapping.macro_message) {
             return;
         }
@@ -49332,14 +49384,19 @@ class MacroButton {
         if (typeof buttonData.emoji !== 'undefined') {
             label = `${buttonData.emoji} ${label}`;
         }
-        const message = this.locale.messages.answers.macros_executed
-            .replace(/(\${username})/g, interaction.user.tag)
+        let answer = this.locale.messages.answers.macros_executed
+            .replace(/\${username}/g, interaction.user.tag)
             .replace(/(\${button_label})/g, label);
+        if (!gcodeValid) {
+            answer = this.locale.messages.errors.macros_failed
+                .replace(/\${username}/g, interaction.user.tag)
+                .replace(/(\${button_label})/g, label);
+        }
         if (interaction.replied) {
-            await interaction.followUp({ ephemeral: false, content: message });
+            await interaction.followUp({ ephemeral: false, content: answer });
         }
         else {
-            await interaction.reply(message);
+            await interaction.reply(answer);
         }
     }
 }
@@ -50789,60 +50846,6 @@ class ConfigCommand {
     }
 }
 
-;// CONCATENATED MODULE: ./src/helper/ConsoleHelper.ts
-
-
-
-
-
-class ConsoleHelper {
-    constructor() {
-        this.moonrakerClient = getMoonrakerClient();
-        this.embedHelper = new EmbedHelper();
-        this.cache = getEntry('execute');
-    }
-    async executeGcodeCommands(gcodes, channel) {
-        let valid = true;
-        if (gcodes.length === 0) {
-            return false;
-        }
-        setData('execute', {
-            'running': false,
-            'to_execute_command': '',
-            'command_state': '',
-            'successful_commands': [],
-            'failed_commands': [],
-            'unknown_commands': []
-        });
-        for (let gcode of gcodes) {
-            gcode = gcode.toUpperCase();
-            logRegular(`execute gcode "${gcode}" now...`);
-            this.cache.to_execute_command = gcode;
-            setData('execute', this.cache);
-            await this.moonrakerClient.send({ "method": "printer.gcode.script", "params": { "script": gcode } }, 2000);
-            await sleep(150);
-            this.cache = getEntry('execute');
-        }
-        if (this.cache.error_commands.length > 0) {
-            valid = false;
-            const failedDescription = `\`\`\`
-${this.cache.error_commands.join('\n')}
-            \`\`\``;
-            const failedEmbed = await this.embedHelper.generateEmbed('execute_error', { gcode_commands: failedDescription });
-            await channel.send(failedEmbed.embed);
-        }
-        if (this.cache.unknown_commands.length > 0) {
-            valid = false;
-            const unknownDescription = `\`\`\`
-${this.cache.unknown_commands.join('\n')}
-            \`\`\``;
-            const unknownEmbed = await this.embedHelper.generateEmbed('execute_unknown', { gcode_commands: unknownDescription });
-            await channel.send(unknownEmbed.embed);
-        }
-        return valid;
-    }
-}
-
 ;// CONCATENATED MODULE: ./src/events/discord/interactions/commands/ExecuteCommand.ts
 
 
@@ -50874,10 +50877,14 @@ class ExecuteCommand {
             await interaction.showModal(modal);
             return;
         }
-        const answer = this.locale.messages.answers.gcodes_execute
+        const gcodeValid = await this.consoleHelper.executeGcodeCommands([gcodeArgument], interaction.channel);
+        let answer = this.locale.messages.answers.execute_successful
             .replace(/\${username}/g, interaction.user.tag);
+        if (!gcodeValid) {
+            answer = this.locale.messages.errors.execute_failed
+                .replace(/\${username}/g, interaction.user.tag);
+        }
         await interaction.reply(answer);
-        await this.consoleHelper.executeGcodeCommands([gcodeArgument], interaction.channel);
     }
 }
 
@@ -52508,10 +52515,10 @@ class DisplayUpdateNotification {
     }
 }
 
-;// CONCATENATED MODULE: ./src/events/moonraker/messages/ConsoleMessageNotification.ts
+;// CONCATENATED MODULE: ./src/events/moonraker/gcode-messages/ConsoleMessage.ts
 
 
-class ConsoleMessageNotification {
+class ConsoleMessage {
     constructor() {
         this.cache = getEntry('execute');
         this.consoleHelper = new ConsoleHelper();
@@ -52526,6 +52533,7 @@ class ConsoleMessageNotification {
         if (message.method !== 'notify_gcode_response') {
             return;
         }
+        this.cache = getEntry('execute');
         const gcodeResponse = message.params[0];
         const commandToExecute = this.cache.to_execute_command;
         let commandFaulty = false;
@@ -52571,7 +52579,7 @@ class MessageHandler {
             updateData('moonraker_client', {
                 'event_count': websocket.underlyingWebsocket['_eventsCount']
             });
-            void new ConsoleMessageNotification().parse(messageData);
+            void new ConsoleMessage().parse(messageData);
             void new ProcStatsNotification().parse(messageData);
             void new SubscriptionNotification().parse(messageData);
             void new UpdateNotification().parse(messageData);
@@ -53473,7 +53481,7 @@ module.exports = JSON.parse('[[[0,44],"disallowed_STD3_valid"],[[45,46],"valid"]
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(3955);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(3081);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()
