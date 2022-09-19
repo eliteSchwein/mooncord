@@ -1,4 +1,4 @@
-import {getEntry} from "../../../utils/CacheUtil";
+import {getEntry, setData} from "../../../utils/CacheUtil";
 import {ConsoleHelper} from "../../../helper/ConsoleHelper";
 
 export class ConsoleMessageNotification {
@@ -15,8 +15,23 @@ export class ConsoleMessageNotification {
         console.log(this.cache.to_execute_command)
         console.log(gcodeResponse)
 
+        let commandFaulty = false
+
         if(gcodeResponse.includes(this.cache.to_execute_command)) {
-            console.log(gcodeResponse)
+            if(gcodeResponse.startsWith('//')) {
+                this.cache.unknown_commands.push(this.cache.to_execute_command)
+                commandFaulty = true
+            }
+            if(gcodeResponse.startsWith('!!')) {
+                this.cache.error_commands.push(this.cache.to_execute_command)
+                commandFaulty = true
+            }
         }
+
+        if(!commandFaulty) {
+            return
+        }
+
+        setData('execute', this.cache)
     }
 }

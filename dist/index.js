@@ -46983,7 +46983,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 955:
+/***/ 3955:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -52509,9 +52509,21 @@ class ConsoleMessageNotification {
         const gcodeResponse = message.params[0];
         console.log(this.cache.to_execute_command);
         console.log(gcodeResponse);
+        let commandFaulty = false;
         if (gcodeResponse.includes(this.cache.to_execute_command)) {
-            console.log(gcodeResponse);
+            if (gcodeResponse.startsWith('//')) {
+                this.cache.unknown_commands.push(this.cache.to_execute_command);
+                commandFaulty = true;
+            }
+            if (gcodeResponse.startsWith('!!')) {
+                this.cache.error_commands.push(this.cache.to_execute_command);
+                commandFaulty = true;
+            }
         }
+        if (!commandFaulty) {
+            return;
+        }
+        setData('execute', this.cache);
     }
 }
 
@@ -53105,7 +53117,7 @@ function initCache() {
         'to_execute_command': '',
         'command_state': '',
         'successful_commands': [],
-        'failed_commands': [],
+        'error_commands': [],
         'unknown_commands': []
     });
     configHelper.loadCache();
@@ -53442,7 +53454,7 @@ module.exports = JSON.parse('[[[0,44],"disallowed_STD3_valid"],[[45,46],"valid"]
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(955);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(3955);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()

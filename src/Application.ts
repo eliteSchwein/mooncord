@@ -170,7 +170,7 @@ function initCache() {
         'to_execute_command': '',
         'command_state': '',
         'successful_commands': [],
-        'failed_commands': [],
+        'error_commands': [],
         'unknown_commands': []
     })
 
