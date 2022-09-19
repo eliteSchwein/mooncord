@@ -463,6 +463,14 @@
         }
     },
     "embed_meta": {
+        "execute_unknown": {
+            "thumbnail": "execute.png",
+            "color": "#c90000"
+        },
+        "execute_error": {
+            "thumbnail": "execute.png",
+            "color": "#c90000"
+        },
         "fileinfo": {
             "author": "${filename}",
             "color": "#0099ff",

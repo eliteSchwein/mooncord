@@ -11,19 +11,17 @@ export class ConsoleMessageNotification {
         if(message.method !== 'notify_gcode_response') { return }
 
         const gcodeResponse = message.params[0]
-
-        console.log(this.cache.to_execute_command)
-        console.log(gcodeResponse)
+        const commandToExecute = this.cache.to_execute_command
 
         let commandFaulty = false
 
-        if(gcodeResponse.includes(this.cache.to_execute_command)) {
+        if(gcodeResponse.includes(commandToExecute)) {
             if(gcodeResponse.startsWith('//')) {
-                this.cache.unknown_commands.push(this.cache.to_execute_command)
+                this.cache.unknown_commands.push(commandToExecute)
                 commandFaulty = true
             }
             if(gcodeResponse.startsWith('!!')) {
-                this.cache.error_commands.push(this.cache.to_execute_command)
+                this.cache.error_commands.push(commandToExecute)
                 commandFaulty = true
             }
         }

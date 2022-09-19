@@ -16,6 +16,14 @@
         }
     },
     "embeds": {
+        "execute_error": {
+            "title": "Malformated GCode Command/s",
+            "description": "${gcode_commands}"
+        },
+        "execute_unknown": {
+            "title": "Unknown GCode Command/s",
+            "description": "${gcode_commands}"
+        },
         "configs_download": {
             "title": "Download config file",
             "description": "${page_entries}",

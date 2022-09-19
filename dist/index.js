@@ -50794,6 +50794,7 @@ class ConfigCommand {
 
 
 
+
 class ConsoleHelper {
     constructor() {
         this.moonrakerClient = getMoonrakerClient();
@@ -50801,6 +50802,7 @@ class ConsoleHelper {
         this.cache = getEntry('execute');
     }
     async executeGcodeCommands(gcodes, channel) {
+        let valid = true;
         if (gcodes.length === 0) {
             return false;
         }
@@ -50818,8 +50820,26 @@ class ConsoleHelper {
             this.cache.to_execute_command = gcode;
             setData('execute', this.cache);
             await this.moonrakerClient.send({ "method": "printer.gcode.script", "params": { "script": gcode } }, 2000);
+            await sleep(150);
             this.cache = getEntry('execute');
         }
+        if (this.cache.error_commands.length > 0) {
+            valid = false;
+            const failedDescription = `\`\`\`
+${this.cache.error_commands.join('\n')}
+            \`\`\``;
+            const failedEmbed = await this.embedHelper.generateEmbed('execute_error', { gcode_commands: failedDescription });
+            await channel.send(failedEmbed.embed);
+        }
+        if (this.cache.unknown_commands.length > 0) {
+            valid = false;
+            const unknownDescription = `\`\`\`
+${this.cache.unknown_commands.join('\n')}
+            \`\`\``;
+            const unknownEmbed = await this.embedHelper.generateEmbed('execute_unknown', { gcode_commands: unknownDescription });
+            await channel.send(unknownEmbed.embed);
+        }
+        return valid;
     }
 }
 
@@ -52507,16 +52527,15 @@ class ConsoleMessageNotification {
             return;
         }
         const gcodeResponse = message.params[0];
-        console.log(this.cache.to_execute_command);
-        console.log(gcodeResponse);
+        const commandToExecute = this.cache.to_execute_command;
         let commandFaulty = false;
-        if (gcodeResponse.includes(this.cache.to_execute_command)) {
+        if (gcodeResponse.includes(commandToExecute)) {
             if (gcodeResponse.startsWith('//')) {
-                this.cache.unknown_commands.push(this.cache.to_execute_command);
+                this.cache.unknown_commands.push(commandToExecute);
                 commandFaulty = true;
             }
             if (gcodeResponse.startsWith('!!')) {
-                this.cache.error_commands.push(this.cache.to_execute_command);
+                this.cache.error_commands.push(commandToExecute);
                 commandFaulty = true;
             }
         }
