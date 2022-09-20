@@ -46983,7 +46983,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 3081:
+/***/ 6811:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -49304,7 +49304,6 @@ class PermissionHelper {
 
 
 
-
 class ConsoleHelper {
     constructor() {
         this.moonrakerClient = getMoonrakerClient();
@@ -49312,12 +49311,16 @@ class ConsoleHelper {
         this.cache = getEntry('execute');
     }
     async executeGcodeCommands(gcodes, channel) {
-        let valid = true;
+        let valid = 1;
         if (gcodes.length === 0) {
-            return false;
+            return 0;
+        }
+        this.cache = getEntry('execute');
+        if (this.cache.running) {
+            return -1;
         }
         setData('execute', {
-            'running': false,
+            'running': true,
             'to_execute_command': '',
             'command_state': '',
             'successful_commands': [],
@@ -49330,11 +49333,10 @@ class ConsoleHelper {
             this.cache.to_execute_command = gcode;
             setData('execute', this.cache);
             await this.moonrakerClient.send({ "method": "printer.gcode.script", "params": { "script": gcode } }, 2000);
-            await sleep(150);
             this.cache = getEntry('execute');
         }
         if (this.cache.error_commands.length > 0) {
-            valid = false;
+            valid = 0;
             const failedDescription = `\`\`\`
 ${this.cache.error_commands.join('\n')}
             \`\`\``;
@@ -49342,13 +49344,15 @@ ${this.cache.error_commands.join('\n')}
             await channel.send(failedEmbed.embed);
         }
         if (this.cache.unknown_commands.length > 0) {
-            valid = false;
+            valid = 0;
             const unknownDescription = `\`\`\`
 ${this.cache.unknown_commands.join('\n')}
             \`\`\``;
             const unknownEmbed = await this.embedHelper.generateEmbed('execute_unknown', { gcode_commands: unknownDescription });
             await channel.send(unknownEmbed.embed);
         }
+        this.cache.running = false;
+        setData('execute', this.cache);
         return valid;
     }
 }
@@ -49387,10 +49391,14 @@ class MacroButton {
         let answer = this.locale.messages.answers.macros_executed
             .replace(/\${username}/g, interaction.user.tag)
             .replace(/(\${button_label})/g, label);
-        if (!gcodeValid) {
+        if (gcodeValid === 0) {
             answer = this.locale.messages.errors.macros_failed
                 .replace(/\${username}/g, interaction.user.tag)
                 .replace(/(\${button_label})/g, label);
+        }
+        if (gcodeValid === -1) {
+            answer = this.locale.messages.errors.execute_running
+                .replace(/\${username}/g, interaction.user.tag);
         }
         if (interaction.replied) {
             await interaction.followUp({ ephemeral: false, content: answer });
@@ -50880,8 +50888,12 @@ class ExecuteCommand {
         const gcodeValid = await this.consoleHelper.executeGcodeCommands([gcodeArgument], interaction.channel);
         let answer = this.locale.messages.answers.execute_successful
             .replace(/\${username}/g, interaction.user.tag);
-        if (!gcodeValid) {
+        if (gcodeValid === 0) {
             answer = this.locale.messages.errors.execute_failed
+                .replace(/\${username}/g, interaction.user.tag);
+        }
+        if (gcodeValid === -1) {
+            answer = this.locale.messages.errors.execute_running
                 .replace(/\${username}/g, interaction.user.tag);
         }
         await interaction.reply(answer);
@@ -51337,7 +51349,41 @@ class TempTargetModal {
     }
 }
 
+;// CONCATENATED MODULE: ./src/events/discord/interactions/modals/ExecuteModal.ts
+
+
+class ExecuteModal {
+    constructor(interaction, modalId) {
+        this.consoleHelper = new ConsoleHelper();
+        this.localeHelper = new LocaleHelper();
+        this.locale = this.localeHelper.getLocale();
+        if (modalId !== 'execute_modal') {
+            return;
+        }
+        this.execute(interaction);
+    }
+    async execute(interaction) {
+        const componentRows = interaction.components;
+        const input = componentRows[0].components[0];
+        const gcodes = input.value.split('\n');
+        await interaction.deferReply();
+        const gcodeValid = await this.consoleHelper.executeGcodeCommands(gcodes, interaction.channel);
+        let answer = this.locale.messages.answers.execute_successful
+            .replace(/\${username}/g, interaction.user.tag);
+        if (gcodeValid === 0) {
+            answer = this.locale.messages.errors.execute_failed
+                .replace(/\${username}/g, interaction.user.tag);
+        }
+        if (gcodeValid === -1) {
+            answer = this.locale.messages.errors.execute_running
+                .replace(/\${username}/g, interaction.user.tag);
+        }
+        await interaction.editReply(answer);
+    }
+}
+
 ;// CONCATENATED MODULE: ./src/events/discord/interactions/ModalInteraction.ts
+
 
 
 
@@ -51378,6 +51424,7 @@ class ModalInteraction {
             return;
         }
         void new TempTargetModal(interaction, modalId);
+        void new ExecuteModal(interaction, modalId);
         await sleep(2000);
         if (interaction.replied || interaction.deferred) {
             return;
@@ -52548,7 +52595,7 @@ class ConsoleMessage {
             }
         }
         if (!commandFaulty) {
-            return;
+            this.cache.successful_commands.push(commandToExecute);
         }
         setData('execute', this.cache);
     }
@@ -53481,7 +53528,7 @@ module.exports = JSON.parse('[[[0,44],"disallowed_STD3_valid"],[[45,46],"valid"]
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(3081);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(6811);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()

@@ -33,10 +33,15 @@ export class MacroButton {
             .replace(/\${username}/g, interaction.user.tag)
             .replace(/(\${button_label})/g, label)
 
-        if(!gcodeValid) {
+        if(gcodeValid === 0) {
             answer = this.locale.messages.errors.macros_failed
                 .replace(/\${username}/g, interaction.user.tag)
                 .replace(/(\${button_label})/g, label)
+        }
+
+        if(gcodeValid === -1) {
+            answer = this.locale.messages.errors.execute_running
+                .replace(/\${username}/g, interaction.user.tag)
         }
 
         if(interaction.replied) {

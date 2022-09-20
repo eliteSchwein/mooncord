@@ -253,6 +253,7 @@
             "excluded_object": "The Object `${object}` got excluded, `${username}`!"
         },
         "errors": {
+            "execute_running": "The Command Executer is already running, please try again later, `${username}`!",
             "macros_failed": "The Macros for `${button_label}` failed, `${username}`!",
             "execute_failed": "The Gcode Commands failed, `${username}`!",
             "check_console": "Please Check the Console!",

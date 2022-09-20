@@ -40,8 +40,13 @@ export class ExecuteCommand {
         let answer = this.locale.messages.answers.execute_successful
             .replace(/\${username}/g, interaction.user.tag)
 
-        if(!gcodeValid) {
+        if(gcodeValid === 0) {
             answer = this.locale.messages.errors.execute_failed
+                .replace(/\${username}/g, interaction.user.tag)
+        }
+
+        if(gcodeValid === -1) {
+            answer = this.locale.messages.errors.execute_running
                 .replace(/\${username}/g, interaction.user.tag)
         }
 

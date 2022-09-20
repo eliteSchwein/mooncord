@@ -6,6 +6,7 @@ import {DiscordInputGenerator} from "../../../generator/DiscordInputGenerator";
 import {logNotice, logWarn} from "../../../helper/LoggerHelper";
 import {sleep} from "../../../helper/DataHelper";
 import {TempTargetModal} from "./modals/TempTargetModal";
+import {ExecuteModal} from "./modals/ExecuteModal";
 
 
 export class ModalInteraction {
@@ -45,6 +46,7 @@ export class ModalInteraction {
         }
 
         void new TempTargetModal(interaction, modalId)
+        void new ExecuteModal(interaction, modalId)
 
         await sleep(2000)
 

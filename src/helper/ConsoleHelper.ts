@@ -11,14 +11,20 @@ export class ConsoleHelper {
     protected cache = getEntry('execute')
 
     public async executeGcodeCommands(gcodes: string[], channel: GuildTextBasedChannel) {
-        let valid = true
+        let valid = 1
 
         if(gcodes.length === 0) {
-            return false
+            return 0
+        }
+
+        this.cache = getEntry('execute')
+
+        if(this.cache.running) {
+            return -1
         }
 
         setData('execute', {
-            'running': false,
+            'running': true,
             'to_execute_command': '',
             'command_state': '',
             'successful_commands': [],
@@ -32,12 +38,11 @@ export class ConsoleHelper {
             this.cache.to_execute_command = gcode
             setData('execute', this.cache)
             await this.moonrakerClient.send({"method": "printer.gcode.script", "params": {"script": gcode}}, 2_000)
-            await sleep(150)
             this.cache = getEntry('execute')
         }
 
         if(this.cache.error_commands.length > 0) {
-            valid = false
+            valid = 0
 
             const failedDescription = `\`\`\`
 ${this.cache.error_commands.join('\n')}
@@ -47,7 +52,7 @@ ${this.cache.error_commands.join('\n')}
         }
 
         if(this.cache.unknown_commands.length > 0) {
-            valid = false
+            valid = 0
 
             const unknownDescription = `\`\`\`
 ${this.cache.unknown_commands.join('\n')}
@@ -55,6 +60,10 @@ ${this.cache.unknown_commands.join('\n')}
             const unknownEmbed = await this.embedHelper.generateEmbed('execute_unknown', {gcode_commands: unknownDescription})
             await channel.send(unknownEmbed.embed)
         }
+
+        this.cache.running = false
+
+        setData('execute', this.cache)
 
         return valid
     }

@@ -29,7 +29,7 @@ export class ConsoleMessage {
         }
 
         if(!commandFaulty) {
-            return
+            this.cache.successful_commands.push(commandToExecute)
         }
 
         setData('execute', this.cache)
