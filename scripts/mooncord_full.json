@@ -471,6 +471,10 @@
             "thumbnail": "execute.png",
             "color": "#c90000"
         },
+        "execute_successful": {
+            "thumbnail": "execute.png",
+            "color": "#25db00"
+        },
         "fileinfo": {
             "author": "${filename}",
             "color": "#0099ff",

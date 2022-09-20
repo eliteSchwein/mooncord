@@ -1,9 +1,8 @@
 import {getMoonrakerClient} from "../Application";
 import {EmbedHelper} from "./EmbedHelper";
 import {GuildTextBasedChannel} from "discord.js";
-import {logRegular} from "./LoggerHelper";
+import {logRegular, logWarn} from "./LoggerHelper";
 import {getEntry, setData} from "../utils/CacheUtil";
-import {sleep} from "./DataHelper";
 
 export class ConsoleHelper {
     protected moonrakerClient = getMoonrakerClient()
@@ -23,30 +22,45 @@ export class ConsoleHelper {
             return -1
         }
 
-        setData('execute', {
+        this.cache = {
             'running': true,
             'to_execute_command': '',
             'command_state': '',
             'successful_commands': [],
-            'failed_commands': [],
+            'error_commands': [],
             'unknown_commands': []
-        })
+        }
+
+        setData('execute', this.cache)
 
         for(let gcode of gcodes) {
             gcode = gcode.toUpperCase()
             logRegular(`execute gcode "${gcode}" now...`)
             this.cache.to_execute_command = gcode
             setData('execute', this.cache)
-            await this.moonrakerClient.send({"method": "printer.gcode.script", "params": {"script": gcode}}, 2_000)
+
+            try {
+                await this.moonrakerClient.send({"method": "printer.gcode.script", "params": {"script": gcode}}, 2_000)
+            } catch {
+                logWarn(`Command ${gcode} timed out...`)
+                this.cache.error_commands.push(gcode)
+            }
+
+            if(!this.cache.error_commands.includes(gcode)&&!this.cache.unknown_commands.includes(gcode)) {
+                this.cache.successful_commands.push(gcode)
+            }
+
+            setData('execute', this.cache)
+
             this.cache = getEntry('execute')
         }
+
+        this.cache = getEntry('execute')
 
         if(this.cache.error_commands.length > 0) {
             valid = 0
 
-            const failedDescription = `\`\`\`
-${this.cache.error_commands.join('\n')}
-            \`\`\``
+            const failedDescription = `\`\`\`${this.cache.error_commands.join('\n')}\`\`\``
             const failedEmbed = await this.embedHelper.generateEmbed('execute_error', {gcode_commands: failedDescription})
             await channel.send(failedEmbed.embed)
         }
@@ -54,11 +68,15 @@ ${this.cache.error_commands.join('\n')}
         if(this.cache.unknown_commands.length > 0) {
             valid = 0
 
-            const unknownDescription = `\`\`\`
-${this.cache.unknown_commands.join('\n')}
-            \`\`\``
+            const unknownDescription = `\`\`\`${this.cache.unknown_commands.join('\n')}\`\`\``
             const unknownEmbed = await this.embedHelper.generateEmbed('execute_unknown', {gcode_commands: unknownDescription})
             await channel.send(unknownEmbed.embed)
+        }
+
+        if(this.cache.successful_commands.length > 0) {
+            const successfulDescription = `\`\`\`${this.cache.successful_commands.join('\n')}\`\`\``
+            const successfulEmbed = await this.embedHelper.generateEmbed('execute_successful', {gcode_commands: successfulDescription})
+            await channel.send(successfulEmbed.embed)
         }
 
         this.cache.running = false

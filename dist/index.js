@@ -49319,37 +49319,50 @@ class ConsoleHelper {
         if (this.cache.running) {
             return -1;
         }
-        setData('execute', {
+        this.cache = {
             'running': true,
             'to_execute_command': '',
             'command_state': '',
             'successful_commands': [],
-            'failed_commands': [],
+            'error_commands': [],
             'unknown_commands': []
-        });
+        };
+        setData('execute', this.cache);
         for (let gcode of gcodes) {
             gcode = gcode.toUpperCase();
             logRegular(`execute gcode "${gcode}" now...`);
             this.cache.to_execute_command = gcode;
             setData('execute', this.cache);
-            await this.moonrakerClient.send({ "method": "printer.gcode.script", "params": { "script": gcode } }, 2000);
+            try {
+                await this.moonrakerClient.send({ "method": "printer.gcode.script", "params": { "script": gcode } }, 2000);
+            }
+            catch {
+                logWarn(`Command ${gcode} timed out...`);
+                this.cache.error_commands.push(gcode);
+            }
+            if (!this.cache.error_commands.includes(gcode) && !this.cache.unknown_commands.includes(gcode)) {
+                this.cache.successful_commands.push(gcode);
+            }
+            setData('execute', this.cache);
             this.cache = getEntry('execute');
         }
+        this.cache = getEntry('execute');
         if (this.cache.error_commands.length > 0) {
             valid = 0;
-            const failedDescription = `\`\`\`
-${this.cache.error_commands.join('\n')}
-            \`\`\``;
+            const failedDescription = `\`\`\`${this.cache.error_commands.join('\n')}\`\`\``;
             const failedEmbed = await this.embedHelper.generateEmbed('execute_error', { gcode_commands: failedDescription });
             await channel.send(failedEmbed.embed);
         }
         if (this.cache.unknown_commands.length > 0) {
             valid = 0;
-            const unknownDescription = `\`\`\`
-${this.cache.unknown_commands.join('\n')}
-            \`\`\``;
+            const unknownDescription = `\`\`\`${this.cache.unknown_commands.join('\n')}\`\`\``;
             const unknownEmbed = await this.embedHelper.generateEmbed('execute_unknown', { gcode_commands: unknownDescription });
             await channel.send(unknownEmbed.embed);
+        }
+        if (this.cache.successful_commands.length > 0) {
+            const successfulDescription = `\`\`\`${this.cache.successful_commands.join('\n')}\`\`\``;
+            const successfulEmbed = await this.embedHelper.generateEmbed('execute_successful', { gcode_commands: successfulDescription });
+            await channel.send(successfulEmbed.embed);
         }
         this.cache.running = false;
         setData('execute', this.cache);
@@ -52583,19 +52596,14 @@ class ConsoleMessage {
         this.cache = getEntry('execute');
         const gcodeResponse = message.params[0];
         const commandToExecute = this.cache.to_execute_command;
-        let commandFaulty = false;
-        if (gcodeResponse.includes(commandToExecute)) {
-            if (gcodeResponse.startsWith('//')) {
-                this.cache.unknown_commands.push(commandToExecute);
-                commandFaulty = true;
-            }
-            if (gcodeResponse.startsWith('!!')) {
-                this.cache.error_commands.push(commandToExecute);
-                commandFaulty = true;
-            }
+        if (!gcodeResponse.includes(commandToExecute)) {
+            return;
         }
-        if (!commandFaulty) {
-            this.cache.successful_commands.push(commandToExecute);
+        if (gcodeResponse.startsWith('//')) {
+            this.cache.unknown_commands.push(commandToExecute);
+        }
+        if (gcodeResponse.startsWith('!!')) {
+            this.cache.error_commands.push(commandToExecute);
         }
         setData('execute', this.cache);
     }

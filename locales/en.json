@@ -24,6 +24,10 @@
             "title": "Unknown GCode Command/s",
             "description": "${gcode_commands}"
         },
+        "execute_successful": {
+            "title": "Executed GCode Command/s",
+            "description": "${gcode_commands}"
+        },
         "configs_download": {
             "title": "Download config file",
             "description": "${page_entries}",

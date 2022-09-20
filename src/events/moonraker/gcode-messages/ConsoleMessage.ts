@@ -15,21 +15,16 @@ export class ConsoleMessage {
         const gcodeResponse = message.params[0]
         const commandToExecute = this.cache.to_execute_command
 
-        let commandFaulty = false
-
-        if(gcodeResponse.includes(commandToExecute)) {
-            if(gcodeResponse.startsWith('//')) {
-                this.cache.unknown_commands.push(commandToExecute)
-                commandFaulty = true
-            }
-            if(gcodeResponse.startsWith('!!')) {
-                this.cache.error_commands.push(commandToExecute)
-                commandFaulty = true
-            }
+        if(!gcodeResponse.includes(commandToExecute)) {
+            return
         }
 
-        if(!commandFaulty) {
-            this.cache.successful_commands.push(commandToExecute)
+        if(gcodeResponse.startsWith('//')) {
+            this.cache.unknown_commands.push(commandToExecute)
+        }
+
+        if(gcodeResponse.startsWith('!!')) {
+            this.cache.error_commands.push(commandToExecute)
         }
 
         setData('execute', this.cache)
