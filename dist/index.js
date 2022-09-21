@@ -46983,7 +46983,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 6811:
+/***/ 193:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -49749,20 +49749,6 @@ class ReconnectButton {
     }
 }
 
-;// CONCATENATED MODULE: ./src/events/discord/interactions/buttons/UpdateButton.ts
-
-class UpdateButton {
-    constructor() {
-        this.moonrakerClient = getMoonrakerClient();
-    }
-    async execute(interaction, buttonData) {
-        if (!buttonData.function_mapping.update_system) {
-            return;
-        }
-        await this.moonrakerClient.send({ 'method': 'machine.update.full' }, Number.POSITIVE_INFINITY);
-    }
-}
-
 ;// CONCATENATED MODULE: ./src/events/discord/interactions/buttons/EmbedButton.ts
 
 class EmbedButton {
@@ -49875,6 +49861,28 @@ class ExcludeConfirmButton {
     }
 }
 
+;// CONCATENATED MODULE: ./src/events/discord/interactions/buttons/WebsocketButton.ts
+
+
+class WebsocketButton {
+    constructor() {
+        this.moonrakerClient = getMoonrakerClient();
+    }
+    async execute(interaction, buttonData) {
+        if (!buttonData.function_mapping.websocket_command) {
+            return;
+        }
+        for (const websocketCommand of buttonData.function_mapping.websocket_command) {
+            try {
+                await this.moonrakerClient.send(websocketCommand);
+            }
+            catch {
+                logWarn(`The Websocket Command ${websocketCommand} timed out...`);
+            }
+        }
+    }
+}
+
 ;// CONCATENATED MODULE: ./src/events/discord/interactions/ButtonInteraction.ts
 
 
@@ -49932,6 +49940,7 @@ class ButtonInteraction {
                 return;
             }
         }
+        await new WebsocketButton().execute(interaction, buttonData);
         await new ExcludeConfirmButton().execute(interaction, buttonData);
         await new TempModalButton().execute(interaction, buttonData);
         await new PrintJobStartButton().execute(interaction, buttonData);
@@ -49944,7 +49953,6 @@ class ButtonInteraction {
         await new PrintlistButton().execute(interaction, buttonData);
         await new PageButton().execute(interaction, buttonData);
         await new MacroButton().execute(interaction, buttonData);
-        await new UpdateButton().execute(interaction, buttonData);
         await sleep(2000);
         if (interaction.replied || interaction.deferred) {
             return;
@@ -53536,7 +53544,7 @@ module.exports = JSON.parse('[[[0,44],"disallowed_STD3_valid"],[[45,46],"valid"]
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(6811);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(193);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()

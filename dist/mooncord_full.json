@@ -213,6 +213,20 @@
                 "users": [],
                 "roles": []
             },
+            "update_refresh_systeminfo": {
+                "command_assign": "restart",
+                "botadmin": true,
+                "guildadmin": true,
+                "users": [],
+                "roles": []
+            },
+            "update_refresh": {
+                "command_assign": "restart",
+                "botadmin": true,
+                "guildadmin": true,
+                "users": [],
+                "roles": []
+            },
             "update_system": {
                 "command_assign": "restart",
                 "botadmin": true,
@@ -875,7 +889,7 @@
             "selections": [
                 "systeminfo_select"
             ],
-            "buttons": ["update_system"],
+            "buttons": ["update_system", "update_refresh_systeminfo"],
             "fields": [],
             "show_updates": true
         },
@@ -905,7 +919,7 @@
         "system_update": {
             "color": "#fbff00",
             "thumbnail": "update.png",
-            "buttons": ["update_system"],
+            "buttons": ["update_system", "update_refresh"],
             "fields": [],
             "show_updates": true
         }
@@ -1108,10 +1122,42 @@
                     "message": "${locale.messages.answers.firmware_restart_successful}"
                 }
             },
+            "update_refresh": {
+                "emoji": "🔄",
+                "style":"PRIMARY",
+                "function_mapping": {
+                    "websocket_command": [
+                        {
+                            "method": "machine.update.status",
+                            "params": {
+                                "refresh": true
+                            }
+                        }
+                    ],
+                    "show_embed": "system_update"
+                }
+            },
+            "update_refresh_systeminfo": {
+                "emoji": "🔄",
+                "style":"PRIMARY",
+                "function_mapping": {
+                    "websocket_command": [
+                        {
+                            "method": "machine.update.status",
+                            "params": {
+                                "refresh": true
+                            }
+                        }
+                    ],
+                    "show_embed": "systeminfo_update"
+                }
+            },
             "update_system": {
                 "style":"SECONDARY",
                 "function_mapping": {
-                    "update_system": true,
+                    "websocket_command": [
+                        {"method": "machine.update.full"}
+                    ],
                     "message": "${locale.messages.answers.update_request}",
                     "message_as_follow_up": true
                 }
