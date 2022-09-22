@@ -46983,7 +46983,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 193:
+/***/ 9193:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -47817,11 +47817,14 @@ class DiscordInputGenerator {
             return;
         }
         for (const buttonData of buttons) {
-            row.addComponents(new external_discord_js_namespaceObject.MessageButton()
+            const button = new external_discord_js_namespaceObject.MessageButton()
                 .setCustomId(buttonData.id)
                 .setEmoji(buttonData.emoji)
-                .setLabel(buttonData.label)
-                .setStyle(buttonData.style));
+                .setStyle(buttonData.style);
+            if (buttonData.label !== null && buttonData.label !== undefined) {
+                button.setLabel(buttonData.label);
+            }
+            row.addComponents(button);
         }
         if (row.components.length === 0) {
             return;
@@ -49759,7 +49762,7 @@ class EmbedButton {
         if (typeof buttonData.function_mapping.show_embed === 'undefined') {
             return;
         }
-        if (!interaction.replied) {
+        if (!interaction.replied && !interaction.deferred) {
             await interaction.deferReply();
         }
         const currentMessage = interaction.message;
@@ -49872,7 +49875,11 @@ class WebsocketButton {
         if (!buttonData.function_mapping.websocket_command) {
             return;
         }
+        if (!interaction.deferred && !interaction.replied) {
+            await interaction.deferReply();
+        }
         for (const websocketCommand of buttonData.function_mapping.websocket_command) {
+            logRegular(`Execute Websocket Command ${websocketCommand}...`);
             try {
                 await this.moonrakerClient.send(websocketCommand);
             }
@@ -53544,7 +53551,7 @@ module.exports = JSON.parse('[[[0,44],"disallowed_STD3_valid"],[[45,46],"valid"]
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(193);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(9193);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()

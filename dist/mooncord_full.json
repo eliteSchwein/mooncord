@@ -1153,7 +1153,8 @@
                 }
             },
             "update_system": {
-                "style":"SECONDARY",
+                "emoji": "\uD83D\uDD3C",
+                "style":"PRIMARY",
                 "function_mapping": {
                     "websocket_command": [
                         {"method": "machine.update.full"}

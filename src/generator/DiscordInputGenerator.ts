@@ -37,13 +37,16 @@ export class DiscordInputGenerator {
         if(buttons.length === 0) { return }
 
         for (const buttonData of buttons) {
-            row.addComponents(
-                new MessageButton()
+            const button = new MessageButton()
                     .setCustomId(buttonData.id)
                     .setEmoji(buttonData.emoji)
-                    .setLabel(buttonData.label)
                     .setStyle(buttonData.style)
-            )
+
+            if(buttonData.label !== null && buttonData.label !== undefined) {
+                button.setLabel(buttonData.label)
+            }
+
+            row.addComponents(button)
         }
 
         if(row.components.length === 0) {

@@ -7,7 +7,7 @@ export class EmbedButton {
     public async execute(interaction: ButtonInteraction, buttonData) {
         if(typeof buttonData.function_mapping.show_embed === 'undefined') { return }
 
-        if(!interaction.replied) { await interaction.deferReply() }
+        if(!interaction.replied && !interaction.deferred) { await interaction.deferReply() }
 
         const currentMessage = interaction.message as Message
 

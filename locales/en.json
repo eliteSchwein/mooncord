@@ -321,9 +321,6 @@
         "reconnect": {
             "label": "Reconnect"
         },
-        "update_system": {
-            "label": "Update"
-        },
         "next_page_printlist":  {
             "label": "Next Page"
         },
