@@ -52152,9 +52152,6 @@ class SubscriptionNotification {
             await this.statusHelper.update('start');
         }
         await this.statusHelper.update(status);
-        if (status === 'complete') {
-            await this.statusHelper.update('ready');
-        }
     }
 }
 

@@ -1014,7 +1014,7 @@
                 "emoji": "🧹",
                 "style":"SECONDARY",
                 "function_mapping": {
-                    "required_states" : ["complete"],
+                    "required_states" : ["complete", "ready"],
                     "macros": ["SDCARD_RESET_FILE"],
                     "message": "${locale.messages.answers.printjob_clear}"
                 }
