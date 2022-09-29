@@ -49033,6 +49033,9 @@ class TemplateHelper {
                 'double_dash': true
             };
         }
+        if (cacheParser.constructor.name === 'Array') {
+            cacheParser = cacheParser.join('\\n');
+        }
         cacheParser = String(cacheParser);
         if (cacheParser === '') {
             cacheParser = 'N/A';
@@ -51933,7 +51936,7 @@ class DiscordClient {
         this.database.updateDatabaseEntry('invite_url', inviteUrl);
         setData('invite_url', inviteUrl);
         setData('discord_client', {
-            'readySince': new Date(),
+            'readySince': Date.now() / 1000,
             'applicationId': this.discordClient.application.id,
             'clientId': this.discordClient.user.id,
             'ping': this.discordClient.ws.ping,
@@ -52810,7 +52813,7 @@ class MoonrakerClient {
         }
         setData('moonraker_client', {
             'url': this.websocket.underlyingWebsocket.url,
-            'readySince': new Date(),
+            'readySince': Date.now() / 1000,
             'event_count': this.websocket.underlyingWebsocket['_eventsCount']
         });
         this.tempHelper.generateColors(data.result.status);

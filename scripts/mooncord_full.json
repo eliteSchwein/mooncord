@@ -833,14 +833,6 @@
                     "value": "${usage.system_load} %"
                 },
                 {
-                    "name": "${embeds.fields.moonraker_load}",
-                    "value": "${proc_stats.moonraker_stats.cpu_usage} %"
-                },
-                {
-                    "name": "${embeds.fields.klipper_load}",
-                    "value": "${usage.klipper_load} %"
-                },
-                {
                     "name": "${embeds.fields.distribution}",
                     "value": "${machine_info.system_info.distribution.name}"
                 },
@@ -851,6 +843,91 @@
                 {
                     "name": "${embeds.fields.distribution_like}",
                     "value": "${machine_info.system_info.distribution.like}"
+                }
+            ]
+        },
+
+        "systeminfo_discord": {
+            "color": "#0099ff",
+            "thumbnail": "discord.png",
+            "selection": {
+                "id": "systeminfo_select",
+                "data": "${raw_entries}"
+            },
+            "fields": [
+                {
+                    "name": "${embeds.fields.ping}",
+                    "value": "${discord_client.ping} ms"
+                },
+                {
+                    "name": "${embeds.fields.client_id}",
+                    "value": "${discord_client.clientId}"
+                },
+                {
+                    "name": "${embeds.fields.event_count}",
+                    "value": "${discord_client.event_count}"
+                },
+                {
+                    "name": "${embeds.fields.ready_since}",
+                    "value": "<t:${round:0:discord_client.readySince}>"
+                }
+            ]
+        },
+        "systeminfo_moonraker_client": {
+            "color": "#0099ff",
+            "thumbnail": "system.png",
+            "selection": {
+                "id": "systeminfo_select",
+                "data": "${raw_entries}"
+            },
+            "fields": [
+                {
+                    "name": "${embeds.fields.event_count}",
+                    "value": "${moonraker_client.event_count}"
+                },
+                {
+                    "name": "${embeds.fields.ready_since}",
+                    "value": "<t:${round:0:moonraker_client.readySince}>"
+                }
+            ]
+        },
+        "systeminfo_moonraker": {
+            "color": "#0099ff",
+            "thumbnail": "system.png",
+            "selection": {
+                "id": "systeminfo_select",
+                "data": "${raw_entries}"
+            },
+            "fields": [
+                {
+                    "name": "${embeds.fields.active_connections}",
+                    "value": "${server_info.websocket_count}"
+                },
+                {
+                    "name": "${embeds.fields.moonraker_load}",
+                    "value": "${proc_stats.moonraker_stats.cpu_usage} %"
+                },
+                {
+                    "name": "${embeds.fields.version}",
+                    "value": "${server_info.moonraker_version}"
+                }
+            ]
+        },
+        "systeminfo_klipper": {
+            "color": "#0099ff",
+            "thumbnail": "mcu.png",
+            "selection": {
+                "id": "systeminfo_select",
+                "data": "${raw_entries}"
+            },
+            "fields": [
+                {
+                    "name": "${embeds.fields.klipper_load}",
+                    "value": "${usage.klipper_load} %"
+                },
+                {
+                    "name": "${embeds.fields.version}",
+                    "value": "${printer_info.software_version}"
                 }
             ]
         },
@@ -987,6 +1064,7 @@
                 "emoji": "▶️",
                 "style":"PRIMARY",
                 "function_mapping": {
+                    "macro_message": false,
                     "required_states" : ["pause"],
                     "macros": ["RESUME"],
                     "message": "${locale.messages.answers.printjob_resume.status_valid}"
@@ -996,6 +1074,7 @@
                 "emoji": "⛔",
                 "style":"DANGER",
                 "function_mapping": {
+                    "macro_message": false,
                     "required_states" : ["pause", "printing"],
                     "macros": ["CANCEL_PRINT"],
                     "message": "${locale.messages.answers.printjob_cancel.status_valid}"
@@ -1005,6 +1084,7 @@
                 "emoji": "☕",
                 "style":"SECONDARY",
                 "function_mapping": {
+                    "macro_message": false,
                     "required_states" : ["printing"],
                     "macros": ["PAUSE"],
                     "message": "${locale.messages.answers.printjob_pause.status_valid}"
@@ -1014,6 +1094,7 @@
                 "emoji": "🧹",
                 "style":"SECONDARY",
                 "function_mapping": {
+                    "macro_message": false,
                     "required_states" : ["complete", "ready"],
                     "macros": ["SDCARD_RESET_FILE"],
                     "message": "${locale.messages.answers.printjob_clear}"
@@ -1118,6 +1199,7 @@
                 "emoji": "🔄",
                 "style":"PRIMARY",
                 "function_mapping": {
+                    "macro_message": false,
                     "macros": ["FIRMWARE_RESTART"],
                     "message": "${locale.messages.answers.firmware_restart_successful}"
                 }

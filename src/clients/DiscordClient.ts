@@ -72,7 +72,7 @@ export class DiscordClient {
 
         setData('invite_url', inviteUrl)
         setData('discord_client', {
-            'readySince': new Date(),
+            'readySince': Date.now()/1000,
             'applicationId': this.discordClient.application.id,
             'clientId': this.discordClient.user.id,
             'ping': this.discordClient.ws.ping,

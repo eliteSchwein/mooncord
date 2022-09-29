@@ -187,7 +187,7 @@ export class MoonrakerClient {
 
         setData('moonraker_client', {
             'url': this.websocket.underlyingWebsocket.url,
-            'readySince': new Date(),
+            'readySince': Date.now()/1000,
             'event_count': this.websocket.underlyingWebsocket['_eventsCount']
         })
 

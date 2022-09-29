@@ -42,6 +42,20 @@
         "systeminfo_system": {
             "title": "System Information"
         },
+        "systeminfo_discord": {
+            "title": "Discord Client Information"
+        },
+        "systeminfo_moonraker_client": {
+            "title": "Moonraker Client Information"
+        },
+        "systeminfo_moonraker": {
+            "title": "Moonraker Information",
+            "description": "**Warnings ⚠:** \n ```\n${server_info.warnings}```"
+        },
+        "systeminfo_klipper": {
+            "title": "Klipper Information",
+            "description": "**Warnings ⚠:** \n ```\n${state.configfile.warnings}```"
+        },
         "systeminfo_mcu": {
             "title": "${mcu_name} Information"
         },
@@ -189,7 +203,12 @@
             "klipper_load": "Klipper Load",
             "distribution": "Distribution",
             "distribution_like": "Distribution Like",
-            "codename": "Codename"
+            "codename": "Codename",
+            "ping": "Ping",
+            "client_id": "Client ID",
+            "event_count": "Events",
+            "ready_since": "Ready Since",
+            "active_connections": "Active Connections"
         }
     },
     "messages": {
@@ -294,9 +313,6 @@
         "printjob_resume": {
             "label": "Resume"
         },
-        "printjob_refresh": {
-            "label": "Refresh"
-        },
         "printjob_status": {
             "label": "Status"
         },
@@ -394,6 +410,22 @@
                 {
                     "label": "System",
                     "value": "system"
+                },
+                {
+                    "label": "Moonraker",
+                    "value": "moonraker"
+                },
+                {
+                    "label": "Klipper",
+                    "value": "klipper"
+                },
+                {
+                    "label": "Discord Client",
+                    "value": "discord"
+                },
+                {
+                    "label": "Moonraker Client",
+                    "value": "moonraker_client"
                 },
                 {
                     "label": "Updates",

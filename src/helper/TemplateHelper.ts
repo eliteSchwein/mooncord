@@ -257,6 +257,10 @@ export class TemplateHelper {
             }
         }
 
+        if(cacheParser.constructor.name === 'Array') {
+            cacheParser = cacheParser.join('\\n')
+        }
+
         cacheParser = String(cacheParser)
 
         if(cacheParser === '') {
