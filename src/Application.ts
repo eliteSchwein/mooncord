@@ -174,6 +174,9 @@ function initCache() {
         'unknown_commands': []
     })
 
+    logRegular('init commands Cache...')
+    setData('commands', [])
+
     configHelper.loadCache()
     localeHelper.loadCache()
     embedHelper.loadCache()

@@ -45,6 +45,10 @@ export class StatusHelper {
             status = 'ready'
         }
 
+        if(status === 'initializing') {
+            status = 'startup'
+        }
+
         if(status === 'paused') {
             status = 'pause'
         }

@@ -46983,7 +46983,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 9193:
+/***/ 183:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -47637,11 +47637,11 @@ class ConfigHelper {
     }
 }
 
-;// CONCATENATED MODULE: ./src/meta/command_structure.json
-const command_structure_namespaceObject = JSON.parse('{"admin":{"role":{"type":"subcommand","options":{"role":{"type":"role","required":true}}},"user":{"type":"subcommand","options":{"user":{"type":"user","required":true}}}},"execute":{"gcode":{"type":"string","required":false}},"config":{"upload":{"type":"subcommand","options":{"file":{"type":"attachment","required":true},"directory":{"type":"string","required":false}}},"get":{"type":"subcommand"}},"preheat":{"preset":{"type":"subcommand","options":{"preset":{"type":"string","required":true,"choices":"${preheatProfileChoices}"}}},"manual":{"type":"subcommand","options":"${heaterArguments}"}},"tune":{"speed":{"type":"integer"},"flow":{"type":"integer"}},"pidtune":{"heater":{"type":"string","required":true,"choices":"${heaterChoices}"},"temperature":{"type":"integer","required":true}},"dump":{"section":{"type":"string","required":true,"choices":[{"value":"database"},{"value":"cache"}]}},"reset_database":{},"editchannel":{"channel":{"type":"channel","required":false}},"emergency_stop":{},"fileinfo":{"file":{"type":"string","required":true}},"get_user_id":{"user":{"type":"user","required":false}},"restart":{"service":{"type":"string","required":true,"choices":"${serviceChoices}"}},"get_log":{"log_file":{"type":"string","required":true,"choices":[{"name":"Klipper","value":"klippy"},{"name":"Moonraker","value":"moonraker"},{"name":"MoonCord","value":"mooncord"}]}},"info":{},"listgcodes":{},"notify":{},"printjob":{"pause":{"type":"subcommand"},"cancel":{"type":"subcommand"},"resume":{"type":"subcommand"},"start":{"type":"subcommand","options":{"file":{"type":"string","required":true}}}},"status":{},"systeminfo":{},"temp":{}}');
 ;// CONCATENATED MODULE: ./src/meta/command_option_types.json
 const command_option_types_namespaceObject = JSON.parse('{"subcommand":1,"subcommand_group":2,"string":3,"integer":4,"boolean":5,"user":6,"channel":7,"role":8,"mentionable":9,"number":10,"attachment":11}');
 ;// CONCATENATED MODULE: ./src/generator/DiscordCommandGenerator.ts
+//import commandStructure from '../meta/command_structure.json'
+
 
 
 
@@ -47649,11 +47649,14 @@ const command_option_types_namespaceObject = JSON.parse('{"subcommand":1,"subcom
 class DiscordCommandGenerator {
     constructor() {
         this.localeHelper = new LocaleHelper();
+        this.commandStructure = {};
     }
     getCommands() {
         const commandList = [];
         const commandCache = {};
-        for (const commandIndex in command_structure_namespaceObject) {
+        const commandStructureFile = (0,external_fs_.readFileSync)(__nccwpck_require__.ab + "command_structure.json");
+        this.commandStructure = JSON.parse(commandStructureFile.toString('utf8'));
+        for (const commandIndex in this.commandStructure) {
             const command = this.buildCommand(commandIndex);
             commandList.push(command);
             commandCache[commandIndex] = command;
@@ -47671,15 +47674,15 @@ class DiscordCommandGenerator {
         }
     }
     buildCommand(command) {
-        const messageLocale = this.localeHelper.getLocale().commands[command];
-        const syntaxLocale = this.localeHelper.getSyntaxLocale().commands[command];
+        const messageLocale = Object.assign({}, this.localeHelper.getLocale().commands[command]);
+        const syntaxLocale = Object.assign({}, this.localeHelper.getSyntaxLocale().commands[command]);
         const builder = {
             name: syntaxLocale.command,
             description: messageLocale.description,
             options: []
         };
-        for (const index in command_structure_namespaceObject[command]) {
-            this.buildCommandOption(builder, command_structure_namespaceObject[command], index, syntaxLocale, messageLocale);
+        for (const index in this.commandStructure[command]) {
+            this.buildCommandOption(builder, this.commandStructure[command], index, syntaxLocale, messageLocale);
         }
         return builder;
     }
@@ -51680,6 +51683,9 @@ class StatusHelper {
         if (status === 'standby') {
             status = 'ready';
         }
+        if (status === 'initializing') {
+            status = 'startup';
+        }
         if (status === 'paused') {
             status = 'pause';
         }
@@ -53217,6 +53223,8 @@ function initCache() {
         'error_commands': [],
         'unknown_commands': []
     });
+    logRegular('init commands Cache...');
+    setData('commands', []);
     configHelper.loadCache();
     localeHelper.loadCache();
     embedHelper.loadCache();
@@ -53551,7 +53559,7 @@ module.exports = JSON.parse('[[[0,44],"disallowed_STD3_valid"],[[45,46],"valid"]
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(9193);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(183);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()

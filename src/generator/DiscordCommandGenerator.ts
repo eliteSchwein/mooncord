@@ -1,4 +1,4 @@
-import commandStructure from '../meta/command_structure.json'
+//import commandStructure from '../meta/command_structure.json'
 import commandOptionsTypes from '../meta/command_option_types.json'
 import {
     getEntry,
@@ -9,15 +9,20 @@ import {
     setData
 } from "../utils/CacheUtil";
 import {LocaleHelper} from "../helper/LocaleHelper";
+import {readFileSync} from "fs";
+import path from "path";
 
 export class DiscordCommandGenerator {
     protected localeHelper = new LocaleHelper()
+    protected commandStructure = {}
 
     public getCommands() {
         const commandList = []
         const commandCache = {}
+        const commandStructureFile = readFileSync(path.resolve(__dirname, '../meta/command_structure.json'))
+        this.commandStructure = JSON.parse(commandStructureFile.toString('utf8'))
 
-        for (const commandIndex in commandStructure) {
+        for (const commandIndex in this.commandStructure) {
             const command = this.buildCommand(commandIndex)
             commandList.push(command)
             commandCache[commandIndex] = command
@@ -38,8 +43,8 @@ export class DiscordCommandGenerator {
     }
 
     protected buildCommand(command:string) {
-        const messageLocale = this.localeHelper.getLocale().commands[command]
-        const syntaxLocale = this.localeHelper.getSyntaxLocale().commands[command]
+        const messageLocale = Object.assign({}, this.localeHelper.getLocale().commands[command])
+        const syntaxLocale = Object.assign({}, this.localeHelper.getSyntaxLocale().commands[command])
 
         const builder = {
             name: syntaxLocale.command,
@@ -47,10 +52,10 @@ export class DiscordCommandGenerator {
             options: []
         }
 
-        for(const index in commandStructure[command]) {
+        for(const index in this.commandStructure[command]) {
             this.buildCommandOption(
                 builder,
-                commandStructure[command],
+                this.commandStructure[command],
                 index,
                 syntaxLocale,
                 messageLocale)
