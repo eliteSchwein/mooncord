@@ -488,7 +488,7 @@
             }
         },
         "preheat": {
-            "description": "Manage Admin Role or User.",
+            "description": "Preheat a profile or manually.",
             "command": "preheat",
             "options": {
                 "preset": {
