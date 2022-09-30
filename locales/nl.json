@@ -1,10 +1,41 @@
 {
+    "modals": {
+        "execute_modal": {
+            "title": "Execute?"
+        },
+        "temp_target": {
+            "title": "Set Target Temperatures"
+        }
+    },
     "pages": {
+        "gcode_files": {
+            "entry_label": "${data.path}"
+        },
+        "configs_download": {
+            "entry_label": "${data.name}"
+        },
         "list_files": {
             "entry_label": "${data.path}"
         }
     },
     "embeds": {
+        "execute_error": {
+            "title": "Malformated GCode Command/s",
+            "description": "${gcode_commands}"
+        },
+        "execute_unknown": {
+            "title": "Unknown GCode Command/s",
+            "description": "${gcode_commands}"
+        },
+        "execute_successful": {
+            "title": "Executed GCode Command/s",
+            "description": "${gcode_commands}"
+        },
+        "configs_download": {
+            "title": "Download config file",
+            "description": "${page_entries}",
+            "footer": "Page ${pages}"
+        },
         "systeminfo_cpu": {
             "title": "Processorinformatie"
         },
@@ -14,20 +45,40 @@
         "systeminfo_system": {
             "title": "Systeeminformatie"
         },
+        "systeminfo_discord": {
+            "title": "Discord Client Information"
+        },
+        "systeminfo_moonraker_client": {
+            "title": "Moonraker Client Information"
+        },
+        "systeminfo_moonraker": {
+            "title": "Moonraker Information",
+            "description": "**Warnings ⚠:** \n ```\n${server_info.warnings}```"
+        },
+        "systeminfo_klipper": {
+            "title": "Klipper Information",
+            "description": "**Warnings ⚠:** \n ```\n${state.configfile.warnings}```"
+        },
         "systeminfo_mcu": {
             "title": "${mcu_name} informatie"
         },
         "systeminfo_update": {
             "title": "Systeemupdates"
         },
+        "exclude_overview": {
+            "title": "Exclude Overview"
+        },
+        "exclude_detail": {
+            "title": "Do you want to exclude the Object?"
+        },
         "fileinfo": {
             "title": "Bestandsinformatie",
             "description": "Print tijd: ${estimated_time}\nSlicer: ${slicer}\nSlicer versie: ${slicer_version}\nHoogte: ${object_height}mm"
         },
-        "list_files": {
-            "title": "Printbestanden",
+        "gcode_files": {
+            "title": "Gcode Files",
             "description": "${page_entries}",
-            "footer": "Pagina ${pages}"
+            "footer": "Page ${pages}"
         },
         "info": {
             "title": "Informatie",
@@ -44,54 +95,57 @@
             "title": "Verwijder printopdracht?",
             "description": "Print tijd: ${estimated_time}\nSlicer: ${slicer}\nSlicer versie: ${slicer_version}\nHoogte: ${object_height}mm"
         },
-        "printjob_start":{
+        "printjob_start": {
             "title": "Print gestart",
             "activity": "Start ${state.print_stats.filename}"
         },
-        "printjob_complete":{
+        "printjob_complete": {
             "title": "Print gereed",
             "activity": "Klaar met printen"
         },
-        "printjob_pause":{
+        "printjob_pause": {
             "title": "Print gepauseerd",
             "activity": "Doet even een dutje 😴"
         },
-        "printjob_printing":{
+        "printjob_printing": {
             "title": "Printen",
             "activity": "Printen: ${percent:0:state.display_status.progress}%"
         },
-        "printjob_stop":{
+        "printjob_stop": {
             "title": "Print gestopt",
             "activity": "Print gestopt"
         },
         "temperatures": {
             "title": "Temperaturen"
         },
-        "disconnected":{
+        "single_temperature": {
+            "title": "Temperature for ${heater}"
+        },
+        "disconnected": {
             "title": "Printerverbinding verbroken!",
             "activity": "wacht op Klipper"
         },
-        "moonraker_disconnected":{
+        "moonraker_disconnected": {
             "title": "Moonrakerverbinding verbroken!",
             "activity": "wacht op Moonraker"
         },
-        "error":{
+        "error": {
             "title": "Er ging iets mis!",
             "activity": "wacht op gebruiker"
         },
-        "offline":{
+        "offline": {
             "title": "Verbinding verbroken!",
             "activity": "wacht op Moonraker"
         },
-        "shutdown":{
+        "shutdown": {
             "title": "Klipper uitgezet",
             "activity": "wacht op Klipper"
         },
-        "ready":{
+        "ready": {
             "title": "Printer gereed",
             "activity": "voor GCODE-bestand..."
         },
-        "startup":{
+        "startup": {
             "title": "Printer aan het starten",
             "activity": "Printer start"
         },
@@ -111,14 +165,15 @@
             "title": "Systeemupdates"
         },
         "fields": {
+            "flow": "Flow",
             "system": "Systeem",
             "packages": "Pakketten",
             "chipset": "Chipset",
+            "color": "Color",
             "version": "Versie",
             "load": "Belasting",
             "awake_time": "Wakkertijd",
             "frequency": "Frequentie",
-            "current": "Huidig",
             "target": "Doel",
             "speed": "Snelheid",
             "power": "Vermogen",
@@ -130,8 +185,8 @@
             "slicer": "Slicer",
             "slicer_version": "Slicer versie",
             "height": "Hoogte",
-            "min_temp": "Min temp",
-            "max_temp": "Max temp",
+            "max": "Max",
+            "min": "Min",
             "temp": "Temp",
             "cores": "Cores",
             "arch": "Achitectuur",
@@ -151,11 +206,29 @@
             "klipper_load": "Klipper belasting",
             "distribution": "Distributie",
             "distribution_like": "Distributie zoals",
-            "codename": "Codename"
+            "codename": "Codename",
+            "ping": "Ping",
+            "client_id": "Client ID",
+            "event_count": "Events",
+            "ready_since": "Ready Since",
+            "active_connections": "Active Connections",
+            "current": "Huidig",
+            "min_temp": "Min temp",
+            "max_temp": "Max temp"
+        },
+        "list_files": {
+            "title": "Printbestanden",
+            "description": "${page_entries}",
+            "footer": "Pagina ${pages}"
         }
     },
     "messages": {
         "answers": {
+            "execute_successful": "The Gcode Commands executed successful, `${username}`!",
+            "preheat_preset": {
+                "preset": "Preheating for `${preset}`, `${username}`!",
+                "manual": "Preheating ${heater_list}, `${username}`!"
+            },
             "update_request": "Systeemupdate aangevraagd, `${username}`!",
             "restart_successful": "Het herstarten van `${service}` is gelukt!",
             "firmware_restart_successful": "De firmware start opnieuw!",
@@ -171,7 +244,6 @@
                 "activated": "`${channel}` is nu een omroepkanaal, `${username}`!",
                 "deactivated": "`${channel}` is niet langer een omroepkanaal, `${username}`!"
             },
-            "execute_success": "Commando uitgevoerd!",
             "log_retrieved": "Hier is het meest actuele logbestand voor `${service}`",
             "user_id": {
                 "own_id": "Jouw gebruikers-id `${id}`",
@@ -202,13 +274,28 @@
             "printjob_request_abort": "De printopdracht voor `${embed_author}` is afgebroken, `${username}`!",
             "printjob_delete_abort": "Het verwijderen van de printopdracht van `${embed_author}` is afgebroken, `${username}`!",
             "printjob_executed": "Printopdrachtverzoek ingediend, `${username}`!",
-            "reconnect": "MoonCord zet een nieuwe verbinding op naar Moonraker en Discord, `${username}`!"
+            "reconnect": "MoonCord zet een nieuwe verbinding op naar Moonraker en Discord, `${username}`!",
+            "pidtune_start": "Starting PID Tuning at `${temp}°C` for `${heater}`, `${username}`!",
+            "pidtune_done": "PID Tuning finished for `${heater}`, `${username}`!",
+            "config_save": "Klipper Config saved, `${username}`!",
+            "upload_successful": "The Upload for `${filename}` was successful, `${username}`!",
+            "tune": {
+                "speed": "New speed factor is `${speed}%`, `${username}`!",
+                "flow": "New flow factor is `${flow}%`, `${username}`!",
+                "speed_flow": "New speed factor is `${speed}%` and flow factor is `${flow}%`, `${username}`!"
+            },
+            "excluded_object": "The Object `${object}` got excluded, `${username}`!",
+            "execute_success": "Commando uitgevoerd!"
         },
         "errors": {
+            "execute_running": "The Command Executer is already running, please try again later, `${username}`!",
+            "macros_failed": "The Macros for `${button_label}` failed, `${username}`!",
+            "execute_failed": "The Gcode Commands failed, `${username}`!",
             "check_console": "Controleer de console!",
             "command_disabled": "De opdracht is uitgeschakelt!",
             "command_failed": "Er ging iets mis!",
             "command_timeout": "Commandouitvoer mislukt!",
+            "command_idle_only": "The Command is only im idle state available, `${username}`!",
             "file_not_found": "Bestand niet gevonden!",
             "guild_only": "Dit command is alleen beschikbaar in een Gilde, `${username}`",
             "no_data": "Er werd geen data voor `${component}` gevonden!",
@@ -216,12 +303,16 @@
             "no_files_found": "Er zijn geen bestanden!",
             "no_permission": "Je hebt niet de juiste rechten, `${username}`",
             "not_ready": "Deze opdracht is niet gereed, `${username}`!",
+            "input_not_a_number": "The Input field `${input}` may only contain a number, `${username}`!",
             "not_textchannel": "`${channel}` is geen tekstkanaal, `${username}`!",
             "execute_error": "Fout: `${gcode_feedback}`",
             "execute_unknown": "Onbekend GCODE-command: `${gcode_feedback}`",
             "log_too_large": "Het logboek voor `${service}` is te groot!",
             "log_failed": "Het downloaden van het logboek voor `${service}` is mislukt: `${reason}`!",
-            "log_not_found": "Er is momenteel geen logboek voor `${service}`"
+            "log_not_found": "Er is momenteel geen logboek voor `${service}`",
+            "pidtune_fail": "PID Tuning failed for `${heater}`, `${username}`!\nReason:\n```\n${reason}```",
+            "missing_arguments": "The Command is missing Arguments, `${username}`!",
+            "upload_failed": "The Upload for `${filename}` failed, `${username}`!"
         }
     },
     "buttons": {
@@ -234,11 +325,17 @@
         "printjob_resume": {
             "label": "Hervat"
         },
-        "printjob_refresh": {
-            "label": "Ververs"
+        "printjob_status": {
+            "label": "Status"
         },
         "printjob_start": {
             "label": "Print"
+        },
+        "printjob_exclude": {
+            "label": "Exclude"
+        },
+        "exclude_confirm": {
+            "label": "Exclude"
         },
         "printjob_request_accept": {
             "label": "Ja"
@@ -252,17 +349,20 @@
         "reconnect": {
             "label": "Opnieuw verbinden"
         },
-        "update_system": {
-            "label": "Bijwerken"
-        },
-        "next_page_printlist":  {
+        "next_page_printlist": {
             "label": "Volgende pagina"
         },
-        "last_page_printlist":  {
+        "last_page_printlist": {
             "label": "Laatste pagina"
         },
         "to_printlist": {
             "label": "naar lijst"
+        },
+        "to_temps": {
+            "label": "to Temps"
+        },
+        "change_temp": {
+            "label": "set Target"
         },
         "clear_file": {
             "label": "Wis bestand"
@@ -275,9 +375,38 @@
         },
         "printjob_delete_deny": {
             "label": "Nee"
+        },
+        "next_page_configs_download": {
+            "label": "Next Page"
+        },
+        "last_page_configs_download": {
+            "label": "Last Page"
+        },
+        "printjob_refresh": {
+            "label": "Ververs"
+        },
+        "update_system": {
+            "label": "Bijwerken"
         }
     },
     "selections": {
+        "show_temp": {
+            "label": "Select a Heater",
+            "option_label": "${data.name}",
+            "option_description": "Click for more Details",
+            "options": []
+        },
+        "exclude_objects": {
+            "label": "Select a Object",
+            "option_label": "${data.name}",
+            "option_description": "Click for Exclude",
+            "options": []
+        },
+        "config_file_download": {
+            "label": "Select a File",
+            "option_label": "${data.name}",
+            "option_description": "Click for Download"
+        },
         "printlist_view_printjob": {
             "label": "Selecteer een bestand...",
             "option_label": "${data.path}",
@@ -287,7 +416,6 @@
             "label": "Selecteer een component...",
             "option_label": "${data.label}",
             "option_description": "Klik voor meer details",
-            "mcu_options": true,
             "options": [
                 {
                     "label": "Processor",
@@ -305,10 +433,88 @@
                     "label": "Updates",
                     "value": "update"
                 }
-            ]
+            ],
+            "mcu_options": true
         }
     },
     "commands": {
+        "tune": {
+            "description": "tune the current Printjob",
+            "command": "tune",
+            "options": {
+                "speed": {
+                    "name": "speed",
+                    "description": "tune your current Print Speed"
+                },
+                "flow": {
+                    "name": "flow",
+                    "description": "tune your current Filament Flow"
+                }
+            }
+        },
+        "config": {
+            "description": "Up- or Download a configuration",
+            "command": "config",
+            "options": {
+                "upload": {
+                    "name": "upload",
+                    "description": "Upload a configuration file",
+                    "options": {
+                        "directory": {
+                            "name": "directory",
+                            "description": "Select a target directory."
+                        },
+                        "file": {
+                            "name": "file",
+                            "description": "Attach a configuration file."
+                        }
+                    }
+                },
+                "get": {
+                    "name": "get",
+                    "description": "Download a configuration file"
+                }
+            }
+        },
+        "pidtune": {
+            "description": "start a PID Tune for a Heater.",
+            "command": "pidtune",
+            "options": {
+                "heater": {
+                    "name": "heater",
+                    "description": "Specifies the Heater."
+                },
+                "temperature": {
+                    "name": "temperature",
+                    "description": "Set the Tune Temperature."
+                }
+            }
+        },
+        "preheat": {
+            "description": "Preheat a profile or manually.",
+            "command": "preheat",
+            "options": {
+                "preset": {
+                    "name": "preset",
+                    "description": "Preheat Preset.",
+                    "options": {
+                        "preset": {
+                            "name": "preset",
+                            "description": "Select a Preset."
+                        }
+                    }
+                },
+                "manual": {
+                    "name": "manual",
+                    "description": "Manual Select Temps.",
+                    "options": {
+                        "heater": {
+                            "description": "Set the Temperature for ${heater}"
+                        }
+                    }
+                }
+            }
+        },
         "admin": {
             "description": "Administreer beheerder- en gebruikersrol.",
             "command": "beheerder",
@@ -421,9 +627,9 @@
             "description": "Stuur een omschrijving over mij.",
             "command": "info"
         },
-        "listfiles": {
-            "description": "Laat alle printbestanden zien.",
-            "command": "bestanden"
+        "listgcodes": {
+            "description": "List all Print Files.",
+            "command": "listgcodes"
         },
         "systeminfo": {
             "description": "Laat de systeeminformatie zien.",
@@ -468,6 +674,25 @@
         "temp": {
             "description": "Haal de huidige temperaturen op van Klipper.",
             "command": "temp"
+        },
+        "listfiles": {
+            "description": "Laat alle printbestanden zien.",
+            "command": "bestanden"
+        }
+    },
+    "graph": {
+        "temp_history": {
+            "title": "Temp History",
+            "temperature": "Temperature",
+            "power": "Power"
+        }
+    },
+    "inputs": {
+        "gcode_input": {
+            "label": "GCode Commands"
+        },
+        "temp_target_input": {
+            "label": "Target for ${heater}"
         }
     }
 }

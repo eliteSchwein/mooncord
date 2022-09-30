@@ -46983,7 +46983,7 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 183:
+/***/ 4183:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -47002,7 +47002,7 @@ __nccwpck_require__.d(__webpack_exports__, {
 });
 
 ;// CONCATENATED MODULE: ./package.json
-const package_namespaceObject = JSON.parse('{"name":"mooncord","version":"0.0.5","description":"Moonraker Discord Bot based on Discord.js","main":"index.js","scripts":{"start":"node --expose-gc dist/index.js","debugstart":"node --trace_gc --expose-gc --trace-deprecation --trace-warnings --trace-uncaught --track-heap-objects dist/index.js","checkcodestyle":"npx eslint ./**","autofixcodestyle":"npx eslint ./** --fix","build":"ncc build -m -d -e discord.js -e @ffmpeg-installer/ffmpeg -e sharp src/Application.ts -o dist","watch":"ncc build -w -d -e discord.js -e @ffmpeg-installer/ffmpeg -e sharp src/Application.ts -o dist"},"repository":{"type":"git","url":"git+https://github.com/eliteSchwein/mooncord.git"},"keywords":[],"author":"eliteSCHW31N","license":"ISC","bugs":{"url":"https://github.com/eliteSchwein/mooncord/issues"},"homepage":"https://github.com/eliteSchwein/mooncord#readme","devDependencies":{"@types/fluent-ffmpeg":"^2.1.20","@types/node":"^18.6.3","@types/sharp":"^0.30.4","@vercel/ncc":"^0.34.0","async-wait-until":"2.0.12","axios":"^0.27.2","bytes":"^3.1.2","colorts":"^0.1.63","eslint":"^8.21.0","eslint-plugin-import":"^2.26.0","eslint-plugin-node":"^11.1.0","eslint-plugin-promise":"^6.0.0","fluent-ffmpeg":"^2.1.2","form-data":"^4.0.0","quickchart-js":"^3.0.2","lodash":"^4.17.21","node-fetch":"^3.2.10","shelljs":"^0.8.5","stacktrace-js":"^2.0.2","typescript":"^4.7.4","websocket-ts":"^1.1.1","ws":"^8.8.1"},"dependencies":{"@ffmpeg-installer/ffmpeg":"^1.1.0","discord.js":"^13.9.2","sharp":"^0.30.7"}}');
+const package_namespaceObject = JSON.parse('{"name":"mooncord","version":"0.0.5","description":"Moonraker Discord Bot based on Discord.js","main":"index.js","scripts":{"start":"node --expose-gc dist/index.js","debugstart":"node --trace_gc --expose-gc --trace-deprecation --trace-warnings --trace-uncaught --track-heap-objects dist/index.js","checkcodestyle":"npx eslint ./**","autofixcodestyle":"npx eslint ./** --fix","generatelocale":"node src/helper/LocaleGenerationHelper.js","build":"ncc build -m -d -e discord.js -e @ffmpeg-installer/ffmpeg -e sharp src/Application.ts -o dist","watch":"ncc build -w -d -e discord.js -e @ffmpeg-installer/ffmpeg -e sharp src/Application.ts -o dist"},"repository":{"type":"git","url":"git+https://github.com/eliteSchwein/mooncord.git"},"keywords":[],"author":"eliteSCHW31N","license":"ISC","bugs":{"url":"https://github.com/eliteSchwein/mooncord/issues"},"homepage":"https://github.com/eliteSchwein/mooncord#readme","devDependencies":{"@types/fluent-ffmpeg":"^2.1.20","@types/node":"^18.6.3","@types/sharp":"^0.30.4","@vercel/ncc":"^0.34.0","async-wait-until":"2.0.12","axios":"^0.27.2","bytes":"^3.1.2","colorts":"^0.1.63","eslint":"^8.21.0","eslint-plugin-import":"^2.26.0","eslint-plugin-node":"^11.1.0","eslint-plugin-promise":"^6.0.0","fluent-ffmpeg":"^2.1.2","form-data":"^4.0.0","quickchart-js":"^3.0.2","lodash":"^4.17.21","node-fetch":"^3.2.10","shelljs":"^0.8.5","stacktrace-js":"^2.0.2","typescript":"^4.7.4","websocket-ts":"^1.1.1","ws":"^8.8.1"},"dependencies":{"@ffmpeg-installer/ffmpeg":"^1.1.0","discord.js":"^13.9.2","sharp":"^0.30.7"}}');
 var package_namespaceObject_0 = /*#__PURE__*/__nccwpck_require__.t(package_namespaceObject, 2);
 // EXTERNAL MODULE: external "util"
 var external_util_ = __nccwpck_require__(3837);
@@ -53559,7 +53559,7 @@ module.exports = JSON.parse('[[[0,44],"disallowed_STD3_valid"],[[45,46],"valid"]
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(183);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(4183);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()
