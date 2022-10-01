@@ -13,9 +13,6 @@
         },
         "configs_download": {
             "entry_label": "${data.name}"
-        },
-        "list_files": {
-            "entry_label": "${data.path}"
         }
     },
     "embeds": {
@@ -690,10 +687,6 @@
         "temp": {
             "description": "Bekomme die aktuellen Klipper Temperaturen.",
             "command": "temperaturen"
-        },
-        "listfiles": {
-            "description": "Zeigt dir alle Druck Dateien.",
-            "command": "druckaufträge"
         }
     },
     "graph": {
