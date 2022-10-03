@@ -682,7 +682,7 @@
     },
     "graph": {
         "temp_history": {
-            "title": "Temperatuurhistorie,
+            "title": "Temperatuurhistorie",
             "temperature": "Temperatuur",
             "power": "Vermogen"
         }
