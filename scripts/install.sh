@@ -216,12 +216,23 @@ generate_config() {
     CONFIG=$(sed "s/MC_WEBCAM_URL/$MCCAMURL_ESC/g" <<< $CONFIG)
     CONFIG=$(sed "s/MC_CONTROLLER/$MCCONTOLLER_ESC/g" <<< $CONFIG)
     CONFIG=$(sed "s/MC_SERVICE_NAME/$MCSERVICENAME_ESC/g" <<< $CONFIG)
-    
-    mkdir "/tmp/$MCSERVICENAME_ESC"
 
-    touch "/tmp/$MCSERVICENAME_ESC/mooncord.log"
+    if [ ! -d "$MCCONFIGPATH/" ];
+    then
+      mkdir "$MCCONFIGPATH/"
+    fi
 
-    ln -s "/tmp/$MCSERVICENAME_ESC/mooncord.log" "$MCLOGPATH/mooncord.log"
+    if [ ! -d "$MCLOGPATH/" ];
+    then
+      mkdir "$MCLOGPATH/"
+    fi
+
+    if [ ! -d "/tmp/$MCSERVICENAME_ESC/" ];
+    then
+      mkdir "/tmp/$MCSERVICENAME_ESC/"
+      touch "/tmp/$MCSERVICENAME_ESC/mooncord.log"
+      ln -s "/tmp/$MCSERVICENAME_ESC/mooncord.log" "$MCLOGPATH/mooncord.log"
+    fi
 
     status_msg "Write Config"
     echo "$CONFIG" | sudo tee $MCCONFIGPATH/mooncord.json > /dev/null
