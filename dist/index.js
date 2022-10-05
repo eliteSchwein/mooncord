@@ -47821,11 +47821,8 @@ class DiscordInputGenerator {
         }
         for (const buttonData of buttons) {
             if (buttonData.required_cache !== undefined) {
-                for (const requiredCache of buttonData.required_cache) {
-                    const isCachePresent = findValue(requiredCache);
-                    if (isCachePresent === undefined || isCachePresent === null) {
-                        continue;
-                    }
+                if (buttonData.required_cache.map(findValue).map(v => !v).find(v => v)) {
+                    continue;
                 }
             }
             const button = new external_discord_js_namespaceObject.MessageButton()
@@ -47852,11 +47849,8 @@ class DiscordInputGenerator {
         }
         for (const selectionData of selections) {
             if (selectionData.required_cache !== undefined) {
-                for (const requiredCache of selectionData.required_cache) {
-                    const isCachePresent = findValue(requiredCache);
-                    if (isCachePresent === undefined || isCachePresent === null) {
-                        continue;
-                    }
+                if (selectionData.required_cache.map(findValue).map(v => !v).find(v => v)) {
+                    continue;
                 }
             }
             const selection = new external_discord_js_namespaceObject.MessageSelectMenu();
