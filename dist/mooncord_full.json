@@ -1171,6 +1171,9 @@
                     "printing",
                     "pause"
                 ],
+                "required_cache": [
+                    "state.configfile.config.exclude_object"
+                ],
                 "function_mapping": {
                     "show_embed": "exclude_overview"
                 }

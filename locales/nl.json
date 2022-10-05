@@ -13,9 +13,6 @@
         },
         "configs_download": {
             "entry_label": "${data.name}"
-        },
-        "list_files": {
-            "entry_label": "${data.path}"
         }
     },
     "embeds": {
@@ -674,10 +671,6 @@
         "temp": {
             "description": "Haal de huidige temperaturen op van Klipper.",
             "command": "temp"
-        },
-        "listfiles": {
-            "description": "Laat alle printbestanden zien.",
-            "command": "bestanden"
         }
     },
     "graph": {

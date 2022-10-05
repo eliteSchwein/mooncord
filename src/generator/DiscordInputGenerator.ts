@@ -1,7 +1,7 @@
 import {ConfigHelper} from "../helper/ConfigHelper";
 import {limitString, mergeDeep, parsePageData} from "../helper/DataHelper";
 
-import {getExcludeChoices, getHeaterChoices, setData} from "../utils/CacheUtil";
+import {findValue, getExcludeChoices, getHeaterChoices, setData} from "../utils/CacheUtil";
 import {MessageActionRow, MessageButton, MessageSelectMenu, TextInputComponent} from "discord.js";
 import {LocaleHelper} from "../helper/LocaleHelper";
 import {MCUHelper} from "../helper/MCUHelper";
@@ -37,6 +37,15 @@ export class DiscordInputGenerator {
         if(buttons.length === 0) { return }
 
         for (const buttonData of buttons) {
+            if(buttonData.required_cache !== undefined) {
+                for(const requiredCache of buttonData.required_cache) {
+                    const isCachePresent = findValue(requiredCache)
+                    if(isCachePresent === undefined || isCachePresent === null) {
+                        continue
+                    }
+                }
+            }
+
             const button = new MessageButton()
                     .setCustomId(buttonData.id)
                     .setEmoji(buttonData.emoji)
@@ -63,6 +72,15 @@ export class DiscordInputGenerator {
         if(selections.length === 0) { return }
 
         for (const selectionData of selections) {
+            if(selectionData.required_cache !== undefined) {
+                for(const requiredCache of selectionData.required_cache) {
+                    const isCachePresent = findValue(requiredCache)
+                    if(isCachePresent === undefined || isCachePresent === null) {
+                        continue
+                    }
+                }
+            }
+
             const selection = new MessageSelectMenu()
             selection.setCustomId(selectionData.id)
                 .setPlaceholder(String(selectionData.label))

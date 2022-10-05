@@ -47820,6 +47820,14 @@ class DiscordInputGenerator {
             return;
         }
         for (const buttonData of buttons) {
+            if (buttonData.required_cache !== undefined) {
+                for (const requiredCache of buttonData.required_cache) {
+                    const isCachePresent = findValue(requiredCache);
+                    if (isCachePresent === undefined || isCachePresent === null) {
+                        continue;
+                    }
+                }
+            }
             const button = new external_discord_js_namespaceObject.MessageButton()
                 .setCustomId(buttonData.id)
                 .setEmoji(buttonData.emoji)
@@ -47843,6 +47851,14 @@ class DiscordInputGenerator {
             return;
         }
         for (const selectionData of selections) {
+            if (selectionData.required_cache !== undefined) {
+                for (const requiredCache of selectionData.required_cache) {
+                    const isCachePresent = findValue(requiredCache);
+                    if (isCachePresent === undefined || isCachePresent === null) {
+                        continue;
+                    }
+                }
+            }
             const selection = new external_discord_js_namespaceObject.MessageSelectMenu();
             selection.setCustomId(selectionData.id)
                 .setPlaceholder(String(selectionData.label))
