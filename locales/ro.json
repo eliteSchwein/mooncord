@@ -1,10 +1,10 @@
 {
     "modals": {
         "execute_modal": {
-            "title": "Execute?"
+            "title": "Executați?"
         },
         "temp_target": {
-            "title": "Set Target Temperatures"
+            "title": "Setați temperaturile țintă"
         }
     },
     "pages": {
@@ -13,196 +13,193 @@
         },
         "configs_download": {
             "entry_label": "${data.name}"
-        },
-        "list_files": {
-            "entry_label": "${data.path}"
         }
     },
     "embeds": {
         "execute_error": {
-            "title": "Malformated GCode Command/s",
+            "title": "Comenzi GCode malformate",
             "description": "${gcode_commands}"
         },
         "execute_unknown": {
-            "title": "Unknown GCode Command/s",
+            "title": "Comenzi GCode necunoscute",
             "description": "${gcode_commands}"
         },
         "execute_successful": {
-            "title": "Executed GCode Command/s",
+            "title": "Comenzi GCode executate",
             "description": "${gcode_commands}"
         },
         "configs_download": {
-            "title": "Download config file",
+            "title": "Descărcați fișierul de configurare",
             "description": "${page_entries}",
-            "footer": "Page ${pages}"
+            "footer": "Pagina ${pages}"
         },
         "systeminfo_cpu": {
-            "title": "CPU Information"
+            "title": "Informații despre procesor"
         },
         "systeminfo_memory": {
-            "title": "Memory Information"
+            "title": "Informații despre memorie"
         },
         "systeminfo_system": {
-            "title": "System Information"
+            "title": "Informații de sistem"
         },
         "systeminfo_discord": {
-            "title": "Discord Client Information"
+            "title": "Informații despre clientul Discord"
         },
         "systeminfo_moonraker_client": {
-            "title": "Moonraker Client Information"
+            "title": "Moonraker Informații pentru clienți"
         },
         "systeminfo_moonraker": {
-            "title": "Moonraker Information",
-            "description": "**Warnings ⚠:** \n ```\n${server_info.warnings}```"
+            "title": "Moonraker Informații",
+            "description": "**Avertismente ⚠:** \n ```\n${server_info.warnings}```"
         },
         "systeminfo_klipper": {
-            "title": "Klipper Information",
-            "description": "**Warnings ⚠:** \n ```\n${state.configfile.warnings}```"
+            "title": "Klipper Informații",
+            "description": "**Avertismente ⚠:** \n ```\n${state.configfile.warnings}```"
         },
         "systeminfo_mcu": {
-            "title": "${mcu_name} Information"
+            "title": "${mcu_name} Informații"
         },
         "systeminfo_update": {
-            "title": "System Updates"
+            "title": "Actualizări de sistem"
         },
         "exclude_overview": {
-            "title": "Exclude Overview"
+            "title": "Excludeți prezentarea generală"
         },
         "exclude_detail": {
-            "title": "Do you want to exclude the Object?"
+            "title": "Doriți să excludeți obiectul?"
         },
         "fileinfo": {
-            "title": "File Informations",
-            "description": "Print Time: ${estimated_time}\nSlicer: ${slicer}\nSlicer Version: ${slicer_version}\nHeight: ${object_height}mm"
+            "title": "Informații despre fișier",
+            "description": "Timp de imprimare: ${estimated_time}\nSlicer: ${slicer}\nVersiunea Slicer: ${slicer_version}\nÎnălțime: ${object_height}mm"
         },
         "gcode_files": {
-            "title": "Gcode Files",
+            "title": "Fișiere Gcode",
             "description": "${page_entries}",
-            "footer": "Page ${pages}"
+            "footer": "Pagina ${pages}"
         },
         "info": {
-            "title": "Informations",
-            "description": "Version: ${package_config.version}\nAuthor: ${package_config.author}\nHomepage: ${package_config.homepage}\n${config.custom_info}"
+            "title": "Informații",
+            "description": "Versiunea: ${package_config.version}\nAutor: ${package_config.author}\nPagina de start: ${package_config.homepage}\n${config.custom_info}"
         },
         "notification": {
-            "title": "Notification"
+            "title": "Notificare"
         },
         "printjob_start_request": {
-            "title": "Start Print Job?",
-            "description": "Print Time: ${estimated_time}\nSlicer: ${slicer}\nSlicer Version: ${slicer_version}\nHeight: ${object_height}mm"
+            "title": "Începeți o lucrare de imprimare?",
+            "description": "Timp de imprimare: ${estimated_time}\nSlicer: ${slicer}\nVersiunea Slicer: ${slicer_version}\nÎnălțime: ${object_height}mm"
         },
         "printjob_delete_request": {
-            "title": "Delete Print Job?",
-            "description": "Print Time: ${estimated_time}\nSlicer: ${slicer}\nSlicer Version: ${slicer_version}\nHeight: ${object_height}mm"
+            "title": "Ștergeți lucrarea de imprimare?",
+            "description": "Timp de imprimare: ${estimated_time}\nSlicer: ${slicer}\nVersiunea Slicer: ${slicer_version}\nÎnălțime: ${object_height}mm"
         },
         "printjob_start": {
-            "title": "Print started",
-            "activity": "start ${state.print_stats.filename}"
+            "title": "Imprimare începută",
+            "activity": "începe ${state.print_stats.filename}"
         },
         "printjob_complete": {
-            "title": "Print Complete",
-            "activity": "Finished Print"
+            "title": "Imprimare completă",
+            "activity": "Imprimare finalizată"
         },
         "printjob_pause": {
             "title": "Printare pusă pe Pauză",
             "activity": "ia o pauză, bea niște sânge 🩸 proaspăt 🧛. Hai Noroc!"
         },
         "printjob_printing": {
-            "title": "Printing",
-            "activity": "Printing: ${percent:0:state.display_status.progress}%"
+            "title": "Imprimare",
+            "activity": "Imprimare: ${percent:0:state.display_status.progress}%"
         },
         "printjob_stop": {
-            "title": "Print stopped",
-            "activity": "Print stopped"
+            "title": "Imprimare oprită",
+            "activity": "Imprimare oprită"
         },
         "temperatures": {
-            "title": "Temperatures"
+            "title": "Temperaturi"
         },
         "single_temperature": {
-            "title": "Temperature for ${heater}"
+            "title": "Temperatura pentru ${heater}"
         },
         "disconnected": {
-            "title": "Printer Disconnected!",
-            "activity": "wait for Klipper"
+            "title": "Imprimanta deconectată!",
+            "activity": "așteptați-l pe Klipper"
         },
         "moonraker_disconnected": {
-            "title": "Moonraker Connection lost!",
-            "activity": "wait for Moonraker"
+            "title": "Moonraker Connection a pierdut!",
+            "activity": "Așteptați Moonraker"
         },
         "error": {
-            "title": "A Error occured!",
-            "activity": "wait for User"
+            "title": "S-a produs o eroare!",
+            "activity": "așteptați pentru utilizator"
         },
         "offline": {
-            "title": "Connection Lost!",
-            "activity": "wait for Moonraker"
+            "title": "Conexiune pierdută!",
+            "activity": "Așteptați Moonraker"
         },
         "shutdown": {
-            "title": "Klipper Shutdown",
-            "activity": "wait for Klipper"
+            "title": "Închiderea Klipper",
+            "activity": "așteptați-l pe Klipper"
         },
         "ready": {
-            "title": "Printer Ready",
-            "activity": "for GCODE File..."
+            "title": "Imprimantă pregătită",
+            "activity": "pentru fișierul GCODE..."
         },
         "startup": {
-            "title": "Printer starting",
-            "activity": "Printer start"
+            "title": "Pornirea imprimantei",
+            "activity": "Pornirea imprimantei"
         },
         "throttle_temperature_limit_active": {
-            "title": "Throttle occured!",
-            "description": "The System is currently throttled because of `Temperature Throttle`!\nCurrent Temperature: `${proc_stats.cpu_temp} °C`\nPlease check your cooling Solution."
+            "title": "A apărut accelerația!",
+            "description": "Sistemul este în prezent limitat din cauza `Temperature Throttle`!\nTemperatura curentă: `${proc_stats.cpu_temp} °C`\nVă rugăm să verificați soluția de răcire."
         },
         "throttle_under_voltage_detected": {
-            "title": "Throttle occured!",
-            "description": "The System is currently throttled because of `Under Voltage`!\nPlease check your Power Delivery."
+            "title": "A apărut accelerația!",
+            "description": "Sistemul este în prezent restricționat din cauza `Subtensiunii`!\nVă rugăm să verificați alimentarea cu energie electrică."
         },
         "throttle_frequency_capped": {
-            "title": "Throttle occured!",
-            "description": "The System is currently throttled because of `Frequency Capped`!\nPlease check your cooling Solution or/and your Power Delivery.."
+            "title": "A apărut accelerația!",
+            "description": "Sistemul este în prezent restricționat din cauza `Frecvență limitată`!\nVă rugăm să verificați soluția de răcire sau/și sistemul de alimentare..."
         },
         "system_update": {
-            "title": "System Updates"
+            "title": "Actualizări de sistem"
         },
         "fields": {
-            "flow": "Flow",
-            "system": "System",
-            "packages": "Packages",
+            "flow": "Flux",
+            "system": "Sistem",
+            "packages": "Pachete",
             "chipset": "Chipset",
-            "color": "Color",
-            "version": "Version",
-            "load": "Load",
-            "awake_time": "Awake Time",
-            "frequency": "Freq",
-            "target": "Target",
-            "speed": "Speed",
-            "power": "Power",
-            "print_time": "Print Time",
-            "eta_print_time": "ETA Print Time",
-            "print_left_time": "Print Time left",
-            "print_progress": "Progress",
-            "print_layers": "Layer",
+            "color": "Culoare",
+            "version": "Versiunea",
+            "load": "Încărcare",
+            "awake_time": "Timp de veghe",
+            "frequency": "Frecvență",
+            "target": "Țintă",
+            "speed": "Viteză",
+            "power": "Putere",
+            "print_time": "Timp de imprimare",
+            "eta_print_time": "Timp de imprimare ETA",
+            "print_left_time": "Imprimare Timp rămas",
+            "print_progress": "Progresul",
+            "print_layers": "Stratul",
             "slicer": "Slicer",
-            "slicer_version": "Slicer version",
-            "height": "Height",
+            "slicer_version": "Versiunea Slicer",
+            "height": "Înălțime",
             "max": "Max",
             "min": "Min",
             "temp": "Temp",
             "cores": "Cores",
-            "arch": "Architecture",
+            "arch": "Arhitectură",
             "bits": "Bits",
             "model": "Model",
-            "desc": "Description",
-            "manufacturer": "Manufacturer",
-            "manufactured": "Manufactured",
-            "total_ram": "Total RAM",
-            "free_ram": "Free RAM",
-            "used_ram": "Used RAM",
-            "total_disk": "Total Disk",
-            "used_disk": "Used Disk",
-            "free_disk": "Free Disk",
-            "system_load": "System Load",
-            "moonraker_load": "Moonraker Load",
+            "desc": "Descriere",
+            "manufacturer": "Producător",
+            "manufactured": "Fabricat",
+            "total_ram": "RAM totală",
+            "free_ram": "RAM liber",
+            "used_ram": "RAM folosită",
+            "total_disk": "Discul total",
+            "used_disk": "Discul folosit",
+            "free_disk": "Discul liber",
+            "system_load": "Sarcina sistemului",
+            "moonraker_load": "Moonraker Încărcați",
             "klipper_load": "Klipper Load",
             "distribution": "Distribution",
             "distribution_like": "Distribution Like",
@@ -674,10 +671,6 @@
         "temp": {
             "description": "Get the current Temperatures from Klipper.",
             "command": "temp"
-        },
-        "listfiles": {
-            "description": "List all Print Files.",
-            "command": "listfiles"
         }
     },
     "graph": {
