@@ -50881,6 +50881,9 @@ class PageHelper {
         this.pageLocale = this.locale.pages[pageId];
     }
     getPage(pageUp, currentPage) {
+        if (this.getEntries(1).entries === '') {
+            return {};
+        }
         const page = this.getNewPage(pageUp, currentPage);
         const entries = this.getEntries(page.calcPage);
         return {
@@ -50969,6 +50972,10 @@ class PageButton {
         const currentPage = Number.parseInt(pages[0]);
         const pageHelper = new PageHelper(embedData.embedID);
         const pageData = pageHelper.getPage(functionMap.page_up, currentPage);
+        if (Object.keys(pageData).length === 0) {
+            await interaction.editReply(this.localeHelper.getCommandNotReadyError(interaction.user.username));
+            return;
+        }
         logNotice(`select Page ${pageData.pages} for ${embedData.embedID}`);
         const answer = await this.embedHelper.generateEmbed(embedData.embedID, pageData);
         const currentMessage = interaction.message;
@@ -51793,6 +51800,7 @@ class GcodeListCommand {
     constructor(interaction, commandId) {
         this.databaseUtil = getDatabase();
         this.localeHelper = new LocaleHelper();
+        this.locale = this.localeHelper.getLocale();
         this.syntaxLocale = this.localeHelper.getSyntaxLocale();
         this.embedHelper = new EmbedHelper();
         if (commandId !== 'listgcodes') {
@@ -51804,6 +51812,10 @@ class GcodeListCommand {
         await interaction.deferReply();
         const pageHelper = new PageHelper('gcode_files');
         const pageData = pageHelper.getPage(false, 1);
+        if (Object.keys(pageData).length === 0) {
+            await interaction.editReply(this.localeHelper.getCommandNotReadyError(interaction.user.username));
+            return;
+        }
         const embed = await this.embedHelper.generateEmbed('gcode_files', pageData);
         await interaction.editReply(embed.embed);
     }
@@ -52290,6 +52302,10 @@ class ConfigCommand {
         if (interaction.options.getSubcommand() === this.syntaxLocale.commands.config.options.get.name) {
             const pageHelper = new PageHelper('configs_download');
             const pageData = pageHelper.getPage(false, 1);
+            if (Object.keys(pageData).length === 0) {
+                await interaction.editReply(this.localeHelper.getCommandNotReadyError(interaction.user.username));
+                return;
+            }
             const embed = await this.embedHelper.generateEmbed('configs_download', pageData);
             await interaction.editReply(embed.embed);
             return;

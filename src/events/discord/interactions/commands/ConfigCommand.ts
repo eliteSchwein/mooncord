@@ -32,6 +32,11 @@ export class ConfigCommand {
             const pageHelper = new PageHelper('configs_download')
             const pageData = pageHelper.getPage(false, 1)
 
+            if(Object.keys(pageData).length === 0) {
+                await interaction.editReply(this.localeHelper.getCommandNotReadyError(interaction.user.username))
+                return
+            }
+
             const embed = await this.embedHelper.generateEmbed('configs_download', pageData)
 
             await interaction.editReply(embed.embed)

@@ -40,6 +40,11 @@ export class PageButton {
 
         const pageData = pageHelper.getPage(functionMap.page_up, currentPage)
 
+        if(Object.keys(pageData).length === 0) {
+            await interaction.editReply(this.localeHelper.getCommandNotReadyError(interaction.user.username))
+            return
+        }
+
         logNotice(`select Page ${pageData.pages} for ${embedData.embedID}`)
 
         const answer = await this.embedHelper.generateEmbed(embedData.embedID, pageData)

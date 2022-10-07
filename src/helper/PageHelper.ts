@@ -16,6 +16,9 @@ export class PageHelper {
     }
 
     public getPage(pageUp: boolean, currentPage: number) {
+        if(this.getEntries(1).entries === '') {
+            return {}
+        }
         const page = this.getNewPage(pageUp, currentPage)
         const entries = this.getEntries(page.calcPage)
 

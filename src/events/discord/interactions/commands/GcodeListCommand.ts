@@ -7,6 +7,7 @@ import {EmbedHelper} from "../../../../helper/EmbedHelper";
 export class GcodeListCommand {
     protected databaseUtil = getDatabase()
     protected localeHelper = new LocaleHelper()
+    protected locale = this.localeHelper.getLocale()
     protected syntaxLocale = this.localeHelper.getSyntaxLocale()
     protected embedHelper = new EmbedHelper()
 
@@ -21,6 +22,11 @@ export class GcodeListCommand {
 
         const pageHelper = new PageHelper('gcode_files')
         const pageData = pageHelper.getPage(false, 1)
+
+        if(Object.keys(pageData).length === 0) {
+            await interaction.editReply(this.localeHelper.getCommandNotReadyError(interaction.user.username))
+            return
+        }
 
         const embed = await this.embedHelper.generateEmbed('gcode_files', pageData)
 
