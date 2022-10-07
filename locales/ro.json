@@ -462,230 +462,230 @@
                             "description": "Selectați un director țintă."
                         },
                         "file": {
-                            "name": "file",
-                            "description": "Attach a configuration file."
+                            "name": "fișier",
+                            "description": "Atașați un fișier de configurare."
                         }
                     }
                 },
                 "get": {
-                    "name": "get",
-                    "description": "Download a configuration file"
+                    "name": "obțineți",
+                    "description": "Descărcați un fișier de configurare"
                 }
             }
         },
         "pidtune": {
-            "description": "start a PID Tune for a Heater.",
+            "description": "porniți un PID Tune pentru un încălzitor.",
             "command": "pidtune",
             "options": {
                 "heater": {
-                    "name": "heater",
-                    "description": "Specifies the Heater."
+                    "name": "încălzitor",
+                    "description": "Specifică încălzitorul."
                 },
                 "temperature": {
-                    "name": "temperature",
-                    "description": "Set the Tune Temperature."
+                    "name": "temperatură",
+                    "description": "Setați temperatura de reglare."
                 }
             }
         },
         "preheat": {
-            "description": "Preheat a profile or manually.",
-            "command": "preheat",
+            "description": "Preîncălziți un profil sau manual.",
+            "command": "preîncălziți",
             "options": {
                 "preset": {
-                    "name": "preset",
-                    "description": "Preheat Preset.",
+                    "name": "prestabilit",
+                    "description": "Preîncălzire Preset.",
                     "options": {
                         "preset": {
-                            "name": "preset",
-                            "description": "Select a Preset."
+                            "name": "prestabilit",
+                            "description": "Selectați o presetare."
                         }
                     }
                 },
                 "manual": {
                     "name": "manual",
-                    "description": "Manual Select Temps.",
+                    "description": "Selectare manuală Temps.",
                     "options": {
                         "heater": {
-                            "description": "Set the Temperature for ${heater}"
+                            "description": "Setați temperatura pentru ${heater}"
                         }
                     }
                 }
             }
         },
         "admin": {
-            "description": "Manage Admin Role or User.",
+            "description": "Gestionați rolul de administrator sau de utilizator.",
             "command": "admin",
             "options": {
                 "role": {
-                    "name": "role",
-                    "description": "Modify Role.",
+                    "name": "rol",
+                    "description": "Modificați rolul.",
                     "options": {
                         "role": {
-                            "name": "role",
-                            "description": "Select a Role."
+                            "name": "rol",
+                            "description": "Selectați un rol."
                         }
                     }
                 },
                 "user": {
-                    "name": "user",
-                    "description": "Modify a User.",
+                    "name": "utilizator",
+                    "description": "Modificați un utilizator.",
                     "options": {
                         "user": {
-                            "name": "user",
-                            "description": "Select a User."
+                            "name": "utilizator",
+                            "description": "Selectați un utilizator."
                         }
                     }
                 }
             }
         },
         "dump": {
-            "description": "dump data.",
-            "command": "dump",
+            "description": "datele de descărcare de gestiune.",
+            "command": "descărcare",
             "options": {
                 "section": {
-                    "name": "section",
-                    "description": "Select the Section to dump.",
+                    "name": "secțiunea",
+                    "description": "Selectați secțiunea pe care doriți să o descărcați.",
                     "choices": {
                         "cache": "Cache",
-                        "database": "Database"
+                        "database": "Baza de date"
                     }
                 }
             }
         },
         "reset_database": {
-            "description": "clear the Database.",
-            "command": "reset"
+            "description": "ștergeți baza de date.",
+            "command": "resetare"
         },
         "editchannel": {
-            "description": "Add or Remove broadcast channel.",
+            "description": "Adăugați sau eliminați canalul de difuzare.",
             "command": "editchannel",
             "options": {
                 "channel": {
-                    "name": "channel",
-                    "description": "Select a Channel to add/remove it as Broadcast channel."
+                    "name": "canal",
+                    "description": "Selectați un canal pentru a-l adăuga/elimina ca canal de difuzare."
                 }
             }
         },
         "emergency_stop": {
-            "description": "Emergency Stop the Printer?",
-            "command": "emergencystop"
+            "description": "Oprire de urgență a imprimantei?",
+            "command": "oprire de urgență"
         },
         "execute": {
-            "description": "Execute a GCode Command.",
-            "command": "execute",
+            "description": "Executarea unei comenzi GCode.",
+            "command": "executați",
             "options": {
                 "gcode": {
                     "name": "gcode",
-                    "description": "GCode that you want to execute."
+                    "description": "GCode pe care doriți să îl executați."
                 }
             }
         },
         "fileinfo": {
-            "description": "Shows Informations about a Print File.",
+            "description": "Afișează informații despre un fișier de imprimare.",
             "command": "fileinfo",
             "options": {
                 "file": {
-                    "name": "file",
-                    "description": "Specifies a Print File."
+                    "name": "fișier",
+                    "description": "Specifică un fișier de imprimare."
                 }
             }
         },
         "get_log": {
-            "description": "Retrieve a Log.",
+            "description": "Preluarea unui jurnal.",
             "command": "getlog",
             "options": {
                 "log_file": {
                     "name": "logfile",
-                    "description": "Specifies the Log File."
+                    "description": "Specifică fișierul jurnal."
                 }
             }
         },
         "get_user_id": {
-            "description": "Retrieve the User ID.",
+            "description": "Preluarea ID-ului de utilizator.",
             "command": "getuserid",
             "options": {
                 "user": {
-                    "name": "user",
-                    "description": "Specifies a User."
+                    "name": "utilizator",
+                    "description": "Specifică un utilizator."
                 }
             }
         },
         "restart": {
-            "description": "Restart a Service.",
+            "description": "Reporniți un serviciu.",
             "command": "restart",
             "options": {
                 "service": {
-                    "name": "service",
-                    "description": "Specifies a Service."
+                    "name": "serviciu",
+                    "description": "Specifică un serviciu."
                 }
             }
         },
         "info": {
-            "description": "Send a Description about me.",
+            "description": "Trimite o descriere despre mine.",
             "command": "info"
         },
         "listgcodes": {
-            "description": "List all Print Files.",
+            "description": "Listează toate fișierele de imprimare.",
             "command": "listgcodes"
         },
         "systeminfo": {
-            "description": "Get the current System Informations.",
+            "description": "Obține informațiile curente ale sistemului.",
             "command": "systeminfo"
         },
         "notify": {
-            "description": "Should i DM you with the current print status?",
+            "description": "Ar trebui să vă trimit un mesaj cu starea actuală a imprimării?",
             "command": "notifyme"
         },
         "printjob": {
-            "description": "Control or start a Print Job.",
+            "description": "Controlați sau porniți o lucrare de imprimare.",
             "command": "printjob",
             "options": {
                 "pause": {
-                    "name": "pause",
-                    "description": "Pause Print Job"
+                    "name": "pauză",
+                    "description": "Pauză lucrare de imprimare"
                 },
                 "cancel": {
-                    "name": "cancel",
-                    "description": "Cancel Print Job"
+                    "name": "anulați",
+                    "description": "Anulare Imprimare lucrare"
                 },
                 "resume": {
-                    "name": "resume",
-                    "description": "Resume Print Job"
+                    "name": "CV",
+                    "description": "CV-ul Print Job"
                 },
                 "start": {
                     "name": "start",
-                    "description": "Start new Print Job",
+                    "description": "Începeți o nouă lucrare de imprimare",
                     "options": {
                         "file": {
-                            "name": "file",
-                            "description": "Select a Print File."
+                            "name": "fișier",
+                            "description": "Selectați un fișier de imprimare."
                         }
                     }
                 }
             }
         },
         "status": {
-            "description": "Get the current Print Status.",
+            "description": "Obține starea actuală a imprimării.",
             "command": "status"
         },
         "temp": {
-            "description": "Get the current Temperatures from Klipper.",
+            "description": "Obțineți temperaturile actuale de la Klipper.",
             "command": "temp"
         }
     },
     "graph": {
         "temp_history": {
-            "title": "Temp History",
-            "temperature": "Temperature",
-            "power": "Power"
+            "title": "Istoric temporar",
+            "temperature": "Temperatura",
+            "power": "Putere"
         }
     },
     "inputs": {
         "gcode_input": {
-            "label": "GCode Commands"
+            "label": "Comenzi GCode"
         },
         "temp_target_input": {
-            "label": "Target for ${heater}"
+            "label": "Ținta pentru ${heater}"
         }
     }
 }
