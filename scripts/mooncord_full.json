@@ -283,12 +283,6 @@
                 "users": [],
                 "roles": []
             },
-            "execute": {
-                "botadmin": true,
-                "guildadmin": false,
-                "users": [],
-                "roles": []
-            },
             "reset_database": {
                 "botadmin": true,
                 "guildadmin": false,
@@ -421,7 +415,7 @@
         "modals": {
             "execute_modal": {
                 "command_assign": "execute",
-                "botadmin": true,
+                "botadmin": false,
                 "guildadmin": false,
                 "users": [],
                 "roles": []

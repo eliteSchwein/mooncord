@@ -69,7 +69,7 @@ export class ConfigHelper {
     }
 
     public getStatusAfterTasks() {
-        return this.getConfig().status.before
+        return this.getConfig().status.after
     }
 
     public getLocale() {

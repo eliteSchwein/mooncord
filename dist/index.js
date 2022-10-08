@@ -48941,7 +48941,7 @@ class ConfigHelper {
         return this.getConfig().status.before;
     }
     getStatusAfterTasks() {
-        return this.getConfig().status.before;
+        return this.getConfig().status.after;
     }
     getLocale() {
         return this.getConfig().language.messages;
