@@ -1058,7 +1058,6 @@
                 "emoji": "▶️",
                 "style":"PRIMARY",
                 "function_mapping": {
-                    "macro_message": false,
                     "required_states" : ["pause"],
                     "macros": ["RESUME"],
                     "message": "${locale.messages.answers.printjob_resume.status_valid}"
@@ -1068,7 +1067,6 @@
                 "emoji": "⛔",
                 "style":"DANGER",
                 "function_mapping": {
-                    "macro_message": false,
                     "required_states" : ["pause", "printing"],
                     "macros": ["CANCEL_PRINT"],
                     "message": "${locale.messages.answers.printjob_cancel.status_valid}"
@@ -1078,7 +1076,6 @@
                 "emoji": "☕",
                 "style":"SECONDARY",
                 "function_mapping": {
-                    "macro_message": false,
                     "required_states" : ["printing"],
                     "macros": ["PAUSE"],
                     "message": "${locale.messages.answers.printjob_pause.status_valid}"
@@ -1088,7 +1085,6 @@
                 "emoji": "🧹",
                 "style":"SECONDARY",
                 "function_mapping": {
-                    "macro_message": false,
                     "required_states" : ["complete", "ready"],
                     "macros": ["SDCARD_RESET_FILE"],
                     "message": "${locale.messages.answers.printjob_clear}"
@@ -1196,7 +1192,6 @@
                 "emoji": "🔄",
                 "style":"PRIMARY",
                 "function_mapping": {
-                    "macro_message": false,
                     "macros": ["FIRMWARE_RESTART"],
                     "message": "${locale.messages.answers.firmware_restart_successful}"
                 }
@@ -1375,7 +1370,7 @@
             "embed_id": "ready",
             "meta_data": {
                 "allow_same": false,
-                "prevent": ["startup"]
+                "prevent": ["startup", "stop"]
             },
             "activity": {
                 "status": "idle",

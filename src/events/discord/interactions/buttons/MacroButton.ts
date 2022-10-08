@@ -19,7 +19,9 @@ export class MacroButton {
         if(typeof buttonData.function_mapping.macros === 'undefined') { return }
         if(buttonData.function_mapping.macros.empty) { return }
 
-        const gcodeValid = await this.consoleHelper.executeGcodeCommands(buttonData.function_mapping.macros, interaction.channel)
+        const gcodeValid = await this.consoleHelper.executeGcodeCommands(buttonData.function_mapping.macros,
+            interaction.channel,
+            buttonData.function_mapping.macro_message === true)
 
         if(!buttonData.function_mapping.macro_message) { return }
 

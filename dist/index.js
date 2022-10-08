@@ -50755,7 +50755,7 @@ class ConsoleHelper {
         this.embedHelper = new EmbedHelper();
         this.cache = getEntry('execute');
     }
-    async executeGcodeCommands(gcodes, channel) {
+    async executeGcodeCommands(gcodes, channel, showExecuted = true) {
         let valid = 1;
         if (gcodes.length === 0) {
             return 0;
@@ -50783,7 +50783,6 @@ class ConsoleHelper {
             }
             catch {
                 logWarn(`Command ${gcode} timed out...`);
-                this.cache.error_commands.push(gcode);
             }
             if (!this.cache.error_commands.includes(gcode) && !this.cache.unknown_commands.includes(gcode)) {
                 this.cache.successful_commands.push(gcode);
@@ -50804,7 +50803,7 @@ class ConsoleHelper {
             const unknownEmbed = await this.embedHelper.generateEmbed('execute_unknown', { gcode_commands: unknownDescription });
             await channel.send(unknownEmbed.embed);
         }
-        if (this.cache.successful_commands.length > 0) {
+        if (this.cache.successful_commands.length > 0 && showExecuted) {
             const successfulDescription = `\`\`\`${this.cache.successful_commands.join('\n')}\`\`\``;
             const successfulEmbed = await this.embedHelper.generateEmbed('execute_successful', { gcode_commands: successfulDescription });
             await channel.send(successfulEmbed.embed);
@@ -50838,7 +50837,7 @@ class MacroButton {
         if (buttonData.function_mapping.macros.empty) {
             return;
         }
-        const gcodeValid = await this.consoleHelper.executeGcodeCommands(buttonData.function_mapping.macros, interaction.channel);
+        const gcodeValid = await this.consoleHelper.executeGcodeCommands(buttonData.function_mapping.macros, interaction.channel, buttonData.function_mapping.macro_message === true);
         if (!buttonData.function_mapping.macro_message) {
             return;
         }

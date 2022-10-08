@@ -9,7 +9,7 @@ export class ConsoleHelper {
     protected embedHelper = new EmbedHelper()
     protected cache = getEntry('execute')
 
-    public async executeGcodeCommands(gcodes: string[], channel: GuildTextBasedChannel) {
+    public async executeGcodeCommands(gcodes: string[], channel: GuildTextBasedChannel, showExecuted = true) {
         let valid = 1
 
         if(gcodes.length === 0) {
@@ -43,7 +43,6 @@ export class ConsoleHelper {
                 await this.moonrakerClient.send({"method": "printer.gcode.script", "params": {"script": gcode}}, 2_000)
             } catch {
                 logWarn(`Command ${gcode} timed out...`)
-                this.cache.error_commands.push(gcode)
             }
 
             if(!this.cache.error_commands.includes(gcode)&&!this.cache.unknown_commands.includes(gcode)) {
@@ -73,7 +72,7 @@ export class ConsoleHelper {
             await channel.send(unknownEmbed.embed)
         }
 
-        if(this.cache.successful_commands.length > 0) {
+        if(this.cache.successful_commands.length > 0 && showExecuted) {
             const successfulDescription = `\`\`\`${this.cache.successful_commands.join('\n')}\`\`\``
             const successfulEmbed = await this.embedHelper.generateEmbed('execute_successful', {gcode_commands: successfulDescription})
             await channel.send(successfulEmbed.embed)
