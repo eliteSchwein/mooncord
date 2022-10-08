@@ -53,6 +53,10 @@ export class StatusHelper {
             status = 'pause'
         }
 
+        if(status === 'cancelled') {
+            status = 'stop'
+        }
+
         if(typeof status === 'undefined') { return }
 
         const currentStatus = functionCache.current_status
