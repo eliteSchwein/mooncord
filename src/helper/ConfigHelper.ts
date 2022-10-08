@@ -11,7 +11,7 @@ export class ConfigHelper {
 
     public loadCache() {
         logRegular("load Config Cache...")
-        const defaultConfig = readFileSync(path.resolve(__dirname, '../../scripts/mooncord_full.json'), {encoding: 'utf8'})
+        const defaultConfig = readFileSync(path.resolve(__dirname, '../scripts/mooncord_full.json'), {encoding: 'utf8'})
 
         const config = JSON.parse(defaultConfig)
         mergeDeep(config, this.getUserConfig())

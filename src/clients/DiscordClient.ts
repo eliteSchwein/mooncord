@@ -8,7 +8,6 @@ import {DiscordCommandGenerator} from "../generator/DiscordCommandGenerator";
 import {DiscordInputGenerator} from '../generator/DiscordInputGenerator'
 import {InteractionHandler} from "../events/discord/InteractionHandler";
 import {DebugHandler} from "../events/discord/DebugHandler";
-import {ActivityTypes} from "discord.js/typings/enums";
 import {DiscordStatusGenerator} from "../generator/DiscordStatusGenerator";
 import {LocaleHelper} from "../helper/LocaleHelper";
 import {StatusHelper} from "../helper/StatusHelper";
@@ -88,7 +87,7 @@ export class DiscordClient {
 
         this.discordClient.user.setActivity(
             this.localeHelper.getLocale().embeds.startup.activity,
-            {type: ActivityTypes.LISTENING}
+            {type: 'LISTENING'}
         )
 
         if(this.config.dumpCacheOnStart()) {

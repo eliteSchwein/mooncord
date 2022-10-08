@@ -19,7 +19,8 @@ export class DiscordCommandGenerator {
     public getCommands() {
         const commandList = []
         const commandCache = {}
-        const commandStructureFile = readFileSync(path.resolve(__dirname, '../meta/command_structure.json'))
+        const commandStructureFile = readFileSync(path.resolve(__dirname, '../src/meta/command_structure.json'))
+        console.log('lol')
         this.commandStructure = JSON.parse(commandStructureFile.toString('utf8'))
 
         for (const commandIndex in this.commandStructure) {
