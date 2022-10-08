@@ -382,9 +382,6 @@
         "last_page_configs_download": {
             "label": "Last Page"
         },
-        "printjob_refresh": {
-            "label": "Refresh"
-        },
         "update_system": {
             "label": "Update"
         }

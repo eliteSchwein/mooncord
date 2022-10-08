@@ -379,9 +379,6 @@
         "last_page_configs_download": {
             "label": "Letzte Seite"
         },
-        "printjob_refresh": {
-            "label": "Aktualisieren"
-        },
         "update_system": {
             "label": "Aktualisieren"
         }

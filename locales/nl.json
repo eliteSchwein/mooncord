@@ -379,9 +379,6 @@
         "last_page_configs_download": {
             "label": "Laatste pagina"
         },
-        "printjob_refresh": {
-            "label": "Ververs"
-        },
         "update_system": {
             "label": "Bijwerken"
         }
