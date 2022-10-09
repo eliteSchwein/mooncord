@@ -20,7 +20,10 @@ export class FileEditNotification {
         }
 
         if(fileData.item.path.endsWith('.gcode')) {
-            void this.fileListHelper.retrieveFiles()
+            void this.fileListHelper.retrieveGcodeFiles()
+            return
         }
+
+        void this.fileListHelper.retrieveConfigFiles()
     }
 }

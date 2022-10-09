@@ -53,9 +53,9 @@ export function hookProcess() {
 }
 
 export function changeTempPath(tempPath: string) {
-    log_file = fs.createWriteStream(path.resolve(__dirname, `${tempPath}/log.log`), {flags : 'w'})
+    log_file = fs.createWriteStream(path.resolve(__dirname, `${tempPath}/mooncord.log`), {flags : 'w'})
     log_file.write(tempLog)
-    updateData('function', {'log_path': path.resolve(__dirname, `${tempPath}/log.log`)})
+    updateData('function', {'log_path': path.resolve(__dirname, `${tempPath}/mooncord.log`)})
     hookLogFile()
 }
 

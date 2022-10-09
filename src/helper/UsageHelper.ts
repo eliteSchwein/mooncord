@@ -1,8 +1,6 @@
 import {findValue, updateData} from "../utils/CacheUtil";
 import * as bytes from "bytes";
 import * as App from "../Application";
-import {logRegular} from "./LoggerHelper";
-import {isNumberObject} from "util/types";
 
 export class UsageHelper {
     protected moonrakerClient = App.getMoonrakerClient()

@@ -1,6 +1,6 @@
 import {CommandInteraction} from "discord.js";
 import {EmbedHelper} from "../../../../helper/EmbedHelper";
-import { TempHelper } from "../../../../helper/TempHelper";
+import {TempHelper} from "../../../../helper/TempHelper";
 
 export class TempCommand {
     protected embedHelper = new EmbedHelper()
@@ -12,9 +12,11 @@ export class TempCommand {
     }
 
     protected async execute(interaction: CommandInteraction) {
+        await interaction.deferReply()
+
         const message = await this.embedHelper.generateEmbed('temperatures')
 
-        void interaction.reply(message.embed)
+        await interaction.editReply(message.embed)
     }
 
 }

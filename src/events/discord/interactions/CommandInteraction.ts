@@ -1,14 +1,14 @@
 import {Interaction} from "discord.js";
 import {InfoCommand} from "./commands/InfoCommand";
 import {DiscordCommandGenerator} from "../../../generator/DiscordCommandGenerator";
-import { DumpCommand } from "./commands/DumpCommand";
+import {DumpCommand} from "./commands/DumpCommand";
 import {logNotice, logWarn} from "../../../helper/LoggerHelper";
 import {PermissionHelper} from "../../../helper/PermissionHelper";
 import {ConfigHelper} from "../../../helper/ConfigHelper";
 import {LocaleHelper} from "../../../helper/LocaleHelper";
-import { TempCommand } from "./commands/TempCommand";
-import { RestartCommand } from "./commands/RestartCommand";
-import { GetLodCommand } from "./commands/GetLogCommand";
+import {TempCommand} from "./commands/TempCommand";
+import {RestartCommand} from "./commands/RestartCommand";
+import {GetLodCommand} from "./commands/GetLogCommand";
 import {UserIdCommand} from "./commands/UserIdCommand";
 import {ResetDatabaseCommand} from "./commands/ResetDatabaseCommand";
 import {NotifyCommand} from "./commands/NotifyCommand";
@@ -16,11 +16,17 @@ import {EmergencyStopCommand} from "./commands/EmergencyStopCommand";
 import {StatusCommand} from "./commands/StatusCommand";
 import {sleep} from "../../../helper/DataHelper";
 import {EditChannelCommand} from "./commands/EditChannelCommand";
-import {FileListCommand} from "./commands/FileListCommand";
+import {GcodeListCommand} from "./commands/GcodeListCommand";
 import {FileInfoCommand} from "./commands/FileInfoCommand";
 import {PrintjobCommand} from "./commands/PrintjobCommand";
 import {SystemInfoCommand} from "./commands/SystemInfoCommand";
 import {AdminCommand} from "./commands/AdminCommand";
+import {PreheatCommand} from "./commands/PreheatCommand";
+import {PidtuneCommand} from "./commands/PidtuneCommand";
+import {SaveConfigCommand} from "./commands/SaveConfigCommand";
+import {TuneCommand} from "./commands/TuneCommand";
+import {ConfigCommand} from "./commands/ConfigCommand";
+import {ExecuteCommand} from "./commands/ExecuteCommand";
 
 export class CommandInteraction {
     protected config = new ConfigHelper()
@@ -67,9 +73,15 @@ export class CommandInteraction {
         void new EmergencyStopCommand(interaction, commandId)
         void new StatusCommand(interaction, commandId)
         void new EditChannelCommand(interaction, commandId)
-        void new FileListCommand(interaction, commandId)
+        void new GcodeListCommand(interaction, commandId)
         void new PrintjobCommand(interaction, commandId)
         void new SystemInfoCommand(interaction, commandId)
+        void new PreheatCommand(interaction, commandId)
+        void new PidtuneCommand(interaction, commandId)
+        void new SaveConfigCommand(interaction, commandId)
+        void new TuneCommand(interaction, commandId)
+        void new ConfigCommand(interaction, commandId)
+        void new ExecuteCommand(interaction, commandId)
 
         await sleep(2000)
 

@@ -1,5 +1,4 @@
 import {CommandInteraction} from "discord.js";
-import {EmbedHelper} from "../../../../helper/EmbedHelper";
 import {getDatabase} from "../../../../Application";
 import {LocaleHelper} from "../../../../helper/LocaleHelper";
 import {removeFromArray} from "../../../../helper/DataHelper";

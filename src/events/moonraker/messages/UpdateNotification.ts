@@ -1,5 +1,5 @@
-import { EmbedHelper } from "../../../helper/EmbedHelper";
-import { NotificationHelper } from "../../../helper/NotificationHelper";
+import {EmbedHelper} from "../../../helper/EmbedHelper";
+import {NotificationHelper} from "../../../helper/NotificationHelper";
 import {updateData} from "../../../utils/CacheUtil";
 import {VersionHelper} from "../../../helper/VersionHelper";
 import {logRegular} from "../../../helper/LoggerHelper";

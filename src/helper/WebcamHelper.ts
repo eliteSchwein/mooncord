@@ -6,7 +6,6 @@ import {MessageAttachment} from "discord.js";
 import {resolve} from "path"
 import {logEmpty, logError} from "./LoggerHelper";
 import {MoonrakerClient} from "../clients/MoonrakerClient";
-import fetch from "node-fetch";
 import StackTrace from "stacktrace-js";
 
 export class WebcamHelper {
@@ -22,8 +21,13 @@ export class WebcamHelper {
         await this.executePostProcess(beforeStatus)
 
         try {
-            const res = await fetch(this.configHelper.getWebcamUrl())
-            const buffer = await res.arrayBuffer()
+            const res = await axios({
+                method: 'get',
+                responseType: 'arraybuffer',
+                url: this.configHelper.getWebcamUrl(),
+                timeout: 2000
+            })
+            const buffer = Buffer.from(res.data, 'binary')
 
             // Only run Jimp if they want the image modifed
             if (

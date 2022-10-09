@@ -1,6 +1,7 @@
 import {ConfigHelper} from "./ConfigHelper";
 import {LocaleHelper} from "./LocaleHelper";
 import {parsePageData} from "./DataHelper";
+import {getConfigFiles, getEntry} from "../utils/CacheUtil";
 
 export class PageHelper {
     protected data: []
@@ -9,12 +10,15 @@ export class PageHelper {
     protected localeHelper = new LocaleHelper()
     protected locale = this.localeHelper.getLocale()
     
-    public constructor(pageData: [], pageId: string) {
-        this.data = pageData
+    public constructor(pageId: string) {
+        this.data = this.getValuesForPageId(pageId)
         this.pageLocale = this.locale.pages[pageId]
     }
 
     public getPage(pageUp: boolean, currentPage: number) {
+        if(this.getEntries(1).entries === '') {
+            return {}
+        }
         const page = this.getNewPage(pageUp, currentPage)
         const entries = this.getEntries(page.calcPage)
 
@@ -58,5 +62,17 @@ export class PageHelper {
         }
 
         return {calcPage: page, labelPage: (page + 1)}
+    }
+
+    protected getValuesForPageId(pageId: string) {
+        if(pageId === 'gcode_files') {
+            return getEntry('gcode_files')
+        }
+
+        if(pageId === 'configs_download')  {
+            return getConfigFiles()
+        }
+
+        return []
     }
 }

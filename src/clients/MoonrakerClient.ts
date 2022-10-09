@@ -1,8 +1,7 @@
 import {ConfigHelper} from '../helper/ConfigHelper'
-import {ConstantBackoff, LinearBackoff, Websocket, WebsocketBuilder, WebsocketEvents} from 'websocket-ts'
+import {Websocket, WebsocketBuilder, WebsocketEvents} from 'websocket-ts'
 import {APIKeyHelper} from '../helper/APIKeyHelper'
 import {waitUntil} from 'async-wait-until'
-import * as util from 'util'
 import {
     changePath,
     changeTempPath,
@@ -13,14 +12,13 @@ import {
     logWarn,
     unhookTempLog
 } from '../helper/LoggerHelper'
-import {findValue, getLogPath, setData} from '../utils/CacheUtil'
+import {getLogPath, setData} from '../utils/CacheUtil'
 import {MessageHandler} from "../events/moonraker/MessageHandler";
 import {FileListHelper} from "../helper/FileListHelper";
 import {MetadataHelper} from "../helper/MetadataHelper";
-import {SchedulerHelper} from "../helper/SchedulerHelper";
-import { getObjectValue } from '../helper/DataHelper'
 import * as App from '../Application'
 import {StatusHelper} from "../helper/StatusHelper";
+import {TempHelper} from "../helper/TempHelper";
 
 const requests: any = {}
 let messageHandler: MessageHandler
@@ -29,6 +27,7 @@ export class MoonrakerClient {
     protected fileListHelper = new FileListHelper(this)
     protected config = new ConfigHelper()
     protected apiKeyHelper = new APIKeyHelper()
+    protected tempHelper = new TempHelper()
     protected ready = false
     protected metadataHelper = new MetadataHelper(this)
     protected websocket: Websocket
@@ -102,7 +101,8 @@ export class MoonrakerClient {
         this.ready = false
 
         const oneShotToken = await this.apiKeyHelper.getOneShotToken()
-        const socketUrl = this.config.getMoonrakerSocketUrl()
+        let socketUrl = ((this.config.getMoonrakerSocketUrl() !== '' ? this.config.getMoonrakerSocketUrl() : `${this.config.getMoonrakerUrl()}/websocket`))
+        socketUrl = socketUrl.replace(/(http:\/\/)|(https:\/\/)/g, 'ws://')
 
         this.websocket = new WebsocketBuilder(`${socketUrl}?token=${oneShotToken}`)
             .build()
@@ -149,14 +149,20 @@ export class MoonrakerClient {
         logRegular('Retrieve Subscribable MoonRaker Objects...')
         const objects = await this.send({"method": "printer.objects.list"})
 
-        await this.fileListHelper.retrieveFiles()
+        await this.fileListHelper.retrieveGcodeFiles()
+        await this.fileListHelper.retrieveConfigFiles()
 
-        const subscriptionObjects: any = {}
+        const subscriptionObjects: any = {
+            'webhooks.state': null,
+            'webhooks.state_message': null
+        }
 
         for (const index in objects.result.objects) {
             const object = objects.result.objects[index]
             subscriptionObjects[object] = null
         }
+
+        delete subscriptionObjects.webhooks
 
         logRegular('Subscribe to MoonRaker Objects...')
         const data = await this.send({"method": "printer.objects.subscribe", "params": { "objects": subscriptionObjects}})
@@ -181,9 +187,11 @@ export class MoonrakerClient {
 
         setData('moonraker_client', {
             'url': this.websocket.underlyingWebsocket.url,
-            'readySince': new Date(),
+            'readySince': Date.now()/1000,
             'event_count': this.websocket.underlyingWebsocket['_eventsCount']
         })
+
+        this.tempHelper.generateColors(data.result.status)
     }
 
     public changeLogPath() {
@@ -191,12 +199,10 @@ export class MoonrakerClient {
             logWarn('Log File is disabled!')
             unhookTempLog()
         } else if(this.config.getLogPath() !== '') {
-            changeTempPath(this.config.getTempPath())
             changePath(this.config.getLogPath())
-        } else {
-            changeTempPath(this.config.getTempPath())
-            changePath(getLogPath())
         }
+
+        changeTempPath(this.config.getTempPath())
 
         logSuccess('MoonRaker Client is ready')
     }

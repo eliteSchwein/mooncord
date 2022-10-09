@@ -1,0 +1,691 @@
+{
+    "modals": {
+        "execute_modal": {
+            "title": "Wykonać?"
+        },
+        "temp_target": {
+            "title": "Ustaw docelowe temperatury"
+        }
+    },
+    "pages": {
+        "gcode_files": {
+            "entry_label": "${data.path}"
+        },
+        "configs_download": {
+            "entry_label": "${data.name}"
+        }
+    },
+    "embeds": {
+        "execute_error": {
+            "title": "Zniekształcona komenda GCode",
+            "description": "${gcode_commands}"
+        },
+        "execute_unknown": {
+            "title": "Nieznana komenda GCode",
+            "description": "${gcode_commands}"
+        },
+        "execute_successful": {
+            "title": "Wykonano komendę GCode",
+            "description": "${gcode_commands}"
+        },
+        "configs_download": {
+            "title": "Pobierz plik konfiguracyjny",
+            "description": "${page_entries}",
+            "footer": "Strona ${pages}"
+        },
+        "systeminfo_cpu": {
+            "title": "Informacje o Procesorze"
+        },
+        "systeminfo_memory": {
+            "title": "Informacje o Pamięci"
+        },
+        "systeminfo_system": {
+            "title": "Informacje o Systemie"
+        },
+        "systeminfo_discord": {
+            "title": "Informacje o kliencie Discord"
+        },
+        "systeminfo_moonraker_client": {
+            "title": "Informacje o kliencie Moonrakera"
+        },
+        "systeminfo_moonraker": {
+            "title": "Informacja Moonrakera",
+            "description": "**Ostrzerzenia ⚠:** \n ```\n${server_info.warnings}```"
+        },
+        "systeminfo_klipper": {
+            "title": "Informacja Klippera",
+            "description": "**Ostrzerzenia ⚠:** \n ```\n${state.configfile.warnings}```"
+        },
+        "systeminfo_mcu": {
+            "title": "Informacja ${mcu_name}"
+        },
+        "systeminfo_update": {
+            "title": "Aktualizacja systemu"
+        },
+        "exclude_overview": {
+            "title": "Pogląd wykluczenia"
+        },
+        "exclude_detail": {
+            "title": "Czy chcesz wykluczyć ten obiekt?"
+        },
+        "fileinfo": {
+            "title": "Informacje o pliku",
+            "description": "Czas Druku: ${estimated_time}\nSlicer: ${slicer}\nWersja Slicera: ${slicer_version}\nWysokość: ${object_height}mm"
+        },
+        "gcode_files": {
+            "title": "Pliki GCODE",
+            "description": "${page_entries}",
+            "footer": "Strona ${pages}"
+        },
+        "info": {
+            "title": "Informacje",
+            "description": "Wersja: ${package_config.version}\nAutor: ${package_config.author}\nStrona główna: ${package_config.homepage}\n${config.custom_info}"
+        },
+        "notification": {
+            "title": "Powiadomienie"
+        },
+        "printjob_start_request": {
+            "title": "Zacząć wydruk?",
+            "description": "Czas Druku: ${estimated_time}\nSlicer: ${slicer}\nWersja Slicera: ${slicer_version}\nWysokość: ${object_height}mm"
+        },
+        "printjob_delete_request": {
+            "title": "Usunąć wydruk?",
+            "description": "Czas Druku: ${estimated_time}\nSlicer: ${slicer}\nWersja Slicera: ${slicer_version}\nWysokość: ${object_height}mm"
+        },
+        "printjob_start": {
+            "title": "Wydruk rozpoczęty",
+            "activity": "Start ${state.print_stats.filename}"
+        },
+        "printjob_complete": {
+            "title": "Wydruk zakończony",
+            "activity": "Zakończono wydruk"
+        },
+        "printjob_pause": {
+            "title": "Wydruk wstrzymany",
+            "activity": "Wstrzymano wydruk"
+        },
+        "printjob_printing": {
+            "title": "Drukowanie",
+            "activity": "Drukowanie: ${percent:0:state.display_status.progress}%"
+        },
+        "printjob_stop": {
+            "title": "Wydruk zatrzymany",
+            "activity": "Wydruk zatrzymany"
+        },
+        "temperatures": {
+            "title": "Temperatury"
+        },
+        "single_temperature": {
+            "title": "Temperatury dla ${heater}"
+        },
+        "disconnected": {
+            "title": "Drukarka nie jest podłączona",
+            "activity": "Oczekiwanie na Klippera"
+        },
+        "moonraker_disconnected": {
+            "title": "Stracono połączenie z Moonrakerem",
+            "activity": "Oczekiwanie na Moonrakera"
+        },
+        "error": {
+            "title": "Wystąpił błąd!",
+            "activity": "Oczekiwanie na użytkownika"
+        },
+        "offline": {
+            "title": "Stracono połączenie!",
+            "activity": "Oczekiwanie na Moonrakera"
+        },
+        "shutdown": {
+            "title": "Klipper jest wyłączony!",
+            "activity": "Oczekiwanie na Klippera"
+        },
+        "ready": {
+            "title": "Drukarka jest gotowa",
+            "activity": "na plik GCODE..."
+        },
+        "startup": {
+            "title": "Uruchamianie drukarki",
+            "activity": "Uruchamianie drukarki"
+        },
+        "throttle_temperature_limit_active": {
+            "title": "Wystąpił Throttling!",
+            "description": "System jest obecnie obraniczony wydajnościowo po przez osiągnięcie `Limitu Temperatury`!\nObecna Temperatura: `${proc_stats.cpu_temp} °C`\nSprawdz swoje chłodzenie."
+        },
+        "throttle_under_voltage_detected": {
+            "title": "Wystąpił Throttling!",
+            "description": "System jest obecnie obraniczony wydajnościowo przez `Nie Wystarczające Napięcie`!\nSprawdz swoje źródło zasilania."
+        },
+        "throttle_frequency_capped": {
+            "title": "Wystąpił Throttling!",
+            "description": "System jest obecnie obraniczony wydajnościowo przez osiągnięcie `Ograniczenia częstotliwości`!\nSprawdz swoje chłodzenie lub/i źródło zasilania."
+        },
+        "system_update": {
+            "title": "Aktualizacje systemu"
+        },
+        "fields": {
+            "flow": "Flow",
+            "system": "System",
+            "packages": "Paczki",
+            "chipset": "Chipset",
+            "color": "Kolor",
+            "version": "Wersja",
+            "load": "Wczytaj",
+            "awake_time": "Czas budzenia",
+            "frequency": "Częstotliwość",
+            "target": "Cel",
+            "speed": "Prędkość",
+            "power": "Siła",
+            "print_time": "Czas Druku",
+            "eta_print_time": "ETA Druku",
+            "print_left_time": "Pozostały Czas Druku",
+            "print_progress": "Postęp Druku",
+            "print_layers": "Warstwa",
+            "slicer": "Slicer",
+            "slicer_version": "Wersja Slicera",
+            "height": "Wysokość",
+            "max": "Max",
+            "min": "Min",
+            "temp": "Temp",
+            "cores": "Rdzenie",
+            "arch": "Architektura",
+            "bits": "Bity",
+            "model": "Model",
+            "desc": "Opis",
+            "manufacturer": "Producent",
+            "manufactured": "Wyprodukowany",
+            "total_ram": "Dostępny RAM",
+            "free_ram": "Wolny RAM",
+            "used_ram": "Używany RAM",
+            "total_disk": "Dostępny Dysk",
+            "used_disk": "Użyty Dysk",
+            "free_disk": "Wolny Dysk",
+            "system_load": "Obciążenie Systemu",
+            "moonraker_load": "Obciążenie Moonrakera",
+            "klipper_load": "Obciążenie Klippera",
+            "distribution": "Dystrybucja",
+            "distribution_like": "Typ Dystrybucji",
+            "codename": "Nazwa Kodowa",
+            "ping": "Opóźnienie",
+            "client_id": "Klient ID",
+            "event_count": "Wydarzenia",
+            "ready_since": "Gotowa od",
+            "active_connections": "Aktywne Połączenia"
+        }
+    },
+    "messages": {
+        "answers": {
+            "execute_successful": "Komenda GCODE została wykonana pomyślnie, `${username}`!",
+            "preheat_preset": {
+                "preset": "Podgrzewanie dla `${preset}`, `${username}`!",
+                "manual": "Podgrzewanie ${heater_list}, `${username}`!"
+            },
+            "update_request": "Żądano aktualizacji systemu, `${username}`!",
+            "restart_successful": "Restart usługi `${service}` był pomyślny, `${username}`!",
+            "firmware_restart_successful": "Oprogramowanie się restartuje, `${username}`!",
+            "timelapse": "Timelapse dla `${printfile}`",
+            "admin": {
+                "added": "${mention} jest teraz adminem bota, `${username}`!",
+                "removed": "${mention} już nie jest adminem bota, `${username}`!"
+            },
+            "macros_executed": "Makro dla `${button_label}` zostało wykonane, `${username}`!",
+            "status_update": "Proszę czekać status odświeża się, `${username}`",
+            "file_deleted": "Plik `${root}/${filename}` został pomyślnie usunięty",
+            "broadcast_channel": {
+                "activated": "`${channel}` jest teraz kanałem nadawczym, `${username}`!",
+                "deactivated": "`${channel}` nie jest już kanałem nadawczym, `${username}`!"
+            },
+            "log_retrieved": "Oto aktualne logi dla `${service}`",
+            "user_id": {
+                "own_id": "Twoje id to `${id}`",
+                "other_id": "Id użytkownika `${username}` to `${id}`"
+            },
+            "notify": {
+                "activated": "Powiadomię Cię o statusie drukowania przez DM, `${username}`!",
+                "deactivated": "Nie będę już powiadamiać Cię o statusie drukowania przez DM, `${username}`!"
+            },
+            "emergency_stop": "Wykonano zatrzymanie awaryjne, `${username}`!",
+            "reset_database": "Baza danych została zresetowana",
+            "printjob_resume": {
+                "status_not_valid": "`${username}` drukowanie nie jest obecnie wstrzymane!",
+                "status_valid": "`${username}` drukowanie zostało wznowione!",
+                "status_same": "`${username}` drukowanie już trwa!"
+            },
+            "printjob_cancel": {
+                "status_not_valid": "`${username}` obecnie nie ma żadnych aktywnych zadań drukowania!",
+                "status_valid": "`${username}` drukowanie zostało przerwane!",
+                "status_same": ""
+            },
+            "printjob_pause": {
+                "status_not_valid": "`${username}` obecnie nie ma żadnych aktywnych zadań drukowania!",
+                "status_valid": "`${username}` zadanie drukowania zostało wstrzymane!",
+                "status_same": "`${username}` bieżące zadanie drukowania jest już wstrzymane!"
+            },
+            "printjob_clear": "Bieżące zadanie drukowania zostało usunięte, `${username}`!",
+            "printjob_request_abort": "Prośba o zadanie drukowania dla `${embed_author}` została anulowana, `${username}`!",
+            "printjob_delete_abort": "Prośba o usunięcie zadania drukowania dla `${embed_author}` została anulowana, `${username}`!",
+            "printjob_executed": "Wykonano zlecenie drukowania, `${username}`!",
+            "reconnect": "MoonCord ponownie połączy się z Moonrakerem i Discord, `${username}`!",
+            "pidtune_start": "Rozpoczęcie strojenia PID dla temperatury `${temp}°C` dla grzałki `${heater}`, `${username}`!",
+            "pidtune_done": "Strojenie PID zakończone dla `${heater}`, `${username}`!",
+            "config_save": "Konfiguracja Klippera została zapisana, `${username}`!",
+            "upload_successful": "Przesyłanie pliku `${filename}` było pomyślne, `${username}`!",
+            "tune": {
+                "speed": "Nowy współczynnik prędkości to `${speed}%`, `${username}`!",
+                "flow": "Nowy współczynnik przepływu to `${flow}%`, `${username}`!",
+                "speed_flow": "Nowy współczynnik prędkości to `${speed}%` a współczynnik przepływu wynosi `${flow}%`, `${username}`!"
+            },
+            "excluded_object": "Obiekt `${object}` został wykluczony, `${username}`!"
+        },
+        "errors": {
+            "execute_running": "Wykonywanie polecenia już trwa, spróbuj ponownie później, `${username}`!",
+            "macros_failed": "Makro dla `${button_label}` nie powiodło się, `${username}`!",
+            "execute_failed": "Polecenia Gcode nie powiodły się, `${username}`!",
+            "check_console": "Sprawdź konsolę!",
+            "command_disabled": "Polecenie jest wyłączone!",
+            "command_failed": "Wystąpił błąd!",
+            "command_timeout": "Wykonanie polecenia nie powiodło się!",
+            "command_idle_only": "Polecenie jest dostępne tylko w stanie bezczynności, `${username}`!",
+            "file_not_found": "Nie znaleziono pliku!",
+            "guild_only": "Ta komenda jest dostępna tylko w na serwerze, `${username}`",
+            "no_data": "Nie znaleziono danych dla `${component}`!",
+            "restart_failed": "Ponowne uruchomienie usługi `${service}` nie powiodło się: `${reason}`, `${username}`",
+            "no_files_found": "Obecnie nie ma plików!",
+            "no_permission": "Nie masz uprawnień do tej akcji, `${username}`",
+            "not_ready": "To polecenie nie jest gotowe, `${username}`!",
+            "input_not_a_number": "Pole wejściowe `${input}` może zawierać tylko liczbę, `${username}`!",
+            "not_textchannel": "`${channel}` nie jest kanałem tekstowym, `${username}`!",
+            "execute_error": "Błąd: `${gcode_feedback}`",
+            "execute_unknown": "Nieznane polecenie GCode: `${gcode_feedback}`",
+            "log_too_large": "Log dla `${service}` jest zbyt duży!",
+            "log_failed": "Pobieranie logów dla `${service}` nie powiodło się: `${reason}`!",
+            "log_not_found": "Obecnie nie ma logów dla `${service}`",
+            "pidtune_fail": "Strojenie PID nie powiodło się dla `${heater}`, `${username}`!\nPowód:\n```\n${reason}```",
+            "missing_arguments": "W poleceniu brakuje argumentów, `${username}`!",
+            "upload_failed": "Przesyłanie pliku `${filename}` nie powiodło się, `${username}`!"
+        }
+    },
+    "buttons": {
+        "printjob_pause": {
+            "label": "Pauza"
+        },
+        "printjob_cancel": {
+            "label": "Anuluj"
+        },
+        "printjob_resume": {
+            "label": "Wznowić"
+        },
+        "printjob_status": {
+            "label": "Status"
+        },
+        "printjob_start": {
+            "label": "Drukuj"
+        },
+        "printjob_exclude": {
+            "label": "Wyklucz"
+        },
+        "exclude_confirm": {
+            "label": "Wyklucz"
+        },
+        "printjob_request_accept": {
+            "label": "Tak"
+        },
+        "printjob_request_deny": {
+            "label": "Nie"
+        },
+        "klipper_restart": {
+            "label": "Restart oprogramowania"
+        },
+        "reconnect": {
+            "label": "Połącz ponownie"
+        },
+        "next_page_printlist": {
+            "label": "Następna strona"
+        },
+        "last_page_printlist": {
+            "label": "Poprzednia strona"
+        },
+        "to_printlist": {
+            "label": "do listy drukowania"
+        },
+        "to_temps": {
+            "label": "do temperatur"
+        },
+        "change_temp": {
+            "label": "ustaw temperaturę"
+        },
+        "clear_file": {
+            "label": "Wyczyść plik"
+        },
+        "printjob_delete_request": {
+            "label": "Usuń"
+        },
+        "printjob_delete_accept": {
+            "label": "Tak"
+        },
+        "printjob_delete_deny": {
+            "label": "Nie"
+        },
+        "next_page_configs_download": {
+            "label": "Następna strona"
+        },
+        "last_page_configs_download": {
+            "label": "Poprzednia strona"
+        }
+    },
+    "selections": {
+        "show_temp": {
+            "label": "Wybierz Grzałkę",
+            "option_label": "${data.name}",
+            "option_description": "Kliknij, aby uzyskać więcej szczegółów",
+            "options": []
+        },
+        "exclude_objects": {
+            "label": "Wybierz obiekt",
+            "option_label": "${data.name}",
+            "option_description": "Kliknij aby wykluczyć",
+            "options": []
+        },
+        "config_file_download": {
+            "label": "Wybierz plik",
+            "option_label": "${data.name}",
+            "option_description": "Kliknij aby pobrać"
+        },
+        "printlist_view_printjob": {
+            "label": "Wybierz plik",
+            "option_label": "${data.path}",
+            "option_description": "Kliknij, aby uzyskać więcej szczegółów"
+        },
+        "systeminfo_select": {
+            "label": "Select a Component",
+            "option_label": "${data.label}",
+            "option_description": "Kliknij, aby uzyskać więcej szczegółów",
+            "options": [
+                {
+                    "label": "CPU",
+                    "value": "cpu"
+                },
+                {
+                    "label": "Pamięć",
+                    "value": "memory"
+                },
+                {
+                    "label": "System",
+                    "value": "system"
+                },
+                {
+                    "label": "Moonraker",
+                    "value": "moonraker"
+                },
+                {
+                    "label": "Klipper",
+                    "value": "klipper"
+                },
+                {
+                    "label": "Klient Discord",
+                    "value": "discord"
+                },
+                {
+                    "label": "Klient Moonraker",
+                    "value": "moonraker_client"
+                },
+                {
+                    "label": "Aktualizacje",
+                    "value": "update"
+                }
+            ]
+        }
+    },
+    "commands": {
+        "tune": {
+            "description": "dostrój bieżące zadanie drukowania",
+            "command": "tune",
+            "options": {
+                "speed": {
+                    "name": "speed",
+                    "description": "dostosuj swoją aktualną prędkość drukowania"
+                },
+                "flow": {
+                    "name": "flow",
+                    "description": "dostosuj bieżący przepływ filamentu"
+                }
+            }
+        },
+        "config": {
+            "description": "Prześlij lub pobierz konfigurację",
+            "command": "config",
+            "options": {
+                "upload": {
+                    "name": "upload",
+                    "description": "Prześlij plik konfiguracyjny",
+                    "options": {
+                        "directory": {
+                            "name": "directory",
+                            "description": "Wybierz katalog docelowy."
+                        },
+                        "file": {
+                            "name": "file",
+                            "description": "Dołącz plik konfiguracyjny."
+                        }
+                    }
+                },
+                "get": {
+                    "name": "get",
+                    "description": "Pobierz plik konfiguracyjny"
+                }
+            }
+        },
+        "pidtune": {
+            "description": "uruchom dostrajanie PID dla grzałki.",
+            "command": "pidtune",
+            "options": {
+                "heater": {
+                    "name": "heater",
+                    "description": "Określ grzałkę."
+                },
+                "temperature": {
+                    "name": "temperature",
+                    "description": "Ustaw temperaturę strojenia."
+                }
+            }
+        },
+        "preheat": {
+            "description": "Podgrzej profil lub ręcznie.",
+            "command": "preheat",
+            "options": {
+                "preset": {
+                    "name": "preset",
+                    "description": "Wstępne podgrzewanie.",
+                    "options": {
+                        "preset": {
+                            "name": "preset",
+                            "description": "Wybierz ustawienie wstępne."
+                        }
+                    }
+                },
+                "manual": {
+                    "name": "manual",
+                    "description": "Ręczny wybór temperatur.",
+                    "options": {
+                        "heater": {
+                            "description": "Ustaw temperaturę dla ${heater}"
+                        }
+                    }
+                }
+            }
+        },
+        "admin": {
+            "description": "Zarządzaj rolą administratora lub użytkownikiem.",
+            "command": "admin",
+            "options": {
+                "role": {
+                    "name": "role",
+                    "description": "Modyfikuj rolę.",
+                    "options": {
+                        "role": {
+                            "name": "role",
+                            "description": "Wybierz rolę."
+                        }
+                    }
+                },
+                "user": {
+                    "name": "user",
+                    "description": "Modyfikuj użytkownika.",
+                    "options": {
+                        "user": {
+                            "name": "user",
+                            "description": "Wybierz użytkownika."
+                        }
+                    }
+                }
+            }
+        },
+        "dump": {
+            "description": "zrzut danych.",
+            "command": "dump",
+            "options": {
+                "section": {
+                    "name": "section",
+                    "description": "Wybierz sekcję do zrzucenia.",
+                    "choices": {
+                        "cache": "Pamięć podręczna",
+                        "database": "Baza danych"
+                    }
+                }
+            }
+        },
+        "reset_database": {
+            "description": "wyczyść bazę danych.",
+            "command": "reset"
+        },
+        "editchannel": {
+            "description": "Dodaj lub usuń kanał transmisji.",
+            "command": "editchannel",
+            "options": {
+                "channel": {
+                    "name": "channel",
+                    "description": "Wybierz kanał, aby dodać/usunąć go jako kanał transmisji."
+                }
+            }
+        },
+        "emergency_stop": {
+            "description": "Awaryjne zatrzymanie drukarki?",
+            "command": "emergencystop"
+        },
+        "execute": {
+            "description": "Wykonaj jedno lub wiele poleceń Gcode.",
+            "command": "execute",
+            "options": {
+                "gcode": {
+                    "name": "gcode",
+                    "description": "Pojedyncze polecenie Gcode, które chcesz wykonać."
+                }
+            }
+        },
+        "fileinfo": {
+            "description": "Pokazuje informacje o drukowanym pliku.",
+            "command": "fileinfo",
+            "options": {
+                "file": {
+                    "name": "file",
+                    "description": "Określa plik wydruku."
+                }
+            }
+        },
+        "get_log": {
+            "description": "Pobierz Logi.",
+            "command": "getlog",
+            "options": {
+                "log_file": {
+                    "name": "logfile",
+                    "description": "Określ plik Logów."
+                }
+            }
+        },
+        "get_user_id": {
+            "description": "Pobierz identyfikator użytkownika.",
+            "command": "getuserid",
+            "options": {
+                "user": {
+                    "name": "user",
+                    "description": "Określa użytkownika."
+                }
+            }
+        },
+        "restart": {
+            "description": "Uruchom ponownie usługę.",
+            "command": "restart",
+            "options": {
+                "service": {
+                    "name": "service",
+                    "description": "Określa usługę."
+                }
+            }
+        },
+        "info": {
+            "description": "Uzyskaj opis mnie.",
+            "command": "info"
+        },
+        "listgcodes": {
+            "description": "Wyświetl wszystkie pliki do drukowania.",
+            "command": "listgcodes"
+        },
+        "systeminfo": {
+            "description": "Uzyskaj aktualne informacje o systemie.",
+            "command": "systeminfo"
+        },
+        "notify": {
+            "description": "Czy mam wysłać Ci wiadomość z aktualnym statusem drukowania??",
+            "command": "notifyme"
+        },
+        "printjob": {
+            "description": "Kontroluj lub rozpocznij zadanie drukowania.",
+            "command": "printjob",
+            "options": {
+                "pause": {
+                    "name": "pause",
+                    "description": "Wstrzymaj zadanie drukowania"
+                },
+                "cancel": {
+                    "name": "cancel",
+                    "description": "Anuluj zadanie drukowania"
+                },
+                "resume": {
+                    "name": "resume",
+                    "description": "Wznów zadanie drukowania"
+                },
+                "start": {
+                    "name": "start",
+                    "description": "Rozpocznij nowe zadanie drukowania",
+                    "options": {
+                        "file": {
+                            "name": "file",
+                            "description": "Wybierz plik do druku."
+                        }
+                    }
+                }
+            }
+        },
+        "status": {
+            "description": "Uzyskaj aktualny stan drukowania.",
+            "command": "status"
+        },
+        "temp": {
+            "description": "Pobierz aktualne temperatury z Klippera.",
+            "command": "temp"
+        }
+    },
+    "graph": {
+        "temp_history": {
+            "title": "Historia temperatur",
+            "temperature": "Temperatura",
+            "power": "Zasilanie"
+        }
+    },
+    "inputs": {
+        "gcode_input": {
+            "label": "Polecenia GCode"
+        },
+        "temp_target_input": {
+            "label": "Cel dla ${heater}"
+        }
+    }
+}

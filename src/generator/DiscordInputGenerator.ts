@@ -1,8 +1,8 @@
 import {ConfigHelper} from "../helper/ConfigHelper";
 import {limitString, mergeDeep, parsePageData} from "../helper/DataHelper";
 
-import {setData, getEntry} from "../utils/CacheUtil";
-import {MessageActionRow, MessageButton, MessageSelectMenu} from "discord.js";
+import {findValue, getExcludeChoices, getHeaterChoices, setData} from "../utils/CacheUtil";
+import {MessageActionRow, MessageButton, MessageSelectMenu, TextInputComponent} from "discord.js";
 import {LocaleHelper} from "../helper/LocaleHelper";
 import {MCUHelper} from "../helper/MCUHelper";
 
@@ -15,6 +15,7 @@ export class DiscordInputGenerator {
     public generateInputCache() {
         this.generateCacheForSection('buttons');
         this.generateCacheForSection('selections');
+        this.generateCacheForSection('inputs');
     }
 
     protected generateCacheForSection(section: string) {
@@ -29,15 +30,29 @@ export class DiscordInputGenerator {
         setData(section, sectionConfig)
     }
 
-    public generateButtons(buttonIDs: []) {
+    public generateButtons(buttons) {
         const row = new MessageActionRow()
 
-        if(typeof(buttonIDs) === 'undefined') { return }
+        if(typeof(buttons) === 'undefined') { return }
+        if(buttons.length === 0) { return }
 
-        for(const index in buttonIDs) {
-            const buttonId = buttonIDs[index]
+        for (const buttonData of buttons) {
+            if(buttonData.required_cache !== undefined) {
+                if(buttonData.required_cache.map(findValue).map(v => !v).find(v => v)) {
+                    continue
+                }
+            }
 
-            row.addComponents(this.generateButton(buttonId))
+            const button = new MessageButton()
+                    .setCustomId(buttonData.id)
+                    .setEmoji(buttonData.emoji)
+                    .setStyle(buttonData.style)
+
+            if(buttonData.label !== null && buttonData.label !== undefined) {
+                button.setLabel(buttonData.label)
+            }
+
+            row.addComponents(button)
         }
 
         if(row.components.length === 0) {
@@ -47,58 +62,80 @@ export class DiscordInputGenerator {
         return row
     }
 
-    public generateSelection(selectionData) {
-        if(typeof selectionData === 'undefined') {
-            return
-        }
-
-        const cache = getEntry('selections')
-        const selectionMeta = cache[selectionData.id]
+    public generateSelections(selections) {
         const row = new MessageActionRow()
 
-        const selection = new MessageSelectMenu()
-            .setCustomId(selectionData.id)
-            .setPlaceholder(selectionMeta.label)
-            .setMinValues(selectionMeta.min_value)
-            .setMaxValues(selectionMeta.max_value)
+        if(typeof selections === 'undefined') { return }
+        if(selections.length === 0) { return }
 
-        if(typeof selectionMeta.options !== 'undefined') {
-            selectionData.data = selectionMeta.options
+        for (const selectionData of selections) {
+            if(selectionData.required_cache !== undefined) {
+                if(selectionData.required_cache.map(findValue).map(v => !v).find(v => v)) {
+                    continue
+                }
+            }
+
+            const selection = new MessageSelectMenu()
+            selection.setCustomId(selectionData.id)
+                .setPlaceholder(String(selectionData.label))
+                .setMinValues(selectionData.min_value)
+                .setMaxValues(selectionData.max_value)
+
+            if(typeof selectionData.options !== 'undefined') {
+                selectionData.data = selectionData.options
+            }
+
+            if(selectionData.heater_options) {
+                selectionData.data = [...selectionData.data, ...getHeaterChoices()]
+            }
+
+            if(selectionData.exclude_options) {
+                selectionData.data = [...selectionData.data, ...getExcludeChoices()]
+            }
+
+            if(selectionData.mcu_options) {
+                selectionData.data = [...selectionData.data, ...this.mcuHelper.getMCUOptions()]
+            }
+
+            for(const data of selectionData.data) {
+                const selectionMetaRaw = JSON.stringify(selectionData)
+
+                const selectionMetaParsed = JSON.parse(parsePageData(selectionMetaRaw, data))
+
+                selection.addOptions([{
+                    label: limitString(selectionMetaParsed.option_label, 100),
+                    description: limitString(selectionMetaParsed.option_description, 100),
+                    value: limitString(selectionMetaParsed.option_value, 100)
+                }])
+            }
+
+            row.addComponents(selection)
         }
-
-        if(selectionMeta.mcu_options) {
-            selectionData.data = [...selectionData.data, ...this.mcuHelper.getMCUOptions()]
-        }
-
-        for(const data of selectionData.data) {
-            const selectionMetaRaw = JSON.stringify(selectionMeta)
-
-            const selectionMetaParsed = JSON.parse(parsePageData(selectionMetaRaw, data))
-
-            selection.addOptions([{
-                label: limitString(selectionMetaParsed.option_label, 100),
-                description: limitString(selectionMetaParsed.option_description, 100),
-                value: limitString(selectionMetaParsed.option_value, 100)
-            }])
-        }
-
-        row.addComponents(selection)
 
         return row
     }
 
-    public generateButton(buttonId: string) {
-        const cache = getEntry("buttons")
-        const buttonMeta = cache[buttonId]
+    public generateInputs(inputs) {
+        const componentRows = []
 
-        const button = new MessageButton()
-            .setCustomId(buttonId)
-            .setLabel(buttonMeta.label)
-            .setStyle(buttonMeta.style)
+        if(typeof(inputs) === 'undefined') { return }
+        if(inputs.length === 0) { return }
 
-        if(typeof(buttonMeta.emoji) !== 'undefined') {
-            button.setEmoji(buttonMeta.emoji)
+        for (const inputData of inputs) {
+            const row = new MessageActionRow()
+
+            row.addComponents(
+                new TextInputComponent()
+                    .setCustomId(inputData.id)
+                    .setLabel(inputData.label)
+                    .setStyle(inputData.style)
+                    .setValue(String(inputData.value))
+                    .setRequired(inputData.required)
+            )
+
+            componentRows.push(row)
         }
-        return button
+
+        return componentRows
     }
 }

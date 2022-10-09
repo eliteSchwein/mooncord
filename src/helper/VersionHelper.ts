@@ -1,5 +1,5 @@
-import { findValue } from "../utils/CacheUtil";
-import { LocaleHelper } from "./LocaleHelper";
+import {findValue} from "../utils/CacheUtil";
+import {LocaleHelper} from "./LocaleHelper";
 
 export class VersionHelper {
     protected localeHelper = new LocaleHelper()

@@ -1,10 +1,38 @@
 {
+    "modals": {
+        "execute_modal": {
+            "title": "Ausführen?"
+        },
+        "temp_target": {
+            "title": "Lege die Ziel Temperatur fest"
+        }
+    },
     "pages": {
-        "list_files": {
+        "gcode_files": {
             "entry_label": "${data.path}"
+        },
+        "configs_download": {
+            "entry_label": "${data.name}"
         }
     },
     "embeds": {
+        "execute_error": {
+            "title": "Falsch formattierte GCode Befehl/e",
+            "description": "${gcode_commands}"
+        },
+        "execute_unknown": {
+            "title": "Unbekannte GCode Befehl/e",
+            "description": "${gcode_commands}"
+        },
+        "execute_successful": {
+            "title": "Ausgeführte GCode Befehl/e",
+            "description": "${gcode_commands}"
+        },
+        "configs_download": {
+            "title": "Download Konfigurations Datei",
+            "description": "${page_entries}",
+            "footer": "Seite ${pages}"
+        },
         "systeminfo_cpu": {
             "title": "CPU Information"
         },
@@ -14,20 +42,40 @@
         "systeminfo_system": {
             "title": "System Information"
         },
+        "systeminfo_discord": {
+            "title": "Discord Klient Information"
+        },
+        "systeminfo_moonraker_client": {
+            "title": "Moonraker Klient Information"
+        },
+        "systeminfo_moonraker": {
+            "title": "Moonraker Information",
+            "description": "**Warnungen ⚠:** \n ```\n${server_info.warnings}```"
+        },
+        "systeminfo_klipper": {
+            "title": "Klipper Information",
+            "description": "**Warnungen ⚠:** \n ```\n${state.configfile.warnings}```"
+        },
         "systeminfo_mcu": {
             "title": "${mcu_name} Information"
         },
         "systeminfo_update": {
             "title": "System Aktualisierungen"
         },
+        "exclude_overview": {
+            "title": "Ausschließ Übersicht"
+        },
+        "exclude_detail": {
+            "title": "Willst du das Objekt ausschließen?"
+        },
         "fileinfo": {
             "title": "Datei Informationen",
             "description": "Druckzeit: ${estimated_time}\nSlicer: ${slicer}\nSlicer Version: ${slicer_version}\nHöhe: ${object_height}mm"
         },
-        "list_files": {
-            "title": "Drucker Dateien",
+        "gcode_files": {
+            "title": "Gcode Files",
             "description": "${page_entries}",
-            "footer": "Seite ${pages}"
+            "footer": "Page ${pages}"
         },
         "info": {
             "title": "Informationen",
@@ -44,54 +92,57 @@
             "title": "Druckjob löschen?",
             "description": "Druckzeit: ${estimated_time}\nSlicer: ${slicer}\nSlicer Version: ${slicer_version}\nHöhe: ${object_height}mm"
         },
-        "printjob_start":{
+        "printjob_start": {
             "title": "Druck gestartet",
             "activity": "starte ${state.print_stats.filename}"
         },
-        "printjob_complete":{
+        "printjob_complete": {
             "title": "Druck abgeschlossen",
             "activity": "Druck abgeschlossen"
         },
-        "printjob_pause":{
+        "printjob_pause": {
             "title": "Druck pausiert",
             "activity": "Drinkt ein Bier 🍺 Prost!"
         },
-        "printjob_printing":{
+        "printjob_printing": {
             "title": "Druck Fortschritt",
             "activity": "Druckfortschritt: ${percent:0:state.display_status.progress}%"
         },
-        "printjob_stop":{
+        "printjob_stop": {
             "title": "Druck angehalten",
             "activity": "Druck angehalten"
         },
         "temperatures": {
-            "title": "Temperaturen"
+            "title": "Temperatur"
         },
-        "disconnected":{
+        "single_temperature": {
+            "title": "Temperatur für ${heater}"
+        },
+        "disconnected": {
             "title": "Drucker getrennt!",
             "activity": "warte auf Klipper"
         },
-        "moonraker_disconnected":{
+        "moonraker_disconnected": {
             "title": "Verbindung verloren!",
             "activity": "warte auf Moonraker"
         },
-        "error":{
+        "error": {
             "title": "Ein Fehler ist aufgetreten!",
             "activity": "warte auf Nutzer"
         },
-        "offline":{
+        "offline": {
             "title": "Verbindung verloren!",
             "activity": "warte auf Moonraker"
         },
-        "shutdown":{
+        "shutdown": {
             "title": "Klipper fährt herunter",
             "activity": "warte auf Klipper"
         },
-        "ready":{
+        "ready": {
             "title": "Drucker Bereit",
             "activity": "warte auf einen Druck Auftrag..."
         },
-        "startup":{
+        "startup": {
             "title": "Drucker fährt hoch",
             "activity": "Drucker fährt hoch"
         },
@@ -111,14 +162,15 @@
             "title": "System Aktualisierungen"
         },
         "fields": {
+            "flow": "Flussrate",
             "system": "System",
             "packages": "Pakete",
             "chipset": "Chipsatz",
+            "color": "Color",
             "version": "Version",
             "load": "Last",
             "awake_time": "Wachzeit",
             "frequency": "Takt",
-            "current": "Aktuell",
             "target": "Ziel",
             "speed": "Geschwindigkeit",
             "power": "Power",
@@ -130,8 +182,8 @@
             "slicer": "Slicer",
             "slicer_version": "Slicer version",
             "height": "Höhe",
-            "min_temp": "Min Temp",
-            "max_temp": "Max Temp",
+            "max": "Max",
+            "min": "Min",
             "temp": "Temp",
             "cores": "Kerne",
             "arch": "Architektur",
@@ -151,11 +203,29 @@
             "klipper_load": "Klipper Last",
             "distribution": "Distribution",
             "distribution_like": "Distribution Verwandter",
-            "codename": "Codename"
+            "codename": "Codename",
+            "ping": "Ping",
+            "client_id": "Klient ID",
+            "event_count": "Events",
+            "ready_since": "Bereit seit",
+            "active_connections": "Aktive Verbindungen",
+            "current": "Aktuell",
+            "min_temp": "Min Temperatur",
+            "max_temp": "Max Temperatur"
+        },
+        "list_files": {
+            "title": "Drucker Dateien",
+            "description": "${page_entries}",
+            "footer": "Seite ${pages}"
         }
     },
     "messages": {
         "answers": {
+            "execute_successful": "Die GCode Befehle wurden erfolgreich ausgeführt, `${username}`!",
+            "preheat_preset": {
+                "preset": "Heize Profil `${preset}` vor, `${username}`!",
+                "manual": "Heize ${heater_list} vor, `${username}`!"
+            },
             "update_request": "System Update angefordert, `${username}`!",
             "restart_successful": "Der Neustart für `${service}` war erfolgreich!",
             "firmware_restart_successful": "Die Firmware startet neu!",
@@ -171,7 +241,6 @@
                 "activated": "`${channel}` ist nun ein Nachrichten Kanal, `${username}`!",
                 "deactivated": "`${channel}` ist kein Nachrichten Kanal mehr, `${username}`!"
             },
-            "execute_success": "Befehl ausgeführt!",
             "log_retrieved": "Hier ist der aktuelle Log für `${service}`",
             "user_id": {
                 "own_id": "Deine ID ist `${id}`",
@@ -202,13 +271,28 @@
             "printjob_request_abort": "Druckauftrag für `${embed_author}` abgebrochen, `${username}`!",
             "printjob_delete_abort": "Druckauftrag Löschung für `${embed_author}` abgebrochen, `${username}`!",
             "printjob_executed": "Druck Auftrag gestartet, `${username}`!",
-            "reconnect": "MoonCord wird sich zu Moonraker und Discord neu verbinden, `${username}`!"
+            "reconnect": "MoonCord wird sich zu Moonraker und Discord neu verbinden, `${username}`!",
+            "pidtune_start": "Starte ein PID Tuning bei `${temp}°C` für `${heater}`, `${username}`!",
+            "pidtune_done": "PID Tuning fertiggestellt für `${heater}`, `${username}`!",
+            "config_save": "Klipper Konfiguration gespeichert, `${username}`!",
+            "upload_successful": "Der Upload für `${filename}` war erfolgreich, `${username}`!",
+            "tune": {
+                "speed": "Neuer Geschwindigkeitsfaktor ist `${speed}%`, `${username}`!",
+                "flow": "Neuer Flussfaktor ist `${flow}%`, `${username}`!",
+                "speed_flow": "New speed factor is `${speed}%` and flow factor is `${flow}%`, `${username}`!"
+            },
+            "excluded_object": "Das Objekt `${object}` wurde ausgeschlossen, `${username}`!",
+            "execute_success": "Befehl ausgeführt!"
         },
         "errors": {
+            "execute_running": "Der Befehl Ausführer läuft bereits, versuch es später nochmal bitte, `${username}`!",
+            "macros_failed": "Die Makros für `${button_label}` sind fehlgeschlagen, `${username}`!",
+            "execute_failed": "Die GCode Befehle sind fehlgeschlagen, `${username}`!",
             "check_console": "Bitte die Konsole prüfen!",
             "command_disabled": "Der Kommand ist deaktiviert!",
             "command_failed": "Ein Fehler ist aufgetreten!",
             "command_timeout": "Befehl konnte nicht ausgeführt werden!",
+            "command_idle_only": "Der Befehl ist nur im Leerlauf verfügbar, `${username}`!",
             "file_not_found": "Datei nicht gefunden!",
             "guild_only": "Dieser Befehl ist nur auf Server verfügbar, `${username}`",
             "no_data": "Es wurden keine Daten für `${component}` gefunden!",
@@ -216,12 +300,16 @@
             "no_files_found": "Es sind derzeit keine Dateien vorhanden!",
             "no_permission": "Du hast nicht die Rechte dazu,`${username}`",
             "not_ready": "Der Befehl ist noch nicht bereit, `${username}`!",
+            "input_not_a_number": "Das Eingabefeld `${input}` darf nur Nummern beinhalten, `${username}`!",
             "not_textchannel": "`${channel}` ist kein Text Kanal, `${username}`!",
             "execute_error": "Fehler: `${gcode_feedback}`",
             "execute_unknown": "Unbekannter GCode Befehl: `${gcode_feedback}`",
             "log_too_large": "Der Log für `${service}` ist zu groß!",
             "log_failed": "Der Download für denn `${service}` Log ist fehlgeschlagen: `${reason}`!",
-            "log_not_found": "Derzeit gibt es keinen Log für `${service}`"
+            "log_not_found": "Derzeit gibt es keinen Log für `${service}`",
+            "pidtune_fail": "PID Tuning fehlgeschlagen für `${heater}`, `${username}`!\nGrund:\n```\n${reason}```",
+            "missing_arguments": "Für denn Befehl fehlen Argumente, `${username}`!",
+            "upload_failed": "Der Upload für `${filename}` ist fehlgeschlagen, `${username}`!"
         }
     },
     "buttons": {
@@ -234,11 +322,17 @@
         "printjob_resume": {
             "label": "Fortsetzen"
         },
-        "printjob_refresh": {
-            "label": "Aktualisieren"
+        "printjob_status": {
+            "label": "Status"
         },
         "printjob_start": {
             "label": "Drucken"
+        },
+        "printjob_exclude": {
+            "label": "Ausschließen"
+        },
+        "exclude_confirm": {
+            "label": "Ausschließen"
         },
         "printjob_request_accept": {
             "label": "Ja"
@@ -252,17 +346,20 @@
         "reconnect": {
             "label": "Neuverbinden"
         },
-        "update_system": {
-            "label": "Aktualisieren"
-        },
-        "next_page_printlist":  {
+        "next_page_printlist": {
             "label": "Nächste Seite"
         },
-        "last_page_printlist":  {
+        "last_page_printlist": {
             "label": "Letzte Seite"
         },
         "to_printlist": {
             "label": "zur Liste"
+        },
+        "to_temps": {
+            "label": "zu Temperaturen"
+        },
+        "change_temp": {
+            "label": "setze Ziel"
         },
         "clear_file": {
             "label": "Entferne Datei"
@@ -275,9 +372,35 @@
         },
         "printjob_delete_deny": {
             "label": "Nein"
+        },
+        "next_page_configs_download": {
+            "label": "Nächste Seite"
+        },
+        "last_page_configs_download": {
+            "label": "Letzte Seite"
+        },
+        "update_system": {
+            "label": "Aktualisieren"
         }
     },
     "selections": {
+        "show_temp": {
+            "label": "Wähle ein Heizelement",
+            "option_label": "${data.name}",
+            "option_description": "Klicke für mehr Details",
+            "options": []
+        },
+        "exclude_objects": {
+            "label": "Wähle ein Objekt",
+            "option_label": "${data.name}",
+            "option_description": "Klicken zum ausschließen",
+            "options": []
+        },
+        "config_file_download": {
+            "label": "Wähle eine Datei",
+            "option_label": "${data.name}",
+            "option_description": "Klicken zum Downloaden"
+        },
         "printlist_view_printjob": {
             "label": "Wähle eine Datei...",
             "option_label": "${data.path}",
@@ -287,14 +410,13 @@
             "label": "Wähle eine Komponente...",
             "option_label": "${data.label}",
             "option_description": "Klicken für mehr Details",
-            "mcu_options": true,
             "options": [
                 {
                     "label": "CPU",
                     "value": "cpu"
                 },
                 {
-                    "label": "Memory",
+                    "label": "Speicher",
                     "value": "memory"
                 },
                 {
@@ -304,11 +426,105 @@
                 {
                     "label": "Updates",
                     "value": "update"
+                },
+                {
+                    "label": "Klipper",
+                    "value": "klipper"
+                },
+                {
+                    "label": "Discord Klient",
+                    "value": "discord"
+                },
+                {
+                    "label": "Moonraker Klient",
+                    "value": "moonraker_client"
+                },
+                {
+                    "label": "Updates",
+                    "value": "update"
                 }
-            ]
+            ],
+            "mcu_options": true
         }
     },
     "commands": {
+        "tune": {
+            "description": "tune denn aktuellen Druck",
+            "command": "tune",
+            "options": {
+                "speed": {
+                    "name": "geschwindigkeit",
+                    "description": "tune deine aktuelle Druckgeschwindigkeit"
+                },
+                "flow": {
+                    "name": "fluss",
+                    "description": "tune deine aktuelle Flussrate"
+                }
+            }
+        },
+        "config": {
+            "description": "Up- oder Download einer Konfiguration",
+            "command": "konfiguration",
+            "options": {
+                "upload": {
+                    "name": "upload",
+                    "description": "Lade eine Konfiguration hoch",
+                    "options": {
+                        "directory": {
+                            "name": "verzeichnis",
+                            "description": "Wähle ein Verzeichnis."
+                        },
+                        "file": {
+                            "name": "datei",
+                            "description": "Hänge eine Konfiguration an."
+                        }
+                    }
+                },
+                "get": {
+                    "name": "download",
+                    "description": "Downloade eine Konfiguration."
+                }
+            }
+        },
+        "pidtune": {
+            "description": "starte ein PID Tuning für ein Heizelement.",
+            "command": "pidtune",
+            "options": {
+                "heater": {
+                    "name": "heizelement",
+                    "description": "Spezifiziere ein Heizelemnt."
+                },
+                "temperature": {
+                    "name": "temperatur",
+                    "description": "Setze die Tuning Temperatur."
+                }
+            }
+        },
+        "preheat": {
+            "description": "Heize manuell oder ein Profil vor.",
+            "command": "preheat",
+            "options": {
+                "preset": {
+                    "name": "profil",
+                    "description": "Heize Profil vor.",
+                    "options": {
+                        "preset": {
+                            "name": "profil",
+                            "description": "Wähle ein Profil."
+                        }
+                    }
+                },
+                "manual": {
+                    "name": "manuell",
+                    "description": "Wähle manuell die Temperaturen.",
+                    "options": {
+                        "heater": {
+                            "description": "Setze die Temperatur für ${heater}"
+                        }
+                    }
+                }
+            }
+        },
         "admin": {
             "description": "Konfiguriere einen Nutzer oder Rolle als Admin.",
             "command": "admin",
@@ -421,9 +637,9 @@
             "description": "Schickt dir eine Beschreibung über mich.",
             "command": "info"
         },
-        "listfiles": {
-            "description": "Zeigt dir alle Druck Dateien.",
-            "command": "druckaufträge"
+        "listgcodes": {
+            "description": "Liste von allen GCode Dateien.",
+            "command": "listgcodes"
         },
         "systeminfo": {
             "description": "Erhalte aktuelle System Informationen.",
@@ -468,6 +684,21 @@
         "temp": {
             "description": "Bekomme die aktuellen Klipper Temperaturen.",
             "command": "temperaturen"
+        }
+    },
+    "graph": {
+        "temp_history": {
+            "title": "Temperatur Verlauf",
+            "temperature": "Temperatur",
+            "power": "Auslastung"
+        }
+    },
+    "inputs": {
+        "gcode_input": {
+            "label": "GCode Befehle"
+        },
+        "temp_target_input": {
+            "label": "Ziel für ${heater}"
         }
     }
 }

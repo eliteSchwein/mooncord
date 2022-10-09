@@ -1,7 +1,7 @@
-import {updateData} from "../../../utils/CacheUtil";
+import {dump, updateData} from "../../../utils/CacheUtil";
 import {getMoonrakerClient, reconnectDiscord, reloadCache, restartScheduler} from "../../../Application";
 import {StatusHelper} from "../../../helper/StatusHelper";
-import { logEmpty, logSuccess } from "../../../helper/LoggerHelper";
+import {logEmpty, logSuccess} from "../../../helper/LoggerHelper";
 
 export class StateUpdateNotification {
     protected moonrakerClient = getMoonrakerClient()

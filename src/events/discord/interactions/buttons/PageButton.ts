@@ -1,11 +1,10 @@
 import {ButtonInteraction, Message} from "discord.js";
-import {getEntry} from "../../../../utils/CacheUtil";
 import {getDatabase} from "../../../../Application";
 import {EmbedHelper} from "../../../../helper/EmbedHelper";
 import {ConfigHelper} from "../../../../helper/ConfigHelper";
 import {LocaleHelper} from "../../../../helper/LocaleHelper";
-import { PageHelper } from "../../../../helper/PageHelper";
-import { logNotice } from "../../../../helper/LoggerHelper";
+import {PageHelper} from "../../../../helper/PageHelper";
+import {logNotice} from "../../../../helper/LoggerHelper";
 
 export class PageButton {
     protected databaseUtil = getDatabase()
@@ -37,9 +36,14 @@ export class PageButton {
         
         const pages = embed.footer.text.replace(filterFooter, '').split('/')
         const currentPage = Number.parseInt(pages[0])
-        const pageHelper = new PageHelper(getEntry('gcode_files'), embedData.embedID)
+        const pageHelper = new PageHelper(embedData.embedID)
 
         const pageData = pageHelper.getPage(functionMap.page_up, currentPage)
+
+        if(Object.keys(pageData).length === 0) {
+            await interaction.editReply(this.localeHelper.getCommandNotReadyError(interaction.user.username))
+            return
+        }
 
         logNotice(`select Page ${pageData.pages} for ${embedData.embedID}`)
 

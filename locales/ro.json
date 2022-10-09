@@ -1,473 +1,688 @@
 {
+    "modals": {
+        "execute_modal": {
+            "title": "Executați?"
+        },
+        "temp_target": {
+            "title": "Setați temperaturile țintă"
+        }
+    },
     "pages": {
-        "list_files": {
+        "gcode_files": {
             "entry_label": "${data.path}"
+        },
+        "configs_download": {
+            "entry_label": "${data.name}"
         }
     },
     "embeds": {
+        "execute_error": {
+            "title": "Comenzi GCode malformate",
+            "description": "${gcode_commands}"
+        },
+        "execute_unknown": {
+            "title": "Comenzi GCode necunoscute",
+            "description": "${gcode_commands}"
+        },
+        "execute_successful": {
+            "title": "Comenzi GCode executate",
+            "description": "${gcode_commands}"
+        },
+        "configs_download": {
+            "title": "Descărcați fișierul de configurare",
+            "description": "${page_entries}",
+            "footer": "Pagina ${pages}"
+        },
         "systeminfo_cpu": {
-            "title": "CPU Information"
+            "title": "Informații despre procesor"
         },
         "systeminfo_memory": {
-            "title": "Memory Information"
+            "title": "Informații despre memorie"
         },
         "systeminfo_system": {
-            "title": "System Information"
+            "title": "Informații de sistem"
+        },
+        "systeminfo_discord": {
+            "title": "Informații despre clientul Discord"
+        },
+        "systeminfo_moonraker_client": {
+            "title": "Moonraker Informații pentru clienți"
+        },
+        "systeminfo_moonraker": {
+            "title": "Moonraker Informații",
+            "description": "**Avertismente ⚠:** \n ```\n${server_info.warnings}```"
+        },
+        "systeminfo_klipper": {
+            "title": "Klipper Informații",
+            "description": "**Avertismente ⚠:** \n ```\n${state.configfile.warnings}```"
         },
         "systeminfo_mcu": {
-            "title": "${mcu_name} Information"
+            "title": "${mcu_name} Informații"
         },
         "systeminfo_update": {
-            "title": "System Updates"
+            "title": "Actualizări de sistem"
+        },
+        "exclude_overview": {
+            "title": "Excludeți prezentarea generală"
+        },
+        "exclude_detail": {
+            "title": "Doriți să excludeți obiectul?"
         },
         "fileinfo": {
-            "title": "File Informations",
-            "description": "Print Time: ${estimated_time}\nSlicer: ${slicer}\nSlicer Version: ${slicer_version}\nHeight: ${object_height}mm"
+            "title": "Informații despre fișier",
+            "description": "Timp de imprimare: ${estimated_time}\nSlicer: ${slicer}\nVersiunea Slicer: ${slicer_version}\nÎnălțime: ${object_height}mm"
         },
-        "list_files": {
-            "title": "Print Files",
+        "gcode_files": {
+            "title": "Fișiere Gcode",
             "description": "${page_entries}",
-            "footer": "Page ${pages}"
+            "footer": "Pagina ${pages}"
         },
         "info": {
-            "title": "Informations",
-            "description": "Version: ${package_config.version}\nAuthor: ${package_config.author}\nHomepage: ${package_config.homepage}\n${config.custom_info}"
+            "title": "Informații",
+            "description": "Versiunea: ${package_config.version}\nAutor: ${package_config.author}\nPagina de start: ${package_config.homepage}\n${config.custom_info}"
         },
         "notification": {
-            "title": "Notification"
+            "title": "Notificare"
         },
         "printjob_start_request": {
-            "title": "Start Print Job?",
-            "description": "Print Time: ${estimated_time}\nSlicer: ${slicer}\nSlicer Version: ${slicer_version}\nHeight: ${object_height}mm"
+            "title": "Începeți o lucrare de imprimare?",
+            "description": "Timp de imprimare: ${estimated_time}\nSlicer: ${slicer}\nVersiunea Slicer: ${slicer_version}\nÎnălțime: ${object_height}mm"
         },
         "printjob_delete_request": {
-            "title": "Delete Print Job?",
-            "description": "Print Time: ${estimated_time}\nSlicer: ${slicer}\nSlicer Version: ${slicer_version}\nHeight: ${object_height}mm"
+            "title": "Ștergeți lucrarea de imprimare?",
+            "description": "Timp de imprimare: ${estimated_time}\nSlicer: ${slicer}\nVersiunea Slicer: ${slicer_version}\nÎnălțime: ${object_height}mm"
         },
-        "printjob_start":{
-            "title": "Print started",
-            "activity": "start ${state.print_stats.filename}"
+        "printjob_start": {
+            "title": "Imprimare începută",
+            "activity": "începe ${state.print_stats.filename}"
         },
-        "printjob_complete":{
-            "title": "Print Complete",
-            "activity": "Finished Print"
+        "printjob_complete": {
+            "title": "Imprimare completă",
+            "activity": "Imprimare finalizată"
         },
-        "printjob_pause":{
+        "printjob_pause": {
             "title": "Printare pusă pe Pauză",
             "activity": "ia o pauză, bea niște sânge 🩸 proaspăt 🧛. Hai Noroc!"
         },
-        "printjob_printing":{
-            "title": "Printing",
-            "activity": "Printing: ${percent:0:state.display_status.progress}%"
+        "printjob_printing": {
+            "title": "Imprimare",
+            "activity": "Imprimare: ${percent:0:state.display_status.progress}%"
         },
-        "printjob_stop":{
-            "title": "Print stopped",
-            "activity": "Print stopped"
+        "printjob_stop": {
+            "title": "Imprimare oprită",
+            "activity": "Imprimare oprită"
         },
         "temperatures": {
-            "title": "Temperatures"
+            "title": "Temperaturi"
         },
-        "disconnected":{
-            "title": "Printer Disconnected!",
-            "activity": "wait for Klipper"
+        "single_temperature": {
+            "title": "Temperatura pentru ${heater}"
         },
-        "moonraker_disconnected":{
-            "title": "Moonraker Connection lost!",
-            "activity": "wait for Moonraker"
+        "disconnected": {
+            "title": "Imprimanta deconectată!",
+            "activity": "așteptați-l pe Klipper"
         },
-        "error":{
-            "title": "A Error occured!",
-            "activity": "wait for User"
+        "moonraker_disconnected": {
+            "title": "Moonraker Connection a pierdut!",
+            "activity": "Așteptați Moonraker"
         },
-        "offline":{
-            "title": "Connection Lost!",
-            "activity": "wait for Moonraker"
+        "error": {
+            "title": "S-a produs o eroare!",
+            "activity": "așteptați pentru utilizator"
         },
-        "shutdown":{
-            "title": "Klipper Shutdown",
-            "activity": "wait for Klipper"
+        "offline": {
+            "title": "Conexiune pierdută!",
+            "activity": "Așteptați Moonraker"
         },
-        "ready":{
-            "title": "Printer Ready",
-            "activity": "for GCODE File..."
+        "shutdown": {
+            "title": "Închiderea Klipper",
+            "activity": "așteptați-l pe Klipper"
         },
-        "startup":{
-            "title": "Printer starting",
-            "activity": "Printer start"
+        "ready": {
+            "title": "Imprimantă pregătită",
+            "activity": "pentru fișierul GCODE..."
+        },
+        "startup": {
+            "title": "Pornirea imprimantei",
+            "activity": "Pornirea imprimantei"
         },
         "throttle_temperature_limit_active": {
-            "title": "Throttle occured!",
-            "description": "The System is currently throttled because of `Temperature Throttle`!\nCurrent Temperature: `${proc_stats.cpu_temp} °C`\nPlease check your cooling Solution."
+            "title": "A apărut accelerația!",
+            "description": "Sistemul este în prezent limitat din cauza `Temperature Throttle`!\nTemperatura curentă: `${proc_stats.cpu_temp} °C`\nVă rugăm să verificați soluția de răcire."
         },
         "throttle_under_voltage_detected": {
-            "title": "Throttle occured!",
-            "description": "The System is currently throttled because of `Under Voltage`!\nPlease check your Power Delivery."
+            "title": "A apărut accelerația!",
+            "description": "Sistemul este în prezent restricționat din cauza `Subtensiunii`!\nVă rugăm să verificați alimentarea cu energie electrică."
         },
         "throttle_frequency_capped": {
-            "title": "Throttle occured!",
-            "description": "The System is currently throttled because of `Frequency Capped`!\nPlease check your cooling Solution or/and your Power Delivery.."
+            "title": "A apărut accelerația!",
+            "description": "Sistemul este în prezent restricționat din cauza `Frecvență limitată`!\nVă rugăm să verificați soluția de răcire sau/și sistemul de alimentare..."
         },
         "system_update": {
-            "title": "System Updates"
+            "title": "Actualizări de sistem"
         },
         "fields": {
-            "system": "System",
-            "packages": "Packages",
+            "flow": "Flux",
+            "system": "Sistem",
+            "packages": "Pachete",
             "chipset": "Chipset",
-            "version": "Version",
-            "load": "Load",
-            "awake_time": "Awake Time",
-            "frequency": "Freq",
-            "current": "Current",
-            "target": "Target",
-            "speed": "Speed",
-            "power": "Power",
-            "print_time": "Print Time",
-            "eta_print_time": "ETA Print Time",
-            "print_left_time": "Print Time left",
-            "print_progress": "Progress",
-            "print_layers": "Layer",
+            "color": "Culoare",
+            "version": "Versiunea",
+            "load": "Încărcare",
+            "awake_time": "Timp de veghe",
+            "frequency": "Frecvență",
+            "target": "Țintă",
+            "speed": "Viteză",
+            "power": "Putere",
+            "print_time": "Timp de imprimare",
+            "eta_print_time": "Timp de imprimare ETA",
+            "print_left_time": "Imprimare Timp rămas",
+            "print_progress": "Progresul",
+            "print_layers": "Stratul",
             "slicer": "Slicer",
-            "slicer_version": "Slicer version",
-            "height": "Height",
-            "min_temp": "Min Temp",
-            "max_temp": "Max Temp",
+            "slicer_version": "Versiunea Slicer",
+            "height": "Înălțime",
+            "max": "Max",
+            "min": "Min",
             "temp": "Temp",
             "cores": "Cores",
-            "arch": "Architecture",
+            "arch": "Arhitectură",
             "bits": "Bits",
             "model": "Model",
-            "desc": "Description",
-            "manufacturer": "Manufacturer",
-            "manufactured": "Manufactured",
-            "total_ram": "Total RAM",
-            "free_ram": "Free RAM",
-            "used_ram": "Used RAM",
-            "total_disk": "Total Disk",
-            "used_disk": "Used Disk",
-            "free_disk": "Free Disk",
-            "system_load": "System Load",
-            "moonraker_load": "Moonraker Load",
-            "klipper_load": "Klipper Load",
-            "distribution": "Distribution",
-            "distribution_like": "Distribution Like",
-            "codename": "Codename"
+            "desc": "Descriere",
+            "manufacturer": "Producător",
+            "manufactured": "Fabricat",
+            "total_ram": "RAM totală",
+            "free_ram": "RAM liber",
+            "used_ram": "RAM folosită",
+            "total_disk": "Discul total",
+            "used_disk": "Discul folosit",
+            "free_disk": "Discul liber",
+            "system_load": "Sarcina sistemului",
+            "moonraker_load": "Moonraker Încărcați",
+            "klipper_load": "Klipper Încărcare",
+            "distribution": "Distribuție",
+            "distribution_like": "Distribuție Ca",
+            "codename": "Nume de cod",
+            "ping": "Ping",
+            "client_id": "Client ID",
+            "event_count": "Evenimente",
+            "ready_since": "Gata de când",
+            "active_connections": "Conexiuni active",
+            "current": "Curent",
+            "min_temp": "Temperatura minimă",
+            "max_temp": "Temperatura maximă"
+        },
+        "list_files": {
+            "title": "Fișiere de imprimare",
+            "description": "${page_entries}",
+            "footer": "Pagina ${pages}"
         }
     },
     "messages": {
         "answers": {
-            "update_request": "System Update requested, `${username}`!",
-            "restart_successful": "The Restart for `${service}` was successful!",
-            "firmware_restart_successful": "The Firmware is restarting!",
-            "timelapse": "Timelapse for `${printfile}`",
+            "execute_successful": "Comenzile Gcode au fost executate cu succes, `${username}`!",
+            "preheat_preset": {
+                "preset": "Preîncălzire pentru `${preset}`, `${username}`!",
+                "manual": "Preîncălzire ${heater_list}, `${username}`!"
+            },
+            "update_request": "Se solicită o actualizare a sistemului, `${username}`!",
+            "restart_successful": "Repornirea pentru `${service}` a avut succes!",
+            "firmware_restart_successful": "Firmware-ul se repornește!",
+            "timelapse": "Timelapse pentru `${printfile}`",
             "admin": {
-                "added": "${mention} is now a Bot Admin, `${username}`!",
-                "removed": "${mention} is not longer a Bot Admin, `${username}`!"
+                "added": "${mention} este acum un Bot Admin, `${username}`!",
+                "removed": "${mention} nu mai este un Bot Admin, `${username}`!"
             },
-            "macros_executed": "The Macros for `${button_label}` got executed, `${username}`!",
-            "status_update": "Please wait the Status is refreshing, `${username}`",
-            "file_deleted": "The file `${root}/${filename}` was successfully removed",
+            "macros_executed": "Macrogramele pentru `${button_label}` au fost executate, `${username}`!",
+            "status_update": "Vă rugăm să așteptați Statutul se actualizează, `${username}`",
+            "file_deleted": "Fișierul `${root}/${filename}` a fost eliminat cu succes",
             "broadcast_channel": {
-                "activated": "`${channel}` is now a Broadcast Channel, `${username}`!",
-                "deactivated": "`${channel}` is not longer a Broadcast Channel, `${username}`!"
+                "activated": "`${channel}` este acum un canal de difuzare, `${username}`!",
+                "deactivated": "`${channel}` nu mai este un canal de difuzare, `${username}`!"
             },
-            "execute_success": "Command Executed!",
-            "log_retrieved": "Here is the current Log for `${service}`",
+            "log_retrieved": "Aici este jurnalul curent pentru `${service}`",
             "user_id": {
-                "own_id": "Your id is `${id}`",
-                "other_id": "`${username}`'s id is `${id}`"
+                "own_id": "Identitatea ta este `${id}`",
+                "other_id": "ID-ul lui `${username}` este `${id}`"
             },
             "notify": {
-                "activated": "I will notify you of the print status via DM, `${username}`!",
-                "deactivated": "I will no longer notify you of the print status via DM, `${username}`!"
+                "activated": "Vă voi informa cu privire la starea imprimării printr-un mesaj privat, `${username}`!",
+                "deactivated": "Nu vă voi mai anunța despre starea imprimării prin Mesaj privat, `${username}`!"
             },
-            "emergency_stop": "Emergency Stop executed, `${username}`!",
-            "reset_database": "Database got wiped",
+            "emergency_stop": "Oprire de urgență executată, `${username}`!",
+            "reset_database": "Baza de date a fost ștearsă",
             "printjob_resume": {
-                "status_not_valid": "`${username}` the Print Job isn`t currently Pausing!",
-                "status_valid": "`${username}` you resumed the Print Job!",
-                "status_same": "`${username}` the Print Job is running!"
+                "status_not_valid": "`${username}` lucrarea de imprimare nu este în prezent în pauză!",
+                "status_valid": "`${username}` ați reluat lucrarea de imprimare!",
+                "status_same": "`${username}` lucrarea de imprimare este în curs de execuție!"
             },
             "printjob_cancel": {
-                "status_not_valid": "`${username}` there isn`t currently any active Print Job!",
-                "status_valid": "`${username}` you aborted the Print Job!",
+                "status_not_valid": "`${username}` în prezent nu există nicio lucrare de imprimare activă!",
+                "status_valid": "`${username}` ați anulat lucrarea de imprimare!",
                 "status_same": ""
             },
             "printjob_pause": {
-                "status_not_valid": "`${username}` there isn`t currently any active Print Job!",
-                "status_valid": "`${username}` you paused the Print Job!",
-                "status_same": "`${username}` the current Print Job is already Paused!"
+                "status_not_valid": "`${username}` în prezent nu există nicio lucrare de imprimare activă!",
+                "status_valid": "`${username}` ați întrerupt lucrarea de imprimare!",
+                "status_same": "`${username}` lucrarea de imprimare curentă este deja în pauză!"
             },
-            "printjob_clear": "The current Print Job got cleared, `${username}`!",
-            "printjob_request_abort": "Print Job request for `${embed_author}` aborted, `${username}`!",
-            "printjob_delete_abort": "Print Job Deletion request for `${embed_author}` aborted, `${username}`!",
-            "printjob_executed": "Print Job request executed, `${username}`!",
-            "reconnect": "MoonCord will reconnect to Moonraker and Discord, `${username}`!"
+            "printjob_clear": "Lucrarea de imprimare curentă a fost ștearsă, `${username}`!",
+            "printjob_request_abort": "Imprimare Cerere de lucru pentru `${embed_author}` anulată, `${username}`!",
+            "printjob_delete_abort": "Cererea de ștergere a lucrărilor de imprimare pentru `${embed_author}` a fost anulată, `${username}`!",
+            "printjob_executed": "Cerere de imprimare executată, `${username}`!",
+            "reconnect": "MoonCord se va reconecta la Moonraker și Discord, `${username}`!",
+            "pidtune_start": "Începe tuningul PID la `${temp}°C` pentru `${heater}`, `${username}`!",
+            "pidtune_done": "Acordarea PID finalizată pentru `${heater}`, `${username}`!",
+            "config_save": "Klipper Config salvat, `${username}`!",
+            "upload_successful": "Încărcarea pentru `${filename}` a avut succes, `${username}`!",
+            "tune": {
+                "speed": "Noul factor de viteză este `${speed}%`, `${username}`!",
+                "flow": "Noul factor de debit este `${flow}%`, `${username}`!",
+                "speed_flow": "Noul factor de viteză este `${speed}%`, iar factorul de debit este `${flow}%`, `${username}`!"
+            },
+            "excluded_object": "Obiectul `${object}` a fost exclus, `${username}`!",
+            "execute_success": "Comandă executată!"
         },
         "errors": {
-            "check_console": "Please Check the Console!",
-            "command_disabled": "The Command is disabled!",
-            "command_failed": "An Error occured!",
-            "command_timeout": "Command execution failed!",
-            "file_not_found": "File not Found!",
-            "guild_only": "This Command is only aviable on a Guild, `${username}`",
-            "no_data": "There was no Data found for `${component}`!",
-            "restart_failed": "The Restart for `${service}` failed: `${reason}`",
-            "no_files_found": "There are currently no Files!",
-            "no_permission": "You dont have the Permissions, `${username}`",
-            "not_ready": "This Command is not ready, `${username}`!",
-            "not_textchannel": "`${channel}` is not a Text Channel, `${username}`!",
-            "execute_error": "Error: `${gcode_feedback}`",
+            "execute_running": "Command Executer rulează deja, vă rugăm să încercați din nou mai târziu, `${username}`!",
+            "macros_failed": "Macros pentru `${button_label}` a eșuat, `${username}`!",
+            "execute_failed": "Comenzile Gcode au eșuat, `${username}`!",
+            "check_console": "Vă rugăm să verificați consola!",
+            "command_disabled": "Comanda este dezactivată!",
+            "command_failed": "S-a produs o eroare!",
+            "command_timeout": "Executarea comenzii a eșuat!",
+            "command_idle_only": "Comanda este disponibilă doar în stare de inactivitate, `${username}`!",
+            "file_not_found": "Fișier nedescoperit!",
+            "guild_only": "Această comandă este disponibilă numai în cadrul unei bresle, `${username}`",
+            "no_data": "Nu au fost găsite date pentru `${component}`!",
+            "restart_failed": "Repornirea pentru `${service}` a eșuat: `${reason}`",
+            "no_files_found": "În prezent nu există fișiere!",
+            "no_permission": "Nu aveți permisiunile necesare, `${username}`",
+            "not_ready": "Această comandă nu este pregătită, `${username}`!",
+            "input_not_a_number": "Câmpul de intrare `${input}` poate conține doar un număr, `${username}`!",
+            "not_textchannel": "`${channel}` nu este un canal de text, `${username}`!",
+            "execute_error": "Eroare: `${gcode_feedback}`",
             "execute_unknown": "Unknown GCode Command: `${gcode_feedback}`",
-            "log_too_large": "The Log for `${service}` is too big!",
-            "log_failed": "The Download of the `${service}` Log failed: `${reason}`!",
-            "log_not_found": "There is currently no Log for `${service}`"
+            "log_too_large": "Jurnalul pentru `${service}` este prea mare!",
+            "log_failed": "Descărcarea jurnalului `${service}` a eșuat: `${reason}`!",
+            "log_not_found": "În prezent nu există niciun jurnal pentru `${service}`",
+            "pidtune_fail": "Acordarea PID a eșuat pentru `${heater}`, `${username}`!\nMotivul::\n```\n${reason}```",
+            "missing_arguments": "Comanda este lipsită de Argumente, `${username}`!",
+            "upload_failed": "Încărcarea pentru `${filename}` a eșuat, `${username}`!"
         }
     },
     "buttons": {
         "printjob_pause": {
-            "label": "Pause"
+            "label": "Pauză"
         },
         "printjob_cancel": {
-            "label": "Cancel"
+            "label": "Anulează"
         },
         "printjob_resume": {
-            "label": "Resume"
+            "label": "Curriculum vitae"
         },
-        "printjob_refresh": {
-            "label": "Refresh"
+        "printjob_status": {
+            "label": "Status"
         },
         "printjob_start": {
-            "label": "Print"
+            "label": "Stare"
+        },
+        "printjob_exclude": {
+            "label": "Excludeți"
+        },
+        "exclude_confirm": {
+            "label": "Excludeți"
         },
         "printjob_request_accept": {
-            "label": "Yes"
+            "label": "Da"
         },
         "printjob_request_deny": {
-            "label": "No"
+            "label": "Nu"
         },
         "klipper_restart": {
-            "label": "Restart Firmware"
+            "label": "Reporniți firmware-ul"
         },
         "reconnect": {
-            "label": "Reconnect"
+            "label": "Reconectați"
         },
-        "update_system": {
-            "label": "Update"
+        "next_page_printlist": {
+            "label": "Pagina următoare"
         },
-        "next_page_printlist":  {
-            "label": "Next Page"
-        },
-        "last_page_printlist":  {
-            "label": "Last Page"
+        "last_page_printlist": {
+            "label": "Ultima pagină"
         },
         "to_printlist": {
-            "label": "to List"
+            "label": "la lista"
+        },
+        "to_temps": {
+            "label": "la Temps"
+        },
+        "change_temp": {
+            "label": "set Target"
         },
         "clear_file": {
-            "label": "Clear File"
+            "label": "Ștergeți fișierul"
         },
         "printjob_delete_request": {
-            "label": "Delete"
+            "label": "Ștergeți"
         },
         "printjob_delete_accept": {
-            "label": "Yes"
+            "label": "Da"
         },
         "printjob_delete_deny": {
-            "label": "No"
+            "label": "Nu"
+        },
+        "next_page_configs_download": {
+            "label": "Pagina următoare"
+        },
+        "last_page_configs_download": {
+            "label": "Ultima pagină"
+        },
+        "update_system": {
+            "label": "Actualizare"
         }
     },
     "selections": {
+        "show_temp": {
+            "label": "Selectați un încălzitor",
+            "option_label": "${data.name}",
+            "option_description": "Click pentru mai multe detalii",
+            "options": []
+        },
+        "exclude_objects": {
+            "label": "Selectați un obiect",
+            "option_label": "${data.name}",
+            "option_description": "Faceți clic pentru Exclude",
+            "options": []
+        },
+        "config_file_download": {
+            "label": "Selectați un fișier",
+            "option_label": "${data.name}",
+            "option_description": "Faceți clic pentru descărcare"
+        },
         "printlist_view_printjob": {
-            "label": "Select a File...",
+            "label": "Selectați un fișier...",
             "option_label": "${data.path}",
-            "option_description": "Click for more Details"
+            "option_description": "Click pentru mai multe detalii"
         },
         "systeminfo_select": {
-            "label": "Select a Component...",
+            "label": "Selectați o componentă...",
             "option_label": "${data.label}",
-            "option_description": "Click for more Details",
-            "mcu_options": true,
+            "option_description": "Click pentru mai multe detalii",
             "options": [
                 {
-                    "label": "CPU",
+                    "label": "Procesor",
                     "value": "cpu"
                 },
                 {
-                    "label": "Memory",
+                    "label": "Memorie",
                     "value": "memory"
                 },
                 {
-                    "label": "System",
+                    "label": "Sistem",
                     "value": "system"
                 },
                 {
-                    "label": "Updates",
+                    "label": "Actualizări",
                     "value": "update"
                 }
-            ]
+            ],
+            "mcu_options": true
         }
     },
     "commands": {
+        "tune": {
+            "description": "reglează activitatea de imprimare curentă",
+            "command": "melodia",
+            "options": {
+                "speed": {
+                    "name": "viteză",
+                    "description": "reglați viteza de imprimare curentă"
+                },
+                "flow": {
+                    "name": "debit",
+                    "description": "reglați fluxul de filament curent"
+                }
+            }
+        },
+        "config": {
+            "description": "Up- sau Descarcă o configurație",
+            "command": "config",
+            "options": {
+                "upload": {
+                    "name": "încărcați",
+                    "description": "Încărcați un fișier de configurare",
+                    "options": {
+                        "directory": {
+                            "name": "director",
+                            "description": "Selectați un director țintă."
+                        },
+                        "file": {
+                            "name": "fișier",
+                            "description": "Atașați un fișier de configurare."
+                        }
+                    }
+                },
+                "get": {
+                    "name": "obțineți",
+                    "description": "Descărcați un fișier de configurare"
+                }
+            }
+        },
+        "pidtune": {
+            "description": "porniți un PID Tune pentru un încălzitor.",
+            "command": "pidtune",
+            "options": {
+                "heater": {
+                    "name": "încălzitor",
+                    "description": "Specifică încălzitorul."
+                },
+                "temperature": {
+                    "name": "temperatură",
+                    "description": "Setați temperatura de reglare."
+                }
+            }
+        },
+        "preheat": {
+            "description": "Preîncălziți un profil sau manual.",
+            "command": "preîncălziți",
+            "options": {
+                "preset": {
+                    "name": "prestabilit",
+                    "description": "Preîncălzire Preset.",
+                    "options": {
+                        "preset": {
+                            "name": "prestabilit",
+                            "description": "Selectați o presetare."
+                        }
+                    }
+                },
+                "manual": {
+                    "name": "manual",
+                    "description": "Selectare manuală Temps.",
+                    "options": {
+                        "heater": {
+                            "description": "Setați temperatura pentru ${heater}"
+                        }
+                    }
+                }
+            }
+        },
         "admin": {
-            "description": "Manage Admin Role or User.",
+            "description": "Gestionați rolul de administrator sau de utilizator.",
             "command": "admin",
             "options": {
                 "role": {
-                    "name": "role",
-                    "description": "Modify Role.",
+                    "name": "rol",
+                    "description": "Modificați rolul.",
                     "options": {
                         "role": {
-                            "name": "role",
-                            "description": "Select a Role."
+                            "name": "rol",
+                            "description": "Selectați un rol."
                         }
                     }
                 },
                 "user": {
-                    "name": "user",
-                    "description": "Modify a User.",
+                    "name": "utilizator",
+                    "description": "Modificați un utilizator.",
                     "options": {
                         "user": {
-                            "name": "user",
-                            "description": "Select a User."
+                            "name": "utilizator",
+                            "description": "Selectați un utilizator."
                         }
                     }
                 }
             }
         },
         "dump": {
-            "description": "dump data.",
-            "command": "dump",
+            "description": "datele de descărcare de gestiune.",
+            "command": "descărcare",
             "options": {
                 "section": {
-                    "name": "section",
-                    "description": "Select the Section to dump.",
+                    "name": "secțiunea",
+                    "description": "Selectați secțiunea pe care doriți să o descărcați.",
                     "choices": {
                         "cache": "Cache",
-                        "database": "Database"
+                        "database": "Baza de date"
                     }
                 }
             }
         },
         "reset_database": {
-            "description": "clear the Database.",
-            "command": "reset"
+            "description": "ștergeți baza de date.",
+            "command": "resetare"
         },
         "editchannel": {
-            "description": "Add or Remove broadcast channel.",
+            "description": "Adăugați sau eliminați canalul de difuzare.",
             "command": "editchannel",
             "options": {
                 "channel": {
-                    "name": "channel",
-                    "description": "Select a Channel to add/remove it as Broadcast channel."
+                    "name": "canal",
+                    "description": "Selectați un canal pentru a-l adăuga/elimina ca canal de difuzare."
                 }
             }
         },
         "emergency_stop": {
-            "description": "Emergency Stop the Printer?",
-            "command": "emergencystop"
+            "description": "Oprire de urgență a imprimantei?",
+            "command": "oprire de urgență"
         },
         "execute": {
-            "description": "Execute a GCode Command.",
-            "command": "execute",
+            "description": "Executarea unei comenzi GCode.",
+            "command": "executați",
             "options": {
                 "gcode": {
                     "name": "gcode",
-                    "description": "GCode that you want to execute."
+                    "description": "GCode pe care doriți să îl executați."
                 }
             }
         },
         "fileinfo": {
-            "description": "Shows Informations about a Print File.",
+            "description": "Afișează informații despre un fișier de imprimare.",
             "command": "fileinfo",
             "options": {
                 "file": {
-                    "name": "file",
-                    "description": "Specifies a Print File."
+                    "name": "fișier",
+                    "description": "Specifică un fișier de imprimare."
                 }
             }
         },
         "get_log": {
-            "description": "Retrieve a Log.",
+            "description": "Preluarea unui jurnal.",
             "command": "getlog",
             "options": {
                 "log_file": {
                     "name": "logfile",
-                    "description": "Specifies the Log File."
+                    "description": "Specifică fișierul jurnal."
                 }
             }
         },
         "get_user_id": {
-            "description": "Retrieve the User ID.",
+            "description": "Preluarea ID-ului de utilizator.",
             "command": "getuserid",
             "options": {
                 "user": {
-                    "name": "user",
-                    "description": "Specifies a User."
+                    "name": "utilizator",
+                    "description": "Specifică un utilizator."
                 }
             }
         },
         "restart": {
-            "description": "Restart a Service.",
+            "description": "Reporniți un serviciu.",
             "command": "restart",
             "options": {
                 "service": {
-                    "name": "service",
-                    "description": "Specifies a Service."
+                    "name": "serviciu",
+                    "description": "Specifică un serviciu."
                 }
             }
         },
         "info": {
-            "description": "Send a Description about me.",
+            "description": "Trimite o descriere despre mine.",
             "command": "info"
         },
-        "listfiles": {
-            "description": "List all Print Files.",
-            "command": "listfiles"
+        "listgcodes": {
+            "description": "Listează toate fișierele de imprimare.",
+            "command": "listgcodes"
         },
         "systeminfo": {
-            "description": "Get the current System Informations.",
+            "description": "Obține informațiile curente ale sistemului.",
             "command": "systeminfo"
         },
         "notify": {
-            "description": "Should i DM you with the current print status?",
+            "description": "Ar trebui să vă trimit un mesaj cu starea actuală a imprimării?",
             "command": "notifyme"
         },
         "printjob": {
-            "description": "Control or start a Print Job.",
+            "description": "Controlați sau porniți o lucrare de imprimare.",
             "command": "printjob",
             "options": {
                 "pause": {
-                    "name": "pause",
-                    "description": "Pause Print Job"
+                    "name": "pauză",
+                    "description": "Pauză lucrare de imprimare"
                 },
                 "cancel": {
-                    "name": "cancel",
-                    "description": "Cancel Print Job"
+                    "name": "anulați",
+                    "description": "Anulare Imprimare lucrare"
                 },
                 "resume": {
-                    "name": "resume",
-                    "description": "Resume Print Job"
+                    "name": "CV",
+                    "description": "CV-ul Print Job"
                 },
                 "start": {
                     "name": "start",
-                    "description": "Start new Print Job",
+                    "description": "Începeți o nouă lucrare de imprimare",
                     "options": {
                         "file": {
-                            "name": "file",
-                            "description": "Select a Print File."
+                            "name": "fișier",
+                            "description": "Selectați un fișier de imprimare."
                         }
                     }
                 }
             }
         },
         "status": {
-            "description": "Get the current Print Status.",
+            "description": "Obține starea actuală a imprimării.",
             "command": "status"
         },
         "temp": {
-            "description": "Get the current Temperatures from Klipper.",
+            "description": "Obțineți temperaturile actuale de la Klipper.",
             "command": "temp"
+        }
+    },
+    "graph": {
+        "temp_history": {
+            "title": "Istoric temporar",
+            "temperature": "Temperatura",
+            "power": "Putere"
+        }
+    },
+    "inputs": {
+        "gcode_input": {
+            "label": "Comenzi GCode"
+        },
+        "temp_target_input": {
+            "label": "Ținta pentru ${heater}"
         }
     }
 }

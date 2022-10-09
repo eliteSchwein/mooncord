@@ -1,10 +1,38 @@
 {
+    "modals": {
+        "execute_modal": {
+            "title": "Exécuter ?"
+        },
+        "temp_target": {
+            "title": "Définir des températures cibles"
+        }
+    },
     "pages": {
-        "list_files": {
+        "gcode_files": {
             "entry_label": "${data.path}"
+        },
+        "configs_download": {
+            "entry_label": "${data.name}"
         }
     },
     "embeds": {
+        "execute_error": {
+            "title": "GCode Command/s erronée ",
+            "description": "${gcode_commands}"
+        },
+        "execute_unknown": {
+            "title": "GCode Command/s inconnu",
+            "description": "${gcode_commands}"
+        },
+        "execute_successful": {
+            "title": "GCode Command/s executée",
+            "description": "${gcode_commands}"
+        },
+        "configs_download": {
+            "title": "Télécharger le fichier de configuration",
+            "description": "${page_entries}",
+            "footer": "Page ${pages}"
+        },
         "systeminfo_cpu": {
             "title": "Information CPU"
         },
@@ -14,18 +42,38 @@
         "systeminfo_system": {
             "title": "Information Système "
         },
+        "systeminfo_discord": {
+            "title": "Informations du client Discord"
+        },
+        "systeminfo_moonraker_client": {
+            "title": "Informations du client Moonraker"
+        },
+        "systeminfo_moonraker": {
+            "title": "Information de Moonraker",
+            "description": "**Attention ⚠:** \n ```\n${server_info.warnings}```"
+        },
+        "systeminfo_klipper": {
+            "title": "Klipper Information",
+            "description": "**Attention ⚠:** \n ```\n${state.configfile.warnings}```"
+        },
         "systeminfo_mcu": {
             "title": "${mcu_name} Information"
         },
         "systeminfo_update": {
             "title": "Mises à jour du système"
         },
+        "exclude_overview": {
+            "title": "Exclure la vue d'ensemble"
+        },
+        "exclude_detail": {
+            "title": "Voulez-vous exclure l'objet ?"
+        },
         "fileinfo": {
-            "title": "File Informations",
+            "title": "Informations du fichier",
             "description": "Temps d'impression: ${estimated_time}\nSlicer: ${slicer}\nSlicer Version: ${slicer_version}\nHeight: ${object_height}mm"
         },
-        "list_files": {
-            "title": "Fichier d'impression",
+        "gcode_files": {
+            "title": "Dossier du Gcode",
             "description": "${page_entries}",
             "footer": "Page ${pages}"
         },
@@ -44,54 +92,57 @@
             "title": "Supprimer l'impression ?",
             "description": "Temps d'impression: ${estimated_time}\nSlicer: ${slicer}\nSlicer Version: ${slicer_version}\nHeight: ${object_height}mm"
         },
-        "printjob_start":{
+        "printjob_start": {
             "title": "Impression démarrer",
             "activity": "start ${state.print_stats.filename}"
         },
-        "printjob_complete":{
+        "printjob_complete": {
             "title": "Impression complète",
             "activity": "Impression finie"
         },
-        "printjob_pause":{
+        "printjob_pause": {
             "title": "Impression en pause",
             "activity": "Une pause ? Apéro 🍾 !!"
         },
-        "printjob_printing":{
+        "printjob_printing": {
             "title": "Impression",
             "activity": "Impression: ${percent:0:state.display_status.progress}%"
         },
-        "printjob_stop":{
+        "printjob_stop": {
             "title": "Impression stopper",
             "activity": "Impression stopper"
         },
         "temperatures": {
             "title": "Temperature"
         },
-        "disconnected":{
-            "title": "Imprimante déconnectée !",
-            "activity": "wait for Klipper"
+        "single_temperature": {
+            "title": "Temperature for ${heater}"
         },
-        "moonraker_disconnected":{
+        "disconnected": {
+            "title": "Imprimante déconnectée !",
+            "activity": "en attente de Klipper"
+        },
+        "moonraker_disconnected": {
             "title": "Connection avec Moonraker perdue !",
             "activity": "en attente de Moonraker"
         },
-        "error":{
+        "error": {
             "title": "Une erreur s'est produite !",
             "activity": "en attente de l'utilisateur"
         },
-        "offline":{
+        "offline": {
             "title": "Connection perdu !",
             "activity": "en attente de Moonraker"
         },
-        "shutdown":{
+        "shutdown": {
             "title": "Klipper s'est arrêté",
             "activity": "en attente de Klipper"
         },
-        "ready":{
+        "ready": {
             "title": "Impression prête",
             "activity": "pour le fichier GCODE..."
         },
-        "startup":{
+        "startup": {
             "title": "Démarrage de l'impression",
             "activity": "L'impression commance"
         },
@@ -111,14 +162,15 @@
             "title": "Mises à jour du système"
         },
         "fields": {
+            "flow": "Flow",
             "system": "Système",
             "packages": "Paquets",
             "chipset": "Chipset",
+            "color": "Color",
             "version": "Version",
             "load": "Charge",
             "awake_time": "DUrée de fonctionnement",
             "frequency": "Fréquence",
-            "current": "Actuel",
             "target": "Cible",
             "speed": "Vitesse",
             "power": "Puissance",
@@ -130,8 +182,8 @@
             "slicer": "Slicer",
             "slicer_version": "Version du Slicer",
             "height": "Hauteur",
-            "min_temp": "Min Temp",
-            "max_temp": "Max Temp",
+            "max": "Max",
+            "min": "Min",
             "temp": "Temps",
             "cores": "Cores",
             "arch": "Architecture",
@@ -151,11 +203,29 @@
             "klipper_load": "Chargement de Klipper",
             "distribution": "Distribution",
             "distribution_like": "Distribution Like",
-            "codename": "Nom de code"
+            "codename": "Nom de code",
+            "ping": "Ping",
+            "client_id": "Client ID",
+            "event_count": "Events",
+            "ready_since": "Ready Since",
+            "active_connections": "Active Connections",
+            "current": "Actuel",
+            "min_temp": "Min Temp",
+            "max_temp": "Max Temp"
+        },
+        "list_files": {
+            "title": "Fichier d'impression",
+            "description": "${page_entries}",
+            "footer": "Page ${pages}"
         }
     },
     "messages": {
         "answers": {
+            "execute_successful": "The Gcode Commands executed successful, `${username}`!",
+            "preheat_preset": {
+                "preset": "Preheating for `${preset}`, `${username}`!",
+                "manual": "Preheating ${heater_list}, `${username}`!"
+            },
             "update_request": "Demande de mise à jour du système, `${username}`!",
             "restart_successful": "Le redémarrage pour `${service}` a réussi !",
             "firmware_restart_successful": "Le Firmware redémarre !",
@@ -171,7 +241,6 @@
                 "activated": "`${channel}` est maintenant un canal de diffusion, `${username}`!",
                 "deactivated": "`${channel}` n'est plus un canal de diffusion, `${username}`!"
             },
-            "execute_success": "Commande exécutée !",
             "log_retrieved": "Voici le log pour `${service}`",
             "user_id": {
                 "own_id": "Votre ID es `${id}`",
@@ -202,13 +271,28 @@
             "printjob_request_abort": "La demande d'impression pour `${embed_author}` a été abandonnée, `${username}`!",
             "printjob_delete_abort": "La demande de suppression d'un travail d'impression pour `${embed_author}` a été abandonnée, `${username}`!",
             "printjob_executed": "Demande d'impression exécutée, `${username}`!",
-            "reconnect": "MoonCord se reconnecte à Moonraker et Discord, `${username}`!"
+            "reconnect": "MoonCord se reconnecte à Moonraker et Discord, `${username}`!",
+            "pidtune_start": "Démarrage du réglage PID à `${temp}°C` pour `${heater}`, `${username}`!",
+            "pidtune_done": "Le réglage PID est terminé pour `${heater}`, `${username}`!",
+            "config_save": "Configuration de Klipper sauvegardée, `${username}`!",
+            "upload_successful": "Le téléchargement de `${filename}` a réussi., `${username}`!",
+            "tune": {
+                "speed": "La nouvelle vitesse est `${speed}%`, `${username}`!",
+                "flow": "La nouvelle vitesse du débit est `${flow}%`, `${username}`!",
+                "speed_flow": "Le nouveau facteur de vitesse est `${speed}%` and flow factor is `${flow}%`, `${username}`!"
+            },
+            "excluded_object": "L'objet `${object}` a été exclu, `${username}`!",
+            "execute_success": "Commande exécutée !"
         },
         "errors": {
+            "execute_running": "Commandes déjà en cours d'exécution, veuillez réessayer plus tard, `${username}`!",
+            "macros_failed": "Les macros pour `${button_label}` ont échoué, `${username}`!",
+            "execute_failed": "Commandes Gcode échoué, `${username}`!",
             "check_console": "Veuillez vérifier la console !",
             "command_disabled": "La commande est désactivée !",
             "command_failed": "Une erreur s'est produite !",
             "command_timeout": "L'exécution de la commande a échoué !",
+            "command_idle_only": "Commande seulement disponible en état d'inactivité, `${username}`!",
             "file_not_found": "Fichier non trouvé !",
             "guild_only": "Cette commande n'est disponible que pour la Guild, `${username}`",
             "no_data": "Aucune donnée n'a été trouvée pour `${component}`!",
@@ -216,12 +300,16 @@
             "no_files_found": "Il n'y a actuellement pas de fichier !",
             "no_permission": "Vous n'avez pas les permissions, `${username}`",
             "not_ready": "ette commande n'est pas prête, `${username}`!",
+            "input_not_a_number": "Le champ de saisie `${input}` ne peut contenir qu'un nombre., `${username}`!",
             "not_textchannel": "`${channel}` n'est pas un canal texte, `${username}`!",
             "execute_error": "Erreur: `${gcode_feedback}`",
             "execute_unknown": "Commande GCode inconnue: `${gcode_feedback}`",
             "log_too_large": "Le Log de`${service}` est trop gros!",
             "log_failed": "Le téléchargement des log `${service}` a échoué: `${reason}`!",
-            "log_not_found": "Il n'y a aucun log pour `${service}`"
+            "log_not_found": "Il n'y a aucun log pour `${service}`",
+            "pidtune_fail": "Echec du réglage PID pour `${heater}`, `${username}`!\nReason:\n```\n${reason}```",
+            "missing_arguments": "Il manque des arguments à la commande, `${username}`!",
+            "upload_failed": "Le téléchargement de `${filename}` a échoué, `${username}`!"
         }
     },
     "buttons": {
@@ -234,11 +322,17 @@
         "printjob_resume": {
             "label": "Reprendre"
         },
-        "printjob_refresh": {
-            "label": "Rafraîchir"
+        "printjob_status": {
+            "label": "Status"
         },
         "printjob_start": {
             "label": "Imprimer"
+        },
+        "printjob_exclude": {
+            "label": "Exclure"
+        },
+        "exclude_confirm": {
+            "label": "Exclure"
         },
         "printjob_request_accept": {
             "label": "Oui"
@@ -250,34 +344,63 @@
             "label": "Redémarrer le système"
         },
         "reconnect": {
-            "label": "Reconnect"
+            "label": "Reconnecter"
         },
-        "update_system": {
-            "label": "Mise à jour"
-        },
-        "next_page_printlist":  {
+        "next_page_printlist": {
             "label": "Page suivante"
         },
-        "last_page_printlist":  {
+        "last_page_printlist": {
             "label": "Page précédente"
         },
         "to_printlist": {
             "label": "à la liste"
         },
+        "to_temps": {
+            "label": "Temps"
+        },
+        "change_temp": {
+            "label": "changer la température"
+        },
         "clear_file": {
-            "label": "Clear File"
+            "label": " effacer le fichier"
         },
         "printjob_delete_request": {
-            "label": "Delete"
+            "label": "Supprimer"
         },
         "printjob_delete_accept": {
             "label": "Oui"
         },
         "printjob_delete_deny": {
             "label": "Non"
+        },
+        "next_page_configs_download": {
+            "label": "Page Suivante"
+        },
+        "last_page_configs_download": {
+            "label": "Page précédente"
+        },
+        "update_system": {
+            "label": "Mise à jour"
         }
     },
     "selections": {
+        "show_temp": {
+            "label": "Sélectionnez un chauffage",
+            "option_label": "${data.name}",
+            "option_description": "Cliquez pour plus de détails",
+            "options": []
+        },
+        "exclude_objects": {
+            "label": "Sélectionnez un objet",
+            "option_label": "${data.name}",
+            "option_description": "Cliquez pour exclure",
+            "options": []
+        },
+        "config_file_download": {
+            "label": "Sélectionner un fichier",
+            "option_label": "${data.name}",
+            "option_description": "Cliquez pour télécharger"
+        },
         "printlist_view_printjob": {
             "label": "Sélectionnez un ficher...",
             "option_label": "${data.path}",
@@ -287,7 +410,6 @@
             "label": "Sélectionnez un composant...",
             "option_label": "${data.label}",
             "option_description": "Cliquez pour plus de détails",
-            "mcu_options": true,
             "options": [
                 {
                     "label": "CPU",
@@ -305,10 +427,88 @@
                     "label": "Mise à jour",
                     "value": "update"
                 }
-            ]
+            ],
+            "mcu_options": true
         }
     },
     "commands": {
+        "tune": {
+            "description": "Régler le travail d'impression en cours",
+            "command": "tune",
+            "options": {
+                "speed": {
+                    "name": "speed",
+                    "description": "Régler votre vitesse d'impression actuelle"
+                },
+                "flow": {
+                    "name": "flow",
+                    "description": "Ajuster votre flux de filaments actuel"
+                }
+            }
+        },
+        "config": {
+            "description": "Up- ou télécharger une configuration",
+            "command": "config",
+            "options": {
+                "upload": {
+                    "name": "upload",
+                    "description": "Télécharger un fichier de configuration",
+                    "options": {
+                        "directory": {
+                            "name": "directory",
+                            "description": "Sélectionnez un répertoire cible."
+                        },
+                        "file": {
+                            "name": "file",
+                            "description": "Joindre un fichier de configuration."
+                        }
+                    }
+                },
+                "get": {
+                    "name": "get",
+                    "description": "Télécharger un fichier de configuration"
+                }
+            }
+        },
+        "pidtune": {
+            "description": "Démarrer un réglage PID pour un chauffage.",
+            "command": "pidtune",
+            "options": {
+                "heater": {
+                    "name": "heater",
+                    "description": "Spécifier le chauffage."
+                },
+                "temperature": {
+                    "name": "temperature",
+                    "description": "Régler la température de réglage."
+                }
+            }
+        },
+        "preheat": {
+            "description": "Préchauffer un profil.",
+            "command": "preheat",
+            "options": {
+                "preset": {
+                    "name": "preset",
+                    "description": "Préréglage du préchauffage.",
+                    "options": {
+                        "preset": {
+                            "name": "preset",
+                            "description": "Sélectionner une présélection."
+                        }
+                    }
+                },
+                "manual": {
+                    "name": "manual",
+                    "description": "Sélection manuelle des températures.",
+                    "options": {
+                        "heater": {
+                            "description": "Régler la température pour ${heater}"
+                        }
+                    }
+                }
+            }
+        },
         "admin": {
             "description": "Gérer les rôles d'administrateur et d'utilisateur.",
             "command": "admin",
@@ -421,9 +621,9 @@
             "description": "Envoyer une description de moi.",
             "command": "info"
         },
-        "listfiles": {
-            "description": "Liste tous les fichiers d'impression.",
-            "command": "listefichier"
+        "listgcodes": {
+            "description": "List all Print Files.",
+            "command": "listgcodes"
         },
         "systeminfo": {
             "description": "Obtenir les informations actuelles du système.",
@@ -468,6 +668,21 @@
         "temp": {
             "description": "Obtenir les températures actuelles de Klipper.",
             "command": "temp"
+        }
+    },
+    "graph": {
+        "temp_history": {
+            "title": "Historique des températures",
+            "temperature": "Temperature",
+            "power": "Power"
+        }
+    },
+    "inputs": {
+        "gcode_input": {
+            "label": "Commande GCode"
+        },
+        "temp_target_input": {
+            "label": "Target for ${heater}"
         }
     }
 }

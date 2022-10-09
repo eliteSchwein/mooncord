@@ -1,6 +1,9 @@
-import exp from "constants";
-import {findValue, getEntry} from "../utils/CacheUtil";
-import { ConfigHelper } from "./ConfigHelper";
+import {findValue} from "../utils/CacheUtil";
+import {ConfigHelper} from "./ConfigHelper";
+import axios from "axios";
+import FormData from "form-data";
+import {logError, logNotice} from "./LoggerHelper";
+import {MessageAttachment} from "discord.js";
 
 export function isObject(item) {
     return (item && typeof item === 'object' && !Array.isArray(item));
@@ -55,17 +58,16 @@ export function limitString(input:string, length: number) {
 }
 
 export function parsePageData(rawData: string, data) {
-    const parsedData = rawData.replace(/(\${data).*?(})/g, (match) => {
+    return rawData.replace(/(\${data).*?(})/g, (match) => {
         const dataProperty = match
             .replace(/(\${data.)/g, '')
             .replace(/(})/g, '')
 
-        if(typeof data[dataProperty] === 'undefined') {
+        if (typeof data[dataProperty] === 'undefined') {
             return match
         }
         return data[dataProperty]
     })
-    return parsedData
 }
 
 export function stripAnsi(input: string) {
@@ -143,3 +145,33 @@ export function formatDate(seconds) {
         minute: '2-digit',
         second: '2-digit' })
     }
+
+export async function uploadAttachment(attachment: MessageAttachment, fileRoot = 'gcodes', filePath = '') {
+    try {
+        logNotice(`Upload for ${attachment.name} started`)
+        const attachmentData = await axios.get(attachment.url,
+            {responseType: 'arraybuffer'})
+
+        const formData = new FormData()
+        const configHelper = new ConfigHelper()
+
+        formData.append('file', attachmentData.data, attachment.name)
+        formData.append('root', fileRoot)
+        formData.append('path', filePath)
+
+        await axios.post(`${configHelper.getMoonrakerUrl()}/server/files/upload`,
+        formData,
+        {
+            'maxContentLength': Infinity,
+            'maxBodyLength': Infinity,
+            headers: {
+                'X-Api-Key': configHelper.getMoonrakerApiKey(),
+                'Content-Type': `multipart/form-data; boundary=${formData['_boundary']}`
+            }})
+        return true
+    } catch (error) {
+        logError(`Upload for ${attachment.name} failed:`)
+        logError(error)
+        return false
+    }
+}

@@ -1,6 +1,4 @@
-import {CommandInteraction, Interaction, MessageAttachment} from "discord.js";
-import { dump } from "../../../../utils/CacheUtil";
-import * as path from "path";
+import {CommandInteraction} from "discord.js";
 import {getDatabase} from "../../../../Application";
 import {LocaleHelper} from "../../../../helper/LocaleHelper";
 

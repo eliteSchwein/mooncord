@@ -1,4 +1,4 @@
-import {readFileSync, writeFileSync} from 'fs'
+import {existsSync, mkdirSync, readFileSync, writeFileSync} from 'fs'
 import path from "path";
 import {mergeDeep} from "./DataHelper";
 import {getEntry, setData, updateData} from "../utils/CacheUtil";
@@ -11,7 +11,7 @@ export class ConfigHelper {
 
     public loadCache() {
         logRegular("load Config Cache...")
-        const defaultConfig = readFileSync(path.resolve(__dirname, '../../scripts/mooncord_full.json'), {encoding: 'utf8'})
+        const defaultConfig = readFileSync(path.resolve(__dirname, '../scripts/mooncord_full.json'), {encoding: 'utf8'})
 
         const config = JSON.parse(defaultConfig)
         mergeDeep(config, this.getUserConfig())
@@ -69,7 +69,7 @@ export class ConfigHelper {
     }
 
     public getStatusAfterTasks() {
-        return this.getConfig().status.before
+        return this.getConfig().status.after
     }
 
     public getLocale() {
@@ -141,7 +141,13 @@ export class ConfigHelper {
     }
 
     public getTempPath() {
-        return this.getConfig().tmp_path
+        const temppath = this.getConfig().tmp_path
+
+        if(!existsSync(temppath)) {
+            mkdirSync(temppath)
+        }
+
+        return temppath
     }
 
     public getIconSet() {
@@ -150,6 +156,10 @@ export class ConfigHelper {
 
     public getEmbedMeta() {
         return this.getConfig().embed_meta
+    }
+
+    public getModalMeta() {
+        return this.getConfig().modal_meta
     }
 
     public getInputMeta() {
@@ -188,7 +198,23 @@ export class ConfigHelper {
         return this.getConfig().notifications.timelapse
     }
 
+    public useDevDatabase() {
+        return this.getConfig().development.dev_database
+    }
+
+    public showM117Notifcation() {
+        return this.getConfig().notifications.show_m117_notification
+    }
+
     public getGcodeExecuteTimeout() {
         return this.getConfig().status.gcode_timeout
+    }
+
+    public getGraphConfig(graph: string) {
+        return this.getConfig().graph_meta[graph]
+    }
+
+    public getGraphService() {
+        return this.getConfig().graph.service
     }
 }

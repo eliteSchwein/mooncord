@@ -1,6 +1,6 @@
 import {ConfigHelper} from "../../../helper/ConfigHelper";
 import {logWarn} from "../../../helper/LoggerHelper";
-import {findValue, getEntry, setData, updateData} from "../../../utils/CacheUtil";
+import {getEntry, setData} from "../../../utils/CacheUtil";
 import {getDiscordClient} from "../../../Application";
 import {NotificationHelper} from "../../../helper/NotificationHelper";
 import {EmbedHelper} from "../../../helper/EmbedHelper";

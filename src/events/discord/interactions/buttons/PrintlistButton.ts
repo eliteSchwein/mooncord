@@ -1,10 +1,8 @@
 import {ButtonInteraction, Message} from "discord.js";
-import {getEntry} from "../../../../utils/CacheUtil";
 import {getDatabase, getMoonrakerClient} from "../../../../Application";
 import {EmbedHelper} from "../../../../helper/EmbedHelper";
 import {ConfigHelper} from "../../../../helper/ConfigHelper";
 import {LocaleHelper} from "../../../../helper/LocaleHelper";
-import {logNotice} from "../../../../helper/LoggerHelper";
 import {PageHelper} from "../../../../helper/PageHelper";
 
 export class PrintlistButton {
@@ -23,10 +21,10 @@ export class PrintlistButton {
             await interaction.deferReply()
         }
 
-        const pageHelper = new PageHelper(getEntry('gcode_files'), 'list_files')
+        const pageHelper = new PageHelper('gcode_files')
         const pageData = pageHelper.getPage(false, 1)
 
-        const answer = await this.embedHelper.generateEmbed('list_files', pageData)
+        const answer = await this.embedHelper.generateEmbed('gcode_files', pageData)
 
         const currentMessage = interaction.message as Message
 

@@ -1,5 +1,3 @@
-import {waitUntil} from 'async-wait-until'
-
 import {Client, Intents} from 'discord.js'
 
 import {getDatabase} from '../Application'
@@ -10,16 +8,17 @@ import {DiscordCommandGenerator} from "../generator/DiscordCommandGenerator";
 import {DiscordInputGenerator} from '../generator/DiscordInputGenerator'
 import {InteractionHandler} from "../events/discord/InteractionHandler";
 import {DebugHandler} from "../events/discord/DebugHandler";
-import {ActivityTypes} from "discord.js/typings/enums";
 import {DiscordStatusGenerator} from "../generator/DiscordStatusGenerator";
 import {LocaleHelper} from "../helper/LocaleHelper";
 import {StatusHelper} from "../helper/StatusHelper";
 import {MetadataHelper} from "../helper/MetadataHelper";
 import {GCodeUploadHandler} from "../events/discord/GCodeUploadHandler";
+import {VerifyHandler} from "../events/discord/VerifyHandler";
 
 let interactionHandler: InteractionHandler
 let debugHandler: DebugHandler
 let gcodeUploadHandler: GCodeUploadHandler
+let verifyHandler: VerifyHandler
 
 export class DiscordClient {
     protected config = new ConfigHelper()
@@ -43,8 +42,16 @@ export class DiscordClient {
                 Intents.FLAGS.DIRECT_MESSAGE_REACTIONS,
                 Intents.FLAGS.GUILDS,
                 Intents.FLAGS.GUILD_MESSAGES,
+                Intents.FLAGS.GUILD_WEBHOOKS,
                 Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
                 Intents.FLAGS.GUILD_INTEGRATIONS
+            ],
+            partials: [
+                'MESSAGE',
+                'CHANNEL',
+                'REACTION',
+                'GUILD_MEMBER',
+                'USER'
             ],
             restRequestTimeout: this.config.getDiscordRequestTimeout() * 1000})
 
@@ -58,11 +65,13 @@ export class DiscordClient {
 
         this.generateCaches()
 
-        this.database.updateDatabaseEntry('invite_url', `https://discord.com/oauth2/authorize?client_id=${this.discordClient.user.id}&permissions=3422944320&scope=bot%20applications.commands`)
+        const inviteUrl = `https://discord.com/oauth2/authorize?client_id=${this.discordClient.user.id}&permissions=3422944320&scope=bot%20applications.commands`
 
-        setData('invite_url', `https://discord.com/oauth2/authorize?client_id=${this.discordClient.user.id}&permissions=3422944320&scope=bot%20applications.commands`)
+        this.database.updateDatabaseEntry('invite_url', inviteUrl)
+
+        setData('invite_url', inviteUrl)
         setData('discord_client', {
-            'readySince': new Date(),
+            'readySince': Date.now()/1000,
             'applicationId': this.discordClient.application.id,
             'clientId': this.discordClient.user.id,
             'ping': this.discordClient.ws.ping,
@@ -78,7 +87,7 @@ export class DiscordClient {
 
         this.discordClient.user.setActivity(
             this.localeHelper.getLocale().embeds.startup.activity,
-            {type: ActivityTypes.LISTENING}
+            {type: 'LISTENING'}
         )
 
         if(this.config.dumpCacheOnStart()) {
@@ -110,6 +119,7 @@ export class DiscordClient {
         interactionHandler = new InteractionHandler(this.discordClient)
         debugHandler = new DebugHandler(this.discordClient)
         gcodeUploadHandler = new GCodeUploadHandler(this.discordClient)
+        verifyHandler = new VerifyHandler(this.discordClient)
     }
 
     public generateCaches() {

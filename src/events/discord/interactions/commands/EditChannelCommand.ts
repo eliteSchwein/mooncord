@@ -23,6 +23,7 @@ export class EditChannelCommand {
             return
         }
 
+        // @ts-ignore
         if(channel.type === 'DM') {
             void interaction.reply(this.locale.messages.errors.guild_only
                 .replace(/\${username}/g, user.tag))

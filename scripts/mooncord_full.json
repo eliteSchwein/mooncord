@@ -1,6 +1,6 @@
 {
     "connection": {
-        "moonraker_socket_url": "ws://127.0.0.1/websocket",
+        "moonraker_socket_url": "",
         "moonraker_url": "http://127.0.0.1",
         "moonraker_token": "",
         "moonraker_retry_interval": 2,
@@ -10,7 +10,7 @@
         "disable_file": false,
         "path": ""
     },
-    "tmp_path": "../temp",
+    "tmp_path": "/tmp/mooncord_fallback",
     "status": {
         "update_interval": 10,
         "use_percent": true,
@@ -50,6 +50,20 @@
             "roles": []
         },
         "selections": {
+            "exclude_objects": {
+                "command_assign": "printjob",
+                "botadmin": true,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
+            "show_temp": {
+                "command_assign": "temp",
+                "botadmin": false,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
             "printlist_view_printjob": {
                 "command_assign": "fileinfo",
                 "botadmin": true,
@@ -63,6 +77,13 @@
                 "guildadmin": false,
                 "users": [],
                 "roles": []
+            },
+            "config_file_download": {
+                "command_assign": "config",
+                "botadmin": false,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
             }
         },
         "buttons": {
@@ -73,15 +94,36 @@
                 "users": "*",
                 "roles": []
             },
+            "printjob_status": {
+                "command_assign": "status",
+                "botadmin": true,
+                "guildadmin": true,
+                "users": "*",
+                "roles": []
+            },
             "next_page_printlist": {
-                "command_assign": "listfiles",
+                "command_assign": "listgcodes",
                 "botadmin": true,
                 "guildadmin": false,
                 "users": [],
                 "roles": []
             },
+            "last_page_configs_download": {
+                "command_assign": "config",
+                "botadmin": false,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
+            "next_page_configs_download": {
+                "command_assign": "config",
+                "botadmin": false,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
             "last_page_printlist": {
-                "command_assign": "listfiles",
+                "command_assign": "listgcodes",
                 "botadmin": true,
                 "guildadmin": false,
                 "users": [],
@@ -102,6 +144,20 @@
                 "roles": []
             },
             "printjob_cancel": {
+                "command_assign": "printjob",
+                "botadmin": true,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
+            "printjob_exclude": {
+                "command_assign": "printjob",
+                "botadmin": true,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
+            "exclude_confirm": {
                 "command_assign": "printjob",
                 "botadmin": true,
                 "guildadmin": false,
@@ -157,6 +213,20 @@
                 "users": [],
                 "roles": []
             },
+            "update_refresh_systeminfo": {
+                "command_assign": "restart",
+                "botadmin": true,
+                "guildadmin": true,
+                "users": [],
+                "roles": []
+            },
+            "update_refresh": {
+                "command_assign": "restart",
+                "botadmin": true,
+                "guildadmin": true,
+                "users": [],
+                "roles": []
+            },
             "update_system": {
                 "command_assign": "restart",
                 "botadmin": true,
@@ -180,6 +250,20 @@
             },
             "printjob_request_deny": {
                 "command_assign": "printjob",
+                "botadmin": true,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
+            "to_temp": {
+                "command_assign": "temp",
+                "botadmin": true,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
+            "change_temp": {
+                "command_assign": "temp",
                 "botadmin": true,
                 "guildadmin": false,
                 "users": [],
@@ -253,7 +337,7 @@
                 "users": "*",
                 "roles": []
             },
-            "listfiles": {
+            "listgcodes": {
                 "botadmin": true,
                 "guildadmin": false,
                 "users": [],
@@ -300,6 +384,48 @@
                 "guildadmin": false,
                 "users": [],
                 "roles": []
+            },
+            "preheat": {
+                "botadmin": false,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
+            "pidtune": {
+                "botadmin": false,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
+            "config": {
+                "botadmin": false,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
+            "tune": {
+                "botadmin": false,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            }
+        },
+        "inputs": {
+        },
+        "modals": {
+            "execute_modal": {
+                "command_assign": "execute",
+                "botadmin": false,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
+            "temp_target": {
+                "command_assign": "temp",
+                "botadmin": true,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
             }
         }
     },
@@ -316,16 +442,47 @@
     },
     "notifications": {
         "moonraker_throttle": true,
-        "timelapse": true
+        "timelapse": true,
+        "show_m117_notification": true
     },
     "development": {
         "dump_cache_on_start": false,
-        "trace_on_web_error": false
+        "trace_on_web_error": false,
+        "dev_database": false
     },
     "discord": {
         "request_timeout": 30
     },
+    "presets": {
+        "ABS": {
+            "extruder": 260,
+            "heater_bed": 100,
+            "gcode": []
+        },
+        "PLA": {
+            "extruder": 180,
+            "heater_bed": 60,
+            "gcode": []
+        },
+        "Cooldown": {
+            "extruder": 0,
+            "heater_bed": 0,
+            "gcode": []
+        }
+    },
     "embed_meta": {
+        "execute_unknown": {
+            "thumbnail": "execute.png",
+            "color": "#c90000"
+        },
+        "execute_error": {
+            "thumbnail": "execute.png",
+            "color": "#c90000"
+        },
+        "execute_successful": {
+            "thumbnail": "execute.png",
+            "color": "#25db00"
+        },
         "fileinfo": {
             "author": "${filename}",
             "color": "#0099ff",
@@ -335,16 +492,26 @@
                 "to_printlist"
             ]
         },
-        "list_files": {
+        "configs_download" : {
+            "color": "#00FF00",
+            "thumbnail": "download.png",
+            "buttons": [
+                "last_page_configs_download",
+                "next_page_configs_download"
+            ],
+            "selections": [
+                "config_file_download"
+            ]
+        },
+        "gcode_files": {
             "color": "#0099ff",
             "thumbnail": "printlist.png",
             "buttons": [
                 "last_page_printlist",
                 "next_page_printlist"],
-            "selection": {
-                "id": "printlist_view_printjob",
-                "data": "${raw_entries}"
-            }
+            "selections": [
+                "printlist_view_printjob"
+            ]
         },
         "info": {
             "color": "#0099ff",
@@ -385,6 +552,14 @@
                 {
                     "name": "${embeds.fields.eta_print_time}",
                     "value": "${timestamp:time.eta}"
+                },
+                {
+                    "name": "${embeds.fields.speed}",
+                    "value": "${percent:0:state.gcode_move.speed_factor}%"
+                },
+                {
+                    "name": "${embeds.fields.flow}",
+                    "value": "${percent:0:state.gcode_move.extrude_factor}%"
                 }
             ]
         },
@@ -406,7 +581,11 @@
             "author": "${state.print_stats.filename}",
             "thumbnail": "thumbnail",
             "image": "webcam",
-            "buttons": ["printjob_resume","printjob_cancel"],
+            "buttons": [
+                "printjob_resume",
+                "printjob_cancel",
+                "printjob_exclude"
+            ],
             "fields": [
                 {
                     "name": "${embeds.fields.print_time}",
@@ -423,6 +602,14 @@
                 {
                     "name": "${embeds.fields.print_layers}",
                     "value": "${layers.current}/${layers.top}"
+                },
+                {
+                    "name": "${embeds.fields.speed}",
+                    "value": "${percent:0:state.gcode_move.speed_factor}%"
+                },
+                {
+                    "name": "${embeds.fields.flow}",
+                    "value": "${percent:0:state.gcode_move.extrude_factor}%"
                 }
             ]
         },
@@ -434,6 +621,7 @@
             "buttons": [
                 "printjob_pause",
                 "printjob_cancel",
+                "printjob_exclude",
                 "printjob_refresh"],
             "fields": [
                 {
@@ -455,6 +643,14 @@
                 {
                     "name": "${embeds.fields.print_layers}",
                     "value": "${layers.current}/${layers.top}"
+                },
+                {
+                    "name": "${embeds.fields.speed}",
+                    "value": "${percent:0:state.gcode_move.speed_factor}%"
+                },
+                {
+                    "name": "${embeds.fields.flow}",
+                    "value": "${percent:0:state.gcode_move.extrude_factor}%"
                 }
             ]
         },
@@ -479,10 +675,37 @@
                 }
             ]
         },
+        "exclude_overview": {
+            "color": "#0099ff",
+            "thumbnail": "exclude.png",
+            "image": "excludeGraph",
+            "selections": ["exclude_objects"],
+            "buttons": ["printjob_status"]
+        },
+        "exclude_detail": {
+            "color": "#0099ff",
+            "thumbnail": "exclude.png",
+            "selections": ["exclude_objects"],
+            "buttons": [
+                "exclude_confirm",
+                "printjob_status"
+            ]
+        },
         "temperatures": {
             "color": "#0099ff",
             "thumbnail": "temps.png",
-            "buttons": [],
+            "image": "tempGraph",
+            "buttons": ["change_temp"],
+            "selections": [
+                "show_temp"
+            ],
+            "fields": [],
+            "show_temps": true
+        },
+        "single_temperature": {
+            "color": "#0099ff",
+            "thumbnail": "temps.png",
+            "buttons": ["to_temps", "change_temp"],
             "fields": [],
             "show_temps": true
         },
@@ -513,10 +736,9 @@
         "systeminfo_cpu": {
             "color": "#0099ff",
             "thumbnail": "cpu.png",
-            "selection": {
-                "id": "systeminfo_select",
-                "data": "${raw_entries}"
-            },
+            "selections": [
+                "systeminfo_select"
+            ],
             "fields": [
                 {
                     "name": "${embeds.fields.cores}",
@@ -551,10 +773,9 @@
         "systeminfo_memory": {
             "color": "#0099ff",
             "thumbnail": "memory.png",
-            "selection": {
-                "id": "systeminfo_select",
-                "data": "${raw_entries}"
-            },
+            "selections": [
+                "systeminfo_select"
+            ],
             "fields": [
                 {
                     "name": "${embeds.fields.total_ram}",
@@ -597,22 +818,13 @@
         "systeminfo_system": {
             "color": "#0099ff",
             "thumbnail": "system.png",
-            "selection": {
-                "id": "systeminfo_select",
-                "data": "${raw_entries}"
-            },
+            "selections": [
+                "systeminfo_select"
+            ],
             "fields": [
                 {
                     "name": "${embeds.fields.system_load}",
                     "value": "${usage.system_load} %"
-                },
-                {
-                    "name": "${embeds.fields.moonraker_load}",
-                    "value": "${proc_stats.moonraker_stats.cpu_usage} %"
-                },
-                {
-                    "name": "${embeds.fields.klipper_load}",
-                    "value": "${usage.klipper_load} %"
                 },
                 {
                     "name": "${embeds.fields.distribution}",
@@ -628,13 +840,97 @@
                 }
             ]
         },
-        "systeminfo_mcu": {
+
+        "systeminfo_discord": {
+            "color": "#0099ff",
+            "thumbnail": "discord.png",
+            "selection": {
+                "id": "systeminfo_select",
+                "data": "${raw_entries}"
+            },
+            "fields": [
+                {
+                    "name": "${embeds.fields.ping}",
+                    "value": "${discord_client.ping} ms"
+                },
+                {
+                    "name": "${embeds.fields.client_id}",
+                    "value": "${discord_client.clientId}"
+                },
+                {
+                    "name": "${embeds.fields.event_count}",
+                    "value": "${discord_client.event_count}"
+                },
+                {
+                    "name": "${embeds.fields.ready_since}",
+                    "value": "<t:${round:0:discord_client.readySince}>"
+                }
+            ]
+        },
+        "systeminfo_moonraker_client": {
+            "color": "#0099ff",
+            "thumbnail": "system.png",
+            "selection": {
+                "id": "systeminfo_select",
+                "data": "${raw_entries}"
+            },
+            "fields": [
+                {
+                    "name": "${embeds.fields.event_count}",
+                    "value": "${moonraker_client.event_count}"
+                },
+                {
+                    "name": "${embeds.fields.ready_since}",
+                    "value": "<t:${round:0:moonraker_client.readySince}>"
+                }
+            ]
+        },
+        "systeminfo_moonraker": {
+            "color": "#0099ff",
+            "thumbnail": "system.png",
+            "selection": {
+                "id": "systeminfo_select",
+                "data": "${raw_entries}"
+            },
+            "fields": [
+                {
+                    "name": "${embeds.fields.active_connections}",
+                    "value": "${server_info.websocket_count}"
+                },
+                {
+                    "name": "${embeds.fields.moonraker_load}",
+                    "value": "${proc_stats.moonraker_stats.cpu_usage} %"
+                },
+                {
+                    "name": "${embeds.fields.version}",
+                    "value": "${server_info.moonraker_version}"
+                }
+            ]
+        },
+        "systeminfo_klipper": {
             "color": "#0099ff",
             "thumbnail": "mcu.png",
             "selection": {
                 "id": "systeminfo_select",
                 "data": "${raw_entries}"
             },
+            "fields": [
+                {
+                    "name": "${embeds.fields.klipper_load}",
+                    "value": "${usage.klipper_load} %"
+                },
+                {
+                    "name": "${embeds.fields.version}",
+                    "value": "${printer_info.software_version}"
+                }
+            ]
+        },
+        "systeminfo_mcu": {
+            "color": "#0099ff",
+            "thumbnail": "mcu.png",
+            "selections": [
+                "systeminfo_select"
+            ],
             "fields": [
                 {
                     "name": "${embeds.fields.chipset}",
@@ -661,11 +957,10 @@
         "systeminfo_update": {
             "color": "#fbff00",
             "thumbnail": "update.png",
-            "selection": {
-                "id": "systeminfo_select",
-                "data": "${raw_entries}"
-            },
-            "buttons": ["update_system"],
+            "selections": [
+                "systeminfo_select"
+            ],
+            "buttons": ["update_system", "update_refresh_systeminfo"],
             "fields": [],
             "show_updates": true
         },
@@ -695,17 +990,58 @@
         "system_update": {
             "color": "#fbff00",
             "thumbnail": "update.png",
-            "buttons": ["update_system"],
+            "buttons": ["update_system", "update_refresh"],
             "fields": [],
             "show_updates": true
         }
     },
+    "modal_meta": {
+        "execute_modal": {
+            "inputs": [
+                "gcode_input"
+            ]
+        },
+        "temp_target": {
+            "inputs": [],
+            "add_temp_inputs": true
+        }
+    },
     "input_meta": {
+        "inputs": {
+            "gcode_input": {
+                "style": "PARAGRAPH",
+                "permission_mapping": "execute",
+                "value": "",
+                "required": true
+            },
+            "temp_target_input": {
+                "style": "SHORT",
+                "permission_mapping": "temp",
+                "value": "0",
+                "required": true
+            }
+        },
         "buttons": {
+            "next_page_configs_download": {
+                "emoji": "➡️",
+                "style":"SECONDARY",
+                "permission_mapping": "config",
+                "function_mapping": {
+                    "page_up": true
+                }
+            },
+            "last_page_configs_download": {
+                "emoji": "⬅️",
+                "style":"SECONDARY",
+                "permission_mapping": "config",
+                "function_mapping": {
+                    "page_down": true
+                }
+            },
             "next_page_printlist": {
                 "emoji": "➡️",
                 "style":"SECONDARY",
-                "permission_mapping": "listfiles",
+                "permission_mapping": "listgcodes",
                 "function_mapping": {
                     "page_up": true
                 }
@@ -713,7 +1049,7 @@
             "last_page_printlist": {
                 "emoji": "⬅️",
                 "style":"SECONDARY",
-                "permission_mapping": "listfiles",
+                "permission_mapping": "listgcodes",
                 "function_mapping": {
                     "page_down": true
                 }
@@ -749,7 +1085,7 @@
                 "emoji": "🧹",
                 "style":"SECONDARY",
                 "function_mapping": {
-                    "required_states" : ["complete"],
+                    "required_states" : ["complete", "ready"],
                     "macros": ["SDCARD_RESET_FILE"],
                     "message": "${locale.messages.answers.printjob_clear}"
                 }
@@ -761,11 +1097,33 @@
                     "refresh_status": true
                 }
             },
+            "printjob_status": {
+                "emoji": "🖨️",
+                "style":"PRIMARY",
+                "function_mapping": {
+                    "refresh_status": true
+                }
+            },
             "to_printlist": {
                 "emoji": "📘",
                 "style":"SECONDARY",
                 "function_mapping": {
                     "show_printlist": true
+                }
+            },
+            "to_temps": {
+                "emoji": "🌡️",
+                "style":"SECONDARY",
+                "function_mapping": {
+                    "show_embed": "temperatures"
+                }
+            },
+            "change_temp": {
+                "emoji": "♨",
+                "style":"SECONDARY",
+                "function_mapping": {
+                    "show_temp_modal": true,
+                    "modal_delete_message": false
                 }
             },
             "printjob_delete_accept": {
@@ -796,6 +1154,32 @@
                     "request_embed": "printjob_delete_request"
                 }
             },
+            "printjob_exclude": {
+                "emoji": "⏏",
+                "style":"PRIMARY",
+                "required_states" : [
+                    "printing",
+                    "pause"
+                ],
+                "required_cache": [
+                    "state.configfile.config.exclude_object"
+                ],
+                "function_mapping": {
+                    "show_embed": "exclude_overview"
+                }
+            },
+            "exclude_confirm": {
+                "emoji": "\uD83D\uDDD1",
+                "style":"DANGER",
+                "required_states" : [
+                    "printing",
+                    "pause"
+                ],
+                "function_mapping": {
+                    "refresh_status": true,
+                    "exclude_object": true
+                }
+            },
             "reconnect": {
                 "emoji": "🔄",
                 "style":"PRIMARY",
@@ -812,10 +1196,43 @@
                     "message": "${locale.messages.answers.firmware_restart_successful}"
                 }
             },
-            "update_system": {
-                "style":"SECONDARY",
+            "update_refresh": {
+                "emoji": "🔄",
+                "style":"PRIMARY",
                 "function_mapping": {
-                    "update_system": true,
+                    "websocket_command": [
+                        {
+                            "method": "machine.update.status",
+                            "params": {
+                                "refresh": true
+                            }
+                        }
+                    ],
+                    "show_embed": "system_update"
+                }
+            },
+            "update_refresh_systeminfo": {
+                "emoji": "🔄",
+                "style":"PRIMARY",
+                "function_mapping": {
+                    "websocket_command": [
+                        {
+                            "method": "machine.update.status",
+                            "params": {
+                                "refresh": true
+                            }
+                        }
+                    ],
+                    "show_embed": "systeminfo_update"
+                }
+            },
+            "update_system": {
+                "emoji": "\uD83D\uDD3C",
+                "style":"PRIMARY",
+                "function_mapping": {
+                    "websocket_command": [
+                        {"method": "machine.update.full"}
+                    ],
                     "message": "${locale.messages.answers.update_request}",
                     "message_as_follow_up": true
                 }
@@ -836,16 +1253,38 @@
             }
         },
         "selections": {
+            "exclude_objects": {
+                "min_value": 1,
+                "max_value": 1,
+                "option_value": "${data.value}",
+                "data": "${raw_entries}",
+                "exclude_options": true
+            },
+            "config_file_download": {
+                "min_value": 1,
+                "max_value": 1,
+                "option_value": "${data.name}",
+                "data": "${raw_entries}"
+            },
             "printlist_view_printjob": {
                 "min_value": 1,
                 "max_value": 1,
-                "option_value": "${data.path}"
+                "option_value": "${data.path}",
+                "data": "${raw_entries}"
             },
             "systeminfo_select": {
                 "min_value": 1,
                 "max_value": 1,
                 "option_value": "${data.value}",
-                "mcu_options": true
+                "mcu_options": true,
+                "data": "${raw_entries}"
+            },
+            "show_temp": {
+                "min_value": 1,
+                "max_value": 1,
+                "option_value": "${data.value}",
+                "heater_options": true,
+                "data": "${raw_entries}"
             }
         }
     },
@@ -931,7 +1370,7 @@
             "embed_id": "ready",
             "meta_data": {
                 "allow_same": false,
-                "prevent": ["startup"]
+                "prevent": ["startup", "stop"]
             },
             "activity": {
                 "status": "idle",
@@ -1023,6 +1462,14 @@
             "controller_fan",
             "fan_generic"
         ],
+        "temperature_sensors": [
+            "heater_generic",
+            "heater_bed",
+            "heater",
+            "extruder",
+            "temperature_sensor",
+            "temperature_fan"
+        ],
         "supported_sensors": [
             "heater_generic",
             "heater_bed",
@@ -1047,15 +1494,15 @@
             "icon": "🌡",
             "fields": {
                 "temperature": {
-                    "label": "${embeds.fields.current}",
+                    "label": "${embeds.fields.temp}",
                     "suffix": "°C"
                 },
                 "measured_min_temp": {
-                    "label": "${embeds.fields.min_temp}",
+                    "label": "${embeds.fields.min}",
                     "suffix": "°C"
                 },
                 "measured_max_temp": {
-                    "label": "${embeds.fields.max_temp}",
+                    "label": "${embeds.fields.max}",
                     "suffix": "°C"
                 }
             }
@@ -1072,7 +1519,7 @@
                     "suffix": "°C"
                 },
                 "temperature": {
-                    "label": "${embeds.fields.current}",
+                    "label": "${embeds.fields.temp}",
                     "suffix": "°C"
                 },
                 "rpm": {
@@ -1093,7 +1540,7 @@
                     "suffix": "°C"
                 },
                 "temperature": {
-                    "label": "${embeds.fields.current}",
+                    "label": "${embeds.fields.temp}",
                     "suffix": "°C"
                 }
             }
@@ -1110,6 +1557,46 @@
                     "suffix": "rpm"
                 }
             }
+        }
+    },
+    "graph_meta": {
+        "exclude_graph": {
+            "background_color": "#3e4147",
+            "active_color": "#0099ff",
+            "inactive_color": "#686d75",
+            "excluded_color": "#282a2e",
+            "border_color": "#000000"
+        },
+        "temp_history": {
+            "value_limit": 200,
+            "colors": [
+                {
+                    "icon": "\uD83D\uDD34",
+                    "color": "#dd2e44"
+                },
+                {
+                    "icon": "\uD83D\uDD35",
+                    "color": "#55acee"
+                },
+                {
+                    "icon": "\uD83D\uDFE4",
+                    "color": "#c1694f"
+                },
+                {
+                    "icon": "\uD83D\uDFE3",
+                    "color": "#aa8ed6"
+                },
+                {
+                    "icon": "\uD83D\uDFE2",
+                    "color": "#78b159"
+                },
+                {
+                    "icon": "\uD83D\uDFE1",
+                    "color": "#fdcb58"
+                },{
+                    "icon": "\uD83D\uDFE0",
+                    "color": "#f4900c"
+                }]
         }
     }
 }

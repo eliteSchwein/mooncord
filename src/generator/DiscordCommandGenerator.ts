@@ -1,16 +1,29 @@
-import commandStructure from '../meta/command_structure.json'
+//import commandStructure from '../meta/command_structure.json'
 import commandOptionsTypes from '../meta/command_option_types.json'
-import {getEntry, getServiceChoices, setData} from "../utils/CacheUtil";
+import {
+    getEntry,
+    getHeaterArguments,
+    getHeaterChoices,
+    getPreheatProfileChoices,
+    getServiceChoices,
+    setData
+} from "../utils/CacheUtil";
 import {LocaleHelper} from "../helper/LocaleHelper";
+import {readFileSync} from "fs";
+import path from "path";
 
 export class DiscordCommandGenerator {
     protected localeHelper = new LocaleHelper()
+    protected commandStructure = {}
 
     public getCommands() {
         const commandList = []
         const commandCache = {}
+        const commandStructureFile = readFileSync(path.resolve(__dirname, '../src/meta/command_structure.json'))
+        console.log('lol')
+        this.commandStructure = JSON.parse(commandStructureFile.toString('utf8'))
 
-        for (const commandIndex in commandStructure) {
+        for (const commandIndex in this.commandStructure) {
             const command = this.buildCommand(commandIndex)
             commandList.push(command)
             commandCache[commandIndex] = command
@@ -31,8 +44,8 @@ export class DiscordCommandGenerator {
     }
 
     protected buildCommand(command:string) {
-        const messageLocale = this.localeHelper.getLocale().commands[command]
-        const syntaxLocale = this.localeHelper.getSyntaxLocale().commands[command]
+        const messageLocale = Object.assign({}, this.localeHelper.getLocale().commands[command])
+        const syntaxLocale = Object.assign({}, this.localeHelper.getSyntaxLocale().commands[command])
 
         const builder = {
             name: syntaxLocale.command,
@@ -40,10 +53,10 @@ export class DiscordCommandGenerator {
             options: []
         }
 
-        for(const index in commandStructure[command]) {
+        for(const index in this.commandStructure[command]) {
             this.buildCommandOption(
                 builder,
-                commandStructure[command],
+                this.commandStructure[command],
                 index,
                 syntaxLocale,
                 messageLocale)
@@ -75,13 +88,22 @@ export class DiscordCommandGenerator {
         if (typeof(optionMeta) === 'undefined') { return }
         if (Object.keys(optionMeta).length === 0) { return }
 
+        if(optionMeta.options === '${heaterArguments}') {
+            syntaxMeta.options[option].options = getHeaterArguments()
+            messageMeta.options[option].options = getHeaterArguments()
+            meta[option].options = getHeaterArguments()
+            optionMeta.options = getHeaterArguments()
+        }
+
         const optionBuilder = {
             type: commandOptionsTypes[optionMeta.type],
             name: syntaxMeta.options[option].name,
             description: messageMeta.options[option].description,
             options: [],
             required: false,
-            choices: []
+            choices: [],
+            min_value: syntaxMeta.options[option].min_value,
+            max_value: syntaxMeta.options[option].max_value
         }
 
         optionBuilder.required = optionMeta.required
@@ -91,6 +113,10 @@ export class DiscordCommandGenerator {
                 optionBuilder.choices = this.localeHelper.getSystemComponents()
             } else if (optionMeta.choices === '${serviceChoices}') {
                 optionBuilder.choices = getServiceChoices()
+            } else if (optionMeta.choices === '${preheatProfileChoices}') {
+                optionBuilder.choices = getPreheatProfileChoices()
+            } else if (optionMeta.choices === '${heaterChoices}') {
+                optionBuilder.choices = getHeaterChoices()
             } else {
                 optionBuilder.choices = this.buildChoices(optionMeta.choices, syntaxMeta.options[option].choices)
             }

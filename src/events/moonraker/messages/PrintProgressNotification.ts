@@ -1,7 +1,7 @@
-import { ConfigHelper } from "../../../helper/ConfigHelper";
-import { updateLayers } from "../../../helper/LayerHelper";
-import { StatusHelper } from "../../../helper/StatusHelper";
-import { updateTimes } from "../../../helper/TimeHelper";
+import {ConfigHelper} from "../../../helper/ConfigHelper";
+import {updateLayers} from "../../../helper/LayerHelper";
+import {StatusHelper} from "../../../helper/StatusHelper";
+import {updateTimes} from "../../../helper/TimeHelper";
 import {getEntry} from "../../../utils/CacheUtil";
 
 export class PrintProgressNotification {

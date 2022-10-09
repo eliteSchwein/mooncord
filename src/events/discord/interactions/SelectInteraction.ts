@@ -8,6 +8,9 @@ import {ConfigHelper} from "../../../helper/ConfigHelper";
 import * as util from "util"
 import {ViewPrintJobSelection} from "./selections/ViewPrintJob";
 import {ViewSystemInfo} from "./selections/ViewSystemInfo";
+import {ShowTempSelection} from "./selections/ShowTemp";
+import {DownloadConfig} from "./selections/DownloadConfig";
+import {ExcludeObjectsSelection} from "./selections/ExcludeObjects";
 
 export class SelectInteraction {
     protected permissionHelper = new PermissionHelper()
@@ -44,12 +47,15 @@ export class SelectInteraction {
             return;
         }
 
-        new ViewPrintJobSelection(interaction, selectId)
-        new ViewSystemInfo(interaction, selectId)
+        void new ViewPrintJobSelection(interaction, selectId)
+        void new ViewSystemInfo(interaction, selectId)
+        void new ShowTempSelection(interaction, selectId)
+        void new DownloadConfig(interaction, selectId)
+        void new ExcludeObjectsSelection(interaction, selectId)
 
         await sleep(2000)
 
-        if(interaction.replied || interaction.deferred) { return }
+        if(interaction.replied || interaction.deferred || interaction.isModalSubmit()) { return }
 
         await interaction.reply(this.localeHelper.getCommandNotReadyError(interaction.user.tag))
     }

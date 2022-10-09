@@ -7,14 +7,17 @@ import {LocaleHelper} from "../../../helper/LocaleHelper";
 import {sleep} from "../../../helper/DataHelper";
 import {getEntry} from "../../../utils/CacheUtil";
 import {MacroButton} from "./buttons/MacroButton";
-import { PageButton } from "./buttons/PageButton";
+import {PageButton} from "./buttons/PageButton";
 import {PrintlistButton} from "./buttons/PrintlistButton";
 import {PrintRequestButton} from "./buttons/PrintRequestButton";
 import {DeleteButton} from "./buttons/DeleteButton";
 import {PrintJobStartButton} from "./buttons/PrintJobStartButton";
 import {MessageButton} from "./buttons/MessageButton";
 import {ReconnectButton} from "./buttons/ReconnectButton";
-import {UpdateButton} from "./buttons/UpdateButton";
+import {EmbedButton} from "./buttons/EmbedButton";
+import {TempModalButton} from "./buttons/TempModalButton";
+import {ExcludeConfirmButton} from "./buttons/ExcludeConfirmButton";
+import {WebsocketButton} from "./buttons/WebsocketButton";
 
 export class ButtonInteraction {
     protected config = new ConfigHelper()
@@ -59,8 +62,12 @@ export class ButtonInteraction {
             }
         }
 
+        await new WebsocketButton().execute(interaction, buttonData)
+        await new ExcludeConfirmButton().execute(interaction, buttonData)
+        await new TempModalButton().execute(interaction, buttonData)
         await new PrintJobStartButton().execute(interaction, buttonData)
         await new MessageButton().execute(interaction, buttonData)
+        await new EmbedButton().execute(interaction, buttonData)
         await new DeleteButton().execute(interaction, buttonData)
         await new ReconnectButton().execute(interaction, buttonData)
         await new RefreshButton().execute(interaction, buttonData)
@@ -68,7 +75,6 @@ export class ButtonInteraction {
         await new PrintlistButton().execute(interaction, buttonData)
         await new PageButton().execute(interaction, buttonData)
         await new MacroButton().execute(interaction, buttonData)
-        await new UpdateButton().execute(interaction, buttonData)
 
         await sleep(2000)
 

@@ -6,9 +6,11 @@ import {updateData} from "../../utils/CacheUtil";
 import {FileEditNotification} from "./messages/FileEditNotification";
 import {StateUpdateNotification} from "./messages/StateUpdateNotification";
 import {GcodeResponseNotification} from "./messages/GcodeResponseNotification";
-import { PrintProgressNotification } from "./messages/PrintProgressNotification";
+import {PrintProgressNotification} from "./messages/PrintProgressNotification";
 import {ThrottleNotification} from "./messages/ThrottleNotification";
 import {TimelapseNotification} from "./messages/TimelapseNotification";
+import {DisplayUpdateNotification} from "./messages/DisplayUpdateNotification";
+import {ConsoleMessage} from "./gcode-messages/ConsoleMessage";
 
 export class MessageHandler {
     protected websocket: Websocket
@@ -25,6 +27,7 @@ export class MessageHandler {
                 'event_count': websocket.underlyingWebsocket['_eventsCount']
             })
 
+            void new ConsoleMessage().parse(messageData)
             void new ProcStatsNotification().parse(messageData)
             void new SubscriptionNotification().parse(messageData)
             void new UpdateNotification().parse(messageData)
@@ -34,6 +37,7 @@ export class MessageHandler {
             void new PrintProgressNotification().parse(messageData)
             void new ThrottleNotification().parse(messageData)
             void new TimelapseNotification().parse(messageData)
+            void new DisplayUpdateNotification().parse(messageData)
         }))
     }
 }
