@@ -1,4 +1,3 @@
-//import commandStructure from '../meta/command_structure.json'
 import commandOptionsTypes from '../meta/command_option_types.json'
 import {
     getEntry,
@@ -20,7 +19,6 @@ export class DiscordCommandGenerator {
         const commandList = []
         const commandCache = {}
         const commandStructureFile = readFileSync(path.resolve(__dirname, '../src/meta/command_structure.json'))
-        console.log('lol')
         this.commandStructure = JSON.parse(commandStructureFile.toString('utf8'))
 
         for (const commandIndex in this.commandStructure) {

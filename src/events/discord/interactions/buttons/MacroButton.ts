@@ -3,7 +3,6 @@ import {getDatabase, getMoonrakerClient} from "../../../../Application";
 import {EmbedHelper} from "../../../../helper/EmbedHelper";
 import {ConfigHelper} from "../../../../helper/ConfigHelper";
 import {LocaleHelper} from "../../../../helper/LocaleHelper";
-import {logNotice} from "../../../../helper/LoggerHelper";
 import {ConsoleHelper} from "../../../../helper/ConsoleHelper";
 
 export class MacroButton {
