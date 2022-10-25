@@ -1,5 +1,4 @@
 import {ButtonInteraction, Message} from "discord.js";
-import {getEntry} from "../../../../utils/CacheUtil";
 import {EmbedHelper} from "../../../../helper/EmbedHelper";
 import {ModalHelper} from "../../../../helper/ModalHelper";
 import {TemplateHelper} from "../../../../helper/TemplateHelper";

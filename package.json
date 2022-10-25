@@ -9,8 +9,8 @@
     "checkcodestyle": "npx eslint ./**",
     "autofixcodestyle": "npx eslint ./** --fix",
     "generatelocale": "node src/helper/LocaleGenerationHelper.js",
-    "build": "esbuild src/Application.ts --analyze=verbose --tree-shaking=true --bundle --sourcemap --minify --color=true --platform=node --external:discord.js --external:sharp --external:@ffmpeg-installer/ffmpeg --define:process.env.FLUENTFFMPEG_COV='' --outfile=dist/index.js",
-    "watch": "esbuild src/Application.ts --analyze=verbose --tree-shaking=true --bundle --sourcemap --color=true --platform=node --watch --external:discord.js --external:sharp --external:@ffmpeg-installer/ffmpeg --define:process.env.FLUENTFFMPEG_COV='' --outfile=dist/index.js"
+    "build": "esbuild src/Application.ts --tree-shaking=true --bundle --minify --color=true --platform=node --external:discord.js --external:sharp --external:@ffmpeg-installer/ffmpeg --define:process.env.FLUENTFFMPEG_COV=false --outfile=dist/index.js",
+    "watch": "esbuild src/Application.ts --tree-shaking=true --bundle --color=true --platform=node --watch --external:discord.js --external:sharp --external:@ffmpeg-installer/ffmpeg --define:process.env.FLUENTFFMPEG_COV=false --outfile=dist/index.js"
   },
   "repository": {
     "type": "git",

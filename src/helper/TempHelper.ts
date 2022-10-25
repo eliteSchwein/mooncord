@@ -2,10 +2,8 @@ import {findValue, getEntry, updateData} from "../utils/CacheUtil";
 import {formatPercent} from "./DataHelper";
 import {ConfigHelper} from "./ConfigHelper";
 import {logRegular} from "./LoggerHelper";
-import {CommandInteraction} from "discord.js";
 import * as App from "../Application"
 import {LocaleHelper} from "./LocaleHelper";
-import {cache} from "sharp";
 
 export class TempHelper {
     protected cache = getEntry('state')
