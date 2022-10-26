@@ -10,12 +10,14 @@ import {
 import {LocaleHelper} from "../helper/LocaleHelper";
 import {readFileSync} from "fs";
 import path from "path";
+import * as App from "../Application"
+import {logError, logRegular} from "../helper/LoggerHelper";
 
 export class DiscordCommandGenerator {
     protected localeHelper = new LocaleHelper()
     protected commandStructure = {}
 
-    public getCommands() {
+    public async registerCommands() {
         const commandList = []
         const commandCache = {}
         const commandStructureFile = readFileSync(path.resolve(__dirname, '../src/meta/command_structure.json'))
@@ -25,10 +27,21 @@ export class DiscordCommandGenerator {
             const command = this.buildCommand(commandIndex)
             commandList.push(command)
             commandCache[commandIndex] = command
+
+            logRegular(`Register Command ${command.name}...`)
+
+            new Promise(async (resolve, reject) => {
+                try {
+                    await App.getDiscordClient().getClient().application?.commands?.create(command)
+                } catch (e) {
+                    logError(`An Error occured while registering the command ${command.name}`)
+                    logError(`Reason: ${e}`)
+                    logError(`Command Data: ${JSON.stringify(command, null, 4)}`)
+                }
+            })
         }
 
         setData('commands', commandCache)
-        return commandList
     }
 
     public getCommandId(command:string) {

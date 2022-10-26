@@ -111,7 +111,8 @@ export class DiscordClient {
 
     public async registerCommands() {
         logRegular('Register Commands...')
-        await this.discordClient.application?.commands.set(this.commandGenerator.getCommands())
+        await this.commandGenerator.registerCommands()
+        //await this.discordClient.application?.commands.set(this.commandGenerator.getCommands())
     }
 
     public async registerEvents() {
