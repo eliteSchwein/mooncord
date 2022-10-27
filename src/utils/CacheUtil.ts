@@ -57,7 +57,9 @@ export function getHeaterChoices() {
     const choices = []
     const heaters = cacheData.state.heaters.available_heaters
 
-    for(const heater of heaters) {
+    for(let heater of heaters) {
+        heater = heater.replace(/(heater_generic )/g, '')
+        
         choices.push({
             "name": heater,
             "value": heater

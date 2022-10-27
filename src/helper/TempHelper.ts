@@ -180,6 +180,30 @@ export class TempHelper {
         return this.cache[heater].target
     }
 
+    public getHeaterConfigData(heater:string) {
+        const rawSearch = findValue(`state.configfile.config.${heater}`)
+
+        if(rawSearch !== undefined && rawSearch !== null) {
+            return rawSearch
+        }
+
+        const heaterGenericSearch = findValue(`state.configfile.config.heater_generic ${heater}`)
+
+        return heaterGenericSearch
+    }
+
+    public getHeaterConfigName(heater:string) {
+        const rawSearch = findValue(`state.configfile.config.${heater}`)
+
+        if(rawSearch !== undefined && rawSearch !== null) {
+            return heater
+        }
+
+        const heaterGenericSearch = findValue(`state.configfile.config.heater_generic ${heater}`)
+
+        return `heater_generic ${heater}`
+    }
+
     public async setHeaterTemp(heater: string, heaterTemp: number) {
         const heaterData = findValue(`state.configfile.config.${heater}`)
         const heaterMaxTemp = Number(heaterData.max_temp)

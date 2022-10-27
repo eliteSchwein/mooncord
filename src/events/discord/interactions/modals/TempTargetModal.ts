@@ -31,7 +31,7 @@ export class TempTargetModal {
                 continue
             }
 
-            const targetResult = await this.tempHelper.setHeaterTemp(heater, Number(heaterTarget))
+            const targetResult = await this.tempHelper.setHeaterTemp(this.tempHelper.getHeaterConfigName(heater), Number(heaterTarget))
 
             if(targetResult === false) {
                 continue

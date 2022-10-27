@@ -49,13 +49,13 @@ export class PreheatCommand {
     }
 
     protected async heatManual(interaction: CommandInteraction) {
-        const aviableHeaters = findValue('state.heaters.available_heaters')
+        const availableHeaters = findValue('state.heaters.available_heaters')
         let argumentFound = false
         let heaterList = ''
 
-        for(const heater of aviableHeaters) {
+        for(const heater of availableHeaters) {
             const heaterTemp = interaction.options.getInteger(heater)
-            const heaterData = findValue(`state.configfile.config.${heater}`)
+            const heaterData = this.tempHelper.getHeaterConfigData(heater)
             const heaterMaxTemp = Number(heaterData.max_temp)
             const heaterMinTemp = Number(heaterData.min_temp)
 
