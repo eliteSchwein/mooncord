@@ -27,6 +27,7 @@ import {SaveConfigCommand} from "./commands/SaveConfigCommand";
 import {TuneCommand} from "./commands/TuneCommand";
 import {ConfigCommand} from "./commands/ConfigCommand";
 import {ExecuteCommand} from "./commands/ExecuteCommand";
+import {CustomCommand} from "./commands/CustomCommand";
 
 export class CommandInteraction {
     protected config = new ConfigHelper()
@@ -48,11 +49,17 @@ export class CommandInteraction {
 
         const commandId = this.commandGenerator.getCommandId(interaction.commandName)
 
+        let permissionId = commandId
+
+        if(this.commandGenerator.isCustomCommand(commandId)) {
+            permissionId = 'custom_command'
+        }
+
         if(typeof commandId === 'undefined') { return }
 
         logNotice(`${interaction.user.tag} executed command: ${logFeedback}`)
 
-        if(!this.permissionHelper.hasPermission(interaction.user, interaction.guild, commandId)) {
+        if(!this.permissionHelper.hasPermission(interaction.user, interaction.guild, permissionId)) {
             await interaction.reply({
                 content: this.localeHelper.getNoPermission(interaction.user.tag),
                 ephemeral: this.config.showNoPermissionPrivate() })
@@ -82,6 +89,7 @@ export class CommandInteraction {
         void new TuneCommand(interaction, commandId)
         void new ConfigCommand(interaction, commandId)
         void new ExecuteCommand(interaction, commandId)
+        void new CustomCommand(interaction, commandId)
 
         await sleep(2000)
 

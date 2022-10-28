@@ -217,4 +217,8 @@ export class ConfigHelper {
     public getGraphService() {
         return this.getConfig().graph.service
     }
+
+    public getCustomCommands() {
+        return this.getConfig().commands
+    }
 }

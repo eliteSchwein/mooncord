@@ -11,20 +11,39 @@ import {LocaleHelper} from "../helper/LocaleHelper";
 import {readFileSync} from "fs";
 import path from "path";
 import * as App from "../Application"
-import {logError, logRegular} from "../helper/LoggerHelper";
+import {logError, logRegular, logWarn} from "../helper/LoggerHelper";
+import {ConfigHelper} from "../helper/ConfigHelper";
+import {mergeDeep} from "../helper/DataHelper";
 
 export class DiscordCommandGenerator {
     protected localeHelper = new LocaleHelper()
+    protected configHelper = new ConfigHelper()
+    protected locale = this.localeHelper.getLocale()
     protected commandStructure = {}
+    protected customCommandStructure = {}
+
+    public constructor() {
+        const commandStructureFile = readFileSync(path.resolve(__dirname, '../src/meta/command_structure.json'))
+        this.commandStructure = JSON.parse(commandStructureFile.toString('utf8'))
+        this.customCommandStructure = this.getCustomCommandStructure()
+        mergeDeep(this.commandStructure, this.customCommandStructure)
+    }
 
     public async registerCommands() {
         const commandList = []
         const commandCache = {}
         const commandStructureFile = readFileSync(path.resolve(__dirname, '../src/meta/command_structure.json'))
         this.commandStructure = JSON.parse(commandStructureFile.toString('utf8'))
+        this.customCommandStructure = this.getCustomCommandStructure()
+        mergeDeep(this.commandStructure, this.customCommandStructure)
 
         for (const commandIndex in this.commandStructure) {
-            const command = this.buildCommand(commandIndex)
+            let command: any
+            if(Object.keys(this.customCommandStructure).includes(commandIndex)) {
+                command = this.customCommandStructure[commandIndex]
+            } else {
+                command = this.buildCommand(commandIndex)
+            }
             commandList.push(command)
             commandCache[commandIndex] = command
 
@@ -44,6 +63,29 @@ export class DiscordCommandGenerator {
         setData('commands', commandCache)
     }
 
+    private getCustomCommandStructure() {
+        const customCommandsConfig = this.configHelper.getCustomCommands()
+        const customCommands = {}
+
+        for(const name of Object.keys(customCommandsConfig)) {
+            if(Object.keys(this.commandStructure).includes(name)) {
+                logError(`The Custom Command ${name} is invalid, you cant overwrite existing commands!`)
+                continue
+            }
+            const customCommandData = customCommandsConfig[name]
+            const customCommandDescription = (customCommandData.description === null || customCommandData.description === null)
+                ? this.locale.messages.errors.custom_command_descript
+                : customCommandData.description
+
+            customCommands[name] = {
+                'name': name,
+                'description': customCommandDescription
+            }
+        }
+
+        return customCommands
+    }
+
     public getCommandId(command:string) {
         const commandCache = getEntry('commands')
 
@@ -52,6 +94,10 @@ export class DiscordCommandGenerator {
 
             if(commandData.name === command) { return commandId}
         }
+    }
+
+    public isCustomCommand(command:string) {
+        return Object.keys(this.customCommandStructure).includes(command)
     }
 
     protected buildCommand(command:string) {

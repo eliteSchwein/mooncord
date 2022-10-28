@@ -277,6 +277,12 @@
                 "users": [],
                 "roles": []
             },
+            "custom_command": {
+                "botadmin": false,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
             "dump": {
                 "botadmin": true,
                 "guildadmin": false,
@@ -1598,5 +1604,6 @@
                     "color": "#f4900c"
                 }]
         }
-    }
+    },
+    "commands": {}
 }
