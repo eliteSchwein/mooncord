@@ -78,7 +78,7 @@ export class DatabaseUtil {
     }
 
     protected async writeDump() {
-        await writeFile(path.resolve(__dirname, '../temp/database_dump.json'), JSON.stringify(database, null, 4), { encoding: 'utf8', flag: 'w+' })
+        await writeFile(path.resolve(__dirname, '../database_dump.json'), JSON.stringify(database, null, 4), { encoding: 'utf8', flag: 'w+' })
         logSuccess('Dumped Database!')
     }
 }

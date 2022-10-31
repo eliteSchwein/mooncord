@@ -137,6 +137,6 @@ export async function dump() {
 }
 
 async function writeDump() {
-    await writeFile(path.resolve(__dirname, '../temp/cache_dump.json'), JSON.stringify(cacheData, null, 4), { encoding: 'utf8', flag: 'w+' })
+    await writeFile(path.resolve(__dirname, '../cache_dump.json'), JSON.stringify(cacheData, null, 4), { encoding: 'utf8', flag: 'w+' })
     logSuccess('Dumped Cache!')
 }

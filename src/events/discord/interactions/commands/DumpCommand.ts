@@ -26,7 +26,7 @@ export class DumpCommand {
             void await this.databaseUtil.dump()
         }
 
-        const attachment = new MessageAttachment(path.resolve(__dirname, `../temp/${sectionArgument}_dump.json`), `${sectionArgument}.json`)
+        const attachment = new MessageAttachment(path.resolve(__dirname, `../${sectionArgument}_dump.json`), `${sectionArgument}.json`)
 
         await interaction.editReply({ files: [attachment] })
     }
