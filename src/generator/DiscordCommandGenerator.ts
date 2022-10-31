@@ -11,7 +11,7 @@ import {LocaleHelper} from "../helper/LocaleHelper";
 import {readFileSync} from "fs";
 import path from "path";
 import * as App from "../Application"
-import {logError, logRegular, logWarn} from "../helper/LoggerHelper";
+import {logError, logRegular, logSuccess, logWarn} from "../helper/LoggerHelper";
 import {ConfigHelper} from "../helper/ConfigHelper";
 import {mergeDeep} from "../helper/DataHelper";
 
@@ -29,6 +29,11 @@ export class DiscordCommandGenerator {
         mergeDeep(this.commandStructure, this.customCommandStructure)
     }
 
+    public getCustomCommandData(key: string) {
+        const customCommandsConfig = this.configHelper.getCustomCommands()
+        return customCommandsConfig[key]
+    }
+
     public async registerCommands() {
         const commandList = []
         const commandCache = {}
@@ -36,6 +41,9 @@ export class DiscordCommandGenerator {
         this.commandStructure = JSON.parse(commandStructureFile.toString('utf8'))
         this.customCommandStructure = this.getCustomCommandStructure()
         mergeDeep(this.commandStructure, this.customCommandStructure)
+
+        logRegular('Unregister old commands...')
+        await App.getDiscordClient().getClient().application.commands.set([])
 
         for (const commandIndex in this.commandStructure) {
             let command: any
@@ -69,10 +77,14 @@ export class DiscordCommandGenerator {
 
         for(const name of Object.keys(customCommandsConfig)) {
             if(Object.keys(this.commandStructure).includes(name)) {
-                logError(`The Custom Command ${name} is invalid, you cant overwrite existing commands!`)
+                this.showCustomCommandError(`The Custom Command ${name} is invalid, you cant overwrite existing commands!`)
                 continue
             }
             const customCommandData = customCommandsConfig[name]
+            if(customCommandData.macros === undefined && customCommandData.websocket_commands === undefined) {
+                this.showCustomCommandError(`The Custom Command ${name} is invalid, it doesnt have any macros or websocket_commands configured!`)
+                continue
+            }
             const customCommandDescription = (customCommandData.description === null || customCommandData.description === null)
                 ? this.locale.messages.errors.custom_command_descript
                 : customCommandData.description
@@ -84,6 +96,14 @@ export class DiscordCommandGenerator {
         }
 
         return customCommands
+    }
+
+    private showCustomCommandError(message: string) {
+        const commandCache = getEntry('commands')
+        if(commandCache === undefined || Object.keys(commandCache).length > 0) {
+            return
+        }
+        logError(message)
     }
 
     public getCommandId(command:string) {

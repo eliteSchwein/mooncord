@@ -32554,6 +32554,10 @@ var DiscordCommandGenerator = class {
     this.customCommandStructure = this.getCustomCommandStructure();
     mergeDeep(this.commandStructure, this.customCommandStructure);
   }
+  getCustomCommandData(key) {
+    const customCommandsConfig = this.configHelper.getCustomCommands();
+    return customCommandsConfig[key];
+  }
   async registerCommands() {
     const commandList = [];
     const commandCache = {};
@@ -32561,6 +32565,8 @@ var DiscordCommandGenerator = class {
     this.commandStructure = JSON.parse(commandStructureFile.toString("utf8"));
     this.customCommandStructure = this.getCustomCommandStructure();
     mergeDeep(this.commandStructure, this.customCommandStructure);
+    logRegular("Unregister old commands...");
+    await getDiscordClient().getClient().application.commands.set([]);
     for (const commandIndex in this.commandStructure) {
       let command;
       if (Object.keys(this.customCommandStructure).includes(commandIndex)) {
@@ -32588,10 +32594,14 @@ var DiscordCommandGenerator = class {
     const customCommands = {};
     for (const name2 of Object.keys(customCommandsConfig)) {
       if (Object.keys(this.commandStructure).includes(name2)) {
-        logError(`The Custom Command ${name2} is invalid, you cant overwrite existing commands!`);
+        this.showCustomCommandError(`The Custom Command ${name2} is invalid, you cant overwrite existing commands!`);
         continue;
       }
       const customCommandData = customCommandsConfig[name2];
+      if (customCommandData.macros === void 0 && customCommandData.websocket_commands === void 0) {
+        this.showCustomCommandError(`The Custom Command ${name2} is invalid, it doesnt have any macros or websocket_commands configured!`);
+        continue;
+      }
       const customCommandDescription = customCommandData.description === null || customCommandData.description === null ? this.locale.messages.errors.custom_command_descript : customCommandData.description;
       customCommands[name2] = {
         "name": name2,
@@ -32599,6 +32609,13 @@ var DiscordCommandGenerator = class {
       };
     }
     return customCommands;
+  }
+  showCustomCommandError(message) {
+    const commandCache = getEntry("commands");
+    if (commandCache === void 0 || Object.keys(commandCache).length > 0) {
+      return;
+    }
+    logError(message);
   }
   getCommandId(command) {
     const commandCache = getEntry("commands");
@@ -34698,13 +34715,13 @@ var WebsocketButton = class {
     this.moonrakerClient = getMoonrakerClient();
   }
   async execute(interaction, buttonData) {
-    if (!buttonData.function_mapping.websocket_command) {
+    if (!buttonData.function_mapping.websocket_commands) {
       return;
     }
     if (!interaction.deferred && !interaction.replied) {
       await interaction.deferReply();
     }
-    for (const websocketCommand of buttonData.function_mapping.websocket_command) {
+    for (const websocketCommand of buttonData.function_mapping.websocket_commands) {
       logRegular(`Execute Websocket Command ${websocketCommand}...`);
       try {
         await this.moonrakerClient.send(websocketCommand);
@@ -35601,10 +35618,12 @@ var CustomCommand = class {
     if (!this.commandGenerator.isCustomCommand(commandId)) {
       return;
     }
-    this.execute(interaction);
+    this.execute(interaction, commandId);
   }
-  async execute(interaction) {
-    await interaction.reply("soon");
+  async execute(interaction, commandId) {
+    const customCommandData = this.commandGenerator.getCustomCommandData(commandId);
+    console.log(customCommandData);
+    await interaction.reply(JSON.stringify(customCommandData));
   }
 };
 

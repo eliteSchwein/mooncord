@@ -14,10 +14,12 @@ export class CustomCommand {
     public constructor(interaction: CommandInteraction, commandId: string) {
         if(!this.commandGenerator.isCustomCommand(commandId)) { return }
 
-        this.execute(interaction)
+        this.execute(interaction, commandId)
     }
 
-    protected async execute(interaction: CommandInteraction) {
-        await interaction.reply('soon')
+    protected async execute(interaction: CommandInteraction, commandId: string) {
+        const customCommandData = this.commandGenerator.getCustomCommandData(commandId)
+        console.log(customCommandData)
+        await interaction.reply(JSON.stringify(customCommandData))
     }
 }
