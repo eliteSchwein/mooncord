@@ -4,3 +4,5 @@ dist/presets/
 temp/cache_dump.json
 temp/log.log
 temp/database_dump.json
+cache_dump.json
+database_dump.json
