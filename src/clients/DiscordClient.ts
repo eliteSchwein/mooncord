@@ -14,6 +14,8 @@ import {StatusHelper} from "../helper/StatusHelper";
 import {MetadataHelper} from "../helper/MetadataHelper";
 import {GCodeUploadHandler} from "../events/discord/GCodeUploadHandler";
 import {VerifyHandler} from "../events/discord/VerifyHandler";
+// @ts-ignore
+import { REST } from '@discordjs/rest'
 
 let interactionHandler: InteractionHandler
 let debugHandler: DebugHandler
@@ -30,6 +32,7 @@ export class DiscordClient {
     protected statusHelper = new StatusHelper()
     protected metadataHelper = new MetadataHelper()
     protected discordClient: Client
+    protected restClient: REST
 
     public async connect() {
         logEmpty()
@@ -56,6 +59,8 @@ export class DiscordClient {
             restRequestTimeout: this.config.getDiscordRequestTimeout() * 1000})
 
         logRegular('Connect to Discord...')
+
+        this.restClient = new REST({version: '10'}).setToken(this.config.getDiscordToken())
 
         await this.discordClient.login(this.config.getDiscordToken())
 
@@ -102,6 +107,10 @@ export class DiscordClient {
         const currentPrintfile = findValue('state.print_stats.filename')
 
         await this.metadataHelper.updateMetaData(currentPrintfile)
+    }
+
+    public getRest() {
+        return this.restClient
     }
 
     public unregisterEvents() {

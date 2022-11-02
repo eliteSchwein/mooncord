@@ -14,6 +14,7 @@ import * as App from "../Application"
 import {logError, logRegular, logSuccess, logWarn} from "../helper/LoggerHelper";
 import {ConfigHelper} from "../helper/ConfigHelper";
 import {mergeDeep} from "../helper/DataHelper";
+import {Routes} from "discord-api-types/v10"
 
 export class DiscordCommandGenerator {
     protected localeHelper = new LocaleHelper()
@@ -35,6 +36,7 @@ export class DiscordCommandGenerator {
     }
 
     public async registerCommands() {
+        const rest = App.getDiscordClient().getRest()
         const commandList = []
         const commandCache = {}
         const commandStructureFile = readFileSync(path.resolve(__dirname, '../src/meta/command_structure.json'))
@@ -42,8 +44,9 @@ export class DiscordCommandGenerator {
         this.customCommandStructure = this.getCustomCommandStructure()
         mergeDeep(this.commandStructure, this.customCommandStructure)
 
-        logRegular('Unregister old commands...')
-        await App.getDiscordClient().getClient().application.commands.set([])
+        logRegular('get current commands...')
+        const currentCommands = await rest.get(Routes.applicationCommands(App.getDiscordClient().getClient().user.id))
+        const commandKeys = []
 
         for (const commandIndex in this.commandStructure) {
             let command: any
@@ -52,6 +55,7 @@ export class DiscordCommandGenerator {
             } else {
                 command = this.buildCommand(commandIndex)
             }
+            commandKeys.push(command.name)
             commandList.push(command)
             commandCache[commandIndex] = command
 
@@ -66,6 +70,23 @@ export class DiscordCommandGenerator {
                     logError(`Command Data: ${JSON.stringify(command, null, 4)}`)
                 }
             })
+        }
+
+        for(const currentCommand of currentCommands) {
+            if(!commandKeys.includes(currentCommand.name)) {
+                logRegular(`Unregister Command ${currentCommand.name}...`)
+                const deleteUrl = `${Routes.applicationCommands(App.getDiscordClient().getClient().user.id)}/${currentCommand.id}`;
+
+                new Promise(async (resolve, reject) => {
+                    try {
+                        await rest.delete(deleteUrl)
+                    } catch (e) {
+                        logError(`An Error occured while unregistering the command ${currentCommand.name}`)
+                        logError(`Reason: ${e}`)
+                        logError(`Command Data: ${JSON.stringify(currentCommand, null, 4)}`)
+                    }
+                })
+            }
         }
 
         setData('commands', commandCache)

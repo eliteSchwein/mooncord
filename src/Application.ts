@@ -47,15 +47,15 @@ async function init() {
 
     try {
         await moonrakerClient.connect()
-        await waitUntil(() => moonrakerClient.isReady(), { timeout: 10_000, intervalBetweenAttempts: 500 })
+        await waitUntil(() => moonrakerClient.isReady(), { timeout: 30_000, intervalBetweenAttempts: 500 })
 
         currentInitState = 'Database'
         await database.retrieveDatabase()
-        await waitUntil(() => database.isReady(), { timeout: 10_000, intervalBetweenAttempts: 500 })
+        await waitUntil(() => database.isReady(), { timeout: 30_000, intervalBetweenAttempts: 500 })
         
         currentInitState = 'Discord Client'
         await discordClient.connect()
-        await waitUntil(() => discordClient.isConnected(), { timeout: 10_000, intervalBetweenAttempts: 500 })
+        await waitUntil(() => discordClient.isConnected(), { timeout: 30_000, intervalBetweenAttempts: 500 })
     } catch (error) {
         logError(`couldn't load ${currentInitState} in Time! Reason: ${util.format(error)}`)
     }
