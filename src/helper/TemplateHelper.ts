@@ -250,7 +250,7 @@ export class TemplateHelper {
             cacheParser = this.getStateMessage()
         }
 
-        if(typeof cacheParser === 'undefined') {
+        if(cacheParser === undefined || cacheParser === null) {
             return {
                 'content': '',
                 'double_dash': true

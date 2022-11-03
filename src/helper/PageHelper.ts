@@ -16,7 +16,7 @@ export class PageHelper {
     }
 
     public getPage(pageUp: boolean, currentPage: number) {
-        if(this.getEntries(1).entries === '') {
+        if(this.getEntries(0).entries === '') {
             return {}
         }
         const page = this.getNewPage(pageUp, currentPage)

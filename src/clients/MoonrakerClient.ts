@@ -149,8 +149,8 @@ export class MoonrakerClient {
         logRegular('Retrieve Subscribable MoonRaker Objects...')
         const objects = await this.send({"method": "printer.objects.list"})
 
-        await this.fileListHelper.retrieveGcodeFiles()
-        await this.fileListHelper.retrieveConfigFiles()
+        this.fileListHelper.retrieveFiles('config', 'config_files')
+        this.fileListHelper.retrieveFiles('gcodes', 'gcode_files')
 
         const subscriptionObjects: any = {
             'webhooks.state': null,
@@ -219,6 +219,18 @@ export class MoonrakerClient {
         }))
 
         messageHandler = new MessageHandler(this.websocket)
+    }
+
+    public sendThread(message, timeout = 10_000) {
+        new Promise(async (resolve, reject) => {
+            try {
+                await this.send(message, timeout)
+            } catch (e) {
+                logError(`An Error occured while sending a Websocket Request`)
+                logError(`Reason: ${e}`)
+                logError(`Websocket Request: ${JSON.stringify(message, null, 4)}`)
+            }
+        })
     }
 
     public async send(message, timeout = 10_000) {

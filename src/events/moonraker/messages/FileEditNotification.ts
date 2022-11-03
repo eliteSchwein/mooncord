@@ -19,11 +19,7 @@ export class FileEditNotification {
             logNotice(`Source File: ${fileData.source_item.path}`)
         }
 
-        if(fileData.item.path.endsWith('.gcode')) {
-            void this.fileListHelper.retrieveGcodeFiles()
-            return
-        }
-
-        void this.fileListHelper.retrieveConfigFiles()
+        this.fileListHelper.retrieveFiles('config', 'config_files')
+        this.fileListHelper.retrieveFiles('gcodes', 'gcode_files')
     }
 }
