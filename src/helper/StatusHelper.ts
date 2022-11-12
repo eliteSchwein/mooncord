@@ -30,6 +30,8 @@ export class StatusHelper {
         const stateCache = getEntry('state')
         const timelapseMacro = stateCache['gcode_macro TIMELAPSE_TAKE_FRAME']
         const klipperStatus = stateCache.print_stats.state
+        const currentProgress = findValue('function.current_percent')
+        const progress = stateCache.display_status.progress.toFixed(2)
 
         if(typeof timelapseMacro !== 'undefined' && timelapseMacro.is_paused) { return }
 
@@ -84,9 +86,8 @@ export class StatusHelper {
         const statusMeta = this.statusMeta[status]
         if(!currentStatusMeta.meta_data.allow_same && status === currentStatus) { return }
         if(currentStatusMeta.meta_data.prevent.includes(status)) { return }
-        if(!this.checkPercentSame()) { return }
-
-        const progress = stateCache.display_status.progress.toFixed(2)
+        if(status === 'printing' && !this.checkPercentSame()) { return }
+        if(status === 'pause' && progress < currentProgress) { return }
 
         updateData('function', {
             'current_status': status
