@@ -32,14 +32,6 @@ export class StatusHelper {
 
         if(typeof timelapseMacro !== 'undefined' && timelapseMacro.is_paused) { return }
 
-        console.log(status)
-
-        if(status === 'paused') {
-            console.log('paused without timelapse?')
-            console.log(typeof timelapseMacro)
-            console.log(timelapseMacro)
-        }
-
         if(typeof serverInfo === 'undefined') { return }
 
         if(typeof status === 'undefined' || status === null) {
@@ -49,6 +41,8 @@ export class StatusHelper {
                 status = klipperStatus
             }
         }
+
+        console.log(status)
 
         if(status === 'standby') {
             status = 'ready'
