@@ -7,6 +7,7 @@ import {DiscordClient} from "../clients/DiscordClient";
 import {ConfigHelper} from "./ConfigHelper";
 import {NotificationHelper} from "./NotificationHelper";
 import {waitUntil} from "async-wait-until";
+import {sleep} from "./DataHelper";
 
 export class StatusHelper {
     protected embedHelper = new EmbedHelper()
@@ -41,8 +42,6 @@ export class StatusHelper {
                 status = klipperStatus
             }
         }
-
-        console.log(status)
 
         if(status === 'standby') {
             status = 'ready'
@@ -85,7 +84,7 @@ export class StatusHelper {
         const statusMeta = this.statusMeta[status]
         if(!currentStatusMeta.meta_data.allow_same && status === currentStatus) { return }
         if(currentStatusMeta.meta_data.prevent.includes(status)) { return }
-        if(status === 'printing' && !this.checkPercentSame()) { return }
+        if(!this.checkPercentSame()) { return }
 
         const progress = stateCache.display_status.progress.toFixed(2)
 
