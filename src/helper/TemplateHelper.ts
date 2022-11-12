@@ -285,6 +285,10 @@ export class TemplateHelper {
             return webhookStateMessage
         }
 
+        if(printerInfoStateMessage === 'Printer is ready') {
+            return webhookStateMessage
+        }
+
         return printerInfoStateMessage
     }
 

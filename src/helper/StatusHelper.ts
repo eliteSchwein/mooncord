@@ -1,8 +1,8 @@
-import {findValue, getEntry, updateData} from "../utils/CacheUtil"
+import {dump, findValue, getEntry, updateData} from "../utils/CacheUtil"
 import {EmbedHelper} from "./EmbedHelper";
 import * as app from "../Application";
 import {LocaleHelper} from "./LocaleHelper";
-import {logRegular} from "./LoggerHelper";
+import {logNotice, logRegular} from "./LoggerHelper";
 import {DiscordClient} from "../clients/DiscordClient";
 import {ConfigHelper} from "./ConfigHelper";
 import {NotificationHelper} from "./NotificationHelper";
@@ -21,13 +21,16 @@ export class StatusHelper {
         if(typeof discordClient === null) {
             discordClient = app.getDiscordClient()
         }
+
         this.bypassChecks = bypassChecks
         this.discordClient = discordClient
         let functionCache = getEntry('function')
         const serverInfo  = getEntry('server_info')
         const stateCache = getEntry('state')
-        const timelapseMacro = getEntry('state')['gcode_macro TIMELAPSE_TAKE_FRAME']
+        const timelapseMacro = stateCache['gcode_macro TIMELAPSE_TAKE_FRAME']
         const klipperStatus = stateCache.print_stats.state
+
+        if(typeof timelapseMacro !== 'undefined' && timelapseMacro.is_paused) { return }
 
         if(typeof serverInfo === 'undefined') { return }
 
@@ -38,8 +41,6 @@ export class StatusHelper {
                 status = klipperStatus
             }
         }
-
-        if(typeof timelapseMacro !== 'undefined' && timelapseMacro.is_paused && status === 'paused') { return }
 
         if(status === 'standby') {
             status = 'ready'
@@ -151,6 +152,14 @@ export class StatusHelper {
         }
 
         if(progress === currentProgress) {
+            return false
+        }
+
+        if(progress === 0 || progress === 100) {
+            return true
+        }
+
+        if(progress < currentProgress) {
             return false
         }
 
