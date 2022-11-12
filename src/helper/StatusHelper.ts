@@ -32,6 +32,8 @@ export class StatusHelper {
 
         if(typeof timelapseMacro !== 'undefined' && timelapseMacro.is_paused) { return }
 
+        console.log(status)
+
         if(status === 'paused') {
             console.log('paused without timelapse?')
             console.log(typeof timelapseMacro)
