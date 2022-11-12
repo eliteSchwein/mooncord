@@ -1431,7 +1431,7 @@
             "embed_id": "printjob_printing",
             "meta_data": {
                 "allow_same": true,
-                "prevent": []
+                "prevent": ["start"]
             },
             "activity": {
                 "status": "online",
