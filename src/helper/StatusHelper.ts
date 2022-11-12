@@ -32,6 +32,12 @@ export class StatusHelper {
 
         if(typeof timelapseMacro !== 'undefined' && timelapseMacro.is_paused) { return }
 
+        if(status === 'paused') {
+            console.log('paused without timelapse?')
+            console.log(typeof timelapseMacro)
+            console.log(timelapseMacro)
+        }
+
         if(typeof serverInfo === 'undefined') { return }
 
         if(typeof status === 'undefined' || status === null) {
