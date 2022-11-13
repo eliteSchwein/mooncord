@@ -29,7 +29,6 @@ export class StatusHelper {
         const serverInfo  = getEntry('server_info')
         const stateCache = getEntry('state')
         const klipperStatus = stateCache.print_stats.state
-        const currentProgress = functionCache.current_percent
         const progress = stateCache.display_status.progress.toFixed(2)
 
         if(typeof serverInfo === 'undefined') { return }
@@ -86,7 +85,6 @@ export class StatusHelper {
         if(!currentStatusMeta.meta_data.allow_same && status === currentStatus) { return }
         if(currentStatusMeta.meta_data.prevent.includes(status)) { return }
         if(status === 'printing' && !this.checkPercentSame()) { return }
-        if(status === 'pause' && progress < currentProgress) { return }
 
         updateData('function', {
             'current_status': status
@@ -158,6 +156,10 @@ export class StatusHelper {
 
         if(progress === 0 || progress === 100) {
             return true
+        }
+
+        if(progress < currentProgress) {
+            return false
         }
 
         return true
