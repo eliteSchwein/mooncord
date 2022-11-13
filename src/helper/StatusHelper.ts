@@ -92,7 +92,7 @@ export class StatusHelper {
 
         if(status === 'start') {
             updateData('function', {
-                'current_percent': -1
+                'current_percent': 0
             })
         }
 

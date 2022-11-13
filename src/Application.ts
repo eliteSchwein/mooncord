@@ -117,7 +117,7 @@ function initCache() {
         'status_in_query': false,
         'server_info_in_query': false,
         'poll_printer_info': false,
-        'current_percent': -1,
+        'current_percent': 0,
         'status_cooldown': 0,
         'log_path': '',
         'ignore_pause': false
