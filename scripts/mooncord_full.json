@@ -603,7 +603,7 @@
                 },
                 {
                     "name": "${embeds.fields.print_progress}",
-                    "value": "${percent:0:state.display_status.progress}%"
+                    "value": "${percent:0:function.current_percent}%"
                 },
                 {
                     "name": "${embeds.fields.print_layers}",
@@ -644,7 +644,7 @@
                 },
                 {
                     "name": "${embeds.fields.print_progress}",
-                    "value": "${percent:0:state.display_status.progress}%"
+                    "value": "${percent:0:function.current_percent}%"
                 },
                 {
                     "name": "${embeds.fields.print_layers}",
@@ -673,7 +673,7 @@
                 },
                 {
                     "name": "${embeds.fields.print_progress}",
-                    "value": "${percent:0:state.display_status.progress}%"
+                    "value": "${percent:0:function.current_percent}%"
                 },
                 {
                     "name": "${embeds.fields.print_layers}",
