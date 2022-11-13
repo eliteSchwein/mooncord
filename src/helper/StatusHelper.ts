@@ -160,10 +160,6 @@ export class StatusHelper {
             return true
         }
 
-        if(progress < currentProgress) {
-            return false
-        }
-
         return true
     }
 
