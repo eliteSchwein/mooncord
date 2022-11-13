@@ -11,6 +11,7 @@ import {ThrottleNotification} from "./messages/ThrottleNotification";
 import {TimelapseNotification} from "./messages/TimelapseNotification";
 import {DisplayUpdateNotification} from "./messages/DisplayUpdateNotification";
 import {ConsoleMessage} from "./gcode-messages/ConsoleMessage";
+import {TimelapseMacroNotification} from "./messages/TimelapseMacroNotification";
 
 export class MessageHandler {
     protected websocket: Websocket
@@ -27,17 +28,18 @@ export class MessageHandler {
                 'event_count': websocket.underlyingWebsocket['_eventsCount']
             })
 
+            void new TimelapseMacroNotification().parse(messageData)
+            void new SubscriptionNotification().parse(messageData)
             void new ConsoleMessage().parse(messageData)
             void new ProcStatsNotification().parse(messageData)
-            void new SubscriptionNotification().parse(messageData)
             void new UpdateNotification().parse(messageData)
             void new FileEditNotification().parse(messageData)
             void new StateUpdateNotification().parse(messageData)
             void new GcodeResponseNotification().parse(messageData)
-            void new PrintProgressNotification().parse(messageData)
             void new ThrottleNotification().parse(messageData)
             void new TimelapseNotification().parse(messageData)
             void new DisplayUpdateNotification().parse(messageData)
+            void new PrintProgressNotification().parse(messageData)
         }))
     }
 }

@@ -28,12 +28,9 @@ export class StatusHelper {
         let functionCache = getEntry('function')
         const serverInfo  = getEntry('server_info')
         const stateCache = getEntry('state')
-        const timelapseMacro = stateCache['gcode_macro TIMELAPSE_TAKE_FRAME']
         const klipperStatus = stateCache.print_stats.state
-        const currentProgress = findValue('function.current_percent')
+        const currentProgress = functionCache.current_percent
         const progress = stateCache.display_status.progress.toFixed(2)
-
-        if(typeof timelapseMacro !== 'undefined' && timelapseMacro.is_paused) { return }
 
         if(typeof serverInfo === 'undefined') { return }
 
@@ -60,6 +57,8 @@ export class StatusHelper {
         if(status === 'cancelled') {
             status = 'stop'
         }
+
+        if(status === 'pause' && functionCache.ignore_pause) { return }
 
         if(typeof status === 'undefined') { return }
 

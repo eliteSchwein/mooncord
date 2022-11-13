@@ -280,13 +280,14 @@ export class TemplateHelper {
         const webhookStateMessage = findValue('state.webhooks.state_message')
         const state = findValue('function.current_status')
         const printerInfoStateMessage = findValue('printer_info.state_message')
+        const printStatsMessage = findValue('state.print_stats.message')
 
         if(webhookState === state) {
             return webhookStateMessage
         }
 
         if(printerInfoStateMessage === 'Printer is ready') {
-            return webhookStateMessage
+            return printStatsMessage
         }
 
         return printerInfoStateMessage

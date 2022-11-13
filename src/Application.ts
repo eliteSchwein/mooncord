@@ -119,7 +119,8 @@ function initCache() {
         'poll_printer_info': false,
         'current_percent': -1,
         'status_cooldown': 0,
-        'log_path': ''
+        'log_path': '',
+        'ignore_pause': false
     })
 
     logRegular('init Memory Cache...')
