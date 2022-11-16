@@ -99,6 +99,27 @@ export function getConfigFiles() {
     return choices
 }
 
+export function getPowerDeviceChoices() {
+    const choices = []
+
+    const serverConfig = cacheData.server_config.config
+
+    const serverConfigKeys = Object.keys(serverConfig)
+
+    for(const serverConfigKey of serverConfigKeys) {
+        if(/(power )/g.test(serverConfigKey)) {
+            const powerDevice = serverConfigKey.replace(/(power )/g, '')
+            const powerDeviceLabel = powerDevice.replace(' ', '')
+            choices.push({
+                "name": powerDeviceLabel,
+                "value": powerDevice
+            })
+        }
+    }
+
+    return choices
+}
+
 export function getPreheatProfileChoices() {
     const choices = []
 

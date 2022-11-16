@@ -43,6 +43,13 @@
       "type": "subcommand"
     }
   },
+  "power": {
+    "device":{
+      "type": "string",
+      "required": true,
+      "choices": "${powerDeviceChoices}"
+    }
+  },
   "preheat": {
     "preset": {
       "type": "subcommand",

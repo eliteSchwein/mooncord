@@ -489,6 +489,16 @@
                 }
             }
         },
+        "power": {
+            "description": "Toggle a Power Device",
+            "command": "power",
+            "options": {
+                "device": {
+                    "name": "device",
+                    "description": "Select a Power Device."
+                }
+            }
+        },
         "preheat": {
             "description": "Preheat a profile or manually.",
             "command": "preheat",
