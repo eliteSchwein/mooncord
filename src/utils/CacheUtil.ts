@@ -102,19 +102,13 @@ export function getConfigFiles() {
 export function getPowerDeviceChoices() {
     const choices = []
 
-    const serverConfig = cacheData.server_config.config
+    const powerDevices = cacheData.power_devices
 
-    const serverConfigKeys = Object.keys(serverConfig)
-
-    for(const serverConfigKey of serverConfigKeys) {
-        if(/(power )/g.test(serverConfigKey)) {
-            const powerDevice = serverConfigKey.replace(/(power )/g, '')
-            const powerDeviceLabel = powerDevice.replace(' ', '')
-            choices.push({
-                "name": powerDeviceLabel,
-                "value": powerDevice
-            })
-        }
+    for(const powerDevice of powerDevices) {
+        choices.push({
+            "name": powerDevice.device,
+            "value": powerDevice.device
+        })
     }
 
     return choices

@@ -19,6 +19,7 @@ import {MetadataHelper} from "../helper/MetadataHelper";
 import * as App from '../Application'
 import {StatusHelper} from "../helper/StatusHelper";
 import {TempHelper} from "../helper/TempHelper";
+import {PowerDeviceHelper} from "../helper/PowerDeviceHelper";
 
 const requests: any = {}
 let messageHandler: MessageHandler
@@ -34,6 +35,7 @@ export class MoonrakerClient {
     protected alreadyRunning = false
     protected reconnectScheduler: any
     protected reconnectAttempt = 1
+    protected powerDeviceHelper = new PowerDeviceHelper(this)
 
     private async errorHandler(instance, event) {
         const reason = event.message
@@ -148,6 +150,8 @@ export class MoonrakerClient {
 
         logRegular('Retrieve Subscribable MoonRaker Objects...')
         const objects = await this.send({"method": "printer.objects.list"})
+
+        this.powerDeviceHelper.getPowerDevices()
 
         this.fileListHelper.retrieveFiles('config', 'config_files')
         this.fileListHelper.retrieveFiles('gcodes', 'gcode_files')

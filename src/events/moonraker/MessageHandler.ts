@@ -12,6 +12,7 @@ import {TimelapseNotification} from "./messages/TimelapseNotification";
 import {DisplayUpdateNotification} from "./messages/DisplayUpdateNotification";
 import {ConsoleMessage} from "./gcode-messages/ConsoleMessage";
 import {TimelapseMacroNotification} from "./messages/TimelapseMacroNotification";
+import {PowerDeviceNotification} from "./messages/PowerDeviceNotification";
 
 export class MessageHandler {
     protected websocket: Websocket
@@ -40,6 +41,7 @@ export class MessageHandler {
             void new TimelapseNotification().parse(messageData)
             void new DisplayUpdateNotification().parse(messageData)
             void new PrintProgressNotification().parse(messageData)
+            void new PowerDeviceNotification().parse(messageData)
         }))
     }
 }

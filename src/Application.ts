@@ -178,6 +178,9 @@ function initCache() {
     logRegular('init commands Cache...')
     setData('commands', [])
 
+    logRegular('init power device Cache...')
+    setData('power_devices', [])
+
     configHelper.loadCache()
     localeHelper.loadCache()
     embedHelper.loadCache()
