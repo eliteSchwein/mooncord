@@ -891,6 +891,16 @@
                 }
             ]
         },
+        "systeminfo_power_devices": {
+            "color": "#0099ff",
+            "thumbnail": "power-devices.png",
+            "selection": {
+                "id": "systeminfo_select",
+                "data": "${raw_entries}"
+            },
+            "fields": [],
+            "show_power_devices": true
+        },
         "systeminfo_moonraker": {
             "color": "#0099ff",
             "thumbnail": "system.png",

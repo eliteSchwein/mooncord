@@ -37,4 +37,17 @@ export class PowerDeviceHelper {
 
         setData('power_devices', this.powerDeviceCache)
     }
+
+    public parseFields() {
+        const fields = []
+
+        for(const powerDevice of this.powerDeviceCache) {
+            fields.push({
+                'name': powerDevice.device,
+                'value': powerDevice.status
+            })
+        }
+
+        return fields
+    }
 }

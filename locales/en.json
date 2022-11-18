@@ -42,6 +42,9 @@
         "systeminfo_system": {
             "title": "System Information"
         },
+        "systeminfo_power_devices": {
+            "title": "Power Devices"
+        },
         "systeminfo_discord": {
             "title": "Discord Client Information"
         },
@@ -428,6 +431,10 @@
                 {
                     "label": "Moonraker Client",
                     "value": "moonraker_client"
+                },
+                {
+                    "label": "Power Devices",
+                    "value": "power_devices"
                 },
                 {
                     "label": "Updates",

@@ -11,6 +11,7 @@ import {MetadataHelper} from "./MetadataHelper";
 import * as app from "../Application";
 import path from "path";
 import {WebcamHelper} from "./WebcamHelper";
+import {PowerDeviceHelper} from "./PowerDeviceHelper";
 
 export class TemplateHelper {
     protected localeHelper = new LocaleHelper()
@@ -19,6 +20,7 @@ export class TemplateHelper {
     protected tempHelper = new TempHelper()
     protected versionHelper = new VersionHelper()
     protected graphHelper = new GraphHelper()
+    protected powerDeviceHelper = new PowerDeviceHelper()
     protected webcamHelper = new WebcamHelper()
 
     public parseRawTemplate(type: string, id: string) {
@@ -34,6 +36,10 @@ export class TemplateHelper {
 
         if(unformattedData.show_temps) {
             unformattedData.fields = [...unformattedData.fields, ...this.tempHelper.parseFields().fields]
+        }
+
+        if(unformattedData.show_power_devices) {
+            unformattedData.fields = [...unformattedData.fields, ...this.powerDeviceHelper.parseFields()]
         }
 
         if(unformattedData.buttons) {
