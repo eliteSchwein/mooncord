@@ -28,6 +28,7 @@ import {TuneCommand} from "./commands/TuneCommand";
 import {ConfigCommand} from "./commands/ConfigCommand";
 import {ExecuteCommand} from "./commands/ExecuteCommand";
 import {CustomCommand} from "./commands/CustomCommand";
+import {PowerDeviceCommand} from "./commands/PowerDeviceCommand";
 
 export class CommandInteraction {
     protected config = new ConfigHelper()
@@ -90,6 +91,7 @@ export class CommandInteraction {
         void new ConfigCommand(interaction, commandId)
         void new ExecuteCommand(interaction, commandId)
         void new CustomCommand(interaction, commandId)
+        void new PowerDeviceCommand(interaction, commandId)
 
         await sleep(2000)
 

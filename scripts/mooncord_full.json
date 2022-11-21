@@ -1449,6 +1449,14 @@
             }
         }
     },
+    "power_device_meta": {
+        "on": {
+            "icon": "🟢"
+        },
+        "off": {
+            "icon": "🔴"
+        }
+    },
     "temp_meta": {
         "cold_meta": {
             "icon": "❄",

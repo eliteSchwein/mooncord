@@ -165,6 +165,8 @@
             "title": "System Updates"
         },
         "fields": {
+            "on": "${icon} On",
+            "off": "${icon} Off",
             "flow": "Flow",
             "system": "System",
             "packages": "Packages",
@@ -277,7 +279,11 @@
                 "flow": "New flow factor is `${flow}%`, `${username}`!",
                 "speed_flow": "New speed factor is `${speed}%` and flow factor is `${flow}%`, `${username}`!"
             },
-            "excluded_object": "The Object `${object}` got excluded, `${username}`!"
+            "excluded_object": "The Object `${object}` got excluded, `${username}`!",
+            "power_device":{
+                "on": "The Power Device `${power_device}` is now on, `${username}`!",
+                "off": "The Power Device `${power_device}` is now off, `${username}`!"
+            }
         },
         "errors": {
             "custom_command_descript": "Configured Custom Command",
