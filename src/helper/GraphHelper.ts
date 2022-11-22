@@ -70,9 +70,7 @@ ${svg}
         if(typeof tempHistoryRequest.error !== 'undefined') {
             return
         }
-        const resHeight = 400
-        const resWidth = 800
-        const graphWidth = resWidth - 200
+        const resHeight = 600
 
         let max = 0
         let width = 0
@@ -113,25 +111,26 @@ ${svg}
             })
         }
 
+        const graphWidth = width
+        width += 200
+
         for(const lineData of rawLines) {
             if(lineData.type === 'temp') {
                 lines.push({
                     label: lineData.label,
                     color: lineData.color,
                     type: 'temp',
-                    coords: this.convertToCoords(lineData.temperatures, width, max, resHeight, graphWidth)
+                    coords: this.convertToCoords(lineData.temperatures, max, resHeight)
                 })
 
                 lines.push({
                     label: lineData.label,
                     color: lineData.color,
                     type: 'target',
-                    coords: this.convertToCoords(lineData.targets, width, max, resHeight, graphWidth)
+                    coords: this.convertToCoords(lineData.targets, max, resHeight)
                 })
             }
         }
-
-
 
         const chartConfig = {
             'type': 'line',
@@ -311,20 +310,16 @@ ${svg}
         return tempValues.slice(limitStart)
     }
 
-    private convertToCoords(values: [], width: number, max: number, resHeight = 400, resWidth = 600) {
+    private convertToCoords(values: [], max: number, resHeight = 400) {
         const coords = []
-        const widthSegment = (100 * resWidth) / width
-        console.log(widthSegment)
-        console.log(width)
-        console.log(resWidth)
         let widthIndex = 0
 
         if(values === undefined) { return }
 
         for(const value of values) {
+            coords.push(`${widthIndex},${resHeight - ((((value * 100) / max) / 100) * resHeight)}`)
             widthIndex++
         }
-
 
         return coords
     }
