@@ -54549,8 +54549,12 @@ ${svg}
     if (typeof tempHistoryRequest.error !== "undefined") {
       return;
     }
-    let tempMax = 0;
-    const tempMin = 0;
+    const resHeight = 400;
+    const resWidth = 800;
+    const graphWidth = resWidth - 200;
+    let max = 0;
+    let width = 0;
+    const rawLines = [];
     const lines = [];
     for (const sensorIndex in tempHistoryRequest.result) {
       const sensorLabel = sensorIndex.replace(/(temperature_sensor )|(temperature_fan )|(heater_generic )/g, "");
@@ -54561,18 +54565,39 @@ ${svg}
       const color = this.tempCache.colors[sensorIndex].color;
       const sensorTempMax = Math.max.apply(null, sensorData.temperatures);
       const sensorTargetMax = Math.max.apply(null, sensorData.targets);
-      if (tempMax < sensorTempMax) {
-        tempMax = Math.ceil((sensorTempMax + 1) / 10) * 10;
+      if (max < sensorTempMax) {
+        max = Math.ceil((sensorTempMax + 1) / 10) * 10;
       }
-      if (tempMax < sensorTargetMax) {
-        tempMax = Math.ceil((sensorTargetMax + 1) / 10) * 10;
+      if (max < sensorTargetMax) {
+        max = Math.ceil((sensorTargetMax + 1) / 10) * 10;
       }
-      lines.push({
+      if (width < sensorData.temperatures.length) {
+        width = sensorData.temperatures.length;
+      }
+      rawLines.push({
         label: sensorLabel,
-        data: sensorData.temperatures,
+        temperatures: sensorData.temperatures,
+        targets: sensorData.targets,
+        powers: sensorData.powers,
         color,
-        type: "temperature"
+        type: "temp"
       });
+    }
+    for (const lineData of rawLines) {
+      if (lineData.type === "temp") {
+        lines.push({
+          label: lineData.label,
+          color: lineData.color,
+          type: "temp",
+          coords: this.convertToCoords(lineData.temperatures, width, max, resHeight, graphWidth)
+        });
+        lines.push({
+          label: lineData.label,
+          color: lineData.color,
+          type: "target",
+          coords: this.convertToCoords(lineData.targets, width, max, resHeight, graphWidth)
+        });
+      }
     }
     const chartConfig = {
       "type": "line",
@@ -54723,6 +54748,21 @@ ${svg}
     }
     const limitStart = tempValues.length - this.tempValueLimit;
     return tempValues.slice(limitStart);
+  }
+  convertToCoords(values, width, max, resHeight = 400, resWidth = 600) {
+    const coords = [];
+    const widthSegment = 100 * resWidth / width;
+    console.log(widthSegment);
+    console.log(width);
+    console.log(resWidth);
+    let widthIndex = 0;
+    if (values === void 0) {
+      return;
+    }
+    for (const value of values) {
+      widthIndex++;
+    }
+    return coords;
   }
 };
 
