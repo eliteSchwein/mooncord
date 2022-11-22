@@ -67,6 +67,42 @@ ${svg}
 
         const tempHistoryRequest = await moonrakerClient.send({'method': 'server.temperature_store'})
 
+        if(typeof tempHistoryRequest.error !== 'undefined') {
+            return
+        }
+
+        let tempMax = 0
+        const tempMin = 0
+        const lines = []
+
+        for(const sensorIndex in tempHistoryRequest.result) {
+            const sensorLabel = sensorIndex.replace(/(temperature_sensor )|(temperature_fan )|(heater_generic )/g, '')
+
+            if(sensor !== undefined && sensorLabel !== sensor) {
+                continue
+            }
+
+            const sensorData = tempHistoryRequest.result[sensorIndex]
+            const color = this.tempCache.colors[sensorIndex].color
+            const sensorTempMax = Math.max.apply(null, sensorData.temperatures)
+            const sensorTargetMax = Math.max.apply(null, sensorData.targets)
+
+            if(tempMax < sensorTempMax) {
+                tempMax = Math.ceil((sensorTempMax+1)/10)*10
+            }
+
+            if(tempMax < sensorTargetMax) {
+                tempMax = Math.ceil((sensorTargetMax+1)/10)*10
+            }
+
+            lines.push({
+                label: sensorLabel,
+                data: sensorData.temperatures,
+                color: color,
+                type: 'temperature'
+            })
+        }
+
         const chartConfig = {
             'type': 'line',
             'data': {
