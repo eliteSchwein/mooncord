@@ -154,13 +154,19 @@ ${svg}
             if(line.coords === undefined) {
                 continue
             }
-            if(line.type !== 'temp') {
+            if(line.type === 'temp') {
+                svg = `
+                ${svg}
+                    <polyline points="${line.coords.join(' ')}" style="fill:none;stroke:${line.color};stroke-width:5" data-label="${line.label}" />
+                `
                 continue
             }
-            svg = `
-                ${svg}
-                <polyline points="${line.coords.join(' ')}" style="fill:none;stroke:${line.color};stroke-width:5" data-label="${line.label}" />
-            `
+            if(line.type === 'target') {
+                svg = `
+                    ${svg}
+                    <polygon points="0,${resHeight} ${line.coords.join(' ')} ${graphWidth},${resHeight}" style="fill:${line.color}11;stroke:${line.color}33;stroke-width:5;" data-label="${line.label}" stroke-dasharray="10"/>
+                `
+            }
         }
         svg =`
             ${svg}
