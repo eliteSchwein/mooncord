@@ -28,7 +28,7 @@ questions()
 {
     title_msg "Welcome to the MoonCord Installer, as soon as you finished the answers the Installation will start."
 
-    if [ "$MCCONFIGPATH" == "/home/$(whoami)/klipper_config" ];
+    if [ "$MCCONFIGPATH" == "/home/$(whoami)/printer_data/config" ];
     then
         status_msg "Please enter your Klipper Config Path"
         while true; do
@@ -41,7 +41,7 @@ questions()
     fi
     ok_msg "Klipper Config Path set: $MCCONFIGPATH"
 
-    if [ "$MCLOGPATH" == "/home/$(whoami)/klipper_logs" ];
+    if [ "$MCLOGPATH" == "/home/$(whoami)/printer_data/logs" ];
     then
         status_msg "Please enter your Klipper Log Path"
         while true; do
