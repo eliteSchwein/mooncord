@@ -73,6 +73,7 @@ ${svg}
             return
         }
         const resHeight = 600
+        const offsetHeight = resHeight - 30
 
         let max = 0
         let width = 0
@@ -122,20 +123,20 @@ ${svg}
                     label: lineData.label,
                     color: lineData.color,
                     type: 'temp',
-                    coords: this.convertToCoords(lineData.temperatures, max, resHeight)
+                    coords: this.convertToCoords(lineData.temperatures, max, offsetHeight, resHeight)
                 })
 
                 lines.push({
                     label: lineData.label,
                     color: lineData.color,
                     type: 'target',
-                    coords: this.convertToCoords(lineData.targets, max, resHeight)
+                    coords: this.convertToCoords(lineData.targets, max, offsetHeight, resHeight)
                 })
             }
         }
 
         const tempLabels = this.generateIntervalsOf(10, 0, max+5)
-        const tempLabelSpace = resHeight / (tempLabels.length - 1)
+        const tempLabelSpace = offsetHeight / (tempLabels.length - 1)
 
         let svg = `<svg
             version="1.1"
@@ -149,9 +150,12 @@ ${svg}
             if(line.coords === undefined) {
                 continue
             }
+            if(line.type !== 'temp') {
+                continue
+            }
             svg = `
                 ${svg}
-                <polyline points="${line.coords.join(' ')}" style="fill:none;stroke:${line.color};stroke-width:5" />
+                <polyline points="${line.coords.join(' ')}" style="fill:none;stroke:${line.color};stroke-width:5" data-label="${line.label}" />
             `
         }
         svg =`
@@ -162,10 +166,9 @@ ${svg}
         let heightIndex = 0
 
         for(const tempLabel of tempLabels) {
-            console.log(heightIndex*tempLabelSpace)
             svg = `
                 ${svg}
-                <text x="60" dy="${resHeight-heightIndex*tempLabelSpace}" style="font: bold 30px sans-serif;fill: gray">${tempLabel}</text>
+                <text x="130" dy="${resHeight-heightIndex*tempLabelSpace}" style="font: bold 30px sans-serif;fill: gray">${tempLabel}</text>
             `
             heightIndex++
         }
@@ -174,18 +177,20 @@ ${svg}
             ${svg}
             </svg>
         `
+
+        console.log(svg)
         const graphBuffer = await sharp(Buffer.from(svg)).png().toBuffer()
         return new MessageAttachment(graphBuffer, 'tempGraph.png')
     }
 
-    private convertToCoords(values: [], max: number, resHeight = 400) {
+    private convertToCoords(values: [], max: number, offsetHeight = 400, resHeight = 600) {
         const coords = []
         let widthIndex = 0
 
         if(values === undefined) { return }
 
         for(const value of values) {
-            coords.push(`${widthIndex},${resHeight - ((((value * 100) / max) / 100) * resHeight)}`)
+            coords.push(`${widthIndex},${resHeight - ((((value * 100) / max) / 100) * offsetHeight)}`)
             widthIndex++
         }
 
