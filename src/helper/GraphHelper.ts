@@ -146,7 +146,13 @@ ${svg}
             }
         }
 
-        const tempLabels = this.generateIntervalsOf(10, 0, max+5)
+        let tempLabels = this.generateIntervalsOf(10, 0, max+5)
+        if(tempLabels.length > 12) {
+            tempLabels = this.generateIntervalsOf(20, 0, max+10)
+        }
+        if(tempLabels.length > 24) {
+            tempLabels = this.generateIntervalsOf(30, 0, max+20)
+        }
         const tempLabelSpace = offsetHeight / (tempLabels.length - 1)
         const powerLabelSpace = offsetHeight / 10
 
@@ -156,15 +162,15 @@ ${svg}
             xmlns:xlink="http://www.w3.org/1999/xlink"
             viewBox="0 0 ${width} ${resHeight}">
             <text x="-300" y="50"
-                  style="font: 600 60px Arial;fill: gray;text-anchor: middle" transform="rotate(270)">
+                  style="font: 600 50px Arial;fill: gray;text-anchor: middle" transform="rotate(270)">
                 ${tempLabel}
             </text>
             `
         if(sensor !== undefined) {
             svg =`
             ${svg}
-            <text x="300" y="-${width-50}"
-                  style="font: 600 60px Arial;fill: gray;text-anchor: middle" transform="rotate(90)">
+            <text x="300" y="-${width-40}"
+                  style="font: 600 50px Arial;fill: gray;text-anchor: middle" transform="rotate(90)">
                 ${powerLabel}
             </text>
             `
@@ -188,7 +194,7 @@ ${svg}
             if(line.type === 'target') {
                 svg = `
                     ${svg}
-                    <polygon points="0,${resHeight} ${line.coords.join(' ')} ${graphWidth},${resHeight}" style="fill:${line.color}11;stroke:${line.color}33;stroke-width:5;" data-label="${line.label}" stroke-dasharray="10"/>
+                    <polygon points="0,${resHeight - 10} ${line.coords.join(' ')} ${graphWidth},${resHeight - 10}" style="fill:${line.color}11;stroke:${line.color}33;stroke-width:5;" data-label="${line.label}" stroke-dasharray="10"/>
                 `
             }
         }
@@ -202,7 +208,7 @@ ${svg}
         for(const tempLabel of tempLabels) {
             svg = `
                 ${svg}
-                <text x="115" y="${resHeight-heightIndex*tempLabelSpace}" style="font: bold 30px Arial;fill: gray;text-anchor: end">${tempLabel}</text>
+                <text x="125" y="${resHeight-heightIndex*tempLabelSpace}" style="font: bold 40px Arial;fill: gray;text-anchor: end">${tempLabel}</text>
             `
             heightIndex++
         }
@@ -211,7 +217,7 @@ ${svg}
             for (let i = 0; i < 11; i++) {
                 svg = `
                 ${svg}
-                <text x="${width-95}" y="${resHeight-i*powerLabelSpace}" style="font: bold 30px Arial;fill: gray;text-anchor: start">${i*10}</text>
+                <text x="${width-105}" y="${resHeight-i*powerLabelSpace}" style="font: bold 40px Arial;fill: gray;text-anchor: start">${i*10}</text>
             `
             }
         }
@@ -232,7 +238,7 @@ ${svg}
         if(values === undefined) { return }
 
         for(const value of values) {
-            coords.push(`${widthIndex},${resHeight - ((((value * 100) / max) / 100) * offsetHeight)}`)
+            coords.push(`${widthIndex},${resHeight - 10 - ((((value * 100) / max) / 100) * offsetHeight)}`)
             widthIndex++
         }
 
