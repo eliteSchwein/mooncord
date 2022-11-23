@@ -115,7 +115,7 @@ ${svg}
         }
 
         const graphWidth = width
-        width += 200
+        width += 120
 
         for(const lineData of rawLines) {
             if(lineData.type === 'temp') {
@@ -143,7 +143,11 @@ ${svg}
             xmlns="http://www.w3.org/2000/svg"
             xmlns:xlink="http://www.w3.org/1999/xlink"
             viewBox="0 0 ${width} ${resHeight}">
-            <g transform="translate(200,0)">
+            <text x="-300" y="50"
+                  style="font: 600 60px Arial;fill: gray;text-anchor: middle" transform="rotate(270)">
+                ${tempLabel}
+            </text>
+            <g transform="translate(130,0)">
             `
 
         for(const line of lines) {
@@ -168,7 +172,7 @@ ${svg}
         for(const tempLabel of tempLabels) {
             svg = `
                 ${svg}
-                <text x="130" dy="${resHeight-heightIndex*tempLabelSpace}" style="font: bold 30px sans-serif;fill: gray">${tempLabel}</text>
+                <text x="115" dy="${resHeight-heightIndex*tempLabelSpace}" style="font: bold 30px Arial;fill: gray;text-anchor: end">${tempLabel}</text>
             `
             heightIndex++
         }
@@ -178,7 +182,6 @@ ${svg}
             </svg>
         `
 
-        console.log(svg)
         const graphBuffer = await sharp(Buffer.from(svg)).png().toBuffer()
         return new MessageAttachment(graphBuffer, 'tempGraph.png')
     }
