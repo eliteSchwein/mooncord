@@ -134,6 +134,9 @@ ${svg}
             }
         }
 
+        const tempLabels = this.generateIntervalsOf(10, 0, max+5)
+        const tempLabelSpace = resHeight / (tempLabels.length - 1)
+
         let svg = `<svg
             version="1.1"
             xmlns="http://www.w3.org/2000/svg"
@@ -156,6 +159,17 @@ ${svg}
             </g>
             `
 
+        let heightIndex = 0
+
+        for(const tempLabel of tempLabels) {
+            console.log(heightIndex*tempLabelSpace)
+            svg = `
+                ${svg}
+                <text x="60" dy="${resHeight-heightIndex*tempLabelSpace}" style="font: bold 30px sans-serif;fill: gray">${tempLabel}</text>
+            `
+            heightIndex++
+        }
+
         svg = `
             ${svg}
             </svg>
@@ -176,5 +190,17 @@ ${svg}
         }
 
         return coords
+    }
+
+    private generateIntervalsOf(interval, start, end) {
+        const result = [];
+        let current = start;
+
+        while (current < end) {
+            result.push(current);
+            current += interval;
+        }
+
+        return result;
     }
 }
