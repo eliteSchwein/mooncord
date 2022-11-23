@@ -3,8 +3,6 @@ import {ConfigHelper} from './ConfigHelper';
 import {LocaleHelper} from './LocaleHelper';
 import {getEntry} from '../utils/CacheUtil';
 import {logRegular} from './LoggerHelper';
-import QuickChart from "quickchart-js";
-import {sleep} from "./DataHelper";
 import {MessageAttachment} from "discord.js";
 import sharp from "sharp";
 
@@ -64,6 +62,7 @@ ${svg}
         const chartConfigSection = this.configHelper.getGraphConfig('temp_history')
         const tempLabel = this.locale.graph.temp_history.temperature
         const powerLabel = this.locale.graph.temp_history.power
+        const powerColor = chartConfigSection.power_color
 
         this.tempValueLimit = chartConfigSection.value_limit
 
@@ -116,6 +115,9 @@ ${svg}
 
         const graphWidth = width
         width += 120
+        if(sensor !== undefined) {
+            width += 120
+        }
 
         for(const lineData of rawLines) {
             if(lineData.type === 'temp') {
@@ -132,11 +134,21 @@ ${svg}
                     type: 'target',
                     coords: this.convertToCoords(lineData.targets, max, offsetHeight, resHeight)
                 })
+
+                if(sensor !== undefined) {
+                    lines.push({
+                        label: lineData.label,
+                        color: powerColor,
+                        type: 'power',
+                        coords: this.convertToCoords(lineData.powers, 1, offsetHeight, resHeight)
+                    })
+                }
             }
         }
 
         const tempLabels = this.generateIntervalsOf(10, 0, max+5)
         const tempLabelSpace = offsetHeight / (tempLabels.length - 1)
+        const powerLabelSpace = offsetHeight / 10
 
         let svg = `<svg
             version="1.1"
@@ -147,6 +159,18 @@ ${svg}
                   style="font: 600 60px Arial;fill: gray;text-anchor: middle" transform="rotate(270)">
                 ${tempLabel}
             </text>
+            `
+        if(sensor !== undefined) {
+            svg =`
+            ${svg}
+            <text x="300" y="-${width-50}"
+                  style="font: 600 60px Arial;fill: gray;text-anchor: middle" transform="rotate(90)">
+                ${powerLabel}
+            </text>
+            `
+        }
+        svg =`
+            ${svg}
             <g transform="translate(130,0)">
             `
 
@@ -154,7 +178,7 @@ ${svg}
             if(line.coords === undefined) {
                 continue
             }
-            if(line.type === 'temp') {
+            if(line.type === 'temp' || line.type === 'power') {
                 svg = `
                 ${svg}
                     <polyline points="${line.coords.join(' ')}" style="fill:none;stroke:${line.color};stroke-width:5" data-label="${line.label}" />
@@ -178,9 +202,18 @@ ${svg}
         for(const tempLabel of tempLabels) {
             svg = `
                 ${svg}
-                <text x="115" dy="${resHeight-heightIndex*tempLabelSpace}" style="font: bold 30px Arial;fill: gray;text-anchor: end">${tempLabel}</text>
+                <text x="115" y="${resHeight-heightIndex*tempLabelSpace}" style="font: bold 30px Arial;fill: gray;text-anchor: end">${tempLabel}</text>
             `
             heightIndex++
+        }
+
+        if(sensor !== undefined) {
+            for (let i = 0; i < 11; i++) {
+                svg = `
+                ${svg}
+                <text x="${width-95}" y="${resHeight-i*powerLabelSpace}" style="font: bold 30px Arial;fill: gray;text-anchor: start">${i*10}</text>
+            `
+            }
         }
 
         svg = `

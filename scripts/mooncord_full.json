@@ -1593,6 +1593,7 @@
         },
         "temp_history": {
             "value_limit": 200,
+            "power_color": "#bfd8b0",
             "colors": [
                 {
                     "icon": "\uD83D\uDD34",
