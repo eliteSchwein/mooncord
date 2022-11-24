@@ -116,6 +116,16 @@ ${svg}
             width += 120
         }
 
+        let tempLabels = this.generateIntervalsOf(10, 0, max+5)
+        if(tempLabels.length > 12) {
+            tempLabels = this.generateIntervalsOf(20, 0, max+15)
+        }
+        if(tempLabels.length > 24) {
+            tempLabels = this.generateIntervalsOf(30, 0, max+25)
+        }
+
+        max = tempLabels[tempLabels.length - 1]
+
         for(const lineData of rawLines) {
             if(lineData.type === 'temp') {
                 lines.push({
@@ -143,13 +153,6 @@ ${svg}
             }
         }
 
-        let tempLabels = this.generateIntervalsOf(10, 0, max+5)
-        if(tempLabels.length > 12) {
-            tempLabels = this.generateIntervalsOf(20, 0, max+15)
-        }
-        if(tempLabels.length > 24) {
-            tempLabels = this.generateIntervalsOf(30, 0, max+25)
-        }
         const tempLabelSpace = offsetHeight / (tempLabels.length - 1)
         const powerLabelSpace = offsetHeight / 10
 
@@ -206,7 +209,7 @@ ${svg}
             svg = `
                 ${svg}
                 <text x="125" y="${resHeight - heightIndex * tempLabelSpace}" style="font: bold 40px Arial;fill: gray;text-anchor: end">${tempLabel}</text>
-                <line x1="130" y1="${resHeight - heightIndex * tempLabelSpace - 15}" x2="${graphWidth + 130}" y2="${resHeight - heightIndex * tempLabelSpace - 15}" style="stroke: rgba(172,172,172,0.3);stroke-width: 3px"></line>
+                <line x1="130" y1="${resHeight - heightIndex * tempLabelSpace - 10}" x2="${graphWidth + 130}" y2="${resHeight - heightIndex * tempLabelSpace - 10}" style="stroke: rgba(172,172,172,0.2);stroke-width: 3px"></line>
             `
             heightIndex++
         }
