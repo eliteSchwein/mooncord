@@ -205,7 +205,8 @@ ${svg}
         for(const tempLabel of tempLabels) {
             svg = `
                 ${svg}
-                <text x="125" y="${resHeight-heightIndex*tempLabelSpace}" style="font: bold 40px Arial;fill: gray;text-anchor: end">${tempLabel}</text>
+                <text x="125" y="${resHeight - heightIndex * tempLabelSpace}" style="font: bold 40px Arial;fill: gray;text-anchor: end">${tempLabel}</text>
+                <line x1="130" y1="${resHeight - heightIndex * tempLabelSpace - 15}" x2="${graphWidth + 130}" y2="${resHeight - heightIndex * tempLabelSpace - 15}" style="stroke: rgba(172,172,172,0.3);stroke-width: 3px"></line>
             `
             heightIndex++
         }
