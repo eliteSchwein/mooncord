@@ -117,14 +117,14 @@ ${l}
             xmlns="http://www.w3.org/2000/svg"
             xmlns:xlink="http://www.w3.org/1999/xlink"
             viewBox="0 0 ${m} ${p}">
-            <text x="-300" y="40"
-                  style="font: 600 50px Arial;fill: gray;text-anchor: middle" transform="rotate(270)">
+            <text x="-300" y="35"
+                  style="font: 600 45px Arial;fill: gray;text-anchor: middle" transform="rotate(270)">
                 ${s}
             </text>
             `;t!==void 0&&(F=`
             ${F}
-            <text x="300" y="-${m-40}"
-                  style="font: 600 50px Arial;fill: gray;text-anchor: middle" transform="rotate(90)">
+            <text x="300" y="-${m-45}"
+                  style="font: 600 35px Arial;fill: gray;text-anchor: middle" transform="rotate(90)">
                 ${A}
             </text>
             `),F=`

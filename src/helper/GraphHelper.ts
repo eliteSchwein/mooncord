@@ -158,16 +158,16 @@ ${svg}
             xmlns="http://www.w3.org/2000/svg"
             xmlns:xlink="http://www.w3.org/1999/xlink"
             viewBox="0 0 ${width} ${resHeight}">
-            <text x="-300" y="40"
-                  style="font: 600 50px Arial;fill: gray;text-anchor: middle" transform="rotate(270)">
+            <text x="-300" y="35"
+                  style="font: 600 45px Arial;fill: gray;text-anchor: middle" transform="rotate(270)">
                 ${tempLabel}
             </text>
             `
         if(sensor !== undefined) {
             svg =`
             ${svg}
-            <text x="300" y="-${width-40}"
-                  style="font: 600 50px Arial;fill: gray;text-anchor: middle" transform="rotate(90)">
+            <text x="300" y="-${width-45}"
+                  style="font: 600 35px Arial;fill: gray;text-anchor: middle" transform="rotate(90)">
                 ${powerLabel}
             </text>
             `
