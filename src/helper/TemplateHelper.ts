@@ -38,6 +38,10 @@ export class TemplateHelper {
             unformattedData.fields = [...unformattedData.fields, ...this.tempHelper.parseFields().fields]
         }
 
+        if(unformattedData.show_minimal_temps) {
+            unformattedData.fields = [...unformattedData.fields, ...this.tempHelper.parseFields(true).fields]
+        }
+
         if(unformattedData.show_power_devices) {
             unformattedData.fields = [...unformattedData.fields, ...this.powerDeviceHelper.parseFields()]
         }

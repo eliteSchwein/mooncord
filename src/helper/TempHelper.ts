@@ -47,15 +47,19 @@ export class TempHelper {
         })
     }
 
-    public parseFields() {
+    public parseFields(minimal = false) {
         const result = {
             "fields": [],
             "cache_ids": []
         }
-        const supportedSensors = this.tempMeta.supported_sensors
+        let supportedSensors = this.tempMeta.supported_sensors
+
+        if(minimal) {
+            supportedSensors = this.tempMeta.minimal_supported_sensors
+        }
 
         for(const sensorType of supportedSensors) {
-            const sensorResult = this.parseFieldsSet(sensorType)
+            const sensorResult = this.parseFieldsSet(sensorType, minimal)
             
             if(sensorResult.fields.length > 0) {
                 result.fields = result.fields.concat(sensorResult.fields)
@@ -86,7 +90,7 @@ export class TempHelper {
         return speed < (this.tempMeta.slow_fan_meta.fast_fan / 100)
     }
 
-    public parseFieldsSet(key: string) {
+    public parseFieldsSet(key: string, hideColor = false) {
         const allias = this.tempMeta.alliases[key]
 
         const cacheData = this.parseCacheFields(key)
@@ -107,7 +111,8 @@ export class TempHelper {
             }
 
             if(typeof cacheData[cacheKey].temperature !== 'undefined' &&
-                this.tempMeta.temperature_sensors.includes(key)) {
+                this.tempMeta.temperature_sensors.includes(key) &&
+                !hideColor) {
 
                 mappingData.fields.color = {
                     label: '${embeds.fields.color}',

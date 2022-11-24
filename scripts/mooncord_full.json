@@ -567,7 +567,8 @@
                     "name": "${embeds.fields.flow}",
                     "value": "${percent:0:state.gcode_move.extrude_factor}%"
                 }
-            ]
+            ],
+            "show_minimal_temps": true
         },
         "printjob_complete":{
             "color": "#25db00",
@@ -617,7 +618,8 @@
                     "name": "${embeds.fields.flow}",
                     "value": "${percent:0:state.gcode_move.extrude_factor}%"
                 }
-            ]
+            ],
+            "show_minimal_temps": true
         },
         "printjob_printing":{
             "color": "#0099ff",
@@ -658,7 +660,8 @@
                     "name": "${embeds.fields.flow}",
                     "value": "${percent:0:state.gcode_move.extrude_factor}%"
                 }
-            ]
+            ],
+            "show_minimal_temps": true
         },
         "printjob_stop":{
             "color": "#c90000",
@@ -727,7 +730,9 @@
         "error":{
             "description": "```${state_message}```",
             "color": "#c90000",
-            "buttons": ["klipper_restart"]
+            "buttons": ["klipper_restart"],
+            "fields": [],
+            "show_minimal_temps": true
         },
         "offline":{
             "color": "#c90000",
@@ -1504,6 +1509,11 @@
             "controller_fan",
             "temperature_sensor",
             "temperature_fan",
+            "fan"
+        ],
+        "minimal_supported_sensors": [
+            "heater_bed",
+            "extruder",
             "fan"
         ],
         "alliases": {
