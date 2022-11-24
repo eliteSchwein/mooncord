@@ -60,6 +60,7 @@ ${svg}
     public async getTempGraph(sensor = undefined) {
         const moonrakerClient = App.getMoonrakerClient()
         const chartConfigSection = this.configHelper.getGraphConfig('temp_history')
+        const serverConfigCache = getEntry('server_config')
         const tempLabel = this.locale.graph.temp_history.temperature
         const powerLabel = this.locale.graph.temp_history.power
         const powerColor = chartConfigSection.power_color
@@ -75,7 +76,7 @@ ${svg}
         const offsetHeight = resHeight - 30
 
         let max = 0
-        let width = 0
+        let width = serverConfigCache.config.data_store.temperature_store_size
         const rawLines = []
         const lines = []
 
@@ -97,10 +98,6 @@ ${svg}
 
             if(max < sensorTargetMax) {
                 max = Math.ceil((sensorTargetMax+1)/10)*10
-            }
-
-            if(width < sensorData.temperatures.length) {
-                width = sensorData.temperatures.length
             }
 
             rawLines.push({
@@ -148,10 +145,10 @@ ${svg}
 
         let tempLabels = this.generateIntervalsOf(10, 0, max+5)
         if(tempLabels.length > 12) {
-            tempLabels = this.generateIntervalsOf(20, 0, max+10)
+            tempLabels = this.generateIntervalsOf(20, 0, max+15)
         }
         if(tempLabels.length > 24) {
-            tempLabels = this.generateIntervalsOf(30, 0, max+20)
+            tempLabels = this.generateIntervalsOf(30, 0, max+25)
         }
         const tempLabelSpace = offsetHeight / (tempLabels.length - 1)
         const powerLabelSpace = offsetHeight / 10
@@ -161,7 +158,7 @@ ${svg}
             xmlns="http://www.w3.org/2000/svg"
             xmlns:xlink="http://www.w3.org/1999/xlink"
             viewBox="0 0 ${width} ${resHeight}">
-            <text x="-300" y="50"
+            <text x="-300" y="40"
                   style="font: 600 50px Arial;fill: gray;text-anchor: middle" transform="rotate(270)">
                 ${tempLabel}
             </text>
