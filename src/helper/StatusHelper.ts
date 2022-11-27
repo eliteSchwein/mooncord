@@ -1,13 +1,13 @@
-import {dump, findValue, getEntry, updateData} from "../utils/CacheUtil"
+import {findValue, getEntry, updateData} from "../utils/CacheUtil"
 import {EmbedHelper} from "./EmbedHelper";
 import * as app from "../Application";
 import {LocaleHelper} from "./LocaleHelper";
-import {logNotice, logRegular} from "./LoggerHelper";
+import {logRegular} from "./LoggerHelper";
 import {DiscordClient} from "../clients/DiscordClient";
 import {ConfigHelper} from "./ConfigHelper";
 import {NotificationHelper} from "./NotificationHelper";
 import {waitUntil} from "async-wait-until";
-import {sleep} from "./DataHelper";
+import {HistoryHelper} from "./HistoryHelper";
 
 export class StatusHelper {
     protected embedHelper = new EmbedHelper()
@@ -17,6 +17,7 @@ export class StatusHelper {
     protected bypassChecks = false
     protected discordClient: DiscordClient
     protected notificationHelper = new NotificationHelper()
+    protected historyHelper = new HistoryHelper()
 
     public async update(status: string = null, bypassChecks: boolean = false, discordClient: DiscordClient = null) {
         if(typeof discordClient === null) {
@@ -78,6 +79,10 @@ export class StatusHelper {
 
         if(status === 'complete' && currentStatus === 'startup') {
             status = 'ready'
+        }
+
+        if(status === 'complete' || status === 'ready') {
+            await this.historyHelper.parseData()
         }
 
         const currentStatusMeta = this.statusMeta[currentStatus]

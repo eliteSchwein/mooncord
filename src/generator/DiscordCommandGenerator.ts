@@ -2,7 +2,8 @@ import commandOptionsTypes from '../meta/command_option_types.json'
 import {
     getEntry,
     getHeaterArguments,
-    getHeaterChoices, getPowerDeviceChoices,
+    getHeaterChoices,
+    getPowerDeviceChoices,
     getPreheatProfileChoices,
     getServiceChoices,
     setData
@@ -11,7 +12,7 @@ import {LocaleHelper} from "../helper/LocaleHelper";
 import {readFileSync} from "fs";
 import path from "path";
 import * as App from "../Application"
-import {logError, logRegular, logSuccess, logWarn} from "../helper/LoggerHelper";
+import {logError, logRegular} from "../helper/LoggerHelper";
 import {ConfigHelper} from "../helper/ConfigHelper";
 import {mergeDeep} from "../helper/DataHelper";
 import {Routes} from "discord-api-types/v10"

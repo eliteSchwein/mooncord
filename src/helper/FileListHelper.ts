@@ -1,7 +1,6 @@
 import {getEntry, setData} from "../utils/CacheUtil";
-import {logError, logRegular} from "./LoggerHelper";
+import {logRegular} from "./LoggerHelper";
 import {MoonrakerClient} from "../clients/MoonrakerClient";
-import * as App from "../Application";
 
 export class FileListHelper {
     protected moonrakerClient

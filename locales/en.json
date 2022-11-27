@@ -84,6 +84,9 @@
             "title": "Informations",
             "description": "Version: ${package_config.version}\nAuthor: ${package_config.author}\nHomepage: ${package_config.homepage}\n${config.custom_info}"
         },
+        "history": {
+            "title": "Printjob History"
+        },
         "notification": {
             "title": "Notification"
         },
@@ -165,6 +168,12 @@
             "title": "System Updates"
         },
         "fields": {
+            "total_filament_used": "Total Filament",
+            "total_time": "Total Time",
+            "total_print_time": "Total Print Time",
+            "longest_job": "Longest Job",
+            "longest_print": "Longest Print",
+            "total_jobs": "Total Jobs",
             "on": "${icon} On",
             "off": "${icon} Off",
             "flow": "Flow",
@@ -172,6 +181,7 @@
             "packages": "Packages",
             "chipset": "Chipset",
             "color": "Color",
+            "count": "Count",
             "version": "Version",
             "load": "Load",
             "awake_time": "Awake Time",
@@ -696,6 +706,10 @@
         "temp": {
             "description": "Get the current Temperatures from Klipper.",
             "command": "temp"
+        },
+        "history": {
+            "description": "Shows the Print History.",
+            "command": "history"
         }
     },
     "graph": {

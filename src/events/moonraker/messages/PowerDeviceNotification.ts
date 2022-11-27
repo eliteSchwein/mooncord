@@ -1,9 +1,5 @@
-import {FileListHelper} from "../../../helper/FileListHelper";
-import {getMoonrakerClient} from "../../../Application";
 import {logNotice} from "../../../helper/LoggerHelper";
 import {PowerDeviceHelper} from "../../../helper/PowerDeviceHelper";
-import {getEntry} from "../../../utils/CacheUtil";
-import {mergeDeep} from "../../../helper/DataHelper";
 
 export class PowerDeviceNotification {
     protected powerDeviceHelper = new PowerDeviceHelper()

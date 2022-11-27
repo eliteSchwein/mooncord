@@ -385,6 +385,12 @@
                 "users": [],
                 "roles": []
             },
+            "history": {
+                "botadmin": true,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
             "gcode_upload": {
                 "botadmin": false,
                 "guildadmin": false,
@@ -522,6 +528,37 @@
         "info": {
             "color": "#0099ff",
             "thumbnail": "logo.png"
+        },
+        "history": {
+            "image": "historyGraph",
+            "color": "#0099ff",
+            "fields": [
+                {
+                    "name": "${embeds.fields.total_jobs}",
+                    "value": "${history.total.job_totals.total_jobs}"
+                },
+                {
+                    "name": "${embeds.fields.total_time}",
+                    "value": "${formatTime:history.total.job_totals.total_time}"
+                },
+                {
+                    "name": "${embeds.fields.total_print_time}",
+                    "value": "${formatTime:history.total.job_totals.total_print_time}"
+                },
+                {
+                    "name": "${embeds.fields.total_filament_used}",
+                    "value": "${reduce:1000:2:history.total.job_totals.total_filament_used}m"
+                },
+                {
+                    "name": "${embeds.fields.longest_job}",
+                    "value": "${formatTime:history.total.job_totals.longest_job}"
+                },
+                {
+                    "name": "${embeds.fields.longest_print}",
+                    "value": "${formatTime:history.total.job_totals.longest_print}"
+                }
+            ],
+            "show_print_history": true
         },
         "notification": {
             "color": "#03f4fc",
@@ -1594,6 +1631,26 @@
         }
     },
     "graph_meta": {
+        "history_graph": {
+            "colors": {
+                "klippy_shutdown": {
+                    "icon": "\uD83D\uDD34",
+                    "color": "#dd2e44"
+                },
+                "error": {
+                    "icon": "\uD83D\uDFE0",
+                    "color": "#f4900c"
+                },
+                "cancelled": {
+                    "icon": "\uD83D\uDFE1",
+                    "color": "#fdcb58"
+                },
+                "completed": {
+                    "icon": "\uD83D\uDFE2",
+                    "color": "#78b159"
+                }
+            }
+        },
         "exclude_graph": {
             "background_color": "#3e4147",
             "active_color": "#0099ff",

@@ -42,6 +42,10 @@ export function formatPercent(percent, digits) {
     return (percent*100).toFixed(digits)
 }
 
+export function formatReduce(value, factor, digits) {
+    return (value / factor).toFixed(digits)
+}
+
 export function findValueByPartial(data, partial: string, key: string) {
     for(const dataFragment of data) {
         if(dataFragment[key].includes(partial)) {
@@ -78,6 +82,9 @@ export function stripAnsi(input: string) {
 export function parseCalculatedPlaceholder(fragments) {
     if(fragments[0] === 'percent') {
         return formatPercent(findValue(fragments[2]), fragments[1])
+    }
+    if(fragments[0] === 'reduce') {
+        return formatReduce(findValue(fragments[3]), fragments[1], fragments[2])
     }
     if(fragments[0] === 'round') {
         return findValue(fragments[2]).toFixed(fragments[1])

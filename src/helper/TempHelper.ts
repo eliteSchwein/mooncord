@@ -137,7 +137,7 @@ export class TempHelper {
             for(const fieldKey in mappingData.fields) {
                 const fieldData = mappingData.fields[fieldKey]
 
-                if(fieldKey === 'color') {
+                if(fieldKey === 'color' && !hideColor) {
                     keyData.value = `${keyData.value}\n\`${fieldData.label}\` ${fieldData.icon}`
                     continue
                 }
@@ -192,9 +192,7 @@ export class TempHelper {
             return rawSearch
         }
 
-        const heaterGenericSearch = findValue(`state.configfile.config.heater_generic ${heater}`)
-
-        return heaterGenericSearch
+        return findValue(`state.configfile.config.heater_generic ${heater}`)
     }
 
     public getHeaterConfigName(heater:string) {
@@ -203,8 +201,6 @@ export class TempHelper {
         if(rawSearch !== undefined && rawSearch !== null) {
             return heater
         }
-
-        const heaterGenericSearch = findValue(`state.configfile.config.heater_generic ${heater}`)
 
         return `heater_generic ${heater}`
     }

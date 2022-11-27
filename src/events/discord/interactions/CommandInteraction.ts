@@ -29,6 +29,7 @@ import {ConfigCommand} from "./commands/ConfigCommand";
 import {ExecuteCommand} from "./commands/ExecuteCommand";
 import {CustomCommand} from "./commands/CustomCommand";
 import {PowerDeviceCommand} from "./commands/PowerDeviceCommand";
+import {HistoryCommand} from "./commands/HistoryCommand";
 
 export class CommandInteraction {
     protected config = new ConfigHelper()
@@ -92,6 +93,7 @@ export class CommandInteraction {
         void new ExecuteCommand(interaction, commandId)
         void new CustomCommand(interaction, commandId)
         void new PowerDeviceCommand(interaction, commandId)
+        void new HistoryCommand(interaction, commandId)
 
         await sleep(2000)
 

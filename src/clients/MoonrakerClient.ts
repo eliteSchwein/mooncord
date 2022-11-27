@@ -20,6 +20,7 @@ import * as App from '../Application'
 import {StatusHelper} from "../helper/StatusHelper";
 import {TempHelper} from "../helper/TempHelper";
 import {PowerDeviceHelper} from "../helper/PowerDeviceHelper";
+import {HistoryHelper} from "../helper/HistoryHelper";
 
 const requests: any = {}
 let messageHandler: MessageHandler
@@ -36,6 +37,7 @@ export class MoonrakerClient {
     protected reconnectScheduler: any
     protected reconnectAttempt = 1
     protected powerDeviceHelper = new PowerDeviceHelper(this)
+    protected historyHelper = new HistoryHelper(this)
 
     private async errorHandler(instance, event) {
         const reason = event.message
@@ -150,6 +152,8 @@ export class MoonrakerClient {
 
         logRegular('Retrieve Subscribable MoonRaker Objects...')
         const objects = await this.send({"method": "printer.objects.list"})
+
+        this.historyHelper.parseData()
 
         this.powerDeviceHelper.getPowerDevices()
 

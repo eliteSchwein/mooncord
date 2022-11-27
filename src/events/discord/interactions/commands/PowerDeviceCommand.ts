@@ -1,6 +1,5 @@
 import {CommandInteraction} from "discord.js";
-import {getEntry} from "../../../../utils/CacheUtil";
-import {getDatabase, getMoonrakerClient} from "../../../../Application";
+import {getMoonrakerClient} from "../../../../Application";
 import {LocaleHelper} from "../../../../helper/LocaleHelper";
 import {PowerDeviceHelper} from "../../../../helper/PowerDeviceHelper";
 

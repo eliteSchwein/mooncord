@@ -15,7 +15,7 @@ import {MetadataHelper} from "../helper/MetadataHelper";
 import {GCodeUploadHandler} from "../events/discord/GCodeUploadHandler";
 import {VerifyHandler} from "../events/discord/VerifyHandler";
 // @ts-ignore
-import { REST } from '@discordjs/rest'
+import {REST} from '@discordjs/rest'
 
 let interactionHandler: InteractionHandler
 let debugHandler: DebugHandler

@@ -6,7 +6,62 @@ import {mergeDeep} from "../helper/DataHelper";
 import {get} from 'lodash'
 import {LocaleHelper} from "../helper/LocaleHelper";
 
-const cacheData:any = {}
+const cacheData:any = {
+    function: {
+        current_status: 'botstart',
+        status_in_query: false,
+        server_info_in_query: false,
+        poll_printer_info: false,
+        current_percent: 0,
+        status_cooldown: 0,
+        log_path: '',
+        ignore_pause: false
+    },
+    usage: {
+        total_ram: '',
+        used_ram: '',
+        free_ram: '',
+        total_disk: '',
+        used_disk: '',
+        free_disk: '',
+        klipper_load: 0,
+        system_load: 0
+    },
+    time: {
+        total: 0,
+        duration: 0,
+        left: 0,
+        eta: 0
+    },
+    layers: {
+        top: 0,
+        current: 0
+    },
+    throttle: {
+        cooldown: 0,
+        throttle_states: []
+    },
+    meta_data: {
+        filename: ''
+    },
+    temps: {
+        colors: {}
+    },
+    history: {
+        total: {},
+        jobs: {}
+    },
+    execute: {
+        running: false,
+        to_execute_command: '',
+        command_state: '',
+        successful_commands: [],
+        error_commands: [],
+        unknown_commands: []
+    },
+    commands: [],
+    power_devices: []
+}
 const writeFile = util.promisify(fs.writeFile)
 
 export function setData(key:string, value:any) {

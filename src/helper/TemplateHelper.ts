@@ -12,6 +12,7 @@ import * as app from "../Application";
 import path from "path";
 import {WebcamHelper} from "./WebcamHelper";
 import {PowerDeviceHelper} from "./PowerDeviceHelper";
+import {HistoryHelper} from "./HistoryHelper";
 
 export class TemplateHelper {
     protected localeHelper = new LocaleHelper()
@@ -22,6 +23,7 @@ export class TemplateHelper {
     protected graphHelper = new GraphHelper()
     protected powerDeviceHelper = new PowerDeviceHelper()
     protected webcamHelper = new WebcamHelper()
+    protected historyHelper = new HistoryHelper()
 
     public parseRawTemplate(type: string, id: string) {
         const unformattedData = Object.assign({}, getEntry(`${type}s`)[id])
@@ -40,6 +42,10 @@ export class TemplateHelper {
 
         if(unformattedData.show_minimal_temps) {
             unformattedData.fields = [...unformattedData.fields, ...this.tempHelper.parseFields(true).fields]
+        }
+
+        if(unformattedData.show_print_history) {
+            unformattedData.fields = [...unformattedData.fields, ...this.historyHelper.parseFields()]
         }
 
         if(unformattedData.show_power_devices) {
@@ -321,6 +327,10 @@ export class TemplateHelper {
 
         if(imageID === 'tempGraph') {
             return await this.graphHelper.getTempGraph()
+        }
+
+        if(imageID === 'historyGraph') {
+            return await this.graphHelper.getHistoryGraph()
         }
 
         if(imageID === 'excludeGraph') {
