@@ -4,7 +4,7 @@ import axios from "axios";
 import sharp from "sharp";
 import {MessageAttachment} from "discord.js";
 import {resolve} from "path"
-import {logEmpty, logError} from "./LoggerHelper";
+import {logEmpty, logError, logRegular} from "./LoggerHelper";
 import {MoonrakerClient} from "../clients/MoonrakerClient";
 import StackTrace from "stacktrace-js";
 
@@ -18,9 +18,11 @@ export class WebcamHelper {
         const beforeStatus = this.configHelper.getStatusBeforeTasks()
         const afterStatus = this.configHelper.getStatusAfterTasks()
 
+        logRegular('Run Webcam pre Tasks if present...')
         await this.executePostProcess(beforeStatus)
 
         try {
+            logRegular('Retrieve Webcam Snapshot...')
             const res = await axios({
                 method: 'get',
                 responseType: 'arraybuffer',
@@ -71,12 +73,15 @@ export class WebcamHelper {
 
                 const editBuffer = await image.toBuffer()
 
+                logRegular('Run Webcam follow up Tasks if present...')
                 await this.executePostProcess(afterStatus)
 
                 return new MessageAttachment(editBuffer, "snapshot.png")
             }
 
             // Else just send the normal images
+
+            logRegular('Run Webcam follow up Tasks if present...')
             await this.executePostProcess(afterStatus)
 
             return new MessageAttachment(Buffer.from(buffer), "snapshot.png")
@@ -118,6 +123,7 @@ export class WebcamHelper {
 
         while (index < config.execute.length) {
             const execute = config.execute[index]
+            logRegular(`Execute Webcam Task ${index+1} from ${config.execute.length}: ${execute}`)
             if (execute.startsWith("gcode:")) {
                 const gcode = execute.replace("gcode:", "")
                 const id = Math.floor(Math.random() * Number.parseInt("10_000")) + 1

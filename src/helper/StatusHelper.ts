@@ -2,7 +2,7 @@ import {findValue, getEntry, updateData} from "../utils/CacheUtil"
 import {EmbedHelper} from "./EmbedHelper";
 import * as app from "../Application";
 import {LocaleHelper} from "./LocaleHelper";
-import {logRegular} from "./LoggerHelper";
+import {logNotice, logRegular} from "./LoggerHelper";
 import {DiscordClient} from "../clients/DiscordClient";
 import {ConfigHelper} from "./ConfigHelper";
 import {NotificationHelper} from "./NotificationHelper";
@@ -29,6 +29,11 @@ export class StatusHelper {
         const stateCache = getEntry('state')
         const klipperStatus = stateCache.print_stats.state
         const progress = stateCache.display_status.progress.toFixed(2)
+
+        if(functionCache.status_cooldown !== 0) {
+            logNotice('Status cooldown is currently active!')
+            return
+        }
 
         if(typeof serverInfo === 'undefined') { return }
 
@@ -84,6 +89,11 @@ export class StatusHelper {
         if(!currentStatusMeta.meta_data.allow_same && status === currentStatus) { return }
         if(currentStatusMeta.meta_data.prevent.includes(status)) { return }
         if(status === 'printing' && !this.checkPercentSame()) { return }
+        if(statusMeta.cooldown !== undefined) {
+            updateData('function', {
+                'status_cooldown': statusMeta.cooldown
+            })
+        }
 
         updateData('function', {
             'current_status': status

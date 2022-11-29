@@ -64,6 +64,8 @@ ${svg}
         const chartConfigSection = this.configHelper.getGraphConfig('history_graph')
         const graphData = []
 
+        logRegular('render history graph...')
+
         for(const printStat in printStats.stats) {
             graphData.push({
                 value: printStats.stats[printStat],
@@ -106,6 +108,8 @@ ${svg}
         const tempLabel = this.locale.graph.temp_history.temperature
         const powerLabel = this.locale.graph.temp_history.power
         const powerColor = chartConfigSection.power_color
+
+        logRegular('render temp chart...')
 
         this.tempValueLimit = chartConfigSection.value_limit
 

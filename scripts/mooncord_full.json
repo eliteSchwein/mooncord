@@ -1460,6 +1460,7 @@
         "complete":{
             "embed_id": "printjob_complete",
             "meta_data": {
+                "cooldown": 2,
                 "allow_same": false,
                 "prevent": []
             },
