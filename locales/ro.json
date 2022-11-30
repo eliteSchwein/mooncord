@@ -42,6 +42,9 @@
         "systeminfo_system": {
             "title": "Informații de sistem"
         },
+        "systeminfo_power_devices": {
+            "title": "Dispozitive de putere"
+        },
         "systeminfo_discord": {
             "title": "Informații despre clientul Discord"
         },
@@ -80,6 +83,9 @@
         "info": {
             "title": "Informații",
             "description": "Versiunea: ${package_config.version}\nAutor: ${package_config.author}\nPagina de start: ${package_config.homepage}\n${config.custom_info}"
+        },
+        "history": {
+            "title": "Istoricul lucrărilor de imprimare"
         },
         "notification": {
             "title": "Notificare"
@@ -162,11 +168,20 @@
             "title": "Actualizări de sistem"
         },
         "fields": {
+            "total_filament_used": "Filament total",
+            "total_time": "Timp total",
+            "total_print_time": "Timp total de imprimare",
+            "longest_job": "Cel mai lung loc de muncă",
+            "longest_print": "Cea mai lungă imprimare",
+            "total_jobs": "Total locuri de muncă",
+            "on": "${icon} Pe",
+            "off": "${icon} Off",
             "flow": "Flux",
             "system": "Sistem",
             "packages": "Pachete",
             "chipset": "Chipset",
             "color": "Culoare",
+            "count": "Contul",
             "version": "Versiunea",
             "load": "Încărcare",
             "awake_time": "Timp de veghe",
@@ -221,6 +236,7 @@
     },
     "messages": {
         "answers": {
+            "custom_command_executed": "Comanda personalizată `${custom_command}` a fost executată, `${username}`!",
             "execute_successful": "Comenzile Gcode au fost executate cu succes, `${username}`!",
             "preheat_preset": {
                 "preset": "Preîncălzire pentru `${preset}`, `${username}`!",
@@ -282,9 +298,14 @@
                 "speed_flow": "Noul factor de viteză este `${speed}%`, iar factorul de debit este `${flow}%`, `${username}`!"
             },
             "excluded_object": "Obiectul `${object}` a fost exclus, `${username}`!",
+            "power_device": {
+                "on": "Dispozitivul de alimentare `${power_device}` este acum pornit, `${username}`!",
+                "off": "Dispozitivul de alimentare `${power_device}` este acum oprit, `${username}`!"
+            },
             "execute_success": "Comandă executată!"
         },
         "errors": {
+            "custom_command_descript": "Comandă personalizată configurată",
             "execute_running": "Command Executer rulează deja, vă rugăm să încercați din nou mai târziu, `${username}`!",
             "macros_failed": "Macros pentru `${button_label}` a eșuat, `${username}`!",
             "execute_failed": "Comenzile Gcode au eșuat, `${username}`!",
@@ -484,6 +505,16 @@
                 }
             }
         },
+        "power": {
+            "description": "Comutarea unui dispozitiv de alimentare",
+            "command": "putere",
+            "options": {
+                "device": {
+                    "name": "dispozitiv",
+                    "description": "Selectați un dispozitiv de alimentare."
+                }
+            }
+        },
         "preheat": {
             "description": "Preîncălziți un profil sau manual.",
             "command": "preîncălziți",
@@ -668,6 +699,10 @@
         "temp": {
             "description": "Obțineți temperaturile actuale de la Klipper.",
             "command": "temp"
+        },
+        "history": {
+            "description": "Afișează istoricul de imprimare.",
+            "command": "istorie"
         }
     },
     "graph": {
