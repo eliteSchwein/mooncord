@@ -42,6 +42,9 @@
         "systeminfo_system": {
             "title": "System Information"
         },
+        "systeminfo_power_devices": {
+            "title": "Energiegeräte"
+        },
         "systeminfo_discord": {
             "title": "Discord Klient Information"
         },
@@ -80,6 +83,9 @@
         "info": {
             "title": "Informationen",
             "description": "Version: ${package_config.version}\nAuthor: ${package_config.author}\nHomepage: ${package_config.homepage}\n${config.custom_info}"
+        },
+        "history": {
+            "title": "Druckverlauf"
         },
         "notification": {
             "title": "Benachrichtigung"
@@ -162,11 +168,20 @@
             "title": "System Aktualisierungen"
         },
         "fields": {
+            "total_filament_used": "insgesamtes Filament",
+            "total_time": "insgesamte Zeit",
+            "total_print_time": "insgesamte Druckzeit",
+            "longest_job": "längster Auftrag",
+            "longest_print": "längster Druck",
+            "total_jobs": "gesamte Aufträge",
+            "on": "${icon} An",
+            "off": "${icon} Aus",
             "flow": "Flussrate",
             "system": "System",
             "packages": "Pakete",
             "chipset": "Chipsatz",
             "color": "Color",
+            "count": "Anzahl",
             "version": "Version",
             "load": "Last",
             "awake_time": "Wachzeit",
@@ -221,6 +236,7 @@
     },
     "messages": {
         "answers": {
+            "custom_command_executed": "Der eigene Befehl `${custom_command}` wurde ausgeführt, `${username}`!",
             "execute_successful": "Die GCode Befehle wurden erfolgreich ausgeführt, `${username}`!",
             "preheat_preset": {
                 "preset": "Heize Profil `${preset}` vor, `${username}`!",
@@ -282,9 +298,14 @@
                 "speed_flow": "New speed factor is `${speed}%` and flow factor is `${flow}%`, `${username}`!"
             },
             "excluded_object": "Das Objekt `${object}` wurde ausgeschlossen, `${username}`!",
+            "power_device": {
+                "on": "Das Energiegerät `${power_device}` ist nun aktiv, `${username}`!",
+                "off": "Das Energiegerät `${power_device}` ist nun inaktiv, `${username}`!"
+            },
             "execute_success": "Befehl ausgeführt!"
         },
         "errors": {
+            "custom_command_descript": "Konfigurierter eigener Befehl",
             "execute_running": "Der Befehl Ausführer läuft bereits, versuch es später nochmal bitte, `${username}`!",
             "macros_failed": "Die Makros für `${button_label}` sind fehlgeschlagen, `${username}`!",
             "execute_failed": "Die GCode Befehle sind fehlgeschlagen, `${username}`!",
@@ -500,6 +521,16 @@
                 }
             }
         },
+        "power": {
+            "description": "Schalte ein Energiegerät um",
+            "command": "energie",
+            "options": {
+                "device": {
+                    "name": "geraet",
+                    "description": "Wähle ein Energiegerät."
+                }
+            }
+        },
         "preheat": {
             "description": "Heize manuell oder ein Profil vor.",
             "command": "preheat",
@@ -684,6 +715,10 @@
         "temp": {
             "description": "Bekomme die aktuellen Klipper Temperaturen.",
             "command": "temperaturen"
+        },
+        "history": {
+            "description": "Zeigt denn Druck Verlauf.",
+            "command": "verlauf"
         }
     },
     "graph": {

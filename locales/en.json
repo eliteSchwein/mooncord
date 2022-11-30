@@ -228,7 +228,7 @@
     },
     "messages": {
         "answers": {
-            "custom_command_executed": "The Custom Command ${custom_command} got executed, `${username}`!",
+            "custom_command_executed": "The Custom Command `${custom_command}` got executed, `${username}`!",
             "execute_successful": "The Gcode Commands executed successful, `${username}`!",
             "preheat_preset": {
                 "preset": "Preheating for `${preset}`, `${username}`!",
