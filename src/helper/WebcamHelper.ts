@@ -97,6 +97,9 @@ export class WebcamHelper {
                 logError(trace)
             }
 
+            logRegular('Run Webcam follow up Tasks if present...')
+            await this.executePostProcess(afterStatus)
+
             return new MessageAttachment(
                 resolve(__dirname, `../assets/icon-sets/${this.configHelper.getIconSet()}/snapshot-error.png`),
                 'snapshot-error.png'
