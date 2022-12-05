@@ -42,6 +42,9 @@
         "systeminfo_system": {
             "title": "Informacje o Systemie"
         },
+        "systeminfo_power_devices": {
+            "title": "Zasinanie urządzeń"
+        },
         "systeminfo_discord": {
             "title": "Informacje o kliencie Discord"
         },
@@ -80,6 +83,9 @@
         "info": {
             "title": "Informacje",
             "description": "Wersja: ${package_config.version}\nAutor: ${package_config.author}\nStrona główna: ${package_config.homepage}\n${config.custom_info}"
+        },
+        "history": {
+            "title": "Historia Druku"
         },
         "notification": {
             "title": "Powiadomienie"
@@ -162,11 +168,20 @@
             "title": "Aktualizacje systemu"
         },
         "fields": {
+            "total_filament_used": "Użyty Filament",
+            "total_time": "Czas Druku",
+            "total_print_time": "Całkowity Czas Druku",
+            "longest_job": "Najdłuższy Wydruk",
+            "longest_print": "Najdłuższy Druk",
+            "total_jobs": "Całkowita Ilość Wydruków",
+            "on": "${icon} On",
+            "off": "${icon} Off",
             "flow": "Flow",
             "system": "System",
             "packages": "Paczki",
             "chipset": "Chipset",
             "color": "Kolor",
+            "count": "Count",
             "version": "Wersja",
             "load": "Wczytaj",
             "awake_time": "Czas budzenia",
@@ -213,6 +228,7 @@
     },
     "messages": {
         "answers": {
+            "custom_command_executed": "Komenda ${custom_command} została wykonana, `${username}`!",
             "execute_successful": "Komenda GCODE została wykonana pomyślnie, `${username}`!",
             "preheat_preset": {
                 "preset": "Podgrzewanie dla `${preset}`, `${username}`!",
@@ -273,9 +289,14 @@
                 "flow": "Nowy współczynnik przepływu to `${flow}%`, `${username}`!",
                 "speed_flow": "Nowy współczynnik prędkości to `${speed}%` a współczynnik przepływu wynosi `${flow}%`, `${username}`!"
             },
-            "excluded_object": "Obiekt `${object}` został wykluczony, `${username}`!"
+            "excluded_object": "Obiekt `${object}` został wykluczony, `${username}`!",
+            "power_device": {
+                "on": "Zasilanie urządzenia `${power_device}` jest teraz włączone, `${username}`!",
+                "off": "Zasilanie urządzenia `${power_device}` jest teraz wyłączone, `${username}`!"
+            }
         },
         "errors": {
+            "custom_command_descript": "Skonfigurowano komendę",
             "execute_running": "Wykonywanie polecenia już trwa, spróbuj ponownie później, `${username}`!",
             "macros_failed": "Makro dla `${button_label}` nie powiodło się, `${username}`!",
             "execute_failed": "Polecenia Gcode nie powiodły się, `${username}`!",
@@ -487,6 +508,16 @@
                 }
             }
         },
+        "power": {
+            "description": "Przełącz zasilanie urządzenia.",
+            "command": "power",
+            "options": {
+                "device": {
+                    "name": "device",
+                    "description": "Wybierz urządzenie."
+                }
+            }
+        },
         "preheat": {
             "description": "Podgrzej profil lub ręcznie.",
             "command": "preheat",
@@ -671,6 +702,10 @@
         "temp": {
             "description": "Pobierz aktualne temperatury z Klippera.",
             "command": "temp"
+        },
+        "history": {
+            "description": "Shows the Print History.",
+            "command": "history"
         }
     },
     "graph": {
