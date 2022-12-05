@@ -107,7 +107,7 @@ export class WebcamHelper {
         }
     }
 
-    protected async triggerWebsite(url, post) {
+    protected triggerWebsite(url, post) {
         new Promise(async (resolve, reject) => {
             if (post) {
                 await axios.post(url)
@@ -143,11 +143,11 @@ export class WebcamHelper {
             }
             if (execute.startsWith("website_post:")) {
                 const url = execute.replace("website_post:", "")
-                await this.triggerWebsite(url, true)
+                this.triggerWebsite(url, true)
             }
             if (execute.startsWith("website:")) {
                 const url = execute.replace("website:", "")
-                await this.triggerWebsite(url, false)
+                this.triggerWebsite(url, false)
             }
             await sleep(config.delay)
             index++
