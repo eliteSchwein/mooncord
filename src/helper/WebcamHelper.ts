@@ -132,8 +132,8 @@ export class WebcamHelper {
             if (execute.startsWith("gcode:")) {
                 const gcode = execute.replace("gcode:", "")
                 try {
-                    this.moonrakerClient
-                        .sendThread(
+                    await this.moonrakerClient
+                        .send(
                             {"method": "printer.gcode.script", "params": {"script": gcode}},
                             this.configHelper.getGcodeExecuteTimeout() * 1000
                         )
