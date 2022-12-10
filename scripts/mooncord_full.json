@@ -1372,7 +1372,8 @@
         "error":{
             "embed_id": "error",
             "meta_data": {
-                "allow_same": false,
+                "cooldown": 1,
+                "allow_same": true,
                 "prevent": []
             },
             "activity": {
