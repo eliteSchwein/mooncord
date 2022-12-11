@@ -1,7 +1,7 @@
 [Unit]
 Description=MoonCord
-Requires=moonraker.service
-After=moonraker.service
+Requires=MC_MOONRAKER_SERVICE.service
+After=MC_MOONRAKER_SERVICE.service
 StartLimitIntervalSec=0
 
 [Service]

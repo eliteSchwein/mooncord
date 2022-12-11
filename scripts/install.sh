@@ -13,12 +13,13 @@ default=$(echo -en "\e[39m")
 
 SCRIPTPATH="$( cd "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 MCPATH="$( pwd -P )"
-MCCONFIGPATH="/home/$(whoami)/klipper_config"
-MCLOGPATH="/home/$(whoami)/klipper_logs"
+MCCONFIGPATH="/home/$(whoami)/printer_data/config"
+MCLOGPATH="/home/$(whoami)/printer_data/logs"
 MCSERVICENAME="MoonCord"
 MCTOKEN=""
 MCWEBTOKEN=""
 MCURL="http://127.0.0.1"
+MCMOONRAKERSERVICE="moonraker"
 MCCAMURL="http://127.0.0.1/webcam/?action=snapshot"
 MCCONTROLLER=""
 WRITECONFIG=true
@@ -27,7 +28,7 @@ questions()
 {
     title_msg "Welcome to the MoonCord Installer, as soon as you finished the answers the Installation will start."
 
-    if [ "$MCCONFIGPATH" == "/home/$(whoami)/klipper_config" ];
+    if [ "$MCCONFIGPATH" == "/home/$(whoami)/printer_data/config" ];
     then
         status_msg "Please enter your Klipper Config Path"
         while true; do
@@ -40,14 +41,14 @@ questions()
     fi
     ok_msg "Klipper Config Path set: $MCCONFIGPATH"
 
-    if [ "$MCLOGPATH" == "/home/$(whoami)/klipper_logs" ];
+    if [ "$MCLOGPATH" == "/home/$(whoami)/printer_data/logs" ];
     then
         status_msg "Please enter your Klipper Log Path"
         while true; do
             read -p "$cyan Path (leave empty if $MCLOGPATH is valid): $default" klipper_logs
             case $klipper_logs in
                 "") break;;
-                * ) $MCLOGPATH="$klipper_logs"; break;;
+                * ) MCLOGPATH="$klipper_logs"; break;;
             esac
         done
     fi
@@ -164,11 +165,13 @@ install_systemd_service()
     SERVICE=$(<$SCRIPTPATH/MoonCord.service)
     MCPATH_ESC=$(sed "s/\//\\\\\//g" <<< $MCPATH)
     MCNPM_ESC=$(sed "s/\//\\\\\//g" <<< $MCNPM)
+    MCMOONRAKERSERVICE_ESC=$(sed "s/\//\\\\\//g" <<< $MCMOONRAKERSERVICE)
     MCCONFIGPATH_ESC=$(sed "s/\//\\\\\//g" <<< "$MCCONFIGPATH/")
 
     SERVICE=$(sed "s/MC_USER/$USER/g" <<< $SERVICE)
     SERVICE=$(sed "s/MC_DIR/$MCPATH_ESC/g" <<< $SERVICE)
     SERVICE=$(sed "s/MC_NPM/$MCNPM_ESC/g" <<< $SERVICE)
+    SERVICE=$(sed "s/MC_MOONRAKER_SERVICE/$MCMOONRAKERSERVICE_ESC/g" <<< $SERVICE)
     SERVICE=$(sed "s/MC_CONFIG_PATH/$MCCONFIGPATH_ESC/g" <<< $SERVICE)
 
     echo "$SERVICE" | sudo tee /etc/systemd/system/$MCSERVICENAME.service > /dev/null
@@ -309,6 +312,7 @@ do
             --discord_token) MCTOKEN=${VALUE};;
             --moonraker_token) MCWEBTOKEN=${VALUE};;
             --moonraker_url) MCURL=${VALUE};;
+            --moonraker_service) MCMOONRAKERSERVICE=${VALUE};;
             --webcam_url) MCCAMURL=${VALUE};;
             --controller_tag) MCCONTROLLER=${VALUE};;
             *)   

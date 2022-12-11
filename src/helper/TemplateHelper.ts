@@ -11,6 +11,8 @@ import {MetadataHelper} from "./MetadataHelper";
 import * as app from "../Application";
 import path from "path";
 import {WebcamHelper} from "./WebcamHelper";
+import {PowerDeviceHelper} from "./PowerDeviceHelper";
+import {HistoryHelper} from "./HistoryHelper";
 
 export class TemplateHelper {
     protected localeHelper = new LocaleHelper()
@@ -19,7 +21,9 @@ export class TemplateHelper {
     protected tempHelper = new TempHelper()
     protected versionHelper = new VersionHelper()
     protected graphHelper = new GraphHelper()
+    protected powerDeviceHelper = new PowerDeviceHelper()
     protected webcamHelper = new WebcamHelper()
+    protected historyHelper = new HistoryHelper()
 
     public parseRawTemplate(type: string, id: string) {
         const unformattedData = Object.assign({}, getEntry(`${type}s`)[id])
@@ -34,6 +38,18 @@ export class TemplateHelper {
 
         if(unformattedData.show_temps) {
             unformattedData.fields = [...unformattedData.fields, ...this.tempHelper.parseFields().fields]
+        }
+
+        if(unformattedData.show_minimal_temps) {
+            unformattedData.fields = [...unformattedData.fields, ...this.tempHelper.parseFields(true).fields]
+        }
+
+        if(unformattedData.show_print_history) {
+            unformattedData.fields = [...unformattedData.fields, ...this.historyHelper.parseFields()]
+        }
+
+        if(unformattedData.show_power_devices) {
+            unformattedData.fields = [...unformattedData.fields, ...this.powerDeviceHelper.parseFields()]
         }
 
         if(unformattedData.buttons) {
@@ -250,7 +266,7 @@ export class TemplateHelper {
             cacheParser = this.getStateMessage()
         }
 
-        if(typeof cacheParser === 'undefined') {
+        if(cacheParser === undefined || cacheParser === null) {
             return {
                 'content': '',
                 'double_dash': true
@@ -280,9 +296,14 @@ export class TemplateHelper {
         const webhookStateMessage = findValue('state.webhooks.state_message')
         const state = findValue('function.current_status')
         const printerInfoStateMessage = findValue('printer_info.state_message')
+        const printStatsMessage = findValue('state.print_stats.message')
 
         if(webhookState === state) {
             return webhookStateMessage
+        }
+
+        if(printerInfoStateMessage === 'Printer is ready') {
+            return printStatsMessage
         }
 
         return printerInfoStateMessage
@@ -306,6 +327,10 @@ export class TemplateHelper {
 
         if(imageID === 'tempGraph') {
             return await this.graphHelper.getTempGraph()
+        }
+
+        if(imageID === 'historyGraph') {
+            return await this.graphHelper.getHistoryGraph()
         }
 
         if(imageID === 'excludeGraph') {

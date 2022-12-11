@@ -19,6 +19,8 @@ import {MetadataHelper} from "../helper/MetadataHelper";
 import * as App from '../Application'
 import {StatusHelper} from "../helper/StatusHelper";
 import {TempHelper} from "../helper/TempHelper";
+import {PowerDeviceHelper} from "../helper/PowerDeviceHelper";
+import {HistoryHelper} from "../helper/HistoryHelper";
 
 const requests: any = {}
 let messageHandler: MessageHandler
@@ -34,6 +36,8 @@ export class MoonrakerClient {
     protected alreadyRunning = false
     protected reconnectScheduler: any
     protected reconnectAttempt = 1
+    protected powerDeviceHelper = new PowerDeviceHelper(this)
+    protected historyHelper = new HistoryHelper(this)
 
     private async errorHandler(instance, event) {
         const reason = event.message
@@ -108,11 +112,11 @@ export class MoonrakerClient {
             .build()
             
         this.websocket.addEventListener(WebsocketEvents.close, ((async (instance, ev) => {
-            this.closeHandler(instance, ev)
+            await this.closeHandler(instance, ev)
         })))
             
         this.websocket.addEventListener(WebsocketEvents.error, ((async (instance, ev) => {
-            this.errorHandler(instance, ev)
+            await this.errorHandler(instance, ev)
         })))
 
         this.websocket.addEventListener(WebsocketEvents.open, ((async (instance, ev) => {
@@ -125,32 +129,34 @@ export class MoonrakerClient {
         })))
     }
 
+    private getCacheData(websocketCommand: any, cacheKey: string) {
+        new Promise(async (resolve, reject) => {
+            logRegular(`Retrieve Data for ${cacheKey}...`)
+            const data = await this.send(websocketCommand, 300_000)
+
+            setData(cacheKey, data.result)
+        })
+    }
+
     public async sendInitCommands() {
         logRegular('Send Initial Commands...')
 
-        logRegular('Retrieve MoonRaker Update Manager Data...')
-        const updates = await this.send({"method": "machine.update.status", "params":{"refresh": false}}, 300_000)
-
-        logRegular('Retrieve Printer Info...')
-        const printerInfo = await this.send({"method": "printer.info"})
-        
-        logRegular('Retrieve Server Config...')
-        const serverConfig = await this.send({"method": "server.config"})
-
-        logRegular('Retrieve Server Info...')
-        const serverInfo = await this.send({"method": "server.info"})
-
-        logRegular('Retrieve Machine System Info...')
-        const machineInfo = await this.send({"method": "machine.system_info"})
-
-        logRegular('Retrieve Proc Stats Info...')
-        const procStats = await this.send({"method": "machine.proc_stats"})
+        this.getCacheData({"method": "machine.update.status", "params":{"refresh": false}},'updates')
+        this.getCacheData({"method": "printer.info"}, 'printer_info')
+        this.getCacheData({"method": "server.config"}, 'server_config')
+        this.getCacheData({"method": "server.info"}, 'server_info')
+        this.getCacheData({"method": "machine.system_info"}, 'machine_info')
+        this.getCacheData({"method": "machine.proc_stats"}, 'proc_stats')
 
         logRegular('Retrieve Subscribable MoonRaker Objects...')
         const objects = await this.send({"method": "printer.objects.list"})
 
-        await this.fileListHelper.retrieveGcodeFiles()
-        await this.fileListHelper.retrieveConfigFiles()
+        await this.historyHelper.parseData()
+
+        this.powerDeviceHelper.getPowerDevices()
+
+        this.fileListHelper.retrieveFiles('config', 'config_files')
+        this.fileListHelper.retrieveFiles('gcodes', 'gcode_files')
 
         const subscriptionObjects: any = {
             'webhooks.state': null,
@@ -169,12 +175,6 @@ export class MoonrakerClient {
 
         this.ready = true
 
-        setData('updates', updates.result)
-        setData('printer_info', printerInfo.result)
-        setData('server_config', serverConfig.result)
-        setData('server_info', serverInfo.result)
-        setData('machine_info', machineInfo.result)
-        setData('proc_stats', procStats.result)
         setData('state', data.result.status)
 
         if(typeof data.result.status !== 'undefined') {
@@ -219,6 +219,18 @@ export class MoonrakerClient {
         }))
 
         messageHandler = new MessageHandler(this.websocket)
+    }
+
+    public sendThread(message, timeout = 10_000) {
+        new Promise(async (resolve, reject) => {
+            try {
+                await this.send(message, timeout)
+            } catch (e) {
+                logError(`An Error occured while sending a Websocket Request`)
+                logError(`Reason: ${e}`)
+                logError(`Websocket Request: ${JSON.stringify(message, null, 4)}`)
+            }
+        })
     }
 
     public async send(message, timeout = 10_000) {

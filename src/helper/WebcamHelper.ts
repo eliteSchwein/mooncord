@@ -4,7 +4,7 @@ import axios from "axios";
 import sharp from "sharp";
 import {MessageAttachment} from "discord.js";
 import {resolve} from "path"
-import {logEmpty, logError} from "./LoggerHelper";
+import {logEmpty, logError, logRegular} from "./LoggerHelper";
 import {MoonrakerClient} from "../clients/MoonrakerClient";
 import StackTrace from "stacktrace-js";
 
@@ -18,9 +18,11 @@ export class WebcamHelper {
         const beforeStatus = this.configHelper.getStatusBeforeTasks()
         const afterStatus = this.configHelper.getStatusAfterTasks()
 
+        logRegular('Run Webcam pre Tasks if present...')
         await this.executePostProcess(beforeStatus)
 
         try {
+            logRegular('Retrieve Webcam Snapshot...')
             const res = await axios({
                 method: 'get',
                 responseType: 'arraybuffer',
@@ -71,12 +73,15 @@ export class WebcamHelper {
 
                 const editBuffer = await image.toBuffer()
 
+                logRegular('Run Webcam follow up Tasks if present...')
                 await this.executePostProcess(afterStatus)
 
                 return new MessageAttachment(editBuffer, "snapshot.png")
             }
 
             // Else just send the normal images
+
+            logRegular('Run Webcam follow up Tasks if present...')
             await this.executePostProcess(afterStatus)
 
             return new MessageAttachment(Buffer.from(buffer), "snapshot.png")
@@ -92,6 +97,9 @@ export class WebcamHelper {
                 logError(trace)
             }
 
+            logRegular('Run Webcam follow up Tasks if present...')
+            await this.executePostProcess(afterStatus)
+
             return new MessageAttachment(
                 resolve(__dirname, `../assets/icon-sets/${this.configHelper.getIconSet()}/snapshot-error.png`),
                 'snapshot-error.png'
@@ -99,12 +107,14 @@ export class WebcamHelper {
         }
     }
 
-    protected async triggerWebsite(url, post) {
-        if (post) {
-            await axios.post(url)
-            return
-        }
-        await axios.get(url)
+    protected triggerWebsite(url, post) {
+        new Promise(async (resolve, reject) => {
+            if (post) {
+                await axios.post(url)
+                return
+            }
+            await axios.get(url)
+        })
     }
 
     protected async executePostProcess(config) {
@@ -118,13 +128,13 @@ export class WebcamHelper {
 
         while (index < config.execute.length) {
             const execute = config.execute[index]
+            logRegular(`Execute Webcam Task ${index+1} from ${config.execute.length}: ${execute}`)
             if (execute.startsWith("gcode:")) {
                 const gcode = execute.replace("gcode:", "")
-                const id = Math.floor(Math.random() * Number.parseInt("10_000")) + 1
                 try {
                     await this.moonrakerClient
                         .send(
-                            {"method": "printer.gcode.script", "params": {"script": gcode}, id},
+                            {"method": "printer.gcode.script", "params": {"script": gcode}},
                             this.configHelper.getGcodeExecuteTimeout() * 1000
                         )
                 } catch (error) {
@@ -133,11 +143,11 @@ export class WebcamHelper {
             }
             if (execute.startsWith("website_post:")) {
                 const url = execute.replace("website_post:", "")
-                await this.triggerWebsite(url, true)
+                this.triggerWebsite(url, true)
             }
             if (execute.startsWith("website:")) {
                 const url = execute.replace("website:", "")
-                await this.triggerWebsite(url, false)
+                this.triggerWebsite(url, false)
             }
             await sleep(config.delay)
             index++

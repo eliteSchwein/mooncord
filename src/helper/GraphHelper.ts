@@ -3,14 +3,14 @@ import {ConfigHelper} from './ConfigHelper';
 import {LocaleHelper} from './LocaleHelper';
 import {getEntry} from '../utils/CacheUtil';
 import {logRegular} from './LoggerHelper';
-import QuickChart from "quickchart-js";
-import {sleep} from "./DataHelper";
 import {MessageAttachment} from "discord.js";
 import sharp from "sharp";
+import {HistoryHelper} from "./HistoryHelper";
 
 export class GraphHelper {
     protected configHelper = new ConfigHelper()
     protected localeHelper = new LocaleHelper()
+    protected historyHelper = new HistoryHelper()
     protected locale = this.localeHelper.getLocale()
     protected tempValueLimit = 0
     protected tempCache = getEntry('temps')
@@ -59,189 +59,298 @@ ${svg}
         return new MessageAttachment(graphBuffer, 'excludeGraph.png')
     }
 
+    public async getHistoryGraph() {
+        const printStats = this.historyHelper.getPrintStats()
+        const chartConfigSection = this.configHelper.getGraphConfig('history_graph')
+        const graphData = []
+
+        logRegular('render history graph...')
+
+        for(const printStat in printStats.stats) {
+            graphData.push({
+                value: printStats.stats[printStat],
+                color: chartConfigSection.colors[printStat].color
+            })
+        }
+
+        const resWidth = 300
+        const resHeight = 300
+
+        const donutData = this.calculateDonut(150,150,125,graphData)
+
+        let svg = `<svg
+            version="1.1"
+            xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+            viewBox="0 0 ${resWidth} ${resHeight}">
+        `
+
+
+        for(const donutPartial of donutData) {
+            svg = `${svg}
+            <g><path d="${donutPartial.d}" stroke="${donutPartial.data.color}" fill="none" stroke-width="50"></path></g>
+            `
+        }
+
+        svg = `
+            ${svg}
+            </svg>
+        `
+
+        const graphBuffer = await sharp(Buffer.from(svg)).png().toBuffer()
+        return new MessageAttachment(graphBuffer, 'historyGraph.png')
+    }
+
     public async getTempGraph(sensor = undefined) {
         const moonrakerClient = App.getMoonrakerClient()
         const chartConfigSection = this.configHelper.getGraphConfig('temp_history')
+        const serverConfigCache = getEntry('server_config')
+        const tempLabel = this.locale.graph.temp_history.temperature
+        const powerLabel = this.locale.graph.temp_history.power
+        const powerColor = chartConfigSection.power_color
+
+        logRegular('render temp chart...')
 
         this.tempValueLimit = chartConfigSection.value_limit
 
         const tempHistoryRequest = await moonrakerClient.send({'method': 'server.temperature_store'})
 
-        const chartConfig = {
-            'type': 'line',
-            'data': {
-                'datasets': [],
-                'labels': []
-            },
-            'options': {
-                'layout': {
-                    'padding': {
-                        'right': 1
-                    }
-                },
-                'elements': {
-                    'point':{
-                        'radius': 0
-                    }
-                },
-                'legend': {
-                    'display': false,
-                    'labels': {
-                        'fontSize': 14,
-                        'fontColor': 'rgb(255,255,255)'
-                    }
-                },
-                'title': {
-                    'display': false
-                },
-                'animation': {
-                    'duration': 0
-                },
-                'hover': {
-                    'animationDuration': 0
-                },
-                'responsiveAnimationDuration': 0,
-                'scales': {
-                    'xAxes': [
-                        {
-                            'drawTicks': false,
-                            'color': 'rgba(255, 255, 255, 0)'
-                        }
-                    ],
-                    'yAxes': [
-                        {
-                            'id': 'temp',
-                            'type': 'linear',
-                            'position': 'left',
-                            'color': 'rgba(255, 255, 255, 0)',
-                            'ticks': {
-                                'min': 0,
-                                'stepSize': 0.5,
-                                'fontSize': 20,
-                                'maxTicksLimit': 12
-                            },
-                            'scaleLabel': {
-                                'fontSize': 20,
-                                'display': true,
-                                'labelString': this.locale.graph.temp_history.temperature
-                            }
-                        }
-                    ]
-                }
-            }
-        }
-
         if(typeof tempHistoryRequest.error !== 'undefined') {
             return
         }
+        const resHeight = 600
+        const offsetHeight = resHeight - 30
 
-        for(const rawTempSensor in tempHistoryRequest.result) {
-            const tempSensor = rawTempSensor.replace(/(temperature_sensor )|(temperature_fan )|(heater_generic )/g, '')
+        let max = 0
+        let width = serverConfigCache.config.data_store.temperature_store_size
+        const rawLines = []
+        const lines = []
 
-            if(typeof sensor !== 'undefined' && tempSensor !== sensor) { continue }
+        for(const sensorIndex in tempHistoryRequest.result) {
+            const sensorLabel = sensorIndex.replace(/(temperature_sensor )|(temperature_fan )|(heater_generic )/g, '')
 
-            const tempValues = this.getTempValues(tempHistoryRequest.result[rawTempSensor].temperatures)
-            const tempTargets = this.getTempValues(tempHistoryRequest.result[rawTempSensor].targets)
-            const tempPowers =  this.getTempValues(tempHistoryRequest.result[rawTempSensor].powers)
-
-            chartConfig.data.datasets.push({
-                'label': tempSensor,
-                'borderColor': this.tempCache.colors[rawTempSensor].color,
-                'fill': false,
-                'data': tempValues,
-                'yAxisID': 'temp'
-            })
-
-            if(typeof sensor !== 'undefined') {
-                chartConfig.options.legend.display = true
-
-                chartConfig.options.scales.yAxes.push({
-                    'id': 'power',
-                    'color': 'rgba(255, 255, 255, 0)',
-                    'type': 'linear',
-                    'position': 'right',
-                    'ticks': {
-                        // @ts-ignore
-                        'max': 100,
-                        'min': 0,
-                        'fontSize': 20
-                    },
-                    'scaleLabel': {
-                        'fontSize': 20,
-                        'display': true,
-                        'labelString': this.locale.graph.temp_history.power
-                    }
-                })
-
-                const parsedTempPowers = []
-
-                for(let i = 0; i < tempPowers.length; i++) {
-                    parsedTempPowers.push(tempPowers[i] * 100)
-                }
-
-                chartConfig.data.datasets.push({
-                    'label': `${tempSensor}_power`,
-                    'lineStyle': {
-                        'type': 'dashed'
-                    },
-                    'borderColor': this.tempCache.colors[rawTempSensor].color,
-                    'backgroundColor': 'rgba(0,0,0,0)',
-                    'data': parsedTempPowers,
-                    'borderDash': [5,10],
-                    'yAxisID': 'power'
-                })
+            if(sensor !== undefined && sensorLabel !== sensor) {
+                continue
             }
 
-            chartConfig.data.datasets.push({
-                'label': `${tempSensor}_target`,
-                'backgroundColor': this.tempCache.colors[rawTempSensor].color+'35',
-                'borderColor': this.tempCache.colors[rawTempSensor].color+'00',
-                'data': tempTargets,
-                'yAxisID': 'temp'
+            const sensorData = tempHistoryRequest.result[sensorIndex]
+            const color = this.tempCache.colors[sensorIndex].color
+            const sensorTempMax = Math.max.apply(null, sensorData.temperatures)
+            const sensorTargetMax = Math.max.apply(null, sensorData.targets)
+
+            if(max < sensorTempMax) {
+                max = Math.ceil((sensorTempMax+1)/10)*10
+            }
+
+            if(max < sensorTargetMax) {
+                max = Math.ceil((sensorTargetMax+1)/10)*10
+            }
+
+            rawLines.push({
+                label: sensorLabel,
+                temperatures: sensorData.temperatures,
+                targets: sensorData.targets,
+                powers: sensorData.powers,
+                color: color,
+                type: 'temp'
             })
         }
 
-        for(let i = 0; i < this.tempValueLimit; i++) {
-           chartConfig.data.labels.push('')
+        const graphWidth = width
+        width += 120
+        if(sensor !== undefined) {
+            width += 120
         }
 
-        const chart = await this.renderChart(chartConfig, 800, 400, 'temp')
-
-        if(typeof chart === 'undefined') {
-            return
+        let tempLabels = this.generateIntervalsOf(10, 0, max+5)
+        if(tempLabels.length > 12) {
+            tempLabels = this.generateIntervalsOf(20, 0, max+15)
+        }
+        if(tempLabels.length > 24) {
+            tempLabels = this.generateIntervalsOf(30, 0, max+25)
         }
 
-        return chart
+        max = tempLabels[tempLabels.length - 1]
+
+        for(const lineData of rawLines) {
+            if(lineData.type === 'temp') {
+                lines.push({
+                    label: lineData.label,
+                    color: lineData.color,
+                    type: 'temp',
+                    coords: this.convertToCoords(lineData.temperatures, max, offsetHeight, resHeight)
+                })
+
+                lines.push({
+                    label: lineData.label,
+                    color: lineData.color,
+                    type: 'target',
+                    coords: this.convertToCoords(lineData.targets, max, offsetHeight, resHeight)
+                })
+
+                if(sensor !== undefined) {
+                    lines.push({
+                        label: lineData.label,
+                        color: powerColor,
+                        type: 'power',
+                        coords: this.convertToCoords(lineData.powers, 1, offsetHeight, resHeight)
+                    })
+                }
+            }
+        }
+
+        const tempLabelSpace = offsetHeight / (tempLabels.length - 1)
+        const powerLabelSpace = offsetHeight / 10
+
+        let svg = `<svg
+            version="1.1"
+            xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+            viewBox="0 0 ${width} ${resHeight}">
+            <text x="-300" y="35"
+                  style="font: 600 45px Arial;fill: gray;text-anchor: middle" transform="rotate(270)">
+                ${tempLabel}
+            </text>
+            `
+        if(sensor !== undefined) {
+            svg =`
+            ${svg}
+            <text x="300" y="-${width-45}"
+                  style="font: 600 35px Arial;fill: gray;text-anchor: middle" transform="rotate(90)">
+                ${powerLabel}
+            </text>
+            `
+        }
+        svg =`
+            ${svg}
+            <g transform="translate(130,0)">
+            `
+
+        for(const line of lines) {
+            if(line.coords === undefined) {
+                continue
+            }
+            if(line.type === 'temp' || line.type === 'power') {
+                svg = `
+                ${svg}
+                    <polyline points="${line.coords.join(' ')}" style="fill:none;stroke:${line.color};stroke-width:5" data-label="${line.label}" />
+                `
+                continue
+            }
+            if(line.type === 'target') {
+                svg = `
+                    ${svg}
+                    <polygon points="0,${resHeight - 10} ${line.coords.join(' ')} ${graphWidth},${resHeight - 10}" style="fill:${line.color}11;stroke:${line.color}33;stroke-width:5;" data-label="${line.label}" stroke-dasharray="10"/>
+                `
+            }
+        }
+        svg =`
+            ${svg}
+            </g>
+            `
+
+        let heightIndex = 0
+
+        for(const tempLabel of tempLabels) {
+            svg = `
+                ${svg}
+                <text x="125" y="${resHeight - heightIndex * tempLabelSpace}" style="font: bold 40px Arial;fill: gray;text-anchor: end">${tempLabel}</text>
+                <line x1="130" y1="${resHeight - heightIndex * tempLabelSpace - 10}" x2="${graphWidth + 130}" y2="${resHeight - heightIndex * tempLabelSpace - 10}" style="stroke: rgba(172,172,172,0.2);stroke-width: 3px"></line>
+            `
+            heightIndex++
+        }
+
+        if(sensor !== undefined) {
+            for (let i = 0; i < 11; i++) {
+                svg = `
+                ${svg}
+                <text x="${width-105}" y="${resHeight-i*powerLabelSpace}" style="font: bold 40px Arial;fill: gray;text-anchor: start">${i*10}</text>
+            `
+            }
+        }
+
+        svg = `
+            ${svg}
+            </svg>
+        `
+
+        const graphBuffer = await sharp(Buffer.from(svg)).png().toBuffer()
+        return new MessageAttachment(graphBuffer, 'tempGraph.png')
     }
 
-    private async renderChart(chartConfig, width: number, height: number, chartName: string) {
-        logRegular(`Render the Chart for ${chartName}...`)
-        const quickChart = new QuickChart()
+    private convertToCoords(values: [], max: number, offsetHeight = 400, resHeight = 600) {
+        const coords = []
+        let widthIndex = 0
 
-        quickChart
-            .setConfig(chartConfig)
-            .setHeight(height)
-            .setWidth(width)
-            .setBackgroundColor('#000000')
+        if(values === undefined) { return }
 
-        const url = await quickChart.getShortUrl()
+        for(const value of values) {
+            coords.push(`${widthIndex},${resHeight - 10 - ((((value * 100) / max) / 100) * offsetHeight)}`)
+            widthIndex++
+        }
 
-        await sleep(500)
-
-        return url
+        return coords
     }
 
-    private getTempValues(tempValues: []) {
-        if(typeof tempValues === 'undefined') {
-            return []
+    private generateIntervalsOf(interval, start, end) {
+        const result = [];
+        let current = start;
+
+        while (current < end) {
+            result.push(current);
+            current += interval;
         }
 
-        if(tempValues.length < this.tempValueLimit) {
-            return tempValues
+        return result;
+    }
+
+    private arcradius(cx, cy, radius, degrees) {
+        const radians = (degrees - 90) * Math.PI / 180.0;
+        return { x: cx + (radius * Math.cos(radians)), y: cy + (radius * Math.sin(radians)) };
+    }
+
+    private calculateDonut(cx, cy, radius, data) {
+        const dataLength = data.length
+        const decimals = 4;
+        let total = 0;
+        const arr = [];
+        let beg = 0;
+        let end = 0;
+        let count = 0;
+
+        for (let i = 0; i < dataLength; i++)
+            total += data[i].value;
+
+        for (let i = 0; i < dataLength; i++) {
+            const item = data[i];
+            const tmp = {
+                index: undefined,
+                value: undefined,
+                data: undefined,
+                d: undefined
+            };
+
+            let p = Number((((item.value + 1) / total) * 100).toFixed(2));
+
+            count += p;
+
+            if (i === dataLength - 1 && count < 100)
+                p = p + (100 - count);
+
+            end = beg + ((360 / 100) * p);
+            tmp.index = i;
+            tmp.value = item.value;
+            tmp.data = item;
+
+            const b = this.arcradius(cx, cy, radius, end);
+            const e = this.arcradius(cx, cy, radius, beg);
+            const la = (end - beg) <= 180 ? 0 : 1;
+
+            tmp.d = ['M', b.x.toFixed(decimals), b.y.toFixed(decimals), 'A', radius, radius, 0, la, 0, e.x.toFixed(decimals), e.y.toFixed(decimals)].join(' ');
+            arr.push(tmp);
+            beg = end;
         }
 
-        const limitStart = tempValues.length - this.tempValueLimit
-
-        return tempValues.slice(limitStart)
+        return arr;
     }
 }

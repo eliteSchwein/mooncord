@@ -42,6 +42,9 @@
         "systeminfo_system": {
             "title": "System Information"
         },
+        "systeminfo_power_devices": {
+            "title": "Power Devices"
+        },
         "systeminfo_discord": {
             "title": "Discord Client Information"
         },
@@ -80,6 +83,9 @@
         "info": {
             "title": "Informations",
             "description": "Version: ${package_config.version}\nAuthor: ${package_config.author}\nHomepage: ${package_config.homepage}\n${config.custom_info}"
+        },
+        "history": {
+            "title": "Printjob History"
         },
         "notification": {
             "title": "Notification"
@@ -162,11 +168,20 @@
             "title": "System Updates"
         },
         "fields": {
+            "total_filament_used": "Total Filament",
+            "total_time": "Total Time",
+            "total_print_time": "Total Print Time",
+            "longest_job": "Longest Job",
+            "longest_print": "Longest Print",
+            "total_jobs": "Total Jobs",
+            "on": "${icon} On",
+            "off": "${icon} Off",
             "flow": "Flow",
             "system": "System",
             "packages": "Packages",
             "chipset": "Chipset",
             "color": "Color",
+            "count": "Count",
             "version": "Version",
             "load": "Load",
             "awake_time": "Awake Time",
@@ -213,6 +228,7 @@
     },
     "messages": {
         "answers": {
+            "custom_command_executed": "The Custom Command `${custom_command}` got executed, `${username}`!",
             "execute_successful": "The Gcode Commands executed successful, `${username}`!",
             "preheat_preset": {
                 "preset": "Preheating for `${preset}`, `${username}`!",
@@ -273,9 +289,14 @@
                 "flow": "New flow factor is `${flow}%`, `${username}`!",
                 "speed_flow": "New speed factor is `${speed}%` and flow factor is `${flow}%`, `${username}`!"
             },
-            "excluded_object": "The Object `${object}` got excluded, `${username}`!"
+            "excluded_object": "The Object `${object}` got excluded, `${username}`!",
+            "power_device":{
+                "on": "The Power Device `${power_device}` is now on, `${username}`!",
+                "off": "The Power Device `${power_device}` is now off, `${username}`!"
+            }
         },
         "errors": {
+            "custom_command_descript": "Configured Custom Command",
             "execute_running": "The Command Executer is already running, please try again later, `${username}`!",
             "macros_failed": "The Macros for `${button_label}` failed, `${username}`!",
             "execute_failed": "The Gcode Commands failed, `${username}`!",
@@ -428,6 +449,10 @@
                     "value": "moonraker_client"
                 },
                 {
+                    "label": "Power Devices",
+                    "value": "power_devices"
+                },
+                {
                     "label": "Updates",
                     "value": "update"
                 }
@@ -484,6 +509,16 @@
                 "temperature": {
                     "name": "temperature",
                     "description": "Set the Tune Temperature."
+                }
+            }
+        },
+        "power": {
+            "description": "Toggle a Power Device",
+            "command": "power",
+            "options": {
+                "device": {
+                    "name": "device",
+                    "description": "Select a Power Device."
                 }
             }
         },
@@ -671,6 +706,10 @@
         "temp": {
             "description": "Get the current Temperatures from Klipper.",
             "command": "temp"
+        },
+        "history": {
+            "description": "Shows the Print History.",
+            "command": "history"
         }
     },
     "graph": {

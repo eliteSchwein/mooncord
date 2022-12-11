@@ -47,15 +47,19 @@ export class TempHelper {
         })
     }
 
-    public parseFields() {
+    public parseFields(minimal = false) {
         const result = {
             "fields": [],
             "cache_ids": []
         }
-        const supportedSensors = this.tempMeta.supported_sensors
+        let supportedSensors = this.tempMeta.supported_sensors
+
+        if(minimal) {
+            supportedSensors = this.tempMeta.minimal_supported_sensors
+        }
 
         for(const sensorType of supportedSensors) {
-            const sensorResult = this.parseFieldsSet(sensorType)
+            const sensorResult = this.parseFieldsSet(sensorType, minimal)
             
             if(sensorResult.fields.length > 0) {
                 result.fields = result.fields.concat(sensorResult.fields)
@@ -86,7 +90,7 @@ export class TempHelper {
         return speed < (this.tempMeta.slow_fan_meta.fast_fan / 100)
     }
 
-    public parseFieldsSet(key: string) {
+    public parseFieldsSet(key: string, hideColor = false) {
         const allias = this.tempMeta.alliases[key]
 
         const cacheData = this.parseCacheFields(key)
@@ -107,7 +111,8 @@ export class TempHelper {
             }
 
             if(typeof cacheData[cacheKey].temperature !== 'undefined' &&
-                this.tempMeta.temperature_sensors.includes(key)) {
+                this.tempMeta.temperature_sensors.includes(key) &&
+                !hideColor) {
 
                 mappingData.fields.color = {
                     label: '${embeds.fields.color}',
@@ -132,7 +137,7 @@ export class TempHelper {
             for(const fieldKey in mappingData.fields) {
                 const fieldData = mappingData.fields[fieldKey]
 
-                if(fieldKey === 'color') {
+                if(fieldKey === 'color' && !hideColor) {
                     keyData.value = `${keyData.value}\n\`${fieldData.label}\` ${fieldData.icon}`
                     continue
                 }
@@ -178,6 +183,26 @@ export class TempHelper {
 
     public getHeaterTarget(heater: string) {
         return this.cache[heater].target
+    }
+
+    public getHeaterConfigData(heater:string) {
+        const rawSearch = findValue(`state.configfile.config.${heater}`)
+
+        if(rawSearch !== undefined && rawSearch !== null) {
+            return rawSearch
+        }
+
+        return findValue(`state.configfile.config.heater_generic ${heater}`)
+    }
+
+    public getHeaterConfigName(heater:string) {
+        const rawSearch = findValue(`state.configfile.config.${heater}`)
+
+        if(rawSearch !== undefined && rawSearch !== null) {
+            return heater
+        }
+
+        return `heater_generic ${heater}`
     }
 
     public async setHeaterTemp(heater: string, heaterTemp: number) {

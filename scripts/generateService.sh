@@ -14,7 +14,14 @@ default=$(echo -en "\e[39m")
 SCRIPTPATH="$( cd "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 MCPATH="$( pwd -P )"
 MCCONFIGPATH="/home/$(whoami)/klipper_config"
+MCLOGPATH="/home/$(whoami)/klipper_logs"
 MCSERVICENAME="MoonCord"
+MCTOKEN=""
+MCWEBTOKEN=""
+MCURL="http://127.0.0.1"
+MCMOONRAKERSERVICE="moonraker"
+MCCAMURL="http://127.0.0.1/webcam/?action=snapshot"
+MCCONTROLLER=""
 
 install_systemd_service()
 {
@@ -24,11 +31,13 @@ install_systemd_service()
     SERVICE=$(<$SCRIPTPATH/MoonCord.service)
     MCPATH_ESC=$(sed "s/\//\\\\\//g" <<< $MCPATH)
     MCNPM_ESC=$(sed "s/\//\\\\\//g" <<< $MCNPM)
+    MCMOONRAKERSERVICE_ESC=$(sed "s/\//\\\\\//g" <<< $MCMOONRAKERSERVICE)
     MCCONFIGPATH_ESC=$(sed "s/\//\\\\\//g" <<< "$MCCONFIGPATH/")
 
     SERVICE=$(sed "s/MC_USER/$USER/g" <<< $SERVICE)
     SERVICE=$(sed "s/MC_DIR/$MCPATH_ESC/g" <<< $SERVICE)
     SERVICE=$(sed "s/MC_NPM/$MCNPM_ESC/g" <<< $SERVICE)
+    SERVICE=$(sed "s/MC_MOONRAKER_SERVICE/$MCMOONRAKERSERVICE_ESC/g" <<< $SERVICE)
     SERVICE=$(sed "s/MC_CONFIG_PATH/$MCCONFIGPATH_ESC/g" <<< $SERVICE)
 
     echo "$SERVICE" | sudo tee /etc/systemd/system/$MCSERVICENAME.service > /dev/null
@@ -50,7 +59,6 @@ locate_config()
 {
     if [[ "$MCCONFIGPATH" == "" ]]
     then
-        warn_msg "no config argument found, use automatic methode!"
         MCCONFIGPATH="."
     fi
 }
@@ -114,7 +122,14 @@ do
     
     case "$KEY" in
             --config_path) MCCONFIGPATH=${VALUE} ;;
-            --service_suffix) MCSERVICENAME="${MCSERVICENAME}_${VALUE}" ;;     
+            --log_path) MCLOGPATH=${VALUE} ;;
+            --service_suffix) MCSERVICENAME="${MCSERVICENAME}_${VALUE}" ;;
+            --discord_token) MCTOKEN=${VALUE};;
+            --moonraker_token) MCWEBTOKEN=${VALUE};;
+            --moonraker_url) MCURL=${VALUE};;
+            --moonraker_service) MCMOONRAKERSERVICE=${VALUE};;
+            --webcam_url) MCCAMURL=${VALUE};;
+            --controller_tag) MCCONTROLLER=${VALUE};;
             *)   
     esac    
 done

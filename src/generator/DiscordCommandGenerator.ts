@@ -3,6 +3,7 @@ import {
     getEntry,
     getHeaterArguments,
     getHeaterChoices,
+    getPowerDeviceChoices,
     getPreheatProfileChoices,
     getServiceChoices,
     setData
@@ -12,19 +13,50 @@ import {readFileSync} from "fs";
 import path from "path";
 import * as App from "../Application"
 import {logError, logRegular} from "../helper/LoggerHelper";
+import {ConfigHelper} from "../helper/ConfigHelper";
+import {mergeDeep} from "../helper/DataHelper";
+import {Routes} from "discord-api-types/v10"
 
 export class DiscordCommandGenerator {
     protected localeHelper = new LocaleHelper()
+    protected configHelper = new ConfigHelper()
+    protected locale = this.localeHelper.getLocale()
     protected commandStructure = {}
+    protected customCommandStructure = {}
+
+    public constructor() {
+        const commandStructureFile = readFileSync(path.resolve(__dirname, '../src/meta/command_structure.json'))
+        this.commandStructure = JSON.parse(commandStructureFile.toString('utf8'))
+        this.customCommandStructure = this.getCustomCommandStructure()
+        mergeDeep(this.commandStructure, this.customCommandStructure)
+    }
+
+    public getCustomCommandData(key: string) {
+        const customCommandsConfig = this.configHelper.getCustomCommands()
+        return customCommandsConfig[key]
+    }
 
     public async registerCommands() {
+        const rest = App.getDiscordClient().getRest()
         const commandList = []
         const commandCache = {}
         const commandStructureFile = readFileSync(path.resolve(__dirname, '../src/meta/command_structure.json'))
         this.commandStructure = JSON.parse(commandStructureFile.toString('utf8'))
+        this.customCommandStructure = this.getCustomCommandStructure()
+        mergeDeep(this.commandStructure, this.customCommandStructure)
+
+        logRegular('get current commands...')
+        const currentCommands = await rest.get(Routes.applicationCommands(App.getDiscordClient().getClient().user.id))
+        const commandKeys = []
 
         for (const commandIndex in this.commandStructure) {
-            const command = this.buildCommand(commandIndex)
+            let command: any
+            if(Object.keys(this.customCommandStructure).includes(commandIndex)) {
+                command = this.customCommandStructure[commandIndex]
+            } else {
+                command = this.buildCommand(commandIndex)
+            }
+            commandKeys.push(command.name)
             commandList.push(command)
             commandCache[commandIndex] = command
 
@@ -41,7 +73,59 @@ export class DiscordCommandGenerator {
             })
         }
 
+        for(const currentCommand of currentCommands) {
+            if(!commandKeys.includes(currentCommand.name)) {
+                logRegular(`Unregister Command ${currentCommand.name}...`)
+                const deleteUrl = `${Routes.applicationCommands(App.getDiscordClient().getClient().user.id)}/${currentCommand.id}`;
+
+                new Promise(async (resolve, reject) => {
+                    try {
+                        await rest.delete(deleteUrl)
+                    } catch (e) {
+                        logError(`An Error occured while unregistering the command ${currentCommand.name}`)
+                        logError(`Reason: ${e}`)
+                        logError(`Command Data: ${JSON.stringify(currentCommand, null, 4)}`)
+                    }
+                })
+            }
+        }
+
         setData('commands', commandCache)
+    }
+
+    private getCustomCommandStructure() {
+        const customCommandsConfig = this.configHelper.getCustomCommands()
+        const customCommands = {}
+
+        for(const name of Object.keys(customCommandsConfig)) {
+            if(Object.keys(this.commandStructure).includes(name)) {
+                this.showCustomCommandError(`The Custom Command ${name} is invalid, you cant overwrite existing commands!`)
+                continue
+            }
+            const customCommandData = customCommandsConfig[name]
+            if(customCommandData.macros === undefined && customCommandData.websocket_commands === undefined) {
+                this.showCustomCommandError(`The Custom Command ${name} is invalid, it doesnt have any macros or websocket_commands configured!`)
+                continue
+            }
+            const customCommandDescription = (customCommandData.description === null || customCommandData.description === null)
+                ? this.locale.messages.errors.custom_command_descript
+                : customCommandData.description
+
+            customCommands[name] = {
+                'name': name,
+                'description': customCommandDescription
+            }
+        }
+
+        return customCommands
+    }
+
+    private showCustomCommandError(message: string) {
+        const commandCache = getEntry('commands')
+        if(commandCache === undefined || Object.keys(commandCache).length > 0) {
+            return
+        }
+        logError(message)
     }
 
     public getCommandId(command:string) {
@@ -52,6 +136,10 @@ export class DiscordCommandGenerator {
 
             if(commandData.name === command) { return commandId}
         }
+    }
+
+    public isCustomCommand(command:string) {
+        return Object.keys(this.customCommandStructure).includes(command)
     }
 
     protected buildCommand(command:string) {
@@ -126,6 +214,8 @@ export class DiscordCommandGenerator {
                 optionBuilder.choices = getServiceChoices()
             } else if (optionMeta.choices === '${preheatProfileChoices}') {
                 optionBuilder.choices = getPreheatProfileChoices()
+            } else if (optionMeta.choices === '${powerDeviceChoices}') {
+                optionBuilder.choices = getPowerDeviceChoices()
             } else if (optionMeta.choices === '${heaterChoices}') {
                 optionBuilder.choices = getHeaterChoices()
             } else {

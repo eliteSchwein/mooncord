@@ -46,13 +46,13 @@ export class ShowTempSelection {
         const tempGraph = await this.graphHelper.getTempGraph(heater)
         const embed = embedData.embed.embeds[0] as MessageEmbed
         const components = embedData.embed['components']
-        let files = []
+        let files = [tempGraph]
 
         if(typeof embedData.embed['files'] !== 'undefined') {
             files = [...files, ...embedData.embed['files']]
         }
 
-        embed.setImage(tempGraph)
+        embed.setImage(`attachment://${tempGraph.name}`)
 
         const currentMessage = interaction.message as Message
         await currentMessage.edit({components: null})

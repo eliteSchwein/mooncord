@@ -42,6 +42,9 @@
         "systeminfo_system": {
             "title": "Systeeminformatie"
         },
+        "systeminfo_power_devices": {
+            "title": "Stroombronnen"
+        },
         "systeminfo_discord": {
             "title": "Discord Client Information"
         },
@@ -80,6 +83,9 @@
         "info": {
             "title": "Informatie",
             "description": "Versie: ${package_config.version}\nAuteur: ${package_config.author}\nHomepage: ${package_config.homepage}\n${config.custom_info}"
+        },
+        "history": {
+            "title": "Printgeschiedenis"
         },
         "notification": {
             "title": "Notificatie"
@@ -162,11 +168,20 @@
             "title": "Systeemupdates"
         },
         "fields": {
+            "total_filament_used": "Totaal filament",
+            "total_time": "Totaal tijd",
+            "total_print_time": "Totale printtijd",
+            "longest_job": "Langste opdracht",
+            "longest_print": "Langste print",
+            "total_jobs": "Totaal opdrachten",
+            "on": "${icon} aan",
+            "off": "${icon} uit",
             "flow": "Flow",
             "system": "Systeem",
             "packages": "Pakketten",
             "chipset": "Chipset",
             "color": "Kleur",
+            "count": "Aantal",
             "version": "Versie",
             "load": "Belasting",
             "awake_time": "Wakkertijd",
@@ -221,6 +236,7 @@
     },
     "messages": {
         "answers": {
+            "custom_command_executed": "Het commando `${custom_command}` werd uitgevoerd, `${username}`!",
             "execute_successful": "De Gcode-commandos zijn succesvol uitgevoerd, `${username}`!",
             "preheat_preset": {
                 "preset": "Opwarmen van `${preset}`, `${username}`!",
@@ -282,9 +298,14 @@
                 "speed_flow": "De nieuwe snelheidsfactor is `${speed}%` en de flowfactor is `${flow}%`, `${username}`!"
             },
             "excluded_object": "Het object `${object}` is nu uitgesloten, `${username}`!",
+            "power_device": {
+                "on": "De stroombron `${power_device}` staat nu aan, `${username}`!",
+                "off": "De stroombron `${power_device}` staat nu uit, `${username}`!"
+            },
             "execute_success": "Commando uitgevoerd!"
         },
         "errors": {
+            "custom_command_descript": "Geconfigureerde opdrachten",
             "execute_running": "Reeds bezig met een commando-uitvoer, probeer het later nogmaals, `${username}`!",
             "macros_failed": "De uitvoer van de macro voor `${button_label}` is mislukt, `${username}`!",
             "execute_failed": "Het Gcode-commando is mislukt, `${username}`!",
@@ -484,6 +505,16 @@
                 }
             }
         },
+        "power": {
+            "description": "Schakel een stroombron aan of uit",
+            "command": "power",
+            "options": {
+                "device": {
+                    "name": "bron",
+                    "description": "Kies een bron."
+                }
+            }
+        },
         "preheat": {
             "description": "Voorverwarmen met een profiel of handmatig.",
             "command": "verwarm",
@@ -668,6 +699,10 @@
         "temp": {
             "description": "Haal de huidige temperaturen op van Klipper.",
             "command": "temp"
+        },
+        "history": {
+            "description": "Laat de printgeschiedenis zien.",
+            "command": "geschiedenis"
         }
     },
     "graph": {

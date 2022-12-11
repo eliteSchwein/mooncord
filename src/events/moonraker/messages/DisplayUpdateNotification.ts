@@ -22,6 +22,7 @@ export class DisplayUpdateNotification {
         const displayMessage = param.display_status.message
 
         if(displayMessage === null) { return }
+        if(displayMessage.match(/(Rendering (\||\/|-|\\))/g)) { return }
 
         logRegular(`Broadcast Message: ${displayMessage}`)
 

@@ -277,6 +277,12 @@
                 "users": [],
                 "roles": []
             },
+            "custom_command": {
+                "botadmin": false,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
             "dump": {
                 "botadmin": true,
                 "guildadmin": false,
@@ -374,6 +380,12 @@
                 "roles": []
             },
             "temp": {
+                "botadmin": true,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
+            "history": {
                 "botadmin": true,
                 "guildadmin": false,
                 "users": [],
@@ -517,6 +529,37 @@
             "color": "#0099ff",
             "thumbnail": "logo.png"
         },
+        "history": {
+            "image": "historyGraph",
+            "color": "#0099ff",
+            "fields": [
+                {
+                    "name": "${embeds.fields.total_jobs}",
+                    "value": "${history.total.job_totals.total_jobs}"
+                },
+                {
+                    "name": "${embeds.fields.total_time}",
+                    "value": "${formatTime:history.total.job_totals.total_time}"
+                },
+                {
+                    "name": "${embeds.fields.total_print_time}",
+                    "value": "${formatTime:history.total.job_totals.total_print_time}"
+                },
+                {
+                    "name": "${embeds.fields.total_filament_used}",
+                    "value": "${reduce:1000:2:history.total.job_totals.total_filament_used}m"
+                },
+                {
+                    "name": "${embeds.fields.longest_job}",
+                    "value": "${formatTime:history.total.job_totals.longest_job}"
+                },
+                {
+                    "name": "${embeds.fields.longest_print}",
+                    "value": "${formatTime:history.total.job_totals.longest_print}"
+                }
+            ],
+            "show_print_history": true
+        },
         "notification": {
             "color": "#03f4fc",
             "thumbnail": "notification.png",
@@ -561,7 +604,8 @@
                     "name": "${embeds.fields.flow}",
                     "value": "${percent:0:state.gcode_move.extrude_factor}%"
                 }
-            ]
+            ],
+            "show_minimal_temps": true
         },
         "printjob_complete":{
             "color": "#25db00",
@@ -597,7 +641,7 @@
                 },
                 {
                     "name": "${embeds.fields.print_progress}",
-                    "value": "${percent:0:state.display_status.progress}%"
+                    "value": "${percent:0:function.current_percent}%"
                 },
                 {
                     "name": "${embeds.fields.print_layers}",
@@ -611,7 +655,8 @@
                     "name": "${embeds.fields.flow}",
                     "value": "${percent:0:state.gcode_move.extrude_factor}%"
                 }
-            ]
+            ],
+            "show_minimal_temps": true
         },
         "printjob_printing":{
             "color": "#0099ff",
@@ -638,7 +683,7 @@
                 },
                 {
                     "name": "${embeds.fields.print_progress}",
-                    "value": "${percent:0:state.display_status.progress}%"
+                    "value": "${percent:0:function.current_percent}%"
                 },
                 {
                     "name": "${embeds.fields.print_layers}",
@@ -652,7 +697,8 @@
                     "name": "${embeds.fields.flow}",
                     "value": "${percent:0:state.gcode_move.extrude_factor}%"
                 }
-            ]
+            ],
+            "show_minimal_temps": true
         },
         "printjob_stop":{
             "color": "#c90000",
@@ -667,7 +713,7 @@
                 },
                 {
                     "name": "${embeds.fields.print_progress}",
-                    "value": "${percent:0:state.display_status.progress}%"
+                    "value": "${percent:0:function.current_percent}%"
                 },
                 {
                     "name": "${embeds.fields.print_layers}",
@@ -721,7 +767,9 @@
         "error":{
             "description": "```${state_message}```",
             "color": "#c90000",
-            "buttons": ["klipper_restart"]
+            "buttons": ["klipper_restart"],
+            "fields": [],
+            "show_minimal_temps": true
         },
         "offline":{
             "color": "#c90000",
@@ -884,6 +932,16 @@
                     "value": "<t:${round:0:moonraker_client.readySince}>"
                 }
             ]
+        },
+        "systeminfo_power_devices": {
+            "color": "#0099ff",
+            "thumbnail": "power-devices.png",
+            "selection": {
+                "id": "systeminfo_select",
+                "data": "${raw_entries}"
+            },
+            "fields": [],
+            "show_power_devices": true
         },
         "systeminfo_moonraker": {
             "color": "#0099ff",
@@ -1200,7 +1258,7 @@
                 "emoji": "🔄",
                 "style":"PRIMARY",
                 "function_mapping": {
-                    "websocket_command": [
+                    "websocket_commands": [
                         {
                             "method": "machine.update.status",
                             "params": {
@@ -1215,7 +1273,7 @@
                 "emoji": "🔄",
                 "style":"PRIMARY",
                 "function_mapping": {
-                    "websocket_command": [
+                    "websocket_commands": [
                         {
                             "method": "machine.update.status",
                             "params": {
@@ -1230,7 +1288,7 @@
                 "emoji": "\uD83D\uDD3C",
                 "style":"PRIMARY",
                 "function_mapping": {
-                    "websocket_command": [
+                    "websocket_commands": [
                         {"method": "machine.update.full"}
                     ],
                     "message": "${locale.messages.answers.update_request}",
@@ -1314,7 +1372,7 @@
         "error":{
             "embed_id": "error",
             "meta_data": {
-                "allow_same": false,
+                "allow_same": true,
                 "prevent": []
             },
             "activity": {
@@ -1402,6 +1460,7 @@
         "complete":{
             "embed_id": "printjob_complete",
             "meta_data": {
+                "cooldown": 2,
                 "allow_same": false,
                 "prevent": []
             },
@@ -1425,12 +1484,20 @@
             "embed_id": "printjob_printing",
             "meta_data": {
                 "allow_same": true,
-                "prevent": []
+                "prevent": ["start"]
             },
             "activity": {
                 "status": "online",
                 "type": "WATCHING"
             }
+        }
+    },
+    "power_device_meta": {
+        "on": {
+            "icon": "🟢"
+        },
+        "off": {
+            "icon": "🔴"
         }
     },
     "temp_meta": {
@@ -1480,6 +1547,11 @@
             "controller_fan",
             "temperature_sensor",
             "temperature_fan",
+            "fan"
+        ],
+        "minimal_supported_sensors": [
+            "heater_bed",
+            "extruder",
             "fan"
         ],
         "alliases": {
@@ -1560,6 +1632,26 @@
         }
     },
     "graph_meta": {
+        "history_graph": {
+            "colors": {
+                "klippy_shutdown": {
+                    "icon": "\uD83D\uDD34",
+                    "color": "#dd2e44"
+                },
+                "error": {
+                    "icon": "\uD83D\uDFE0",
+                    "color": "#f4900c"
+                },
+                "cancelled": {
+                    "icon": "\uD83D\uDFE1",
+                    "color": "#fdcb58"
+                },
+                "completed": {
+                    "icon": "\uD83D\uDFE2",
+                    "color": "#78b159"
+                }
+            }
+        },
         "exclude_graph": {
             "background_color": "#3e4147",
             "active_color": "#0099ff",
@@ -1569,6 +1661,7 @@
         },
         "temp_history": {
             "value_limit": 200,
+            "power_color": "#bfd8b0",
             "colors": [
                 {
                     "icon": "\uD83D\uDD34",
@@ -1598,5 +1691,6 @@
                     "color": "#f4900c"
                 }]
         }
-    }
+    },
+    "commands": {}
 }

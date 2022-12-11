@@ -2,7 +2,7 @@ import {findValue, getEntry, updateData} from "../utils/CacheUtil"
 import {EmbedHelper} from "./EmbedHelper";
 import * as app from "../Application";
 import {LocaleHelper} from "./LocaleHelper";
-import {logRegular} from "./LoggerHelper";
+import {logNotice, logRegular} from "./LoggerHelper";
 import {DiscordClient} from "../clients/DiscordClient";
 import {ConfigHelper} from "./ConfigHelper";
 import {NotificationHelper} from "./NotificationHelper";
@@ -21,13 +21,19 @@ export class StatusHelper {
         if(typeof discordClient === null) {
             discordClient = app.getDiscordClient()
         }
+
         this.bypassChecks = bypassChecks
         this.discordClient = discordClient
         let functionCache = getEntry('function')
         const serverInfo  = getEntry('server_info')
         const stateCache = getEntry('state')
-        const timelapseMacro = getEntry('state')['gcode_macro TIMELAPSE_TAKE_FRAME']
         const klipperStatus = stateCache.print_stats.state
+        const progress = stateCache.display_status.progress.toFixed(2)
+
+        if(functionCache.status_cooldown !== 0) {
+            logNotice('Status cooldown is currently active!')
+            return
+        }
 
         if(typeof serverInfo === 'undefined') { return }
 
@@ -38,8 +44,6 @@ export class StatusHelper {
                 status = klipperStatus
             }
         }
-
-        if(typeof timelapseMacro !== 'undefined' && timelapseMacro.is_paused && status === 'paused') { return }
 
         if(status === 'standby') {
             status = 'ready'
@@ -56,6 +60,8 @@ export class StatusHelper {
         if(status === 'cancelled') {
             status = 'stop'
         }
+
+        if(status === 'pause' && functionCache.ignore_pause) { return }
 
         if(typeof status === 'undefined') { return }
 
@@ -83,8 +89,11 @@ export class StatusHelper {
         if(!currentStatusMeta.meta_data.allow_same && status === currentStatus) { return }
         if(currentStatusMeta.meta_data.prevent.includes(status)) { return }
         if(status === 'printing' && !this.checkPercentSame()) { return }
-
-        const progress = stateCache.display_status.progress.toFixed(2)
+        if(statusMeta.cooldown !== undefined) {
+            updateData('function', {
+                'status_cooldown': statusMeta.cooldown
+            })
+        }
 
         updateData('function', {
             'current_status': status
@@ -92,7 +101,7 @@ export class StatusHelper {
 
         if(status === 'start') {
             updateData('function', {
-                'current_percent': -1
+                'current_percent': 0
             })
         }
 
@@ -151,6 +160,14 @@ export class StatusHelper {
         }
 
         if(progress === currentProgress) {
+            return false
+        }
+
+        if(progress === 0 || progress === 100) {
+            return true
+        }
+
+        if(progress < currentProgress) {
             return false
         }
 

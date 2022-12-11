@@ -2,12 +2,14 @@ import {findValue, getEntry, updateData} from "../../../utils/CacheUtil";
 import {StatusHelper} from "../../../helper/StatusHelper";
 import {MetadataHelper} from "../../../helper/MetadataHelper";
 import {UsageHelper} from "../../../helper/UsageHelper";
+import {HistoryHelper} from "../../../helper/HistoryHelper";
 
 export class SubscriptionNotification {
     protected statusHelper = new StatusHelper()
     protected metadataHelper = new MetadataHelper()
     protected functionCache = getEntry('function')
     protected usageHelper = new UsageHelper()
+    protected historyHelper = new HistoryHelper()
 
     public parse(message) {
         if(typeof(message.method) === 'undefined') { return }
@@ -35,5 +37,9 @@ export class SubscriptionNotification {
         }
 
         await this.statusHelper.update(status)
+
+        if(status === 'complete') {
+            await this.historyHelper.parseData()
+        }
     }
 }

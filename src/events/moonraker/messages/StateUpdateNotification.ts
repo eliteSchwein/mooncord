@@ -11,14 +11,14 @@ export class StateUpdateNotification {
         if(typeof(message.method) === 'undefined') { return }
 
         if(message.method === 'notify_klippy_disconnected') {
-            this.statusHelper.update('disconnected')
+            await this.statusHelper.update('disconnected')
             updateData('function', {
                 'poll_printer_info': true
             })
         }
 
         if(message.method === 'notify_klippy_shutdown') {
-            this.statusHelper.update('shutdown')
+            await this.statusHelper.update('shutdown')
             updateData('function', {
                 'poll_printer_info': true
             })

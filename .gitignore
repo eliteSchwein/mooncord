@@ -6,3 +6,5 @@ temp/log.log
 temp/database_dump.json
 cache_dump.json
 database_dump.json
+mooncord.log
+dist/mooncord.log

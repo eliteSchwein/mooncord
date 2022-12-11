@@ -47,15 +47,15 @@ async function init() {
 
     try {
         await moonrakerClient.connect()
-        await waitUntil(() => moonrakerClient.isReady(), { timeout: 10_000, intervalBetweenAttempts: 500 })
+        await waitUntil(() => moonrakerClient.isReady(), { timeout: 30_000, intervalBetweenAttempts: 500 })
 
         currentInitState = 'Database'
         await database.retrieveDatabase()
-        await waitUntil(() => database.isReady(), { timeout: 10_000, intervalBetweenAttempts: 500 })
+        await waitUntil(() => database.isReady(), { timeout: 30_000, intervalBetweenAttempts: 500 })
         
         currentInitState = 'Discord Client'
         await discordClient.connect()
-        await waitUntil(() => discordClient.isConnected(), { timeout: 10_000, intervalBetweenAttempts: 500 })
+        await waitUntil(() => discordClient.isConnected(), { timeout: 30_000, intervalBetweenAttempts: 500 })
     } catch (error) {
         logError(`couldn't load ${currentInitState} in Time! Reason: ${util.format(error)}`)
     }
@@ -110,72 +110,6 @@ export async function reconnectMoonraker() {
 function initCache() {
     logRegular('load Package Cache...')
     setData('package_config', packageConfig)
-
-    logRegular('init Function Cache...')
-    setData('function', {
-        'current_status': 'botstart',
-        'status_in_query': false,
-        'server_info_in_query': false,
-        'poll_printer_info': false,
-        'current_percent': -1,
-        'status_cooldown': 0,
-        'log_path': ''
-    })
-
-    logRegular('init Memory Cache...')
-    setData('usage', {
-        'total_ram': '',
-        'used_ram': '',
-        'free_ram': '',
-        'total_disk': '',
-        'used_disk': '',
-        'free_disk': '',
-        'klipper_load': 0,
-        'system_load': 0
-    })
-
-    logRegular('init Time Cache...')
-    setData('time', {
-        'total': 0,
-        'duration': 0,
-        'left': 0,
-        'eta': 0
-    })
-
-    logRegular('init Layer Cache...')
-    setData('layers', {
-        'top': 0,
-        'current': 0
-    })
-
-    logRegular('init Throttle Cache...')
-    setData('throttle', {
-        'cooldown': 0,
-        'throttle_states': []
-    })
-
-    logRegular('init MetaData Cache...')
-    setData('meta_data', {
-        'filename': ''
-    })
-
-    logRegular('init Temp Cache...')
-    setData('temps', {
-        'colors': {}
-    })
-
-    logRegular('init execute Cache...')
-    setData('execute', {
-        'running': false,
-        'to_execute_command': '',
-        'command_state': '',
-        'successful_commands': [],
-        'error_commands': [],
-        'unknown_commands': []
-    })
-
-    logRegular('init commands Cache...')
-    setData('commands', [])
 
     configHelper.loadCache()
     localeHelper.loadCache()
