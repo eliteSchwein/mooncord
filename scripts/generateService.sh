@@ -13,8 +13,8 @@ default=$(echo -en "\e[39m")
 
 SCRIPTPATH="$( cd "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 MCPATH="$( pwd -P )"
-MCCONFIGPATH="/home/$(whoami)/klipper_config"
-MCLOGPATH="/home/$(whoami)/klipper_logs"
+MCCONFIGPATH="/home/$(whoami)/printer_data/config"
+MCLOGPATH="/home/$(whoami)/printer_data/logs"
 MCSERVICENAME="MoonCord"
 MCTOKEN=""
 MCWEBTOKEN=""
