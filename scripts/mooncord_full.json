@@ -49,6 +49,15 @@
             "users": [],
             "roles": []
         },
+        "reactions": {
+            "delete": {
+                "command_assign": "dump",
+                "botadmin": true,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            }
+        },
         "selections": {
             "exclude_objects": {
                 "command_assign": "printjob",
