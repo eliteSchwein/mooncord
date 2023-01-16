@@ -3,6 +3,7 @@ import {ButtonInteraction} from "./interactions/ButtonInteraction";
 import {CommandInteraction} from "./interactions/CommandInteraction";
 import {SelectInteraction} from "./interactions/SelectInteraction";
 import {ModalInteraction} from "./interactions/ModalInteraction";
+import {ReactionInteraction} from "./interactions/ReactionInteraction";
 
 export class InteractionHandler {
     public constructor(discordClient: Client) {
@@ -11,7 +12,8 @@ export class InteractionHandler {
             new ButtonInteraction(interaction);
             new CommandInteraction(interaction);
             new SelectInteraction(interaction);
-            new ModalInteraction(interaction)
+            new ModalInteraction(interaction);
+            new ReactionInteraction(interaction);
         })
     }
 }

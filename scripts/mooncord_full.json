@@ -1705,5 +1705,6 @@
                 }]
         }
     },
-    "commands": {}
+    "commands": {},
+    "reaction_meta": {}
 }
