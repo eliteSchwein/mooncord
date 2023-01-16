@@ -13,6 +13,9 @@ export class InteractionHandler {
             new CommandInteraction(interaction);
             new SelectInteraction(interaction);
             new ModalInteraction(interaction);
+        })
+
+        discordClient.on('messageReactionAdd', async interaction => {
             new ReactionInteraction(interaction);
         })
     }
