@@ -1,31 +1,31 @@
-import {ButtonInteraction, Message, MessageEmbed} from "discord.js";
+import {ButtonInteraction, Message, MessageEmbed, User} from "discord.js";
 import {LocaleHelper} from "../../../../helper/LocaleHelper";
 import {MetadataHelper} from "../../../../helper/MetadataHelper";
 import {formatTime} from "../../../../helper/DataHelper";
 import {EmbedHelper} from "../../../../helper/EmbedHelper";
 
-export class PrintRequestButton {
+export class PrintRequestHandler {
     protected localeHelper = new LocaleHelper()
     protected locale = this.localeHelper.getLocale()
     protected metadataHelper = new MetadataHelper()
     protected embedHelper = new EmbedHelper()
 
-    public async execute(interaction: ButtonInteraction, buttonData) {
-        if(!buttonData.function_mapping.request_printjob) { return }
+    public async execute(message: Message, user: User, data, interaction = null) {
+        if(!data.function_mapping.request_printjob) { return }
 
         let embedId = 'printjob_start_request'
 
-        if(typeof buttonData.function_mapping.request_embed !== 'undefined') {
-            embedId = buttonData.function_mapping.request_embed
+        if(typeof data.function_mapping.request_embed !== 'undefined') {
+            embedId = data.function_mapping.request_embed
         }
 
-        const currentEmbed = interaction.message.embeds[0] as MessageEmbed
+        const currentEmbed = message.embeds[0] as MessageEmbed
 
         if(currentEmbed.author === null) {
             return
         }
-
-        if(!interaction.replied &&
+        if(interaction !== null &&
+            !interaction.replied &&
             !interaction.deferred) {
             await interaction.deferReply()
         }
@@ -34,7 +34,7 @@ export class PrintRequestButton {
 
         const metadata = await this.metadataHelper.getMetaData(printFile)
 
-        if(typeof metadata === 'undefined') {
+        if(interaction !== null && typeof metadata === 'undefined') {
             await interaction.editReply(this.locale.messages.errors.file_not_found)
             return
         }
@@ -52,14 +52,12 @@ export class PrintRequestButton {
         embedData.embed.embeds = [embed]
         embedData.embed['files'] = [thumbnail]
 
-        const currentMessage = interaction.message as Message
+        await message.edit({components: null})
+        await message.removeAttachments()
 
-        await currentMessage.edit({components: null})
-        await currentMessage.removeAttachments()
+        await message.edit(embedData.embed)
 
-        await currentMessage.edit(embedData.embed)
-
-        if(!interaction.replied) {
+        if(interaction !== null && !interaction.replied) {
             await interaction.deleteReply()
         }
     }

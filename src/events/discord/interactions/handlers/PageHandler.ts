@@ -1,4 +1,4 @@
-import {ButtonInteraction, Message} from "discord.js";
+import {ButtonInteraction, Message, User} from "discord.js";
 import {getDatabase} from "../../../../Application";
 import {EmbedHelper} from "../../../../helper/EmbedHelper";
 import {ConfigHelper} from "../../../../helper/ConfigHelper";
@@ -6,28 +6,29 @@ import {LocaleHelper} from "../../../../helper/LocaleHelper";
 import {PageHelper} from "../../../../helper/PageHelper";
 import {logNotice} from "../../../../helper/LoggerHelper";
 
-export class PageButton {
+export class PageHandler {
     protected databaseUtil = getDatabase()
     protected embedHelper = new EmbedHelper()
     protected configHelper = new ConfigHelper()
     protected localeHelper = new LocaleHelper()
     protected locale = this.localeHelper.getLocale()
 
-    public async execute(interaction: ButtonInteraction, buttonData) {
-        if(typeof buttonData.function_mapping === 'undefined') { return }
-        if(!buttonData.function_mapping.page_up &&
-            !buttonData.function_mapping.page_down) { return }
+    public async execute(message: Message, user: User, data, interaction = null) {
+        if(typeof data.function_mapping === 'undefined') { return }
+        if(!data.function_mapping.page_up &&
+            !data.function_mapping.page_down) { return }
 
-        const functionMap = buttonData.function_mapping
+        const functionMap = data.function_mapping
 
-        if(interaction.message.embeds.length === 0) { return }
+        if(message.embeds.length === 0) { return }
 
-        if(!interaction.replied &&
+        if(interaction !== null &&
+            !interaction.replied &&
             !interaction.deferred) {
             await interaction.deferReply()
         }
 
-        const embed = interaction.message.embeds[0]
+        const embed = message.embeds[0]
         const embedData = this.embedHelper.getRawEmbedByTitle(embed.title)
 
         if(typeof embedData === 'undefined') { return }
@@ -41,7 +42,11 @@ export class PageButton {
         const pageData = pageHelper.getPage(functionMap.page_up, currentPage)
 
         if(Object.keys(pageData).length === 0) {
-            await interaction.editReply(this.localeHelper.getCommandNotReadyError(interaction.user.username))
+            if(interaction !== null) {
+                await interaction.editReply(this.localeHelper.getCommandNotReadyError(interaction.user.username))
+            } else {
+                await message.reply(this.localeHelper.getCommandNotReadyError(interaction.user.username))
+            }
             return
         }
 
@@ -49,14 +54,12 @@ export class PageButton {
 
         const answer = await this.embedHelper.generateEmbed(embedData.embedID, pageData)
 
-        const currentMessage = interaction.message as Message
+        await message.edit({components: null})
+        await message.removeAttachments()
 
-        await currentMessage.edit({components: null})
-        await currentMessage.removeAttachments()
+        await message.edit(answer.embed)
 
-        await currentMessage.edit(answer.embed)
-
-        if(!interaction.replied) {
+        if(interaction !== null && !interaction.replied) {
             await interaction.deleteReply()
         }
     }

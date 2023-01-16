@@ -1,11 +1,11 @@
-import {ButtonInteraction, Message} from "discord.js";
+import {ButtonInteraction, Message, User} from "discord.js";
 import {getDatabase, getMoonrakerClient} from "../../../../Application";
 import {EmbedHelper} from "../../../../helper/EmbedHelper";
 import {ConfigHelper} from "../../../../helper/ConfigHelper";
 import {LocaleHelper} from "../../../../helper/LocaleHelper";
 import {PageHelper} from "../../../../helper/PageHelper";
 
-export class PrintlistButton {
+export class PrintlistHandler {
     protected databaseUtil = getDatabase()
     protected embedHelper = new EmbedHelper()
     protected configHelper = new ConfigHelper()
@@ -13,27 +13,23 @@ export class PrintlistButton {
     protected localeHelper = new LocaleHelper()
     protected locale = this.localeHelper.getLocale()
 
-    public async execute(interaction: ButtonInteraction, buttonData) {
-        if(!buttonData.function_mapping.show_printlist) { return }
+    public async execute(message: Message, user: User, data, interaction = null) {
+        if(!data.function_mapping.show_printlist) { return }
 
-        if(!interaction.replied &&
-            !interaction.deferred) {
-            await interaction.deferReply()
-        }
+
+        if(interaction !== null && !interaction.replied && !interaction.deferred) { await interaction.deferReply() }
 
         const pageHelper = new PageHelper('gcode_files')
         const pageData = pageHelper.getPage(false, 1)
 
         const answer = await this.embedHelper.generateEmbed('gcode_files', pageData)
 
-        const currentMessage = interaction.message as Message
+        await message.edit({components: null})
+        await message.removeAttachments()
 
-        await currentMessage.edit({components: null})
-        await currentMessage.removeAttachments()
+        await message.edit(answer.embed)
 
-        await currentMessage.edit(answer.embed)
-
-        if(!interaction.replied) {
+        if(interaction !== null && !interaction.replied) {
             await interaction.deleteReply()
         }
     }

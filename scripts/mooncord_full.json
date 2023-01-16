@@ -1088,6 +1088,13 @@
                 "required": true
             }
         },
+        "reactions": {
+            "delete": {
+                "function_mapping": {
+                    "delete_message": true
+                }
+            }
+        },
         "buttons": {
             "next_page_configs_download": {
                 "emoji": "➡️",
@@ -1189,8 +1196,7 @@
                 "emoji": "♨",
                 "style":"SECONDARY",
                 "function_mapping": {
-                    "show_temp_modal": true,
-                    "modal_delete_message": false
+                    "show_temp_modal": true
                 }
             },
             "printjob_delete_accept": {
