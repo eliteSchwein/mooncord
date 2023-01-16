@@ -42,7 +42,7 @@ export class ReactionInteraction {
 
         if(reactionId === undefined) { return }
 
-        const reactionData = this.reactionCache[buttonId]
+        const reactionData = this.reactionCache[reactionId]
 
         const user = interaction.users.cache.first()
 
