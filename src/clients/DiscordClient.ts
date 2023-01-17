@@ -150,6 +150,7 @@ export class DiscordClient {
 
     public close() {
         if (typeof this.discordClient === 'undefined') { return }
+        this.discordClient.removeAllListeners()
         this.discordClient.destroy()
     }
 }
