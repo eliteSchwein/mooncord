@@ -10,10 +10,8 @@ export class ReconnectHandler {
                 logWarn('Discord Client is offline...')
                 this.isReconnect = true
             }
-        })
 
-        discordClient.on('ready', () => {
-            if(this.isReconnect) {
+            if(info.includes('CONNECTED') && this.isReconnect) {
                 this.isReconnect = false
                 logRegular('Reconnect Discord Client...')
                 void App.getDiscordClient().connect()
