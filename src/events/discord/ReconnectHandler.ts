@@ -13,8 +13,7 @@ export class ReconnectHandler {
 
             if(info.includes('CONNECTED') && this.isReconnect) {
                 this.isReconnect = false
-                logRegular('Reconnect Discord Client...')
-                void App.getDiscordClient().connect()
+                void App.reconnectDiscord()
             }
         })
     }

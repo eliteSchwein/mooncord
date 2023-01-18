@@ -472,7 +472,12 @@
             ],
             "whitelist": []
         },
-        "show_m117_notification": true
+        "temp_target_notification": {
+            "enable": false,
+            "temp_offset": 2,
+            "temp_duration": 2,
+            "delay": 10
+        }
     },
     "development": {
         "dump_cache_on_start": false,

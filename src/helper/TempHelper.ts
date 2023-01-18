@@ -13,6 +13,7 @@ export class TempHelper {
     protected chartConfigSection = this.configHelper.getGraphConfig('temp_history')
     protected locale = this.localeHelper.getLocale()
     protected tempCache = getEntry('temps')
+    protected functionCache = getEntry('function')
     protected colorIndex = 0
 
     public generateColors(cache: any) {
@@ -185,6 +186,10 @@ export class TempHelper {
         return this.cache[heater].target
     }
 
+    public getHeaterTemp(heater: string) {
+        return this.cache[heater].temperature
+    }
+
     public getHeaterConfigData(heater:string) {
         const rawSearch = findValue(`state.configfile.config.${heater}`)
 
@@ -235,5 +240,31 @@ export class TempHelper {
 
     public getHeaters() {
         return this.cache.heaters.available_heaters
+    }
+
+    public updateHeaterTargets() {
+        if(this.cache === undefined) {
+            return
+        }
+
+        const heaters = this.getHeaters()
+
+        for(const heater of heaters) {
+            console.log(heater)
+            console.log(this.getHeaterTemp(heater))
+            console.log(this.getHeaterTarget(heater))
+        }
+    }
+
+    public async notifyHeaterTargetNotifications() {
+        this.functionCache = getEntry('function')
+
+        const tempTargets = this.functionCache.temp_targets
+
+        if(tempTargets.length === 0) {
+            return
+        }
+
+        console.log(tempTargets)
     }
 }

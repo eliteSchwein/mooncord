@@ -15,7 +15,8 @@ const cacheData:any = {
         current_percent: 0,
         status_cooldown: 0,
         log_path: '',
-        ignore_pause: false
+        ignore_pause: false,
+        temp_targets: {}
     },
     usage: {
         total_ram: '',
