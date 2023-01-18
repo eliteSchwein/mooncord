@@ -221,4 +221,8 @@ export class ConfigHelper {
     public getCustomCommands() {
         return this.getConfig().commands
     }
+
+    public getTempTargetNotificationConfig() {
+        return this.getConfig().notifications.temp_target_notification
+    }
 }

@@ -473,10 +473,10 @@
             "whitelist": []
         },
         "temp_target_notification": {
-            "enable": false,
+            "enable": true,
             "temp_offset": 2,
-            "temp_duration": 2,
-            "delay": 10
+            "temp_duration": 5,
+            "delay": 30
         }
     },
     "development": {

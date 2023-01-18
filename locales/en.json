@@ -228,7 +228,7 @@
     },
     "messages": {
         "answers": {
-            "temp_target_reacher": "The heater `${heater}` reached the Target Temperature `${target}°C` after `${time}`!",
+            "temp_target_reached": "The heater `${heater}` reached the Target Temperature `${target}°C`!",
             "custom_command_executed": "The Custom Command `${custom_command}` got executed, `${username}`!",
             "execute_successful": "The Gcode Commands executed successful, `${username}`!",
             "preheat_preset": {
