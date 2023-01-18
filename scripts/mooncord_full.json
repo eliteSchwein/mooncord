@@ -464,6 +464,14 @@
     "notifications": {
         "moonraker_throttle": true,
         "timelapse": true,
+        "m117_notification": {
+            "enable": true,
+            "blacklist": [
+                "/(Rendering (\\||\\/|-|\\\\))/g",
+                "/^.*(Time Left).*$/g"
+            ],
+            "whitelist": []
+        },
         "show_m117_notification": true
     },
     "development": {

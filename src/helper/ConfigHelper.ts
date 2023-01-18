@@ -202,8 +202,8 @@ export class ConfigHelper {
         return this.getConfig().development.dev_database
     }
 
-    public showM117Notifcation() {
-        return this.getConfig().notifications.show_m117_notification
+    public getM117NotifactionConfig() {
+        return this.getConfig().notifications.m117_notification
     }
 
     public getGcodeExecuteTimeout() {
