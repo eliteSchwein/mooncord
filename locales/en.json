@@ -88,6 +88,7 @@
             "title": "Printjob History"
         },
         "notification": {
+            "content": "Printer ${config.printer_name} Notification",
             "title": "Notification"
         },
         "printjob_start_request": {
@@ -99,22 +100,27 @@
             "description": "Print Time: ${estimated_time}\nSlicer: ${slicer}\nSlicer Version: ${slicer_version}\nHeight: ${object_height}mm"
         },
         "printjob_start":{
+            "content": "Printjob started: `${state.print_stats.filename}`",
             "title": "Print started",
             "activity": "start ${state.print_stats.filename}"
         },
         "printjob_complete":{
+            "content": "Printjob is complete",
             "title": "Print Complete",
             "activity": "Finished Print"
         },
         "printjob_pause":{
+            "content": "Printjob ${state.print_stats.filename} is paused",
             "title": "Print Paused",
             "activity": "take a Break"
         },
         "printjob_printing":{
+            "content": "Printjob ${state.print_stats.filename} is at ${percent:0:state.display_status.progress}%",
             "title": "Printing",
             "activity": "Printing: ${percent:0:state.display_status.progress}%"
         },
         "printjob_stop":{
+            "content": "The Printjob stopped",
             "title": "Print stopped",
             "activity": "Print stopped"
         },
@@ -125,46 +131,57 @@
             "title": "Temperature for ${heater}"
         },
         "disconnected":{
+            "content": "Printer ${config.printer_name} got disconnected from Klipper!",
             "title": "Printer Disconnected!",
             "activity": "wait for Klipper"
         },
         "moonraker_disconnected":{
+            "content": "Moonraker Connection got lost!",
             "title": "Moonraker Connection lost!",
             "activity": "wait for Moonraker"
         },
         "error":{
+            "content": "An Error occured!",
             "title": "An Error occured!",
             "activity": "wait for User"
         },
         "offline":{
+            "content": "Moonraker or Klipper Connection got lost!",
             "title": "Connection Lost!",
             "activity": "wait for Moonraker"
         },
         "shutdown":{
+            "content": "Klipper firmware has a shutdown!",
             "title": "Klipper Shutdown",
             "activity": "wait for Klipper"
         },
         "ready":{
+            "content": "Printer ${config.printer_name} is ready to print",
             "title": "Printer Ready",
             "activity": "for GCODE File..."
         },
         "startup":{
+            "content": "Printer ${config.printer_name} is starting",
             "title": "Printer starting",
             "activity": "Printer start"
         },
         "throttle_temperature_limit_active": {
+            "content": "System of Printer ${config.printer_name} is currently throttled",
             "title": "Throttle occured!",
             "description": "The system is currently throttled because it has reached the `Temperature Limit`!\nCurrent Temperature: `${proc_stats.cpu_temp} °C`\nPlease check your cooling solution."
         },
         "throttle_under_voltage_detected": {
+            "content": "System of Printer ${config.printer_name} is currently throttled",
             "title": "Throttle occured!",
             "description": "The system is currently throttled due to an `Under Voltage`!\nPlease check your power source."
         },
         "throttle_frequency_capped": {
+            "content": "System of Printer ${config.printer_name} is currently throttled",
             "title": "Throttle occured!",
             "description": "The system is currently throttled because it has been`Frequency Capped`!\nPlease check your cooling solution or/and your power supply.."
         },
         "system_update": {
+            "content": "System found some Updates",
             "title": "System Updates"
         },
         "fields": {

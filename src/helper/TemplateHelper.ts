@@ -113,7 +113,8 @@ export class TemplateHelper {
         let files = []
         let components = []
         const response = {
-            embeds: undefined
+            embeds: undefined,
+            content: null
         }
 
         if(placeholders !== null) {
@@ -122,6 +123,8 @@ export class TemplateHelper {
                 const placeholderContent = this.parsePlaceholder(placeholderId,providedPlaceholders)
 
                 if(placeholderContent.content === null || placeholderContent.content === '') { continue }
+
+                if(placeholderContent.content === '$clear') { placeholderContent.content = '' }
 
                 if(!placeholderContent.double_dash) {
                     const startPos = messageObjectRaw.indexOf(placeholderId)
@@ -166,6 +169,10 @@ export class TemplateHelper {
 
         if(typeof messageObjectData.footer !== 'undefined') {
             messageObject.setFooter({'text': messageObjectData.footer})
+        }
+
+        if(messageObjectData.content !== undefined) {
+            response.content = messageObjectData.content
         }
 
         if(typeof thumbnail === 'object') {

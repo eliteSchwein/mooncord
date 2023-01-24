@@ -32,6 +32,7 @@
         "icon_set": "acryl",
         "entries_per_page": 8
     },
+    "printer_name": "$clear",
     "custom_info": "Thanks for installing MoonCord and Happy Printing ❤",
     "language": {
         "date_locale": "de-DE",
