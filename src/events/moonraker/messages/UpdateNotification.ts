@@ -21,6 +21,10 @@ export class UpdateNotification {
 
         logRegular('There are some Updates available...')
 
+        if(this.notificationHelper.isEmbedBlocked('system_update')) {
+            return
+        }
+
         const embed = await this.embedHelper.generateEmbed('system_update')
         void this.notificationHelper.broadcastMessage(embed.embed)
     }

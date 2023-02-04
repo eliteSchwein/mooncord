@@ -3,9 +3,11 @@ import * as app from "../Application"
 import {DiscordClient} from "../clients/DiscordClient"
 import {LocaleHelper} from "./LocaleHelper"
 import {logWarn} from "./LoggerHelper";
+import {ConfigHelper} from "./ConfigHelper";
 
 export class NotificationHelper {
     protected databaseUtil = app.getDatabase()
+    protected configHelper = new ConfigHelper()
     protected broadcastList = {}
     protected notifyList = []
     protected discordClient: DiscordClient
@@ -95,5 +97,11 @@ export class NotificationHelper {
         } catch {
             return
         }
+    }
+
+    public isEmbedBlocked(embedId: string) {
+        const config = this.configHelper.getConfig()
+
+        return config.notifications.blacklist.includes(embedId)
     }
 }

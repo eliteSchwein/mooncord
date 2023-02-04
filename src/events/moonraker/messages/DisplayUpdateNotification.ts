@@ -48,6 +48,10 @@ export class DisplayUpdateNotification {
             return
         }
 
+        if(this.notificationHelper.isEmbedBlocked('notification')) {
+            return
+        }
+
         logRegular(`Broadcast Message: ${displayMessage}`)
 
         const embed = await this.embedHelper.generateEmbed('notification', {'message': displayMessage})
