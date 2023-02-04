@@ -14,7 +14,7 @@ import {DeleteHandler} from "./handlers/DeleteHandler";
 import {ReconnectHandler} from "./handlers/ReconnectHandler";
 import {RefreshHandler} from "./handlers/RefreshHandler";
 import {PrintRequestHandler} from "./handlers/PrintRequestHandler";
-import {PrintlistHandler} from "./handlers/PrintlistHandler";
+import {ListHandler} from "./handlers/ListHandler";
 import {PageHandler} from "./handlers/PageHandler";
 import {MacroHandler} from "./handlers/MacroHandler";
 import {DeleteMessageHandler} from "./handlers/DeleteMessageHandler";
@@ -63,7 +63,7 @@ export class ReactionInteraction {
         await new ReconnectHandler().execute(message, user, reactionData)
         await new RefreshHandler().execute(message, user, reactionData)
         await new PrintRequestHandler().execute(message, user, reactionData)
-        await new PrintlistHandler().execute(message, user, reactionData)
+        await new ListHandler().execute(message, user, reactionData)
         await new PageHandler().execute(message, user, reactionData)
         await new MacroHandler().execute(message, user, reactionData)
         await new DeleteMessageHandler().execute(message, user, reactionData)

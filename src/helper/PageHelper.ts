@@ -65,12 +65,14 @@ export class PageHelper {
     }
 
     protected getValuesForPageId(pageId: string) {
-        if(pageId === 'gcode_files') {
-            return getEntry('gcode_files')
-        }
-
         if(pageId === 'configs_download')  {
             return getConfigFiles()
+        }
+
+        const cacheEntry = getEntry(pageId)
+
+        if(cacheEntry !== undefined && cacheEntry !== null) {
+            return cacheEntry
         }
 
         return []

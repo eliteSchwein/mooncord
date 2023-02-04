@@ -348,7 +348,7 @@ export class TemplateHelper {
         return new MessageAttachment(imagePath, imageID)
     }
 
-    protected getInputData(type: string, data: []) {
+    public getInputData(type: string, data: []) {
         const inputData = []
         const metaData = Object.assign({}, getEntry(type))
 

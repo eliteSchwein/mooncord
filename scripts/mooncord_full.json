@@ -81,6 +81,13 @@
                 "users": [],
                 "roles": []
             },
+            "timelapse_download": {
+                "command_assign": "listtimelapse",
+                "botadmin": true,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
             "systeminfo_select": {
                 "command_assign": "systeminfo",
                 "botadmin": true,
@@ -111,13 +118,6 @@
                 "users": "*",
                 "roles": []
             },
-            "next_page_printlist": {
-                "command_assign": "listgcodes",
-                "botadmin": true,
-                "guildadmin": false,
-                "users": [],
-                "roles": []
-            },
             "last_page_configs_download": {
                 "command_assign": "config",
                 "botadmin": false,
@@ -132,8 +132,29 @@
                 "users": [],
                 "roles": []
             },
+            "next_page_printlist": {
+                "command_assign": "listgcodes",
+                "botadmin": true,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
             "last_page_printlist": {
                 "command_assign": "listgcodes",
+                "botadmin": true,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
+            "next_page_timelapselist": {
+                "command_assign": "listtimelapses",
+                "botadmin": true,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
+            "last_page_timelapselist": {
+                "command_assign": "listtimelapses",
                 "botadmin": true,
                 "guildadmin": false,
                 "users": [],
@@ -547,6 +568,16 @@
                 "next_page_printlist"],
             "selections": [
                 "printlist_view_printjob"
+            ]
+        },
+        "timelapse_files": {
+            "color": "#0099ff",
+            "thumbnail": "printlist.png",
+            "buttons": [
+                "last_page_timelapselist",
+                "next_page_timelapselist"],
+            "selections": [
+                "timelapse_download"
             ]
         },
         "info": {
@@ -1143,6 +1174,22 @@
                     "page_down": true
                 }
             },
+            "next_page_timelapselist": {
+                "emoji": "➡️",
+                "style":"SECONDARY",
+                "permission_mapping": "listtimelapses",
+                "function_mapping": {
+                    "page_up": true
+                }
+            },
+            "last_page_timelapselist": {
+                "emoji": "⬅️",
+                "style":"SECONDARY",
+                "permission_mapping": "listtimelapses",
+                "function_mapping": {
+                    "page_down": true
+                }
+            },
             "printjob_resume": {
                 "emoji": "▶️",
                 "style":"PRIMARY",
@@ -1197,7 +1244,14 @@
                 "emoji": "📘",
                 "style":"SECONDARY",
                 "function_mapping": {
-                    "show_printlist": true
+                    "show_list": "gcode_files"
+                }
+            },
+            "to_timelapselist": {
+                "emoji": "📘",
+                "style":"SECONDARY",
+                "function_mapping": {
+                    "show_list": "timelapse_files"
                 }
             },
             "to_temps": {
@@ -1354,7 +1408,7 @@
                 "option_value": "${data.name}",
                 "data": "${raw_entries}"
             },
-            "printlist_view_printjob": {
+            "timelapse_download": {
                 "min_value": 1,
                 "max_value": 1,
                 "option_value": "${data.path}",
@@ -1365,6 +1419,12 @@
                 "max_value": 1,
                 "option_value": "${data.value}",
                 "mcu_options": true,
+                "data": "${raw_entries}"
+            },
+            "printlist_view_printjob": {
+                "min_value": 1,
+                "max_value": 1,
+                "option_value": "${data.path}",
                 "data": "${raw_entries}"
             },
             "show_temp": {

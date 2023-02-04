@@ -5,7 +5,7 @@ import {ConfigHelper} from "../../../../helper/ConfigHelper";
 import {LocaleHelper} from "../../../../helper/LocaleHelper";
 import {PageHelper} from "../../../../helper/PageHelper";
 
-export class PrintlistHandler {
+export class ListHandler {
     protected databaseUtil = getDatabase()
     protected embedHelper = new EmbedHelper()
     protected configHelper = new ConfigHelper()
@@ -14,15 +14,16 @@ export class PrintlistHandler {
     protected locale = this.localeHelper.getLocale()
 
     public async execute(message: Message, user: User, data, interaction = null) {
-        if(!data.function_mapping.show_printlist) { return }
+        const listId = data.function_mapping.show_list
+        if(!listId) { return }
 
 
         if(interaction !== null && !interaction.replied && !interaction.deferred) { await interaction.deferReply() }
 
-        const pageHelper = new PageHelper('gcode_files')
+        const pageHelper = new PageHelper(listId)
         const pageData = pageHelper.getPage(false, 1)
 
-        const answer = await this.embedHelper.generateEmbed('gcode_files', pageData)
+        const answer = await this.embedHelper.generateEmbed(listId, pageData)
 
         await message.edit({components: null})
         await message.removeAttachments()

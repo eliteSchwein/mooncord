@@ -11,6 +11,9 @@
         "gcode_files": {
             "entry_label": "${data.path}"
         },
+        "timelapse_files": {
+            "entry_label": "${data.path}"
+        },
         "configs_download": {
             "entry_label": "${data.name}"
         }
@@ -77,6 +80,11 @@
         },
         "gcode_files": {
             "title": "Gcode Files",
+            "description": "${page_entries}",
+            "footer": "Page ${pages}"
+        },
+        "timelapse_files": {
+            "title": "Timelapse Files",
             "description": "${page_entries}",
             "footer": "Page ${pages}"
         },
@@ -256,6 +264,7 @@
             "restart_successful": "The Restart of `${service}` was successful, `${username}`!",
             "firmware_restart_successful": "The Firmware is restarting, `${username}`!",
             "timelapse": "Timelapse for `${printfile}`",
+            "timelapse_download": "Timelapse `${timelapsefile}`",
             "admin": {
                 "added": "${mention} is now a Bot Admin, `${username}`!",
                 "removed": "${mention} is no longer a Bot Admin, `${username}`!"
@@ -382,7 +391,16 @@
         "last_page_printlist":  {
             "label": "Last Page"
         },
+        "next_page_timelapselist":  {
+            "label": "Next Page"
+        },
+        "last_page_timelapselist":  {
+            "label": "Last Page"
+        },
         "to_printlist": {
+            "label": "to List"
+        },
+        "to_timelapselist": {
             "label": "to List"
         },
         "to_temps": {
@@ -432,6 +450,11 @@
             "label": "Select a File",
             "option_label": "${data.path}",
             "option_description": "Click for more Details"
+        },
+        "timelapse_download": {
+            "label": "Select a File",
+            "option_label": "${data.path}",
+            "option_description": "Click for Download"
         },
         "systeminfo_select": {
             "label": "Select a Component",
@@ -680,6 +703,10 @@
         "listgcodes": {
             "description": "List all Print Files.",
             "command": "listgcodes"
+        },
+        "listtimelapses": {
+            "description": "List all Timelapse Files.",
+            "command": "listtimelapses"
         },
         "systeminfo": {
             "description": "Get the current System Information.",

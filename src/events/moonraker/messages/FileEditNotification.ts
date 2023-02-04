@@ -21,5 +21,6 @@ export class FileEditNotification {
 
         this.fileListHelper.retrieveFiles('config', 'config_files')
         this.fileListHelper.retrieveFiles('gcodes', 'gcode_files')
+        this.fileListHelper.retrieveFiles('timelapse', 'timelapse_files', /(.*\.mp4)/g)
     }
 }

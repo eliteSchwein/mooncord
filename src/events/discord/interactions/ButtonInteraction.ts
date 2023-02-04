@@ -8,7 +8,7 @@ import {sleep} from "../../../helper/DataHelper";
 import {getEntry} from "../../../utils/CacheUtil";
 import {MacroHandler} from "./handlers/MacroHandler";
 import {PageHandler} from "./handlers/PageHandler";
-import {PrintlistHandler} from "./handlers/PrintlistHandler";
+import {ListHandler} from "./handlers/ListHandler";
 import {PrintRequestHandler} from "./handlers/PrintRequestHandler";
 import {PrintJobStartHandler} from "./handlers/PrintJobStartHandler";
 import {MessageHandler} from "./handlers/MessageHandler";
@@ -75,7 +75,7 @@ export class ButtonInteraction {
         await new ReconnectHandler().execute(message, interaction.user, buttonData, interaction)
         await new RefreshHandler().execute(message, interaction.user, buttonData, interaction)
         await new PrintRequestHandler().execute(message, interaction.user, buttonData, interaction)
-        await new PrintlistHandler().execute(message, interaction.user, buttonData, interaction)
+        await new ListHandler().execute(message, interaction.user, buttonData, interaction)
         await new PageHandler().execute(message, interaction.user, buttonData, interaction)
         await new MacroHandler().execute(message, interaction.user, buttonData, interaction)
         await new DeleteMessageHandler().execute(message, interaction.user, buttonData, interaction)
