@@ -1,12 +1,15 @@
-import {Message, SelectMenuInteraction} from "discord.js";
+import {Message, MessageAttachment, SelectMenuInteraction} from "discord.js";
 import {getEntry} from "../../../../utils/CacheUtil";
 import {LocaleHelper} from "../../../../helper/LocaleHelper";
 import {findValueByPartial, formatTime} from "../../../../helper/DataHelper";
 import {TimelapseHelper} from "../../../../helper/TimelapseHelper";
+import {resolve} from "path";
+import {ConfigHelper} from "../../../../helper/ConfigHelper";
 
 export class DownloadTimelapse {
     protected timelapseHelper = new TimelapseHelper()
     protected localeHelper = new LocaleHelper()
+    protected configHelper = new ConfigHelper()
     protected locale = this.localeHelper.getLocale()
 
     public constructor(interaction: SelectMenuInteraction, selectionId: string) {
@@ -20,19 +23,27 @@ export class DownloadTimelapse {
 
         const timelapseFile = findValueByPartial(getEntry('timelapse_files'), interaction.values[0], 'path')
 
+        const placeholderMessage = this.locale.messages.answers.timelapse_render
+            .replace(/(\${timelapsefile})/g, timelapseFile)
+
+        const placeholderImage = new MessageAttachment(
+            resolve(__dirname, `../assets/icon-sets/${this.configHelper.getIconSet()}/timelapse-render.png`),
+            'snapshot-error.png'
+        )
+
+        const currentMessage = interaction.message as Message
+
+        await currentMessage.removeAttachments()
+        await currentMessage.edit({content: placeholderMessage, components: [], embeds: [], files: [placeholderImage]})
+
+        await interaction.deleteReply()
+
         const timelapseMessage = this.locale.messages.answers.timelapse_download
             .replace(/(\${timelapsefile})/g, timelapseFile)
 
         const timelapseContent = await this.timelapseHelper.downloadTimelapse(timelapseFile, timelapseMessage)
 
-        const currentMessage = interaction.message as Message
-
-        await currentMessage.removeAttachments()
-        await currentMessage.edit({components: timelapseContent.components, embeds: []})
-
         await currentMessage.edit(timelapseContent)
-
-        await interaction.deleteReply()
 
         if (global.gc) {
             global.gc()

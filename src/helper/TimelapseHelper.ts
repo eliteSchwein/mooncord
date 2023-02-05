@@ -1,5 +1,5 @@
 import path from "path";
-import {logRegular, logSuccess} from "./LoggerHelper";
+import {logNotice, logRegular, logSuccess} from "./LoggerHelper";
 import {readFileSync, unlinkSync, writeFileSync} from "fs";
 import {waitUntil} from "async-wait-until";
 import {ConfigHelper} from "./ConfigHelper";
@@ -12,6 +12,7 @@ import axios from "axios";
 import {MessageAttachment} from "discord.js";
 import {DiscordInputGenerator} from "../generator/DiscordInputGenerator";
 import {TemplateHelper} from "./TemplateHelper";
+import {getEntry} from "../utils/CacheUtil";
 
 export class TimelapseHelper {
     protected inputGenerator = new DiscordInputGenerator()
@@ -22,9 +23,11 @@ export class TimelapseHelper {
     protected notificationHelper = new NotificationHelper()
     protected templateHelper = new TemplateHelper()
     protected ffmpegRender = Ffmpeg()
+    protected functionCache = getEntry('function')
     protected ffmpegArguments = [
         "-pix_fmt yuv420p",
         "-preset veryslow",
+        "-g 5",
         "-crf 33",
         "-vf scale=800:-1"
     ]
@@ -34,13 +37,14 @@ export class TimelapseHelper {
     }
 
     public async downloadTimelapse(filename: string, timelapseMessage: string) {
-
+        logRegular(`Downloading Timelapse ${filename}`)
         const result = await axios.get(`${this.configHelper.getMoonrakerUrl()}/server/files/timelapse/${filename}`,{
             responseType: 'arraybuffer',
             headers: {
                 'X-Api-Key': this.configHelper.getMoonrakerApiKey()
             }
         })
+        logSuccess(`Download Timelapse ${filename} complete`)
 
         let timelapseRaw = result.data
 
@@ -64,6 +68,10 @@ export class TimelapseHelper {
         let renderComplete = false
 
         logRegular(`Compress Timelapse: ${timelapseName}`)
+        if(this.functionCache.current_status === 'printing') {
+            logNotice('use single thread for ffmpeg because a print is running')
+            this.ffmpegArguments.push('-threads 1')
+        }
 
         writeFileSync(tempPath, timelapseBuffer,{encoding: 'utf8', flag: 'w+'})
 

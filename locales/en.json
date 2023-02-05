@@ -265,6 +265,7 @@
             "firmware_restart_successful": "The Firmware is restarting, `${username}`!",
             "timelapse": "Timelapse for `${printfile}`",
             "timelapse_download": "Timelapse `${timelapsefile}`",
+            "timelapse_render": "Render Timelapse `${timelapsefile}`, please wait...",
             "admin": {
                 "added": "${mention} is now a Bot Admin, `${username}`!",
                 "removed": "${mention} is no longer a Bot Admin, `${username}`!"
