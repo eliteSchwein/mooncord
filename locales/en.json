@@ -103,6 +103,10 @@
             "title": "Start Print Job?",
             "description": "Print Time: ${estimated_time}\nSlicer: ${slicer}\nSlicer Version: ${slicer_version}\nHeight: ${object_height}mm"
         },
+        "printjob_cancel_request": {
+            "title": "Cancel Print Job?",
+            "description": "Print Time: ${estimated_time}\nSlicer: ${slicer}\nSlicer Version: ${slicer_version}\nHeight: ${object_height}mm"
+        },
         "printjob_delete_request": {
             "title": "Delete Print Job?",
             "description": "Print Time: ${estimated_time}\nSlicer: ${slicer}\nSlicer Version: ${slicer_version}\nHeight: ${object_height}mm"
@@ -378,6 +382,12 @@
             "label": "Yes"
         },
         "printjob_request_deny": {
+            "label": "No"
+        },
+        "cancel_request_accept": {
+            "label": "Yes"
+        },
+        "cancel_request_deny": {
             "label": "No"
         },
         "klipper_restart": {

@@ -272,6 +272,20 @@
                 "users": [],
                 "roles": []
             },
+            "cancel_request_accept": {
+                "command_assign": "printjob",
+                "botadmin": true,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
+            "cancel_request_deny": {
+                "command_assign": "printjob",
+                "botadmin": true,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
             "printjob_request_accept": {
                 "command_assign": "printjob",
                 "botadmin": true,
@@ -620,6 +634,14 @@
             "thumbnail": "notification.png",
             "description": "${message}"
         },
+        "printjob_cancel_request": {
+            "author": "${filename}",
+            "color": "#c90000",
+            "image": "webcam",
+            "buttons": [
+                "cancel_request_accept",
+                "cancel_request_deny"]
+        },
         "printjob_start_request": {
             "author": "${filename}",
             "color": "#0099ff",
@@ -943,7 +965,6 @@
                 }
             ]
         },
-
         "systeminfo_discord": {
             "color": "#0099ff",
             "thumbnail": "discord.png",
@@ -1204,8 +1225,7 @@
                 "style":"DANGER",
                 "function_mapping": {
                     "required_states" : ["pause", "printing"],
-                    "macros": ["CANCEL_PRINT"],
-                    "message": "${locale.messages.answers.printjob_cancel.status_valid}"
+                    "request_cancel": true
                 }
             },
             "printjob_pause": {
@@ -1389,6 +1409,20 @@
             },
             "printjob_request_deny": {
                 "style":"DANGER",
+                "function_mapping": {
+                    "message": "${locale.messages.answers.printjob_request_abort}"
+                }
+            },
+            "cancel_request_accept": {
+                "style":"DANGER",
+                "required_states" : ["pause", "printing"],
+                "function_mapping": {
+                    "macros": ["CANCEL_PRINT"],
+                    "message": "${locale.messages.answers.printjob_cancel.status_valid}"
+                }
+            },
+            "cancel_request_deny": {
+                "style":"SUCCESS",
                 "function_mapping": {
                     "message": "${locale.messages.answers.printjob_request_abort}"
                 }
