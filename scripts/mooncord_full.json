@@ -635,7 +635,8 @@
             "description": "${message}"
         },
         "printjob_cancel_request": {
-            "author": "${filename}",
+            "author": "${state.print_stats.filename}",
+            "thumbnail": "thumbnail",
             "color": "#c90000",
             "image": "webcam",
             "buttons": [
@@ -1225,7 +1226,8 @@
                 "style":"DANGER",
                 "function_mapping": {
                     "required_states" : ["pause", "printing"],
-                    "request_cancel": true
+                    "show_embed": "printjob_cancel_request",
+                    "fetch_author_metadata": true
                 }
             },
             "printjob_pause": {
@@ -1305,15 +1307,18 @@
                 "emoji": "🖨️",
                 "style":"SECONDARY",
                 "function_mapping": {
-                    "request_printjob": true
+                    "show_embed": "printjob_start_request",
+                    "fetch_author_metadata": true,
+                    "fetch_author_thumbnail": true
                 }
             },
             "printjob_delete_request": {
                 "emoji": "🪣",
                 "style":"DANGER",
                 "function_mapping": {
-                    "request_printjob": true,
-                    "request_embed": "printjob_delete_request"
+                    "fetch_author_metadata": true,
+                    "fetch_author_thumbnail": true,
+                    "show_embed": "printjob_delete_request"
                 }
             },
             "printjob_exclude": {
