@@ -41,16 +41,16 @@ export class EmbedHandler {
             metaData.filename = author
         }
 
-        const embed = await this.embedHelper.generateEmbed(data.function_mapping.show_embed, metaData)
+        const embedData  = await this.embedHelper.generateEmbed(data.function_mapping.show_embed, metaData)
 
         if (data.function_mapping.fetch_author_thumbnail) {
             const thumbnail = await this.metadataHelper.getThumbnail(author)
 
-            embed.embed[0].setThumbnail(`attachment://${thumbnail.name}`)
-            embed.embed['files'].push(thumbnail)
+            embedData.embed.embeds[0].setThumbnail(`attachment://${thumbnail.name}`)
+            embedData.embed['files'].push(thumbnail)
         }
 
-        await message.edit(embed.embed)
+        await message.edit(embedData .embed)
 
         if(interaction === null || !interaction.deferred) { return }
 
