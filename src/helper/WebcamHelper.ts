@@ -107,12 +107,14 @@ export class WebcamHelper {
         }
     }
 
-    protected async triggerWebsite(url, post) {
-        if (post) {
-            await axios.post(url)
-            return
-        }
-        await axios.get(url)
+    protected triggerWebsite(url, post) {
+        new Promise(async (resolve, reject) => {
+            if (post) {
+                await axios.post(url)
+                return
+            }
+            await axios.get(url)
+        })
     }
 
     protected async executePostProcess(config) {
@@ -129,11 +131,10 @@ export class WebcamHelper {
             logRegular(`Execute Webcam Task ${index+1} from ${config.execute.length}: ${execute}`)
             if (execute.startsWith("gcode:")) {
                 const gcode = execute.replace("gcode:", "")
-                const id = Math.floor(Math.random() * Number.parseInt("10_000")) + 1
                 try {
                     await this.moonrakerClient
                         .send(
-                            {"method": "printer.gcode.script", "params": {"script": gcode}, id},
+                            {"method": "printer.gcode.script", "params": {"script": gcode}},
                             this.configHelper.getGcodeExecuteTimeout() * 1000
                         )
                 } catch (error) {
@@ -142,11 +143,11 @@ export class WebcamHelper {
             }
             if (execute.startsWith("website_post:")) {
                 const url = execute.replace("website_post:", "")
-                await this.triggerWebsite(url, true)
+                this.triggerWebsite(url, true)
             }
             if (execute.startsWith("website:")) {
                 const url = execute.replace("website:", "")
-                await this.triggerWebsite(url, false)
+                this.triggerWebsite(url, false)
             }
             await sleep(config.delay)
             index++

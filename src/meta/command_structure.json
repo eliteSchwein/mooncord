@@ -148,6 +148,7 @@
   },
   "info": {},
   "listgcodes": {},
+  "listtimelapses": {},
   "notify": {},
   "printjob": {
     "pause": {

@@ -1,16 +1,16 @@
-import {ButtonInteraction} from "discord.js";
+import {ButtonInteraction, Message, User} from "discord.js";
 import {LocaleHelper} from "../../../../helper/LocaleHelper";
 import {getMoonrakerClient} from "../../../../Application";
 
-export class ExcludeConfirmButton {
+export class ExcludeConfirmHandler {
     protected moonrakerClient = getMoonrakerClient()
     protected localeHelper = new LocaleHelper()
     protected locale = this.localeHelper.getLocale()
 
-    public async execute(interaction: ButtonInteraction, buttonData) {
-        if(typeof buttonData.function_mapping.exclude_object === 'undefined') { return }
+    public async execute(message: Message, user: User, data, interaction = null) {
+        if(typeof data.function_mapping.exclude_object === 'undefined') { return }
 
-        if(!interaction.deferred && !interaction.replied) {
+        if(interaction !== null && !interaction.deferred && !interaction.replied) {
             await interaction.deferReply()
         }
 
@@ -29,11 +29,12 @@ export class ExcludeConfirmButton {
             .replace(/(\${object})/g, object)
             .replace(/(\${username})/g, interaction.user.username)
 
-        if(!interaction.replied) {
+        if(interaction !== null && !interaction.replied) {
             await interaction.editReply(answer)
-        } else {
+        } else if(interaction !== null) {
             await interaction.followUp(answer)
+        } else {
+            await message.reply(answer)
         }
-
     }
 }

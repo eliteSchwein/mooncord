@@ -56,6 +56,10 @@ export class ThrottleNotification {
 
         setData('throttle', currentThrottleState)
 
+        if(this.notificationHelper.isEmbedBlocked(`throttle_${localeKey}`)) {
+            return
+        }
+
         const embed = await this.embedHelper.generateEmbed(`throttle_${localeKey}`)
 
         this.notificationHelper.broadcastMessage(embed.embed)

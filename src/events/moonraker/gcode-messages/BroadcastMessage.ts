@@ -17,6 +17,10 @@ export class BroadcastMessage {
         const notificationMessage = notificationMessageFragments[0]
         const color = ((notificationMessageFragments.length > 1) ? `#${notificationMessageFragments[1]}` : defaultColor)
 
+        if(this.notificationHelper.isEmbedBlocked('notification')) {
+            return
+        }
+
         logRegular(`Broadcast Message: ${notificationMessage}`)
 
         const embed = await this.embedHelper.generateEmbed('notification', {'message': notificationMessage}, null, {color})

@@ -16,8 +16,10 @@ import {GCodeUploadHandler} from "../events/discord/GCodeUploadHandler";
 import {VerifyHandler} from "../events/discord/VerifyHandler";
 // @ts-ignore
 import {REST} from '@discordjs/rest'
+import {ReconnectHandler} from "../events/discord/ReconnectHandler";
 
 let interactionHandler: InteractionHandler
+let reconnectHandler: ReconnectHandler
 let debugHandler: DebugHandler
 let gcodeUploadHandler: GCodeUploadHandler
 let verifyHandler: VerifyHandler
@@ -129,6 +131,7 @@ export class DiscordClient {
         debugHandler = new DebugHandler(this.discordClient)
         gcodeUploadHandler = new GCodeUploadHandler(this.discordClient)
         verifyHandler = new VerifyHandler(this.discordClient)
+        reconnectHandler = new ReconnectHandler(this.discordClient)
     }
 
     public generateCaches() {
@@ -147,6 +150,7 @@ export class DiscordClient {
 
     public close() {
         if (typeof this.discordClient === 'undefined') { return }
+        this.discordClient.removeAllListeners()
         this.discordClient.destroy()
     }
 }
