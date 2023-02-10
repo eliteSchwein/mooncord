@@ -639,6 +639,28 @@
             "thumbnail": "thumbnail",
             "color": "#c90000",
             "image": "webcam",
+            "fields": [
+                {
+                    "name": "${embeds.fields.print_time}",
+                    "value": "${formatTime:time.duration}"
+                },
+                {
+                    "name": "${embeds.fields.print_left_time}",
+                    "value": "${formatTime:time.left}"
+                },
+                {
+                    "name": "${embeds.fields.eta_print_time}",
+                    "value": "${timestamp:time.eta}"
+                },
+                {
+                    "name": "${embeds.fields.print_progress}",
+                    "value": "${percent:0:function.current_percent}%"
+                },
+                {
+                    "name": "${embeds.fields.print_layers}",
+                    "value": "${layers.current}/${layers.top}"
+                }
+            ],
             "buttons": [
                 "cancel_request_accept",
                 "cancel_request_deny"]
@@ -1226,8 +1248,7 @@
                 "style":"DANGER",
                 "function_mapping": {
                     "required_states" : ["pause", "printing"],
-                    "show_embed": "printjob_cancel_request",
-                    "fetch_author_metadata": true
+                    "show_embed": "printjob_cancel_request"
                 }
             },
             "printjob_pause": {
