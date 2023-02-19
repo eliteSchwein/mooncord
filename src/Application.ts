@@ -2,7 +2,7 @@ import * as packageConfig from '../package.json'
 import * as util from 'util'
 import {DiscordClient} from './clients/DiscordClient'
 import {MoonrakerClient} from './clients/MoonrakerClient'
-import {hookProcess, logEmpty, logError, logRegular, logSuccess, tempHookLog} from './helper/LoggerHelper'
+import {hookProcess, logEmpty, logError, logRegular, logSuccess, logWarn, tempHookLog} from './helper/LoggerHelper'
 import {DatabaseUtil} from './utils/DatabaseUtil'
 import {LocaleHelper} from "./helper/LocaleHelper";
 import {getEntry, setData} from './utils/CacheUtil'
@@ -76,6 +76,7 @@ async function init() {
     logRegular(`please invite the bot on a Server: 
         ${getEntry('invite_url')}`)
     logRegular(`and write a Message on this Server with your Account with the Tag ${userConfig.tmp.controller_tag}`)
+    logWarn('please dont use strg+c for copying the script, this will stop the install script')
 }
 
 export function reloadCache() {
