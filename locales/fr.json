@@ -9,10 +9,13 @@
     },
     "pages": {
         "gcode_files": {
-            "entry_label": "${data.path}"
+            "entry_label": "`${data.path}`"
+        },
+        "timelapse_files": {
+            "entry_label": "`${data.path}`"
         },
         "configs_download": {
-            "entry_label": "${data.name}"
+            "entry_label": "`${data.name}`"
         }
     },
     "embeds": {
@@ -41,6 +44,9 @@
         },
         "systeminfo_system": {
             "title": "Information Système "
+        },
+        "systeminfo_power_devices": {
+            "title": "Power Devices"
         },
         "systeminfo_discord": {
             "title": "Informations du client Discord"
@@ -77,38 +83,55 @@
             "description": "${page_entries}",
             "footer": "Page ${pages}"
         },
+        "timelapse_files": {
+            "title": "Dossier des Timelapse",
+            "description": "${page_entries}",
+            "footer": "Page ${pages}"
+        },
         "info": {
             "title": "Information",
             "description": "Version: ${package_config.version}\nAuthor: ${package_config.author}\nHomepage: ${package_config.homepage}\n${config.custom_info}"
         },
+        "history": {
+            "title": "Historique d'impression"
+        },
         "notification": {
+            "content": "Notification de l'imprimante ${config.printer_name} ",
             "title": "Notification"
         },
         "printjob_start_request": {
             "title": "Démarrer l'impression ?",
             "description": "Temps d'impression: ${estimated_time}\nSlicer: ${slicer}\nSlicer Version: ${slicer_version}\nHeight: ${object_height}mm"
         },
+        "printjob_cancel_request": {
+            "title": "Annuler l'mpression ?"
+        },
         "printjob_delete_request": {
             "title": "Supprimer l'impression ?",
             "description": "Temps d'impression: ${estimated_time}\nSlicer: ${slicer}\nSlicer Version: ${slicer_version}\nHeight: ${object_height}mm"
         },
         "printjob_start": {
+            "content": "Impression démarrer: `${state.print_stats.filename}`",
             "title": "Impression démarrer",
             "activity": "start ${state.print_stats.filename}"
         },
         "printjob_complete": {
+            "content": "Impression complète",
             "title": "Impression complète",
             "activity": "Impression finie"
         },
         "printjob_pause": {
+            "content": "L'impression ${state.print_stats.filename} est en pause",
             "title": "Impression en pause",
             "activity": "Une pause ? Apéro 🍾 !!"
         },
         "printjob_printing": {
+            "content": "Impression ${state.print_stats.filename} est à ${percent:0:state.display_status.progress}%",
             "title": "Impression",
             "activity": "Impression: ${percent:0:state.display_status.progress}%"
         },
         "printjob_stop": {
+            "content": "Impression stopper",
             "title": "Impression stopper",
             "activity": "Impression stopper"
         },
@@ -119,57 +142,77 @@
             "title": "Temperature for ${heater}"
         },
         "disconnected": {
+            "content": "L'imprimante ${config.printer_name} a été déconnectée Klipper !",
             "title": "Imprimante déconnectée !",
             "activity": "en attente de Klipper"
         },
         "moonraker_disconnected": {
+            "content": "Connection avec Moonraker perdu !",
             "title": "Connection avec Moonraker perdue !",
             "activity": "en attente de Moonraker"
         },
         "error": {
+            "content": "Une erreur s'est produite !",
             "title": "Une erreur s'est produite !",
             "activity": "en attente de l'utilisateur"
         },
         "offline": {
+            "content": "La connection avec Moonraker or Klipper est perdu !",
             "title": "Connection perdu !",
             "activity": "en attente de Moonraker"
         },
         "shutdown": {
+            "content": "Le firmware de Klipper s'est arrêté !",
             "title": "Klipper s'est arrêté",
             "activity": "en attente de Klipper"
         },
         "ready": {
+            "content": "L'imprimante ${config.printer_name} est prête à imprimer",
             "title": "Impression prête",
             "activity": "pour le fichier GCODE..."
         },
         "startup": {
+            "content": "L'imprimante ${config.printer_name} démarre",
             "title": "Démarrage de l'impression",
             "activity": "L'impression commance"
         },
         "throttle_temperature_limit_active": {
+            "content": "Le système de l'imprimante ${config.printer_name} est actuellement bridé",
             "title": "Un ralentissement s'est produit !",
-            "description": "Le système est actuellement ralentis à cause de `Temperature Throttle`!\nCurrent Temperature: `${proc_stats.cpu_temp} °C`\nPlease check your cooling Solution."
+            "description": "Le système est actuellement ralentis à cause de `Temperature Throttle`!\nCurrent Temperature: `${proc_stats.cpu_temp} °C`\nVeuillez vérifier votre refroidissement."
         },
         "throttle_under_voltage_detected": {
+            "content": "Le système de l'imprimante ${config.printer_name} est actuellement bridé",
             "title": "Un ralentissement s'est produit !",
-            "description": "Le système est actuellement ralentis à cause de `Under Voltage`!\nPlease check your Power Delivery."
+            "description": "Le système est actuellement ralentis à cause de `Under Voltage`!\nVeuillez vérifier votre alimentation."
         },
         "throttle_frequency_capped": {
+            "content": "Le système de l'imprimante ${config.printer_name} est actuellement bridé",
             "title": "Un ralentissement s'est produit !",
-            "description": "Le système est actuellement ralentis à cause de `Frequency Capped`!\nPlease check your cooling Solution or/and your Power Delivery.."
+            "description": "Le système est actuellement ralentis à cause de `Frequency Capped`!\nVeuillez vérifier votre refroidissement ou/et votre alimentation..."
         },
         "system_update": {
+            "content": "Le système a trouvé des mises à jour",
             "title": "Mises à jour du système"
         },
         "fields": {
+            "total_filament_used": "Filament Total Utilisé",
+            "total_time": "Temps Total",
+            "total_print_time": "Temps Total d'Impression",
+            "longest_job": "Action la plus long",
+            "longest_print": "Impression la plus longue",
+            "total_jobs": "Total des actions",
+            "on": "${icon} On",
+            "off": "${icon} Off",
             "flow": "Flow",
             "system": "Système",
             "packages": "Paquets",
             "chipset": "Chipset",
-            "color": "Color",
+            "color": "Couleur",
+            "count": "Compte",
             "version": "Version",
             "load": "Charge",
-            "awake_time": "DUrée de fonctionnement",
+            "awake_time": "Durée de fonctionnement",
             "frequency": "Fréquence",
             "target": "Cible",
             "speed": "Vitesse",
@@ -205,13 +248,13 @@
             "distribution_like": "Distribution Like",
             "codename": "Nom de code",
             "ping": "Ping",
-            "client_id": "Client ID",
-            "event_count": "Events",
-            "ready_since": "Ready Since",
-            "active_connections": "Active Connections",
+            "client_id": "ID Client",
+            "event_count": "Évènements",
+            "ready_since": "Prêt depuis",
+            "active_connections": "Connexions actives",
             "current": "Actuel",
-            "min_temp": "Min Temp",
-            "max_temp": "Max Temp"
+            "min_temp": "Température min",
+            "max_temp": "Température max"
         },
         "list_files": {
             "title": "Fichier d'impression",
@@ -221,15 +264,19 @@
     },
     "messages": {
         "answers": {
-            "execute_successful": "The Gcode Commands executed successful, `${username}`!",
+            "temp_target_reached": "Le chauffage `${heater}` à atteint la température cible `${target}°C`!",
+            "custom_command_executed": "La commande personnalisée `${custom_command}` a été exécutée, `${username}`!",
+            "execute_successful": "Commandes Gcode exécutées avec succès, `${username}`!",
             "preheat_preset": {
-                "preset": "Preheating for `${preset}`, `${username}`!",
-                "manual": "Preheating ${heater_list}, `${username}`!"
+                "preset": "Préchauffage pour `${preset}`, `${username}`!",
+                "manual": "Préchauffage ${heater_list}, `${username}`!"
             },
             "update_request": "Demande de mise à jour du système, `${username}`!",
             "restart_successful": "Le redémarrage pour `${service}` a réussi !",
             "firmware_restart_successful": "Le Firmware redémarre !",
             "timelapse": "Timelapse pour `${printfile}`",
+            "timelapse_download": "Timelapse `${timelapsefile}`",
+            "timelapse_render": "Rendu du Timelapse `${timelapsefile}`, veuillez patienter...",
             "admin": {
                 "added": "${mention} est maintenant administrateur, `${username}`!",
                 "removed": "${mention} n'est plus administrateur, `${username}`!"
@@ -282,9 +329,14 @@
                 "speed_flow": "Le nouveau facteur de vitesse est `${speed}%` and flow factor is `${flow}%`, `${username}`!"
             },
             "excluded_object": "L'objet `${object}` a été exclu, `${username}`!",
+            "power_device": {
+                "on": "L'appareil d'alimentation `${power_device}` est allumé, `${username}`!",
+                "off": "L'appareil d'alimentation `${power_device}` est etteint, `${username}`!"
+            },
             "execute_success": "Commande exécutée !"
         },
         "errors": {
+            "custom_command_descript": "Configured Custom Command",
             "execute_running": "Commandes déjà en cours d'exécution, veuillez réessayer plus tard, `${username}`!",
             "macros_failed": "Les macros pour `${button_label}` ont échoué, `${username}`!",
             "execute_failed": "Commandes Gcode échoué, `${username}`!",
@@ -340,6 +392,12 @@
         "printjob_request_deny": {
             "label": "Non"
         },
+        "cancel_request_accept": {
+            "label": "Oui"
+        },
+        "cancel_request_deny": {
+            "label": "Non"
+        },
         "klipper_restart": {
             "label": "Redémarrer le système"
         },
@@ -352,7 +410,16 @@
         "last_page_printlist": {
             "label": "Page précédente"
         },
+        "next_page_timelapselist": {
+            "label": "Page suivante"
+        },
+        "last_page_timelapselist": {
+            "label": "Page précédente"
+        },
         "to_printlist": {
+            "label": "à la liste"
+        },
+        "to_timelapselist": {
             "label": "à la liste"
         },
         "to_temps": {
@@ -406,6 +473,11 @@
             "option_label": "${data.path}",
             "option_description": "Cliquez pour plus de détails"
         },
+        "timelapse_download": {
+            "label": "Sélectionnez un ficher",
+            "option_label": "${data.path}",
+            "option_description": "Cliquez pour télécharger"
+        },
         "systeminfo_select": {
             "label": "Sélectionnez un composant...",
             "option_label": "${data.label}",
@@ -437,7 +509,7 @@
             "command": "tune",
             "options": {
                 "speed": {
-                    "name": "speed",
+                    "name": "vitesse",
                     "description": "Régler votre vitesse d'impression actuelle"
                 },
                 "flow": {
@@ -481,6 +553,16 @@
                 "temperature": {
                     "name": "temperature",
                     "description": "Régler la température de réglage."
+                }
+            }
+        },
+        "power": {
+            "description": "Changer un appareil d'alimentation",
+            "command": "alimentation",
+            "options": {
+                "device": {
+                    "name": "appareil",
+                    "description": "Sélectionnez un appareil d'alimentation."
                 }
             }
         },
@@ -618,12 +700,16 @@
             }
         },
         "info": {
-            "description": "Envoyer une description de moi.",
+            "description": "Envoyer une description.",
             "command": "info"
         },
         "listgcodes": {
-            "description": "List all Print Files.",
+            "description": "Lister tous les fichiers d'impression.",
             "command": "listgcodes"
+        },
+        "listtimelapses": {
+            "description": "Lister tous les fichiers Timelapse.",
+            "command": "listtimelapses"
         },
         "systeminfo": {
             "description": "Obtenir les informations actuelles du système.",
@@ -668,13 +754,17 @@
         "temp": {
             "description": "Obtenir les températures actuelles de Klipper.",
             "command": "temp"
+        },
+        "history": {
+            "description": "Afficher l'historique des impressions.",
+            "command": "history"
         }
     },
     "graph": {
         "temp_history": {
             "title": "Historique des températures",
             "temperature": "Temperature",
-            "power": "Power"
+            "power": "Alimentation"
         }
     },
     "inputs": {
@@ -682,7 +772,7 @@
             "label": "Commande GCode"
         },
         "temp_target_input": {
-            "label": "Target for ${heater}"
+            "label": "Cible de ${heater}"
         }
     }
 }

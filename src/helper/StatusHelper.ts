@@ -128,8 +128,8 @@ export class StatusHelper {
             this.discordClient = app.getDiscordClient()
         }
 
-        if(status === 'printing' && this.checkPercentMatch() ||
-        status !== 'printing') {
+        if(status === 'printing' && this.checkPercentMatch() && !this.notificationHelper.isEmbedBlocked(statusMeta.embed_id) ||
+        status !== 'printing' && !this.notificationHelper.isEmbedBlocked(statusMeta.embed_id)) {
             this.notificationHelper.broadcastMessage(statusEmbed.embed)
         }
 

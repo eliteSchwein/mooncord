@@ -4,7 +4,7 @@ import {LocaleHelper} from "../../../../helper/LocaleHelper";
 import {PageHelper} from "../../../../helper/PageHelper";
 import {EmbedHelper} from "../../../../helper/EmbedHelper";
 
-export class GcodeListCommand {
+export class TimelapseListCommand {
     protected databaseUtil = getDatabase()
     protected localeHelper = new LocaleHelper()
     protected locale = this.localeHelper.getLocale()
@@ -12,7 +12,7 @@ export class GcodeListCommand {
     protected embedHelper = new EmbedHelper()
 
     public constructor(interaction: CommandInteraction, commandId: string) {
-        if(commandId !== 'listgcodes') { return }
+        if(commandId !== 'listtimelapses') { return }
 
         this.execute(interaction)
     }
@@ -20,7 +20,7 @@ export class GcodeListCommand {
     protected async execute(interaction: CommandInteraction) {
         await interaction.deferReply()
 
-        const pageHelper = new PageHelper('gcode_files')
+        const pageHelper = new PageHelper('timelapse_files')
         const pageData = pageHelper.getPage(false, 1)
 
         if(Object.keys(pageData) === undefined || Object.keys(pageData).length === 0) {
@@ -28,7 +28,7 @@ export class GcodeListCommand {
             return
         }
 
-        const embed = await this.embedHelper.generateEmbed('gcode_files', pageData)
+        const embed = await this.embedHelper.generateEmbed('timelapse_files', pageData)
 
         await interaction.editReply(embed.embed)
     }

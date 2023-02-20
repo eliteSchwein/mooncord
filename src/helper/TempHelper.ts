@@ -1,9 +1,10 @@
-import {findValue, getEntry, updateData} from "../utils/CacheUtil";
+import {findValue, getEntry, setData, updateData} from "../utils/CacheUtil";
 import {formatPercent} from "./DataHelper";
 import {ConfigHelper} from "./ConfigHelper";
 import {logRegular} from "./LoggerHelper";
 import * as App from "../Application"
 import {LocaleHelper} from "./LocaleHelper";
+import {NotificationHelper} from "./NotificationHelper";
 
 export class TempHelper {
     protected cache = getEntry('state')
@@ -13,6 +14,8 @@ export class TempHelper {
     protected chartConfigSection = this.configHelper.getGraphConfig('temp_history')
     protected locale = this.localeHelper.getLocale()
     protected tempCache = getEntry('temps')
+    protected functionCache = getEntry('function')
+    protected notificationHelper = new NotificationHelper()
     protected colorIndex = 0
 
     public generateColors(cache: any) {
@@ -185,6 +188,10 @@ export class TempHelper {
         return this.cache[heater].target
     }
 
+    public getHeaterTemp(heater: string) {
+        return this.cache[heater].temperature
+    }
+
     public getHeaterConfigData(heater:string) {
         const rawSearch = findValue(`state.configfile.config.${heater}`)
 
@@ -235,5 +242,107 @@ export class TempHelper {
 
     public getHeaters() {
         return this.cache.heaters.available_heaters
+    }
+
+    public updateHeaterTargets() {
+        if(this.cache === undefined) {
+            return
+        }
+
+        const config = this.configHelper.getTempTargetNotificationConfig()
+
+        if(!config.enable) {
+            return
+        }
+
+        const tempTargets = this.functionCache.temp_targets
+
+        const heaters = this.getHeaters()
+
+        for(const heater of heaters) {
+            const target = this.getHeaterTarget(heater)
+            const temp = this.getHeaterTemp(heater)
+
+            const current = tempTargets[heater]
+
+            if(current !== undefined) {
+                current.temp = temp
+
+                tempTargets[heater] = current
+            }
+
+            if(current !== undefined && target === 0) {
+                delete tempTargets[heater]
+            }
+
+            if(current === undefined && target > 0 ||
+                current !== undefined && target !== current.target) {
+                tempTargets[heater] = {
+                    temp,
+                    target,
+                    offset: config.temp_offset,
+                    duration: config.temp_duration,
+                    delay: config.delay,
+                    sended: false
+                }
+            }
+        }
+
+        this.functionCache.temp_targets = tempTargets
+
+        setData('function', this.functionCache)
+    }
+
+    public async notifyHeaterTargetNotifications() {
+        this.functionCache = getEntry('function')
+
+        const tempTargets = this.functionCache.temp_targets
+
+        const config = this.configHelper.getTempTargetNotificationConfig()
+
+        this.localeHelper = new LocaleHelper()
+        this.locale = this.localeHelper.getLocale()
+
+        this.notificationHelper = new NotificationHelper()
+
+        if(!config.enable) {
+            return
+        }
+
+        if(Object.keys(tempTargets).length === 0) {
+            return
+        }
+
+        for(const heater in tempTargets) {
+            const heaterData = tempTargets[heater]
+
+            const minTemp = heaterData.target - heaterData.offset
+            const maxTemp = heaterData.target + heaterData.offset
+
+            if(heaterData.temp > minTemp && heaterData.temp < maxTemp && heaterData.duration !== 0) {
+                tempTargets[heater].duration--
+                continue
+            } else if(heaterData.duration !== 0 && heaterData.delay === config.delay) {
+                tempTargets[heater].duration = config.temp_duration
+                continue
+            }
+
+            if(heaterData.delay === 0 && !heaterData.sended) {
+                tempTargets[heater].sended = true
+
+                const message = this.locale.messages.answers.temp_target_reached
+                    .replace(/(\${heater})/g, heater)
+                    .replace(/(\${target})/g, heaterData.target)
+
+                void this.notificationHelper.broadcastMessage(message)
+                continue
+            }
+
+            tempTargets[heater].delay--
+        }
+
+        this.functionCache.temp_targets = tempTargets
+
+        setData('function', this.functionCache)
     }
 }

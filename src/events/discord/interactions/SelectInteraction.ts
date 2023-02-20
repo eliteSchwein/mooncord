@@ -11,6 +11,7 @@ import {ViewSystemInfo} from "./selections/ViewSystemInfo";
 import {ShowTempSelection} from "./selections/ShowTemp";
 import {DownloadConfig} from "./selections/DownloadConfig";
 import {ExcludeObjectsSelection} from "./selections/ExcludeObjects";
+import {DownloadTimelapse} from "./selections/DownloadTimelapse";
 
 export class SelectInteraction {
     protected permissionHelper = new PermissionHelper()
@@ -52,6 +53,7 @@ export class SelectInteraction {
         void new ShowTempSelection(interaction, selectId)
         void new DownloadConfig(interaction, selectId)
         void new ExcludeObjectsSelection(interaction, selectId)
+        void new DownloadTimelapse(interaction, selectId)
 
         await sleep(2000)
 

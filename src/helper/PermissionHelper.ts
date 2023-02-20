@@ -23,10 +23,17 @@ export class PermissionHelper {
         const buttonPermission = this.permissions.buttons[command]
         const selectPermission = this.permissions.selections[command]
         const modalPermission = this.permissions.modals[command]
+        const reactPermission = this.permissions.reactions[command]
         
+        if(typeof reactPermission !== 'undefined') {
+            if(reactPermission.users === "*") { return true }
+            
+            commandPermission = this.permissions.commands[reactPermission.command_assign]
+        }
+
         if(typeof buttonPermission !== 'undefined') {
             if(buttonPermission.users === "*") { return true }
-            
+
             commandPermission = this.permissions.commands[buttonPermission.command_assign]
         }
 

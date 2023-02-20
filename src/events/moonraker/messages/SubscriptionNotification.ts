@@ -3,6 +3,7 @@ import {StatusHelper} from "../../../helper/StatusHelper";
 import {MetadataHelper} from "../../../helper/MetadataHelper";
 import {UsageHelper} from "../../../helper/UsageHelper";
 import {HistoryHelper} from "../../../helper/HistoryHelper";
+import {TempHelper} from "../../../helper/TempHelper";
 
 export class SubscriptionNotification {
     protected statusHelper = new StatusHelper()
@@ -24,6 +25,9 @@ export class SubscriptionNotification {
         if(typeof param.print_stats !== 'undefined') {
             void this.parsePrintStats(param.print_stats)
         }
+
+        const tempHelper = new TempHelper()
+        tempHelper.updateHeaterTargets()
     }
 
     protected async parsePrintStats(printStatsData) {

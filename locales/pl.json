@@ -9,10 +9,13 @@
     },
     "pages": {
         "gcode_files": {
-            "entry_label": "${data.path}"
+            "entry_label": "`${data.path}`"
+        },
+        "timelapse_files": {
+            "entry_label": "`${data.path}`"
         },
         "configs_download": {
-            "entry_label": "${data.name}"
+            "entry_label": "`${data.name}`"
         }
     },
     "embeds": {
@@ -80,6 +83,11 @@
             "description": "${page_entries}",
             "footer": "Strona ${pages}"
         },
+        "timelapse_files": {
+            "title": "Pliki Timelapse",
+            "description": "${page_entries}",
+            "footer": "Strona ${pages}"
+        },
         "info": {
             "title": "Informacje",
             "description": "Wersja: ${package_config.version}\nAutor: ${package_config.author}\nStrona główna: ${package_config.homepage}\n${config.custom_info}"
@@ -88,33 +96,42 @@
             "title": "Historia Druku"
         },
         "notification": {
+            "content": "Drukarka ${config.printer_name} Powiadomienie",
             "title": "Powiadomienie"
         },
         "printjob_start_request": {
             "title": "Zacząć wydruk?",
             "description": "Czas Druku: ${estimated_time}\nSlicer: ${slicer}\nWersja Slicera: ${slicer_version}\nWysokość: ${object_height}mm"
         },
+        "printjob_cancel_request": {
+            "title": "Anulować wydruk?"
+        },
         "printjob_delete_request": {
             "title": "Usunąć wydruk?",
             "description": "Czas Druku: ${estimated_time}\nSlicer: ${slicer}\nWersja Slicera: ${slicer_version}\nWysokość: ${object_height}mm"
         },
         "printjob_start": {
+            "content": "Wydruk rozpoczęty: `${state.print_stats.filename}`",
             "title": "Wydruk rozpoczęty",
             "activity": "Start ${state.print_stats.filename}"
         },
         "printjob_complete": {
+            "content": "Wydruk zakończony",
             "title": "Wydruk zakończony",
             "activity": "Zakończono wydruk"
         },
         "printjob_pause": {
+            "content": "Wydruk ${state.print_stats.filename} jest zatrzymany",
             "title": "Wydruk wstrzymany",
             "activity": "Wstrzymano wydruk"
         },
         "printjob_printing": {
+            "content": "Wydruk ${state.print_stats.filename} jest ${percent:0:state.display_status.progress}% ukończony",
             "title": "Drukowanie",
             "activity": "Drukowanie: ${percent:0:state.display_status.progress}%"
         },
         "printjob_stop": {
+            "content": "Wydruk zatrzymany",
             "title": "Wydruk zatrzymany",
             "activity": "Wydruk zatrzymany"
         },
@@ -125,46 +142,57 @@
             "title": "Temperatury dla ${heater}"
         },
         "disconnected": {
+            "content": "Drukarka ${config.printer_name} została rozłączona z Klipperem!",
             "title": "Drukarka nie jest podłączona",
             "activity": "Oczekiwanie na Klippera"
         },
         "moonraker_disconnected": {
+            "content": "Stracono połączenie z Moonrakerem!",
             "title": "Stracono połączenie z Moonrakerem",
             "activity": "Oczekiwanie na Moonrakera"
         },
         "error": {
+            "content": "Wystąpił błąd!",
             "title": "Wystąpił błąd!",
             "activity": "Oczekiwanie na użytkownika"
         },
         "offline": {
+            "content": "Moonraker lub Klipper straciły połączenie!",
             "title": "Stracono połączenie!",
             "activity": "Oczekiwanie na Moonrakera"
         },
         "shutdown": {
+            "content": "Klipper jest wyłączony!",
             "title": "Klipper jest wyłączony!",
             "activity": "Oczekiwanie na Klippera"
         },
         "ready": {
+            "content": "Drukarka ${config.printer_name} jest gotowa do wydruku",
             "title": "Drukarka jest gotowa",
             "activity": "na plik GCODE..."
         },
         "startup": {
+            "content": "Drukarka ${config.printer_name} uruchamia się",
             "title": "Uruchamianie drukarki",
             "activity": "Uruchamianie drukarki"
         },
         "throttle_temperature_limit_active": {
+            "content": "System drukarki ${config.printer_name} jest obecnie ograniczony wydajnościowo",
             "title": "Wystąpił Throttling!",
             "description": "System jest obecnie obraniczony wydajnościowo po przez osiągnięcie `Limitu Temperatury`!\nObecna Temperatura: `${proc_stats.cpu_temp} °C`\nSprawdz swoje chłodzenie."
         },
         "throttle_under_voltage_detected": {
+            "content": "System drukarki ${config.printer_name} jest obecnie ograniczony wydajnościowo",
             "title": "Wystąpił Throttling!",
             "description": "System jest obecnie obraniczony wydajnościowo przez `Nie Wystarczające Napięcie`!\nSprawdz swoje źródło zasilania."
         },
         "throttle_frequency_capped": {
+            "content": "System drukarki ${config.printer_name} jest obecnie ograniczony wydajnościowo",
             "title": "Wystąpił Throttling!",
             "description": "System jest obecnie obraniczony wydajnościowo przez osiągnięcie `Ograniczenia częstotliwości`!\nSprawdz swoje chłodzenie lub/i źródło zasilania."
         },
         "system_update": {
+            "content": "System ma dostępne aktualizacje",
             "title": "Aktualizacje systemu"
         },
         "fields": {
@@ -228,6 +256,7 @@
     },
     "messages": {
         "answers": {
+            "temp_target_reached": "The heater `${heater}` reached the Target Temperature `${target}°C`!",
             "custom_command_executed": "Komenda ${custom_command} została wykonana, `${username}`!",
             "execute_successful": "Komenda GCODE została wykonana pomyślnie, `${username}`!",
             "preheat_preset": {
@@ -238,6 +267,8 @@
             "restart_successful": "Restart usługi `${service}` był pomyślny, `${username}`!",
             "firmware_restart_successful": "Oprogramowanie się restartuje, `${username}`!",
             "timelapse": "Timelapse dla `${printfile}`",
+            "timelapse_download": "Timelapse `${timelapsefile}`",
+            "timelapse_render": "Render Timelapse `${timelapsefile}`, please wait...",
             "admin": {
                 "added": "${mention} jest teraz adminem bota, `${username}`!",
                 "removed": "${mention} już nie jest adminem bota, `${username}`!"
@@ -352,6 +383,12 @@
         "printjob_request_deny": {
             "label": "Nie"
         },
+        "cancel_request_accept": {
+            "label": "Tak"
+        },
+        "cancel_request_deny": {
+            "label": "Nie"
+        },
         "klipper_restart": {
             "label": "Restart oprogramowania"
         },
@@ -364,8 +401,17 @@
         "last_page_printlist": {
             "label": "Poprzednia strona"
         },
+        "next_page_timelapselist": {
+            "label": "Następna strona"
+        },
+        "last_page_timelapselist": {
+            "label": "Poprzednia strona"
+        },
         "to_printlist": {
             "label": "do listy drukowania"
+        },
+        "to_timelapselist": {
+            "label": "to List"
         },
         "to_temps": {
             "label": "do temperatur"
@@ -415,8 +461,13 @@
             "option_label": "${data.path}",
             "option_description": "Kliknij, aby uzyskać więcej szczegółów"
         },
+        "timelapse_download": {
+            "label": "Wybierz plik",
+            "option_label": "${data.path}",
+            "option_description": "Kliknij aby pobrać"
+        },
         "systeminfo_select": {
-            "label": "Select a Component",
+            "label": "Wybierz Komponent",
             "option_label": "${data.label}",
             "option_description": "Kliknij, aby uzyskać więcej szczegółów",
             "options": [
@@ -659,6 +710,10 @@
             "description": "Wyświetl wszystkie pliki do drukowania.",
             "command": "listgcodes"
         },
+        "listtimelapses": {
+            "description": "List all Timelapse Files.",
+            "command": "listtimelapses"
+        },
         "systeminfo": {
             "description": "Uzyskaj aktualne informacje o systemie.",
             "command": "systeminfo"
@@ -704,7 +759,7 @@
             "command": "temp"
         },
         "history": {
-            "description": "Shows the Print History.",
+            "description": "Pokazuje historię wydruków.",
             "command": "history"
         }
     },

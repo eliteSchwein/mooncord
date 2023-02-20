@@ -1,11 +1,11 @@
-import {ButtonInteraction} from "discord.js";
+import {ButtonInteraction, Message, User} from "discord.js";
 import {getDatabase, getMoonrakerClient} from "../../../../Application";
 import {EmbedHelper} from "../../../../helper/EmbedHelper";
 import {ConfigHelper} from "../../../../helper/ConfigHelper";
 import {LocaleHelper} from "../../../../helper/LocaleHelper";
 import {ConsoleHelper} from "../../../../helper/ConsoleHelper";
 
-export class MacroButton {
+export class MacroHandler {
     protected databaseUtil = getDatabase()
     protected embedHelper = new EmbedHelper()
     protected configHelper = new ConfigHelper()
@@ -14,20 +14,20 @@ export class MacroButton {
     protected locale = this.localeHelper.getLocale()
     protected consoleHelper = new ConsoleHelper()
 
-    public async execute(interaction: ButtonInteraction, buttonData) {
-        if(typeof buttonData.function_mapping.macros === 'undefined') { return }
-        if(buttonData.function_mapping.macros.empty) { return }
+    public async execute(message: Message, user: User, data, interaction = null) {
+        if(typeof data.function_mapping.macros === 'undefined') { return }
+        if(data.function_mapping.macros.empty) { return }
 
-        const gcodeValid = await this.consoleHelper.executeGcodeCommands(buttonData.function_mapping.macros,
+        const gcodeValid = await this.consoleHelper.executeGcodeCommands(data.function_mapping.macros,
             interaction.channel,
-            buttonData.function_mapping.macro_message === true)
+            data.function_mapping.macro_message === true)
 
-        if(!buttonData.function_mapping.macro_message) { return }
+        if(!data.function_mapping.macro_message) { return }
 
-        let label = buttonData.label
+        let label = data.label
 
-        if(typeof buttonData.emoji !== 'undefined') {
-            label = `${buttonData.emoji} ${label}`
+        if(typeof data.emoji !== 'undefined') {
+            label = `${data.emoji} ${label}`
         }
 
         let answer = this.locale.messages.answers.macros_executed
@@ -45,10 +45,10 @@ export class MacroButton {
                 .replace(/\${username}/g, interaction.user.tag)
         }
 
-        if(interaction.replied) {
+        if(interaction !== null && interaction.replied) {
             await interaction.followUp({ephemeral: false, content: answer})
         } else {
-            await interaction.reply(answer)
+            await message.reply(answer)
         }
     }
 }

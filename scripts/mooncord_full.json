@@ -32,6 +32,7 @@
         "icon_set": "acryl",
         "entries_per_page": 8
     },
+    "printer_name": "$clear",
     "custom_info": "Thanks for installing MoonCord and Happy Printing ❤",
     "language": {
         "date_locale": "de-DE",
@@ -48,6 +49,15 @@
             "_comment": "this Section is managed by the /admin command",
             "users": [],
             "roles": []
+        },
+        "reactions": {
+            "delete": {
+                "command_assign": "dump",
+                "botadmin": true,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            }
         },
         "selections": {
             "exclude_objects": {
@@ -66,6 +76,13 @@
             },
             "printlist_view_printjob": {
                 "command_assign": "fileinfo",
+                "botadmin": true,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
+            "timelapse_download": {
+                "command_assign": "listtimelapse",
                 "botadmin": true,
                 "guildadmin": false,
                 "users": [],
@@ -101,13 +118,6 @@
                 "users": "*",
                 "roles": []
             },
-            "next_page_printlist": {
-                "command_assign": "listgcodes",
-                "botadmin": true,
-                "guildadmin": false,
-                "users": [],
-                "roles": []
-            },
             "last_page_configs_download": {
                 "command_assign": "config",
                 "botadmin": false,
@@ -122,8 +132,29 @@
                 "users": [],
                 "roles": []
             },
+            "next_page_printlist": {
+                "command_assign": "listgcodes",
+                "botadmin": true,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
             "last_page_printlist": {
                 "command_assign": "listgcodes",
+                "botadmin": true,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
+            "next_page_timelapselist": {
+                "command_assign": "listtimelapses",
+                "botadmin": true,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
+            "last_page_timelapselist": {
+                "command_assign": "listtimelapses",
                 "botadmin": true,
                 "guildadmin": false,
                 "users": [],
@@ -238,6 +269,20 @@
                 "command_assign": "restart",
                 "botadmin": true,
                 "guildadmin": true,
+                "users": [],
+                "roles": []
+            },
+            "cancel_request_accept": {
+                "command_assign": "printjob",
+                "botadmin": true,
+                "guildadmin": false,
+                "users": [],
+                "roles": []
+            },
+            "cancel_request_deny": {
+                "command_assign": "printjob",
+                "botadmin": true,
+                "guildadmin": false,
                 "users": [],
                 "roles": []
             },
@@ -453,9 +498,23 @@
         "sepia": false
     },
     "notifications": {
+        "blacklist": [],
         "moonraker_throttle": true,
         "timelapse": true,
-        "show_m117_notification": true
+        "m117_notification": {
+            "enable": true,
+            "blacklist": [
+                "/(Rendering (\\||\\/|-|\\\\))/g",
+                "/^.*(Time Left).*$/g"
+            ],
+            "whitelist": []
+        },
+        "temp_target_notification": {
+            "enable": true,
+            "temp_offset": 2,
+            "temp_duration": 5,
+            "delay": 30
+        }
     },
     "development": {
         "dump_cache_on_start": false,
@@ -525,6 +584,16 @@
                 "printlist_view_printjob"
             ]
         },
+        "timelapse_files": {
+            "color": "#0099ff",
+            "thumbnail": "printlist.png",
+            "buttons": [
+                "last_page_timelapselist",
+                "next_page_timelapselist"],
+            "selections": [
+                "timelapse_download"
+            ]
+        },
         "info": {
             "color": "#0099ff",
             "thumbnail": "logo.png"
@@ -564,6 +633,37 @@
             "color": "#03f4fc",
             "thumbnail": "notification.png",
             "description": "${message}"
+        },
+        "printjob_cancel_request": {
+            "author": "${state.print_stats.filename}",
+            "thumbnail": "thumbnail",
+            "color": "#c90000",
+            "image": "webcam",
+            "fields": [
+                {
+                    "name": "${embeds.fields.print_time}",
+                    "value": "${formatTime:time.duration}"
+                },
+                {
+                    "name": "${embeds.fields.print_left_time}",
+                    "value": "${formatTime:time.left}"
+                },
+                {
+                    "name": "${embeds.fields.eta_print_time}",
+                    "value": "${timestamp:time.eta}"
+                },
+                {
+                    "name": "${embeds.fields.print_progress}",
+                    "value": "${percent:0:function.current_percent}%"
+                },
+                {
+                    "name": "${embeds.fields.print_layers}",
+                    "value": "${layers.current}/${layers.top}"
+                }
+            ],
+            "buttons": [
+                "cancel_request_accept",
+                "cancel_request_deny"]
         },
         "printjob_start_request": {
             "author": "${filename}",
@@ -888,7 +988,6 @@
                 }
             ]
         },
-
         "systeminfo_discord": {
             "color": "#0099ff",
             "thumbnail": "discord.png",
@@ -1079,6 +1178,13 @@
                 "required": true
             }
         },
+        "reactions": {
+            "delete": {
+                "function_mapping": {
+                    "delete_message": true
+                }
+            }
+        },
         "buttons": {
             "next_page_configs_download": {
                 "emoji": "➡️",
@@ -1112,6 +1218,22 @@
                     "page_down": true
                 }
             },
+            "next_page_timelapselist": {
+                "emoji": "➡️",
+                "style":"SECONDARY",
+                "permission_mapping": "listtimelapses",
+                "function_mapping": {
+                    "page_up": true
+                }
+            },
+            "last_page_timelapselist": {
+                "emoji": "⬅️",
+                "style":"SECONDARY",
+                "permission_mapping": "listtimelapses",
+                "function_mapping": {
+                    "page_down": true
+                }
+            },
             "printjob_resume": {
                 "emoji": "▶️",
                 "style":"PRIMARY",
@@ -1126,8 +1248,7 @@
                 "style":"DANGER",
                 "function_mapping": {
                     "required_states" : ["pause", "printing"],
-                    "macros": ["CANCEL_PRINT"],
-                    "message": "${locale.messages.answers.printjob_cancel.status_valid}"
+                    "show_embed": "printjob_cancel_request"
                 }
             },
             "printjob_pause": {
@@ -1166,7 +1287,14 @@
                 "emoji": "📘",
                 "style":"SECONDARY",
                 "function_mapping": {
-                    "show_printlist": true
+                    "show_list": "gcode_files"
+                }
+            },
+            "to_timelapselist": {
+                "emoji": "📘",
+                "style":"SECONDARY",
+                "function_mapping": {
+                    "show_list": "timelapse_files"
                 }
             },
             "to_temps": {
@@ -1180,8 +1308,7 @@
                 "emoji": "♨",
                 "style":"SECONDARY",
                 "function_mapping": {
-                    "show_temp_modal": true,
-                    "modal_delete_message": false
+                    "show_temp_modal": true
                 }
             },
             "printjob_delete_accept": {
@@ -1201,15 +1328,18 @@
                 "emoji": "🖨️",
                 "style":"SECONDARY",
                 "function_mapping": {
-                    "request_printjob": true
+                    "show_embed": "printjob_start_request",
+                    "fetch_author_metadata": true,
+                    "fetch_author_thumbnail": true
                 }
             },
             "printjob_delete_request": {
                 "emoji": "🪣",
                 "style":"DANGER",
                 "function_mapping": {
-                    "request_printjob": true,
-                    "request_embed": "printjob_delete_request"
+                    "fetch_author_metadata": true,
+                    "fetch_author_thumbnail": true,
+                    "show_embed": "printjob_delete_request"
                 }
             },
             "printjob_exclude": {
@@ -1308,6 +1438,20 @@
                 "function_mapping": {
                     "message": "${locale.messages.answers.printjob_request_abort}"
                 }
+            },
+            "cancel_request_accept": {
+                "style":"DANGER",
+                "required_states" : ["pause", "printing"],
+                "function_mapping": {
+                    "macros": ["CANCEL_PRINT"],
+                    "message": "${locale.messages.answers.printjob_cancel.status_valid}"
+                }
+            },
+            "cancel_request_deny": {
+                "style":"SUCCESS",
+                "function_mapping": {
+                    "message": "${locale.messages.answers.printjob_request_abort}"
+                }
             }
         },
         "selections": {
@@ -1324,7 +1468,7 @@
                 "option_value": "${data.name}",
                 "data": "${raw_entries}"
             },
-            "printlist_view_printjob": {
+            "timelapse_download": {
                 "min_value": 1,
                 "max_value": 1,
                 "option_value": "${data.path}",
@@ -1335,6 +1479,12 @@
                 "max_value": 1,
                 "option_value": "${data.value}",
                 "mcu_options": true,
+                "data": "${raw_entries}"
+            },
+            "printlist_view_printjob": {
+                "min_value": 1,
+                "max_value": 1,
+                "option_value": "${data.path}",
                 "data": "${raw_entries}"
             },
             "show_temp": {
@@ -1649,6 +1799,10 @@
                 "completed": {
                     "icon": "\uD83D\uDFE2",
                     "color": "#78b159"
+                },
+                "in_progress": {
+                    "icon": "\uD83D\uDFE3",
+                    "color": "#aa8ed6"
                 }
             }
         },
@@ -1692,5 +1846,9 @@
                 }]
         }
     },
-    "commands": {}
+    "commands": {},
+    "reaction_meta": {
+        "\uD83D\uDDD1️": "delete",
+        "\uD83E\uDDF9": "delete"
+    }
 }

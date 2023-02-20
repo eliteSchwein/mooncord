@@ -9,10 +9,13 @@
     },
     "pages": {
         "gcode_files": {
-            "entry_label": "${data.path}"
+            "entry_label": "`${data.path}`"
+        },
+        "timelapse_files": {
+            "entry_label": "`${data.path}`"
         },
         "configs_download": {
-            "entry_label": "${data.name}"
+            "entry_label": "`${data.name}`"
         }
     },
     "embeds": {
@@ -80,6 +83,11 @@
             "description": "${page_entries}",
             "footer": "Pagina ${pages}"
         },
+        "timelapse_files": {
+            "title": "Timelapse Files",
+            "description": "${page_entries}",
+            "footer": "Page ${pages}"
+        },
         "info": {
             "title": "Informații",
             "description": "Versiunea: ${package_config.version}\nAutor: ${package_config.author}\nPagina de start: ${package_config.homepage}\n${config.custom_info}"
@@ -88,33 +96,42 @@
             "title": "Istoricul lucrărilor de imprimare"
         },
         "notification": {
+            "content": "Printer ${config.printer_name} Notification",
             "title": "Notificare"
         },
         "printjob_start_request": {
             "title": "Începeți o lucrare de imprimare?",
             "description": "Timp de imprimare: ${estimated_time}\nSlicer: ${slicer}\nVersiunea Slicer: ${slicer_version}\nÎnălțime: ${object_height}mm"
         },
+        "printjob_cancel_request": {
+            "title": "Cancel Print Job?"
+        },
         "printjob_delete_request": {
             "title": "Ștergeți lucrarea de imprimare?",
             "description": "Timp de imprimare: ${estimated_time}\nSlicer: ${slicer}\nVersiunea Slicer: ${slicer_version}\nÎnălțime: ${object_height}mm"
         },
         "printjob_start": {
+            "content": "Printjob started: `${state.print_stats.filename}`",
             "title": "Imprimare începută",
             "activity": "începe ${state.print_stats.filename}"
         },
         "printjob_complete": {
+            "content": "Printjob is complete",
             "title": "Imprimare completă",
             "activity": "Imprimare finalizată"
         },
         "printjob_pause": {
+            "content": "Printjob ${state.print_stats.filename} is paused",
             "title": "Printare pusă pe Pauză",
             "activity": "ia o pauză, bea niște sânge 🩸 proaspăt 🧛. Hai Noroc!"
         },
         "printjob_printing": {
+            "content": "Printjob ${state.print_stats.filename} is at ${percent:0:state.display_status.progress}%",
             "title": "Imprimare",
             "activity": "Imprimare: ${percent:0:state.display_status.progress}%"
         },
         "printjob_stop": {
+            "content": "The Printjob stopped",
             "title": "Imprimare oprită",
             "activity": "Imprimare oprită"
         },
@@ -125,46 +142,57 @@
             "title": "Temperatura pentru ${heater}"
         },
         "disconnected": {
+            "content": "Printer ${config.printer_name} got disconnected from Klipper!",
             "title": "Imprimanta deconectată!",
             "activity": "așteptați-l pe Klipper"
         },
         "moonraker_disconnected": {
+            "content": "Moonraker Connection got lost!",
             "title": "Moonraker Connection a pierdut!",
             "activity": "Așteptați Moonraker"
         },
         "error": {
+            "content": "An Error occured!",
             "title": "S-a produs o eroare!",
             "activity": "așteptați pentru utilizator"
         },
         "offline": {
+            "content": "Moonraker or Klipper Connection got lost!",
             "title": "Conexiune pierdută!",
             "activity": "Așteptați Moonraker"
         },
         "shutdown": {
+            "content": "Klipper firmware has a shutdown!",
             "title": "Închiderea Klipper",
             "activity": "așteptați-l pe Klipper"
         },
         "ready": {
+            "content": "Printer ${config.printer_name} is ready to print",
             "title": "Imprimantă pregătită",
             "activity": "pentru fișierul GCODE..."
         },
         "startup": {
+            "content": "Printer ${config.printer_name} is starting",
             "title": "Pornirea imprimantei",
             "activity": "Pornirea imprimantei"
         },
         "throttle_temperature_limit_active": {
+            "content": "System of Printer ${config.printer_name} is currently throttled",
             "title": "A apărut accelerația!",
             "description": "Sistemul este în prezent limitat din cauza `Temperature Throttle`!\nTemperatura curentă: `${proc_stats.cpu_temp} °C`\nVă rugăm să verificați soluția de răcire."
         },
         "throttle_under_voltage_detected": {
+            "content": "System of Printer ${config.printer_name} is currently throttled",
             "title": "A apărut accelerația!",
             "description": "Sistemul este în prezent restricționat din cauza `Subtensiunii`!\nVă rugăm să verificați alimentarea cu energie electrică."
         },
         "throttle_frequency_capped": {
+            "content": "System of Printer ${config.printer_name} is currently throttled",
             "title": "A apărut accelerația!",
             "description": "Sistemul este în prezent restricționat din cauza `Frecvență limitată`!\nVă rugăm să verificați soluția de răcire sau/și sistemul de alimentare..."
         },
         "system_update": {
+            "content": "System found some Updates",
             "title": "Actualizări de sistem"
         },
         "fields": {
@@ -236,6 +264,7 @@
     },
     "messages": {
         "answers": {
+            "temp_target_reached": "The heater `${heater}` reached the Target Temperature `${target}°C`!",
             "custom_command_executed": "Comanda personalizată `${custom_command}` a fost executată, `${username}`!",
             "execute_successful": "Comenzile Gcode au fost executate cu succes, `${username}`!",
             "preheat_preset": {
@@ -246,6 +275,8 @@
             "restart_successful": "Repornirea pentru `${service}` a avut succes!",
             "firmware_restart_successful": "Firmware-ul se repornește!",
             "timelapse": "Timelapse pentru `${printfile}`",
+            "timelapse_download": "Timelapse `${timelapsefile}`",
+            "timelapse_render": "Render Timelapse `${timelapsefile}`, please wait...",
             "admin": {
                 "added": "${mention} este acum un Bot Admin, `${username}`!",
                 "removed": "${mention} nu mai este un Bot Admin, `${username}`!"
@@ -361,6 +392,12 @@
         "printjob_request_deny": {
             "label": "Nu"
         },
+        "cancel_request_accept": {
+            "label": "Yes"
+        },
+        "cancel_request_deny": {
+            "label": "No"
+        },
         "klipper_restart": {
             "label": "Reporniți firmware-ul"
         },
@@ -373,8 +410,17 @@
         "last_page_printlist": {
             "label": "Ultima pagină"
         },
+        "next_page_timelapselist": {
+            "label": "Next Page"
+        },
+        "last_page_timelapselist": {
+            "label": "Last Page"
+        },
         "to_printlist": {
             "label": "la lista"
+        },
+        "to_timelapselist": {
+            "label": "to List"
         },
         "to_temps": {
             "label": "la Temps"
@@ -426,6 +472,11 @@
             "label": "Selectați un fișier...",
             "option_label": "${data.path}",
             "option_description": "Click pentru mai multe detalii"
+        },
+        "timelapse_download": {
+            "label": "Select a File",
+            "option_label": "${data.path}",
+            "option_description": "Click for Download"
         },
         "systeminfo_select": {
             "label": "Selectați o componentă...",
@@ -655,6 +706,10 @@
         "listgcodes": {
             "description": "Listează toate fișierele de imprimare.",
             "command": "listgcodes"
+        },
+        "listtimelapses": {
+            "description": "List all Timelapse Files.",
+            "command": "listtimelapses"
         },
         "systeminfo": {
             "description": "Obține informațiile curente ale sistemului.",

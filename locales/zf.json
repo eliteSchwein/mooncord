@@ -9,13 +9,16 @@
     },
     "pages": {
         "gcode_files": {
-            "entry_label": "${data.path}"
+            "entry_label": "`${data.path}`"
+        },
+        "timelapse_files": {
+            "entry_label": "`${data.path}`"
         },
         "configs_download": {
-            "entry_label": "${data.name}"
+            "entry_label": "`${data.name}`"
         },
         "list_files": {
-            "entry_label": "${data.path}"
+            "entry_label": "`${data.path}`"
         }
     },
     "embeds": {
@@ -44,6 +47,9 @@
         },
         "systeminfo_system": {
             "title": "System Information"
+        },
+        "systeminfo_power_devices": {
+            "title": "Power Devices"
         },
         "systeminfo_discord": {
             "title": "Discord Client Information"
@@ -80,38 +86,55 @@
             "description": "${page_entries}",
             "footer": "Page ${pages}"
         },
+        "timelapse_files": {
+            "title": "Timelapse Files",
+            "description": "${page_entries}",
+            "footer": "Page ${pages}"
+        },
         "info": {
             "title": "Informations",
             "description": "Version: ${package_config.version}\nAuthor: ${package_config.author}\nHomepage: ${package_config.homepage}\n${config.custom_info}"
         },
+        "history": {
+            "title": "Printjob History"
+        },
         "notification": {
+            "content": "Printer ${config.printer_name} Notification",
             "title": "Notification"
         },
         "printjob_start_request": {
             "title": "Start Print Job?",
             "description": "Print Time: ${estimated_time}\nSlicer: ${slicer}\nSlicer Version: ${slicer_version}\nHeight: ${object_height}mm"
         },
+        "printjob_cancel_request": {
+            "title": "Cancel Print Job?"
+        },
         "printjob_delete_request": {
             "title": "Delete Print Job?",
             "description": "Print Time: ${estimated_time}\nSlicer: ${slicer}\nSlicer Version: ${slicer_version}\nHeight: ${object_height}mm"
         },
         "printjob_start": {
+            "content": "Printjob started: `${state.print_stats.filename}`",
             "title": "Print started",
             "activity": "start ${state.print_stats.filename}"
         },
         "printjob_complete": {
+            "content": "Printjob is complete",
             "title": "Print Complete",
             "activity": "Finished Print"
         },
         "printjob_pause": {
+            "content": "Printjob ${state.print_stats.filename} is paused",
             "title": "列印暫停",
             "activity": "休息一下"
         },
         "printjob_printing": {
+            "content": "Printjob ${state.print_stats.filename} is at ${percent:0:state.display_status.progress}%",
             "title": "Printing",
             "activity": "Printing: ${percent:0:state.display_status.progress}%"
         },
         "printjob_stop": {
+            "content": "The Printjob stopped",
             "title": "Print stopped",
             "activity": "Print stopped"
         },
@@ -122,54 +145,74 @@
             "title": "Temperature for ${heater}"
         },
         "disconnected": {
+            "content": "Printer ${config.printer_name} got disconnected from Klipper!",
             "title": "Printer Disconnected!",
             "activity": "wait for Klipper"
         },
         "moonraker_disconnected": {
+            "content": "Moonraker Connection got lost!",
             "title": "Moonraker Connection lost!",
             "activity": "wait for Moonraker"
         },
         "error": {
+            "content": "An Error occured!",
             "title": "A Error occured!",
             "activity": "wait for User"
         },
         "offline": {
+            "content": "Moonraker or Klipper Connection got lost!",
             "title": "Connection Lost!",
             "activity": "wait for Moonraker"
         },
         "shutdown": {
+            "content": "Klipper firmware has a shutdown!",
             "title": "Klipper Shutdown",
             "activity": "wait for Klipper"
         },
         "ready": {
+            "content": "Printer ${config.printer_name} is ready to print",
             "title": "Printer Ready",
             "activity": "for GCODE File..."
         },
         "startup": {
+            "content": "Printer ${config.printer_name} is starting",
             "title": "Printer starting",
             "activity": "Printer start"
         },
         "throttle_temperature_limit_active": {
+            "content": "System of Printer ${config.printer_name} is currently throttled",
             "title": "Throttle occured!",
             "description": "The System is currently throttled because of `Temperature Throttle`!\nCurrent Temperature: `${proc_stats.cpu_temp} °C`\nPlease check your cooling Solution."
         },
         "throttle_under_voltage_detected": {
+            "content": "System of Printer ${config.printer_name} is currently throttled",
             "title": "Throttle occured!",
             "description": "The System is currently throttled because of `Under Voltage`!\nPlease check your Power Delivery."
         },
         "throttle_frequency_capped": {
+            "content": "System of Printer ${config.printer_name} is currently throttled",
             "title": "Throttle occured!",
             "description": "The System is currently throttled because of `Frequency Capped`!\nPlease check your cooling Solution or/and your Power Delivery.."
         },
         "system_update": {
+            "content": "System found some Updates",
             "title": "System Updates"
         },
         "fields": {
+            "total_filament_used": "Total Filament",
+            "total_time": "Total Time",
+            "total_print_time": "Total Print Time",
+            "longest_job": "Longest Job",
+            "longest_print": "Longest Print",
+            "total_jobs": "Total Jobs",
+            "on": "${icon} On",
+            "off": "${icon} Off",
             "flow": "Flow",
             "system": "System",
             "packages": "Packages",
             "chipset": "Chipset",
             "color": "Color",
+            "count": "Count",
             "version": "Version",
             "load": "Load",
             "awake_time": "Awake Time",
@@ -224,6 +267,8 @@
     },
     "messages": {
         "answers": {
+            "temp_target_reached": "The heater `${heater}` reached the Target Temperature `${target}°C`!",
+            "custom_command_executed": "The Custom Command `${custom_command}` got executed, `${username}`!",
             "execute_successful": "The Gcode Commands executed successful, `${username}`!",
             "preheat_preset": {
                 "preset": "Preheating for `${preset}`, `${username}`!",
@@ -233,6 +278,8 @@
             "restart_successful": "The Restart for `${service}` was successful!",
             "firmware_restart_successful": "The Firmware is restarting!",
             "timelapse": "Timelapse for `${printfile}`",
+            "timelapse_download": "Timelapse `${timelapsefile}`",
+            "timelapse_render": "Render Timelapse `${timelapsefile}`, please wait...",
             "admin": {
                 "added": "${mention} is now a Bot Admin, `${username}`!",
                 "removed": "${mention} is not longer a Bot Admin, `${username}`!"
@@ -285,9 +332,14 @@
                 "speed_flow": "New speed factor is `${speed}%` and flow factor is `${flow}%`, `${username}`!"
             },
             "excluded_object": "The Object `${object}` got excluded, `${username}`!",
+            "power_device": {
+                "on": "The Power Device `${power_device}` is now on, `${username}`!",
+                "off": "The Power Device `${power_device}` is now off, `${username}`!"
+            },
             "execute_success": "Command Executed!"
         },
         "errors": {
+            "custom_command_descript": "Configured Custom Command",
             "execute_running": "The Command Executer is already running, please try again later, `${username}`!",
             "macros_failed": "The Macros for `${button_label}` failed, `${username}`!",
             "execute_failed": "The Gcode Commands failed, `${username}`!",
@@ -343,6 +395,12 @@
         "printjob_request_deny": {
             "label": "No"
         },
+        "cancel_request_accept": {
+            "label": "Yes"
+        },
+        "cancel_request_deny": {
+            "label": "No"
+        },
         "klipper_restart": {
             "label": "Restart Firmware"
         },
@@ -355,7 +413,16 @@
         "last_page_printlist": {
             "label": "Last Page"
         },
+        "next_page_timelapselist": {
+            "label": "Next Page"
+        },
+        "last_page_timelapselist": {
+            "label": "Last Page"
+        },
         "to_printlist": {
+            "label": "to List"
+        },
+        "to_timelapselist": {
             "label": "to List"
         },
         "to_temps": {
@@ -408,6 +475,11 @@
             "label": "Select a File...",
             "option_label": "${data.path}",
             "option_description": "Click for more Details"
+        },
+        "timelapse_download": {
+            "label": "Select a File",
+            "option_label": "${data.path}",
+            "option_description": "Click for Download"
         },
         "systeminfo_select": {
             "label": "Select a Component...",
@@ -484,6 +556,16 @@
                 "temperature": {
                     "name": "temperature",
                     "description": "Set the Tune Temperature."
+                }
+            }
+        },
+        "power": {
+            "description": "Toggle a Power Device",
+            "command": "power",
+            "options": {
+                "device": {
+                    "name": "device",
+                    "description": "Select a Power Device."
                 }
             }
         },
@@ -628,6 +710,10 @@
             "description": "List all Print Files.",
             "command": "listgcodes"
         },
+        "listtimelapses": {
+            "description": "List all Timelapse Files.",
+            "command": "listtimelapses"
+        },
         "systeminfo": {
             "description": "Get the current System Informations.",
             "command": "systeminfo"
@@ -671,6 +757,10 @@
         "temp": {
             "description": "Get the current Temperatures from Klipper.",
             "command": "temp"
+        },
+        "history": {
+            "description": "Shows the Print History.",
+            "command": "history"
         },
         "listfiles": {
             "description": "List all Print Files.",

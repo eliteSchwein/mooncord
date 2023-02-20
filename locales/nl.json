@@ -9,10 +9,13 @@
     },
     "pages": {
         "gcode_files": {
-            "entry_label": "${data.path}"
+            "entry_label": "`${data.path}`"
+        },
+        "timelapse_files": {
+            "entry_label": "`${data.path}`"
         },
         "configs_download": {
-            "entry_label": "${data.name}"
+            "entry_label": "`${data.name}`"
         }
     },
     "embeds": {
@@ -80,6 +83,11 @@
             "description": "${page_entries}",
             "footer": "Pagina ${pages}"
         },
+        "timelapse_files": {
+            "title": "Tijdsverloopbestanden",
+            "description": "${page_entries}",
+            "footer": "Pagina ${pages}"
+        },
         "info": {
             "title": "Informatie",
             "description": "Versie: ${package_config.version}\nAuteur: ${package_config.author}\nHomepage: ${package_config.homepage}\n${config.custom_info}"
@@ -88,35 +96,44 @@
             "title": "Printgeschiedenis"
         },
         "notification": {
+            "content": "Printer ${config.printer_name} notificatie",
             "title": "Notificatie"
         },
         "printjob_start_request": {
             "title": "Start printopdracht?",
             "description": "Print tijd: ${estimated_time}\nSlicer: ${slicer}\nSlicer versie: ${slicer_version}\nHoogte: ${object_height}mm"
         },
+        "printjob_cancel_request": {
+            "title": "Breek printopdracht af?"
+        },
         "printjob_delete_request": {
             "title": "Verwijder printopdracht?",
             "description": "Print tijd: ${estimated_time}\nSlicer: ${slicer}\nSlicer versie: ${slicer_version}\nHoogte: ${object_height}mm"
         },
         "printjob_start": {
-            "title": "Print gestart",
+            "content": "Printopdracht gestart: `${state.print_stats.filename}`",
+            "title": "Printopdracht gestart",
             "activity": "Start ${state.print_stats.filename}"
         },
         "printjob_complete": {
-            "title": "Print gereed",
+            "content": "Printopdracht gereed",
+            "title": "Printopdracht gereed",
             "activity": "Klaar met printen"
         },
         "printjob_pause": {
-            "title": "Print gepauseerd",
+            "content": "Printopdracht ${state.print_stats.filename} is gepauseerd",
+            "title": "Printopdracht gepauseerd",
             "activity": "Doet even een dutje 😴"
         },
         "printjob_printing": {
+            "content": "Printopdracht ${state.print_stats.filename} is op ${percent:0:state.display_status.progress}%",
             "title": "Printen",
             "activity": "Printen: ${percent:0:state.display_status.progress}%"
         },
         "printjob_stop": {
-            "title": "Print gestopt",
-            "activity": "Print gestopt"
+            "content": "De printopdracht is gestopt",
+            "title": "Printopdracht gestopt",
+            "activity": "Printopdracht gestopt"
         },
         "temperatures": {
             "title": "Temperaturen"
@@ -125,46 +142,57 @@
             "title": "Temperatuur van ${heater}"
         },
         "disconnected": {
+            "content": "Printer ${config.printer_name} is de verbinding met Klipper kwijt!",
             "title": "Printerverbinding verbroken!",
             "activity": "wacht op Klipper"
         },
         "moonraker_disconnected": {
+            "content": "Verbinding met Moonraker kwijt!",
             "title": "Moonrakerverbinding verbroken!",
             "activity": "wacht op Moonraker"
         },
         "error": {
+            "content": "Er ging iets mis!",
             "title": "Er ging iets mis!",
             "activity": "wacht op gebruiker"
         },
         "offline": {
+            "content": "Verhinding met Moonraker of Klipper verbroken!",
             "title": "Verbinding verbroken!",
             "activity": "wacht op Moonraker"
         },
         "shutdown": {
+            "content": "Klipper firmware is uitgezet!",
             "title": "Klipper uitgezet",
             "activity": "wacht op Klipper"
         },
         "ready": {
+            "content": "Printer ${config.printer_name} is klaar om te printen",
             "title": "Printer gereed",
             "activity": "voor GCODE-bestand..."
         },
         "startup": {
+            "content": "Printer ${config.printer_name} bezig met starten",
             "title": "Printer aan het starten",
             "activity": "Printer start"
         },
         "throttle_temperature_limit_active": {
+            "content": "Systeem van printer ${config.printer_name} is begrensd",
             "title": "Systeem begrensd!",
             "description": "Het systeem is momenteel begrensd vanwege `Temperature Throttle`!\nHuidige temperatuur: `${proc_stats.cpu_temp} °C`\nIs de koeling van je systeem in orde?"
         },
         "throttle_under_voltage_detected": {
+            "content": "Systeem van printer ${config.printer_name} is begrensd",
             "title": "Systeem begrensd!",
             "description": "Het systeem is momenteel begrensd vanwege `Under Voltage`!\nControleer de stroomtoevoer van het systeem."
         },
         "throttle_frequency_capped": {
+            "content": "Systeem van printer ${config.printer_name} is begrensd",
             "title": "Systeem begrensd!",
             "description": "Het systeem is momenteel begrensd vanwege `Frequency Capped`!\nControleer de stroomtoevoer en/of koeling van het systeem."
         },
         "system_update": {
+            "content": "Systeem moet worden bijgewerkt",
             "title": "Systeemupdates"
         },
         "fields": {
@@ -236,6 +264,7 @@
     },
     "messages": {
         "answers": {
+            "temp_target_reached": "De verwarming `${heater}` heeft de doeltemperatuur `${target}°C` bereikt!",
             "custom_command_executed": "Het commando `${custom_command}` werd uitgevoerd, `${username}`!",
             "execute_successful": "De Gcode-commandos zijn succesvol uitgevoerd, `${username}`!",
             "preheat_preset": {
@@ -246,6 +275,8 @@
             "restart_successful": "Het herstarten van `${service}` is gelukt!",
             "firmware_restart_successful": "De firmware start opnieuw!",
             "timelapse": "Timelapse voor `${printfile}`",
+            "timelapse_download": "Tijdsverloop `${timelapsefile}`",
+            "timelapse_render": "Video van tijdsverloop `${timelapsefile}` maken, een moment geduld...",
             "admin": {
                 "added": "${mention} is nu een botbeheerder, `${username}`!",
                 "removed": "${mention} is niet langer een botbeheerder, `${username}`!"
@@ -361,6 +392,12 @@
         "printjob_request_deny": {
             "label": "Nee"
         },
+        "cancel_request_accept": {
+            "label": "Ja"
+        },
+        "cancel_request_deny": {
+            "label": "Nee"
+        },
         "klipper_restart": {
             "label": "Herstart firmware"
         },
@@ -373,7 +410,16 @@
         "last_page_printlist": {
             "label": "Laatste pagina"
         },
+        "next_page_timelapselist": {
+            "label": "Volgende pagina"
+        },
+        "last_page_timelapselist": {
+            "label": "Laatste pagina"
+        },
         "to_printlist": {
+            "label": "naar lijst"
+        },
+        "to_timelapselist": {
             "label": "naar lijst"
         },
         "to_temps": {
@@ -426,6 +472,11 @@
             "label": "Selecteer een bestand...",
             "option_label": "${data.path}",
             "option_description": "Klik voor meer details"
+        },
+        "timelapse_download": {
+            "label": "Selecteer een bestand...",
+            "option_label": "${data.path}",
+            "option_description": "Klik om te downloaden"
         },
         "systeminfo_select": {
             "label": "Selecteer een component...",
@@ -654,7 +705,11 @@
         },
         "listgcodes": {
             "description": "Lijst van alle printbestanden.",
-            "command": "listgcodes"
+            "command": "printbestanden"
+        },
+        "listtimelapses": {
+            "description": "Laat alle tijdverloopbestanden zien.",
+            "command": "tijdsverlooplijst"
         },
         "systeminfo": {
             "description": "Laat de systeeminformatie zien.",

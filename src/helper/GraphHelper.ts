@@ -6,6 +6,7 @@ import {logRegular} from './LoggerHelper';
 import {MessageAttachment} from "discord.js";
 import sharp from "sharp";
 import {HistoryHelper} from "./HistoryHelper";
+import {it} from "node:test";
 
 export class GraphHelper {
     protected configHelper = new ConfigHelper()
@@ -68,6 +69,7 @@ ${svg}
 
         for(const printStat in printStats.stats) {
             graphData.push({
+                label: printStat,
                 value: printStats.stats[printStat],
                 color: chartConfigSection.colors[printStat].color
             })
@@ -76,7 +78,7 @@ ${svg}
         const resWidth = 300
         const resHeight = 300
 
-        const donutData = this.calculateDonut(150,150,125,graphData)
+        const donutData = this.calculateDonut(150,150,125, 45, graphData)
 
         let svg = `<svg
             version="1.1"
@@ -88,7 +90,7 @@ ${svg}
 
         for(const donutPartial of donutData) {
             svg = `${svg}
-            <g><path d="${donutPartial.d}" stroke="${donutPartial.data.color}" fill="none" stroke-width="50"></path></g>
+                ${donutPartial}
             `
         }
 
@@ -304,51 +306,29 @@ ${svg}
         return result;
     }
 
-    private arcradius(cx, cy, radius, degrees) {
-        const radians = (degrees - 90) * Math.PI / 180.0;
-        return { x: cx + (radius * Math.cos(radians)), y: cy + (radius * Math.sin(radians)) };
-    }
+    private calculateDonut(cx, cy, radius, strokeWidth, data) {
+        const startAngle = -90
 
-    private calculateDonut(cx, cy, radius, data) {
         const dataLength = data.length
-        const decimals = 4;
-        let total = 0;
-        const arr = [];
-        let beg = 0;
-        let end = 0;
-        let count = 0;
+        const arr = []
 
-        for (let i = 0; i < dataLength; i++)
-            total += data[i].value;
+        let filled = 0
+        let total = 0
 
         for (let i = 0; i < dataLength; i++) {
-            const item = data[i];
-            const tmp = {
-                index: undefined,
-                value: undefined,
-                data: undefined,
-                d: undefined
-            };
+            total += data[i].value;
+        }
 
-            let p = Number((((item.value + 1) / total) * 100).toFixed(2));
+        for (let i = 0; i < dataLength; i++) {
+            const item = data[i]
+            const fill = (100/total) * item.value
+            const dashArray = 2 * Math.PI * radius
+            const dashOffset = dashArray - (dashArray * fill / 100)
+            const angle = (filled * 360 / 100) + startAngle
 
-            count += p;
+            arr.push(`<circle r="${radius}" cx="${cx}" cy="${cy}" fill="transparent" stroke="${item.color}" stroke-width="${strokeWidth}" stroke-dasharray="${dashArray}" stroke-dashoffset="${dashOffset}" transform="rotate(${angle} ${cx} ${cy})"></circle>`)
 
-            if (i === dataLength - 1 && count < 100)
-                p = p + (100 - count);
-
-            end = beg + ((360 / 100) * p);
-            tmp.index = i;
-            tmp.value = item.value;
-            tmp.data = item;
-
-            const b = this.arcradius(cx, cy, radius, end);
-            const e = this.arcradius(cx, cy, radius, beg);
-            const la = (end - beg) <= 180 ? 0 : 1;
-
-            tmp.d = ['M', b.x.toFixed(decimals), b.y.toFixed(decimals), 'A', radius, radius, 0, la, 0, e.x.toFixed(decimals), e.y.toFixed(decimals)].join(' ');
-            arr.push(tmp);
-            beg = end;
+            filled += fill
         }
 
         return arr;

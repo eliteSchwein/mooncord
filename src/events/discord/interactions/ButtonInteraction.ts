@@ -1,23 +1,23 @@
-import {Interaction} from "discord.js";
-import {RefreshButton} from "./buttons/RefreshButton";
+import {Interaction, Message} from "discord.js";
+import {RefreshHandler} from "./handlers/RefreshHandler";
 import {logNotice, logWarn} from "../../../helper/LoggerHelper";
 import {PermissionHelper} from "../../../helper/PermissionHelper";
 import {ConfigHelper} from "../../../helper/ConfigHelper";
 import {LocaleHelper} from "../../../helper/LocaleHelper";
 import {sleep} from "../../../helper/DataHelper";
 import {getEntry} from "../../../utils/CacheUtil";
-import {MacroButton} from "./buttons/MacroButton";
-import {PageButton} from "./buttons/PageButton";
-import {PrintlistButton} from "./buttons/PrintlistButton";
-import {PrintRequestButton} from "./buttons/PrintRequestButton";
-import {DeleteButton} from "./buttons/DeleteButton";
-import {PrintJobStartButton} from "./buttons/PrintJobStartButton";
-import {MessageButton} from "./buttons/MessageButton";
-import {ReconnectButton} from "./buttons/ReconnectButton";
-import {EmbedButton} from "./buttons/EmbedButton";
-import {TempModalButton} from "./buttons/TempModalButton";
-import {ExcludeConfirmButton} from "./buttons/ExcludeConfirmButton";
-import {WebsocketButton} from "./buttons/WebsocketButton";
+import {MacroHandler} from "./handlers/MacroHandler";
+import {PageHandler} from "./handlers/PageHandler";
+import {ListHandler} from "./handlers/ListHandler";
+import {PrintJobStartHandler} from "./handlers/PrintJobStartHandler";
+import {MessageHandler} from "./handlers/MessageHandler";
+import {ReconnectHandler} from "./handlers/ReconnectHandler";
+import {TempModalHandler} from "./handlers/TempModalHandler";
+import {ExcludeConfirmHandler} from "./handlers/ExcludeConfirmHandler";
+import {WebsocketHandler} from "./handlers/WebsocketHandler";
+import {DeleteHandler} from "./handlers/DeleteHandler";
+import {EmbedHandler} from "./handlers/EmbedHandler";
+import {DeleteMessageHandler} from "./handlers/DeleteMessageHandler";
 
 export class ButtonInteraction {
     protected config = new ConfigHelper()
@@ -62,19 +62,21 @@ export class ButtonInteraction {
             }
         }
 
-        await new WebsocketButton().execute(interaction, buttonData)
-        await new ExcludeConfirmButton().execute(interaction, buttonData)
-        await new TempModalButton().execute(interaction, buttonData)
-        await new PrintJobStartButton().execute(interaction, buttonData)
-        await new MessageButton().execute(interaction, buttonData)
-        await new EmbedButton().execute(interaction, buttonData)
-        await new DeleteButton().execute(interaction, buttonData)
-        await new ReconnectButton().execute(interaction, buttonData)
-        await new RefreshButton().execute(interaction, buttonData)
-        await new PrintRequestButton().execute(interaction, buttonData)
-        await new PrintlistButton().execute(interaction, buttonData)
-        await new PageButton().execute(interaction, buttonData)
-        await new MacroButton().execute(interaction, buttonData)
+        const message = interaction.message as Message
+
+        await new WebsocketHandler().execute(message, interaction.user, buttonData, interaction)
+        await new ExcludeConfirmHandler().execute(message, interaction.user, buttonData, interaction)
+        await new TempModalHandler().execute(message, interaction.user, buttonData, interaction)
+        await new PrintJobStartHandler().execute(message, interaction.user, buttonData, interaction)
+        await new MessageHandler().execute(message, interaction.user, buttonData, interaction)
+        await new EmbedHandler().execute(message, interaction.user, buttonData, interaction)
+        await new DeleteHandler().execute(message, interaction.user, buttonData, interaction)
+        await new ReconnectHandler().execute(message, interaction.user, buttonData, interaction)
+        await new RefreshHandler().execute(message, interaction.user, buttonData, interaction)
+        await new ListHandler().execute(message, interaction.user, buttonData, interaction)
+        await new PageHandler().execute(message, interaction.user, buttonData, interaction)
+        await new MacroHandler().execute(message, interaction.user, buttonData, interaction)
+        await new DeleteMessageHandler().execute(message, interaction.user, buttonData, interaction)
 
         await sleep(2000)
 

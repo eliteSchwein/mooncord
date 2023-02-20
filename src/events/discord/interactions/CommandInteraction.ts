@@ -30,6 +30,7 @@ import {ExecuteCommand} from "./commands/ExecuteCommand";
 import {CustomCommand} from "./commands/CustomCommand";
 import {PowerDeviceCommand} from "./commands/PowerDeviceCommand";
 import {HistoryCommand} from "./commands/HistoryCommand";
+import {TimelapseListCommand} from "./commands/TimelapseListCommand";
 
 export class CommandInteraction {
     protected config = new ConfigHelper()
@@ -94,6 +95,7 @@ export class CommandInteraction {
         void new CustomCommand(interaction, commandId)
         void new PowerDeviceCommand(interaction, commandId)
         void new HistoryCommand(interaction, commandId)
+        void new TimelapseListCommand(interaction, commandId)
 
         await sleep(2000)
 
