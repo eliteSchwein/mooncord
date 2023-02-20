@@ -9,16 +9,16 @@
     },
     "pages": {
         "gcode_files": {
-            "entry_label": "${data.path}"
+            "entry_label": "`${data.path}`"
         },
         "timelapse_files": {
             "entry_label": "`${data.path}`"
         },
         "configs_download": {
-            "entry_label": "${data.name}"
+            "entry_label": "`${data.name}`"
         },
         "list_files": {
-            "entry_label": "${data.path}"
+            "entry_label": "`${data.path}`"
         }
     },
     "embeds": {
