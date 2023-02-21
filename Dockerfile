@@ -18,5 +18,5 @@ COPY --from=builder /app/ /app/
 
 USER node
 
-ENTRYPOINT ["/tini", "--"]
+ENTRYPOINT ["/sbin/tini", "--"]
 CMD ["node", "/app/dist/index.js"]
