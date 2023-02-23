@@ -214,14 +214,8 @@ export class TemplateHelper {
         }
 
         response.embeds = [messageObject]
-
-        if(components.length > 0) {
-            response['components'] = components
-        }
-
-        if(files.length > 0) {
-            response['files'] = files
-        }
+        response['components'] = components
+        response['files'] = files
 
         switch (type) {
             case 'embed':

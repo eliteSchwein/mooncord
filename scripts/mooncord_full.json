@@ -30,7 +30,7 @@
     "messages": {
         "show_no_permission_private": true,
         "icon_set": "acryl",
-        "entries_per_page": 8
+        "entries_per_page": 15
     },
     "printer_name": "$clear",
     "custom_info": "Thanks for installing MoonCord and Happy Printing ❤",
