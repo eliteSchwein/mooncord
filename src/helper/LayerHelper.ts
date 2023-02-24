@@ -5,6 +5,10 @@ export function updateLayers() {
     const stateCache = getEntry('state')
     const metaDataCache = getEntry('meta_data')
 
+    if(metaDataCache === undefined) {
+        return
+    }
+
     let top_layer = Math.ceil((metaDataCache.object_height - metaDataCache.first_layer_height) / metaDataCache.layer_height + 1)
     top_layer = top_layer > 0 ? top_layer : 0
     

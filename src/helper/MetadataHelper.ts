@@ -45,7 +45,8 @@ export class MetadataHelper {
     public async getThumbnail(filename: string) {
         const metaDataCache = getEntry('meta_data')
 
-        if(metaDataCache.filename === filename &&
+        if(metaDataCache !== undefined &&
+            metaDataCache.filename === filename &&
             typeof metaDataCache.thumbnail !== 'undefined') {
 
             const thumbnailBuffer = Buffer.from(metaDataCache.thumbnail, 'base64')
