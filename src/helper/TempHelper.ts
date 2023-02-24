@@ -153,7 +153,7 @@ export class TempHelper {
                     continue
                 }
 
-                if(fieldData.suffix === '%') {
+                if(fieldData.suffix === '%' || fieldData.suffix === 'rpm') {
                     keyData.value = `${keyData.value}\n\`${fieldData.label}\` ${formatPercent(cacheData[cacheKey][fieldKey], 0)}${fieldData.suffix}`
                     continue
                 }
