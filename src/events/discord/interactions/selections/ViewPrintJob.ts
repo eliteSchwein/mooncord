@@ -17,7 +17,9 @@ export class ViewPrintJobSelection {
     protected metadataHelper = new MetadataHelper()
 
     public constructor(interaction: SelectMenuInteraction, selectionId: string) {
-        if(selectionId !== 'printlist_view_printjob') { return }
+        if (selectionId !== 'printlist_view_printjob') {
+            return
+        }
 
         void this.execute(interaction)
     }
@@ -29,7 +31,7 @@ export class ViewPrintJobSelection {
 
         const metadata = await this.metadataHelper.getMetaData(gcodeFile)
 
-        if(typeof metadata === 'undefined') {
+        if (typeof metadata === 'undefined') {
             await interaction.editReply(this.locale.messages.errors.file_not_found)
             return
         }
@@ -38,7 +40,7 @@ export class ViewPrintJobSelection {
 
         metadata.estimated_time = formatTime(metadata.estimated_time)
         metadata.filename = gcodeFile
-        
+
         const embedData = await this.embedHelper.generateEmbed('fileinfo', metadata)
         const embed = embedData.embed.embeds[0] as MessageEmbed
 

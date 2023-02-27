@@ -31,7 +31,7 @@ export class ConfigHelper {
 
         writeFileSync(this.configPath, JSON.stringify(modifiedConfig, null, 4), {encoding: 'utf8', flag: 'w+'})
     }
-    
+
     public getPermissions() {
         return this.getConfig().permission
     }
@@ -143,7 +143,7 @@ export class ConfigHelper {
     public getTempPath() {
         const temppath = this.getConfig().tmp_path
 
-        if(!existsSync(temppath)) {
+        if (!existsSync(temppath)) {
             mkdirSync(temppath)
         }
 

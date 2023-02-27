@@ -18,7 +18,7 @@ export class HistoryHelper {
     protected cache = getEntry('history')
 
     public constructor(moonrakerClient: MoonrakerClient = undefined) {
-        if(moonrakerClient !== undefined) {
+        if (moonrakerClient !== undefined) {
             this.moonrakerClient = moonrakerClient
         }
         this.printJobs = this.cache.jobs
@@ -27,10 +27,12 @@ export class HistoryHelper {
 
     public async parseData() {
         logRegular('Retrieve history data...')
-        const printJobsRequest = await this.moonrakerClient.send({"method":"server.history.list"})
-        const printTotalRequest = await this.moonrakerClient.send({"method":"server.history.totals"})
+        const printJobsRequest = await this.moonrakerClient.send({"method": "server.history.list"})
+        const printTotalRequest = await this.moonrakerClient.send({"method": "server.history.totals"})
 
-        if(printJobsRequest.result === undefined ||printTotalRequest.result === undefined) { return }
+        if (printJobsRequest.result === undefined || printTotalRequest.result === undefined) {
+            return
+        }
 
         this.printJobs = printJobsRequest.result
         this.printTotals = printTotalRequest.result
@@ -55,13 +57,13 @@ export class HistoryHelper {
             stats: {}
         }
 
-        if(this.printJobs.jobs === undefined) {
+        if (this.printJobs.jobs === undefined) {
             printStats.count = 0
             return printStats
         }
 
-        for(const printJob of this.printJobs.jobs) {
-            if(printStats.stats[printJob.status] === undefined) {
+        for (const printJob of this.printJobs.jobs) {
+            if (printStats.stats[printJob.status] === undefined) {
                 printStats.stats[printJob.status] = 1
                 continue
             }
@@ -76,7 +78,7 @@ export class HistoryHelper {
         const printStats = this.getPrintStats()
         const fields = []
 
-        for(const printStat in printStats.stats) {
+        for (const printStat in printStats.stats) {
             const printStatCount = printStats.stats[printStat]
             const valueData = []
             const fieldData = {

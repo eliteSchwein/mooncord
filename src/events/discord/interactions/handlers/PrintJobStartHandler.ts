@@ -1,4 +1,4 @@
-import {ButtonInteraction, Message, User} from "discord.js";
+import {Message, User} from "discord.js";
 import {EmbedHelper} from "../../../../helper/EmbedHelper";
 import {LocaleHelper} from "../../../../helper/LocaleHelper";
 import {MetadataHelper} from "../../../../helper/MetadataHelper";
@@ -12,7 +12,9 @@ export class PrintJobStartHandler {
     protected moonrakerClient = getMoonrakerClient()
 
     public async execute(message: Message, user: User, data, interaction = null) {
-        if(!data.function_mapping.start_print) { return }
+        if (!data.function_mapping.start_print) {
+            return
+        }
 
         const embed = message.embeds[0]
 
@@ -20,8 +22,8 @@ export class PrintJobStartHandler {
 
         const metadata = await this.metadataHelper.getMetaData(printFile)
 
-        if(typeof metadata === 'undefined') {
-            if(interaction !== null) {
+        if (typeof metadata === 'undefined') {
+            if (interaction !== null) {
                 await interaction.editReply(this.locale.messages.errors.file_not_found)
             } else {
                 await message.reply(this.locale.messages.errors.file_not_found)

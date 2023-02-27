@@ -51,7 +51,7 @@ export class DiscordCommandGenerator {
 
         for (const commandIndex in this.commandStructure) {
             let command: any
-            if(Object.keys(this.customCommandStructure).includes(commandIndex)) {
+            if (Object.keys(this.customCommandStructure).includes(commandIndex)) {
                 command = this.customCommandStructure[commandIndex]
             } else {
                 command = this.buildCommand(commandIndex)
@@ -73,8 +73,8 @@ export class DiscordCommandGenerator {
             })
         }
 
-        for(const currentCommand of currentCommands) {
-            if(!commandKeys.includes(currentCommand.name)) {
+        for (const currentCommand of currentCommands) {
+            if (!commandKeys.includes(currentCommand.name)) {
                 logRegular(`Unregister Command ${currentCommand.name}...`)
                 const deleteUrl = `${Routes.applicationCommands(App.getDiscordClient().getClient().user.id)}/${currentCommand.id}`;
 
@@ -93,56 +93,23 @@ export class DiscordCommandGenerator {
         setData('commands', commandCache)
     }
 
-    private getCustomCommandStructure() {
-        const customCommandsConfig = this.configHelper.getCustomCommands()
-        const customCommands = {}
-
-        for(const name of Object.keys(customCommandsConfig)) {
-            if(Object.keys(this.commandStructure).includes(name)) {
-                this.showCustomCommandError(`The Custom Command ${name} is invalid, you cant overwrite existing commands!`)
-                continue
-            }
-            const customCommandData = customCommandsConfig[name]
-            if(customCommandData.macros === undefined && customCommandData.websocket_commands === undefined) {
-                this.showCustomCommandError(`The Custom Command ${name} is invalid, it doesnt have any macros or websocket_commands configured!`)
-                continue
-            }
-            const customCommandDescription = (customCommandData.description === null || customCommandData.description === null)
-                ? this.locale.messages.errors.custom_command_descript
-                : customCommandData.description
-
-            customCommands[name] = {
-                'name': name,
-                'description': customCommandDescription
-            }
-        }
-
-        return customCommands
-    }
-
-    private showCustomCommandError(message: string) {
-        const commandCache = getEntry('commands')
-        if(commandCache === undefined || Object.keys(commandCache).length > 0) {
-            return
-        }
-        logError(message)
-    }
-
-    public getCommandId(command:string) {
+    public getCommandId(command: string) {
         const commandCache = getEntry('commands')
 
-        for(const commandId in commandCache) {
+        for (const commandId in commandCache) {
             const commandData = commandCache[commandId]
 
-            if(commandData.name === command) { return commandId}
+            if (commandData.name === command) {
+                return commandId
+            }
         }
     }
 
-    public isCustomCommand(command:string) {
+    public isCustomCommand(command: string) {
         return Object.keys(this.customCommandStructure).includes(command)
     }
 
-    protected buildCommand(command:string) {
+    protected buildCommand(command: string) {
         const messageLocale = Object.assign({}, this.localeHelper.getLocale().commands[command])
         const syntaxLocale = Object.assign({}, this.localeHelper.getSyntaxLocale().commands[command])
 
@@ -152,7 +119,7 @@ export class DiscordCommandGenerator {
             options: []
         }
 
-        for(const index in this.commandStructure[command]) {
+        for (const index in this.commandStructure[command]) {
             this.buildCommandOption(
                 builder,
                 this.commandStructure[command],
@@ -165,10 +132,10 @@ export class DiscordCommandGenerator {
     }
 
     protected buildChoices(choices: any, syntaxMeta: any) {
-        for(const index in choices) {
+        for (const index in choices) {
             const choice = choices[index]
 
-            if(typeof syntaxMeta !== 'undefined' &&
+            if (typeof syntaxMeta !== 'undefined' &&
                 typeof syntaxMeta[choice.value] !== 'undefined') {
                 choice.name = syntaxMeta[choice.value]
             }
@@ -179,15 +146,21 @@ export class DiscordCommandGenerator {
         return choices
     }
 
-    protected buildCommandOption(builder:any, meta:any, option:any, syntaxMeta:any, messageMeta:any) {
-        if (typeof(meta) === 'undefined') { return }
+    protected buildCommandOption(builder: any, meta: any, option: any, syntaxMeta: any, messageMeta: any) {
+        if (typeof (meta) === 'undefined') {
+            return
+        }
 
         const optionMeta = meta[option]
 
-        if (typeof(optionMeta) === 'undefined') { return }
-        if (Object.keys(optionMeta).length === 0) { return }
+        if (typeof (optionMeta) === 'undefined') {
+            return
+        }
+        if (Object.keys(optionMeta).length === 0) {
+            return
+        }
 
-        if(optionMeta.options === '${heaterArguments}') {
+        if (optionMeta.options === '${heaterArguments}') {
             syntaxMeta.options[option].options = getHeaterArguments()
             messageMeta.options[option].options = getHeaterArguments()
             meta[option].options = getHeaterArguments()
@@ -223,7 +196,7 @@ export class DiscordCommandGenerator {
             }
         }
 
-        for(const index in meta[option].options) {
+        for (const index in meta[option].options) {
             this.buildCommandOption(
                 optionBuilder,
                 meta[option].options,
@@ -233,5 +206,40 @@ export class DiscordCommandGenerator {
         }
 
         builder.options.push(optionBuilder)
+    }
+
+    private getCustomCommandStructure() {
+        const customCommandsConfig = this.configHelper.getCustomCommands()
+        const customCommands = {}
+
+        for (const name of Object.keys(customCommandsConfig)) {
+            if (Object.keys(this.commandStructure).includes(name)) {
+                this.showCustomCommandError(`The Custom Command ${name} is invalid, you cant overwrite existing commands!`)
+                continue
+            }
+            const customCommandData = customCommandsConfig[name]
+            if (customCommandData.macros === undefined && customCommandData.websocket_commands === undefined) {
+                this.showCustomCommandError(`The Custom Command ${name} is invalid, it doesnt have any macros or websocket_commands configured!`)
+                continue
+            }
+            const customCommandDescription = (customCommandData.description === null || customCommandData.description === null)
+                ? this.locale.messages.errors.custom_command_descript
+                : customCommandData.description
+
+            customCommands[name] = {
+                'name': name,
+                'description': customCommandDescription
+            }
+        }
+
+        return customCommands
+    }
+
+    private showCustomCommandError(message: string) {
+        const commandCache = getEntry('commands')
+        if (commandCache === undefined || Object.keys(commandCache).length > 0) {
+            return
+        }
+        logError(message)
     }
 }

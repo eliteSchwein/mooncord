@@ -8,7 +8,9 @@ export class BroadcastMessage {
     protected notificationHelper = new NotificationHelper()
 
     public async execute(message: string) {
-        if(!message.startsWith('mooncord.broadcast')) { return }
+        if (!message.startsWith('mooncord.broadcast')) {
+            return
+        }
 
         const defaultColor = findValue('embeds.notification.color')
 
@@ -17,7 +19,7 @@ export class BroadcastMessage {
         const notificationMessage = notificationMessageFragments[0]
         const color = ((notificationMessageFragments.length > 1) ? `#${notificationMessageFragments[1]}` : defaultColor)
 
-        if(this.notificationHelper.isEmbedBlocked('notification')) {
+        if (this.notificationHelper.isEmbedBlocked('notification')) {
             return
         }
 

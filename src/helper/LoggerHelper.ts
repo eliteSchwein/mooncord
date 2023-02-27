@@ -53,7 +53,7 @@ export function hookProcess() {
 }
 
 export function changeTempPath(tempPath: string) {
-    log_file = fs.createWriteStream(path.resolve(__dirname, `${tempPath}/mooncord.log`), {flags : 'w'})
+    log_file = fs.createWriteStream(path.resolve(__dirname, `${tempPath}/mooncord.log`), {flags: 'w'})
     log_file.write(tempLog)
     updateData('function', {'log_path': path.resolve(__dirname, `${tempPath}/mooncord.log`)})
     hookLogFile()
@@ -61,13 +61,13 @@ export function changeTempPath(tempPath: string) {
 
 export function changePath(directory: string) {
     logRegular(`Change Log Path to ${directory}...`)
-    if(!fs.existsSync(directory)) {
+    if (!fs.existsSync(directory)) {
         logWarn(`Path ${directory} not present`)
         return
     }
 
     try {
-        fs.accessSync(directory,fs.constants.R_OK | fs.constants.W_OK)
+        fs.accessSync(directory, fs.constants.R_OK | fs.constants.W_OK)
     } catch {
         logWarn(`Cant Read or/and Write to ${directory}`)
         return
@@ -81,7 +81,7 @@ export function changePath(directory: string) {
         current = Buffer.from(tempLog, 'utf8')
     }
 
-    log_file = fs.createWriteStream(path.resolve(directory, 'mooncord.log'), {flags : 'w'})
+    log_file = fs.createWriteStream(path.resolve(directory, 'mooncord.log'), {flags: 'w'})
 
     log_file.write(current)
 
@@ -90,7 +90,7 @@ export function changePath(directory: string) {
     hookLogFile()
 }
 
-export function logError (message) {
+export function logError(message) {
     console.log(`${getLevel('error')} ${getTimeStamp()} ${util.format(message)}`.red)
 }
 
@@ -110,7 +110,9 @@ export function logWarn(message) {
     console.log(`${getLevel('warn')} ${getTimeStamp()} ${util.format(message)}`.yellow)
 }
 
-export function logEmpty() { console.log('') }
+export function logEmpty() {
+    console.log('')
+}
 
 function getLevel(level: string) {
     return `[${level}]`.grey

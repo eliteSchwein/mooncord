@@ -15,7 +15,9 @@ export class CustomCommand {
     protected moonrakerClient = getMoonrakerClient()
 
     public constructor(interaction: CommandInteraction, commandId: string) {
-        if(!this.commandGenerator.isCustomCommand(commandId)) { return }
+        if (!this.commandGenerator.isCustomCommand(commandId)) {
+            return
+        }
 
         this.execute(interaction, commandId)
     }
@@ -25,13 +27,13 @@ export class CustomCommand {
 
         await interaction.deferReply()
 
-        if(customCommandData.macros !== undefined) {
+        if (customCommandData.macros !== undefined) {
             await this.consoleHelper.executeGcodeCommands(customCommandData.macros,
                 interaction.channel)
         }
 
-        if(customCommandData.websocket_commands !== undefined) {
-            for(const websocketCommand of customCommandData.websocket_commands) {
+        if (customCommandData.websocket_commands !== undefined) {
+            for (const websocketCommand of customCommandData.websocket_commands) {
                 logRegular(`Execute Websocket Command ${websocketCommand}...`)
                 try {
                     await this.moonrakerClient.send(websocketCommand)

@@ -24,7 +24,9 @@ export class ShowTempSelection {
     protected tempHelper = new TempHelper()
 
     public constructor(interaction: SelectMenuInteraction, selectionId: string) {
-        if(selectionId !== 'show_temp') { return }
+        if (selectionId !== 'show_temp') {
+            return
+        }
 
         void this.execute(interaction)
     }
@@ -36,19 +38,19 @@ export class ShowTempSelection {
         const temps = this.tempHelper.parseFields().fields
         let tempField = {}
 
-        for(const temp of temps) {
-            if(temp.name.endsWith(heater)) {
+        for (const temp of temps) {
+            if (temp.name.endsWith(heater)) {
                 tempField = temp
             }
         }
 
-        const embedData = await this.embedHelper.generateEmbed('single_temperature',{heater}, [tempField])
+        const embedData = await this.embedHelper.generateEmbed('single_temperature', {heater}, [tempField])
         const tempGraph = await this.graphHelper.getTempGraph(heater)
         const embed = embedData.embed.embeds[0] as MessageEmbed
         const components = embedData.embed['components']
         let files = [tempGraph]
 
-        if(typeof embedData.embed['files'] !== 'undefined') {
+        if (typeof embedData.embed['files'] !== 'undefined') {
             files = [...files, ...embedData.embed['files']]
         }
 

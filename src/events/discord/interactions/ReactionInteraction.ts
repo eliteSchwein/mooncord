@@ -35,11 +35,15 @@ export class ReactionInteraction {
         const emoji = interaction.emoji.toString()
         const message = interaction.message as Message
 
-        if (message.author.id !== interaction.client.user.id) { return }
+        if (message.author.id !== interaction.client.user.id) {
+            return
+        }
 
         const reactionId = this.reactionMetaCache[emoji]
 
-        if(reactionId === undefined) { return }
+        if (reactionId === undefined) {
+            return
+        }
 
         const reactionData = this.reactionCache[reactionId]
 
@@ -47,7 +51,7 @@ export class ReactionInteraction {
 
         logNotice(`${user.tag} reacted: ${reactionId}`)
 
-        if(!this.permissionHelper.hasPermission(user, interaction.message.guild, reactionId)) {
+        if (!this.permissionHelper.hasPermission(user, interaction.message.guild, reactionId)) {
             logWarn(`${user.tag} doesnt have the permission for: ${reactionId}`)
             return;
         }

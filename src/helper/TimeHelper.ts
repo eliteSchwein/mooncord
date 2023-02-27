@@ -14,7 +14,7 @@ export function updateTimes() {
         !isFinite(total)) {
         total = metaDataCache.estimated_time
     }
-  
+
     const left = (total - duration) / stateCache.gcode_move.speed_factor || 1
     const end = endTime + (total - duration)
 

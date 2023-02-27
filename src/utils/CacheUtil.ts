@@ -6,7 +6,7 @@ import {mergeDeep} from "../helper/DataHelper";
 import {get} from 'lodash'
 import {LocaleHelper} from "../helper/LocaleHelper";
 
-const cacheData:any = {
+const cacheData: any = {
     function: {
         current_status: 'botstart',
         status_in_query: false,
@@ -65,19 +65,19 @@ const cacheData:any = {
 }
 const writeFile = util.promisify(fs.writeFile)
 
-export function setData(key:string, value:any) {
+export function setData(key: string, value: any) {
     cacheData[key] = value
 }
 
-export function updateData(key:string, value:any) {
+export function updateData(key: string, value: any) {
     cacheData[key] = mergeDeep(cacheData[key], value)
 }
 
-export function getEntry(key:string) {
+export function getEntry(key: string) {
     return cacheData[key]
 }
 
-export function findValue(key:string) {
+export function findValue(key: string) {
     return get(cacheData, key)
 }
 
@@ -86,11 +86,13 @@ export function getHeaterArguments() {
     const options = {}
     let {heater} = cacheData.locale.commands.preheat.options.manual.options
 
-    if(typeof heater === 'undefined') { heater = {'description': '${heater}'}}
+    if (typeof heater === 'undefined') {
+        heater = {'description': '${heater}'}
+    }
 
     const {description} = heater
 
-    for(const heater of heaters) {
+    for (const heater of heaters) {
         const heaterData = cacheData.state.configfile.config[heater]
         const heaterMaxTemp = Number(heaterData.max_temp)
         const heaterMinTemp = Number(heaterData.min_temp)
@@ -113,9 +115,9 @@ export function getHeaterChoices() {
     const choices = []
     const heaters = cacheData.state.heaters.available_heaters
 
-    for(let heater of heaters) {
+    for (let heater of heaters) {
         heater = heater.replace(/(heater_generic )/g, '')
-        
+
         choices.push({
             "name": heater,
             "value": heater
@@ -129,8 +131,8 @@ export function getExcludeChoices() {
     const excludeObjects = cacheData.state.exclude_object.objects
     const excludedObjects = cacheData.state.exclude_object.excluded_objects
 
-    for(const excludeObject of excludeObjects) {
-        if(excludedObjects.includes(excludeObject.name)) {
+    for (const excludeObject of excludeObjects) {
+        if (excludedObjects.includes(excludeObject.name)) {
             continue
         }
 
@@ -146,7 +148,7 @@ export function getConfigFiles() {
     const choices = []
     const configs = cacheData.config_files
 
-    for(const config of configs) {
+    for (const config of configs) {
         choices.push({
             "name": config.path,
             "value": config.path
@@ -160,7 +162,7 @@ export function getPowerDeviceChoices() {
 
     const powerDevices = cacheData.power_devices
 
-    for(const powerDevice of powerDevices) {
+    for (const powerDevice of powerDevices) {
         choices.push({
             "name": powerDevice.device,
             "value": powerDevice.device
@@ -173,7 +175,7 @@ export function getPowerDeviceChoices() {
 export function getPreheatProfileChoices() {
     const choices = []
 
-    for(const profile in cacheData.config.presets) {
+    for (const profile in cacheData.config.presets) {
         choices.push({
             "name": profile,
             "value": profile
@@ -186,13 +188,13 @@ export function getServiceChoices() {
     const localeHelper = new LocaleHelper()
     const choices = []
 
-    for(const service of cacheData.machine_info.system_info.available_services) {
+    for (const service of cacheData.machine_info.system_info.available_services) {
         choices.push({
             "name": service,
             "value": service
         })
     }
-    
+
     choices.push({
         "name": localeHelper.getSyntaxLocale().buttons.klipper_restart.label,
         "value": "FirmwareRestart"
@@ -210,6 +212,9 @@ export async function dump() {
 }
 
 async function writeDump() {
-    await writeFile(path.resolve(__dirname, '../cache_dump.json'), JSON.stringify(cacheData, null, 4), { encoding: 'utf8', flag: 'w+' })
+    await writeFile(path.resolve(__dirname, '../cache_dump.json'), JSON.stringify(cacheData, null, 4), {
+        encoding: 'utf8',
+        flag: 'w+'
+    })
     logSuccess('Dumped Cache!')
 }

@@ -12,7 +12,9 @@ export class FileInfoCommand {
     protected embedHelper = new EmbedHelper()
 
     public constructor(interaction: CommandInteraction, commandId: string) {
-        if(commandId !== 'fileinfo') { return }
+        if (commandId !== 'fileinfo') {
+            return
+        }
 
         void this.execute(interaction)
     }
@@ -20,13 +22,13 @@ export class FileInfoCommand {
     protected async execute(interaction: CommandInteraction) {
         let filename = interaction.options.getString(this.syntaxLocale.commands.fileinfo.options.file.name)
 
-        if(!filename.endsWith('.gcode')) {
+        if (!filename.endsWith('.gcode')) {
             filename = `${filename}.gcode`
         }
 
         const metadata = await this.metadataHelper.getMetaData(filename)
 
-        if(typeof metadata === 'undefined') {
+        if (typeof metadata === 'undefined') {
             await interaction.reply(this.locale.messages.errors.file_not_found)
             return
         }

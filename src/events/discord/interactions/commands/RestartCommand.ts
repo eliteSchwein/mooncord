@@ -8,9 +8,11 @@ export class RestartCommand {
     protected syntaxLocale = this.localeHelper.getSyntaxLocale()
     protected moonrakerClient = getMoonrakerClient()
     protected user: User
-    
+
     public constructor(interaction: CommandInteraction, commandId: string) {
-        if(commandId !== 'restart') { return }
+        if (commandId !== 'restart') {
+            return
+        }
 
         this.execute(interaction)
     }
@@ -24,7 +26,7 @@ export class RestartCommand {
 
         let result
 
-        if(service === 'FirmwareRestart') {
+        if (service === 'FirmwareRestart') {
             result = await this.restartFirmware()
         } else {
             result = await this.restartService(service)
@@ -36,7 +38,7 @@ export class RestartCommand {
     protected async restartService(service: string) {
         const result = await this.moonrakerClient.send({"method": "machine.services.restart", "params": {service}})
 
-        if(typeof result.error !== 'undefined') {
+        if (typeof result.error !== 'undefined') {
             return this.locale.messages.errors.restart_failed
                 .replace(/(\${service})/g, service)
                 .replace(/(\${reason})/g, result.error.message)

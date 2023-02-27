@@ -1,4 +1,4 @@
-import {ButtonInteraction, Message, User} from "discord.js";
+import {Message, User} from "discord.js";
 import {getDatabase, getMoonrakerClient} from "../../../../Application";
 import {EmbedHelper} from "../../../../helper/EmbedHelper";
 import {ConfigHelper} from "../../../../helper/ConfigHelper";
@@ -15,10 +15,14 @@ export class ListHandler {
 
     public async execute(message: Message, user: User, data, interaction = null) {
         const listId = data.function_mapping.show_list
-        if(!listId) { return }
+        if (!listId) {
+            return
+        }
 
 
-        if(interaction !== null && !interaction.replied && !interaction.deferred) { await interaction.deferReply() }
+        if (interaction !== null && !interaction.replied && !interaction.deferred) {
+            await interaction.deferReply()
+        }
 
         const pageHelper = new PageHelper(listId)
         const pageData = pageHelper.getPage(false, 1)
@@ -30,7 +34,7 @@ export class ListHandler {
 
         await message.edit(answer.embed)
 
-        if(interaction !== null && !interaction.replied) {
+        if (interaction !== null && !interaction.replied) {
             await interaction.deleteReply()
         }
     }

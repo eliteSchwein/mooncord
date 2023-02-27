@@ -11,27 +11,29 @@ export class EditChannelCommand {
     protected syntaxLocale = this.localeHelper.getSyntaxLocale()
 
     public constructor(interaction: CommandInteraction, commandId: string) {
-        if(commandId !== 'editchannel') { return }
+        if (commandId !== 'editchannel') {
+            return
+        }
 
         let channelOption = interaction.options.getChannel(this.syntaxLocale.commands.editchannel.options.channel.name)
         const user = interaction.user
         let channel = interaction.channel
 
-        if(channel === null) {
+        if (channel === null) {
             void interaction.reply(this.locale.messages.errors.guild_only
                 .replace(/\${username}/g, user.tag))
             return
         }
 
         // @ts-ignore
-        if(channel.type === 'DM') {
+        if (channel.type === 'DM') {
             void interaction.reply(this.locale.messages.errors.guild_only
                 .replace(/\${username}/g, user.tag))
             return
         }
 
-        if(channelOption !== null) {
-            if(channelOption.type !== 'GUILD_TEXT') {
+        if (channelOption !== null) {
+            if (channelOption.type !== 'GUILD_TEXT') {
                 void interaction.reply(this.locale.messages.errors.not_textchannel
                     .replace(/\${username}/g, user.tag)
                     .replace(/\${channel}/g, channelOption.name))
@@ -40,7 +42,7 @@ export class EditChannelCommand {
             channel = channelOption as TextChannel
         }
 
-        if(!Object.keys(this.broadcastList).includes(interaction.guildId)) {
+        if (!Object.keys(this.broadcastList).includes(interaction.guildId)) {
             this.broadcastList[interaction.guildId] = {
                 'broadcast_channels': []
             }
@@ -51,7 +53,7 @@ export class EditChannelCommand {
 
         let answer
 
-        if(broadcastChannels.includes(channel.id)) {
+        if (broadcastChannels.includes(channel.id)) {
             removeFromArray(broadcastChannels, channel.id)
             answer = this.locale.messages.answers.broadcast_channel.deactivated
         } else {
@@ -66,7 +68,7 @@ export class EditChannelCommand {
             .replace(/\${channel}/g, channel.name)
 
         this.databaseUtil.updateDatabaseEntry('guilds', this.broadcastList)
-        
+
         void interaction.reply(answer)
     }
 }

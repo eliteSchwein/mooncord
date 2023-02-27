@@ -1,4 +1,4 @@
-import {ButtonInteraction, Message, User} from "discord.js";
+import {Message, User} from "discord.js";
 import {getDatabase} from "../../../../Application";
 import {EmbedHelper} from "../../../../helper/EmbedHelper";
 import {ConfigHelper} from "../../../../helper/ConfigHelper";
@@ -14,15 +14,21 @@ export class PageHandler {
     protected locale = this.localeHelper.getLocale()
 
     public async execute(message: Message, user: User, data, interaction = null) {
-        if(typeof data.function_mapping === 'undefined') { return }
-        if(!data.function_mapping.page_up &&
-            !data.function_mapping.page_down) { return }
+        if (typeof data.function_mapping === 'undefined') {
+            return
+        }
+        if (!data.function_mapping.page_up &&
+            !data.function_mapping.page_down) {
+            return
+        }
 
         const functionMap = data.function_mapping
 
-        if(message.embeds.length === 0) { return }
+        if (message.embeds.length === 0) {
+            return
+        }
 
-        if(interaction !== null &&
+        if (interaction !== null &&
             !interaction.replied &&
             !interaction.deferred) {
             await interaction.deferReply()
@@ -31,18 +37,20 @@ export class PageHandler {
         const embed = message.embeds[0]
         const embedData = this.embedHelper.getRawEmbedByTitle(embed.title)
 
-        if(typeof embedData === 'undefined') { return }
+        if (typeof embedData === 'undefined') {
+            return
+        }
 
         const filterFooter = embedData.embedData.footer.replace(/(\${pages})/g, '')
-        
+
         const pages = embed.footer.text.replace(filterFooter, '').split('/')
         const currentPage = Number.parseInt(pages[0])
         const pageHelper = new PageHelper(embedData.embedID)
 
         const pageData = pageHelper.getPage(functionMap.page_up, currentPage)
 
-        if(Object.keys(pageData).length === 0) {
-            if(interaction !== null) {
+        if (Object.keys(pageData).length === 0) {
+            if (interaction !== null) {
                 await interaction.editReply(this.localeHelper.getCommandNotReadyError(interaction.user.username))
             } else {
                 await message.reply(this.localeHelper.getCommandNotReadyError(interaction.user.username))
@@ -59,7 +67,7 @@ export class PageHandler {
 
         await message.edit(answer.embed)
 
-        if(interaction !== null && !interaction.replied) {
+        if (interaction !== null && !interaction.replied) {
             await interaction.deleteReply()
         }
     }

@@ -44,7 +44,7 @@
     }
   },
   "power": {
-    "device":{
+    "device": {
       "type": "string",
       "required": true,
       "choices": "${powerDeviceChoices}"
@@ -130,7 +130,7 @@
     "log_file": {
       "type": "string",
       "required": true,
-      "choices" : [
+      "choices": [
         {
           "name": "Klipper",
           "value": "klippy"
@@ -164,8 +164,8 @@
       "type": "subcommand",
       "options": {
         "file": {
-          "type":"string",
-          "required":true
+          "type": "string",
+          "required": true
         }
       }
     }

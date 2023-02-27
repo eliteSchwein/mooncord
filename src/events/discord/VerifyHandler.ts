@@ -8,20 +8,26 @@ export class VerifyHandler {
 
     public constructor(discordClient: Client) {
         discordClient.on("messageCreate", async message => {
-            if (message.author.id === discordClient.user.id) { return }
-            if(typeof this.userConfig.tmp === 'undefined') { return }
-            if(typeof this.userConfig.tmp.controller_tag === 'undefined') { return }
+            if (message.author.id === discordClient.user.id) {
+                return
+            }
+            if (typeof this.userConfig.tmp === 'undefined') {
+                return
+            }
+            if (typeof this.userConfig.tmp.controller_tag === 'undefined') {
+                return
+            }
 
             const controllerTag = this.userConfig.tmp.controller_tag
 
-            if(message.author.tag !== controllerTag) {
+            if (message.author.tag !== controllerTag) {
                 logError(`${message.author.tag} is not matching the Controller Tag ${controllerTag}!!!`)
                 return
             }
 
             const controllerId = message.author.id
 
-            if(this.userConfig.permission.controllers.users === controllerId ||
+            if (this.userConfig.permission.controllers.users === controllerId ||
                 this.userConfig.permission.controllers.users.includes(controllerId)) {
                 logError(`${message.author.tag} is already a Controller!!!`)
                 await message.reply('You are already a Controller')
@@ -29,7 +35,7 @@ export class VerifyHandler {
                 return
             }
 
-            if(this.userConfig.permission.controllers.users === '') {
+            if (this.userConfig.permission.controllers.users === '') {
                 logRegular(`write ${message.author.tag}'s ID as Controller (${controllerId})...`)
                 this.userConfig.permission.controllers.users = controllerId
             } else {

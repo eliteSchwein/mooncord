@@ -10,7 +10,9 @@ export class StatusCommand {
     protected configHelper = new ConfigHelper()
 
     public constructor(interaction: CommandInteraction, commandId: string) {
-        if(commandId !== 'status') { return }
+        if (commandId !== 'status') {
+            return
+        }
 
         this.execute(interaction)
     }

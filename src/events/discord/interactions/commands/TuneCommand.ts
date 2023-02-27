@@ -12,7 +12,9 @@ export class TuneCommand {
     protected moonrakerClient = getMoonrakerClient()
 
     public constructor(interaction: CommandInteraction, commandId: string) {
-        if(commandId !== 'tune') { return }
+        if (commandId !== 'tune') {
+            return
+        }
 
         this.execute(interaction)
     }
@@ -22,7 +24,7 @@ export class TuneCommand {
         const flow = interaction.options.getInteger(this.syntaxLocale.commands.tune.options.flow.name)
         let message = ''
 
-        if(this.functionCache.current_status !== 'printing') {
+        if (this.functionCache.current_status !== 'printing') {
             const message = this.locale.messages.answers.printjob_pause.status_not_valid
                 .replace(/(\${username})/g, interaction.user.tag)
 
@@ -32,23 +34,23 @@ export class TuneCommand {
 
         await interaction.deferReply()
 
-        if(speed === null && flow === null) {
+        if (speed === null && flow === null) {
             await interaction.editReply(this.locale.messages.errors.missing_arguments
                 .replace(/(\${username})/g, interaction.user.tag))
             return
         }
 
-        if(speed !== null) {
+        if (speed !== null) {
             await this.moonrakerClient.send({"method": "printer.gcode.script", "params": {"script": `M220 S${speed}`}})
             message = 'speed'
         }
 
-        if(flow !== null) {
+        if (flow !== null) {
             await this.moonrakerClient.send({"method": "printer.gcode.script", "params": {"script": `M221 S${flow}`}})
             message = 'flow'
         }
 
-        if(flow !== null && speed !== null) {
+        if (flow !== null && speed !== null) {
             message = 'speed_flow'
         }
 

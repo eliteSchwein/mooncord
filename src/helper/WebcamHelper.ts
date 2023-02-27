@@ -49,13 +49,13 @@ export class WebcamHelper {
                     .flop(this.configHelper.isWebcamHorizontalMirrored())
                     .greyscale(this.configHelper.isWebcamGreyscale())
 
-                if(this.configHelper.getWebcamBrightness()) {
+                if (this.configHelper.getWebcamBrightness()) {
                     image.modulate({
                         brightness: (this.configHelper.getWebcamBrightness() + 1)
                     })
                 }
 
-                if(this.configHelper.getWebcamContrast()) {
+                if (this.configHelper.getWebcamContrast()) {
                     image.linear(this.configHelper.getWebcamContrast() + 1, -(128 * (this.configHelper.getWebcamContrast() + 1)) + 128)
                 }
 
@@ -93,7 +93,7 @@ export class WebcamHelper {
             logError('Webcam Error:')
             logError(`Url: ${this.configHelper.getWebcamUrl()}`)
             logError(`Error: ${reason}`)
-            if(this.configHelper.traceOnWebErrors()) {
+            if (this.configHelper.traceOnWebErrors()) {
                 logError(trace)
             }
 
@@ -128,7 +128,7 @@ export class WebcamHelper {
 
         while (index < config.execute.length) {
             const execute = config.execute[index]
-            logRegular(`Execute Webcam Task ${index+1} from ${config.execute.length}: ${execute}`)
+            logRegular(`Execute Webcam Task ${index + 1} from ${config.execute.length}: ${execute}`)
             if (execute.startsWith("gcode:")) {
                 const gcode = execute.replace("gcode:", "")
                 try {

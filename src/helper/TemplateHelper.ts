@@ -28,48 +28,48 @@ export class TemplateHelper {
     public parseRawTemplate(type: string, id: string) {
         const unformattedData = Object.assign({}, getEntry(`${type}s`)[id])
 
-        if(unformattedData.show_versions) {
+        if (unformattedData.show_versions) {
             unformattedData.fields = [...unformattedData.fields, ...this.versionHelper.getFields()]
         }
 
-        if(unformattedData.show_updates) {
+        if (unformattedData.show_updates) {
             unformattedData.fields = [...unformattedData.fields, ...this.versionHelper.getUpdateFields()]
         }
 
-        if(unformattedData.show_temps) {
+        if (unformattedData.show_temps) {
             unformattedData.fields = [...unformattedData.fields, ...this.tempHelper.parseFields().fields]
         }
 
-        if(unformattedData.show_minimal_temps) {
+        if (unformattedData.show_minimal_temps) {
             unformattedData.fields = [...unformattedData.fields, ...this.tempHelper.parseFields(true).fields]
         }
 
-        if(unformattedData.show_print_history) {
+        if (unformattedData.show_print_history) {
             unformattedData.fields = [...unformattedData.fields, ...this.historyHelper.parseFields()]
         }
 
-        if(unformattedData.show_power_devices) {
+        if (unformattedData.show_power_devices) {
             unformattedData.fields = [...unformattedData.fields, ...this.powerDeviceHelper.parseFields()]
         }
 
-        if(unformattedData.buttons) {
+        if (unformattedData.buttons) {
             unformattedData.buttons = this.getInputData('buttons', unformattedData.buttons)
         }
 
-        if(unformattedData.selections) {
+        if (unformattedData.selections) {
             unformattedData.selections = this.getInputData('selections', unformattedData.selections)
         }
 
-        if(unformattedData.inputs) {
+        if (unformattedData.inputs) {
             unformattedData.inputs = this.getInputData('inputs', unformattedData.inputs)
         }
 
-        if(unformattedData.add_temp_inputs) {
+        if (unformattedData.add_temp_inputs) {
             // @ts-ignore
             const rawTempInputData = this.getInputData('inputs', ['temp_target_input'])[0]
             const heaters = this.tempHelper.getHeaters()
 
-            for(const heater of heaters) {
+            for (const heater of heaters) {
                 const heaterInput = Object.assign({}, rawTempInputData)
                 heaterInput.id = heater
                 heaterInput.value = this.tempHelper.getHeaterTarget(heater)
@@ -81,7 +81,7 @@ export class TemplateHelper {
         return unformattedData
     }
 
-    public async parseTemplate(type: string, id: string,providedPlaceholders = null, providedFields = null, providedValues = null) {
+    public async parseTemplate(type: string, id: string, providedPlaceholders = null, providedFields = null, providedValues = null) {
         let messageObject = null
 
         switch (type) {
@@ -93,17 +93,17 @@ export class TemplateHelper {
                 break
         }
 
-        if(messageObject === null) {
+        if (messageObject === null) {
             return false
         }
 
         const unformattedData = this.parseRawTemplate(type, id)
 
-        if(providedFields !== null) {
+        if (providedFields !== null) {
             mergeDeep(unformattedData, {fields: providedFields})
         }
 
-        if(providedValues !== null) {
+        if (providedValues !== null) {
             mergeDeep(unformattedData, providedValues)
         }
 
@@ -117,21 +117,25 @@ export class TemplateHelper {
             content: null
         }
 
-        if(placeholders !== null) {
-            for(const placeholder of placeholders) {
+        if (placeholders !== null) {
+            for (const placeholder of placeholders) {
                 const placeholderId = String(placeholder).match(/(\${).*?}/g)[0]
-                const placeholderContent = this.parsePlaceholder(placeholderId,providedPlaceholders)
+                const placeholderContent = this.parsePlaceholder(placeholderId, providedPlaceholders)
 
-                if(placeholderContent.content === null || placeholderContent.content === '') { continue }
+                if (placeholderContent.content === null || placeholderContent.content === '') {
+                    continue
+                }
 
-                if(placeholderContent.content === '$clear') { placeholderContent.content = '' }
+                if (placeholderContent.content === '$clear') {
+                    placeholderContent.content = ''
+                }
 
-                if(!placeholderContent.double_dash) {
+                if (!placeholderContent.double_dash) {
                     const startPos = messageObjectRaw.indexOf(placeholderId)
                     const endPos = startPos + placeholderId.length
-                    messageObjectRaw = messageObjectRaw.slice(0,startPos-1) +
+                    messageObjectRaw = messageObjectRaw.slice(0, startPos - 1) +
                         placeholderContent.content +
-                        messageObjectRaw.slice(endPos+1)
+                        messageObjectRaw.slice(endPos + 1)
                 } else {
                     messageObjectRaw = messageObjectRaw.replace(placeholderId, placeholderContent.content)
                 }
@@ -150,57 +154,69 @@ export class TemplateHelper {
         components.push(buttons)
         components.push(inputs)
 
-        files = files.filter((element) => { return element != null})
-        components = components.filter((element) => { return element != null})
+        files = files.filter((element) => {
+            return element != null
+        })
+        components = components.filter((element) => {
+            return element != null
+        })
 
         messageObject.setTitle(messageObjectData.title)
 
-        if(typeof messageObjectData.color !== 'undefined') {
+        if (typeof messageObjectData.color !== 'undefined') {
             messageObject.setColor(messageObjectData.color)
         }
 
-        if(typeof messageObjectData.description !== 'undefined') {
+        if (typeof messageObjectData.description !== 'undefined') {
             messageObject.setDescription(messageObjectData.description)
         }
 
-        if(typeof messageObjectData.author !== 'undefined') {
+        if (typeof messageObjectData.author !== 'undefined') {
             messageObject.setAuthor({'name': messageObjectData.author})
         }
 
-        if(typeof messageObjectData.footer !== 'undefined') {
+        if (typeof messageObjectData.footer !== 'undefined') {
             messageObject.setFooter({'text': messageObjectData.footer})
         }
 
-        if(messageObjectData.content !== undefined) {
+        if (messageObjectData.content !== undefined) {
             response.content = messageObjectData.content
         }
 
-        if(typeof thumbnail === 'object') {
+        if (typeof thumbnail === 'object') {
             files.push(thumbnail)
             messageObject.setThumbnail(`attachment://${thumbnail.name}`)
         }
 
-        if(typeof image === 'object') {
+        if (typeof image === 'object') {
             files.push(image)
             messageObject.setImage(`attachment://${image.name}`)
         }
 
-        if(typeof thumbnail === 'string') {
+        if (typeof thumbnail === 'string') {
             messageObject.setThumbnail(thumbnail)
         }
 
-        if(typeof image === 'string') {
+        if (typeof image === 'string') {
             messageObject.setImage(image)
         }
 
         const fields = []
 
-        if(typeof messageObjectData.fields !== 'undefined') {
+        if (typeof messageObjectData.fields !== 'undefined') {
             messageObjectData.fields.forEach(field => {
-                if(field.name === '') {field.name = 'N/A'}
-                if(field.value === '') {field.value = 'N/A'}
-                if(field.name === ' ') {field.name = 'N/A'}
-                if(field.value === ' ') {field.value = 'N/A'}
+                if (field.name === '') {
+                    field.name = 'N/A'
+                }
+                if (field.value === '') {
+                    field.value = 'N/A'
+                }
+                if (field.name === ' ') {
+                    field.name = 'N/A'
+                }
+                if (field.value === ' ') {
+                    field.value = 'N/A'
+                }
                 fields.push({
                     'name': field.name,
                     'value': field.value,
@@ -209,7 +225,7 @@ export class TemplateHelper {
             })
         }
 
-        if(fields.length > 0) {
+        if (fields.length > 0) {
             messageObject.addFields(fields)
         }
 
@@ -227,21 +243,34 @@ export class TemplateHelper {
         }
     }
 
-    protected parsePlaceholder(placeholder: string,providedPlaceholders = null) {
-        const placeholderId = placeholder
-            .replace(/(\${)/g,'')
-            .replace(/}/g,'')
+    public getInputData(type: string, data: []) {
+        const inputData = []
+        const metaData = Object.assign({}, getEntry(type))
 
-        if(providedPlaceholders !== null) {
+        for (const inputId of data) {
+            const inputMetaData = metaData[inputId]
+            inputMetaData.id = inputId
+            inputData.push(inputMetaData)
+        }
+
+        return inputData
+    }
+
+    protected parsePlaceholder(placeholder: string, providedPlaceholders = null) {
+        const placeholderId = placeholder
+            .replace(/(\${)/g, '')
+            .replace(/}/g, '')
+
+        if (providedPlaceholders !== null) {
             const providedParser = providedPlaceholders[placeholderId]
-            if(typeof providedParser !== 'undefined') {
-                if(typeof providedParser === 'object') {
+            if (typeof providedParser !== 'undefined') {
+                if (typeof providedParser === 'object') {
                     return {
                         'content': JSON.stringify(providedParser),
                         'double_dash': false
                     }
                 }
-                if(typeof providedParser !== 'string') {
+                if (typeof providedParser !== 'string') {
                     return {
                         'content': providedParser,
                         'double_dash': true
@@ -249,8 +278,8 @@ export class TemplateHelper {
                 }
                 return {
                     'content': providedParser
-                        .replace(/(")/g,'\'')
-                        .replace(/(\n)/g,'\\n'),
+                        .replace(/(")/g, '\'')
+                        .replace(/(\n)/g, '\\n'),
                     'double_dash': true
                 }
             }
@@ -258,36 +287,36 @@ export class TemplateHelper {
 
         let cacheParser = findValue(placeholderId)
 
-        if(placeholderId.includes(':')) {
+        if (placeholderId.includes(':')) {
             const templateFragments = placeholderId.split(':')
             cacheParser = parseCalculatedPlaceholder(templateFragments)
         }
 
-        if(placeholderId === 'state_message') {
+        if (placeholderId === 'state_message') {
             cacheParser = this.getStateMessage()
         }
 
-        if(cacheParser === undefined || cacheParser === null) {
+        if (cacheParser === undefined || cacheParser === null) {
             return {
                 'content': '',
                 'double_dash': true
             }
         }
 
-        if(cacheParser.constructor.name === 'Array') {
+        if (cacheParser.constructor.name === 'Array') {
             cacheParser = cacheParser.join('\\n')
         }
 
         cacheParser = String(cacheParser)
 
-        if(cacheParser === '') {
+        if (cacheParser === '') {
             cacheParser = 'N/A'
         }
 
         return {
             'content': cacheParser
-                .replace(/(")/g,'\'')
-                .replace(/(\n)/g,'\\n'),
+                .replace(/(")/g, '\'')
+                .replace(/(\n)/g, '\\n'),
             'double_dash': true
         }
     }
@@ -299,11 +328,11 @@ export class TemplateHelper {
         const printerInfoStateMessage = findValue('printer_info.state_message')
         const printStatsMessage = findValue('state.print_stats.message')
 
-        if(webhookState === state) {
+        if (webhookState === state) {
             return webhookStateMessage
         }
 
-        if(printerInfoStateMessage === 'Printer is ready') {
+        if (printerInfoStateMessage === 'Printer is ready') {
             return printStatsMessage
         }
 
@@ -312,46 +341,35 @@ export class TemplateHelper {
 
     protected async parseImage(imageID: string) {
         const metadataHelper = new MetadataHelper()
-        if(typeof imageID === 'undefined') { return }
+        if (typeof imageID === 'undefined') {
+            return
+        }
 
-        if(imageID.startsWith('http')) {
+        if (imageID.startsWith('http')) {
             return imageID
         }
 
-        if(imageID === 'webcam') {
+        if (imageID === 'webcam') {
             return this.webcamHelper.retrieveWebcam(app.getMoonrakerClient())
         }
 
-        if(imageID === 'thumbnail') {
+        if (imageID === 'thumbnail') {
             return metadataHelper.getThumbnail(findValue('state.print_stats.filename'))
         }
 
-        if(imageID === 'tempGraph') {
+        if (imageID === 'tempGraph') {
             return await this.graphHelper.getTempGraph()
         }
 
-        if(imageID === 'historyGraph') {
+        if (imageID === 'historyGraph') {
             return await this.graphHelper.getHistoryGraph()
         }
 
-        if(imageID === 'excludeGraph') {
+        if (imageID === 'excludeGraph') {
             return await this.graphHelper.getExcludeGraph(undefined)
         }
 
         const imagePath = path.resolve(__dirname, `../assets/icon-sets/${this.configHelper.getIconSet()}/${imageID}`)
         return new MessageAttachment(imagePath, imageID)
-    }
-
-    public getInputData(type: string, data: []) {
-        const inputData = []
-        const metaData = Object.assign({}, getEntry(type))
-
-        for(const inputId of data) {
-            const inputMetaData = metaData[inputId]
-            inputMetaData.id = inputId
-            inputData.push(inputMetaData)
-        }
-
-        return inputData
     }
 }

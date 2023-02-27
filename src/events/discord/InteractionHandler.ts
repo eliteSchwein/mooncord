@@ -8,7 +8,9 @@ import {ReactionInteraction} from "./interactions/ReactionInteraction";
 export class InteractionHandler {
     public constructor(discordClient: Client) {
         discordClient.on('interactionCreate', async interaction => {
-            if(interaction.applicationId !== discordClient.application.id) { return }
+            if (interaction.applicationId !== discordClient.application.id) {
+                return
+            }
             new ButtonInteraction(interaction);
             new CommandInteraction(interaction);
             new SelectInteraction(interaction);

@@ -19,7 +19,9 @@ export class ConfigCommand {
     protected serviceHelper = new ServiceHelper()
 
     public constructor(interaction: CommandInteraction, commandId: string) {
-        if(commandId !== 'config') { return }
+        if (commandId !== 'config') {
+            return
+        }
 
         this.execute(interaction)
     }
@@ -28,11 +30,11 @@ export class ConfigCommand {
 
         await interaction.deferReply()
 
-        if(interaction.options.getSubcommand() === this.syntaxLocale.commands.config.options.get.name) {
+        if (interaction.options.getSubcommand() === this.syntaxLocale.commands.config.options.get.name) {
             const pageHelper = new PageHelper('configs_download')
             const pageData = pageHelper.getPage(false, 1)
 
-            if(Object.keys(pageData).length === 0) {
+            if (Object.keys(pageData).length === 0) {
                 await interaction.editReply(this.localeHelper.getCommandNotReadyError(interaction.user.username))
                 return
             }
@@ -44,7 +46,7 @@ export class ConfigCommand {
             return
         }
 
-        if(interaction.options.getSubcommand() === this.syntaxLocale.commands.config.options.upload.name) {
+        if (interaction.options.getSubcommand() === this.syntaxLocale.commands.config.options.upload.name) {
             await this.uploadConfiguration(interaction)
             return
         }
@@ -54,17 +56,19 @@ export class ConfigCommand {
         const attachment = interaction.options.getAttachment(this.syntaxLocale.commands.config.options.upload.options.file.name)
         let directory: string | null = interaction.options.getString(this.syntaxLocale.commands.config.options.upload.options.directory.name)
 
-        if(directory === null) { directory = '' }
+        if (directory === null) {
+            directory = ''
+        }
 
         const uploadRequest = await uploadAttachment(attachment, 'config', directory)
 
-        if(uploadRequest) {
+        if (uploadRequest) {
             await interaction.editReply(this.locale.messages.answers.upload_successful
                 .replace(/(\${filename})/g, attachment.name)
                 .replace(/(\${username})/g, interaction.user.tag))
             const serviceRestart = await this.serviceHelper.restartServiceByFile(attachment.name)
 
-            if(serviceRestart) {
+            if (serviceRestart) {
                 await interaction.followUp(this.locale.messages.answers.restart_successful
                     .replace(/(\${service})/g, serviceRestart)
                     .replace(/(\${username})/g, interaction.user.tag))

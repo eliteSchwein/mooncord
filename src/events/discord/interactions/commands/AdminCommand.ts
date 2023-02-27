@@ -10,7 +10,9 @@ export class AdminCommand {
     protected configHelper = new ConfigHelper()
 
     public constructor(interaction: CommandInteraction, commandId: string) {
-        if(commandId !== 'admin') { return }
+        if (commandId !== 'admin') {
+            return
+        }
 
         this.execute(interaction)
     }
@@ -27,7 +29,7 @@ export class AdminCommand {
         const id = (role === null) ? user.id : role.id
         const mention = (role === null) ? user.tag : role.name
 
-        if(botAdmins[section].includes(id)) {
+        if (botAdmins[section].includes(id)) {
             removeFromArray(botAdmins[section], id)
 
             const message = this.locale.messages.answers.admin.removed

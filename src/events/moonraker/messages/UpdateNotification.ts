@@ -10,18 +10,26 @@ export class UpdateNotification {
     protected versionHelper = new VersionHelper()
 
     public async parse(message) {
-        if(typeof(message.method) === 'undefined') { return }
-        if(typeof(message.params) === 'undefined') { return }
+        if (typeof (message.method) === 'undefined') {
+            return
+        }
+        if (typeof (message.params) === 'undefined') {
+            return
+        }
 
-        if(message.method !== 'notify_update_refreshed') { return }
+        if (message.method !== 'notify_update_refreshed') {
+            return
+        }
 
         updateData('updates', message.params[0])
 
-        if(!this.versionHelper.updateAvailable()) { return }
+        if (!this.versionHelper.updateAvailable()) {
+            return
+        }
 
         logRegular('There are some Updates available...')
 
-        if(this.notificationHelper.isEmbedBlocked('system_update')) {
+        if (this.notificationHelper.isEmbedBlocked('system_update')) {
             return
         }
 

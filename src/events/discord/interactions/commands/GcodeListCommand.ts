@@ -12,7 +12,9 @@ export class GcodeListCommand {
     protected embedHelper = new EmbedHelper()
 
     public constructor(interaction: CommandInteraction, commandId: string) {
-        if(commandId !== 'listgcodes') { return }
+        if (commandId !== 'listgcodes') {
+            return
+        }
 
         this.execute(interaction)
     }
@@ -23,7 +25,7 @@ export class GcodeListCommand {
         const pageHelper = new PageHelper('gcode_files')
         const pageData = pageHelper.getPage(false, 1)
 
-        if(Object.keys(pageData) === undefined || Object.keys(pageData).length === 0) {
+        if (Object.keys(pageData) === undefined || Object.keys(pageData).length === 0) {
             await interaction.editReply(this.localeHelper.getCommandNotReadyError(interaction.user.username))
             return
         }

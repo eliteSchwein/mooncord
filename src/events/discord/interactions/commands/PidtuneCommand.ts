@@ -12,7 +12,9 @@ export class PidtuneCommand {
     protected functionCache = getEntry('function')
 
     public constructor(interaction: CommandInteraction, commandId: string) {
-        if(commandId !== 'pidtune') { return }
+        if (commandId !== 'pidtune') {
+            return
+        }
 
         this.execute(interaction)
     }
@@ -21,7 +23,7 @@ export class PidtuneCommand {
         const temp = interaction.options.getInteger(this.syntaxLocale.commands.pidtune.options.temperature.name)
         const heater = interaction.options.getString(this.syntaxLocale.commands.pidtune.options.heater.name)
 
-        if(this.functionCache.current_status !== 'ready') {
+        if (this.functionCache.current_status !== 'ready') {
             await interaction.reply(this.locale.messages.errors.command_idle_only
                 .replace(/(\${username})/g, interaction.user.tag))
             return
@@ -32,9 +34,12 @@ export class PidtuneCommand {
             .replace(/(\${temp})/g, temp)
             .replace(/(\${username})/g, interaction.user.tag))
 
-        const gcodeResponse = await this.moonrakerClient.send({"method": "printer.gcode.script", "params": {"script": `PID_CALIBRATE HEATER=${heater} TARGET=${temp}`}}, Number.POSITIVE_INFINITY)
+        const gcodeResponse = await this.moonrakerClient.send({
+            "method": "printer.gcode.script",
+            "params": {"script": `PID_CALIBRATE HEATER=${heater} TARGET=${temp}`}
+        }, Number.POSITIVE_INFINITY)
 
-        if(typeof gcodeResponse.error !== 'undefined') {
+        if (typeof gcodeResponse.error !== 'undefined') {
             await interaction.editReply(this.locale.messages.errors.pidtune_fail
                 .replace(/(\${heater})/g, heater)
                 .replace(/(\${reason})/g, gcodeResponse.error.message)

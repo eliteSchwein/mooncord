@@ -5,10 +5,16 @@ export class PowerDeviceNotification {
     protected powerDeviceHelper = new PowerDeviceHelper()
 
     public parse(message) {
-        if(typeof(message.method) === 'undefined') { return }
-        if(typeof(message.params) === 'undefined') { return }
+        if (typeof (message.method) === 'undefined') {
+            return
+        }
+        if (typeof (message.params) === 'undefined') {
+            return
+        }
 
-        if(message.method !== 'notify_power_changed') { return }
+        if (message.method !== 'notify_power_changed') {
+            return
+        }
 
         const powerDeviceData = message.params[0]
 

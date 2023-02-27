@@ -18,7 +18,9 @@ export class PrintjobCommand {
     protected functionCache = getEntry('function')
 
     public constructor(interaction: CommandInteraction, commandId: string) {
-        if(commandId !== 'printjob') { return }
+        if (commandId !== 'printjob') {
+            return
+        }
 
         void this.execute(interaction)
     }
@@ -48,16 +50,16 @@ export class PrintjobCommand {
         }
     }
 
-    protected async requestPrintjob(printFile: string,interaction: CommandInteraction) {
+    protected async requestPrintjob(printFile: string, interaction: CommandInteraction) {
         await interaction.deferReply()
 
-        if(!printFile.endsWith('.gcode')) {
+        if (!printFile.endsWith('.gcode')) {
             printFile = `${printFile}.gcode`
         }
 
         const metadata = await this.metadataHelper.getMetaData(printFile)
 
-        if(typeof metadata === 'undefined') {
+        if (typeof metadata === 'undefined') {
             await interaction.editReply(this.locale.messages.errors.file_not_found)
             return
         }
@@ -81,13 +83,19 @@ export class PrintjobCommand {
     protected async triggerMacro(buttonId: string, interaction: CommandInteraction, subLocale, status = '') {
         const buttonData = this.buttonsCache[buttonId]
 
-        if(typeof buttonData.function_mapping.macros === 'undefined') { return }
-        if(buttonData.function_mapping.macros.empty) { return }
-        if(typeof buttonData.function_mapping.required_states === 'undefined') { return }
+        if (typeof buttonData.function_mapping.macros === 'undefined') {
+            return
+        }
+        if (buttonData.function_mapping.macros.empty) {
+            return
+        }
+        if (typeof buttonData.function_mapping.required_states === 'undefined') {
+            return
+        }
 
         const requiredStates = buttonData.function_mapping.required_states
 
-        if(status === this.functionCache.current_status) {
+        if (status === this.functionCache.current_status) {
             const message = subLocale.status_same
                 .replace(/(\${username})/g, interaction.user.tag)
 
@@ -95,7 +103,7 @@ export class PrintjobCommand {
             return
         }
 
-        if(!requiredStates.includes(this.functionCache.current_status)) {
+        if (!requiredStates.includes(this.functionCache.current_status)) {
             const message = subLocale.status_not_valid
                 .replace(/(\${username})/g, interaction.user.tag)
 
@@ -103,9 +111,12 @@ export class PrintjobCommand {
             return
         }
 
-        for(const macro of buttonData.function_mapping.macros) {
+        for (const macro of buttonData.function_mapping.macros) {
             logNotice(`executing macro: ${macro}`)
-            void this.moonrakerClient.send({"method": "printer.gcode.script", "params": {"script": macro}}, Number.POSITIVE_INFINITY)
+            void this.moonrakerClient.send({
+                "method": "printer.gcode.script",
+                "params": {"script": macro}
+            }, Number.POSITIVE_INFINITY)
         }
 
         const message = subLocale.status_valid

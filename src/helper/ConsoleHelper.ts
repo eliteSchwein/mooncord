@@ -12,13 +12,13 @@ export class ConsoleHelper {
     public async executeGcodeCommands(gcodes: string[], channel: GuildTextBasedChannel, showExecuted = true) {
         let valid = 1
 
-        if(gcodes.length === 0) {
+        if (gcodes.length === 0) {
             return 0
         }
 
         this.cache = getEntry('execute')
 
-        if(this.cache.running) {
+        if (this.cache.running) {
             return -1
         }
 
@@ -33,7 +33,7 @@ export class ConsoleHelper {
 
         setData('execute', this.cache)
 
-        for(let gcode of gcodes) {
+        for (let gcode of gcodes) {
             gcode = gcode.toUpperCase()
             logRegular(`execute gcode "${gcode}" now...`)
             this.cache.to_execute_command = gcode
@@ -45,7 +45,7 @@ export class ConsoleHelper {
                 logWarn(`Command ${gcode} timed out...`)
             }
 
-            if(!this.cache.error_commands.includes(gcode)&&!this.cache.unknown_commands.includes(gcode)) {
+            if (!this.cache.error_commands.includes(gcode) && !this.cache.unknown_commands.includes(gcode)) {
                 this.cache.successful_commands.push(gcode)
             }
 
@@ -56,7 +56,7 @@ export class ConsoleHelper {
 
         this.cache = getEntry('execute')
 
-        if(this.cache.error_commands.length > 0) {
+        if (this.cache.error_commands.length > 0) {
             valid = 0
 
             const failedDescription = `\`\`\`${this.cache.error_commands.join('\n')}\`\`\``
@@ -64,7 +64,7 @@ export class ConsoleHelper {
             await channel.send(failedEmbed.embed)
         }
 
-        if(this.cache.unknown_commands.length > 0) {
+        if (this.cache.unknown_commands.length > 0) {
             valid = 0
 
             const unknownDescription = `\`\`\`${this.cache.unknown_commands.join('\n')}\`\`\``
@@ -72,7 +72,7 @@ export class ConsoleHelper {
             await channel.send(unknownEmbed.embed)
         }
 
-        if(this.cache.successful_commands.length > 0 && showExecuted) {
+        if (this.cache.successful_commands.length > 0 && showExecuted) {
             const successfulDescription = `\`\`\`${this.cache.successful_commands.join('\n')}\`\`\``
             const successfulEmbed = await this.embedHelper.generateEmbed('execute_successful', {gcode_commands: successfulDescription})
             await channel.send(successfulEmbed.embed)

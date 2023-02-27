@@ -8,23 +8,25 @@ export class StateUpdateNotification {
     protected statusHelper = new StatusHelper()
 
     public async parse(message) {
-        if(typeof(message.method) === 'undefined') { return }
+        if (typeof (message.method) === 'undefined') {
+            return
+        }
 
-        if(message.method === 'notify_klippy_disconnected') {
+        if (message.method === 'notify_klippy_disconnected') {
             await this.statusHelper.update('disconnected')
             updateData('function', {
                 'poll_printer_info': true
             })
         }
 
-        if(message.method === 'notify_klippy_shutdown') {
+        if (message.method === 'notify_klippy_shutdown') {
             await this.statusHelper.update('shutdown')
             updateData('function', {
                 'poll_printer_info': true
             })
         }
 
-        if(message.method === 'notify_klippy_ready') {
+        if (message.method === 'notify_klippy_ready') {
             updateData('function', {
                 'poll_printer_info': false
             })

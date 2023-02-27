@@ -8,23 +8,28 @@ export class ServiceHelper {
     protected functionCache = getEntry('function')
     protected currentStatus = this.functionCache.current_status
 
-    public async restartServiceByFile(fileName:string) {
-        if(/^(.*\.(?!(cfg|conf|json)$))?[^.]*$/g.test(fileName)) { return false }
+    public async restartServiceByFile(fileName: string) {
+        if (/^(.*\.(?!(cfg|conf|json)$))?[^.]*$/g.test(fileName)) {
+            return false
+        }
 
         let service = servicesMeta[fileName]
 
-        if(typeof service === 'undefined') {
+        if (typeof service === 'undefined') {
             service = 'klipper'
         }
 
-        if(this.currentStatus !== 'ready') {
+        if (this.currentStatus !== 'ready') {
             logWarn(`Service Restart for ${service} failed because the Print Status is ${this.currentStatus}`)
             return false
         }
 
-        const serviceRestartRequest = await this.moonrakerClient.send({"method": "machine.services.restart", "params": {"service": service}}, Number.POSITIVE_INFINITY)
+        const serviceRestartRequest = await this.moonrakerClient.send({
+            "method": "machine.services.restart",
+            "params": {"service": service}
+        }, Number.POSITIVE_INFINITY)
 
-        if(typeof serviceRestartRequest.result !== 'undefined') {
+        if (typeof serviceRestartRequest.result !== 'undefined') {
             return service
         }
 

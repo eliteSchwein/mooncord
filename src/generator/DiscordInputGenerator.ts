@@ -18,44 +18,36 @@ export class DiscordInputGenerator {
         this.generateCacheForSection('inputs');
     }
 
-    protected generateCacheForSection(section: string) {
-        let sectionConfig = this.localeHelper.getLocale()[section]
-
-        if(this.config.isButtonSyntaxLocale()) {
-            sectionConfig = this.localeHelper.getSyntaxLocale()[section]
-        }
-
-        mergeDeep(sectionConfig, this.inputMeta[section])
-
-        setData(section, sectionConfig)
-    }
-
     public generateButtons(buttons) {
         const row = new MessageActionRow()
 
-        if(typeof(buttons) === 'undefined') { return }
-        if(buttons.length === 0) { return }
+        if (typeof (buttons) === 'undefined') {
+            return
+        }
+        if (buttons.length === 0) {
+            return
+        }
 
         for (const buttonData of buttons) {
-            if(buttonData.required_cache !== undefined) {
-                if(buttonData.required_cache.map(findValue).map(v => !v).find(v => v)) {
+            if (buttonData.required_cache !== undefined) {
+                if (buttonData.required_cache.map(findValue).map(v => !v).find(v => v)) {
                     continue
                 }
             }
 
             const button = new MessageButton()
-                    .setCustomId(buttonData.id)
-                    .setEmoji(buttonData.emoji)
-                    .setStyle(buttonData.style)
+                .setCustomId(buttonData.id)
+                .setEmoji(buttonData.emoji)
+                .setStyle(buttonData.style)
 
-            if(buttonData.label !== null && buttonData.label !== undefined) {
+            if (buttonData.label !== null && buttonData.label !== undefined) {
                 button.setLabel(buttonData.label)
             }
 
             row.addComponents(button)
         }
 
-        if(row.components.length === 0) {
+        if (row.components.length === 0) {
             return
         }
 
@@ -65,12 +57,16 @@ export class DiscordInputGenerator {
     public generateSelections(selections) {
         const row = new MessageActionRow()
 
-        if(typeof selections === 'undefined') { return }
-        if(selections.length === 0) { return }
+        if (typeof selections === 'undefined') {
+            return
+        }
+        if (selections.length === 0) {
+            return
+        }
 
         for (const selectionData of selections) {
-            if(selectionData.required_cache !== undefined) {
-                if(selectionData.required_cache.map(findValue).map(v => !v).find(v => v)) {
+            if (selectionData.required_cache !== undefined) {
+                if (selectionData.required_cache.map(findValue).map(v => !v).find(v => v)) {
                     continue
                 }
             }
@@ -81,23 +77,23 @@ export class DiscordInputGenerator {
                 .setMinValues(selectionData.min_value)
                 .setMaxValues(selectionData.max_value)
 
-            if(typeof selectionData.options !== 'undefined') {
+            if (typeof selectionData.options !== 'undefined') {
                 selectionData.data = selectionData.options
             }
 
-            if(selectionData.heater_options) {
+            if (selectionData.heater_options) {
                 selectionData.data = [...selectionData.data, ...getHeaterChoices()]
             }
 
-            if(selectionData.exclude_options) {
+            if (selectionData.exclude_options) {
                 selectionData.data = [...selectionData.data, ...getExcludeChoices()]
             }
 
-            if(selectionData.mcu_options) {
+            if (selectionData.mcu_options) {
                 selectionData.data = [...selectionData.data, ...this.mcuHelper.getMCUOptions()]
             }
 
-            for(const data of selectionData.data) {
+            for (const data of selectionData.data) {
                 const selectionMetaRaw = JSON.stringify(selectionData)
 
                 const selectionMetaParsed = JSON.parse(parsePageData(selectionMetaRaw, data))
@@ -118,8 +114,12 @@ export class DiscordInputGenerator {
     public generateInputs(inputs) {
         const componentRows = []
 
-        if(typeof(inputs) === 'undefined') { return }
-        if(inputs.length === 0) { return }
+        if (typeof (inputs) === 'undefined') {
+            return
+        }
+        if (inputs.length === 0) {
+            return
+        }
 
         for (const inputData of inputs) {
             const row = new MessageActionRow()
@@ -137,5 +137,17 @@ export class DiscordInputGenerator {
         }
 
         return componentRows
+    }
+
+    protected generateCacheForSection(section: string) {
+        let sectionConfig = this.localeHelper.getLocale()[section]
+
+        if (this.config.isButtonSyntaxLocale()) {
+            sectionConfig = this.localeHelper.getSyntaxLocale()[section]
+        }
+
+        mergeDeep(sectionConfig, this.inputMeta[section])
+
+        setData(section, sectionConfig)
     }
 }

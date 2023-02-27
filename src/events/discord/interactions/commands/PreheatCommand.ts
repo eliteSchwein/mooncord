@@ -17,7 +17,9 @@ export class PreheatCommand {
     protected functionCache = getEntry('function')
 
     public constructor(interaction: CommandInteraction, commandId: string) {
-        if(commandId !== 'preheat') { return }
+        if (commandId !== 'preheat') {
+            return
+        }
 
         this.execute(interaction)
     }
@@ -25,7 +27,7 @@ export class PreheatCommand {
     protected async execute(interaction: CommandInteraction) {
         const subCommand = interaction.options.getSubcommand()
 
-        if(this.functionCache.current_status !== 'ready') {
+        if (this.functionCache.current_status !== 'ready') {
             await interaction.reply(this.locale.messages.errors.command_idle_only
                 .replace(/(\${username})/g, interaction.user.tag))
             return
@@ -53,15 +55,17 @@ export class PreheatCommand {
         let argumentFound = false
         let heaterList = ''
 
-        for(const heater of availableHeaters) {
+        for (const heater of availableHeaters) {
             const heaterTemp = interaction.options.getInteger(heater)
             const heaterData = this.tempHelper.getHeaterConfigData(heater)
             const heaterMaxTemp = Number(heaterData.max_temp)
             const heaterMinTemp = Number(heaterData.min_temp)
 
-            if(heaterTemp === null) { continue }
+            if (heaterTemp === null) {
+                continue
+            }
 
-            if(heaterTemp > heaterMaxTemp) {
+            if (heaterTemp > heaterMaxTemp) {
                 await interaction.reply(this.locale.messages.errors.preheat_over_max
                     .replace(/(\${max_temp})/g, heaterMaxTemp)
                     .replace(/(\${temp})/g, heaterTemp)
@@ -69,7 +73,7 @@ export class PreheatCommand {
                 return
             }
 
-            if(heaterTemp < heaterMinTemp) {
+            if (heaterTemp < heaterMinTemp) {
                 await interaction.reply(this.locale.messages.errors.preheat_below_min
                     .replace(/(\${min_temp})/g, heaterMinTemp)
                     .replace(/(\${temp})/g, heaterTemp)
@@ -82,13 +86,13 @@ export class PreheatCommand {
             await this.tempHelper.heatHeater(heater, heaterTemp)
         }
 
-        if(!argumentFound) {
+        if (!argumentFound) {
             const modal = await this.modalHelper.generateModal('temp_target')
             await interaction.showModal(modal)
             return
         }
 
-        heaterList = heaterList.slice(0, Math.max(0, heaterList.length-2))
+        heaterList = heaterList.slice(0, Math.max(0, heaterList.length - 2))
 
         await interaction.reply(this.locale.messages.answers.preheat_preset.manual
             .replace(/(\${heater_list})/g, heaterList)
@@ -98,14 +102,14 @@ export class PreheatCommand {
     protected async heatProfile(profileName: string) {
         const preset = Object.assign({}, findValue(`config.presets.${profileName}`))
 
-        for(const gcode in preset.gcode) {
+        for (const gcode in preset.gcode) {
             logRegular(`execute ${gcode}...`)
             await this.moonrakerClient.send({"method": "printer.gcode.script", "params": {"script": gcode}})
         }
 
         delete preset.gcode
 
-        for(const heater in preset) {
+        for (const heater in preset) {
             const heaterTemp = preset[heater]
             await this.tempHelper.heatHeater(heater, heaterTemp)
         }

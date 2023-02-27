@@ -10,7 +10,7 @@ const defaultDatabase = {
     'invite_url': ''
 }
 
-let database:any
+let database: any
 
 export class DatabaseUtil {
     protected config = new ConfigHelper()
@@ -21,9 +21,12 @@ export class DatabaseUtil {
         logEmpty()
         logSuccess('Retrieve Database...')
 
-        const databaseRequest = await this.moonrakerClient.send({"method": "server.database.get_item", "params": { "namespace": this.nameSpace, "key": "dataset"}})
+        const databaseRequest = await this.moonrakerClient.send({
+            "method": "server.database.get_item",
+            "params": {"namespace": this.nameSpace, "key": "dataset"}
+        })
 
-        if(typeof databaseRequest.error !== 'undefined') {
+        if (typeof databaseRequest.error !== 'undefined') {
             await this.handleDatabaseMissing()
             return
         }
@@ -32,37 +35,35 @@ export class DatabaseUtil {
     }
 
     public async resetDatabase() {
-        void await this.moonrakerClient.send({"method": "server.database.delete_item", "params": { "namespace": this.nameSpace, "key": "dataset"}})
+        void await this.moonrakerClient.send({
+            "method": "server.database.delete_item",
+            "params": {"namespace": this.nameSpace, "key": "dataset"}
+        })
 
         logWarn('Database wiped')
 
         void await this.handleDatabaseMissing()
     }
 
-    private async handleDatabaseMissing() {
-        logRegular('generate Database Structure...')
-        
-        database = defaultDatabase
-
-        await this.updateDatabase()
-    }
-
     public async updateDatabase() {
-        const updateRequest = await this.moonrakerClient.send({"method": "server.database.post_item", "params": { "namespace": this.nameSpace, "key": "dataset", "value": database}})
+        const updateRequest = await this.moonrakerClient.send({
+            "method": "server.database.post_item",
+            "params": {"namespace": this.nameSpace, "key": "dataset", "value": database}
+        })
 
-        if(typeof updateRequest.error !== 'undefined') {
+        if (typeof updateRequest.error !== 'undefined') {
             logError(`Database Update failed: ${updateRequest.error.message}`)
             return
         }
 
         logSuccess('Database updated')
     }
-    
-    public getDatabaseEntry(key:string) {
+
+    public getDatabaseEntry(key: string) {
         return database[key]
     }
 
-    public updateDatabaseEntry(key:string, value:any) {
+    public updateDatabaseEntry(key: string, value: any) {
         database[key] = value
         this.updateDatabase()
     }
@@ -71,14 +72,24 @@ export class DatabaseUtil {
         return typeof database !== 'undefined'
     }
 
-
     public async dump() {
         void await this.writeDump()
         return database
     }
 
     protected async writeDump() {
-        await writeFile(path.resolve(__dirname, '../database_dump.json'), JSON.stringify(database, null, 4), { encoding: 'utf8', flag: 'w+' })
+        await writeFile(path.resolve(__dirname, '../database_dump.json'), JSON.stringify(database, null, 4), {
+            encoding: 'utf8',
+            flag: 'w+'
+        })
         logSuccess('Dumped Database!')
+    }
+
+    private async handleDatabaseMissing() {
+        logRegular('generate Database Structure...')
+
+        database = defaultDatabase
+
+        await this.updateDatabase()
     }
 }

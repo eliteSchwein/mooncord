@@ -19,7 +19,9 @@ export class ExecuteCommand {
     protected consoleHelper = new ConsoleHelper()
 
     public constructor(interaction: CommandInteraction, commandId: string) {
-        if(commandId !== 'execute') { return }
+        if (commandId !== 'execute') {
+            return
+        }
 
         this.execute(interaction)
     }
@@ -27,7 +29,7 @@ export class ExecuteCommand {
     protected async execute(interaction: CommandInteraction) {
         const gcodeArgument = interaction.options.getString(this.syntaxLocale.commands.execute.options.gcode.name)
 
-        if(gcodeArgument === null) {
+        if (gcodeArgument === null) {
             const modal = await this.modalHelper.generateModal('execute_modal')
             await interaction.showModal(modal)
             return
@@ -38,12 +40,12 @@ export class ExecuteCommand {
         let answer = this.locale.messages.answers.execute_successful
             .replace(/\${username}/g, interaction.user.tag)
 
-        if(gcodeValid === 0) {
+        if (gcodeValid === 0) {
             answer = this.locale.messages.errors.execute_failed
                 .replace(/\${username}/g, interaction.user.tag)
         }
 
-        if(gcodeValid === -1) {
+        if (gcodeValid === -1) {
             answer = this.locale.messages.errors.execute_running
                 .replace(/\${username}/g, interaction.user.tag)
         }

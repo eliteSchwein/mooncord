@@ -30,29 +30,33 @@ export class EmbedHelper {
         return getEntry('embeds').fields
     }
 
-    public getRawEmbedByTitle(title:string) {
+    public getRawEmbedByTitle(title: string) {
         const embeds = this.getEmbeds()
-        for(const embedID in embeds) {
+        for (const embedID in embeds) {
             const embedData = embeds[embedID]
-            if(embedData.title === title) {
+            if (embedData.title === title) {
                 return {embedID, embedData}
             }
         }
     }
 
     public getAuthorName(embed: MessageEmbed) {
-        if(embed.author === null) { return '' }
+        if (embed.author === null) {
+            return ''
+        }
 
         return embed.author.name
     }
 
     public getTitle(embed: MessageEmbed) {
-        if(embed.title === null) { return '' }
+        if (embed.title === null) {
+            return ''
+        }
 
         return embed.title
     }
 
-    public async generateEmbed(embedID: string,providedPlaceholders = null, providedFields = null, providedValues = null) {
+    public async generateEmbed(embedID: string, providedPlaceholders = null, providedFields = null, providedValues = null) {
         return await this.templateHelper.parseTemplate('embed', embedID, providedPlaceholders, providedFields, providedValues)
     }
 }

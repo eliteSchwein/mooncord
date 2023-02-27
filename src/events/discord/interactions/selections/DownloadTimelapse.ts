@@ -1,7 +1,7 @@
 import {Message, MessageAttachment, SelectMenuInteraction} from "discord.js";
 import {getEntry} from "../../../../utils/CacheUtil";
 import {LocaleHelper} from "../../../../helper/LocaleHelper";
-import {findValueByPartial, formatTime} from "../../../../helper/DataHelper";
+import {findValueByPartial} from "../../../../helper/DataHelper";
 import {TimelapseHelper} from "../../../../helper/TimelapseHelper";
 import {resolve} from "path";
 import {ConfigHelper} from "../../../../helper/ConfigHelper";
@@ -13,7 +13,9 @@ export class DownloadTimelapse {
     protected locale = this.localeHelper.getLocale()
 
     public constructor(interaction: SelectMenuInteraction, selectionId: string) {
-        if(selectionId !== 'timelapse_download') { return }
+        if (selectionId !== 'timelapse_download') {
+            return
+        }
 
         void this.execute(interaction)
     }

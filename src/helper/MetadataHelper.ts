@@ -15,7 +15,7 @@ export class MetadataHelper {
     protected configHelper = new ConfigHelper()
 
     public constructor(moonrakerClient: MoonrakerClient = null) {
-        if(moonrakerClient !== null) {
+        if (moonrakerClient !== null) {
             this.moonrakerClient = moonrakerClient
         } else {
             this.moonrakerClient = getMoonrakerClient()
@@ -29,9 +29,15 @@ export class MetadataHelper {
     }
 
     public async updateMetaData(filename: string) {
-        if(typeof filename === 'undefined') { return }
-        if(filename === null) { return }
-        if(filename === '') { return }
+        if (typeof filename === 'undefined') {
+            return
+        }
+        if (filename === null) {
+            return
+        }
+        if (filename === '') {
+            return
+        }
 
         const metaData = await this.getMetaData(filename)
 
@@ -45,7 +51,7 @@ export class MetadataHelper {
     public async getThumbnail(filename: string) {
         const metaDataCache = getEntry('meta_data')
 
-        if(metaDataCache !== undefined &&
+        if (metaDataCache !== undefined &&
             metaDataCache.filename === filename &&
             typeof metaDataCache.thumbnail !== 'undefined') {
 
@@ -61,10 +67,16 @@ export class MetadataHelper {
         const placeholder = new MessageAttachment(placeholderPath, 'thumbnail_not_found.png')
         const url = this.configHelper.getMoonrakerUrl()
 
-        if(typeof metaData === 'undefined') { return placeholder }
-        if(typeof metaData.thumbnails === 'undefined') { return placeholder }
+        if (typeof metaData === 'undefined') {
+            return placeholder
+        }
+        if (typeof metaData.thumbnails === 'undefined') {
+            return placeholder
+        }
 
-        const thumbnailFile = metaData.thumbnails.reduce((prev, current) => { return (prev.size > current.size) ? prev : current})
+        const thumbnailFile = metaData.thumbnails.reduce((prev, current) => {
+            return (prev.size > current.size) ? prev : current
+        })
         const thumbnailPath = thumbnailFile.relative_path
         const thumbnailURL = encodeURI(`${url}/server/files/gcodes/${rootPath}${thumbnailPath}`)
         let thumbnail: string
@@ -79,7 +91,7 @@ export class MetadataHelper {
             logError('Thumbnail Error:')
             logError(`Url: ${thumbnailURL}`)
             logError(`Error: ${reason}`)
-            if(this.configHelper.traceOnWebErrors()) {
+            if (this.configHelper.traceOnWebErrors()) {
                 logError(trace)
             }
             return placeholder
@@ -90,12 +102,14 @@ export class MetadataHelper {
         return new MessageAttachment(thumbnailBuffer, 'thumbnail.png')
     }
 
-    protected async getBase64(url:string) {
+    protected async getBase64(url: string) {
         const response = await axios.get(url,
-            {responseType: 'arraybuffer',
+            {
+                responseType: 'arraybuffer',
                 headers: {
                     'X-Api-Key': this.configHelper.getMoonrakerApiKey()
-                }})
+                }
+            })
         return Buffer.from(response.data, 'binary').toString('base64')
     }
 }

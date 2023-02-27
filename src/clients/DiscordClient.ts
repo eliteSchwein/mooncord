@@ -42,7 +42,8 @@ export class DiscordClient {
 
         this.close()
 
-        this.discordClient = new Client({intents: [
+        this.discordClient = new Client({
+            intents: [
                 Intents.FLAGS.DIRECT_MESSAGES,
                 Intents.FLAGS.DIRECT_MESSAGE_REACTIONS,
                 Intents.FLAGS.GUILDS,
@@ -58,7 +59,8 @@ export class DiscordClient {
                 'GUILD_MEMBER',
                 'USER'
             ],
-            restRequestTimeout: this.config.getDiscordRequestTimeout() * 1000})
+            restRequestTimeout: this.config.getDiscordRequestTimeout() * 1000
+        })
 
         logRegular('Connect to Discord...')
 
@@ -78,15 +80,15 @@ export class DiscordClient {
 
         setData('invite_url', inviteUrl)
         setData('discord_client', {
-            'readySince': Date.now()/1000,
+            'readySince': Date.now() / 1000,
             'applicationId': this.discordClient.application.id,
             'clientId': this.discordClient.user.id,
             'ping': this.discordClient.ws.ping,
             'event_count': this.discordClient['_eventsCount']
         })
-        
+
         logSuccess('Discordbot Connected')
-        logSuccess(`${'Name:'.green  } ${  (this.discordClient.user.tag).white}`)
+        logSuccess(`${'Name:'.green} ${(this.discordClient.user.tag).white}`)
         logSuccess('Invite:'.green)
         console.log(getEntry('invite_url').cyan)
 
@@ -97,7 +99,7 @@ export class DiscordClient {
             {type: 'LISTENING'}
         )
 
-        if(this.config.dumpCacheOnStart()) {
+        if (this.config.dumpCacheOnStart()) {
             await dump()
             await this.database.dump()
         }
@@ -149,7 +151,9 @@ export class DiscordClient {
     }
 
     public close() {
-        if (typeof this.discordClient === 'undefined') { return }
+        if (typeof this.discordClient === 'undefined') {
+            return
+        }
         this.discordClient.removeAllListeners()
         this.discordClient.destroy()
     }

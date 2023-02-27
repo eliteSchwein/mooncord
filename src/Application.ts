@@ -13,7 +13,7 @@ import {StatusHelper} from "./helper/StatusHelper";
 import {waitUntil} from "async-wait-until";
 import {ModalHelper} from "./helper/ModalHelper";
 
-Object.assign(global, { WebSocket: require('ws') })
+Object.assign(global, {WebSocket: require('ws')})
 
 tempHookLog()
 hookProcess()
@@ -47,15 +47,15 @@ async function init() {
 
     try {
         await moonrakerClient.connect()
-        await waitUntil(() => moonrakerClient.isReady(), { timeout: 30_000, intervalBetweenAttempts: 500 })
+        await waitUntil(() => moonrakerClient.isReady(), {timeout: 30_000, intervalBetweenAttempts: 500})
 
         currentInitState = 'Database'
         await database.retrieveDatabase()
-        await waitUntil(() => database.isReady(), { timeout: 30_000, intervalBetweenAttempts: 500 })
-        
+        await waitUntil(() => database.isReady(), {timeout: 30_000, intervalBetweenAttempts: 500})
+
         currentInitState = 'Discord Client'
         await discordClient.connect()
-        await waitUntil(() => discordClient.isConnected(), { timeout: 30_000, intervalBetweenAttempts: 500 })
+        await waitUntil(() => discordClient.isConnected(), {timeout: 30_000, intervalBetweenAttempts: 500})
     } catch (error) {
         logError(`couldn't load ${currentInitState} in Time! Reason: ${util.format(error)}`)
     }
@@ -66,10 +66,14 @@ async function init() {
 
     await statusHelper.update(null, true, discordClient)
 
-    if(typeof userConfig.tmp === 'undefined') { return }
-    if(typeof userConfig.tmp.controller_tag === 'undefined') { return }
+    if (typeof userConfig.tmp === 'undefined') {
+        return
+    }
+    if (typeof userConfig.tmp.controller_tag === 'undefined') {
+        return
+    }
 
-    for(let i = 0; i < 1024; i++) {
+    for (let i = 0; i < 1024; i++) {
         logEmpty()
     }
 

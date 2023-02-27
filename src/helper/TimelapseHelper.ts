@@ -38,7 +38,7 @@ export class TimelapseHelper {
 
     public async downloadTimelapse(filename: string, timelapseMessage: string) {
         logRegular(`Downloading Timelapse ${filename}`)
-        const result = await axios.get(`${this.configHelper.getMoonrakerUrl()}/server/files/timelapse/${filename}`,{
+        const result = await axios.get(`${this.configHelper.getMoonrakerUrl()}/server/files/timelapse/${filename}`, {
             responseType: 'arraybuffer',
             headers: {
                 'X-Api-Key': this.configHelper.getMoonrakerApiKey()
@@ -48,7 +48,7 @@ export class TimelapseHelper {
 
         let timelapseRaw = result.data
 
-        if(Buffer.byteLength(timelapseRaw) > 8_388_608) {
+        if (Buffer.byteLength(timelapseRaw) > 8_388_608) {
             timelapseRaw = await this.compressTimelapse(timelapseRaw, filename)
         }
         // @ts-ignore
@@ -57,7 +57,8 @@ export class TimelapseHelper {
 
         const attachment = new MessageAttachment(timelapseRaw, filename)
 
-        return {content: timelapseMessage, files: [attachment], components:  [buttons]
+        return {
+            content: timelapseMessage, files: [attachment], components: [buttons]
         }
     }
 
@@ -68,12 +69,12 @@ export class TimelapseHelper {
         let renderComplete = false
 
         logRegular(`Compress Timelapse: ${timelapseName}`)
-        if(this.functionCache.current_status === 'printing') {
+        if (this.functionCache.current_status === 'printing') {
             logNotice('use single thread for ffmpeg because a print is running')
             this.ffmpegArguments.push('-threads 1')
         }
 
-        writeFileSync(tempPath, timelapseBuffer,{encoding: 'utf8', flag: 'w+'})
+        writeFileSync(tempPath, timelapseBuffer, {encoding: 'utf8', flag: 'w+'})
 
         this.ffmpegRender
             .addInput(tempPath)
@@ -86,7 +87,7 @@ export class TimelapseHelper {
 
         this.ffmpegRender.run()
 
-        await waitUntil(() => renderComplete === true, { timeout: Number.POSITIVE_INFINITY })
+        await waitUntil(() => renderComplete === true, {timeout: Number.POSITIVE_INFINITY})
 
         logSuccess(`Compressed Timelapse: ${timelapseName}`)
 

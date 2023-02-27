@@ -5,17 +5,23 @@ export class TimelapseMacroNotification {
     protected functionCache = getEntry('function')
 
     public async parse(message) {
-        if(typeof(message.params) === 'undefined') { return }
+        if (typeof (message.params) === 'undefined') {
+            return
+        }
 
         const params = message.params[0]
         const timelapseMacro = params['gcode_macro TIMELAPSE_TAKE_FRAME']
 
-        if(timelapseMacro === undefined) { return }
-        if(timelapseMacro.is_paused === undefined) { return }
+        if (timelapseMacro === undefined) {
+            return
+        }
+        if (timelapseMacro.is_paused === undefined) {
+            return
+        }
 
         const macroPaused = timelapseMacro.is_paused
 
-        if(!macroPaused) {
+        if (!macroPaused) {
             await sleep(200)
         }
 

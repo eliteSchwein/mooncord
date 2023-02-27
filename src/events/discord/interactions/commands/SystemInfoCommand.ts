@@ -10,7 +10,9 @@ export class SystemInfoCommand {
     protected embedHelper = new EmbedHelper()
 
     public constructor(interaction: CommandInteraction, commandId: string) {
-        if(commandId !== 'systeminfo') { return }
+        if (commandId !== 'systeminfo') {
+            return
+        }
 
         this.execute(interaction)
     }

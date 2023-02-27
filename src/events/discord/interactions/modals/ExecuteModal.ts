@@ -8,7 +8,9 @@ export class ExecuteModal {
     protected locale = this.localeHelper.getLocale()
 
     public constructor(interaction: ModalSubmitInteraction, modalId: string) {
-        if(modalId !== 'execute_modal') { return }
+        if (modalId !== 'execute_modal') {
+            return
+        }
 
         this.execute(interaction)
     }
@@ -25,12 +27,12 @@ export class ExecuteModal {
         let answer = this.locale.messages.answers.execute_successful
             .replace(/\${username}/g, interaction.user.tag)
 
-        if(gcodeValid === 0) {
+        if (gcodeValid === 0) {
             answer = this.locale.messages.errors.execute_failed
                 .replace(/\${username}/g, interaction.user.tag)
         }
 
-        if(gcodeValid === -1) {
+        if (gcodeValid === -1) {
             answer = this.locale.messages.errors.execute_running
                 .replace(/\${username}/g, interaction.user.tag)
         }

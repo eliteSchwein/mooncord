@@ -1,4 +1,4 @@
-import {ButtonInteraction, Message, User} from "discord.js";
+import {Message, User} from "discord.js";
 import {getEntry} from "../../../../utils/CacheUtil";
 import {getDatabase} from "../../../../Application";
 import {EmbedHelper} from "../../../../helper/EmbedHelper";
@@ -13,15 +13,17 @@ export class RefreshHandler {
     protected locale = this.localeHelper.getLocale()
 
     public async execute(message: Message, user: User, data, interaction = null) {
-        if(!data.function_mapping.refresh_status) { return }
+        if (!data.function_mapping.refresh_status) {
+            return
+        }
 
         const functionCache = getEntry('function')
 
         const waitMessage = this.locale.messages.answers.status_update
             .replace(/(\${username})/g, interaction.user.tag)
 
-        if(interaction !== null) {
-            if(interaction.replied) {
+        if (interaction !== null) {
+            if (interaction.replied) {
                 await interaction.followUp({ephemeral: true, content: waitMessage})
             } else {
                 await interaction.update({components: null, content: waitMessage})

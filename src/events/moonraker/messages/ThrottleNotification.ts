@@ -21,18 +21,26 @@ export class ThrottleNotification {
     protected cooldownValue = 120
 
     public parse(message) {
-        if(typeof(message.method) === 'undefined') { return }
-        if(typeof(message.params) === 'undefined') { return }
+        if (typeof (message.method) === 'undefined') {
+            return
+        }
+        if (typeof (message.params) === 'undefined') {
+            return
+        }
 
-        if(message.method !== 'notify_cpu_throttled') { return }
+        if (message.method !== 'notify_cpu_throttled') {
+            return
+        }
 
-        if(!this.configHelper.notifyOnMoonrakerThrottle()) { return }
+        if (!this.configHelper.notifyOnMoonrakerThrottle()) {
+            return
+        }
 
         const {flags} = message.params[0]
         const currentThrottleState = getEntry('throttle')
 
-        for(const flag of flags) {
-            if(currentThrottleState.throttle_states.includes(flag)
+        for (const flag of flags) {
+            if (currentThrottleState.throttle_states.includes(flag)
                 && currentThrottleState.cooldown !== 0) {
                 currentThrottleState.cooldown = this.cooldownValue
                 setData('throttle', currentThrottleState)
@@ -43,7 +51,9 @@ export class ThrottleNotification {
     }
 
     protected async broadcastThrottle(flag: string, currentThrottleState) {
-        if(!this.validFlags.includes(flag)) { return }
+        if (!this.validFlags.includes(flag)) {
+            return
+        }
 
         logWarn(`A Throttle occured: ${flag}`)
 
@@ -56,7 +66,7 @@ export class ThrottleNotification {
 
         setData('throttle', currentThrottleState)
 
-        if(this.notificationHelper.isEmbedBlocked(`throttle_${localeKey}`)) {
+        if (this.notificationHelper.isEmbedBlocked(`throttle_${localeKey}`)) {
             return
         }
 

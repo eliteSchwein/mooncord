@@ -1,14 +1,9 @@
 import {ConfigHelper} from "../../../helper/ConfigHelper";
-import path from "path";
 import {getMoonrakerClient} from "../../../Application";
-import axios from "axios";
 import Ffmpeg from "fluent-ffmpeg";
-import {waitUntil} from "async-wait-until";
-import {logRegular, logSuccess} from "../../../helper/LoggerHelper";
+import {logRegular} from "../../../helper/LoggerHelper";
 import {LocaleHelper} from "../../../helper/LocaleHelper";
-import {MessageAttachment} from "discord.js";
 import {NotificationHelper} from "../../../helper/NotificationHelper";
-import {readFileSync, unlinkSync, writeFileSync} from "fs";
 import * as ffmpegInstall from "@ffmpeg-installer/ffmpeg"
 import {TimelapseHelper} from "../../../helper/TimelapseHelper";
 
@@ -32,17 +27,29 @@ export class TimelapseNotification {
     }
 
     public async parse(message) {
-        if(typeof(message.method) === 'undefined') { return }
-        if(typeof(message.params) === 'undefined') { return }
+        if (typeof (message.method) === 'undefined') {
+            return
+        }
+        if (typeof (message.params) === 'undefined') {
+            return
+        }
 
-        if(message.method !== 'notify_timelapse_event') { return }
+        if (message.method !== 'notify_timelapse_event') {
+            return
+        }
 
-        if(!this.configHelper.notifyOnMoonrakerThrottle()) { return }
+        if (!this.configHelper.notifyOnMoonrakerThrottle()) {
+            return
+        }
 
         const param = message.params[0]
 
-        if(param.action !== 'render') { return }
-        if(param.status !== 'success') { return }
+        if (param.action !== 'render') {
+            return
+        }
+        if (param.status !== 'success') {
+            return
+        }
 
         const printfile = (param.printfile === '') ? 'n/a' : param.printfile
         const timelapseMessage = this.locale.messages.answers.timelapse

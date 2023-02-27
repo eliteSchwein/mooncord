@@ -13,7 +13,7 @@ export class DiscordStatusGenerator {
         const tempCache = {}
         const locale = this.localeHelper.getLocale()
 
-        for(const statusId in this.statusMeta) {
+        for (const statusId in this.statusMeta) {
             const statusData = this.statusMeta[statusId]
             const statusLocale = locale.embeds[statusData.embed_id]
             tempCache[statusId] = statusData

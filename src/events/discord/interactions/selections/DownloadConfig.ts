@@ -13,7 +13,9 @@ export class DownloadConfig {
     protected config = new ConfigHelper()
 
     public constructor(interaction: SelectMenuInteraction, selectionId: string) {
-        if(selectionId !== 'config_file_download') { return }
+        if (selectionId !== 'config_file_download') {
+            return
+        }
 
         void this.execute(interaction)
     }
@@ -31,7 +33,7 @@ export class DownloadConfig {
         logRegular(`downloading config for ${config}...`)
 
         try {
-            const result = await axios.get(`${this.config.getMoonrakerUrl()}/server/files/config/${config}`,{
+            const result = await axios.get(`${this.config.getMoonrakerUrl()}/server/files/config/${config}`, {
                 responseType: 'arraybuffer',
                 headers: {
                     'X-Api-Key': this.config.getMoonrakerApiKey()
@@ -49,16 +51,16 @@ export class DownloadConfig {
             const attachment = new MessageAttachment(<Buffer>result.data, `${config}`)
 
             logSuccess(`Configuration ${config} Download successful!`)
-            return { files: [attachment] }
+            return {files: [attachment]}
         } catch (error) {
-            if(typeof error.code !== 'undefined') {
+            if (typeof error.code !== 'undefined') {
                 logError(`${config} Config Download failed: ${error.config.url}: ${error.code}`)
                 return this.locale.messages.errors.config_failed
                     .replace(/(\${config})/g, config)
                     .replace(/(\${reason})/g, `${error.code}`)
             }
             logError(`${config} Config Download failed: ${error.config.url}: ${error.response.status} ${error.response.statusText}`)
-            if(error.response.status === 404) {
+            if (error.response.status === 404) {
                 return this.locale.messages.errors.config_not_found
                     .replace(/(\${config})/g, config)
             }

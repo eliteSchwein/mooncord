@@ -24,7 +24,9 @@ export class ExcludeObjectsSelection {
     protected tempHelper = new TempHelper()
 
     public constructor(interaction: SelectMenuInteraction, selectionId: string) {
-        if(selectionId !== 'exclude_objects') { return }
+        if (selectionId !== 'exclude_objects') {
+            return
+        }
 
         void this.execute(interaction)
     }
@@ -40,15 +42,15 @@ export class ExcludeObjectsSelection {
         const components = embedData.embed['components']
         const selectMenu = components[0].components[0]
 
-        for(const selectMenuOption of selectMenu.options) {
-            if(selectMenuOption.value === object) {
+        for (const selectMenuOption of selectMenu.options) {
+            if (selectMenuOption.value === object) {
                 selectMenuOption.default = true
             }
         }
 
         let files = [excludeGraph]
 
-        if(typeof embedData.embed['files'] !== 'undefined') {
+        if (typeof embedData.embed['files'] !== 'undefined') {
             files = [...files, ...embedData.embed['files']]
         }
 

@@ -11,7 +11,9 @@ export class PowerDeviceCommand {
     protected powerDeviceHelper = new PowerDeviceHelper()
 
     public constructor(interaction: CommandInteraction, commandId: string) {
-        if(commandId !== 'power') { return }
+        if (commandId !== 'power') {
+            return
+        }
 
         this.execute(interaction)
     }
@@ -20,7 +22,7 @@ export class PowerDeviceCommand {
         const powerDevice = interaction.options.getString(this.syntaxLocale.commands.power.options.device.name)
         const powerDeviceData = this.powerDeviceHelper.getPowerDeviceData(powerDevice)
 
-        if(powerDevice === null ||powerDeviceData === null) {
+        if (powerDevice === null || powerDeviceData === null) {
             await interaction.reply(this.localeHelper.getCommandNotReadyError(interaction.user.username))
         }
 
@@ -28,7 +30,10 @@ export class PowerDeviceCommand {
 
         const newState = (powerDeviceData.status === 'on') ? 'off' : 'on'
 
-        await this.moonrakerClient.send({'method': 'machine.device_power.post_device', 'params': {'device': powerDevice, 'action': newState}})
+        await this.moonrakerClient.send({
+            'method': 'machine.device_power.post_device',
+            'params': {'device': powerDevice, 'action': newState}
+        })
 
         let newStatusMessage = (powerDeviceData.status === 'on') ?
             this.locale.messages.answers.power_device.off :

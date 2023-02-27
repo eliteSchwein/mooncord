@@ -18,24 +18,6 @@ export class LocaleHelper {
         this.loadLocales()
     }
 
-    protected loadLocales() {
-        const localePath = path.resolve(__dirname, `../locales/${this.config.getLocale()}.json`)
-        const syntaxLocalePath = path.resolve(__dirname, `../locales/${this.config.getSyntaxLocale()}.json`)
-
-        const localeRaw = readFileSync(localePath, {encoding: 'utf8'})
-        const syntaxLocaleRaw  = readFileSync(syntaxLocalePath, {encoding: 'utf8'})
-
-        updateData('locale', JSON.parse(localeRaw))
-        updateData('syntax_locale', JSON.parse(syntaxLocaleRaw))
-    }
-
-    protected loadFallback() {
-        const fallbackLocaleRaw = readFileSync(this.fallbackLocalePath, {encoding: 'utf8'})
-
-        setData('locale', JSON.parse(fallbackLocaleRaw))
-        setData('syntax_locale', JSON.parse(fallbackLocaleRaw))
-    }
-
     public getLocale() {
         return getEntry('locale')
     }
@@ -44,15 +26,15 @@ export class LocaleHelper {
         return getEntry('syntax_locale')
     }
 
-    public getNoPermission(username:string) {
+    public getNoPermission(username: string) {
         return this.getLocale().messages.errors.no_permission.replace(/(\${username})/g, username)
     }
 
-    public getGuildOnlyError(username:string) {
+    public getGuildOnlyError(username: string) {
         return this.getLocale().messages.errors.guild_only.replace(/(\${username})/g, username)
     }
 
-    public getCommandNotReadyError(username:string) {
+    public getCommandNotReadyError(username: string) {
         return this.getLocale().messages.errors.not_ready.replace(/(\${username})/g, username)
     }
 
@@ -72,8 +54,8 @@ export class LocaleHelper {
             }
         ]
 
-        for(const stateComponent in getEntry('state')) {
-            if(/(mcu)/g.test(stateComponent) && !/(temperature_sensor)/g.test(stateComponent)) {
+        for (const stateComponent in getEntry('state')) {
+            if (/(mcu)/g.test(stateComponent) && !/(temperature_sensor)/g.test(stateComponent)) {
                 components.push({
                     name: stateComponent.toUpperCase(),
                     value: stateComponent
@@ -82,5 +64,23 @@ export class LocaleHelper {
         }
 
         return components
+    }
+
+    protected loadLocales() {
+        const localePath = path.resolve(__dirname, `../locales/${this.config.getLocale()}.json`)
+        const syntaxLocalePath = path.resolve(__dirname, `../locales/${this.config.getSyntaxLocale()}.json`)
+
+        const localeRaw = readFileSync(localePath, {encoding: 'utf8'})
+        const syntaxLocaleRaw = readFileSync(syntaxLocalePath, {encoding: 'utf8'})
+
+        updateData('locale', JSON.parse(localeRaw))
+        updateData('syntax_locale', JSON.parse(syntaxLocaleRaw))
+    }
+
+    protected loadFallback() {
+        const fallbackLocaleRaw = readFileSync(this.fallbackLocalePath, {encoding: 'utf8'})
+
+        setData('locale', JSON.parse(fallbackLocaleRaw))
+        setData('syntax_locale', JSON.parse(fallbackLocaleRaw))
     }
 }

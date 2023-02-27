@@ -17,15 +17,15 @@ export class FileListHelper {
 
             const result = currentFiles.result
 
-            if(result === null || result === undefined) {
+            if (result === null || result === undefined) {
                 return
             }
 
-            if(filter !== undefined && filter !== null) {
+            if (filter !== undefined && filter !== null) {
                 const filteredResult = []
 
-                for(const resultPartial of result) {
-                    if(!filter.test(resultPartial.path)) {
+                for (const resultPartial of result) {
+                    if (!filter.test(resultPartial.path)) {
                         continue
                     }
                     filteredResult.push(resultPartial)

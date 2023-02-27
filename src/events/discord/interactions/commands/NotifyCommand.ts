@@ -10,13 +10,15 @@ export class NotifyCommand {
     protected locale = this.localeHelper.getLocale()
 
     public constructor(interaction: CommandInteraction, commandId: string) {
-        if(commandId !== 'notify') { return }
+        if (commandId !== 'notify') {
+            return
+        }
 
         const user = interaction.user
 
         let answer
 
-        if(this.notifyList.includes(user.id)) {
+        if (this.notifyList.includes(user.id)) {
             removeFromArray(this.notifyList, user.id)
             answer = this.locale.messages.answers.notify.deactivated
         } else {
@@ -27,7 +29,7 @@ export class NotifyCommand {
         answer = answer.replace(/\${username}/g, user.tag)
 
         this.databaseUtil.updateDatabaseEntry('notify', this.notifyList)
-        
+
         void interaction.reply(answer)
     }
 }

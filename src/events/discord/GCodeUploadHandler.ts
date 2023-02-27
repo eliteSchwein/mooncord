@@ -15,22 +15,28 @@ export class GCodeUploadHandler {
 
     public constructor(discordClient: Client) {
         discordClient.on("messageCreate", async message => {
-            if (message.author.id === discordClient.user.id) { return }
-            if (message.attachments.size === 0) { return }
+            if (message.author.id === discordClient.user.id) {
+                return
+            }
+            if (message.attachments.size === 0) {
+                return
+            }
 
             const attachment = message.attachments.at(0)
             const url = attachment.url
 
-            if(!url.endsWith('.gcode')) { return }
+            if (!url.endsWith('.gcode')) {
+                return
+            }
 
-            if(!this.permissionHelper.hasPermission(message.author, message.guild, 'gcode_upload')) {
+            if (!this.permissionHelper.hasPermission(message.author, message.guild, 'gcode_upload')) {
                 logWarn(`${message.author.tag} doesnt have the permission to upload gcode files!`)
                 return;
             }
 
             const uploadRequest = await uploadAttachment(attachment)
 
-            if(uploadRequest) {
+            if (uploadRequest) {
                 await message.react('✅')
                 return
             }

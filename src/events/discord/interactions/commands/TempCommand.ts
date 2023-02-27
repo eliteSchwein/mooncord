@@ -5,8 +5,11 @@ import {TempHelper} from "../../../../helper/TempHelper";
 export class TempCommand {
     protected embedHelper = new EmbedHelper()
     protected tempHelper = new TempHelper()
+
     public constructor(interaction: CommandInteraction, commandId: string) {
-        if(commandId !== 'temp') { return }
+        if (commandId !== 'temp') {
+            return
+        }
 
         this.execute(interaction)
     }

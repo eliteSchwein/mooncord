@@ -17,7 +17,9 @@ export class ViewSystemInfo {
     protected mcuHelper = new MCUHelper()
 
     public constructor(interaction: SelectMenuInteraction, selectionId: string) {
-        if(selectionId !== 'systeminfo_select') { return }
+        if (selectionId !== 'systeminfo_select') {
+            return
+        }
 
         void this.execute(interaction)
     }
@@ -30,7 +32,7 @@ export class ViewSystemInfo {
 
         let embedData = await this.embedHelper.generateEmbed('systeminfo_cpu')
 
-        if(component.startsWith('mcu')) {
+        if (component.startsWith('mcu')) {
             const mcuData = this.mcuHelper.getMCULoad(component)
             embedData = await this.embedHelper.generateEmbed(`systeminfo_mcu`, mcuData)
         } else {

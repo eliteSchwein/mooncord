@@ -16,8 +16,8 @@ export class VersionHelper {
                     version = `${version} **(${remote_version})**`
                 }
                 fields.push({
-                    name:component,
-                    value:version
+                    name: component,
+                    value: version
                 })
             }
         }
@@ -31,13 +31,13 @@ export class VersionHelper {
             if (component !== 'system') {
                 const remoteVersion = (versionData[component].version !== versionData[component].remote_version) ? `\n🆕 ${versionData[component].remote_version}` : ''
                 fields.push({
-                    name:component,
-                    value:`${versionData[component].version} ${remoteVersion}`
+                    name: component,
+                    value: `${versionData[component].version} ${remoteVersion}`
                 })
             } else {
                 fields.push({
-                    name:this.locale.embeds.fields.system,
-                    value:`${this.locale.embeds.fields.packages}: ${versionData[component].package_count}`
+                    name: this.locale.embeds.fields.system,
+                    value: `${this.locale.embeds.fields.packages}: ${versionData[component].package_count}`
                 })
             }
         }
@@ -50,11 +50,11 @@ export class VersionHelper {
 
         for (const component in versionData) {
             if (component !== 'system') {
-                if(versionData[component].version !== versionData[component].remote_version) {
+                if (versionData[component].version !== versionData[component].remote_version) {
                     updateAvailable = true
                 }
             } else {
-                if(versionData[component].package_count > 0) {
+                if (versionData[component].package_count > 0) {
                     updateAvailable = true
                 }
             }

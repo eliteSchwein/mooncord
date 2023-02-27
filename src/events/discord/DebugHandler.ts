@@ -5,7 +5,7 @@ import {getDiscordClient} from "../../Application";
 export class DebugHandler {
     public constructor(discordClient: Client) {
         discordClient.on("debug", info => {
-            if(info.includes('Heartbeat acknowledged, latency of')) {
+            if (info.includes('Heartbeat acknowledged, latency of')) {
                 updateData('discord_client', {
                     'ping': getDiscordClient().getClient().ws.ping,
                     'event_count': getDiscordClient().getClient()['_eventsCount']

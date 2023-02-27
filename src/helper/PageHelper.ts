@@ -9,14 +9,14 @@ export class PageHelper {
     protected configHelper = new ConfigHelper()
     protected localeHelper = new LocaleHelper()
     protected locale = this.localeHelper.getLocale()
-    
+
     public constructor(pageId: string) {
         this.data = this.getValuesForPageId(pageId)
         this.pageLocale = this.locale.pages[pageId]
     }
 
     public getPage(pageUp: boolean, currentPage: number) {
-        if(this.getEntries(0).entries === '') {
+        if (this.getEntries(0).entries === '') {
             return {}
         }
         const page = this.getNewPage(pageUp, currentPage)
@@ -42,7 +42,7 @@ export class PageHelper {
 
             entries = `${entries}${label}\n`
         }
-        return { 'entries': entries, 'raw_entries': rawEntries }
+        return {'entries': entries, 'raw_entries': rawEntries}
     }
 
     protected getLastPage() {
@@ -53,11 +53,11 @@ export class PageHelper {
         const lastPage = this.getLastPage()
         let page = currentPage - 1
 
-        if(pageUp) {
-            if(page !== lastPage -1) {
+        if (pageUp) {
+            if (page !== lastPage - 1) {
                 page++
             }
-        } else if(page !== 0) {
+        } else if (page !== 0) {
             page--
         }
 
@@ -65,13 +65,13 @@ export class PageHelper {
     }
 
     protected getValuesForPageId(pageId: string) {
-        if(pageId === 'configs_download')  {
+        if (pageId === 'configs_download') {
             return getConfigFiles()
         }
 
         const cacheEntry = getEntry(pageId)
 
-        if(cacheEntry !== undefined && cacheEntry !== null) {
+        if (cacheEntry !== undefined && cacheEntry !== null) {
             return cacheEntry
         }
 

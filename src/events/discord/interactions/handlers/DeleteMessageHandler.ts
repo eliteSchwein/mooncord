@@ -1,10 +1,11 @@
-import {ButtonInteraction, Message, User} from "discord.js";
-import * as App from '../../../../Application'
+import {Message, User} from "discord.js";
 
 export class DeleteMessageHandler {
 
     public async execute(message: Message, user: User, data, interaction = null) {
-        if(!data.function_mapping.delete_message) { return }
+        if (!data.function_mapping.delete_message) {
+            return
+        }
 
         await message.delete()
     }

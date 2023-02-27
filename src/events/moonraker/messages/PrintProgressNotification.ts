@@ -10,13 +10,17 @@ export class PrintProgressNotification {
     protected statusHelper = new StatusHelper()
 
     public parse(message) {
-        if(this.functionCache.current_status !== 'printing') { return }
+        if (this.functionCache.current_status !== 'printing') {
+            return
+        }
 
         updateTimes()
         updateLayers()
 
-        if(!this.configHelper.isStatusPerPercent()) { return }
-        
+        if (!this.configHelper.isStatusPerPercent()) {
+            return
+        }
+
         this.statusHelper.update()
     }
 }

@@ -8,7 +8,9 @@ export class EmergencyStopCommand {
     protected locale = this.localeHelper.getLocale()
 
     public constructor(interaction: CommandInteraction, commandId: string) {
-        if(commandId !== 'emergency_stop') { return }
+        if (commandId !== 'emergency_stop') {
+            return
+        }
 
         this.execute(interaction)
     }
@@ -16,7 +18,7 @@ export class EmergencyStopCommand {
     protected async execute(interaction: CommandInteraction) {
         await interaction.deferReply()
 
-        void await this.moonrakerClient.send({"method": "printer.emergency_stop" })
+        void await this.moonrakerClient.send({"method": "printer.emergency_stop"})
 
         const answer = this.locale.messages.answers.emergency_stop
             .replace(/\${username}/g, interaction.user.tag)

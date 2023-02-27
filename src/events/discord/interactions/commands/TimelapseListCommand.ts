@@ -12,7 +12,9 @@ export class TimelapseListCommand {
     protected embedHelper = new EmbedHelper()
 
     public constructor(interaction: CommandInteraction, commandId: string) {
-        if(commandId !== 'listtimelapses') { return }
+        if (commandId !== 'listtimelapses') {
+            return
+        }
 
         this.execute(interaction)
     }
@@ -23,7 +25,7 @@ export class TimelapseListCommand {
         const pageHelper = new PageHelper('timelapse_files')
         const pageData = pageHelper.getPage(false, 1)
 
-        if(Object.keys(pageData) === undefined || Object.keys(pageData).length === 0) {
+        if (Object.keys(pageData) === undefined || Object.keys(pageData).length === 0) {
             await interaction.editReply(this.localeHelper.getCommandNotReadyError(interaction.user.username))
             return
         }

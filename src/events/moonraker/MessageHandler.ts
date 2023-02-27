@@ -23,7 +23,9 @@ export class MessageHandler {
         websocket.addEventListener(WebsocketEvents.message, ((instance, ev) => {
             const messageData = JSON.parse(ev.data)
 
-            if(typeof(messageData) === 'undefined') { return }
+            if (typeof (messageData) === 'undefined') {
+                return
+            }
 
             updateData('moonraker_client', {
                 'event_count': websocket.underlyingWebsocket['_eventsCount']

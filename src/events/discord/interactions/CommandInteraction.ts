@@ -37,16 +37,19 @@ export class CommandInteraction {
     protected commandGenerator = new DiscordCommandGenerator()
     protected localeHelper = new LocaleHelper()
     protected permissionHelper = new PermissionHelper()
-    
+
     public constructor(interaction: Interaction) {
         void this.execute(interaction)
     }
+
     protected async execute(interaction: Interaction) {
-        if(!interaction.isCommand()) { return }
+        if (!interaction.isCommand()) {
+            return
+        }
 
         let logFeedback = interaction.commandName
 
-        for(const option of interaction.options['_hoistedOptions']) {
+        for (const option of interaction.options['_hoistedOptions']) {
             logFeedback = `${logFeedback} ${option.name}:${option.value}`
         }
 
@@ -54,18 +57,21 @@ export class CommandInteraction {
 
         let permissionId = commandId
 
-        if(this.commandGenerator.isCustomCommand(commandId)) {
+        if (this.commandGenerator.isCustomCommand(commandId)) {
             permissionId = 'custom_command'
         }
 
-        if(typeof commandId === 'undefined') { return }
+        if (typeof commandId === 'undefined') {
+            return
+        }
 
         logNotice(`${interaction.user.tag} executed command: ${logFeedback}`)
 
-        if(!this.permissionHelper.hasPermission(interaction.user, interaction.guild, permissionId)) {
+        if (!this.permissionHelper.hasPermission(interaction.user, interaction.guild, permissionId)) {
             await interaction.reply({
                 content: this.localeHelper.getNoPermission(interaction.user.tag),
-                ephemeral: this.config.showNoPermissionPrivate() })
+                ephemeral: this.config.showNoPermissionPrivate()
+            })
             logWarn(`${interaction.user.tag} doesnt have the permission for: ${interaction.commandName} (${commandId})`)
             return;
         }
@@ -99,7 +105,9 @@ export class CommandInteraction {
 
         await sleep(2000)
 
-        if(interaction.replied || interaction.deferred) { return }
+        if (interaction.replied || interaction.deferred) {
+            return
+        }
 
         await interaction.reply(this.localeHelper.getCommandNotReadyError(interaction.user.tag))
     }

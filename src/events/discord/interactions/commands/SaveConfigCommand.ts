@@ -11,7 +11,9 @@ export class SaveConfigCommand {
     protected moonrakerClient = getMoonrakerClient()
 
     public constructor(interaction: CommandInteraction, commandId: string) {
-        if(commandId !== 'saveconfig') { return }
+        if (commandId !== 'saveconfig') {
+            return
+        }
 
         this.execute(interaction)
     }

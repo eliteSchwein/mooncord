@@ -6,8 +6,8 @@ export class MCUHelper {
     public getMCUOptions() {
         const options = []
 
-        for(const key in this.stateCache) {
-            if(key.startsWith('mcu')) {
+        for (const key in this.stateCache) {
+            if (key.startsWith('mcu')) {
                 options.push({
                     "label": key,
                     "value": key

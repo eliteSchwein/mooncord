@@ -8,7 +8,9 @@ export class ResetDatabaseCommand {
     protected locale = this.localeHelper.getLocale()
 
     public constructor(interaction: CommandInteraction, commandId: string) {
-        if(commandId !== 'reset_database') { return }
+        if (commandId !== 'reset_database') {
+            return
+        }
 
         this.execute(interaction)
     }

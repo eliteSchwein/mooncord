@@ -32,28 +32,33 @@ export class ButtonInteraction {
     }
 
     protected async execute(interaction: Interaction) {
-        if(!interaction.isButton()) { return }
+        if (!interaction.isButton()) {
+            return
+        }
 
         const buttonId = interaction.customId
 
-        if(buttonId === null) { return }
+        if (buttonId === null) {
+            return
+        }
 
         const buttonData = this.buttonsCache[buttonId]
 
         logNotice(`${interaction.user.tag} pressed button: ${buttonId}`)
 
-        if(!this.permissionHelper.hasPermission(interaction.user, interaction.guild, buttonId)) {
+        if (!this.permissionHelper.hasPermission(interaction.user, interaction.guild, buttonId)) {
             await interaction.reply({
                 content: this.localeHelper.getNoPermission(interaction.user.tag),
-                ephemeral: this.config.showNoPermissionPrivate() })
+                ephemeral: this.config.showNoPermissionPrivate()
+            })
             logWarn(`${interaction.user.tag} doesnt have the permission for: ${interaction.customId}`)
             return;
         }
 
-        if(typeof buttonData.function_mapping.required_states !== 'undefined') {
+        if (typeof buttonData.function_mapping.required_states !== 'undefined') {
             const requiredStates = buttonData.function_mapping.required_states
 
-            if(!requiredStates.includes(this.functionCache.current_status)) {
+            if (!requiredStates.includes(this.functionCache.current_status)) {
                 const message = this.locale.messages.errors.not_ready
                     .replace(/(\${username})/g, interaction.user.tag)
 
@@ -80,7 +85,9 @@ export class ButtonInteraction {
 
         await sleep(2000)
 
-        if(interaction.replied || interaction.deferred) { return }
+        if (interaction.replied || interaction.deferred) {
+            return
+        }
 
         await interaction.reply(this.localeHelper.getCommandNotReadyError(interaction.user.tag))
     }

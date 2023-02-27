@@ -10,7 +10,9 @@ export class APIKeyHelper {
         const apiKey = this.config.getMoonrakerApiKey()
         const url = this.config.getMoonrakerUrl()
 
-        if (apiKey === '') { return '' }
+        if (apiKey === '') {
+            return ''
+        }
 
         logRegular('Retrieve Oneshot Token...')
 
@@ -21,7 +23,7 @@ export class APIKeyHelper {
                         'X-Api-Key': apiKey
                     }
                 })
-    
+
             return response.data['result']
         } catch (error) {
             const reason = error as string
@@ -30,7 +32,7 @@ export class APIKeyHelper {
             logError('Token Error:')
             logError(`Url: ${url}/access/oneshot_token`)
             logError(`Error: ${reason}`)
-            if(this.config.traceOnWebErrors()) {
+            if (this.config.traceOnWebErrors()) {
                 logError(trace)
             }
             return ''

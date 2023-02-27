@@ -1,4 +1,4 @@
-import {ButtonInteraction, Message, MessageEmbed, User} from "discord.js";
+import {Message, MessageEmbed, User} from "discord.js";
 import {getMoonrakerClient} from "../../../../Application";
 import {LocaleHelper} from "../../../../helper/LocaleHelper";
 import {EmbedHelper} from "../../../../helper/EmbedHelper";
@@ -10,16 +10,20 @@ export class DeleteHandler {
     protected embedHelper = new EmbedHelper()
 
     public async execute(message: Message, user: User, data, interaction = null) {
-        if (!data.function_mapping.delete) { return }
-        if(typeof data.function_mapping.root_path === 'undefined') { return }
-
-        const currentEmbed = message.embeds[0] as MessageEmbed
-
-        if(currentEmbed.author === null) {
+        if (!data.function_mapping.delete) {
+            return
+        }
+        if (typeof data.function_mapping.root_path === 'undefined') {
             return
         }
 
-        if(interaction !== null &&
+        const currentEmbed = message.embeds[0] as MessageEmbed
+
+        if (currentEmbed.author === null) {
+            return
+        }
+
+        if (interaction !== null &&
             !interaction.replied &&
             !interaction.deferred) {
             await interaction.deferReply()
@@ -28,9 +32,12 @@ export class DeleteHandler {
         const rootPath = data.function_mapping.root_path
         const filename = this.embedHelper.getAuthorName(currentEmbed)
 
-        const feedback = await this.moonrakerClient.send({"method": "server.files.delete_file", "params": {"path": `${rootPath}/${filename}`}})
+        const feedback = await this.moonrakerClient.send({
+            "method": "server.files.delete_file",
+            "params": {"path": `${rootPath}/${filename}`}
+        })
 
-        if(interaction !== null && typeof feedback.error !== 'undefined') {
+        if (interaction !== null && typeof feedback.error !== 'undefined') {
             await interaction.editReply(this.locale.messages.errors.file_not_found)
             return
         }

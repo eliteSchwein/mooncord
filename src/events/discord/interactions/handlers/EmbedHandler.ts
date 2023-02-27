@@ -1,4 +1,4 @@
-import {ButtonInteraction, Message, MessageEmbed, User} from "discord.js";
+import {Message, MessageEmbed, User} from "discord.js";
 import {getMoonrakerClient} from "../../../../Application";
 import {LocaleHelper} from "../../../../helper/LocaleHelper";
 import {EmbedHelper} from "../../../../helper/EmbedHelper";
@@ -13,9 +13,13 @@ export class EmbedHandler {
     protected metadataHelper = new MetadataHelper()
 
     public async execute(message: Message, user: User, data, interaction = null) {
-        if(typeof data.function_mapping.show_embed === 'undefined') { return }
+        if (typeof data.function_mapping.show_embed === 'undefined') {
+            return
+        }
 
-        if(interaction !== null && !interaction.replied && !interaction.deferred) { await interaction.deferReply() }
+        if (interaction !== null && !interaction.replied && !interaction.deferred) {
+            await interaction.deferReply()
+        }
 
         await message.edit({components: null, embeds: null})
         await message.removeAttachments()
@@ -32,7 +36,7 @@ export class EmbedHandler {
         if (data.function_mapping.fetch_author_metadata) {
             metaData = await this.metadataHelper.getMetaData(author)
 
-            if(interaction !== null && typeof metaData === 'undefined') {
+            if (interaction !== null && typeof metaData === 'undefined') {
                 await interaction.editReply(this.locale.messages.errors.file_not_found)
                 return
             }
@@ -41,7 +45,7 @@ export class EmbedHandler {
             metaData.filename = author
         }
 
-        const embedData  = await this.embedHelper.generateEmbed(data.function_mapping.show_embed, metaData)
+        const embedData = await this.embedHelper.generateEmbed(data.function_mapping.show_embed, metaData)
 
         if (data.function_mapping.fetch_author_thumbnail) {
             const thumbnail = await this.metadataHelper.getThumbnail(author)
@@ -50,9 +54,11 @@ export class EmbedHandler {
             embedData.embed['files'].push(thumbnail)
         }
 
-        await message.edit(embedData .embed)
+        await message.edit(embedData.embed)
 
-        if(interaction === null || !interaction.deferred) { return }
+        if (interaction === null || !interaction.deferred) {
+            return
+        }
 
         await interaction.deleteReply()
     }

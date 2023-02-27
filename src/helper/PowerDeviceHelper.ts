@@ -12,16 +12,16 @@ export class PowerDeviceHelper {
     protected locale = this.localeHelper.getLocale()
 
     public constructor(moonrakerClient: MoonrakerClient = null) {
-        if(moonrakerClient !== null) {
+        if (moonrakerClient !== null) {
             this.moonrakerClient = moonrakerClient
         }
     }
 
     public getPowerDeviceData(powerDeviceName: string) {
-        for(const index in this.powerDeviceCache) {
+        for (const index in this.powerDeviceCache) {
             const powerDevice = this.powerDeviceCache[index]
 
-            if(powerDevice.device = powerDeviceName) {
+            if (powerDevice.device = powerDeviceName) {
                 return powerDevice
             }
         }
@@ -32,9 +32,9 @@ export class PowerDeviceHelper {
     public getPowerDevices() {
         logRegular('Retrieve Power Devices...')
         new Promise(async (resolve, reject) => {
-            const powerDevicesData = await this.moonrakerClient.send({"method":"machine.device_power.devices"})
+            const powerDevicesData = await this.moonrakerClient.send({"method": "machine.device_power.devices"})
 
-            if(powerDevicesData.error !== undefined) {
+            if (powerDevicesData.error !== undefined) {
                 return
             }
 
@@ -43,10 +43,10 @@ export class PowerDeviceHelper {
     }
 
     public updatePowerDevice(powerDeviceData: any) {
-        for(const index in this.powerDeviceCache) {
+        for (const index in this.powerDeviceCache) {
             const powerDevice = this.powerDeviceCache[index]
 
-            if(powerDeviceData.device = powerDevice.device) {
+            if (powerDeviceData.device = powerDevice.device) {
                 this.powerDeviceCache[index] = powerDeviceData
             }
         }
@@ -61,7 +61,7 @@ export class PowerDeviceHelper {
         const offLabel = this.locale.embeds.fields.off
             .replace(/(\${icon})/g, this.powerDeviceMeta.off.icon)
 
-        for(const powerDevice of this.powerDeviceCache) {
+        for (const powerDevice of this.powerDeviceCache) {
             fields.push({
                 'name': powerDevice.device,
                 'value': (powerDevice.status === 'on') ? onLabel : offLabel

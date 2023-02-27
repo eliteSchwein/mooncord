@@ -8,7 +8,7 @@ const sourceLocaleRaw = fs.readFileSync(path.resolve(__dirname, `${localeDir}en.
 const sourceLocale = JSON.parse(sourceLocaleRaw)
 let targetLocale = {}
 
-if(fs.existsSync(path.resolve(__dirname, `${localeDir}${targetLocaleName}.json`))) {
+if (fs.existsSync(path.resolve(__dirname, `${localeDir}${targetLocaleName}.json`))) {
     const targetLocaleRaw = fs.readFileSync(path.resolve(__dirname, `${localeDir}${targetLocaleName}.json`)).toString()
     targetLocale = JSON.parse(targetLocaleRaw)
 }
@@ -22,16 +22,20 @@ function isObject(item) {
 }
 
 function mergeDeep(target, ...sources) {
-    if (!sources.length) return target;
+    if (!sources.length) {
+        return target;
+    }
     const source = sources.shift();
 
     if (isObject(target) && isObject(source)) {
         for (const key in source) {
             if (isObject(source[key])) {
-                if (!target[key]) Object.assign(target, { [key]: {} });
+                if (!target[key]) {
+                    Object.assign(target, {[key]: {}});
+                }
                 mergeDeep(target[key], source[key]);
             } else {
-                Object.assign(target, { [key]: source[key] });
+                Object.assign(target, {[key]: source[key]});
             }
         }
     }

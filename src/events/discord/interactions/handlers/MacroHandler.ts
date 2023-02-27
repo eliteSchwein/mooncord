@@ -1,4 +1,4 @@
-import {ButtonInteraction, Message, User} from "discord.js";
+import {Message, User} from "discord.js";
 import {getDatabase, getMoonrakerClient} from "../../../../Application";
 import {EmbedHelper} from "../../../../helper/EmbedHelper";
 import {ConfigHelper} from "../../../../helper/ConfigHelper";
@@ -15,18 +15,24 @@ export class MacroHandler {
     protected consoleHelper = new ConsoleHelper()
 
     public async execute(message: Message, user: User, data, interaction = null) {
-        if(typeof data.function_mapping.macros === 'undefined') { return }
-        if(data.function_mapping.macros.empty) { return }
+        if (typeof data.function_mapping.macros === 'undefined') {
+            return
+        }
+        if (data.function_mapping.macros.empty) {
+            return
+        }
 
         const gcodeValid = await this.consoleHelper.executeGcodeCommands(data.function_mapping.macros,
             interaction.channel,
             data.function_mapping.macro_message === true)
 
-        if(!data.function_mapping.macro_message) { return }
+        if (!data.function_mapping.macro_message) {
+            return
+        }
 
         let label = data.label
 
-        if(typeof data.emoji !== 'undefined') {
+        if (typeof data.emoji !== 'undefined') {
             label = `${data.emoji} ${label}`
         }
 
@@ -34,18 +40,18 @@ export class MacroHandler {
             .replace(/\${username}/g, interaction.user.tag)
             .replace(/(\${button_label})/g, label)
 
-        if(gcodeValid === 0) {
+        if (gcodeValid === 0) {
             answer = this.locale.messages.errors.macros_failed
                 .replace(/\${username}/g, interaction.user.tag)
                 .replace(/(\${button_label})/g, label)
         }
 
-        if(gcodeValid === -1) {
+        if (gcodeValid === -1) {
             answer = this.locale.messages.errors.execute_running
                 .replace(/\${username}/g, interaction.user.tag)
         }
 
-        if(interaction !== null && interaction.replied) {
+        if (interaction !== null && interaction.replied) {
             await interaction.followUp({ephemeral: false, content: answer})
         } else {
             await message.reply(answer)
