@@ -57,8 +57,13 @@ export class PageHelper {
             if (page !== lastPage - 1) {
                 page++
             }
+            if(page === lastPage - 1) {
+                page = 0
+            }
         } else if (page !== 0) {
             page--
+        } else {
+            page = lastPage - 1
         }
 
         return {calcPage: page, labelPage: (page + 1)}

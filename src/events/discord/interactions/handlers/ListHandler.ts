@@ -25,7 +25,7 @@ export class ListHandler {
         }
 
         const pageHelper = new PageHelper(listId)
-        const pageData = pageHelper.getPage(false, 1)
+        const pageData = pageHelper.getPage(false, 2)
 
         const answer = await this.embedHelper.generateEmbed(listId, pageData)
 

@@ -23,7 +23,7 @@ export class TimelapseListCommand {
         await interaction.deferReply()
 
         const pageHelper = new PageHelper('timelapse_files')
-        const pageData = pageHelper.getPage(false, 1)
+        const pageData = pageHelper.getPage(false, 2)
 
         if (Object.keys(pageData) === undefined || Object.keys(pageData).length === 0) {
             await interaction.editReply(this.localeHelper.getCommandNotReadyError(interaction.user.username))

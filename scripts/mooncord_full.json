@@ -1785,22 +1785,27 @@
         "history_graph": {
             "colors": {
                 "klippy_shutdown": {
+                    "list_icon": "❗",
                     "icon": "\uD83D\uDD34",
                     "color": "#dd2e44"
                 },
                 "error": {
+                    "list_icon": "❗",
                     "icon": "\uD83D\uDFE0",
                     "color": "#f4900c"
                 },
                 "cancelled": {
+                    "list_icon": "⛔",
                     "icon": "\uD83D\uDFE1",
                     "color": "#fdcb58"
                 },
                 "completed": {
+                    "list_icon": "✅",
                     "icon": "\uD83D\uDFE2",
                     "color": "#78b159"
                 },
                 "in_progress": {
+                    "list_icon": "⏱️",
                     "icon": "\uD83D\uDFE3",
                     "color": "#aa8ed6"
                 }

@@ -50,7 +50,7 @@ export class PageHandler {
         const pageData = pageHelper.getPage(functionMap.page_up, currentPage)
 
         if (Object.keys(pageData).length === 0) {
-            if (interaction !== null) {
+            if (interaction.replied) {
                 await interaction.editReply(this.localeHelper.getCommandNotReadyError(interaction.user.username))
             } else {
                 await message.reply(this.localeHelper.getCommandNotReadyError(interaction.user.username))
