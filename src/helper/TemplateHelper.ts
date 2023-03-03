@@ -150,7 +150,9 @@ export class TemplateHelper {
         const selections = this.inputGenerator.generateSelections(messageObjectData.selections)
         const inputs = this.inputGenerator.generateInputs(messageObjectData.inputs)
 
-        components.push(selections)
+        for(const selectionId in selections) {
+            components.push(selections[selectionId])
+        }
         components.push(buttons)
         components.push(inputs)
 

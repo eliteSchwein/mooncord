@@ -55,7 +55,7 @@ export class DiscordInputGenerator {
     }
 
     public generateSelections(selections) {
-        const row = new MessageActionRow()
+        const rows = []
 
         if (typeof selections === 'undefined') {
             return
@@ -65,6 +65,8 @@ export class DiscordInputGenerator {
         }
 
         for (const selectionData of selections) {
+            const row = new MessageActionRow()
+
             if (selectionData.required_cache !== undefined) {
                 if (selectionData.required_cache.map(findValue).map(v => !v).find(v => v)) {
                     continue
@@ -106,9 +108,11 @@ export class DiscordInputGenerator {
             }
 
             row.addComponents(selection)
+
+            rows.push(row)
         }
 
-        return row
+        return rows
     }
 
     public generateInputs(inputs) {
