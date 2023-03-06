@@ -3,11 +3,13 @@ import path from "path";
 import {mergeDeep} from "./DataHelper";
 import {getEntry, setData, updateData} from "../utils/CacheUtil";
 import {logRegular} from "./LoggerHelper";
+import * as ini from "ini";
 
 const args = process.argv.slice(2)
 
 export class ConfigHelper {
-    protected configPath = `${args[0]}/mooncord.json`
+    protected configLegacyPath = `${args[0]}/mooncord.json`
+    protected configPath = `${args[0]}/mooncord.cfg`
 
     public loadCache() {
         logRegular("load Config Cache...")
@@ -23,13 +25,14 @@ export class ConfigHelper {
     }
 
     public getUserConfig() {
-        return JSON.parse(readFileSync(this.configPath, {encoding: 'utf8'}))
+        const config = ini.parse(readFileSync(this.configPath, {encoding: 'utf8'}))
+        return JSON.parse(readFileSync(this.configLegacyPath, {encoding: 'utf8'}))
     }
 
     public writeUserConfig(modifiedConfig) {
         updateData('config', modifiedConfig)
 
-        writeFileSync(this.configPath, JSON.stringify(modifiedConfig, null, 4), {encoding: 'utf8', flag: 'w+'})
+        writeFileSync(this.configLegacyPath, JSON.stringify(modifiedConfig, null, 4), {encoding: 'utf8', flag: 'w+'})
     }
 
     public getPermissions() {
