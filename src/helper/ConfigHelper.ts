@@ -13,15 +13,26 @@ export class ConfigHelper {
 
     public loadCache() {
         logRegular("load Config Cache...")
-        const defaultConfig = readFileSync(path.resolve(__dirname, '../scripts/mooncord_full.json'), {encoding: 'utf8'})
-
-        const config = JSON.parse(defaultConfig)
+        const defaultLegacyConfig = readFileSync(path.resolve(__dirname, '../scripts/mooncord_full.json'), {encoding: 'utf8'})
+        const defaultConfig = this.parseConfig(path.resolve(__dirname, '../scripts/'), 'mooncord_full.cfg')
+        console.log(defaultConfig)
+        const config = JSON.parse(defaultLegacyConfig)
         mergeDeep(config, this.getUserConfig())
         setData('config', config)
     }
 
     public getConfig() {
         return getEntry('config')
+    }
+
+    public parseConfig(path: string, filename: string) {
+        const configData = ini.parse(readFileSync(`${path}/${filename}`, {encoding: "utf-8"}))
+        const keys = Object.keys(configData)
+        console.log(configData)
+        const includes = keys.filter((key) => {console.log(key)
+            console.log(/^include\s(.*\.cfg)$/g.test(key))
+            return /^include\s(.*\.cfg)$/g.test(key)})
+        console.log(includes)
     }
 
     public getUserConfig() {
