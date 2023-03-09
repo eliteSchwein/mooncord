@@ -2,7 +2,7 @@ import {existsSync, mkdirSync, readFileSync, writeFileSync} from 'fs'
 import path from "path";
 import {mergeDeep} from "./DataHelper";
 import {getEntry, setData, updateData} from "../utils/CacheUtil";
-import {logRegular} from "./LoggerHelper";
+import {logError, logRegular, logWarn} from "./LoggerHelper";
 
 const args = process.argv.slice(2)
 
@@ -25,6 +25,10 @@ export class ConfigHelper {
     }
 
     public parseConfig(path: string, filename: string) {
+        if(!existsSync(`${path}/${filename}`)) {
+            logError(`Config File ${path}/${filename} is not present, skipping!`)
+            return {}
+        }
         const file = readFileSync(`${path}/${filename}`, {encoding: "utf-8"})
         const lines = file.replace(/\r/g, '').split('\n')
         let result = {}
