@@ -41,6 +41,20 @@ export class ConfigHelper {
                 continue
             }
 
+            const webcamHeader = line.match(/^\[webcam.*\]$/g)
+            if(webcamHeader) {
+                const name = webcamHeader[0].replace(/\[|\]/g, '').split(' ')
+                if(name.length < 2) {
+                    name[1] = 'default'
+                }
+                if(result[name[0]] === undefined) {
+                    result[name[0]] = {}
+                }
+
+                objects = {}
+                result[name[0]][name[1]] = objects
+                continue
+            }
             const header = line.match(/^\[([^\]]+)\]$/)
             if(header) {
                 const name = header[1]
@@ -50,6 +64,20 @@ export class ConfigHelper {
             }
             const value = line.match(/^([^;][^=]*)=(.*)$/)
             if(value) {
+                const realValue = value[2]
+                const numberValue = Number(realValue)
+                if(!isNaN(numberValue)) {
+                    objects[value[1]] = numberValue
+                    continue
+                }
+                if(realValue === 'true') {
+                    objects[value[1]] = true
+                    continue
+                }
+                if(realValue === 'false') {
+                    objects[value[1]] = false
+                    continue
+                }
                 objects[value[1]] = value[2]
             }
         }
