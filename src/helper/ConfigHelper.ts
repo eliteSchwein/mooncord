@@ -3,7 +3,6 @@ import path from "path";
 import {mergeDeep} from "./DataHelper";
 import {getEntry, setData, updateData} from "../utils/CacheUtil";
 import {logRegular} from "./LoggerHelper";
-import * as ini from "ini";
 
 const args = process.argv.slice(2)
 
@@ -26,17 +25,43 @@ export class ConfigHelper {
     }
 
     public parseConfig(path: string, filename: string) {
-        const configData = ini.parse(readFileSync(`${path}/${filename}`, {encoding: "utf-8"}))
-        const keys = Object.keys(configData)
-        console.log(configData)
-        const includes = keys.filter((key) => {console.log(key)
-            console.log(/^include\s(.*\.cfg)$/g.test(key))
-            return /^include\s(.*\.cfg)$/g.test(key)})
-        console.log(includes)
+        const file = readFileSync(`${path}/${filename}`, {encoding: "utf-8"})
+        const lines = file.replace(/\r/g, '').split('\n')
+        let result = {}
+        let objects = {}
+        for(const line of lines) {
+            if(/^\[include\s(.*\.cfg)\]$/g.test(line)) {
+                const subFile = line.split(' ')[1].replace(']','')
+                const subData = this.parseConfig(path, subFile)
+                mergeDeep(result, subData)
+                continue
+            }
+
+            const header = line.match(/^\[([^\]]+)\]$/)
+            if(header) {
+                const name = header[1]
+                objects = {}
+                result[name] = objects
+                continue
+            }
+            const value = line.match(/^([^;][^=]*)=(.*)$/)
+            if(value) {
+                objects[value[1]] = value[2]
+            }
+        }
+
+        return result
+
+        //const keys = Object.keys(configData)
+        //console.log(configData)
+        //const includes = keys.filter((key) => {console.log(key)
+        //    console.log(/^include\s(.*\.cfg)$/g.test(key))
+        //    return /^include\s(.*\.cfg)$/g.test(key)})
+        //console.log(includes)
     }
 
     public getUserConfig() {
-        const config = ini.parse(readFileSync(this.configPath, {encoding: 'utf8'}))
+       // const config = ini.parse(readFileSync(this.configPath, {encoding: 'utf8'}))
         return JSON.parse(readFileSync(this.configLegacyPath, {encoding: 'utf8'}))
     }
 
