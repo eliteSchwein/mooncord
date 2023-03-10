@@ -58,6 +58,10 @@ export class ConfigHelper {
             }
             const header = line.match(/^\[([^\]]+)\]$/)
             if(header) {
+                if(objects[tempKey] !== undefined && objects[tempKey].length === 0) {
+                    objects[tempKey] = undefined
+                }
+                tempKey = undefined
                 const name = header[1]
                 objects = {}
                 result[name] = objects
@@ -71,6 +75,9 @@ export class ConfigHelper {
                     tempKey = value[1]
                     objects[value[1]] = []
                     continue
+                }
+                if(objects[tempKey] !== undefined && objects[tempKey].length === 0) {
+                    objects[tempKey] = undefined
                 }
                 if(!isNaN(numberValue)) {
                     objects[value[1]] = numberValue
@@ -88,8 +95,16 @@ export class ConfigHelper {
                 objects[value[1]] = realValue
                 continue
             }
-            if(tempKey !== undefined) {
-                objects[tempKey].push(line.trim())
+            if(tempKey !== undefined && objects[tempKey] !== undefined) {
+                const currentLine = line.trim()
+                if(currentLine.length === 0) {
+                    continue
+                }
+                console.log(currentLine)
+                objects[tempKey].push(currentLine)
+            }
+            if(objects[tempKey] !== undefined && objects[tempKey].length === 0) {
+                objects[tempKey] = undefined
             }
         }
 
