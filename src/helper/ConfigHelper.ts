@@ -33,6 +33,7 @@ export class ConfigHelper {
         const lines = file.replace(/\r/g, '').split('\n')
         let result = {}
         let objects = {}
+        let tempKey = undefined
         for(const line of lines) {
             if(/^\[include\s(.*\.cfg)\]$/g.test(line)) {
                 const subFile = line.split(' ')[1].replace(']','')
@@ -62,10 +63,15 @@ export class ConfigHelper {
                 result[name] = objects
                 continue
             }
-            const value = line.match(/^([^;][^=]*)=(.*)$/)
+            const value = line.match(/^([^;][^:]*):(.*)$/)
             if(value) {
                 const realValue = value[2]
                 const numberValue = Number(realValue)
+                if(realValue === '') {
+                    tempKey = value[1]
+                    objects[value[1]] = []
+                    continue
+                }
                 if(!isNaN(numberValue)) {
                     objects[value[1]] = numberValue
                     continue
@@ -78,7 +84,12 @@ export class ConfigHelper {
                     objects[value[1]] = false
                     continue
                 }
-                objects[value[1]] = value[2]
+                tempKey = undefined
+                objects[value[1]] = realValue
+                continue
+            }
+            if(tempKey !== undefined) {
+                objects[tempKey].push(line.trim())
             }
         }
 

@@ -41,6 +41,7 @@
         "buttons_use_syntax_locale": false
     },
     "permission": {
+        "devinfo": "MENEXT!",
         "controllers": {
             "roles": "",
             "users": ""
