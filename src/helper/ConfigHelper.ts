@@ -69,27 +69,32 @@ export class ConfigHelper {
             }
             const value = line.match(/^([^;][^:]*):(.*)$/)
             if(value) {
-                const realValue = value[2]
+                let realValue: any = value[2].trim()
                 const numberValue = Number(realValue)
+                const key = value[1].trim()
                 if(realValue === '') {
                     tempKey = value[1]
                     objects[value[1]] = []
                     continue
                 }
-                if(objects[tempKey] !== undefined && objects[tempKey].length === 0) {
-                    objects[tempKey] = undefined
-                }
                 if(!isNaN(numberValue)) {
-                    objects[value[1]] = numberValue
-                    continue
+                    realValue = numberValue
                 }
                 if(realValue === 'true') {
-                    objects[value[1]] = true
-                    continue
+                    realValue = true
                 }
                 if(realValue === 'false') {
-                    objects[value[1]] = false
+                    realValue = false
+                }
+                if(typeof realValue === 'string') {
+                    realValue = realValue.replace(/\'/g,'')
+                }
+                if(key.startsWith('- ')) {
+                    objects[tempKey].push({key: key.substring(2), value: realValue})
                     continue
+                }
+                if(objects[tempKey] !== undefined && objects[tempKey].length === 0) {
+                    objects[tempKey] = undefined
                 }
                 tempKey = undefined
                 objects[value[1]] = realValue
@@ -100,7 +105,6 @@ export class ConfigHelper {
                 if(currentLine.length === 0) {
                     continue
                 }
-                console.log(currentLine)
                 objects[tempKey].push(currentLine)
             }
             if(objects[tempKey] !== undefined && objects[tempKey].length === 0) {
