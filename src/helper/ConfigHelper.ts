@@ -69,27 +69,22 @@ export class ConfigHelper {
             }
             const value = line.match(/^([^;][^:]*):(.*)$/)
             if(value) {
-                let realValue: any = value[2].trim()
-                const numberValue = Number(realValue)
                 const key = value[1].trim()
+                let realValue = this.parseValue(value[2].trim())
+
+                if(key.startsWith('- {') && objects[tempKey] !== undefined) {
+                    realValue = this.parseValue(`${key}:${value[2].trim()}`)
+                    objects[tempKey].push(realValue)
+                    continue
+                }
+
                 if(realValue === '') {
                     tempKey = value[1]
                     objects[value[1]] = []
                     continue
                 }
-                if(!isNaN(numberValue)) {
-                    realValue = numberValue
-                }
-                if(realValue === 'true') {
-                    realValue = true
-                }
-                if(realValue === 'false') {
-                    realValue = false
-                }
-                if(typeof realValue === 'string') {
-                    realValue = realValue.replace(/\'/g,'')
-                }
-                if(key.startsWith('- ')) {
+
+                if(key.startsWith('- ') && objects[tempKey] !== undefined) {
                     objects[tempKey].push({key: key.substring(2), value: realValue})
                     continue
                 }
@@ -101,7 +96,7 @@ export class ConfigHelper {
                 continue
             }
             if(tempKey !== undefined && objects[tempKey] !== undefined) {
-                const currentLine = line.trim()
+                const currentLine = this.parseValue(line.trim())
                 if(currentLine.length === 0) {
                     continue
                 }
@@ -113,13 +108,37 @@ export class ConfigHelper {
         }
 
         return result
+    }
 
-        //const keys = Object.keys(configData)
-        //console.log(configData)
-        //const includes = keys.filter((key) => {console.log(key)
-        //    console.log(/^include\s(.*\.cfg)$/g.test(key))
-        //    return /^include\s(.*\.cfg)$/g.test(key)})
-        //console.log(includes)
+    private parseValue(value: string) {
+        let realValue: any = value
+
+        if(realValue === '') {
+            return undefined
+        }
+
+        if(realValue.startsWith('- ')) {
+            realValue = realValue.substring(2)
+        }
+
+        const numberValue = Number(value)
+        if(!isNaN(numberValue)) {
+            realValue = numberValue
+        }
+        if(realValue === 'true') {
+            realValue = true
+        }
+        if(realValue === 'false') {
+            realValue = false
+        }
+        if(typeof realValue === 'string' && realValue.match(/^\{.*\}/g)) {
+            realValue = JSON.parse(realValue)
+        }
+        if(typeof realValue === 'string') {
+            realValue = realValue.replace(/\'/g,'')
+        }
+
+        return realValue
     }
 
     public getUserConfig() {
