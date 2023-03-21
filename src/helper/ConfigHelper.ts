@@ -14,7 +14,7 @@ export class ConfigHelper {
         logRegular("load Config Cache...")
         const defaultLegacyConfig = readFileSync(path.resolve(__dirname, '../scripts/mooncord_full.json'), {encoding: 'utf8'})
         const defaultConfig = this.parseConfig(path.resolve(__dirname, '../scripts/'), 'mooncord_full.cfg')
-        console.log(defaultConfig)
+        console.log(JSON.stringify(defaultConfig))
         const config = JSON.parse(defaultLegacyConfig)
         mergeDeep(config, this.getUserConfig())
         setData('config', config)
@@ -70,17 +70,18 @@ export class ConfigHelper {
             const value = line.match(/^([^;][^:]*):(.*)$/)
             if(value) {
                 const key = value[1].trim()
+
+                if(value[2].trim() === '') {
+                    tempKey = value[1]
+                    objects[value[1]] = []
+                    continue
+                }
+
                 let realValue = this.parseValue(value[2].trim())
 
                 if(key.startsWith('- {') && objects[tempKey] !== undefined) {
                     realValue = this.parseValue(`${key}:${value[2].trim()}`)
                     objects[tempKey].push(realValue)
-                    continue
-                }
-
-                if(realValue === '') {
-                    tempKey = value[1]
-                    objects[value[1]] = []
                     continue
                 }
 
@@ -97,7 +98,7 @@ export class ConfigHelper {
             }
             if(tempKey !== undefined && objects[tempKey] !== undefined) {
                 const currentLine = this.parseValue(line.trim())
-                if(currentLine.length === 0) {
+                if(currentLine === undefined || currentLine.length === 0) {
                     continue
                 }
                 objects[tempKey].push(currentLine)
