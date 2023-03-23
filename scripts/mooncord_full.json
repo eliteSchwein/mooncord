@@ -41,7 +41,6 @@
         "buttons_use_syntax_locale": false
     },
     "permission": {
-        "devinfo": "MENEXT!",
         "controllers": {
             "roles": "",
             "users": ""
@@ -499,6 +498,7 @@
         "sepia": false
     },
     "notifications": {
+        "devinfo": "MENEXT!",
         "blacklist": [],
         "moonraker_throttle": true,
         "timelapse": true,
