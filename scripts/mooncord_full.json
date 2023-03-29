@@ -498,7 +498,6 @@
         "sepia": false
     },
     "notifications": {
-        "devinfo": "MENEXT!",
         "blacklist": [],
         "moonraker_throttle": true,
         "timelapse": true,
@@ -543,6 +542,7 @@
         }
     },
     "embed_meta": {
+        "devinfo": "HERE!!!",
         "execute_unknown": {
             "thumbnail": "execute.png",
             "color": "#c90000"
