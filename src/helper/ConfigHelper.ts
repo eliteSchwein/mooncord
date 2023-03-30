@@ -79,6 +79,25 @@ export class ConfigHelper {
 
                 let realValue = this.parseValue(value[2].trim())
 
+                if(key.match(/[0-9]+_/g)) {
+                    const index = Number(key.match(/[0-9]+/g)) - 1
+                    const objectRawKey = key.replace(/[0-9]+/g, '')
+                    const objectKeys = objectRawKey.split('_')
+                    const objectKey = objectKeys[0]
+                    const objectKeyValue = objectKeys[1]
+
+                    if(objects[objectKey] === undefined) {
+                        objects[objectKey] = []
+                    }
+
+                    if(objects[objectKeys[0]][index] === undefined) {
+                        objects[objectKeys[0]].push({[objectKeyValue]: realValue})
+                    } else {
+                        objects[objectKeys[0]][index][objectKeyValue] = realValue
+                    }
+                    continue
+                }
+
                 if(key.startsWith('- {') && objects[tempKey] !== undefined) {
                     realValue = this.parseValue(`${key}:${value[2].trim()}`)
                     objects[tempKey].push(realValue)
