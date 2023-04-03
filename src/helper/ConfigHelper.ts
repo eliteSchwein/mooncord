@@ -7,17 +7,14 @@ import {logError, logRegular, logWarn} from "./LoggerHelper";
 const args = process.argv.slice(2)
 
 export class ConfigHelper {
-    protected configLegacyPath = `${args[0]}/mooncord.json`
     protected configPath = `${args[0]}/mooncord.cfg`
 
     public loadCache() {
         logRegular("load Config Cache...")
-        const defaultLegacyConfig = readFileSync(path.resolve(__dirname, '../scripts/mooncord_full.json'), {encoding: 'utf8'})
         const defaultConfig = this.parseConfig(path.resolve(__dirname, '../scripts/'), 'mooncord_full.cfg')
-        console.log(JSON.stringify(defaultConfig))
-        const config = JSON.parse(defaultLegacyConfig)
-        mergeDeep(config, this.getUserConfig())
-        setData('config', config)
+        console.log(defaultConfig)
+        mergeDeep(defaultConfig, this.getUserConfig())
+        setData('config', defaultConfig)
     }
 
     public getConfig() {
@@ -29,7 +26,8 @@ export class ConfigHelper {
             logError(`Config File ${path}/${filename} is not present, skipping!`)
             return {}
         }
-        const file = readFileSync(`${path}/${filename}`, {encoding: "utf-8"})
+        let file = readFileSync(`${path}/${filename}`, {encoding: "utf-8"})
+        file = file.replace(/#.*/g, '')
         const lines = file.replace(/\r/g, '').split('\n')
         let result = {}
         let objects = {}
@@ -162,14 +160,15 @@ export class ConfigHelper {
     }
 
     public getUserConfig() {
-       // const config = ini.parse(readFileSync(this.configPath, {encoding: 'utf8'}))
-        return JSON.parse(readFileSync(this.configLegacyPath, {encoding: 'utf8'}))
+        return this.parseConfig(this.configPath, 'mooncord.cfg')
     }
 
     public writeUserConfig(modifiedConfig) {
         updateData('config', modifiedConfig)
 
-        writeFileSync(this.configLegacyPath, JSON.stringify(modifiedConfig, null, 4), {encoding: 'utf8', flag: 'w+'})
+        logWarn('write config is currently unsupported!')
+
+        //writeFileSync(this.configLegacyPath, JSON.stringify(modifiedConfig, null, 4), {encoding: 'utf8', flag: 'w+'})
     }
 
     public getPermissions() {
