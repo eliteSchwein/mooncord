@@ -7,13 +7,13 @@ import {logError, logRegular, logWarn} from "./LoggerHelper";
 const args = process.argv.slice(2)
 
 export class ConfigHelper {
-    protected configPath = `${args[0]}/mooncord.cfg`
+    protected configPath = args[0]
 
     public loadCache() {
         logRegular("load Config Cache...")
         const defaultConfig = this.parseConfig(path.resolve(__dirname, '../scripts/'), 'mooncord_full.cfg')
-        console.log(defaultConfig)
         mergeDeep(defaultConfig, this.getUserConfig())
+        console.log(defaultConfig)
         setData('config', defaultConfig)
     }
 

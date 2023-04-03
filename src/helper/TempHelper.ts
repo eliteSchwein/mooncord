@@ -10,13 +10,143 @@ export class TempHelper {
     protected cache = getEntry('state')
     protected configHelper = new ConfigHelper()
     protected localeHelper = new LocaleHelper()
-    protected tempMeta = this.configHelper.getTempMeta()
     protected chartConfigSection = this.configHelper.getGraphConfig('temp_history')
     protected locale = this.localeHelper.getLocale()
     protected tempCache = getEntry('temps')
     protected functionCache = getEntry('function')
     protected notificationHelper = new NotificationHelper()
     protected colorIndex = 0
+    protected tempMeta = {
+        "cold_meta": {
+            "icon": "cold",
+            "hot_temp": 50
+        },
+        "slow_fan_meta": {
+            "icon": "slow_fan",
+            "fast_fan": 1
+        },
+        "fan_types": [
+            "temperature_fan",
+            "controller_fan",
+            "heater_fan",
+            "fan_generic",
+            "fan"
+        ],
+        "heater_types": [
+            "temperature_fan",
+            "heater_generic",
+            "heater_bed",
+            "heater",
+            "extruder"
+        ],
+        "hide_types": [
+            "temperature_sensor",
+            "temperature_fan",
+            "controller_fan",
+            "fan_generic"
+        ],
+        "temperature_sensors": [
+            "heater_generic",
+            "heater_bed",
+            "heater",
+            "extruder",
+            "temperature_sensor",
+            "temperature_fan"
+        ],
+        "supported_sensors": [
+            "heater_generic",
+            "heater_bed",
+            "heater",
+            "extruder",
+            "fan_generic",
+            "heater_fan",
+            "controller_fan",
+            "temperature_sensor",
+            "temperature_fan",
+            "fan"
+        ],
+        "minimal_supported_sensors": [
+            "heater_bed",
+            "extruder",
+            "fan"
+        ],
+        "alliases": {
+            "heater_generic": "heater",
+            "heater_bed": "heater",
+            "extruder": "heater",
+            "fan_generic": "fan",
+            "heater_fan": "fan",
+            "controller_fan": "fan"
+        },
+        "temperature_sensor": {
+            "icon": "temp_sensor",
+            "fields": {
+                "temperature": {
+                    "label": "${embeds.fields.temp}",
+                    "suffix": "${config.general.temp_unit}"
+                },
+                "measured_min_temp": {
+                    "label": "${embeds.fields.min}",
+                    "suffix": "${config.general.temp_unit}"
+                },
+                "measured_max_temp": {
+                    "label": "${embeds.fields.max}",
+                    "suffix": "${config.general.temp_unit}"
+                }
+            }
+        },
+        "temperature_fan": {
+            "icon": "hot",
+            "fields": {
+                "power": {
+                    "label": "${embeds.fields.power}",
+                    "suffix": "%"
+                },
+                "target": {
+                    "label": "${embeds.fields.target}",
+                    "suffix": "${config.general.temp_unit}"
+                },
+                "temperature": {
+                    "label": "${embeds.fields.temp}",
+                    "suffix": "${config.general.temp_unit}"
+                },
+                "rpm": {
+                    "label": "${embeds.fields.speed}",
+                    "suffix": "rpm"
+                }
+            }
+        },
+        "heater": {
+            "icon": "hot",
+            "fields": {
+                "power": {
+                    "label": "${embeds.fields.power}",
+                    "suffix": "%"
+                },
+                "target": {
+                    "label": "${embeds.fields.target}",
+                    "suffix": "${config.general.temp_unit}"
+                },
+                "temperature": {
+                    "label": "${embeds.fields.temp}",
+                    "suffix": "${config.general.temp_unit}"
+                }
+            }
+        },
+        "fan": {
+            "icon": "fast_fan",
+            "fields": {
+                "speed": {
+                    "label": "${embeds.fields.power}",
+                    "suffix": "%"
+                },
+                "rpm": {
+                    "label": "${embeds.fields.speed}",
+                    "suffix": "rpm"
+                }
+            }
+        }
+    }
 
     public generateColors(cache: any) {
         this.cache = cache
