@@ -32,7 +32,7 @@ export class DiscordCommandGenerator {
     }
 
     public getCustomCommandData(key: string) {
-        const customCommandsConfig = this.configHelper.getCustomCommands()
+        const customCommandsConfig = this.configHelper.getEntriesByFilter(/^command.*/g)
         return customCommandsConfig[key]
     }
 
@@ -209,7 +209,7 @@ export class DiscordCommandGenerator {
     }
 
     private getCustomCommandStructure() {
-        const customCommandsConfig = this.configHelper.getCustomCommands()
+        const customCommandsConfig = this.configHelper.getEntriesByFilter(/^command.*/g)
         const customCommands = {}
 
         for (const name of Object.keys(customCommandsConfig)) {

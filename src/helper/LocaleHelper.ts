@@ -67,8 +67,9 @@ export class LocaleHelper {
     }
 
     protected loadLocales() {
-        const localePath = path.resolve(__dirname, `../locales/${this.config.getLocale()}.json`)
-        const syntaxLocalePath = path.resolve(__dirname, `../locales/${this.config.getSyntaxLocale()}.json`)
+        const localeConfig = this.config.getLocale()
+        const localePath = path.resolve(__dirname, `../locales/${localeConfig.locale}.json`)
+        const syntaxLocalePath = path.resolve(__dirname, `../locales/${localeConfig.syntax}.json`)
 
         const localeRaw = readFileSync(localePath, {encoding: 'utf8'})
         const syntaxLocaleRaw = readFileSync(syntaxLocalePath, {encoding: 'utf8'})

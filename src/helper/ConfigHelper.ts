@@ -212,15 +212,15 @@ export class ConfigHelper {
     }
 
     public getLocale() {
-        return this.getConfig().language.messages
-    }
-
-    public getSyntaxLocale() {
-        return this.getConfig().language.command_syntax
+        const section = this.getEntriesByFilter(/^language$/g)[0]
+        return {
+            'locale': section.messages,
+            'syntax': section.commands
+        }
     }
 
     public isButtonSyntaxLocale() {
-        return this.getConfig().language.buttons_use_syntax_locale
+        return this.getEntriesByFilter(/^language$/g)[0].buttons_use_commands_language
     }
 
     public getWebcamUrl() {
@@ -353,23 +353,33 @@ export class ConfigHelper {
         return this.getConfig().graph.service
     }
 
-    public getCustomCommands() {
-        return this.getConfig().commands
-    }
-
     public getTempTargetNotificationConfig() {
         return this.getConfig().notifications.temp_target_notification
     }
 
     public getIcons(filter: RegExp) {
         const result = []
-
         const config = this.getConfig()
 
         for (const key in config) {
             if(!key.match(/icon.*/g)) {
                 continue
             }
+            if(!key.match(filter)) {
+                continue
+            }
+
+            result.push(config[key])
+        }
+
+        return result
+    }
+
+    public getEntriesByFilter(filter: RegExp) {
+        const result = []
+        const config = this.getConfig()
+
+        for (const key in config) {
             if(!key.match(filter)) {
                 continue
             }
