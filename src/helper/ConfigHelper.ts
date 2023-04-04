@@ -337,10 +337,6 @@ export class ConfigHelper {
         return this.getConfig().notifications.timelapse
     }
 
-    public useDevDatabase() {
-        return this.getConfig().development.dev_database
-    }
-
     public getM117NotifactionConfig() {
         return this.getConfig().notifications.m117_notification
     }
@@ -363,5 +359,24 @@ export class ConfigHelper {
 
     public getTempTargetNotificationConfig() {
         return this.getConfig().notifications.temp_target_notification
+    }
+
+    public getIcons(filter: RegExp) {
+        const result = []
+
+        const config = this.getConfig()
+
+        for (const key in config) {
+            if(!key.match(/icon.*/g)) {
+                continue
+            }
+            if(!key.match(filter)) {
+                continue
+            }
+
+            result.push(config[key])
+        }
+
+        return result
     }
 }

@@ -15,7 +15,6 @@ let database: any
 export class DatabaseUtil {
     protected config = new ConfigHelper()
     protected moonrakerClient = getMoonrakerClient()
-    protected nameSpace = (this.config.useDevDatabase() ? 'mooncord_dev' : 'mooncord')
 
     public async retrieveDatabase() {
         logEmpty()
@@ -23,7 +22,7 @@ export class DatabaseUtil {
 
         const databaseRequest = await this.moonrakerClient.send({
             "method": "server.database.get_item",
-            "params": {"namespace": this.nameSpace, "key": "dataset"}
+            "params": {"namespace": "mooncord", "key": "dataset"}
         })
 
         if (typeof databaseRequest.error !== 'undefined') {
@@ -37,7 +36,7 @@ export class DatabaseUtil {
     public async resetDatabase() {
         void await this.moonrakerClient.send({
             "method": "server.database.delete_item",
-            "params": {"namespace": this.nameSpace, "key": "dataset"}
+            "params": {"namespace": "mooncord", "key": "dataset"}
         })
 
         logWarn('Database wiped')
@@ -48,7 +47,7 @@ export class DatabaseUtil {
     public async updateDatabase() {
         const updateRequest = await this.moonrakerClient.send({
             "method": "server.database.post_item",
-            "params": {"namespace": this.nameSpace, "key": "dataset", "value": database}
+            "params": {"namespace": "mooncord", "key": "dataset", "value": database}
         })
 
         if (typeof updateRequest.error !== 'undefined') {
