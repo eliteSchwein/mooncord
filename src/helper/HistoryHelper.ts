@@ -4,11 +4,13 @@ import {logRegular} from "./LoggerHelper";
 import {ConfigHelper} from "./ConfigHelper";
 import {LocaleHelper} from "./LocaleHelper";
 import {MoonrakerClient} from "../clients/MoonrakerClient";
+import HistoryGraph from "./graphs/HistoryGraph";
 
 export class HistoryHelper {
     protected moonrakerClient = getMoonrakerClient()
     protected configHelper = new ConfigHelper()
     protected localeHelper = new LocaleHelper()
+    protected historyGraph = new HistoryGraph()
     protected locale = this.localeHelper.getLocale()
     protected printJobs = {
         jobs: [],
@@ -74,7 +76,7 @@ export class HistoryHelper {
     }
 
     public parseFields() {
-        const chartConfigSection = this.configHelper.getGraphConfig('history_graph')
+        const chartConfigSection = this.historyGraph.getIcons()
         const printStats = this.getPrintStats()
         const fields = []
 
@@ -88,7 +90,7 @@ export class HistoryHelper {
             }
 
             valueData.push(`\`${this.locale.embeds.fields.count}\`:${printStatCount}`)
-            valueData.push(`\`${this.locale.embeds.fields.color}\`:${chartConfigSection.colors[printStat].icon}`)
+            valueData.push(`\`${this.locale.embeds.fields.color}\`:${chartConfigSection[printStat].icon}`)
 
             fieldData.value = valueData.join('\n')
 

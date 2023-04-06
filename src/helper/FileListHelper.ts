@@ -3,10 +3,12 @@ import {logRegular} from "./LoggerHelper";
 import {MoonrakerClient} from "../clients/MoonrakerClient";
 import {MetadataHelper} from "./MetadataHelper";
 import {ConfigHelper} from "./ConfigHelper";
+import HistoryGraph from "./graphs/HistoryGraph";
 
 export class FileListHelper {
     protected moonrakerClient
     protected metadataHelper = new MetadataHelper()
+    protected historyGraph = new HistoryGraph()
     protected configHelper = new ConfigHelper()
 
     public constructor(moonrakerClient: MoonrakerClient) {
@@ -58,7 +60,7 @@ export class FileListHelper {
                 }
 
                 const jobs = historyCache.jobs.jobs
-                const chartConfigSection = this.configHelper.getGraphConfig('history_graph')
+                const chartConfigSection = this.historyGraph.getIcons()
                 const iconConfig = chartConfigSection.colors
 
                 for(const resultPartial of result) {

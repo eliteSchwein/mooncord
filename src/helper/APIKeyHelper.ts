@@ -10,7 +10,7 @@ export class APIKeyHelper {
         const apiKey = this.config.getMoonrakerApiKey()
         const url = this.config.getMoonrakerUrl()
 
-        if (apiKey === '') {
+        if (apiKey === '' || apiKey === undefined) {
             return ''
         }
 

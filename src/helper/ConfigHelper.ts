@@ -338,19 +338,11 @@ export class ConfigHelper {
     }
 
     public getM117NotifactionConfig() {
-        return this.getConfig().notifications.m117_notification
+        return this.getConfig().notifications.gcode_notifications
     }
 
     public getGcodeExecuteTimeout() {
         return this.getConfig().status.gcode_timeout
-    }
-
-    public getGraphConfig(graph: string) {
-        return this.getConfig().graph_meta[graph]
-    }
-
-    public getGraphService() {
-        return this.getConfig().graph.service
     }
 
     public getTempTargetNotificationConfig() {

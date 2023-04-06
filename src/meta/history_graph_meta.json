@@ -1,0 +1,9 @@
+{
+  "icons": [
+    "klippy_shutdown",
+    "error",
+    "cancelled",
+    "completed",
+    "in_progress"
+  ]
+}
