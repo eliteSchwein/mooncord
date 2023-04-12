@@ -237,9 +237,9 @@ export class TempHelper {
             return
         }
 
-        const config = this.configHelper.getTempTargetNotificationConfig()
+        const config = this.configHelper.getConfig().notifications
 
-        if (!config.enable) {
+        if (!config.temp_notifications) {
             return
         }
 
@@ -268,9 +268,9 @@ export class TempHelper {
                 tempTargets[heater] = {
                     temp,
                     target,
-                    offset: config.temp_offset,
-                    duration: config.temp_duration,
-                    delay: config.delay,
+                    offset: config.temp_notification_offset,
+                    duration: config.temp_notification_duration,
+                    delay: config.temp_notification_delay,
                     sended: false
                 }
             }
@@ -286,14 +286,14 @@ export class TempHelper {
 
         const tempTargets = this.functionCache.temp_targets
 
-        const config = this.configHelper.getTempTargetNotificationConfig()
+        const config = this.configHelper.getConfig().notifications
 
         this.localeHelper = new LocaleHelper()
         this.locale = this.localeHelper.getLocale()
 
         this.notificationHelper = new NotificationHelper()
 
-        if (!config.enable) {
+        if (!config.temp_notifications) {
             return
         }
 
@@ -310,8 +310,8 @@ export class TempHelper {
             if (heaterData.temp > minTemp && heaterData.temp < maxTemp && heaterData.duration !== 0) {
                 tempTargets[heater].duration--
                 continue
-            } else if (heaterData.duration !== 0 && heaterData.delay === config.delay) {
-                tempTargets[heater].duration = config.temp_duration
+            } else if (heaterData.duration !== 0 && heaterData.delay === config.temp_notification_delay) {
+                tempTargets[heater].duration = config.temp_notification_duration
                 continue
             }
 

@@ -60,8 +60,7 @@ export class FileListHelper {
                 }
 
                 const jobs = historyCache.jobs.jobs
-                const chartConfigSection = this.historyGraph.getIcons()
-                const iconConfig = chartConfigSection.colors
+                const iconConfig = this.historyGraph.getIcons()
 
                 for(const resultPartial of result) {
                     let partialJobs = jobs.filter((element) => {return resultPartial.path === element.filename})

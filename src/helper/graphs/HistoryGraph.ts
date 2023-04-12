@@ -5,17 +5,18 @@ export default class HistoryGraph {
     protected configHelper = new ConfigHelper()
 
     public getIcons() {
-        const icons = {}
+        const icons:any = {}
 
         for(const iconKey of metaData.icons) {
             const iconData = this.configHelper.getIcons(new RegExp(`${iconKey}`, 'g'))
 
-            console.log(iconKey)
+            if(iconData.length === 0) {
+                continue
+            }
+
+            icons[iconKey] = iconData[0]
         }
 
-        console.log('history graph icons')
-        console.log(metaData.icons)
-
-        return this.configHelper.getIcons(/temp\d+$/g)
+        return icons
     }
 }

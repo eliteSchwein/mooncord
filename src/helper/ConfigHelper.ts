@@ -280,7 +280,7 @@ export class ConfigHelper {
     }
 
     public getTempPath() {
-        const temppath = this.getConfig().tmp_path
+        const temppath = this.getConfig().logger.tmp_path
 
         if (!existsSync(temppath)) {
             mkdirSync(temppath)
@@ -318,7 +318,7 @@ export class ConfigHelper {
     }
 
     public getDiscordRequestTimeout() {
-        return this.getConfig().discord.request_timeout
+        return this.getConfig().connection.discord_request_timeout
     }
 
     public getEntriesPerPage() {
@@ -343,10 +343,6 @@ export class ConfigHelper {
 
     public getGcodeExecuteTimeout() {
         return this.getConfig().status.gcode_timeout
-    }
-
-    public getTempTargetNotificationConfig() {
-        return this.getConfig().notifications.temp_target_notification
     }
 
     public getIcons(filter: RegExp) {
