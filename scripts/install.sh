@@ -143,7 +143,7 @@ install_packages()
 
         status_msg "Install Dependencies, this will take some time please wait....."
         sudo npm i -g npm@latest
-        npm ci --only=prod
+        npm ci --omit=dev
     else
         status_msg "NodeJS found, do you want to update it?"
         while true; do
