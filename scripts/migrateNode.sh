@@ -47,6 +47,6 @@ status_msg "Update NPM"
 sudo npm install -g npm@latest node-gyp@latest
 
 status_msg "Install Dependencies, this will take some time please wait....."
-npm ci --only=prod
+npm ci --omit=dev
 
 ok_msg "Please regenerate the Service with bash scripts/generateService.sh, if you used a custom path or service suffix, the arguments from the install script work also on the generate Service script"
