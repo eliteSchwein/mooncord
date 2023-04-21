@@ -92,10 +92,10 @@ export class StatusHelper {
 
         const currentStatusMeta = this.statusMeta[currentStatus]
         const statusMeta = this.statusMeta[status]
-        if (!currentStatusMeta.meta_data.allow_same && status === currentStatus) {
+        if (!currentStatusMeta.allow_same && status === currentStatus) {
             return
         }
-        if (currentStatusMeta.meta_data.prevent.includes(status)) {
+        if (currentStatusMeta.prevent !== undefined && currentStatusMeta.prevent.includes(status)) {
             return
         }
         if (status === 'printing' && !this.checkPercentSame()) {

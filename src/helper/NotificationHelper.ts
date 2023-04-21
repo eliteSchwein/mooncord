@@ -56,9 +56,13 @@ export class NotificationHelper {
     }
 
     public isEmbedBlocked(embedId: string) {
-        const config = this.configHelper.getConfig()
+        const blacklist = this.configHelper.getEntriesByFilter(/^notifications/g)[0].embed_blacklist
 
-        return config.notifications.blacklist.includes(embedId)
+        if(blacklist === undefined) {
+            return false
+        }
+
+        return blacklist.includes(embedId)
     }
 
     protected getEntries() {

@@ -96,7 +96,7 @@
             "title": "Historia Druku"
         },
         "notification": {
-            "content": "Drukarka ${config.printer_name} Powiadomienie",
+            "content": "Drukarka Powiadomienie",
             "title": "Powiadomienie"
         },
         "printjob_start_request": {
@@ -142,7 +142,7 @@
             "title": "Temperatury dla ${heater}"
         },
         "disconnected": {
-            "content": "Drukarka ${config.printer_name} została rozłączona z Klipperem!",
+            "content": "Drukarka została rozłączona z Klipperem!",
             "title": "Drukarka nie jest podłączona",
             "activity": "Oczekiwanie na Klippera"
         },
@@ -167,27 +167,27 @@
             "activity": "Oczekiwanie na Klippera"
         },
         "ready": {
-            "content": "Drukarka ${config.printer_name} jest gotowa do wydruku",
+            "content": "Drukarka jest gotowa do wydruku",
             "title": "Drukarka jest gotowa",
             "activity": "na plik GCODE..."
         },
         "startup": {
-            "content": "Drukarka ${config.printer_name} uruchamia się",
+            "content": "Drukarka uruchamia się",
             "title": "Uruchamianie drukarki",
             "activity": "Uruchamianie drukarki"
         },
         "throttle_temperature_limit_active": {
-            "content": "System drukarki ${config.printer_name} jest obecnie ograniczony wydajnościowo",
+            "content": "System drukarki jest obecnie ograniczony wydajnościowo",
             "title": "Wystąpił Throttling!",
             "description": "System jest obecnie obraniczony wydajnościowo po przez osiągnięcie `Limitu Temperatury`!\nObecna Temperatura: `${proc_stats.cpu_temp} °C`\nSprawdz swoje chłodzenie."
         },
         "throttle_under_voltage_detected": {
-            "content": "System drukarki ${config.printer_name} jest obecnie ograniczony wydajnościowo",
+            "content": "System drukarki jest obecnie ograniczony wydajnościowo",
             "title": "Wystąpił Throttling!",
             "description": "System jest obecnie obraniczony wydajnościowo przez `Nie Wystarczające Napięcie`!\nSprawdz swoje źródło zasilania."
         },
         "throttle_frequency_capped": {
-            "content": "System drukarki ${config.printer_name} jest obecnie ograniczony wydajnościowo",
+            "content": "System drukarki jest obecnie ograniczony wydajnościowo",
             "title": "Wystąpił Throttling!",
             "description": "System jest obecnie obraniczony wydajnościowo przez osiągnięcie `Ograniczenia częstotliwości`!\nSprawdz swoje chłodzenie lub/i źródło zasilania."
         },

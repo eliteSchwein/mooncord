@@ -3,14 +3,19 @@ import {logEmpty, logError, logRegular, logSuccess, logWarn} from '../helper/Log
 import {getMoonrakerClient} from "../Application";
 import path from "path";
 import {writeFile} from "fs/promises";
+import {mergeDeep} from "../helper/DataHelper";
 
 const defaultDatabase = {
     'guilds': {},
     'notify': [],
+    'permissions': {
+        'controllers': [],
+        'admins': []
+    },
     'invite_url': ''
 }
 
-let database: any
+let database: any = {}
 
 export class DatabaseUtil {
     protected config = new ConfigHelper()
@@ -31,6 +36,10 @@ export class DatabaseUtil {
         }
 
         database = databaseRequest.result.value
+
+        database = mergeDeep(defaultDatabase, database)
+
+        await this.updateDatabase()
     }
 
     public async resetDatabase() {

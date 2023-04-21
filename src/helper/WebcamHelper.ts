@@ -12,11 +12,21 @@ export class WebcamHelper {
     protected configHelper = new ConfigHelper()
     protected moonrakerClient: MoonrakerClient
 
-    public async retrieveWebcam(moonrakerClient: MoonrakerClient) {
+    public async retrieveWebcam(moonrakerClient: MoonrakerClient, name = 'default') {
         this.moonrakerClient = moonrakerClient
 
-        const beforeStatus = this.configHelper.getStatusBeforeTasks()
-        const afterStatus = this.configHelper.getStatusAfterTasks()
+        const webcamData = this.configHelper.getEntriesByFilter(/^webcam$/g)[0][name]
+
+        const beforeStatus = {
+            'enable': webcamData.enable_before_snapshot_commands,
+            'execute': webcamData.before_snapshot_commands,
+            'delay': webcamData.delay_before_snapshot_commands
+        }
+        const afterStatus = {
+            'enable': webcamData.enable_after_snapshot_commands,
+            'execute': webcamData.after_snapshot_commands,
+            'delay': webcamData.delay_after_snapshot_commands
+        }
 
         logRegular('Run Webcam pre Tasks if present...')
         await this.executePostProcess(beforeStatus)
@@ -26,40 +36,45 @@ export class WebcamHelper {
             const res = await axios({
                 method: 'get',
                 responseType: 'arraybuffer',
-                url: this.configHelper.getWebcamUrl(),
+                url: webcamData.url,
                 timeout: 2000
             })
+
+            if(!res.headers['content-type'].startsWith('image')) {
+                throw new Error('the Webcam URL is not a static image!')
+            }
+
             const buffer = Buffer.from(res.data, 'binary')
 
-            // Only run Jimp if they want the image modifed
+            // Only run Sharp if they want the image modifed
             if (
-                this.configHelper.getWebcamBrightness() ||
-                this.configHelper.getWebcamContrast() ||
-                this.configHelper.isWebcamGreyscale() ||
-                this.configHelper.isWebcamHorizontalMirrored() ||
-                this.configHelper.getWebcamRotation() ||
-                this.configHelper.isWebcamSepia() ||
-                this.configHelper.isWebcamVerticalMirrored()
+                webcamData.brightness ||
+                webcamData.contrast ||
+                webcamData.greyscale ||
+                webcamData.horizontal_mirror ||
+                webcamData.rotation ||
+                webcamData.sepia ||
+                webcamData.vertical_mirror
             ) {
                 const image = sharp(Buffer.from(buffer))
 
                 image
-                    .rotate(this.configHelper.getWebcamRotation())
-                    .flip(this.configHelper.isWebcamVerticalMirrored())
-                    .flop(this.configHelper.isWebcamHorizontalMirrored())
-                    .greyscale(this.configHelper.isWebcamGreyscale())
+                    .rotate(webcamData.rotation)
+                    .flip(webcamData.vertical_mirror)
+                    .flop(webcamData.horizontal_mirror)
+                    .greyscale(webcamData.greyscale)
 
-                if (this.configHelper.getWebcamBrightness()) {
+                if (webcamData.brightness) {
                     image.modulate({
-                        brightness: (this.configHelper.getWebcamBrightness() + 1)
+                        brightness: (webcamData.brightness + 1)
                     })
                 }
 
-                if (this.configHelper.getWebcamContrast()) {
-                    image.linear(this.configHelper.getWebcamContrast() + 1, -(128 * (this.configHelper.getWebcamContrast() + 1)) + 128)
+                if (webcamData.contrast) {
+                    image.linear(webcamData.contrast + 1, -(128 * (webcamData.contrast + 1)) + 128)
                 }
 
-                if (this.configHelper.isWebcamSepia()) {
+                if (webcamData.sepia) {
                     image.recomb([
                         [0.3588, 0.7044, 0.1368],
                         [0.299, 0.587, 0.114],
@@ -68,7 +83,7 @@ export class WebcamHelper {
                 }
 
                 image.png({
-                    quality: this.configHelper.getWebcamQuality()
+                    quality: webcamData.quality
                 })
 
                 const editBuffer = await image.toBuffer()
@@ -91,7 +106,7 @@ export class WebcamHelper {
 
             logEmpty()
             logError('Webcam Error:')
-            logError(`Url: ${this.configHelper.getWebcamUrl()}`)
+            logError(`Url: ${webcamData.url}`)
             logError(`Error: ${reason}`)
             if (this.configHelper.traceOnWebErrors()) {
                 logError(trace)

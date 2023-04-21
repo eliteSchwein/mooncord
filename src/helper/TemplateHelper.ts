@@ -27,41 +27,28 @@ export class TemplateHelper {
 
     public parseRawTemplate(type: string, id: string) {
         const unformattedData = Object.assign({}, getEntry(`${type}s`)[id])
+        const partials = unformattedData.partials
 
-        if (unformattedData.show_versions) {
-            unformattedData.fields = [...unformattedData.fields, ...this.versionHelper.getFields()]
+        if(unformattedData.fields === undefined) {
+            unformattedData.fields = []
         }
 
-        if (unformattedData.show_updates) {
-            unformattedData.fields = [...unformattedData.fields, ...this.versionHelper.getUpdateFields()]
-        }
-
-        if (unformattedData.show_temps) {
-            unformattedData.fields = [...unformattedData.fields, ...this.tempHelper.parseFields().fields]
-        }
-
-        if (unformattedData.show_minimal_temps) {
-            unformattedData.fields = [...unformattedData.fields, ...this.tempHelper.parseFields(true).fields]
-        }
-
-        if (unformattedData.show_print_history) {
-            unformattedData.fields = [...unformattedData.fields, ...this.historyHelper.parseFields()]
-        }
-
-        if (unformattedData.show_power_devices) {
-            unformattedData.fields = [...unformattedData.fields, ...this.powerDeviceHelper.parseFields()]
+        if(unformattedData.partials !== undefined) {
+            unformattedData.fields = this.parsePartials(partials, unformattedData.fields)
         }
 
         if (unformattedData.buttons) {
             unformattedData.buttons = this.getInputData('buttons', unformattedData.buttons)
         }
 
-        if (unformattedData.selections) {
-            unformattedData.selections = this.getInputData('selections', unformattedData.selections)
+        if (unformattedData.select_menus) {
+            unformattedData.selections = this.getInputData('selections', unformattedData.select_menus)
+            delete unformattedData.select_menus
         }
 
-        if (unformattedData.inputs) {
-            unformattedData.inputs = this.getInputData('inputs', unformattedData.inputs)
+        if (unformattedData.textinputs) {
+            unformattedData.inputs = this.getInputData('inputs', unformattedData.textinputs)
+            delete unformattedData.textinputs
         }
 
         if (unformattedData.add_temp_inputs) {
@@ -79,6 +66,34 @@ export class TemplateHelper {
         }
 
         return unformattedData
+    }
+
+    protected parsePartials(partials: any[], fields: any[]) {
+        if (partials.includes('versions')) {
+            fields = [...fields, ...this.versionHelper.getFields()]
+        }
+
+        if (partials.includes('updates')) {
+            fields = [...fields, ...this.versionHelper.getUpdateFields()]
+        }
+
+        if (partials.includes('temps')) {
+            fields = [...fields, ...this.tempHelper.parseFields().fields]
+        }
+
+        if (partials.includes('minimal_temp')) {
+            fields = [...fields, ...this.tempHelper.parseFields(true).fields]
+        }
+
+        if (partials.includes('print_history')) {
+            fields = [...fields, ...this.historyHelper.parseFields()]
+        }
+
+        if (partials.includes('power_devices')) {
+            fields = [...fields, ...this.powerDeviceHelper.parseFields()]
+        }
+
+        return fields
     }
 
     public async parseTemplate(type: string, id: string, providedPlaceholders = null, providedFields = null, providedValues = null) {

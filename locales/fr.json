@@ -96,7 +96,7 @@
             "title": "Historique d'impression"
         },
         "notification": {
-            "content": "Notification de l'imprimante ${config.printer_name} ",
+            "content": "Notification de l'imprimante ",
             "title": "Notification"
         },
         "printjob_start_request": {
@@ -142,7 +142,7 @@
             "title": "Temperature for ${heater}"
         },
         "disconnected": {
-            "content": "L'imprimante ${config.printer_name} a été déconnectée Klipper !",
+            "content": "L'imprimante a été déconnectée Klipper !",
             "title": "Imprimante déconnectée !",
             "activity": "en attente de Klipper"
         },
@@ -167,27 +167,27 @@
             "activity": "en attente de Klipper"
         },
         "ready": {
-            "content": "L'imprimante ${config.printer_name} est prête à imprimer",
+            "content": "L'imprimante est prête à imprimer",
             "title": "Impression prête",
             "activity": "pour le fichier GCODE..."
         },
         "startup": {
-            "content": "L'imprimante ${config.printer_name} démarre",
+            "content": "L'imprimante démarre",
             "title": "Démarrage de l'impression",
             "activity": "L'impression commance"
         },
         "throttle_temperature_limit_active": {
-            "content": "Le système de l'imprimante ${config.printer_name} est actuellement bridé",
+            "content": "Le système de l'imprimante est actuellement bridé",
             "title": "Un ralentissement s'est produit !",
             "description": "Le système est actuellement ralentis à cause de `Temperature Throttle`!\nCurrent Temperature: `${proc_stats.cpu_temp} °C`\nVeuillez vérifier votre refroidissement."
         },
         "throttle_under_voltage_detected": {
-            "content": "Le système de l'imprimante ${config.printer_name} est actuellement bridé",
+            "content": "Le système de l'imprimante est actuellement bridé",
             "title": "Un ralentissement s'est produit !",
             "description": "Le système est actuellement ralentis à cause de `Under Voltage`!\nVeuillez vérifier votre alimentation."
         },
         "throttle_frequency_capped": {
-            "content": "Le système de l'imprimante ${config.printer_name} est actuellement bridé",
+            "content": "Le système de l'imprimante est actuellement bridé",
             "title": "Un ralentissement s'est produit !",
             "description": "Le système est actuellement ralentis à cause de `Frequency Capped`!\nVeuillez vérifier votre refroidissement ou/et votre alimentation..."
         },

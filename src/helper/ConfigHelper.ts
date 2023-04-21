@@ -264,7 +264,7 @@ export class ConfigHelper {
     }
 
     public dumpCacheOnStart() {
-        return this.getConfig().development.dump_cache_on_start
+        return this.getEntriesByFilter(/^develop$/g)[0].dump_cache_on_start
     }
 
     public showNoPermissionPrivate() {
@@ -290,11 +290,11 @@ export class ConfigHelper {
     }
 
     public getIconSet() {
-        return this.getConfig().messages.icon_set
+        return this.getEntriesByFilter(/^message$/g)[0].icon_set
     }
 
     public getEmbedMeta() {
-        return this.getConfig().embed_meta
+        return this.getEntriesByFilter(/^embed /g, true)
     }
 
     public getModalMeta() {
@@ -302,11 +302,15 @@ export class ConfigHelper {
     }
 
     public getInputMeta() {
-        return this.getConfig().input_meta
+        return {
+            'buttons': this.getEntriesByFilter(/^button /g, true),
+            'selections': this.getEntriesByFilter(/^select_menu /g, true),
+            'inputs': this.getEntriesByFilter(/^textinput /g, true)
+        }
     }
 
     public getStatusMeta() {
-        return this.getConfig().status_meta
+        return this.getEntriesByFilter(/^status /g, true)
     }
 
     public getTempMeta() {
@@ -326,7 +330,7 @@ export class ConfigHelper {
     }
 
     public traceOnWebErrors() {
-        return this.getConfig().development.trace_on_web_error
+        return this.getEntriesByFilter(/^develop$/g)[0].trace_on_web_error
     }
 
     public getMoonrakerRetryInterval() {
@@ -363,16 +367,25 @@ export class ConfigHelper {
         return result
     }
 
-    public getEntriesByFilter(filter: RegExp) {
-        const result = []
+    public getEntriesByFilter(filter: RegExp, asObject = false) {
+        let result: any = []
         const config = this.getConfig()
+
+        if(asObject) {
+            result = {}
+        }
 
         for (const key in config) {
             if(!key.match(filter)) {
                 continue
             }
 
-            result.push(config[key])
+            if(asObject) {
+                const realKey = key.replace(filter, '')
+                result[realKey] = config[key]
+            } else {
+                result.push(config[key])
+            }
         }
 
         return result

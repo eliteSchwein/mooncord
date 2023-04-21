@@ -96,7 +96,7 @@
             "title": "Printgeschiedenis"
         },
         "notification": {
-            "content": "Printer ${config.printer_name} notificatie",
+            "content": "Printer notificatie",
             "title": "Notificatie"
         },
         "printjob_start_request": {
@@ -142,7 +142,7 @@
             "title": "Temperatuur van ${heater}"
         },
         "disconnected": {
-            "content": "Printer ${config.printer_name} is de verbinding met Klipper kwijt!",
+            "content": "Printer is de verbinding met Klipper kwijt!",
             "title": "Printerverbinding verbroken!",
             "activity": "wacht op Klipper"
         },
@@ -167,27 +167,27 @@
             "activity": "wacht op Klipper"
         },
         "ready": {
-            "content": "Printer ${config.printer_name} is klaar om te printen",
+            "content": "Printer is klaar om te printen",
             "title": "Printer gereed",
             "activity": "voor GCODE-bestand..."
         },
         "startup": {
-            "content": "Printer ${config.printer_name} bezig met starten",
+            "content": "Printer bezig met starten",
             "title": "Printer aan het starten",
             "activity": "Printer start"
         },
         "throttle_temperature_limit_active": {
-            "content": "Systeem van printer ${config.printer_name} is begrensd",
+            "content": "Systeem van printer is begrensd",
             "title": "Systeem begrensd!",
             "description": "Het systeem is momenteel begrensd vanwege `Temperature Throttle`!\nHuidige temperatuur: `${proc_stats.cpu_temp} °C`\nIs de koeling van je systeem in orde?"
         },
         "throttle_under_voltage_detected": {
-            "content": "Systeem van printer ${config.printer_name} is begrensd",
+            "content": "Systeem van printer is begrensd",
             "title": "Systeem begrensd!",
             "description": "Het systeem is momenteel begrensd vanwege `Under Voltage`!\nControleer de stroomtoevoer van het systeem."
         },
         "throttle_frequency_capped": {
-            "content": "Systeem van printer ${config.printer_name} is begrensd",
+            "content": "Systeem van printer is begrensd",
             "title": "Systeem begrensd!",
             "description": "Het systeem is momenteel begrensd vanwege `Frequency Capped`!\nControleer de stroomtoevoer en/of koeling van het systeem."
         },

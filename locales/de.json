@@ -96,7 +96,7 @@
             "title": "Druckverlauf"
         },
         "notification": {
-            "content": "Drucker ${config.printer_name} Benachrichtigung",
+            "content": "Drucker Benachrichtigung",
             "title": "Benachrichtigung"
         },
         "printjob_start_request": {
@@ -142,7 +142,7 @@
             "title": "Temperatur für ${heater}"
         },
         "disconnected": {
-            "content": "Drucker ${config.printer_name} hat die Verbindung zu Klipper verloren!",
+            "content": "Drucker hat die Verbindung zu Klipper verloren!",
             "title": "Drucker getrennt!",
             "activity": "warte auf Klipper"
         },
@@ -167,27 +167,27 @@
             "activity": "warte auf Klipper"
         },
         "ready": {
-            "content": "Drucker ${config.printer_name} ist bereit zum drucken",
+            "content": "Drucker ist bereit zum drucken",
             "title": "Drucker Bereit",
             "activity": "warte auf einen Druck Auftrag..."
         },
         "startup": {
-            "content": "Drucker ${config.printer_name} fährt hoch",
+            "content": "Drucker fährt hoch",
             "title": "Drucker fährt hoch",
             "activity": "Drucker fährt hoch"
         },
         "throttle_temperature_limit_active": {
-            "content": "System vom Drucker ${config.printer_name} ist gerade gedrosselt",
+            "content": "System vom Drucker ist gerade gedrosselt",
             "title": "Drosselung erkannt!",
             "description": "Das System wird durch `Temperatur Überhitzung` gedrosst!\nAktuelle Temperatur: `${proc_stats.cpu_temp} °C`\nBitte überprüfe deine Kühllösung."
         },
         "throttle_under_voltage_detected": {
-            "content": "System vom Drucker ${config.printer_name} ist gerade gedrosselt",
+            "content": "System vom Drucker ist gerade gedrosselt",
             "title": "Drosselung erkannt!",
             "description": "Das System wird durch `Unterspannung` gedrosst!\nBitte überprüfe deine Spannungs Versorgung."
         },
         "throttle_frequency_capped": {
-            "content": "System vom Drucker ${config.printer_name} ist gerade gedrosselt",
+            "content": "System vom Drucker ist gerade gedrosselt",
             "title": "Drosselung erkannt!",
             "description": "Das System wird durch `Frequenz Limiterung` gedrosst!\nBitte überprüfe deine Kühllösung und/oder deine Spannungs Versorgung."
         },

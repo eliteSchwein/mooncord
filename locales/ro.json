@@ -96,7 +96,7 @@
             "title": "Istoricul lucrărilor de imprimare"
         },
         "notification": {
-            "content": "Printer ${config.printer_name} Notification",
+            "content": "Printer Notification",
             "title": "Notificare"
         },
         "printjob_start_request": {
@@ -142,7 +142,7 @@
             "title": "Temperatura pentru ${heater}"
         },
         "disconnected": {
-            "content": "Printer ${config.printer_name} got disconnected from Klipper!",
+            "content": "Printer got disconnected from Klipper!",
             "title": "Imprimanta deconectată!",
             "activity": "așteptați-l pe Klipper"
         },
@@ -167,27 +167,27 @@
             "activity": "așteptați-l pe Klipper"
         },
         "ready": {
-            "content": "Printer ${config.printer_name} is ready to print",
+            "content": "Printer is ready to print",
             "title": "Imprimantă pregătită",
             "activity": "pentru fișierul GCODE..."
         },
         "startup": {
-            "content": "Printer ${config.printer_name} is starting",
+            "content": "Printer is starting",
             "title": "Pornirea imprimantei",
             "activity": "Pornirea imprimantei"
         },
         "throttle_temperature_limit_active": {
-            "content": "System of Printer ${config.printer_name} is currently throttled",
+            "content": "System of Printer is currently throttled",
             "title": "A apărut accelerația!",
             "description": "Sistemul este în prezent limitat din cauza `Temperature Throttle`!\nTemperatura curentă: `${proc_stats.cpu_temp} °C`\nVă rugăm să verificați soluția de răcire."
         },
         "throttle_under_voltage_detected": {
-            "content": "System of Printer ${config.printer_name} is currently throttled",
+            "content": "System of Printer is currently throttled",
             "title": "A apărut accelerația!",
             "description": "Sistemul este în prezent restricționat din cauza `Subtensiunii`!\nVă rugăm să verificați alimentarea cu energie electrică."
         },
         "throttle_frequency_capped": {
-            "content": "System of Printer ${config.printer_name} is currently throttled",
+            "content": "System of Printer is currently throttled",
             "title": "A apărut accelerația!",
             "description": "Sistemul este în prezent restricționat din cauza `Frecvență limitată`!\nVă rugăm să verificați soluția de răcire sau/și sistemul de alimentare..."
         },

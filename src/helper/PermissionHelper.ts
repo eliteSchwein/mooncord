@@ -1,11 +1,13 @@
 import {Guild, Permissions, User} from "discord.js";
 import {ConfigHelper} from "./ConfigHelper";
+import {DatabaseUtil} from "../utils/DatabaseUtil";
 
 export class PermissionHelper {
     protected config = new ConfigHelper()
-    protected permissions = this.config.getPermissions()
+    protected database = new DatabaseUtil()
+    protected permissions = this.database.getDatabaseEntry('permissions')
     protected controllers = this.permissions.controllers
-    protected botAdmins = this.permissions.botadmins
+    protected botAdmins = this.permissions.admins
 
     public constructor() {
         if (typeof this.controllers.users === "string") {

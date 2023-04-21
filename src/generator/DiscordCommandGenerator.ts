@@ -16,6 +16,7 @@ import {logError, logRegular} from "../helper/LoggerHelper";
 import {ConfigHelper} from "../helper/ConfigHelper";
 import {mergeDeep} from "../helper/DataHelper";
 import {Routes} from "discord-api-types/v10"
+import {RouteLike} from "@discordjs/rest";
 
 export class DiscordCommandGenerator {
     protected localeHelper = new LocaleHelper()
@@ -32,7 +33,7 @@ export class DiscordCommandGenerator {
     }
 
     public getCustomCommandData(key: string) {
-        const customCommandsConfig = this.configHelper.getEntriesByFilter(/^command.*/g)
+        const customCommandsConfig = this.configHelper.getEntriesByFilter(/^command /g)
         return customCommandsConfig[key]
     }
 
@@ -73,6 +74,7 @@ export class DiscordCommandGenerator {
             })
         }
 
+        // @ts-ignore
         for (const currentCommand of currentCommands) {
             if (!commandKeys.includes(currentCommand.name)) {
                 logRegular(`Unregister Command ${currentCommand.name}...`)
@@ -80,7 +82,7 @@ export class DiscordCommandGenerator {
 
                 new Promise(async (resolve, reject) => {
                     try {
-                        await rest.delete(deleteUrl)
+                        await rest.delete(<RouteLike>deleteUrl)
                     } catch (e) {
                         logError(`An Error occured while unregistering the command ${currentCommand.name}`)
                         logError(`Reason: ${e}`)
@@ -209,12 +211,12 @@ export class DiscordCommandGenerator {
     }
 
     private getCustomCommandStructure() {
-        const customCommandsConfig = this.configHelper.getEntriesByFilter(/^command.*/g)
+        const customCommandsConfig = this.configHelper.getEntriesByFilter(/^command /g, true)
         const customCommands = {}
 
         for (const name of Object.keys(customCommandsConfig)) {
+
             if (Object.keys(this.commandStructure).includes(name)) {
-                this.showCustomCommandError(`The Custom Command ${name} is invalid, you cant overwrite existing commands!`)
                 continue
             }
             const customCommandData = customCommandsConfig[name]
@@ -222,7 +224,7 @@ export class DiscordCommandGenerator {
                 this.showCustomCommandError(`The Custom Command ${name} is invalid, it doesnt have any macros or websocket_commands configured!`)
                 continue
             }
-            const customCommandDescription = (customCommandData.description === null || customCommandData.description === null)
+            const customCommandDescription = (customCommandData.description === null)
                 ? this.locale.messages.errors.custom_command_descript
                 : customCommandData.description
 

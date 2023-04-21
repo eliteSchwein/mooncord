@@ -96,7 +96,7 @@
             "title": "Printjob History"
         },
         "notification": {
-            "content": "Printer ${config.printer_name} Notification",
+            "content": "Printer Notification",
             "title": "Notification"
         },
         "printjob_start_request": {
@@ -142,7 +142,7 @@
             "title": "Temperature for ${heater}"
         },
         "disconnected":{
-            "content": "Printer ${config.printer_name} got disconnected from Klipper!",
+            "content": "Printer got disconnected from Klipper!",
             "title": "Printer Disconnected!",
             "activity": "wait for Klipper"
         },
@@ -167,27 +167,27 @@
             "activity": "wait for Klipper"
         },
         "ready":{
-            "content": "Printer ${config.printer_name} is ready to print",
+            "content": "Printer is ready to print",
             "title": "Printer Ready",
             "activity": "for GCODE File..."
         },
         "startup":{
-            "content": "Printer ${config.printer_name} is starting",
+            "content": "Printer is starting",
             "title": "Printer starting",
             "activity": "Printer start"
         },
         "throttle_temperature_limit_active": {
-            "content": "System of Printer ${config.printer_name} is currently throttled",
+            "content": "System of Printer is currently throttled",
             "title": "Throttle occured!",
             "description": "The system is currently throttled because it has reached the `Temperature Limit`!\nCurrent Temperature: `${proc_stats.cpu_temp} °C`\nPlease check your cooling solution."
         },
         "throttle_under_voltage_detected": {
-            "content": "System of Printer ${config.printer_name} is currently throttled",
+            "content": "System of Printer is currently throttled",
             "title": "Throttle occured!",
             "description": "The system is currently throttled due to an `Under Voltage`!\nPlease check your power source."
         },
         "throttle_frequency_capped": {
-            "content": "System of Printer ${config.printer_name} is currently throttled",
+            "content": "System of Printer is currently throttled",
             "title": "Throttle occured!",
             "description": "The system is currently throttled because it has been`Frequency Capped`!\nPlease check your cooling solution or/and your power supply.."
         },
