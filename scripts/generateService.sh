@@ -134,6 +134,11 @@ do
     esac    
 done
 
+if [[ ${UID} == '0' ]]; then
+    warn_msg "You cant run this script as Root!"
+    exit 1
+fi
+
 setup
 install_systemd_service
 restart_MoonCord
