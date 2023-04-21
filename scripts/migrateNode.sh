@@ -9,6 +9,10 @@ red=$(echo -en "\e[91m")
 cyan=$(echo -en "\e[96m")
 default=$(echo -en "\e[39m")
 
+warn_msg(){
+  echo -e "${red}<!!!!> $1${default}"
+}
+
 status_msg(){
   echo; echo -e "${yellow}###### $1${default}"
 }
@@ -16,6 +20,11 @@ status_msg(){
 ok_msg(){
   echo; echo -e "${green}>>>>>> $1${default}"
 }
+
+if [[ ${UID} == '0' ]]; then
+    warn_msg "You cant run this script as Root!"
+    exit 1
+fi
 
 status_msg "Remove old Node Modules"
 sudo rm -rf /usr/local/lib/node_modules
