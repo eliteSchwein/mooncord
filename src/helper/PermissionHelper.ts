@@ -23,42 +23,34 @@ export class PermissionHelper {
     }
 
     public hasPermission(user: User, guild: Guild, command: string) {
-        let commandPermission = this.permissions.commands[command]
-        const buttonPermission = this.permissions.buttons[command]
-        const selectPermission = this.permissions.selections[command]
-        const modalPermission = this.permissions.modals[command]
-        const reactPermission = this.permissions.reactions[command]
+        let commandPermission = this.config.getEntriesByFilter(new RegExp(`/^command ${command}/`, 'g'))[0]
+        const buttonPermission = this.config.getEntriesByFilter(new RegExp(`/^button ${command}/`, 'g'))[0]
+        const selectPermission = this.config.getEntriesByFilter(new RegExp(`/^select_menu ${command}/`, 'g'))[0]
+        const modalPermission = this.config.getEntriesByFilter(new RegExp(`/^modal ${command}/`, 'g'))[0]
+        const reactPermission = this.config.getEntriesByFilter(new RegExp(`/^reaction ${command}/`, 'g'))[0]
 
         if (typeof reactPermission !== 'undefined') {
             if (reactPermission.users === "*") {
                 return true
             }
-
-            commandPermission = this.permissions.commands[reactPermission.command_assign]
         }
 
         if (typeof buttonPermission !== 'undefined') {
             if (buttonPermission.users === "*") {
                 return true
             }
-
-            commandPermission = this.permissions.commands[buttonPermission.command_assign]
         }
 
         if (typeof selectPermission !== 'undefined') {
             if (selectPermission.users === "*") {
                 return true
             }
-
-            commandPermission = this.permissions.commands[selectPermission.command_assign]
         }
 
         if (typeof modalPermission !== 'undefined') {
             if (modalPermission.users === "*") {
                 return true
             }
-
-            commandPermission = this.permissions.commands[modalPermission.command_assign]
         }
 
         if (typeof commandPermission !== 'undefined' && commandPermission.users === "*") {
@@ -143,10 +135,10 @@ export class PermissionHelper {
             permissions.roles = [permissions.roles]
         }
 
-        if (permissions.guildadmin && this.isGuildAdmin(user, guild)) {
+        if (permissions.guild_admin && this.isGuildAdmin(user, guild)) {
             return true
         }
-        if (permissions.botadmin && this.isBotAdmin(user, guild)) {
+        if (permissions.bot_admin && this.isBotAdmin(user, guild)) {
             return true
         }
         if (permissions.users.includes(user.id)) {
