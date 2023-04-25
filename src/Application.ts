@@ -12,6 +12,9 @@ import {SchedulerHelper} from "./helper/SchedulerHelper";
 import {StatusHelper} from "./helper/StatusHelper";
 import {waitUntil} from "async-wait-until";
 import {ModalHelper} from "./helper/ModalHelper";
+import {createInterface} from "readline";
+
+const args = process.argv.slice(2)
 
 Object.assign(global, {WebSocket: require('ws')})
 
@@ -66,10 +69,7 @@ async function init() {
 
     await statusHelper.update(null, true, discordClient)
 
-    if (typeof userConfig.tmp === 'undefined') {
-        return
-    }
-    if (typeof userConfig.tmp.controller_tag === 'undefined') {
+    if(!args.includes('register-controller')) {
         return
     }
 
@@ -79,8 +79,22 @@ async function init() {
 
     logRegular(`please invite the bot on a Server: 
         ${getEntry('invite_url')}`)
-    logRegular(`and write a Message on this Server with your Account with the Tag ${userConfig.tmp.controller_tag}`)
-    logWarn('please dont use ctrl + c for copying the script, this will stop the install script')
+    logWarn('please dont use ctrl + c for copying the script, this will stop the install script!')
+    logEmpty()
+    logRegular(`after that please write your username (Example#123).`)
+
+    const readline = createInterface({
+        input: process.stdin,
+        output: process.stdout
+    })
+
+    readline.question('username:', userNameTag => {
+        userNameTag = userNameTag.trim()
+        setData('tmp_controller', userNameTag)
+        logRegular(`please write with ${userNameTag} in a channel on your Server to activate Controller.`)
+        readline.close();
+    });
+    //logRegular(`and write a Message on this Server with your Account with the Tag ${userConfig.tmp.controller_tag}`)
 }
 
 export function reloadCache() {
