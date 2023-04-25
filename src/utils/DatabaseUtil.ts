@@ -73,7 +73,7 @@ export class DatabaseUtil {
 
     public updateDatabaseEntry(key: string, value: any) {
         database[key] = value
-        this.updateDatabase()
+        void this.updateDatabase()
     }
 
     public isReady() {

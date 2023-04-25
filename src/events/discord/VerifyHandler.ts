@@ -4,6 +4,7 @@ import {getEntry} from "../../utils/CacheUtil";
 import {getDatabase} from "../../Application";
 
 export class VerifyHandler {
+    protected database = getDatabase()
 
     public constructor(discordClient: Client) {
         discordClient.on("messageCreate", async message => {
@@ -24,16 +25,18 @@ export class VerifyHandler {
 
             const controllerId = message.author.id
 
-            const controllers = getDatabase().getDatabaseEntry('permissions')['controllers']
+            const permissions = this.database.getDatabaseEntry('permissions')
 
-            if (controllers.includes(controllerId)) {
+            if (permissions['controllers'].includes(controllerId)) {
                 logError(`${message.author.tag} is already a Controller!!!`)
                 await message.reply('You are already a Controller')
                 return
             }
 
             logRegular(`add ${message.author.tag}'s ID into the Controller List (${controllerId})...`)
-            controllers.push(controllerId)
+            permissions['controllers'].push(controllerId)
+
+            this.database.updateDatabaseEntry('permissions', permissions)
 
             await message.reply('You have now the Controller Permission over me')
 
