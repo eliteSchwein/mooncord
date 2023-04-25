@@ -4,19 +4,21 @@ import {getEntry} from "../../utils/CacheUtil";
 import {getDatabase} from "../../Application";
 
 export class VerifyHandler {
-    protected tmpController = getEntry('tmp_controller')
 
     public constructor(discordClient: Client) {
         discordClient.on("messageCreate", async message => {
             if (message.author.id === discordClient.user.id) {
                 return
             }
-            if (typeof this.tmpController === 'undefined') {
+
+            const tmpController = getEntry('tmp_controller')
+
+            if (typeof tmpController === 'undefined') {
                 return
             }
 
-            if (message.author.tag !== this.tmpController) {
-                logError(`${message.author.tag} is not matching the Controller Tag ${this.tmpController}!!!`)
+            if (message.author.tag !== tmpController) {
+                logError(`${message.author.tag} is not matching the Controller Tag ${tmpController}!!!`)
                 return
             }
 
