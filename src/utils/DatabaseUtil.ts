@@ -71,9 +71,9 @@ export class DatabaseUtil {
         return database[key]
     }
 
-    public updateDatabaseEntry(key: string, value: any) {
+    public async updateDatabaseEntry(key: string, value: any) {
         database[key] = value
-        void this.updateDatabase()
+        await this.updateDatabase()
     }
 
     public isReady() {

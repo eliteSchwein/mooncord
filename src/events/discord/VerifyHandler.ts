@@ -1,7 +1,8 @@
 import {Client} from "discord.js";
 import {logError, logRegular, logSuccess} from "../../helper/LoggerHelper";
-import {getEntry} from "../../utils/CacheUtil";
+import {getEntry, setData} from "../../utils/CacheUtil";
 import {getDatabase} from "../../Application";
+import {createInterface} from "readline";
 
 export class VerifyHandler {
     protected database = getDatabase()
@@ -36,13 +37,33 @@ export class VerifyHandler {
             logRegular(`add ${message.author.tag}'s ID into the Controller List (${controllerId})...`)
             permissions['controllers'].push(controllerId)
 
-            this.database.updateDatabaseEntry('permissions', permissions)
+            await this.database.updateDatabaseEntry('permissions', permissions)
 
             await message.reply('You have now the Controller Permission over me')
 
-            logSuccess('stopping MoonCord...')
+            logRegular(`do you want notifications via direct message?`)
 
-            process.exit(0)
+            const readline = createInterface({
+                input: process.stdin,
+                output: process.stdout
+            })
+
+            readline.question('[yY] or [nN]:', async answer => {
+                if(answer.toLowerCase() === 'y') {
+                    const notifyList = this.database.getDatabaseEntry('notify')
+
+                    if(!notifyList.includes(controllerId)) {
+                        notifyList.push(controllerId)
+                        await this.database.updateDatabaseEntry('notify', notifyList)
+                    }
+
+                    logRegular(`you will receive direct messages now!`)
+                }
+
+                logSuccess('stopping MoonCord...')
+
+                process.exit(0)
+            });
         })
     }
 }

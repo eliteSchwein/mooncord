@@ -94,7 +94,6 @@ async function init() {
         logRegular(`please write with ${userNameTag} in a channel on your Server to activate Controller.`)
         readline.close();
     });
-    //logRegular(`and write a Message on this Server with your Account with the Tag ${userConfig.tmp.controller_tag}`)
 }
 
 export function reloadCache() {
