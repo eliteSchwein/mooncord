@@ -106,7 +106,7 @@ export class PermissionHelper {
 
     public isController(user: User, guild: Guild) {
         const member = this.getMember(user, guild)
-        if (this.controllers.users.includes(user.id)) {
+        if (this.controllers.includes(user.id)) {
             return true
         }
 

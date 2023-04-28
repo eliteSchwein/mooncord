@@ -13,7 +13,6 @@ export class ConfigHelper {
         logRegular("load Config Cache...")
         const defaultConfig = this.parseConfig(path.resolve(__dirname, '../scripts/'), 'mooncord_full.cfg')
         mergeDeep(defaultConfig, this.getUserConfig())
-        console.log(defaultConfig)
         setData('config', defaultConfig)
     }
 
@@ -176,39 +175,31 @@ export class ConfigHelper {
     }
 
     public getMoonrakerSocketUrl() {
-        return this.getConfig().connection.moonraker_socket_url
+        return this.getEntriesByFilter(/^connection$/g)[0].moonraker_socket_url
     }
 
     public getMoonrakerUrl() {
-        return this.getConfig().connection.moonraker_url
+        return this.getEntriesByFilter(/^connection$/g)[0].moonraker_url
     }
 
     public getMoonrakerApiKey() {
-        return this.getConfig().connection.moonraker_token
+        return this.getEntriesByFilter(/^connection$/g)[0].moonraker_token
     }
 
     public getDiscordToken() {
-        return this.getConfig().connection.bot_token
+        return this.getEntriesByFilter(/^connection$/g)[0].bot_token
     }
 
     public getStatusInterval() {
-        return this.getConfig().status.update_interval
+        return this.getEntriesByFilter(/^status$/g)[0].update_interval
     }
 
     public getStatusMinInterval() {
-        return this.getConfig().status.min_interval
+        return this.getEntriesByFilter(/^status$/g)[0].min_interval
     }
 
     public isStatusPerPercent() {
-        return this.getConfig().status.use_percent
-    }
-
-    public getStatusBeforeTasks() {
-        return this.getConfig().status.before
-    }
-
-    public getStatusAfterTasks() {
-        return this.getConfig().status.after
+        return this.getEntriesByFilter(/^status$/g)[0].use_percent
     }
 
     public getLocale() {
@@ -223,44 +214,8 @@ export class ConfigHelper {
         return this.getEntriesByFilter(/^language$/g)[0].buttons_use_commands_language
     }
 
-    public getWebcamUrl() {
-        return this.getConfig().webcam.url
-    }
-
-    public getWebcamQuality() {
-        return this.getConfig().webcam.quality
-    }
-
-    public getWebcamBrightness() {
-        return this.getConfig().webcam.brightness
-    }
-
-    public getWebcamRotation() {
-        return this.getConfig().webcam.rotation
-    }
-
-    public getWebcamContrast() {
-        return this.getConfig().webcam.contrast
-    }
-
-    public isWebcamVerticalMirrored() {
-        return this.getConfig().webcam.vertical_mirror
-    }
-
-    public isWebcamHorizontalMirrored() {
-        return this.getConfig().webcam.horizontal_mirror
-    }
-
-    public isWebcamGreyscale() {
-        return this.getConfig().webcam.greyscale
-    }
-
-    public isWebcamSepia() {
-        return this.getConfig().webcam.sepia
-    }
-
     public notifyOnMoonrakerThrottle() {
-        return this.getConfig().notifications.moonraker_throttle
+        return this.getEntriesByFilter(/^notifications /g)[0].show_no_permission_private
     }
 
     public dumpCacheOnStart() {
@@ -268,19 +223,19 @@ export class ConfigHelper {
     }
 
     public showNoPermissionPrivate() {
-        return this.getConfig().messages.show_no_permission_private
+        return this.getEntriesByFilter(/^message /g)[0].show_no_permission_private
     }
 
     public getLogPath() {
-        return this.getConfig().logger.path
+        return this.getEntriesByFilter(/^logger$/g)[0].path
     }
 
     public isLogFileDisabled() {
-        return this.getConfig().logger.disable_file
+        return this.getEntriesByFilter(/^logger$/g)[0].disable_file
     }
 
     public getTempPath() {
-        const temppath = this.getConfig().logger.tmp_path
+        const temppath = this.getEntriesByFilter(/^logger$/g)[0].tmp_path
 
         if (!existsSync(temppath)) {
             mkdirSync(temppath)
@@ -322,11 +277,11 @@ export class ConfigHelper {
     }
 
     public getDiscordRequestTimeout() {
-        return this.getConfig().connection.discord_request_timeout
+        return this.getEntriesByFilter(/^connection$/g)[0].discord_request_timeout
     }
 
     public getEntriesPerPage() {
-        return this.getConfig().messages.entries_per_page
+        return this.getEntriesByFilter(/^message$/g)[0].page_entries
     }
 
     public traceOnWebErrors() {
@@ -334,19 +289,19 @@ export class ConfigHelper {
     }
 
     public getMoonrakerRetryInterval() {
-        return this.getConfig().connection.moonraker_retry_interval
+        return this.getEntriesByFilter(/^connection$/g)[0].moonraker_retry_interval
     }
 
     public notifyOnTimelapseFinish() {
-        return this.getConfig().notifications.timelapse
+        return this.getEntriesByFilter(/^notifications$/g)[0].timelapse
     }
 
     public getM117NotifactionConfig() {
-        return this.getConfig().notifications.gcode_notifications
+        return this.getEntriesByFilter(/^notifications$/g)[0].gcode_notifications
     }
 
     public getGcodeExecuteTimeout() {
-        return this.getConfig().status.gcode_timeout
+        return this.getEntriesByFilter(/^status$/g)[0].gcode_timeout
     }
 
     public getIcons(filter: RegExp) {
