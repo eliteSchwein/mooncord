@@ -165,6 +165,8 @@ export class TemplateHelper {
         const selections = this.inputGenerator.generateSelections(messageObjectData.selections)
         const inputs = this.inputGenerator.generateInputs(messageObjectData.inputs)
 
+        console.log(messageObjectData)
+
         for(const selectionId in selections) {
             components.push(selections[selectionId])
         }
@@ -264,10 +266,10 @@ export class TemplateHelper {
         const inputData = []
         const metaData = Object.assign({}, getEntry(type))
 
-        console.log(metaData)
-
         for (const inputId of data) {
+            console.log(inputId)
             const inputMetaData = metaData[inputId]
+            console.log(inputMetaData)
             inputMetaData.id = inputId
             inputData.push(inputMetaData)
         }
