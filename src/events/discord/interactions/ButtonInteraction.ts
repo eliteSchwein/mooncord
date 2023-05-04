@@ -43,6 +43,7 @@ export class ButtonInteraction {
         }
 
         const buttonData = this.buttonsCache[buttonId]
+        const requiredStates = buttonData.required_states
 
         logNotice(`${interaction.user.tag} pressed button: ${buttonId}`)
 
@@ -55,8 +56,7 @@ export class ButtonInteraction {
             return;
         }
 
-        if (typeof buttonData.function_mapping.required_states !== 'undefined') {
-            const requiredStates = buttonData.function_mapping.required_states
+        if (typeof requiredStates !== 'undefined') {
 
             if (!requiredStates.includes(this.functionCache.current_status)) {
                 const message = this.locale.messages.errors.not_ready
