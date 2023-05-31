@@ -12,7 +12,7 @@ import {ListHandler} from "./handlers/ListHandler";
 import {PrintJobStartHandler} from "./handlers/PrintJobStartHandler";
 import {MessageHandler} from "./handlers/MessageHandler";
 import {ReconnectHandler} from "./handlers/ReconnectHandler";
-import {TempModalHandler} from "./handlers/TempModalHandler";
+import {ModalHandler} from "./handlers/ModalHandler";
 import {ExcludeConfirmHandler} from "./handlers/ExcludeConfirmHandler";
 import {WebsocketHandler} from "./handlers/WebsocketHandler";
 import {DeleteHandler} from "./handlers/DeleteHandler";
@@ -71,7 +71,7 @@ export class ButtonInteraction {
 
         await new WebsocketHandler().execute(message, interaction.user, buttonData, interaction)
         await new ExcludeConfirmHandler().execute(message, interaction.user, buttonData, interaction)
-        await new TempModalHandler().execute(message, interaction.user, buttonData, interaction)
+        await new ModalHandler().execute(message, interaction.user, buttonData, interaction)
         await new PrintJobStartHandler().execute(message, interaction.user, buttonData, interaction)
         await new MessageHandler().execute(message, interaction.user, buttonData, interaction)
         await new EmbedHandler().execute(message, interaction.user, buttonData, interaction)

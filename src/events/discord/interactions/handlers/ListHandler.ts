@@ -14,7 +14,7 @@ export class ListHandler {
     protected locale = this.localeHelper.getLocale()
 
     public async execute(message: Message, user: User, data, interaction = null) {
-        const listId = data.function_mapping.show_list
+        const listId = data.list
         if (!listId) {
             return
         }

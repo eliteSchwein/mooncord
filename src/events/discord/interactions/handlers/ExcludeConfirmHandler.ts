@@ -8,7 +8,7 @@ export class ExcludeConfirmHandler {
     protected locale = this.localeHelper.getLocale()
 
     public async execute(message: Message, user: User, data, interaction = null) {
-        if (typeof data.function_mapping.exclude_object === 'undefined') {
+        if (!data.functions.includes("exclude_object")) {
             return
         }
 

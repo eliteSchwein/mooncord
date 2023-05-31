@@ -10,7 +10,7 @@ export class DeleteHandler {
     protected embedHelper = new EmbedHelper()
 
     public async execute(message: Message, user: User, data, interaction = null) {
-        if (!data.function_mapping.delete) {
+        if (!data.functions.includes("delete")) {
             return
         }
         if (typeof data.function_mapping.root_path === 'undefined') {

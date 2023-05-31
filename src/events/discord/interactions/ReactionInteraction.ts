@@ -6,7 +6,7 @@ import {findValue, getEntry} from "../../../utils/CacheUtil";
 import {logNotice, logWarn} from "../../../helper/LoggerHelper";
 import {WebsocketHandler} from "./handlers/WebsocketHandler";
 import {ExcludeConfirmHandler} from "./handlers/ExcludeConfirmHandler";
-import {TempModalHandler} from "./handlers/TempModalHandler";
+import {ModalHandler} from "./handlers/ModalHandler";
 import {PrintJobStartHandler} from "./handlers/PrintJobStartHandler";
 import {MessageHandler} from "./handlers/MessageHandler";
 import {EmbedHandler} from "./handlers/EmbedHandler";
@@ -62,7 +62,7 @@ export class ReactionInteraction {
 
         await new WebsocketHandler().execute(message, user, reactionData)
         await new ExcludeConfirmHandler().execute(message, user, reactionData)
-        await new TempModalHandler().execute(message, user, reactionData)
+        await new ModalHandler().execute(message, user, reactionData)
         await new PrintJobStartHandler().execute(message, user, reactionData)
         await new MessageHandler().execute(message, user, reactionData)
         await new EmbedHandler().execute(message, user, reactionData)

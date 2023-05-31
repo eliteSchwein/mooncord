@@ -12,7 +12,7 @@ export class PrintJobStartHandler {
     protected moonrakerClient = getMoonrakerClient()
 
     public async execute(message: Message, user: User, data, interaction = null) {
-        if (!data.function_mapping.start_print) {
+        if (!data.functions.includes("start_print")) {
             return
         }
 

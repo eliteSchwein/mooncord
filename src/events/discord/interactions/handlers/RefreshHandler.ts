@@ -13,7 +13,7 @@ export class RefreshHandler {
     protected locale = this.localeHelper.getLocale()
 
     public async execute(message: Message, user: User, data, interaction = null) {
-        if (!data.function_mapping.refresh_status) {
+        if (!data.functions.includes('refresh_status')) {
             return
         }
 

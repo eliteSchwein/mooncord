@@ -150,7 +150,13 @@ export class DiscordInputGenerator {
             sectionConfig = this.localeHelper.getSyntaxLocale()[section]
         }
 
-        mergeDeep(sectionConfig, this.inputMeta[section])
+        const meta = this.inputMeta[section]
+
+        if(section === 'buttons' && meta.functions === undefined) {
+            meta.functions = []
+        }
+
+        mergeDeep(sectionConfig, meta)
 
         setData(section, sectionConfig)
     }

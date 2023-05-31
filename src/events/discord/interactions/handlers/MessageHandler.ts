@@ -6,7 +6,7 @@ export class MessageHandler {
     protected embedHelper = new EmbedHelper()
 
     public async execute(message: Message, user: User, data, interaction = null) {
-        if (typeof data.function_mapping.message === 'undefined') {
+        if (typeof data.message === 'undefined') {
             return
         }
 

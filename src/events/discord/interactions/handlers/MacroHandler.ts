@@ -15,18 +15,18 @@ export class MacroHandler {
     protected consoleHelper = new ConsoleHelper()
 
     public async execute(message: Message, user: User, data, interaction = null) {
-        if (typeof data.function_mapping.macros === 'undefined') {
+        if (typeof data.macros === 'undefined') {
             return
         }
-        if (data.function_mapping.macros.empty) {
+        if (data.macros.empty) {
             return
         }
 
-        const gcodeValid = await this.consoleHelper.executeGcodeCommands(data.function_mapping.macros,
+        const gcodeValid = await this.consoleHelper.executeGcodeCommands(data.macros,
             interaction.channel,
-            data.function_mapping.macro_message === true)
+            data.macro_message === true)
 
-        if (!data.function_mapping.macro_message) {
+        if (!data.macro_message) {
             return
         }
 

@@ -14,15 +14,10 @@ export class PageHandler {
     protected locale = this.localeHelper.getLocale()
 
     public async execute(message: Message, user: User, data, interaction = null) {
-        if (typeof data.function_mapping === 'undefined') {
+        if (!data.functions.includes("page_up") &&
+            !data.functions.includes("page_down")) {
             return
         }
-        if (!data.function_mapping.page_up &&
-            !data.function_mapping.page_down) {
-            return
-        }
-
-        const functionMap = data.function_mapping
 
         if (message.embeds.length === 0) {
             return
@@ -47,7 +42,7 @@ export class PageHandler {
         const currentPage = Number.parseInt(pages[0])
         const pageHelper = new PageHelper(embedData.embedID)
 
-        const pageData = pageHelper.getPage(functionMap.page_up, currentPage)
+        const pageData = pageHelper.getPage(data.functions.includes("page_up"), currentPage)
 
         if (Object.keys(pageData).length === 0) {
             if (interaction.replied) {

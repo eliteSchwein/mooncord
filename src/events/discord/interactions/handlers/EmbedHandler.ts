@@ -13,7 +13,7 @@ export class EmbedHandler {
     protected metadataHelper = new MetadataHelper()
 
     public async execute(message: Message, user: User, data, interaction = null) {
-        if (typeof data.function_mapping.show_embed === 'undefined') {
+        if (typeof data.embed === 'undefined') {
             return
         }
 
