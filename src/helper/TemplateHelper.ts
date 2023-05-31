@@ -29,12 +29,12 @@ export class TemplateHelper {
         const unformattedData = Object.assign({}, getEntry(`${type}s`)[id])
         const partials = unformattedData.partials
 
-        if(unformattedData.fields === undefined) {
-            unformattedData.fields = []
+        if(unformattedData.field === undefined) {
+            unformattedData.field = []
         }
 
         if(unformattedData.partials !== undefined) {
-            unformattedData.fields = this.parsePartials(partials, unformattedData.fields)
+            unformattedData.field = this.parsePartials(partials, unformattedData.field)
         }
 
         if (unformattedData.buttons) {
@@ -68,32 +68,32 @@ export class TemplateHelper {
         return unformattedData
     }
 
-    protected parsePartials(partials: any[], fields: any[]) {
+    protected parsePartials(partials: any[], field: any[]) {
         if (partials.includes('versions')) {
-            fields = [...fields, ...this.versionHelper.getFields()]
+            field = [...field, ...this.versionHelper.getFields()]
         }
 
         if (partials.includes('updates')) {
-            fields = [...fields, ...this.versionHelper.getUpdateFields()]
+            field = [...field, ...this.versionHelper.getUpdateFields()]
         }
 
         if (partials.includes('temps')) {
-            fields = [...fields, ...this.tempHelper.parseFields().fields]
+            field = [...field, ...this.tempHelper.parseFields().fields]
         }
 
         if (partials.includes('minimal_temp')) {
-            fields = [...fields, ...this.tempHelper.parseFields(true).fields]
+            field = [...field, ...this.tempHelper.parseFields(true).fields]
         }
 
         if (partials.includes('print_history')) {
-            fields = [...fields, ...this.historyHelper.parseFields()]
+            field = [...field, ...this.historyHelper.parseFields()]
         }
 
         if (partials.includes('power_devices')) {
-            fields = [...fields, ...this.powerDeviceHelper.parseFields()]
+            field = [...field, ...this.powerDeviceHelper.parseFields()]
         }
 
-        return fields
+        return field
     }
 
     public async parseTemplate(type: string, id: string, providedPlaceholders = null, providedFields = null, providedValues = null) {
@@ -115,7 +115,7 @@ export class TemplateHelper {
         const unformattedData = this.parseRawTemplate(type, id)
 
         if (providedFields !== null) {
-            mergeDeep(unformattedData, {fields: providedFields})
+            mergeDeep(unformattedData, {field: providedFields})
         }
 
         if (providedValues !== null) {
@@ -164,8 +164,6 @@ export class TemplateHelper {
         const buttons = this.inputGenerator.generateButtons(messageObjectData.buttons)
         const selections = this.inputGenerator.generateSelections(messageObjectData.selections)
         const inputs = this.inputGenerator.generateInputs(messageObjectData.inputs)
-
-        console.log(messageObjectData)
 
         for(const selectionId in selections) {
             components.push(selections[selectionId])
@@ -220,32 +218,32 @@ export class TemplateHelper {
             messageObject.setImage(image)
         }
 
-        const fields = []
+        const field = []
 
-        if (typeof messageObjectData.fields !== 'undefined') {
-            messageObjectData.fields.forEach(field => {
-                if (field.name === '') {
-                    field.name = 'N/A'
+        if (typeof messageObjectData.field !== 'undefined') {
+            messageObjectData.field.forEach(fieldEntry => {
+                if (fieldEntry.name === '') {
+                    fieldEntry.name = 'N/A'
                 }
-                if (field.value === '') {
-                    field.value = 'N/A'
+                if (fieldEntry.value === '') {
+                    fieldEntry.value = 'N/A'
                 }
-                if (field.name === ' ') {
-                    field.name = 'N/A'
+                if (fieldEntry.name === ' ') {
+                    fieldEntry.name = 'N/A'
                 }
-                if (field.value === ' ') {
-                    field.value = 'N/A'
+                if (fieldEntry.value === ' ') {
+                    fieldEntry.value = 'N/A'
                 }
-                fields.push({
-                    'name': field.name,
-                    'value': field.value,
+                field.push({
+                    'name': fieldEntry.name,
+                    'value': fieldEntry.value,
                     'inline': true
                 })
             })
         }
 
-        if (fields.length > 0) {
-            messageObject.addFields(fields)
+        if (field.length > 0) {
+            messageObject.addFields(field)
         }
 
         response.embeds = [messageObject]
