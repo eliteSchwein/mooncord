@@ -33,7 +33,7 @@ export class EmbedHandler {
             filename: 'N/A'
         }
 
-        if (data.function_mapping.fetch_author_metadata) {
+        if (data.functions.includes('fetch_author_metadata')) {
             metaData = await this.metadataHelper.getMetaData(author)
 
             if (interaction !== null && typeof metaData === 'undefined') {
@@ -45,9 +45,9 @@ export class EmbedHandler {
             metaData.filename = author
         }
 
-        const embedData = await this.embedHelper.generateEmbed(data.function_mapping.show_embed, metaData)
+        const embedData = await this.embedHelper.generateEmbed(data.embed, metaData)
 
-        if (data.function_mapping.fetch_author_thumbnail) {
+        if (data.functions.includes('fetch_author_metadata')) {
             const thumbnail = await this.metadataHelper.getThumbnail(author)
 
             embedData.embed.embeds[0].setThumbnail(`attachment://${thumbnail.name}`)

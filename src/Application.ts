@@ -16,6 +16,8 @@ import {createInterface} from "readline";
 
 const args = process.argv.slice(2)
 
+let firstLoad = true
+
 Object.assign(global, {WebSocket: require('ws')})
 
 tempHookLog()
@@ -129,7 +131,12 @@ function initCache() {
     logRegular('load Package Cache...')
     setData('package_config', packageConfig)
 
-    configHelper.loadCache()
+    if(firstLoad) {
+        firstLoad = false
+    } else {
+        configHelper.loadCache()
+    }
+
     localeHelper.loadCache()
     embedHelper.loadCache()
     modalHelper.loadCache()

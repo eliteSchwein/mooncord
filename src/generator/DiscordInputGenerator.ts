@@ -152,8 +152,16 @@ export class DiscordInputGenerator {
 
         const meta = this.inputMeta[section]
 
-        if(section === 'buttons' && meta.functions === undefined) {
-            meta.functions = []
+        if(section === 'buttons') {
+            for(const key in meta) {
+                const value = meta[key]
+
+                if(value.functions === undefined) {
+                    value.functions = []
+                }
+
+                meta[key] = value
+            }
         }
 
         mergeDeep(sectionConfig, meta)

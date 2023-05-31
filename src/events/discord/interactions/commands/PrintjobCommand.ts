@@ -83,17 +83,17 @@ export class PrintjobCommand {
     protected async triggerMacro(buttonId: string, interaction: CommandInteraction, subLocale, status = '') {
         const buttonData = this.buttonsCache[buttonId]
 
-        if (typeof buttonData.function_mapping.macros === 'undefined') {
+        if (typeof buttonData.macros === 'undefined') {
             return
         }
-        if (buttonData.function_mapping.macros.empty) {
+        if (buttonData.macros.empty) {
             return
         }
-        if (typeof buttonData.function_mapping.required_states === 'undefined') {
+        if (typeof buttonData.required_states === 'undefined') {
             return
         }
 
-        const requiredStates = buttonData.function_mapping.required_states
+        const requiredStates = buttonData.required_states
 
         if (status === this.functionCache.current_status) {
             const message = subLocale.status_same
@@ -111,7 +111,7 @@ export class PrintjobCommand {
             return
         }
 
-        for (const macro of buttonData.function_mapping.macros) {
+        for (const macro of buttonData.macros) {
             logNotice(`executing macro: ${macro}`)
             void this.moonrakerClient.send({
                 "method": "printer.gcode.script",

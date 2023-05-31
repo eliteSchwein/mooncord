@@ -179,7 +179,13 @@ export class ConfigHelper {
     }
 
     public getMoonrakerUrl() {
-        return this.getEntriesByFilter(/^connection$/g)[0].moonraker_url
+        let url = this.getEntriesByFilter(/^connection$/g)[0].moonraker_url
+
+        if(url.endsWith('/')) {
+            url = url.substring(0, url.length - 1)
+        }
+
+        return url
     }
 
     public getMoonrakerApiKey() {
@@ -215,7 +221,7 @@ export class ConfigHelper {
     }
 
     public notifyOnMoonrakerThrottle() {
-        return this.getEntriesByFilter(/^notifications /g)[0].show_no_permission_private
+        return this.getEntriesByFilter(/^notifications$/g)[0].show_no_permission_private
     }
 
     public dumpCacheOnStart() {
@@ -223,7 +229,7 @@ export class ConfigHelper {
     }
 
     public showNoPermissionPrivate() {
-        return this.getEntriesByFilter(/^message /g)[0].show_no_permission_private
+        return this.getEntriesByFilter(/^message$/g)[0].show_no_permission_private
     }
 
     public getLogPath() {

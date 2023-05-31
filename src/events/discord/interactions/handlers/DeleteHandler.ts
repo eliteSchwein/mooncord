@@ -13,7 +13,7 @@ export class DeleteHandler {
         if (!data.functions.includes("delete")) {
             return
         }
-        if (typeof data.function_mapping.root_path === 'undefined') {
+        if (typeof data.root_path === 'undefined') {
             return
         }
 
@@ -29,7 +29,7 @@ export class DeleteHandler {
             await interaction.deferReply()
         }
 
-        const rootPath = data.function_mapping.root_path
+        const rootPath = data.root_path
         const filename = this.embedHelper.getAuthorName(currentEmbed)
 
         const feedback = await this.moonrakerClient.send({

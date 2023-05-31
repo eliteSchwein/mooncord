@@ -265,9 +265,7 @@ export class TemplateHelper {
         const metaData = Object.assign({}, getEntry(type))
 
         for (const inputId of data) {
-            console.log(inputId)
             const inputMetaData = metaData[inputId]
-            console.log(inputMetaData)
             inputMetaData.id = inputId
             inputData.push(inputMetaData)
         }

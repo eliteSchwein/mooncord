@@ -18,7 +18,7 @@ export class MessageHandler {
             label = `${data.emoji} ${label}`
         }
 
-        let newMessage = data.function_mapping.message
+        let newMessage = data.message
 
         if (/(\${).*?}/g.test(newMessage)) {
             const placeholderId = newMessage
@@ -37,7 +37,7 @@ export class MessageHandler {
         if (interaction !== null && interaction.replied) {
             await interaction.followUp(newMessage)
         } else {
-            if (data.function_mapping.message_as_follow_up) {
+            if (data.functions.includes('message_as_follow_up')) {
                 await message.reply(newMessage)
                 return
             }
