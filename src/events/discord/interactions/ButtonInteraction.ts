@@ -18,6 +18,7 @@ import {WebsocketHandler} from "./handlers/WebsocketHandler";
 import {DeleteHandler} from "./handlers/DeleteHandler";
 import {EmbedHandler} from "./handlers/EmbedHandler";
 import {DeleteMessageHandler} from "./handlers/DeleteMessageHandler";
+import {SetupHandler} from "./handlers/SetupHandler";
 
 export class ButtonInteraction {
     protected config = new ConfigHelper()
@@ -82,6 +83,7 @@ export class ButtonInteraction {
         await new PageHandler().execute(message, interaction.user, buttonData, interaction)
         await new MacroHandler().execute(message, interaction.user, buttonData, interaction)
         await new DeleteMessageHandler().execute(message, interaction.user, buttonData, interaction)
+        await new SetupHandler().execute(message, interaction.user, buttonData, interaction)
 
         await sleep(2000)
 

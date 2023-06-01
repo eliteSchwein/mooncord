@@ -19,6 +19,14 @@
         }
     },
     "embeds": {
+        "setup_1": {
+            "title": "Setup Step 1",
+            "description": "Welcome to MoonCord! \n in this Setup you can configure where i will send notifications."
+        },
+        "setup_2": {
+            "title": "Setup Step 2",
+            "description": "Do you want private notifications?"
+        },
         "execute_error": {
             "title": "Malformated GCode Command/s",
             "description": "${gcode_commands}"
@@ -256,6 +264,9 @@
     },
     "messages": {
         "answers": {
+            "setup": {
+                "finish": "You finished or closed the setup, `${username}`!"
+            },
             "temp_target_reached": "The heater `${heater}` reached the Target Temperature `${target}°C`!",
             "custom_command_executed": "The Custom Command `${custom_command}` got executed, `${username}`!",
             "execute_successful": "The Gcode Commands executed successful, `${username}`!",
@@ -356,6 +367,12 @@
         }
     },
     "buttons": {
+        "setup_step_2": {
+            "label": "Next"
+        },
+        "setup_step_1": {
+            "label": "Last"
+        },
         "printjob_pause": {
             "label": "Pause"
         },

@@ -71,7 +71,7 @@ async function init() {
 
     await statusHelper.update(null, true, discordClient)
 
-    if(!args.includes('register-controller')) {
+    if(!args.includes('setup')) {
         return
     }
 
@@ -93,7 +93,8 @@ async function init() {
     readline.question('username:', userNameTag => {
         userNameTag = userNameTag.trim()
         setData('tmp_controller', userNameTag)
-        logRegular(`please write with ${userNameTag} in a channel on your Server to activate Controller.`)
+        setData('setup_mode', true)
+        logRegular(`please write with ${userNameTag} in a channel on your Server to activate Controller and start the setup.`)
         readline.close();
     });
 }

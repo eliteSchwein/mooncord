@@ -2,10 +2,11 @@ import {Client} from "discord.js";
 import {logError, logRegular, logSuccess} from "../../helper/LoggerHelper";
 import {getEntry, setData} from "../../utils/CacheUtil";
 import {getDatabase} from "../../Application";
-import {createInterface} from "readline";
+import {EmbedHelper} from "../../helper/EmbedHelper";
 
 export class VerifyHandler {
     protected database = getDatabase()
+    protected embedHelper = new EmbedHelper()
 
     public constructor(discordClient: Client) {
         discordClient.on("messageCreate", async message => {
@@ -31,41 +32,23 @@ export class VerifyHandler {
             if (permissions['controllers'].includes(controllerId)) {
                 logError(`${message.author.tag} is already a Controller!!!`)
                 await message.reply('You are already a Controller')
-                return
-            }
+                //return
+            } else {
+                logRegular(`add ${message.author.tag}'s ID into the Controller List (${controllerId})...`)
+                permissions['controllers'].push(controllerId)
 
-            logRegular(`add ${message.author.tag}'s ID into the Controller List (${controllerId})...`)
-            permissions['controllers'].push(controllerId)
+                setData('tmp_controller', undefined)
+
+                await this.database.updateDatabaseEntry('permissions', permissions)
+
+                await message.reply('You have now the Controller Permission over me')
+            }
 
             setData('tmp_controller', undefined)
 
-            await this.database.updateDatabaseEntry('permissions', permissions)
+            const setupMessage = await this.embedHelper.generateEmbed('setup_1')
 
-            await message.reply('You have now the Controller Permission over me')
-
-            logRegular(`do you want notifications via direct message?`)
-
-            const readline = createInterface({
-                input: process.stdin,
-                output: process.stdout
-            })
-
-            readline.question('[yY] or [nN]:', async answer => {
-                if(answer.toLowerCase() === 'y') {
-                    const notifyList = this.database.getDatabaseEntry('notify')
-
-                    if(!notifyList.includes(controllerId)) {
-                        notifyList.push(controllerId)
-                        await this.database.updateDatabaseEntry('notify', notifyList)
-                    }
-
-                    logRegular(`you will receive direct messages now!`)
-                }
-
-                logSuccess('stopping MoonCord...')
-
-                process.exit(0)
-            });
+            await message.channel.send(setupMessage.embed)
         })
     }
 }
