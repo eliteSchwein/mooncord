@@ -19,7 +19,11 @@ export class DiscordInputGenerator {
     }
 
     public generateButtons(buttons) {
-        const row = new MessageActionRow()
+        const rows = []
+        const limit = 4
+        let currentButton = 0
+
+        rows.push(new MessageActionRow())
 
         if (typeof (buttons) === 'undefined') {
             return
@@ -44,14 +48,24 @@ export class DiscordInputGenerator {
                 button.setLabel(buttonData.label)
             }
 
-            row.addComponents(button)
+            if(currentButton > limit) {
+                if (rows[1] === undefined) {
+                    rows.push(new MessageActionRow())
+                }
+
+                rows[1].addComponents(button)
+            } else {
+                rows[0].addComponents(button)
+            }
+
+            currentButton++
         }
 
-        if (row.components.length === 0) {
+        if (rows[0].components.length === 0) {
             return
         }
 
-        return row
+        return rows
     }
 
     public generateSelections(selections) {

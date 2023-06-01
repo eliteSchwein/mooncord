@@ -4,6 +4,7 @@ import {getMoonrakerClient} from "../Application";
 import path from "path";
 import {writeFile} from "fs/promises";
 import {mergeDeep} from "../helper/DataHelper";
+import {getEntry} from "./CacheUtil";
 
 const defaultDatabase = {
     'guilds': {},
@@ -61,6 +62,10 @@ export class DatabaseUtil {
 
         if (typeof updateRequest.error !== 'undefined') {
             logError(`Database Update failed: ${updateRequest.error.message}`)
+            return
+        }
+
+        if(getEntry('setup_mode')) {
             return
         }
 

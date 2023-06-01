@@ -19,6 +19,8 @@ import {DeleteHandler} from "./handlers/DeleteHandler";
 import {EmbedHandler} from "./handlers/EmbedHandler";
 import {DeleteMessageHandler} from "./handlers/DeleteMessageHandler";
 import {SetupHandler} from "./handlers/SetupHandler";
+import {NotificationHandler} from "./handlers/NotificationHandler";
+import {CameraSettingHandler} from "./handlers/CameraSettingHandler";
 
 export class ButtonInteraction {
     protected config = new ConfigHelper()
@@ -70,6 +72,7 @@ export class ButtonInteraction {
 
         const message = interaction.message as Message
 
+        await new CameraSettingHandler().execute(message, interaction.user, buttonData, interaction)
         await new WebsocketHandler().execute(message, interaction.user, buttonData, interaction)
         await new ExcludeConfirmHandler().execute(message, interaction.user, buttonData, interaction)
         await new ModalHandler().execute(message, interaction.user, buttonData, interaction)
@@ -84,6 +87,7 @@ export class ButtonInteraction {
         await new MacroHandler().execute(message, interaction.user, buttonData, interaction)
         await new DeleteMessageHandler().execute(message, interaction.user, buttonData, interaction)
         await new SetupHandler().execute(message, interaction.user, buttonData, interaction)
+        await new NotificationHandler().execute(message, interaction.user, buttonData, interaction)
 
         await sleep(2000)
 

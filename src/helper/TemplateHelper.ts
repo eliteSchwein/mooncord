@@ -168,7 +168,11 @@ export class TemplateHelper {
         for(const selectionId in selections) {
             components.push(selections[selectionId])
         }
-        components.push(buttons)
+
+        for (const rowId in buttons) {
+            components.push(buttons[rowId])
+        }
+
         components.push(inputs)
 
         files = files.filter((element) => {

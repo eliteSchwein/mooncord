@@ -13,6 +13,7 @@ import {StatusHelper} from "./helper/StatusHelper";
 import {waitUntil} from "async-wait-until";
 import {ModalHelper} from "./helper/ModalHelper";
 import {createInterface} from "readline";
+import {sleep} from "./helper/DataHelper";
 
 const args = process.argv.slice(2)
 
@@ -75,6 +76,8 @@ async function init() {
         return
     }
 
+    setData('setup_mode', true)
+
     for (let i = 0; i < 1024; i++) {
         logEmpty()
     }
@@ -93,7 +96,6 @@ async function init() {
     readline.question('username:', userNameTag => {
         userNameTag = userNameTag.trim()
         setData('tmp_controller', userNameTag)
-        setData('setup_mode', true)
         logRegular(`please write with ${userNameTag} in a channel on your Server to activate Controller and start the setup.`)
         readline.close();
     });

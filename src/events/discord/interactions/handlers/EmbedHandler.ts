@@ -26,7 +26,11 @@ export class EmbedHandler {
 
         const currentEmbed = message.embeds[0] as MessageEmbed
 
-        const author = this.embedHelper.getAuthorName(currentEmbed)
+        let author = ''
+
+        if(currentEmbed !== undefined) {
+            author = this.embedHelper.getAuthorName(currentEmbed)
+        }
 
         let metaData = {
             estimated_time: 'N/A',

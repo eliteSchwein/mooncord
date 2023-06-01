@@ -162,6 +162,10 @@ export class ConfigHelper {
         return this.parseConfig(this.configPath, 'mooncord.cfg')
     }
 
+    public getUserConfigPath() {
+        return this.configPath
+    }
+
     public writeUserConfig(modifiedConfig) {
         updateData('config', modifiedConfig)
 

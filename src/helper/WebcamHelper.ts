@@ -52,14 +52,14 @@ export class WebcamHelper {
                 webcamData.contrast ||
                 webcamData.greyscale ||
                 webcamData.horizontal_mirror ||
-                webcamData.rotation ||
+                webcamData.rotate ||
                 webcamData.sepia ||
                 webcamData.vertical_mirror
             ) {
                 const image = sharp(Buffer.from(buffer))
 
                 image
-                    .rotate(webcamData.rotation)
+                    .rotate(webcamData.rotate)
                     .flip(webcamData.vertical_mirror)
                     .flop(webcamData.horizontal_mirror)
                     .greyscale(webcamData.greyscale)

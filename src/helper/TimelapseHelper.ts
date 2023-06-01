@@ -53,12 +53,17 @@ export class TimelapseHelper {
         }
         // @ts-ignore
         const buttonData = this.templateHelper.getInputData('buttons', ['to_timelapselist'])
+        const components = []
         const buttons = this.inputGenerator.generateButtons(buttonData)
+
+        for (const rowId in buttons) {
+            components.push(buttons[rowId])
+        }
 
         const attachment = new MessageAttachment(timelapseRaw, filename)
 
         return {
-            content: timelapseMessage, files: [attachment], components: [buttons]
+            content: timelapseMessage, files: [attachment], components: [components]
         }
     }
 

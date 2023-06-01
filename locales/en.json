@@ -21,11 +21,19 @@
     "embeds": {
         "setup_1": {
             "title": "Setup Step 1",
-            "description": "Welcome to MoonCord! \n in this Setup you can configure where i will send notifications."
+            "description": "Welcome to MoonCord! \n this Setup will help you to setup me."
         },
         "setup_2": {
             "title": "Setup Step 2",
             "description": "Do you want private notifications?"
+        },
+        "setup_3": {
+            "title": "Setup Step 3",
+            "description": "Is the Camera correctly configured? You can edit the cam settings below."
+        },
+        "setup_4": {
+            "title": "Setup Step 4",
+            "description": "The Setup is now finished, you can go back and check if everything is correctly set."
         },
         "execute_error": {
             "title": "Malformated GCode Command/s",
@@ -370,10 +378,28 @@
         "setup_cancel": {
             "label": "Cancel"
         },
-        "setup_step_2": {
+        "setup_finish": {
+            "label": "Finish"
+        },
+        "enable_notifyme": {
+            "label": "Yes"
+        },
+        "disable_notifyme": {
+            "label": "No"
+        },
+        "setup_next_4": {
             "label": "Next"
         },
-        "setup_step_1": {
+        "setup_last_3": {
+            "label": "Last"
+        },
+        "setup_last_2": {
+            "label": "Last"
+        },
+        "setup_next_2": {
+            "label": "Next"
+        },
+        "setup_last_1": {
             "label": "Last"
         },
         "printjob_pause": {
