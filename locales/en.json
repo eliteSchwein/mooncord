@@ -367,6 +367,9 @@
         }
     },
     "buttons": {
+        "setup_cancel": {
+            "label": "Cancel"
+        },
         "setup_step_2": {
             "label": "Next"
         },
