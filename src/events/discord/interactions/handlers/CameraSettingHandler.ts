@@ -40,13 +40,13 @@ export class CameraSettingHandler {
         }
 
         if(data.functions.includes("camera_brightness_down")) {
-            webcamData.brightness -= 0.25
+            webcamData.brightness -= 0.2
 
             rawUserConfig = rawUserConfig.replace(/brightness:\s*.*/g, `brightness: ${webcamData.brightness}`)
         }
 
         if(data.functions.includes("camera_brightness_up")) {
-            webcamData.brightness += 0.25
+            webcamData.brightness += 0.2
 
             rawUserConfig = rawUserConfig.replace(/brightness:\s*.*/g, `brightness: ${webcamData.brightness}`)
         }

@@ -39,7 +39,7 @@ if(legacyConfig.webcam.horizontal_mirror !== undefined) {
 
 if(legacyConfig.webcam.rotation !== undefined) {
     newConfig =
-        newConfig.replace(/rotation:\s*.*/g, `rotation: ${legacyConfig.webcam.rotation}`)
+        newConfig.replace(/rotate:\s*.*/g, `rotate: ${legacyConfig.webcam.rotation}`)
 }
 
 if(legacyConfig.webcam.brightness !== undefined) {
