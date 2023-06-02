@@ -54,7 +54,7 @@ questions()
     fi
     ok_msg "Klipper Log Path set: $MCLOGPATH"
 
-    if [ -f "$MCCONFIGPATH/mooncord.json" ];
+    if [ -f "$MCCONFIGPATH/mooncord.cfg" ];
     then
         status_msg "MoonCord config found, do you want to overwrite it?"
         while true; do
@@ -204,7 +204,7 @@ generate_config() {
     fi
     status_msg "Generate Config"
 
-    CONFIG=$(<$SCRIPTPATH/mooncord.json)
+    CONFIG=$(<$SCRIPTPATH/mooncord.cfg)
 
     MCURL_ESC=$(sed "s/\//\\\\\//g" <<< $MCURL)
     MCTOKEN_ESC=$(sed "s/\//\\\\\//g" <<< $MCTOKEN)
@@ -238,9 +238,9 @@ generate_config() {
     fi
 
     status_msg "Write Config"
-    echo "$CONFIG" | sudo tee $MCCONFIGPATH/mooncord.json > /dev/null
-    sed "s/MC_SERVICE/$MCSERVICENAME/g" $MCCONFIGPATH/mooncord.json
-    sudo chown $(whoami) $MCCONFIGPATH/mooncord.json
+    echo "$CONFIG" | sudo tee $MCCONFIGPATH/mooncord.cfg > /dev/null
+    sed "s/MC_SERVICE/$MCSERVICENAME/g" $MCCONFIGPATH/mooncord.cfg
+    sudo chown $(whoami) $MCCONFIGPATH/mooncord.cfg
 }
 
 verify_Controller() {

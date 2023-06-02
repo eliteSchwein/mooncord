@@ -4,6 +4,7 @@
   "description": "Moonraker Discord Bot based on Discord.js",
   "main": "index.js",
   "scripts": {
+    "migrateJson": "node src/migration/ConfigMigration.js",
     "start": "node --expose-gc dist/index.js",
     "debugstart": "node --trace_gc --expose-gc --trace-deprecation --trace-warnings --trace-uncaught --track-heap-objects dist/index.js",
     "checkcodestyle": "npx eslint ./**",
