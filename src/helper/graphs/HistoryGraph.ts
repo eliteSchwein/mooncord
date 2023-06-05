@@ -9,7 +9,6 @@ import SvgHelper from "../SvgHelper";
 
 export default class HistoryGraph {
     protected configHelper = new ConfigHelper()
-    protected historyHelper = new HistoryHelper()
     protected localeHelper = new LocaleHelper()
     protected locale = this.localeHelper.getLocale()
     protected svgHelper = new SvgHelper()
@@ -31,7 +30,7 @@ export default class HistoryGraph {
     }
 
     public async renderGraph() {
-        const printStats = this.historyHelper.getPrintStats()
+        const printStats = new HistoryHelper().getPrintStats()
         const icons = this.getIcons()
         const graphData = []
 
@@ -41,7 +40,7 @@ export default class HistoryGraph {
             graphData.push({
                 label: printStat,
                 value: printStats.stats[printStat],
-                color: chartConfigSectlion.colors[printStat].color
+                color: '#'+icons[printStat].color
             })
         }
 

@@ -26,4 +26,32 @@ export default class SvgHelper {
 
         return arr;
     }
+
+    public convertToCoords(values: [], max: number, offsetHeight = 400, resHeight = 600) {
+        const coords = []
+        let widthIndex = 0
+
+        if (values === undefined) {
+            return
+        }
+
+        for (const value of values) {
+            coords.push(`${widthIndex},${resHeight - 10 - ((((value * 100) / max) / 100) * offsetHeight)}`)
+            widthIndex++
+        }
+
+        return coords
+    }
+
+    public generateIntervalsOf(interval, start, end) {
+        const result = [];
+        let current = start;
+
+        while (current < end) {
+            result.push(current);
+            current += interval;
+        }
+
+        return result;
+    }
 }

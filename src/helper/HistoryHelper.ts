@@ -10,7 +10,6 @@ export class HistoryHelper {
     protected moonrakerClient = getMoonrakerClient()
     protected configHelper = new ConfigHelper()
     protected localeHelper = new LocaleHelper()
-    protected historyGraph = new HistoryGraph()
     protected locale = this.localeHelper.getLocale()
     protected printJobs = {
         jobs: [],
@@ -76,7 +75,7 @@ export class HistoryHelper {
     }
 
     public parseFields() {
-        const chartConfigSection = this.historyGraph.getIcons()
+        const chartConfigSection = new HistoryGraph().getIcons()
         const printStats = this.getPrintStats()
         const fields = []
 

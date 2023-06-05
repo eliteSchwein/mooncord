@@ -1,4 +1,4 @@
-import type {Message, SelectMenuInteraction} from "discord.js";
+import {Message, SelectMenuInteraction} from "discord.js";
 import {MessageEmbed} from "discord.js";
 
 import {getDatabase, getMoonrakerClient} from "../../../../Application";
@@ -7,21 +7,21 @@ import {EmbedHelper} from "../../../../helper/EmbedHelper";
 import {LocaleHelper} from "../../../../helper/LocaleHelper";
 import {MetadataHelper} from "../../../../helper/MetadataHelper";
 import {getEntry} from "../../../../utils/CacheUtil";
-import {GraphHelper} from "../../../../helper/GraphHelper";
 import {TempHelper} from "../../../../helper/TempHelper";
+import {ExcludeGraph} from "../../../../helper/graphs/ExcludeGraph";
 
 export class ExcludeObjectsSelection {
     protected databaseUtil = getDatabase()
     protected embedHelper = new EmbedHelper()
     protected configHelper = new ConfigHelper()
     protected moonrakerClient = getMoonrakerClient()
-    protected graphHelper = new GraphHelper()
     protected localeHelper = new LocaleHelper()
     protected locale = this.localeHelper.getLocale()
     protected syntaxLocale = this.localeHelper.getSyntaxLocale()
     protected metadataHelper = new MetadataHelper()
     protected functionCache = getEntry('function')
     protected tempHelper = new TempHelper()
+    protected excludeGraph = new ExcludeGraph()
 
     public constructor(interaction: SelectMenuInteraction, selectionId: string) {
         if (selectionId !== 'exclude_objects') {
@@ -37,7 +37,7 @@ export class ExcludeObjectsSelection {
         const object = interaction.values[0]
 
         const embedData = await this.embedHelper.generateEmbed('exclude_detail', {object})
-        const excludeGraph = await this.graphHelper.getExcludeGraph(object)
+        const excludeGraph = await this.excludeGraph.renderGraph(object)
         const embed = embedData.embed.embeds[0] as MessageEmbed
         const components = embedData.embed['components']
         const selectMenu = components[0].components[0]

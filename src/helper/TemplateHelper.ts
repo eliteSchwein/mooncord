@@ -6,13 +6,15 @@ import {findValue, getEntry} from "../utils/CacheUtil";
 import {mergeDeep, parseCalculatedPlaceholder} from "./DataHelper";
 import {TempHelper} from "./TempHelper";
 import {VersionHelper} from "./VersionHelper";
-import {GraphHelper} from "./GraphHelper";
 import {MetadataHelper} from "./MetadataHelper";
 import * as app from "../Application";
 import path from "path";
 import {WebcamHelper} from "./WebcamHelper";
 import {PowerDeviceHelper} from "./PowerDeviceHelper";
 import {HistoryHelper} from "./HistoryHelper";
+import HistoryGraph from "./graphs/HistoryGraph";
+import TempHistoryGraph from "./graphs/TempHistoryGraph";
+import {ExcludeGraph} from "./graphs/ExcludeGraph";
 
 export class TemplateHelper {
     protected localeHelper = new LocaleHelper()
@@ -20,10 +22,13 @@ export class TemplateHelper {
     protected inputGenerator = new DiscordInputGenerator()
     protected tempHelper = new TempHelper()
     protected versionHelper = new VersionHelper()
-    protected graphHelper = new GraphHelper()
     protected powerDeviceHelper = new PowerDeviceHelper()
     protected webcamHelper = new WebcamHelper()
     protected historyHelper = new HistoryHelper()
+
+    protected historyGraph = new HistoryGraph()
+    protected tempGraph = new TempHistoryGraph()
+    protected excludeGraph = new ExcludeGraph()
 
     public parseRawTemplate(type: string, id: string) {
         const unformattedData = Object.assign({}, getEntry(`${type}s`)[id])
@@ -31,10 +36,6 @@ export class TemplateHelper {
 
         if(unformattedData.field === undefined) {
             unformattedData.field = []
-        }
-
-        if(unformattedData.partials !== undefined) {
-            unformattedData.field = this.parsePartials(partials, unformattedData.field)
         }
 
         if (unformattedData.buttons) {
@@ -51,17 +52,25 @@ export class TemplateHelper {
             delete unformattedData.textinputs
         }
 
-        if (unformattedData.add_temp_inputs) {
-            // @ts-ignore
-            const rawTempInputData = this.getInputData('inputs', ['temp_target_input'])[0]
-            const heaters = this.tempHelper.getHeaters()
+        if(unformattedData.partials !== undefined) {
+            unformattedData.field = this.parsePartials(partials, unformattedData.field)
 
-            for (const heater of heaters) {
-                const heaterInput = Object.assign({}, rawTempInputData)
-                heaterInput.id = heater
-                heaterInput.value = this.tempHelper.getHeaterTarget(heater)
-                heaterInput.label = heaterInput.label.replace(/\${heater}/g, heater)
-                unformattedData.inputs.push(heaterInput)
+            if (unformattedData.partials.includes('temp_inputs')) {
+                // @ts-ignore
+                const rawTempInputData = this.getInputData('inputs', ['temp_target_input'])[0]
+                const heaters = this.tempHelper.getHeaters()
+
+                if(unformattedData.inputs === undefined) {
+                    unformattedData.inputs = []
+                }
+
+                for (const heater of heaters) {
+                    const heaterInput = Object.assign({}, rawTempInputData)
+                    heaterInput.id = heater
+                    heaterInput.value = this.tempHelper.getHeaterTarget(heater)
+                    heaterInput.label = heaterInput.label.replace(/\${heater}/g, heater)
+                    unformattedData.inputs.push(heaterInput)
+                }
             }
         }
 
@@ -379,15 +388,15 @@ export class TemplateHelper {
         }
 
         if (imageID === 'tempGraph') {
-            return await this.graphHelper.getTempGraph()
+            return await this.tempGraph.renderGraph()
         }
 
         if (imageID === 'historyGraph') {
-            return await this.graphHelper.getHistoryGraph()
+            return await this.historyGraph.renderGraph()
         }
 
         if (imageID === 'excludeGraph') {
-            return await this.graphHelper.getExcludeGraph(undefined)
+            return await this.excludeGraph.renderGraph(undefined)
         }
 
         const imagePath = path.resolve(__dirname, `../assets/icon-sets/${this.configHelper.getIconSet()}/${imageID}`)

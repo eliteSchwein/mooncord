@@ -99,9 +99,10 @@ export class TempHelper {
 
         for (const cacheKey in cacheData) {
             const title = this.parseFieldTitle(cacheKey)
+            let icon = this.configHelper.getIcons(new RegExp(`${mappingData.icon}`, 'g'))[0].icon
 
             const keyData = {
-                name: `${mappingData.icon} ${title}`,
+                name: `${icon} ${title}`,
                 value: '',
                 inline: true
             }
@@ -119,14 +120,16 @@ export class TempHelper {
             if (typeof cacheData[cacheKey].temperature !== 'undefined' &&
                 this.tempMeta.heater_types.includes(key)) {
                 if (this.isCold(cacheData[cacheKey].temperature)) {
-                    keyData.name = `${this.tempMeta.cold_meta.icon} ${this.parseFieldTitle(cacheKey)}`
+                    icon = this.configHelper.getIcons(new RegExp(`${this.tempMeta.cold_meta.icon}`, 'g'))[0].icon
+                    keyData.name = `${icon} ${this.parseFieldTitle(cacheKey)}`
                 }
             }
 
             if (typeof cacheData[cacheKey].speed !== 'undefined' &&
                 this.tempMeta.fan_types.includes(key)) {
                 if (this.isSlowFan(cacheData[cacheKey].speed)) {
-                    keyData.name = `${this.tempMeta.slow_fan_meta.icon} ${this.parseFieldTitle(cacheKey)}`
+                    icon = this.configHelper.getIcons(new RegExp(`${this.tempMeta.slow_fan_meta.icon}`, 'g'))[0].icon
+                    keyData.name = `${icon} ${this.parseFieldTitle(cacheKey)}`
                 }
             }
 

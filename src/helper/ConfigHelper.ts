@@ -263,7 +263,7 @@ export class ConfigHelper {
     }
 
     public getModalMeta() {
-        return this.getConfig().modal_meta
+        return this.getEntriesByFilter(/^modal /g, true)
     }
 
     public getInputMeta() {
@@ -314,9 +314,13 @@ export class ConfigHelper {
         return this.getEntriesByFilter(/^status$/g)[0].gcode_timeout
     }
 
-    public getIcons(filter: RegExp) {
-        const result = []
+    public getIcons(filter: RegExp, asObject = false) {
+        let result: any = []
         const config = this.getConfig()
+
+        if(asObject) {
+            result = {}
+        }
 
         for (const key in config) {
             if(!key.match(/icon.*/g)) {
@@ -326,7 +330,39 @@ export class ConfigHelper {
                 continue
             }
 
-            result.push(config[key])
+            if(asObject) {
+                const realKey = key.replace(/^icon /g, '')
+                result[realKey] = config[key]
+            } else {
+                result.push(config[key])
+            }
+        }
+
+        return result
+    }
+
+    public getColors(filter: RegExp, asObject = false) {
+        let result: any = []
+        const config = this.getConfig()
+
+        if(asObject) {
+            result = {}
+        }
+
+        for (const key in config) {
+            if(!key.match(/color.*/g)) {
+                continue
+            }
+            if(!key.match(filter)) {
+                continue
+            }
+
+            if(asObject) {
+                const realKey = key.replace(/^color /g, '')
+                result[realKey] = config[key]
+            } else {
+                result.push(config[key])
+            }
         }
 
         return result
