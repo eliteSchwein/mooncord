@@ -86,11 +86,11 @@ export class TemplateHelper {
             field = [...field, ...this.versionHelper.getUpdateFields()]
         }
 
-        if (partials.includes('temps')) {
+        if (partials.includes('temp') || partials.includes('temps')) {
             field = [...field, ...this.tempHelper.parseFields().fields]
         }
 
-        if (partials.includes('minimal_temp')) {
+        if (partials.includes('minimal_temp') || partials.includes('minimal_temps')) {
             field = [...field, ...this.tempHelper.parseFields(true).fields]
         }
 
