@@ -52,7 +52,6 @@ export class MoonrakerClient {
             socketUrl = `${this.config.getMoonrakerUrl()}/websocket`
         }
 
-        console.log(`"${socketUrl}"`)
         socketUrl = socketUrl.replace(/(http:\/\/)|(https:\/\/)/g, 'ws://')
 
         this.websocket = new WebsocketBuilder(`${socketUrl}?token=${oneShotToken}`)
