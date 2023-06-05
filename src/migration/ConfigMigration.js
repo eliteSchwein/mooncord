@@ -20,10 +20,10 @@ console.log('update base config...')
 newConfig =
     newConfig
         .replace('MC_WEBCAM_URL', legacyConfig.webcam.url)
-        .replace(/moonraker_url:\s*.*/g, `moonraker_url: ${legacyConfig.connection.moonraker_url}`)
-        .replace(/moonraker_token:\s*.*/g, `moonraker_token: ${legacyConfig.connection.moonraker_token}`)
-        .replace(/bot_token:\s*.*/g, `bot_token: ${legacyConfig.connection.bot_token}`)
-        .replace(/tmp_path:\s*.*/g, `tmp_path: ${legacyConfig.tmp_path}`)
+        .replace(/moonraker_url:\s*.*/g, `moonraker_url: '${legacyConfig.connection.moonraker_url}'`)
+        .replace(/moonraker_token:\s*.*/g, `moonraker_token: '${legacyConfig.connection.moonraker_token}'`)
+        .replace(/bot_token:\s*.*/g, `bot_token: '${legacyConfig.connection.bot_token}'`)
+        .replace(/tmp_path:\s*.*/g, `tmp_path: '${legacyConfig.tmp_path}'`)
 
 console.log('update detailes cam settings...')
 
