@@ -35,8 +35,8 @@ sudo rm  /usr/local/bin/node
 status_msg "Add NodeJS 16.x Repo"
 curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
 
-status_msg "Install NodeJS 16.X"
-sudo apt-get install -y nodejs
+status_msg "Install NodeJS 16.X or higher"
+sudo apt-get install -y nodejs npm
 
 status_msg "Rebuild NPM, this will take some time please wait....."
 npm rebuild
