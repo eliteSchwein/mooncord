@@ -237,7 +237,13 @@ export class ConfigHelper {
     }
 
     public getLogPath() {
-        return this.getEntriesByFilter(/^logger$/g)[0].path
+        const path = this.getEntriesByFilter(/^logger$/g)[0].path
+
+        if(path === undefined || path === '') {
+            return this.getTempPath()
+        }
+
+        return path
     }
 
     public isLogFileDisabled() {

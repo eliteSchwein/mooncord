@@ -45,7 +45,7 @@ export class MoonrakerClient {
         this.ready = false
 
         const oneShotToken = await this.apiKeyHelper.getOneShotToken()
-        let socketUrl = ((this.config.getMoonrakerSocketUrl() !== undefined ? this.config.getMoonrakerSocketUrl() : `${this.config.getMoonrakerUrl()}/websocket`))
+        let socketUrl = ((this.config.getMoonrakerSocketUrl() !== undefined && this.config.getMoonrakerSocketUrl() !== '' ? this.config.getMoonrakerSocketUrl() : `${this.config.getMoonrakerUrl()}/websocket`))
         socketUrl = socketUrl.replace(/(http:\/\/)|(https:\/\/)/g, 'ws://')
 
         this.websocket = new WebsocketBuilder(`${socketUrl}?token=${oneShotToken}`)
