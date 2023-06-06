@@ -6,7 +6,7 @@ export class WebsocketHandler {
     protected moonrakerClient = getMoonrakerClient()
 
     public async execute(message: Message, user: User, data, interaction = null) {
-        if (!data.websocket_commands) {
+        if (!data.websocket_requests) {
             return
         }
 
@@ -14,8 +14,8 @@ export class WebsocketHandler {
             await interaction.deferReply()
         }
 
-        for (const websocketCommand of data.websocket_commands) {
-            logRegular(`Execute Websocket Command ${websocketCommand}...`)
+        for (const websocketCommand of data.websocket_requests) {
+            logRegular(`Execute Websocket Command ${JSON.stringify(websocketCommand)}...`)
             try {
                 await this.moonrakerClient.send(websocketCommand)
             } catch {

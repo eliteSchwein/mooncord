@@ -34,6 +34,7 @@ export class MessageHandler {
             .replace(/(\${embed_author})/g, this.embedHelper.getAuthorName(embed))
             .replace(/(\${embed_title})/g, this.embedHelper.getTitle(embed))
 
+
         if (interaction !== null && interaction.replied) {
             await interaction.followUp(newMessage)
         } else {
@@ -41,6 +42,13 @@ export class MessageHandler {
                 await message.reply(newMessage)
                 return
             }
+
+            if(interaction !== null &&
+                interaction.deferred) {
+                await interaction.editReply(newMessage)
+                return
+            }
+
             await message.edit({components: null, embeds: null})
             await message.removeAttachments()
 
