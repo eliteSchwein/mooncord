@@ -26,7 +26,10 @@ export class TimelapseListCommand {
         const pageData = pageHelper.getPage(false, 2)
 
         if (Object.keys(pageData) === undefined || Object.keys(pageData).length === 0) {
-            await interaction.editReply(this.localeHelper.getCommandNotReadyError(interaction.user.username))
+            const message = this.locale.messages.errors.no_timelapses
+                .replace(/(\${username})/g, interaction.user.tag)
+
+            await interaction.editReply(message)
             return
         }
 
