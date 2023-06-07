@@ -11,7 +11,10 @@ const defaultDatabase = {
     'notify': [],
     'permissions': {
         'controllers': [],
-        'admins': []
+        'admins': {
+            'roles': [],
+            'users': []
+        }
     },
     'invite_url': ''
 }
@@ -44,14 +47,13 @@ export class DatabaseUtil {
     }
 
     public async resetDatabase() {
-        void await this.moonrakerClient.send({
-            "method": "server.database.delete_item",
-            "params": {"namespace": "mooncord", "key": "dataset"}
-        })
+        database = Object.assign({}, defaultDatabase)
+
+        await this.updateDatabase()
 
         logWarn('Database wiped')
 
-        void await this.handleDatabaseMissing()
+        await this.retrieveDatabase()
     }
 
     public async updateDatabase() {

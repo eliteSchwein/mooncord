@@ -2,12 +2,14 @@ import {CommandInteraction} from "discord.js";
 import {LocaleHelper} from "../../../../helper/LocaleHelper";
 import {ConfigHelper} from "../../../../helper/ConfigHelper";
 import {removeFromArray} from "../../../../helper/DataHelper";
+import {DatabaseUtil} from "../../../../utils/DatabaseUtil";
 
 export class AdminCommand {
     protected localeHelper = new LocaleHelper()
     protected syntaxLocale = this.localeHelper.getSyntaxLocale()
     protected locale = this.localeHelper.getLocale()
     protected configHelper = new ConfigHelper()
+    protected databaseUtil = new DatabaseUtil()
 
     public constructor(interaction: CommandInteraction, commandId: string) {
         if (commandId !== 'admin') {
@@ -21,6 +23,7 @@ export class AdminCommand {
         const role = interaction.options.getRole(this.syntaxLocale.commands.admin.options.role.options.role.name)
         const user = interaction.options.getUser(this.syntaxLocale.commands.admin.options.user.options.user.name)
 
+        console.log(this.databaseUtil.getDatabaseEntry('permissions').admins)
         const permissions = this.configHelper.getPermissions()
         const botAdmins = permissions.botadmins
         const userConfig = this.configHelper.getUserConfig()
