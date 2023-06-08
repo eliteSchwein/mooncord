@@ -41,17 +41,13 @@ export class DatabaseUtil {
 
         database = databaseRequest.result.value
 
-        database = mergeDeep(defaultDatabase, database)
+        database = mergeDeep(JSON.parse(JSON.stringify(defaultDatabase)), database)
 
         await this.updateDatabase()
     }
 
     public async resetDatabase() {
-        database = defaultDatabase
-
-        await this.updateDatabase()
-
-        console.log(database)
+        await this.handleDatabaseMissing()
 
         logWarn('Database wiped')
 
@@ -105,7 +101,7 @@ export class DatabaseUtil {
     private async handleDatabaseMissing() {
         logRegular('generate Database Structure...')
 
-        database = defaultDatabase
+        database = Object.assign({}, defaultDatabase)
 
         await this.updateDatabase()
     }
