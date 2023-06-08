@@ -47,7 +47,7 @@ export class PidtuneCommand {
             return
         }
 
-        await interaction.reply(this.locale.messages.answers.pidtune_done
+        await interaction.editReply(this.locale.messages.answers.pidtune_done
             .replace(/(\${heater})/g, heater)
             .replace(/(\${username})/g, interaction.user.tag))
     }
