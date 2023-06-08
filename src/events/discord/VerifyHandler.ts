@@ -14,14 +14,14 @@ export class VerifyHandler {
                 return
             }
 
-            const tmpController = getEntry('tmp_controller')
+            const setupCode = getEntry('setup_code')
 
-            if (typeof tmpController === 'undefined') {
+            if (typeof setupCode === 'undefined') {
                 return
             }
 
-            if (message.author.tag !== tmpController) {
-                logError(`${message.author.tag} is not matching the Controller Tag ${tmpController}!!!`)
+            if(message.content !== setupCode) {
+                logError(`Message doesnt match the setup code :${setupCode}!!!`)
                 return
             }
 

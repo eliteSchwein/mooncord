@@ -2,7 +2,16 @@ import * as packageConfig from '../package.json'
 import * as util from 'util'
 import {DiscordClient} from './clients/DiscordClient'
 import {MoonrakerClient} from './clients/MoonrakerClient'
-import {hookProcess, logEmpty, logError, logRegular, logSuccess, logWarn, tempHookLog} from './helper/LoggerHelper'
+import {
+    hookProcess,
+    logEmpty,
+    logError,
+    logNotice,
+    logRegular,
+    logSuccess,
+    logWarn,
+    tempHookLog
+} from './helper/LoggerHelper'
 import {DatabaseUtil} from './utils/DatabaseUtil'
 import {LocaleHelper} from "./helper/LocaleHelper";
 import {getEntry, setData} from './utils/CacheUtil'
@@ -45,8 +54,6 @@ void init()
 async function init() {
     initCache()
 
-    const userConfig = configHelper.getUserConfig()
-
     logEmpty()
 
     let currentInitState = 'Moonraker Client'
@@ -76,7 +83,10 @@ async function init() {
         return
     }
 
+    const setupCode = (Math.random() + 1).toString(36).substring(2)
+
     setData('setup_mode', true)
+    setData('setup_code', setupCode)
 
     for (let i = 0; i < 1024; i++) {
         logEmpty()
@@ -86,19 +96,8 @@ async function init() {
         ${getEntry('invite_url')}`)
     logWarn('please dont use ctrl + c for copying the script, this will stop the install script!')
     logEmpty()
-    logRegular(`after that please write your username (Example#123).`)
-
-    const readline = createInterface({
-        input: process.stdin,
-        output: process.stdout
-    })
-
-    readline.question('username:', userNameTag => {
-        userNameTag = userNameTag.trim()
-        setData('tmp_controller', userNameTag)
-        logRegular(`please write with ${userNameTag} in a channel on your Server to activate Controller and start the setup.`)
-        readline.close();
-    });
+    logRegular(`after the invite please write the following code in a text channel:`)
+    logNotice(setupCode)
 }
 
 export function reloadCache() {
