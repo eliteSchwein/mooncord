@@ -51,6 +51,8 @@ export class DatabaseUtil {
 
         await this.updateDatabase()
 
+        console.log(database)
+
         logWarn('Database wiped')
 
         await this.retrieveDatabase()
