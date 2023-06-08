@@ -37,7 +37,7 @@ export class VerifyHandler {
                 logRegular(`add ${message.author.tag}'s ID into the Controller List (${controllerId})...`)
                 permissions['controllers'].push(controllerId)
 
-                setData('tmp_controller', undefined)
+                setData('setup_code', undefined)
 
                 await this.database.updateDatabaseEntry('permissions', permissions)
 
