@@ -18,7 +18,7 @@ export class ResetDatabaseCommand {
     protected async execute(interaction: CommandInteraction) {
         await interaction.deferReply()
 
-        void await this.databaseUtil.resetDatabase()
+        await this.databaseUtil.resetDatabase()
 
         await interaction.editReply(this.locale.messages.answers.reset_database)
     }

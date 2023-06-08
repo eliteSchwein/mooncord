@@ -47,7 +47,7 @@ export class DatabaseUtil {
     }
 
     public async resetDatabase() {
-        database = Object.assign({}, defaultDatabase)
+        database = defaultDatabase
 
         await this.updateDatabase()
 
