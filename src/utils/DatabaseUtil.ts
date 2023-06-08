@@ -43,6 +43,10 @@ export class DatabaseUtil {
 
         database = mergeDeep(JSON.parse(JSON.stringify(defaultDatabase)), database)
 
+        if(Array.isArray(database.permissions.admins)) {
+            database.permissions.admins = JSON.parse(JSON.stringify(defaultDatabase.permissions.admins))
+        }
+
         await this.updateDatabase()
     }
 
