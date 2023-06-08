@@ -20,6 +20,9 @@ export class PermissionHelper {
         if (typeof this.controllers.roles === "string") {
             this.controllers.roles = [this.controllers.roles]
         }
+        if (typeof this.botAdmins.roles === "string") {
+            this.botAdmins.roles = [this.botAdmins.roles]
+        }
     }
 
     public hasPermission(user: User, guild: Guild, command: string) {
