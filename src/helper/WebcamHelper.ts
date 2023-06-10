@@ -58,6 +58,12 @@ export class WebcamHelper {
             ) {
                 const image = sharp(Buffer.from(buffer))
 
+                if(webcamData.horizontal_mirror && webcamData.vertical_mirror && webcamData.rotate === 0) {
+                    webcamData.rotate = 180
+                    webcamData.horizontal_mirror = false
+                    webcamData.vertical_mirror = false
+                }
+
                 image
                     .rotate(webcamData.rotate)
                     .flip(webcamData.vertical_mirror)
