@@ -48,7 +48,7 @@ export class TimelapseHelper {
 
         let timelapseRaw = result.data
 
-        if (Buffer.byteLength(timelapseRaw) > 8_388_608) {
+        if (Buffer.byteLength(timelapseRaw) > 26_214_400) {
             timelapseRaw = await this.compressTimelapse(timelapseRaw, filename)
         }
         // @ts-ignore
@@ -63,7 +63,7 @@ export class TimelapseHelper {
         const attachment = new MessageAttachment(timelapseRaw, filename)
 
         return {
-            content: timelapseMessage, files: [attachment], components: [components]
+            content: timelapseMessage, files: [attachment], components
         }
     }
 
