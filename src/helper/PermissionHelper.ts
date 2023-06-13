@@ -104,9 +104,7 @@ export class PermissionHelper {
     }
 
     public isController(user: User, guild: Guild) {
-        if (this.controllers.includes(user.id)) {
-            return true
-        }
+        return this.controllers.includes(user.id);
     }
 
     protected getMember(user: User, guild: Guild) {
