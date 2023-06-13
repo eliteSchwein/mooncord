@@ -19,15 +19,8 @@ export class VerifyHandler {
             if (typeof setupCode === 'undefined') {
                 return
             }
-
-            let content = message.content
-
-            if(content.startsWith(':')) {
-                content = content.substring(1)
-            }
-
-            if(content !== setupCode) {
-                logError(`Message doesnt match the setup code :${setupCode}!!!`)
+            if(message.content.trim() !== setupCode) {
+                logError(`Message (${message.content.trim()}) doesnt match the setup code: ${setupCode}!!!`)
                 return
             }
 
