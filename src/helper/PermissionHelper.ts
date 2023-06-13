@@ -16,10 +16,6 @@ export class PermissionHelper {
         if (typeof this.botAdmins.users === "string") {
             this.botAdmins.users = [this.botAdmins.users]
         }
-
-        if (typeof this.controllers.roles === "string") {
-            this.controllers.roles = [this.controllers.roles]
-        }
         if (typeof this.botAdmins.roles === "string") {
             this.botAdmins.roles = [this.botAdmins.roles]
         }
@@ -108,13 +104,8 @@ export class PermissionHelper {
     }
 
     public isController(user: User, guild: Guild) {
-        const member = this.getMember(user, guild)
         if (this.controllers.includes(user.id)) {
             return true
-        }
-
-        if (typeof member !== 'undefined') {
-            return member.roles.cache.some((role) => this.controllers.roles.includes(role.id))
         }
     }
 
