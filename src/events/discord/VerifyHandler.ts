@@ -20,7 +20,13 @@ export class VerifyHandler {
                 return
             }
 
-            if(message.content !== setupCode) {
+            let content = message.content
+
+            if(content.startsWith(':')) {
+                content = content.substring(1)
+            }
+
+            if(content !== setupCode) {
                 logError(`Message doesnt match the setup code :${setupCode}!!!`)
                 return
             }
