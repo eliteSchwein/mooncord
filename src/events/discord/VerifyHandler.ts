@@ -19,6 +19,9 @@ export class VerifyHandler {
             if (typeof setupCode === 'undefined') {
                 return
             }
+
+            console.log(message)
+
             if(message.content.trim() !== setupCode) {
                 logError(`Message (${message.content.trim()}) doesnt match the setup code: ${setupCode}!!!`)
                 return
