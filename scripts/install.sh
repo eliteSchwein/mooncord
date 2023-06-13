@@ -245,7 +245,7 @@ generate_config() {
 
 verify_Controller() {
     ok_msg "Temporary Start MoonCord for the Controller verification"
-    npm start $MCCONFIGPATH
+    npm start $MCCONFIGPATH setup
 }
 
 start_MoonCord() {
