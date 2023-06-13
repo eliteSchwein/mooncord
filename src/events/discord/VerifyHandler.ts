@@ -20,10 +20,15 @@ export class VerifyHandler {
                 return
             }
 
-            console.log(message)
+            const content = message.content.trim()
 
-            if(message.content.trim() !== setupCode) {
-                logError(`Message (${message.content.trim()}) doesnt match the setup code: ${setupCode}!!!`)
+            if(content === '') {
+                console.log(message)
+                return
+            }
+
+            if(content !== setupCode) {
+                logError(`Message (${content}) doesnt match the setup code: ${setupCode}!!!`)
                 return
             }
 
