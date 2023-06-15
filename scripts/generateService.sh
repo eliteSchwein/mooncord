@@ -21,7 +21,6 @@ MCWEBTOKEN=""
 MCURL="http://127.0.0.1"
 MCMOONRAKERSERVICE="moonraker"
 MCCAMURL="http://127.0.0.1/webcam/?action=snapshot"
-MCCONTROLLER=""
 
 install_systemd_service()
 {
@@ -129,7 +128,6 @@ do
             --moonraker_url) MCURL=${VALUE};;
             --moonraker_service) MCMOONRAKERSERVICE=${VALUE};;
             --webcam_url) MCCAMURL=${VALUE};;
-            --controller_tag) MCCONTROLLER=${VALUE};;
             *)   
     esac    
 done
