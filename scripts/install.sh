@@ -21,7 +21,6 @@ MCWEBTOKEN=""
 MCURL="http://127.0.0.1"
 MCMOONRAKERSERVICE="moonraker"
 MCCAMURL="http://127.0.0.1/webcam/?action=snapshot"
-MCCONTROLLER=""
 WRITECONFIG=true
 
 questions()
@@ -113,16 +112,6 @@ questions()
         done
     fi
     ok_msg "Snapshot URL set: $MCCAMURL"
-
-    status_msg "Please enter your Discord Tag"
-    while true; do
-        read -p "$cyan Tag (example#0001): $default" discord_tag
-        case $discord_tag in
-            "") warn_msg "Please Enter your Discord Tag (example#123)";;
-            * ) MCCONTROLLER="$discord_tag"; break;;
-        esac
-    done
-    ok_msg "Discord Tag set: $MCCONTROLLER"
 }
 
 install_packages()
@@ -210,14 +199,12 @@ generate_config() {
     MCTOKEN_ESC=$(sed "s/\//\\\\\//g" <<< $MCTOKEN)
     MCWEBTOKEN_ESC=$(sed "s/\//\\\\\//g" <<< $MCWEBTOKEN)
     MCCAMURL_ESC=$(sed "s/\//\\\\\//g" <<< $MCCAMURL)
-    MCCONTOLLER_ESC=$(sed "s/\//\\\\\//g" <<< $MCCONTROLLER)
     MCSERVICENAME_ESC=$(sed "s/\//\\\\\//g" <<< $MCSERVICENAME)
 
     CONFIG=$(sed "s/MC_URL/$MCURL_ESC/g" <<< $CONFIG)
     CONFIG=$(sed "s/MC_TOKEN/$MCTOKEN_ESC/g" <<< $CONFIG)
     CONFIG=$(sed "s/MC_WEB_TOKEN/$MCWEBTOKEN_ESC/g" <<< $CONFIG)
     CONFIG=$(sed "s/MC_WEBCAM_URL/$MCCAMURL_ESC/g" <<< $CONFIG)
-    CONFIG=$(sed "s/MC_CONTROLLER/$MCCONTOLLER_ESC/g" <<< $CONFIG)
     CONFIG=$(sed "s/MC_SERVICE_NAME/$MCSERVICENAME_ESC/g" <<< $CONFIG)
 
     if [ ! -d "$MCCONFIGPATH/" ];
@@ -314,7 +301,6 @@ do
             --moonraker_url) MCURL=${VALUE};;
             --moonraker_service) MCMOONRAKERSERVICE=${VALUE};;
             --webcam_url) MCCAMURL=${VALUE};;
-            --controller_tag) MCCONTROLLER=${VALUE};;
             *)   
     esac    
 done

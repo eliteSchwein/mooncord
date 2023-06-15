@@ -22,6 +22,6 @@ export class SetupHandler {
 
         logRegular('finish MoonCord installation now, Happy Printing!')
 
-        process.exit(6)
+        process.exit(0)
     }
 }
