@@ -80,6 +80,10 @@ export class TimelapseHelper {
 
         await waitUntil(() => this.timelapseFile[fileId].finish === true, Number.POSITIVE_INFINITY)
 
+        const timelapsePath = this.timelapseFile[fileId].path
+
+        delete this.timelapseFile[fileId]
+
         // @ts-ignore
         const buttonData = this.templateHelper.getInputData('buttons', ['to_timelapselist'])
         const components = []
@@ -89,13 +93,13 @@ export class TimelapseHelper {
             components.push(buttons[rowId])
         }
 
-        const attachment = new MessageAttachment(this.timelapseFile[fileId].path, filename)
+        const attachment = new MessageAttachment(timelapsePath, filename)
 
         return {
             message: {
                 content: timelapseMessage, files: [attachment], components
             },
-            path: this.timelapseFile[fileId].path
+            path: timelapsePath
         }
     }
 
