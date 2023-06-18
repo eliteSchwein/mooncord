@@ -13,9 +13,24 @@ import {DisplayUpdateNotification} from "./messages/DisplayUpdateNotification";
 import {ConsoleMessage} from "./gcode-messages/ConsoleMessage";
 import {TimelapseMacroNotification} from "./messages/TimelapseMacroNotification";
 import {PowerDeviceNotification} from "./messages/PowerDeviceNotification";
+import {PowerDeviceHelper} from "../../helper/PowerDeviceHelper";
 
 export class MessageHandler {
     protected websocket: Websocket
+
+    protected timelapseMacroNotification = new TimelapseMacroNotification()
+    protected subscriptionNotification = new SubscriptionNotification()
+    protected consoleMessage = new ConsoleMessage()
+    protected procStatsNotification = new ProcStatsNotification()
+    protected updateNotification = new UpdateNotification()
+    protected fileEditNotification = new FileEditNotification()
+    protected stateUpdateNotification = new StateUpdateNotification()
+    protected gcodeResponseNotification = new GcodeResponseNotification()
+    protected throttleNotification = new ThrottleNotification()
+    protected timelapseNotification = new TimelapseNotification()
+    protected displayUpdateNotification = new DisplayUpdateNotification()
+    protected printProgressNotification = new PrintProgressNotification()
+    protected powerDeviceNotification = new PowerDeviceNotification()
 
     public constructor(websocket: Websocket) {
         this.websocket = websocket
@@ -31,19 +46,19 @@ export class MessageHandler {
                 'event_count': websocket.underlyingWebsocket['_eventsCount']
             })
 
-            void new TimelapseMacroNotification().parse(messageData)
-            void new SubscriptionNotification().parse(messageData)
-            void new ConsoleMessage().parse(messageData)
-            void new ProcStatsNotification().parse(messageData)
-            void new UpdateNotification().parse(messageData)
-            void new FileEditNotification().parse(messageData)
-            void new StateUpdateNotification().parse(messageData)
-            void new GcodeResponseNotification().parse(messageData)
-            void new ThrottleNotification().parse(messageData)
-            void new TimelapseNotification().parse(messageData)
-            void new DisplayUpdateNotification().parse(messageData)
-            void new PrintProgressNotification().parse(messageData)
-            void new PowerDeviceNotification().parse(messageData)
+            void this.timelapseMacroNotification.parse(messageData)
+            void this.subscriptionNotification.parse(messageData)
+            void this.consoleMessage.parse(messageData)
+            void this.procStatsNotification.parse(messageData)
+            void this.updateNotification.parse(messageData)
+            void this.fileEditNotification.parse(messageData)
+            void this.stateUpdateNotification.parse(messageData)
+            void this.gcodeResponseNotification.parse(messageData)
+            void this.throttleNotification.parse(messageData)
+            void this.timelapseNotification.parse(messageData)
+            void this.displayUpdateNotification.parse(messageData)
+            void this.printProgressNotification.parse(messageData)
+            void this.powerDeviceNotification.parse(messageData)
         }))
     }
 }

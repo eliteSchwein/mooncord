@@ -56,7 +56,7 @@ export class WebcamHelper {
                 webcamData.sepia ||
                 webcamData.vertical_mirror
             ) {
-                const image = sharp(Buffer.from(buffer))
+                const image = sharp(buffer)
 
                 if(webcamData.horizontal_mirror && webcamData.vertical_mirror && webcamData.rotate === 0) {
                     webcamData.rotate = 180
@@ -93,6 +93,8 @@ export class WebcamHelper {
                 })
 
                 const editBuffer = await image.toBuffer()
+
+                buffer.fill(0)
 
                 logRegular('Run Webcam follow up Tasks if present...')
                 await this.executePostProcess(afterStatus)

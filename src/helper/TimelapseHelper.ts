@@ -1,6 +1,6 @@
-import path from "path";
+import path, {resolve} from "path";
 import {logNotice, logRegular, logSuccess} from "./LoggerHelper";
-import {readFileSync, unlinkSync, writeFileSync} from "fs";
+import {createWriteStream, statSync, unlinkSync} from "fs";
 import {waitUntil} from "async-wait-until";
 import {ConfigHelper} from "./ConfigHelper";
 import {getMoonrakerClient} from "../Application";
@@ -24,6 +24,7 @@ export class TimelapseHelper {
     protected templateHelper = new TemplateHelper()
     protected ffmpegRender = Ffmpeg()
     protected functionCache = getEntry('function')
+    protected timelapseFile = {}
     protected ffmpegArguments = [
         "-pix_fmt yuv420p",
         "-preset veryslow",
@@ -36,21 +37,49 @@ export class TimelapseHelper {
         this.ffmpegRender.setFfmpegPath(ffmpegInstall.path)
     }
 
+    private async finishTimelapse(fileId: string) {
+        const path = this.timelapseFile[fileId].path
+        const fileStats = statSync(path)
+        const fileName = this.timelapseFile[fileId].fileName
+        const fileSizeInMegabytes = Math.round((fileStats.size / (1024 * 1000)) * 100) / 100
+
+        logSuccess(`Download Timelapse ${fileName} complete`)
+        logRegular(`Timelapse ${fileName} is ${fileSizeInMegabytes}mb big`)
+
+        if(fileSizeInMegabytes > 8) {
+            this.timelapseFile[fileId].path = await this.compressTimelapse(path, fileName)
+        }
+
+        this.timelapseFile[fileId].finish = true
+    }
+
     public async downloadTimelapse(filename: string, timelapseMessage: string) {
         logRegular(`Downloading Timelapse ${filename}`)
+        const fileId = Math.random().toString(36).substring(2,7)
+        const path = resolve(this.configHelper.getTempPath(), `timelapse_${fileId}.mp4`)
+        const writer = createWriteStream(path)
+
+        this.timelapseFile[fileId] = {
+            finish: false,
+            fileName: filename,
+            path: path
+        }
+
         const result = await axios.get(`${this.configHelper.getMoonrakerUrl()}/server/files/timelapse/${filename}`, {
-            responseType: 'arraybuffer',
+            responseType: 'stream',
             headers: {
                 'X-Api-Key': this.configHelper.getMoonrakerApiKey()
             }
         })
-        logSuccess(`Download Timelapse ${filename} complete`)
 
-        let timelapseRaw = result.data
+        result.data.pipe(writer)
 
-        if (Buffer.byteLength(timelapseRaw) > 26_214_400) {
-            timelapseRaw = await this.compressTimelapse(timelapseRaw, filename)
-        }
+        writer.on('finish', () => this.finishTimelapse(fileId))
+        writer.on('error', () => this.finishTimelapse(fileId))
+
+
+        await waitUntil(() => this.timelapseFile[fileId].finish === true, Number.POSITIVE_INFINITY)
+
         // @ts-ignore
         const buttonData = this.templateHelper.getInputData('buttons', ['to_timelapselist'])
         const components = []
@@ -60,16 +89,18 @@ export class TimelapseHelper {
             components.push(buttons[rowId])
         }
 
-        const attachment = new MessageAttachment(timelapseRaw, filename)
+        const attachment = new MessageAttachment(this.timelapseFile[fileId].path, filename)
 
         return {
-            content: timelapseMessage, files: [attachment], components
+            message: {
+                content: timelapseMessage, files: [attachment], components
+            },
+            path: this.timelapseFile[fileId].path
         }
     }
 
-    protected async compressTimelapse(timelapseBuffer: Buffer, timelapseName: string) {
+    protected async compressTimelapse(timelapseInput: string, timelapseName: string) {
         const absolutePath = (this.configHelper.getTempPath().startsWith('..')) ? path.join(__dirname, this.configHelper.getTempPath()) : this.configHelper.getTempPath()
-        const tempPath = path.join(absolutePath, timelapseName)
         const tempPathShort = path.join(absolutePath, `compressed-${timelapseName}`)
         let renderComplete = false
 
@@ -79,10 +110,8 @@ export class TimelapseHelper {
             this.ffmpegArguments.push('-threads 1')
         }
 
-        writeFileSync(tempPath, timelapseBuffer, {encoding: 'utf8', flag: 'w+'})
-
         this.ffmpegRender
-            .addInput(tempPath)
+            .addInput(timelapseInput)
             .noAudio()
             .output(tempPathShort)
             .outputOptions(this.ffmpegArguments)
@@ -96,12 +125,8 @@ export class TimelapseHelper {
 
         logSuccess(`Compressed Timelapse: ${timelapseName}`)
 
-        unlinkSync(tempPath)
+        unlinkSync(timelapseInput)
 
-        const timelapseRaw = readFileSync(tempPathShort)
-
-        unlinkSync(tempPathShort)
-
-        return timelapseRaw
+        return tempPathShort
     }
 }

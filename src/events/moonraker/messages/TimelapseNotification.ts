@@ -6,6 +6,7 @@ import {LocaleHelper} from "../../../helper/LocaleHelper";
 import {NotificationHelper} from "../../../helper/NotificationHelper";
 import * as ffmpegInstall from "@ffmpeg-installer/ffmpeg"
 import {TimelapseHelper} from "../../../helper/TimelapseHelper";
+import {unlinkSync} from "fs";
 
 export class TimelapseNotification {
     protected timelapseHelper = new TimelapseHelper()
@@ -59,8 +60,9 @@ export class TimelapseNotification {
 
         logRegular(`Broadcast Timelapse for ${printfile}...`)
 
-        await this.notificationHelper.broadcastMessage(timelapseContent)
+        await this.notificationHelper.broadcastMessage(timelapseContent.message)
 
+        unlinkSync(timelapseContent.path)
 
         if (global.gc) {
             global.gc()

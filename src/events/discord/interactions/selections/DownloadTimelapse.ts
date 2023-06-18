@@ -5,6 +5,7 @@ import {findValueByPartial} from "../../../../helper/DataHelper";
 import {TimelapseHelper} from "../../../../helper/TimelapseHelper";
 import {resolve} from "path";
 import {ConfigHelper} from "../../../../helper/ConfigHelper";
+import {unlinkSync} from "fs";
 
 export class DownloadTimelapse {
     protected timelapseHelper = new TimelapseHelper()
@@ -45,7 +46,9 @@ export class DownloadTimelapse {
 
         const timelapseContent = await this.timelapseHelper.downloadTimelapse(timelapseFile, timelapseMessage)
 
-        await currentMessage.edit(timelapseContent)
+        await currentMessage.edit(timelapseContent.message)
+
+        unlinkSync(timelapseContent.path)
 
         if (global.gc) {
             global.gc()
