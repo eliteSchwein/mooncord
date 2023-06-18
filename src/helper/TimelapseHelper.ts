@@ -46,7 +46,7 @@ export class TimelapseHelper {
         logSuccess(`Download Timelapse ${fileName} complete`)
         logRegular(`Timelapse ${fileName} is ${fileSizeInMegabytes}mb big`)
 
-        if(fileSizeInMegabytes > 8) {
+        if(fileSizeInMegabytes > 25) {
             this.timelapseFile[fileId].path = await this.compressTimelapse(path, fileName)
         }
 
