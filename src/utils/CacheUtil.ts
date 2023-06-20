@@ -1,3 +1,5 @@
+'use strict'
+
 import * as fs from "fs";
 import * as path from "path";
 import {logSuccess} from "../helper/LoggerHelper";

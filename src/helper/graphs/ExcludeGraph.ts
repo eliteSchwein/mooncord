@@ -1,8 +1,9 @@
+'use strict'
+
 import {ConfigHelper} from "../ConfigHelper";
 import {LocaleHelper} from "../LocaleHelper";
 import {HistoryHelper} from "../HistoryHelper";
 import {getEntry} from "../../utils/CacheUtil";
-import * as metaData from "../../meta/temp_history_meta.json"
 import {logRegular} from "../LoggerHelper";
 import sharp from "sharp";
 import {MessageAttachment} from "discord.js";

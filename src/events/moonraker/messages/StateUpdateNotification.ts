@@ -1,3 +1,5 @@
+'use strict'
+
 import {updateData} from "../../../utils/CacheUtil";
 import {getMoonrakerClient, reconnectDiscord, reloadCache, restartScheduler} from "../../../Application";
 import {StatusHelper} from "../../../helper/StatusHelper";

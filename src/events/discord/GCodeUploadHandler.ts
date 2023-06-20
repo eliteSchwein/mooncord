@@ -1,3 +1,5 @@
+'use strict'
+
 import {Client} from "discord.js";
 import {getMoonrakerClient} from "../../Application";
 import {ConfigHelper} from "../../helper/ConfigHelper";

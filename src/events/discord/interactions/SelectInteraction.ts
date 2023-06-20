@@ -1,3 +1,5 @@
+'use strict'
+
 import {Interaction} from "discord.js";
 import {PermissionHelper} from "../../../helper/PermissionHelper";
 import {LocaleHelper} from "../../../helper/LocaleHelper";

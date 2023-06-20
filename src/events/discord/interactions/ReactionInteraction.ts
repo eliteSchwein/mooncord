@@ -1,3 +1,5 @@
+'use strict'
+
 import {Message, MessageReaction, PartialMessageReaction} from "discord.js";
 import {PermissionHelper} from "../../../helper/PermissionHelper";
 import {ConfigHelper} from "../../../helper/ConfigHelper";

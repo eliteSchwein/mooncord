@@ -1,3 +1,5 @@
+'use strict'
+
 import {CommandInteraction} from "discord.js";
 import {findValue, getEntry} from "../../../../utils/CacheUtil";
 import {getDatabase, getMoonrakerClient} from "../../../../Application";

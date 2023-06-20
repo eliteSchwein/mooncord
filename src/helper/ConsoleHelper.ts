@@ -1,3 +1,5 @@
+'use strict'
+
 import {getMoonrakerClient} from "../Application";
 import {EmbedHelper} from "./EmbedHelper";
 import {GuildTextBasedChannel} from "discord.js";

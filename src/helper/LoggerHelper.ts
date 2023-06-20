@@ -1,3 +1,5 @@
+'use strict'
+
 import 'colorts/lib/string';
 import * as util from 'util'
 import * as fs from 'fs'

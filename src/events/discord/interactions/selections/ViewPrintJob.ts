@@ -1,3 +1,5 @@
+'use strict'
+
 import {Message, MessageEmbed, SelectMenuInteraction} from "discord.js";
 import {getEntry} from "../../../../utils/CacheUtil";
 import {getDatabase, getMoonrakerClient} from "../../../../Application";

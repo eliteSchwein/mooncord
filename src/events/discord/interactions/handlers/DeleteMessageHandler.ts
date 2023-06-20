@@ -1,3 +1,5 @@
+'use strict'
+
 import {Message, User} from "discord.js";
 
 export class DeleteMessageHandler {

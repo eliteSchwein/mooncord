@@ -1,3 +1,5 @@
+'use strict'
+
 import {logNotice} from "../../../helper/LoggerHelper";
 import {PowerDeviceHelper} from "../../../helper/PowerDeviceHelper";
 

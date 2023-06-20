@@ -1,4 +1,6 @@
-import {existsSync, mkdirSync, readFileSync, writeFileSync} from 'fs'
+'use strict'
+
+import {existsSync, mkdirSync, readFileSync} from 'fs'
 import path from "path";
 import {mergeDeep} from "./DataHelper";
 import {getEntry, setData, updateData} from "../utils/CacheUtil";

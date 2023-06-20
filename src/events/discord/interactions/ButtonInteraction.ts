@@ -1,3 +1,5 @@
+'use strict'
+
 import {Interaction, Message} from "discord.js";
 import {RefreshHandler} from "./handlers/RefreshHandler";
 import {logNotice, logWarn} from "../../../helper/LoggerHelper";

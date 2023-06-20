@@ -1,3 +1,5 @@
+'use strict'
+
 import {MessageAttachment, SelectMenuInteraction} from "discord.js";
 import {logError, logRegular, logSuccess} from "../../../../helper/LoggerHelper";
 import axios from "axios";

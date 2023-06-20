@@ -1,3 +1,5 @@
+'use strict'
+
 import {CommandInteraction, MessageEmbed} from "discord.js";
 import {LocaleHelper} from "../../../../helper/LocaleHelper";
 import {MetadataHelper} from "../../../../helper/MetadataHelper";

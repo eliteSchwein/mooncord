@@ -1,3 +1,5 @@
+'use strict'
+
 import {ConfigHelper} from "../../../helper/ConfigHelper";
 import {logWarn} from "../../../helper/LoggerHelper";
 import {getEntry, setData} from "../../../utils/CacheUtil";

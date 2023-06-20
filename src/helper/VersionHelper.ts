@@ -1,3 +1,5 @@
+'use strict'
+
 import {findValue} from "../utils/CacheUtil";
 import {LocaleHelper} from "./LocaleHelper";
 

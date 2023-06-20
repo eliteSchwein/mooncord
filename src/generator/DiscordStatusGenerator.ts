@@ -1,3 +1,5 @@
+'use strict'
+
 import {ConfigHelper} from "../helper/ConfigHelper";
 import {mergeDeep} from "../helper/DataHelper";
 

@@ -1,3 +1,5 @@
+'use strict'
+
 import commandOptionsTypes from '../meta/command_option_types.json'
 import {
     getEntry,

@@ -1,3 +1,5 @@
+'use strict'
+
 import {ConfigHelper} from '../helper/ConfigHelper'
 import {logEmpty, logError, logRegular, logSuccess, logWarn} from '../helper/LoggerHelper'
 import {getMoonrakerClient} from "../Application";

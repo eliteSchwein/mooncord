@@ -1,3 +1,5 @@
+'use strict'
+
 import {ConfigHelper} from "../ConfigHelper";
 import * as metaData from "../../meta/history_graph_meta.json"
 import {HistoryHelper} from "../HistoryHelper";

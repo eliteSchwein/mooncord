@@ -1,3 +1,5 @@
+'use strict'
+
 import path, {resolve} from "path";
 import {logNotice, logRegular, logSuccess} from "./LoggerHelper";
 import {createWriteStream, statSync, unlinkSync} from "fs";

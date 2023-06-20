@@ -1,3 +1,5 @@
+'use strict'
+
 import {findValue, getEntry, updateData} from "../../../utils/CacheUtil";
 import {StatusHelper} from "../../../helper/StatusHelper";
 import {MetadataHelper} from "../../../helper/MetadataHelper";

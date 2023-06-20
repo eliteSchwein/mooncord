@@ -1,3 +1,5 @@
+'use strict'
+
 import {getEntry, setData} from "../utils/CacheUtil";
 import {logRegular} from "./LoggerHelper";
 import {MoonrakerClient} from "../clients/MoonrakerClient";

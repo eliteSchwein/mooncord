@@ -1,3 +1,5 @@
+'use strict'
+
 import {findValue, getEntry, setData, updateData} from "../utils/CacheUtil";
 import {formatPercent} from "./DataHelper";
 import {ConfigHelper} from "./ConfigHelper";

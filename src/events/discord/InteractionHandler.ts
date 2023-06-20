@@ -1,3 +1,5 @@
+'use strict'
+
 import {Client} from "discord.js";
 import {ButtonInteraction} from "./interactions/ButtonInteraction";
 import {CommandInteraction} from "./interactions/CommandInteraction";

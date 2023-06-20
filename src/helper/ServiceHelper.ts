@@ -1,3 +1,5 @@
+'use strict'
+
 import servicesMeta from '../meta/services.json'
 import {getMoonrakerClient} from "../Application";
 import {getEntry} from "../utils/CacheUtil";

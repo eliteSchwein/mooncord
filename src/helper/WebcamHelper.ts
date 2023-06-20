@@ -1,3 +1,5 @@
+'use strict'
+
 import {ConfigHelper} from "./ConfigHelper";
 import {sleep} from "./DataHelper";
 import axios from "axios";

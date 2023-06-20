@@ -1,3 +1,5 @@
+'use strict'
+
 import {CommandInteraction} from "discord.js";
 import {EmbedHelper} from "../../../../helper/EmbedHelper";
 

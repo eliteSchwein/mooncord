@@ -1,3 +1,5 @@
+'use strict'
+
 import * as App from '../Application'
 import {getEntry, setData} from "../utils/CacheUtil";
 import {logRegular} from "./LoggerHelper";

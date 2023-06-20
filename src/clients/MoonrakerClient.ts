@@ -1,3 +1,5 @@
+'use strict'
+
 import {ConfigHelper} from '../helper/ConfigHelper'
 import {Websocket, WebsocketBuilder, WebsocketEvents} from 'websocket-ts'
 import {APIKeyHelper} from '../helper/APIKeyHelper'

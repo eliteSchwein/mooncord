@@ -1,3 +1,5 @@
+'use strict'
+
 import {ConfigHelper} from "../../../helper/ConfigHelper";
 import {PermissionHelper} from "../../../helper/PermissionHelper";
 import {LocaleHelper} from "../../../helper/LocaleHelper";

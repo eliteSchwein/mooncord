@@ -1,3 +1,5 @@
+'use strict'
+
 import {CommandInteraction, TextChannel} from "discord.js";
 import {getDatabase} from "../../../../Application";
 import {LocaleHelper} from "../../../../helper/LocaleHelper";

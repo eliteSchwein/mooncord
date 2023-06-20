@@ -1,3 +1,5 @@
+'use strict'
+
 import {Message, User} from "discord.js";
 import {findValue} from "../../../../utils/CacheUtil";
 import {EmbedHelper} from "../../../../helper/EmbedHelper";

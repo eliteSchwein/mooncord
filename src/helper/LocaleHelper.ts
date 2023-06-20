@@ -1,3 +1,5 @@
+'use strict'
+
 import {readFileSync} from 'fs'
 
 import path from "path";

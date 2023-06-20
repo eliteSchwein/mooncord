@@ -1,3 +1,5 @@
+'use strict'
+
 import {Message, User} from "discord.js";
 import {getMoonrakerClient} from "../../../../Application";
 import {logRegular, logWarn} from "../../../../helper/LoggerHelper";

@@ -1,3 +1,5 @@
+'use strict'
+
 import * as metaData from "../../meta/temp_history_meta.json"
 import {ConfigHelper} from "../ConfigHelper";
 import {LocaleHelper} from "../LocaleHelper";

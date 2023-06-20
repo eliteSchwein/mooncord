@@ -1,3 +1,5 @@
+'use strict'
+
 import {ConfigHelper} from "../../../helper/ConfigHelper";
 import {updateLayers} from "../../../helper/LayerHelper";
 import {StatusHelper} from "../../../helper/StatusHelper";

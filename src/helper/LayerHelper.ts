@@ -1,5 +1,6 @@
-import {getEntry, updateData} from "../utils/CacheUtil"
+'use strict'
 
+import {getEntry, updateData} from "../utils/CacheUtil"
 
 export function updateLayers() {
     const stateCache = getEntry('state')

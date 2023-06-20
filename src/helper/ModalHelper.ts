@@ -1,3 +1,5 @@
+'use strict'
+
 import {logRegular} from "./LoggerHelper";
 import {LocaleHelper} from "./LocaleHelper";
 import {ConfigHelper} from "./ConfigHelper";

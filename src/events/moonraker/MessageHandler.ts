@@ -1,3 +1,5 @@
+'use strict'
+
 import {Websocket, WebsocketEvents} from "websocket-ts";
 import {ProcStatsNotification} from "./messages/ProcStatsNotification";
 import {SubscriptionNotification} from "./messages/SubscriptionNotification";
@@ -13,7 +15,6 @@ import {DisplayUpdateNotification} from "./messages/DisplayUpdateNotification";
 import {ConsoleMessage} from "./gcode-messages/ConsoleMessage";
 import {TimelapseMacroNotification} from "./messages/TimelapseMacroNotification";
 import {PowerDeviceNotification} from "./messages/PowerDeviceNotification";
-import {PowerDeviceHelper} from "../../helper/PowerDeviceHelper";
 
 export class MessageHandler {
     protected websocket: Websocket

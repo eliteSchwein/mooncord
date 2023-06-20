@@ -1,3 +1,5 @@
+'use strict'
+
 import {ConfigHelper} from "./ConfigHelper";
 import {LocaleHelper} from "./LocaleHelper";
 import {parsePageData} from "./DataHelper";

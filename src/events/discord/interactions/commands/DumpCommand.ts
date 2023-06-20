@@ -1,3 +1,5 @@
+'use strict'
+
 import {CommandInteraction, MessageAttachment} from "discord.js";
 import * as CacheUtil from "../../../../utils/CacheUtil";
 import * as path from "path";

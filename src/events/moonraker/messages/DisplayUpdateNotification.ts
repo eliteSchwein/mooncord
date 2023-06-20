@@ -1,3 +1,5 @@
+'use strict'
+
 import {EmbedHelper} from "../../../helper/EmbedHelper";
 import {ConfigHelper} from "../../../helper/ConfigHelper";
 import {logRegular} from "../../../helper/LoggerHelper";

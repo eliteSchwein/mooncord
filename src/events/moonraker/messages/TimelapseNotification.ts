@@ -1,3 +1,5 @@
+'use strict'
+
 import {ConfigHelper} from "../../../helper/ConfigHelper";
 import {getMoonrakerClient} from "../../../Application";
 import Ffmpeg from "fluent-ffmpeg";

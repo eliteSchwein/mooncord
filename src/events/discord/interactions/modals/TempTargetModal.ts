@@ -1,3 +1,5 @@
+'use strict'
+
 import {ModalSubmitInteraction} from "discord.js";
 import {LocaleHelper} from "../../../../helper/LocaleHelper";
 import {TempHelper} from "../../../../helper/TempHelper";

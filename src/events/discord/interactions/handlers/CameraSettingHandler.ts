@@ -1,4 +1,6 @@
-import {Message, MessageEmbed, User} from "discord.js";
+'use strict'
+
+import {Message, User} from "discord.js";
 import {getMoonrakerClient} from "../../../../Application";
 import {LocaleHelper} from "../../../../helper/LocaleHelper";
 import {EmbedHelper} from "../../../../helper/EmbedHelper";

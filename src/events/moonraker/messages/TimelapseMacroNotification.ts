@@ -1,3 +1,5 @@
+'use strict'
+
 import {getEntry, setData} from "../../../utils/CacheUtil";
 import {sleep} from "../../../helper/DataHelper";
 

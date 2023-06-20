@@ -1,3 +1,5 @@
+'use strict'
+
 import {LocaleHelper} from "./LocaleHelper";
 import {ConfigHelper} from "./ConfigHelper";
 import {getEntry, setData} from "../utils/CacheUtil";

@@ -1,5 +1,6 @@
-import {Message, SelectMenuInteraction} from "discord.js";
-import {MessageEmbed} from "discord.js";
+'use strict'
+
+import {Message, MessageEmbed, SelectMenuInteraction} from "discord.js";
 
 import {getDatabase, getMoonrakerClient} from "../../../../Application";
 import {ConfigHelper} from "../../../../helper/ConfigHelper";

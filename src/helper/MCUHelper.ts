@@ -1,3 +1,5 @@
+'use strict'
+
 import {findValue, getEntry} from "../utils/CacheUtil";
 
 export class MCUHelper {

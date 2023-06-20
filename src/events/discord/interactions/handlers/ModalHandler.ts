@@ -1,3 +1,5 @@
+'use strict'
+
 import {Message, User} from "discord.js";
 import {EmbedHelper} from "../../../../helper/EmbedHelper";
 import {ModalHelper} from "../../../../helper/ModalHelper";

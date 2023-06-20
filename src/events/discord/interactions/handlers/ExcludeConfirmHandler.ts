@@ -1,3 +1,5 @@
+'use strict'
+
 import {Message, User} from "discord.js";
 import {LocaleHelper} from "../../../../helper/LocaleHelper";
 import {getMoonrakerClient} from "../../../../Application";

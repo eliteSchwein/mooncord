@@ -1,3 +1,5 @@
+'use strict'
+
 import {findValue} from "../utils/CacheUtil";
 import {ConfigHelper} from "./ConfigHelper";
 import axios from "axios";

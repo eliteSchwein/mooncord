@@ -1,3 +1,5 @@
+'use strict'
+
 import {TextChannel} from "discord.js"
 import * as app from "../Application"
 import {DiscordClient} from "../clients/DiscordClient"

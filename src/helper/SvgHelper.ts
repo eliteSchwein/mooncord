@@ -1,3 +1,5 @@
+'use strict'
+
 export default class SvgHelper {
     public calculateDonut(cx, cy, radius, strokeWidth, data) {
         const startAngle = -90

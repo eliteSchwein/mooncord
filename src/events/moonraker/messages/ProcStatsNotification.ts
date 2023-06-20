@@ -1,3 +1,5 @@
+'use strict'
+
 import {setData} from "../../../utils/CacheUtil";
 
 export class ProcStatsNotification {

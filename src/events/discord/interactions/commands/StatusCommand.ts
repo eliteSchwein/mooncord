@@ -1,3 +1,5 @@
+'use strict'
+
 import {CommandInteraction} from "discord.js";
 import {getDatabase} from "../../../../Application";
 import {getEntry} from "../../../../utils/CacheUtil";

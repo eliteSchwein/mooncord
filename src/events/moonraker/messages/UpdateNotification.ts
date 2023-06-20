@@ -1,3 +1,5 @@
+'use strict'
+
 import {EmbedHelper} from "../../../helper/EmbedHelper";
 import {NotificationHelper} from "../../../helper/NotificationHelper";
 import {updateData} from "../../../utils/CacheUtil";

@@ -1,3 +1,5 @@
+'use strict'
+
 import {findValue, getEntry, updateData} from "../utils/CacheUtil"
 import {EmbedHelper} from "./EmbedHelper";
 import * as app from "../Application";

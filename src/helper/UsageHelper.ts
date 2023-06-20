@@ -1,3 +1,5 @@
+'use strict'
+
 import {findValue, updateData} from "../utils/CacheUtil";
 import * as bytes from "bytes";
 import * as App from "../Application";

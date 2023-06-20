@@ -1,3 +1,5 @@
+'use strict'
+
 import {Guild, Permissions, User} from "discord.js";
 import {ConfigHelper} from "./ConfigHelper";
 import {DatabaseUtil} from "../utils/DatabaseUtil";

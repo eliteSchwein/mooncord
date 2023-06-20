@@ -1,3 +1,5 @@
+'use strict'
+
 import {Client} from "discord.js";
 import {updateData} from "../../utils/CacheUtil";
 import {getDiscordClient} from "../../Application";

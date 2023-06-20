@@ -1,3 +1,5 @@
+'use strict'
+
 import {MoonrakerClient} from "../clients/MoonrakerClient";
 import {ConfigHelper} from "./ConfigHelper";
 import {findValue, getEntry, setData, updateData} from "../utils/CacheUtil";
@@ -50,6 +52,10 @@ export class SchedulerHelper {
 
             if (this.functionCache.poll_printer_info) {
                 void this.pollServerInfo()
+            }
+
+            if (global.gc) {
+                global.gc()
             }
         }, 250)
     }

@@ -1,3 +1,5 @@
+'use strict'
+
 import {CommandInteraction, MessageAttachment} from "discord.js";
 import {ConfigHelper} from "../../../../helper/ConfigHelper";
 import axios from "axios";

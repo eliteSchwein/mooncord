@@ -1,3 +1,5 @@
+'use strict'
+
 import {Interaction} from "discord.js";
 import {InfoCommand} from "./commands/InfoCommand";
 import {DiscordCommandGenerator} from "../../../generator/DiscordCommandGenerator";

@@ -1,3 +1,5 @@
+'use strict'
+
 import type {Message, SelectMenuInteraction} from "discord.js";
 import {MessageEmbed} from "discord.js";
 
@@ -7,7 +9,6 @@ import {EmbedHelper} from "../../../../helper/EmbedHelper";
 import {LocaleHelper} from "../../../../helper/LocaleHelper";
 import {MetadataHelper} from "../../../../helper/MetadataHelper";
 import {getEntry} from "../../../../utils/CacheUtil";
-import {GraphHelper} from "../../../../helper/GraphHelper";
 import {TempHelper} from "../../../../helper/TempHelper";
 import TempHistoryGraph from "../../../../helper/graphs/TempHistoryGraph";
 

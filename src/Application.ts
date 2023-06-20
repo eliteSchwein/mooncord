@@ -1,3 +1,5 @@
+'use strict'
+
 import * as packageConfig from '../package.json'
 import * as util from 'util'
 import {DiscordClient} from './clients/DiscordClient'
@@ -21,8 +23,6 @@ import {SchedulerHelper} from "./helper/SchedulerHelper";
 import {StatusHelper} from "./helper/StatusHelper";
 import {waitUntil} from "async-wait-until";
 import {ModalHelper} from "./helper/ModalHelper";
-import {createInterface} from "readline";
-import {sleep} from "./helper/DataHelper";
 
 const args = process.argv.slice(2)
 

@@ -1,3 +1,5 @@
+'use strict'
+
 import axios from 'axios'
 import * as StackTrace from 'stacktrace-js'
 import {ConfigHelper} from './ConfigHelper'

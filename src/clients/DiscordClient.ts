@@ -13,6 +13,8 @@ import {LocaleHelper} from "../helper/LocaleHelper";
 import {StatusHelper} from "../helper/StatusHelper";
 import {MetadataHelper} from "../helper/MetadataHelper";
 import {GCodeUploadHandler} from "../events/discord/GCodeUploadHandler";
+'use strict'
+
 import {VerifyHandler} from "../events/discord/VerifyHandler";
 // @ts-ignore
 import {REST} from '@discordjs/rest'

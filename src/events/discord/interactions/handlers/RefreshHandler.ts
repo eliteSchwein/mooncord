@@ -1,3 +1,5 @@
+'use strict'
+
 import {Message, User} from "discord.js";
 import {getEntry} from "../../../../utils/CacheUtil";
 import {getDatabase} from "../../../../Application";

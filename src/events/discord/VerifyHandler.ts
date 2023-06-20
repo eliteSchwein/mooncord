@@ -1,5 +1,7 @@
+'use strict'
+
 import {Client} from "discord.js";
-import {logError, logRegular, logSuccess} from "../../helper/LoggerHelper";
+import {logError, logRegular} from "../../helper/LoggerHelper";
 import {getEntry, setData} from "../../utils/CacheUtil";
 import {getDatabase} from "../../Application";
 import {EmbedHelper} from "../../helper/EmbedHelper";

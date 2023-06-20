@@ -1,3 +1,5 @@
+'use strict'
+
 import {Message, MessageAttachment, SelectMenuInteraction} from "discord.js";
 import {getEntry} from "../../../../utils/CacheUtil";
 import {LocaleHelper} from "../../../../helper/LocaleHelper";
