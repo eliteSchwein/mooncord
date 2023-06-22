@@ -6,10 +6,6 @@ import {removeFromArray} from "../../../../helper/DataHelper";
 import {DatabaseUtil} from "../../../../utils/DatabaseUtil";
 
 export class AdminCommand {
-    protected localeHelper = new LocaleHelper()
-    protected syntaxLocale = this.localeHelper.getSyntaxLocale()
-    protected locale = this.localeHelper.getLocale()
-    protected databaseUtil = new DatabaseUtil()
 
     public constructor(interaction: CommandInteraction, commandId: string) {
         if (commandId !== 'admin') {
@@ -20,10 +16,15 @@ export class AdminCommand {
     }
 
     protected async execute(interaction: CommandInteraction) {
-        const role = interaction.options.getRole(this.syntaxLocale.commands.admin.options.role.options.role.name)
-        const user = interaction.options.getUser(this.syntaxLocale.commands.admin.options.user.options.user.name)
+        const databaseUtil = new DatabaseUtil()
+        const localeHelper = new LocaleHelper()
+        const syntaxLocale = localeHelper.getSyntaxLocale()
+        const locale = localeHelper.getLocale()
 
-        const permissions = this.databaseUtil.getDatabaseEntry('permissions')
+        const role = interaction.options.getRole(syntaxLocale.commands.admin.options.role.options.role.name)
+        const user = interaction.options.getUser(syntaxLocale.commands.admin.options.user.options.user.name)
+
+        const permissions = databaseUtil.getDatabaseEntry('permissions')
         const botAdmins = permissions.admins
 
         const section = (role === null) ? 'users' : 'roles'
@@ -33,7 +34,7 @@ export class AdminCommand {
         if (botAdmins[section].includes(id)) {
             removeFromArray(botAdmins[section], id)
 
-            const message = this.locale.messages.answers.admin.removed
+            const message = locale.messages.answers.admin.removed
                 .replace(/(\${username})/g, interaction.user.tag)
                 .replace(/(\${mention})/g, mention)
 
@@ -41,7 +42,7 @@ export class AdminCommand {
         } else {
             botAdmins[section].push(id)
 
-            const message = this.locale.messages.answers.admin.added
+            const message = locale.messages.answers.admin.added
                 .replace(/(\${username})/g, interaction.user.tag)
                 .replace(/(\${mention})/g, mention)
 
@@ -50,6 +51,6 @@ export class AdminCommand {
 
         permissions.admins = botAdmins
 
-        await this.databaseUtil.updateDatabaseEntry('permissions', permissions)
+        await databaseUtil.updateDatabaseEntry('permissions', permissions)
     }
 }
