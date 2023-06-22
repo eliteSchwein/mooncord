@@ -28,30 +28,25 @@ const requests: any = {}
 let messageHandler: MessageHandler
 
 export class MoonrakerClient {
-    protected fileListHelper = new FileListHelper(this)
-    protected config = new ConfigHelper()
-    protected apiKeyHelper = new APIKeyHelper()
-    protected tempHelper = new TempHelper()
     protected ready = false
-    protected metadataHelper = new MetadataHelper(this)
     protected websocket: Websocket
     protected alreadyRunning = false
     protected reconnectScheduler: any
     protected reconnectAttempt = 1
-    protected powerDeviceHelper = new PowerDeviceHelper(this)
-    protected historyHelper = new HistoryHelper(this)
 
     public async connect() {
         logSuccess('Connect to MoonRaker...')
 
         this.ready = false
 
-        const oneShotToken = await this.apiKeyHelper.getOneShotToken()
-        let socketUrl = this.config.getMoonrakerSocketUrl()
+        const config = new ConfigHelper()
+
+        const oneShotToken = await new APIKeyHelper().getOneShotToken()
+        let socketUrl = config.getMoonrakerSocketUrl()
 
         if(socketUrl === undefined ||
             socketUrl === '') {
-            socketUrl = `${this.config.getMoonrakerUrl()}/websocket`
+            socketUrl = `${config.getMoonrakerUrl()}/websocket`
         }
 
         socketUrl = socketUrl.replace(/(http:\/\/)|(https:\/\/)/g, 'ws://')
@@ -90,13 +85,15 @@ export class MoonrakerClient {
         logRegular('Retrieve Subscribable MoonRaker Objects...')
         const objects = await this.send({"method": "printer.objects.list"})
 
-        await this.historyHelper.parseData()
+        await new HistoryHelper(this).parseData()
 
-        this.powerDeviceHelper.getPowerDevices()
+        new PowerDeviceHelper(this).getPowerDevices()
 
-        this.fileListHelper.retrieveFiles('config', 'config_files')
-        this.fileListHelper.retrieveFiles('gcodes', 'gcode_files')
-        this.fileListHelper.retrieveFiles('timelapse', 'timelapse_files', /(.*\.mp4)/g)
+        const fileListHelper = new FileListHelper(this)
+
+        fileListHelper.retrieveFiles('config', 'config_files')
+        fileListHelper.retrieveFiles('gcodes', 'gcode_files')
+        fileListHelper.retrieveFiles('timelapse', 'timelapse_files', /(.*\.mp4)/g)
 
         const subscriptionObjects: any = {
             'webhooks.state': null,
@@ -123,7 +120,7 @@ export class MoonrakerClient {
         if (typeof data.result.status !== 'undefined') {
             if (typeof data.result.status.print_stats !== 'undefined') {
                 if (data.result.status.print_stats.filename !== null) {
-                    await this.metadataHelper.updateMetaData(data.result.status.print_stats.filename)
+                    await new MetadataHelper(this).updateMetaData(data.result.status.print_stats.filename)
                 }
             }
         }
@@ -134,18 +131,20 @@ export class MoonrakerClient {
             'event_count': this.websocket.underlyingWebsocket['_eventsCount']
         })
 
-        this.tempHelper.generateColors(data.result.status)
+        new TempHelper().generateColors(data.result.status)
     }
 
     public changeLogPath() {
-        if (this.config.isLogFileDisabled()) {
+        const config = new ConfigHelper()
+
+        if (config.isLogFileDisabled()) {
             logWarn('Log File is disabled!')
             unhookTempLog()
-        } else if (this.config.getLogPath() !== '') {
-            changePath(this.config.getLogPath())
+        } else if (config.getLogPath() !== '') {
+            changePath(config.getLogPath())
         }
 
-        changeTempPath(this.config.getTempPath())
+        changeTempPath(config.getTempPath())
 
         logSuccess('MoonRaker Client is ready')
     }
@@ -221,11 +220,13 @@ export class MoonrakerClient {
         const statusHelper = new StatusHelper()
         await statusHelper.update('moonraker_disconnected')
 
+        const config = new ConfigHelper()
+
         this.reconnectScheduler = setInterval(() => {
             logRegular(`Reconnect Attempt ${this.reconnectAttempt} to Moonraker...`)
             void this.connect()
             this.reconnectAttempt++
-        }, this.config.getMoonrakerRetryInterval() * 1000)
+        }, config.getMoonrakerRetryInterval() * 1000)
     }
 
     private async connectHandler(instance, event) {
