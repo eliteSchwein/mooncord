@@ -10,7 +10,6 @@ import {InteractionHandler} from "../events/discord/InteractionHandler";
 import {DebugHandler} from "../events/discord/DebugHandler";
 import {DiscordStatusGenerator} from "../generator/DiscordStatusGenerator";
 import {LocaleHelper} from "../helper/LocaleHelper";
-import {StatusHelper} from "../helper/StatusHelper";
 import {MetadataHelper} from "../helper/MetadataHelper";
 import {GCodeUploadHandler} from "../events/discord/GCodeUploadHandler";
 'use strict'
@@ -27,18 +26,15 @@ let gcodeUploadHandler: GCodeUploadHandler
 let verifyHandler: VerifyHandler
 
 export class DiscordClient {
-    protected config = new ConfigHelper()
-    protected database = getDatabase()
-    protected commandGenerator = new DiscordCommandGenerator()
-    protected inputGenerator = new DiscordInputGenerator()
-    protected statusGenerator = new DiscordStatusGenerator()
-    protected localeHelper = new LocaleHelper()
-    protected statusHelper = new StatusHelper()
-    protected metadataHelper = new MetadataHelper()
     protected discordClient: Client
     protected restClient: REST
 
     public async connect() {
+        const config = new ConfigHelper()
+        const database = getDatabase()
+        const localeHelper = new LocaleHelper()
+        const metadataHelper = new MetadataHelper()
+
         logEmpty()
         logSuccess('Load Discord Client...')
 
@@ -61,14 +57,14 @@ export class DiscordClient {
                 'GUILD_MEMBER',
                 'USER'
             ],
-            restRequestTimeout: this.config.getDiscordRequestTimeout() * 1000
+            restRequestTimeout: config.getDiscordRequestTimeout() * 1000
         })
 
         logRegular('Connect to Discord...')
 
-        this.restClient = new REST({version: '10'}).setToken(this.config.getDiscordToken())
+        this.restClient = new REST({version: '10'}).setToken(config.getDiscordToken())
 
-        await this.discordClient.login(this.config.getDiscordToken())
+        await this.discordClient.login(config.getDiscordToken())
 
         await this.registerCommands()
 
@@ -78,7 +74,7 @@ export class DiscordClient {
 
         const inviteUrl = `https://discord.com/oauth2/authorize?client_id=${this.discordClient.user.id}&permissions=3422944320&scope=bot%20applications.commands`
 
-        this.database.updateDatabaseEntry('invite_url', inviteUrl)
+        await database.updateDatabaseEntry('invite_url', inviteUrl)
 
         setData('invite_url', inviteUrl)
         setData('discord_client', {
@@ -97,13 +93,13 @@ export class DiscordClient {
         this.discordClient.user.setPresence({status: "idle"})
 
         this.discordClient.user.setActivity(
-            this.localeHelper.getLocale().embeds.startup.activity,
+            localeHelper.getLocale().embeds.startup.activity,
             {type: 'LISTENING'}
         )
 
-        if (this.config.dumpCacheOnStart()) {
+        if (config.dumpCacheOnStart()) {
             await dump()
-            await this.database.dump()
+            await database.dump()
         }
 
         logSuccess('Discord Client is ready')
@@ -112,7 +108,7 @@ export class DiscordClient {
 
         const currentPrintfile = findValue('state.print_stats.filename')
 
-        await this.metadataHelper.updateMetaData(currentPrintfile)
+        await metadataHelper.updateMetaData(currentPrintfile)
     }
 
     public getRest() {
@@ -126,7 +122,7 @@ export class DiscordClient {
 
     public async registerCommands() {
         logRegular('Register Commands...')
-        await this.commandGenerator.registerCommands()
+        await new DiscordCommandGenerator().registerCommands()
     }
 
     public async registerEvents() {
@@ -140,8 +136,8 @@ export class DiscordClient {
 
     public generateCaches() {
         logRegular('Generate Caches...')
-        this.inputGenerator.generateInputCache()
-        this.statusGenerator.generateStatusCache()
+        new DiscordInputGenerator().generateInputCache()
+        new DiscordStatusGenerator().generateStatusCache()
     }
 
     public isConnected() {
