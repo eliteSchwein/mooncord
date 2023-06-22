@@ -109,7 +109,7 @@ export class WebcamHelper {
             logRegular('Run Webcam follow up Tasks if present...')
             await this.executePostProcess(afterStatus)
 
-            return new MessageAttachment(Buffer.from(buffer), "snapshot.png")
+            return new MessageAttachment(buffer, "snapshot.png")
         } catch (error) {
             const reason = error as string
             const trace = await StackTrace.get()
@@ -132,7 +132,7 @@ export class WebcamHelper {
         }
     }
 
-    protected triggerWebsite(url, post) {
+    private triggerWebsite(url, post) {
         new Promise(async (resolve, reject) => {
             if (post) {
                 await axios.post(url)
@@ -142,7 +142,7 @@ export class WebcamHelper {
         })
     }
 
-    protected async executePostProcess(config) {
+    private async executePostProcess(config) {
         if (!config.enable || config.execute.length === 0) {
             return
         }
