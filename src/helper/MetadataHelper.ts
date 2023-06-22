@@ -13,19 +13,10 @@ import * as StackTrace from 'stacktrace-js'
 import {logEmpty, logError, logRegular} from "./LoggerHelper"
 
 export class MetadataHelper {
-    protected moonrakerClient: MoonrakerClient
     protected configHelper = new ConfigHelper()
 
-    public constructor(moonrakerClient: MoonrakerClient = null) {
-        if (moonrakerClient !== null) {
-            this.moonrakerClient = moonrakerClient
-        } else {
-            this.moonrakerClient = getMoonrakerClient()
-        }
-    }
-
     public async getMetaData(filename: string) {
-        const metaData = await this.moonrakerClient.send({"method": "server.files.metadata", "params": {filename}})
+        const metaData = await getMoonrakerClient().send({"method": "server.files.metadata", "params": {filename}})
 
         return metaData.result
     }

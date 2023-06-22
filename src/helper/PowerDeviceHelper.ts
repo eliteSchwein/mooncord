@@ -1,22 +1,18 @@
 'use strict'
 
-import * as App from '../Application'
 import {getEntry, setData} from "../utils/CacheUtil";
 import {logRegular} from "./LoggerHelper";
 import {MoonrakerClient} from "../clients/MoonrakerClient";
 import {LocaleHelper} from "./LocaleHelper";
+import {getMoonrakerClient} from "../Application";
 
 export class PowerDeviceHelper {
-    protected moonrakerClient = App.getMoonrakerClient()
     protected localeHelper = new LocaleHelper()
     protected powerDeviceCache = getEntry('power_devices')
     protected powerDeviceMeta = getEntry('config')['power_device_meta']
     protected locale = this.localeHelper.getLocale()
 
-    public constructor(moonrakerClient: MoonrakerClient = null) {
-        if (moonrakerClient !== null) {
-            this.moonrakerClient = moonrakerClient
-        }
+    public constructor() {
     }
 
     public getPowerDeviceData(powerDeviceName: string) {
@@ -34,7 +30,7 @@ export class PowerDeviceHelper {
     public getPowerDevices() {
         logRegular('Retrieve Power Devices...')
         new Promise(async (resolve, reject) => {
-            const powerDevicesData = await this.moonrakerClient.send({"method": "machine.device_power.devices"})
+            const powerDevicesData = await getMoonrakerClient().send({"method": "machine.device_power.devices"})
 
             if (powerDevicesData.error !== undefined) {
                 return

@@ -9,7 +9,6 @@ import {MoonrakerClient} from "../clients/MoonrakerClient";
 import HistoryGraph from "./graphs/HistoryGraph";
 
 export class HistoryHelper {
-    protected moonrakerClient = getMoonrakerClient()
     protected configHelper = new ConfigHelper()
     protected localeHelper = new LocaleHelper()
     protected locale = this.localeHelper.getLocale()
@@ -20,18 +19,16 @@ export class HistoryHelper {
     protected printTotals = {}
     protected cache = getEntry('history')
 
-    public constructor(moonrakerClient: MoonrakerClient = undefined) {
-        if (moonrakerClient !== undefined) {
-            this.moonrakerClient = moonrakerClient
-        }
+    public constructor() {
         this.printJobs = this.cache.jobs
         this.printTotals = this.cache.total
     }
 
     public async parseData() {
         logRegular('Retrieve history data...')
-        const printJobsRequest = await this.moonrakerClient.send({"method": "server.history.list"})
-        const printTotalRequest = await this.moonrakerClient.send({"method": "server.history.totals"})
+        const moonrakerClient = getMoonrakerClient()
+        const printJobsRequest = await moonrakerClient.send({"method": "server.history.list"})
+        const printTotalRequest = await moonrakerClient.send({"method": "server.history.totals"})
 
         if (printJobsRequest.result === undefined || printTotalRequest.result === undefined) {
             return

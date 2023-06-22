@@ -85,11 +85,11 @@ export class MoonrakerClient {
         logRegular('Retrieve Subscribable MoonRaker Objects...')
         const objects = await this.send({"method": "printer.objects.list"})
 
-        await new HistoryHelper(this).parseData()
+        await new HistoryHelper().parseData()
 
-        new PowerDeviceHelper(this).getPowerDevices()
+        new PowerDeviceHelper().getPowerDevices()
 
-        const fileListHelper = new FileListHelper(this)
+        const fileListHelper = new FileListHelper()
 
         fileListHelper.retrieveFiles('config', 'config_files')
         fileListHelper.retrieveFiles('gcodes', 'gcode_files')
@@ -120,7 +120,7 @@ export class MoonrakerClient {
         if (typeof data.result.status !== 'undefined') {
             if (typeof data.result.status.print_stats !== 'undefined') {
                 if (data.result.status.print_stats.filename !== null) {
-                    await new MetadataHelper(this).updateMetaData(data.result.status.print_stats.filename)
+                    await new MetadataHelper().updateMetaData(data.result.status.print_stats.filename)
                 }
             }
         }

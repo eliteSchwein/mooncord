@@ -6,23 +6,19 @@ import {MoonrakerClient} from "../clients/MoonrakerClient";
 import {MetadataHelper} from "./MetadataHelper";
 import {ConfigHelper} from "./ConfigHelper";
 import HistoryGraph from "./graphs/HistoryGraph";
+import {getMoonrakerClient} from "../Application";
 
 export class FileListHelper {
-    protected moonrakerClient
-    protected metadataHelper = new MetadataHelper()
     protected historyGraph = new HistoryGraph()
     protected configHelper = new ConfigHelper()
 
-    public constructor(moonrakerClient: MoonrakerClient) {
-        this.moonrakerClient = moonrakerClient
-        this.metadataHelper = new MetadataHelper(this.moonrakerClient)
-    }
-
     public retrieveFiles(root: string, cacheKey: string, filter?: RegExp) {
         logRegular(`Retrieve Files from ${root}...`)
+        const moonrakerClient = getMoonrakerClient()
+
         const message = {"method": "server.files.list", "params": {"root": root}}
         new Promise(async (resolve, reject) => {
-            const currentFiles = await this.moonrakerClient.send(message)
+            const currentFiles = await moonrakerClient.send(message)
 
             let result = currentFiles.result
 
