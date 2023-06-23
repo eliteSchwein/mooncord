@@ -8,11 +8,6 @@ import {logError, logSuccess} from "../../../../helper/LoggerHelper";
 import {getEntry} from "../../../../utils/CacheUtil";
 
 export class GetLodCommand {
-    protected config = new ConfigHelper()
-    protected localeHelper = new LocaleHelper()
-    protected syntaxLocale = this.localeHelper.getSyntaxLocale()
-    protected locale = this.localeHelper.getLocale()
-
     public constructor(interaction: CommandInteraction, commandId: string) {
         if (commandId !== 'get_log') {
             return
@@ -22,9 +17,11 @@ export class GetLodCommand {
     }
 
     protected async execute(interaction: CommandInteraction) {
+        const localeHelper = new LocaleHelper()
+        const syntaxLocale = localeHelper.getSyntaxLocale()
         await interaction.deferReply({ephemeral: true})
 
-        const service = interaction.options.getString(this.syntaxLocale.commands.get_log.options.log_file.name)
+        const service = interaction.options.getString(syntaxLocale.commands.get_log.options.log_file.name)
 
         let request: any
 
@@ -38,6 +35,9 @@ export class GetLodCommand {
     }
 
     protected async readMoonCordLog() {
+        const localeHelper = new LocaleHelper()
+        const locale = localeHelper.getLocale()
+
         try {
             const logPath = getEntry('function').log_path
 
@@ -47,18 +47,22 @@ export class GetLodCommand {
 
             return {files: [attachment]}
         } catch (e) {
-            return this.locale.messages.errors.log_failed
+            return locale.messages.errors.log_failed
                 .replace(/(\${service})/g, 'MoonCord')
                 .replace(/(\${reason})/g, `${e}`)
         }
     }
 
     protected async retrieveServiceLog(service: string) {
+        const config = new ConfigHelper()
+        const localeHelper = new LocaleHelper()
+        const locale = localeHelper.getLocale()
+
         try {
-            const result = await axios.get(`${this.config.getMoonrakerUrl()}/server/files/${service}.log`, {
+            const result = await axios.get(`${config.getMoonrakerUrl()}/server/files/${service}.log`, {
                 responseType: 'arraybuffer',
                 headers: {
-                    'X-Api-Key': this.config.getMoonrakerApiKey()
+                    'X-Api-Key': config.getMoonrakerApiKey()
                 }
             })
 
@@ -66,7 +70,7 @@ export class GetLodCommand {
 
             if (bufferSize > Number.parseInt('8000000')) {
                 logError(`${service} Log to big, Logfile: ${bufferSize}byte Limit: 8000000byte`)
-                return this.locale.messages.errors.log_too_large
+                return locale.messages.errors.log_too_large
                     .replace(/(\${service})/g, `\`${service}\``)
             }
 
@@ -77,16 +81,16 @@ export class GetLodCommand {
         } catch (error) {
             if (typeof error.code !== 'undefined') {
                 logError(`${service} Log Download failed: ${error.config.url}: ${error.code}`)
-                return this.locale.messages.errors.log_failed
+                return locale.messages.errors.log_failed
                     .replace(/(\${service})/g, service)
                     .replace(/(\${reason})/g, `${error.code}`)
             }
             logError(`${service} Log Download failed: ${error.config.url}: ${error.response.status} ${error.response.statusText}`)
             if (error.response.status === 404) {
-                return this.locale.messages.errors.log_not_found
+                return locale.messages.errors.log_not_found
                     .replace(/(\${service})/g, service)
             }
-            return this.locale.messages.errors.log_failed
+            return locale.messages.errors.log_failed
                 .replace(/(\${service})/g, service)
                 .replace(/(\${reason})/g, `${error.response.status} ${error.response.statusText}`)
         }

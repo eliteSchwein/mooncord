@@ -7,10 +7,6 @@ import {LocaleHelper} from "../../../../helper/LocaleHelper";
 import {getEntry} from "../../../../utils/CacheUtil";
 
 export class HistoryCommand {
-    protected embedHelper = new EmbedHelper()
-    protected historyHelper = new HistoryHelper()
-    protected localeHelper = new LocaleHelper()
-
     public constructor(interaction: CommandInteraction, commandId: string) {
         if (commandId !== 'history') {
             return
@@ -20,22 +16,26 @@ export class HistoryCommand {
     }
 
     protected async execute(interaction: CommandInteraction) {
+        const embedHelper = new EmbedHelper()
+        const historyHelper = new HistoryHelper()
+        const localeHelper = new LocaleHelper()
+
         const serverComponents = getEntry('server_info').components
 
         if (!serverComponents.includes('history')) {
-            await interaction.reply(this.localeHelper.getCommandNotReadyError(interaction.user.username))
+            await interaction.reply(localeHelper.getCommandNotReadyError(interaction.user.username))
             return
         }
 
         await interaction.deferReply()
-        const printStats = this.historyHelper.getPrintStats()
+        const printStats = historyHelper.getPrintStats()
 
         if (printStats.count === 0) {
-            await interaction.editReply(this.localeHelper.getCommandNotReadyError(interaction.user.username))
+            await interaction.editReply(localeHelper.getCommandNotReadyError(interaction.user.username))
             return
         }
 
-        const message = await this.embedHelper.generateEmbed('history')
+        const message = await embedHelper.generateEmbed('history')
 
         void interaction.editReply(message.embed)
     }

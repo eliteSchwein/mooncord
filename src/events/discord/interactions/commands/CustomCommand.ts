@@ -1,23 +1,18 @@
 'use strict'
 
 import {CommandInteraction} from "discord.js";
-import {getDatabase, getMoonrakerClient} from "../../../../Application";
+import {getMoonrakerClient} from "../../../../Application";
 import {LocaleHelper} from "../../../../helper/LocaleHelper";
 import {DiscordCommandGenerator} from "../../../../generator/DiscordCommandGenerator";
 import {ConsoleHelper} from "../../../../helper/ConsoleHelper";
 import {logRegular, logWarn} from "../../../../helper/LoggerHelper";
 
 export class CustomCommand {
-    protected commandGenerator = new DiscordCommandGenerator()
-    protected databaseUtil = getDatabase()
-    protected localeHelper = new LocaleHelper()
-    protected locale = this.localeHelper.getLocale()
-    protected syntaxLocale = this.localeHelper.getSyntaxLocale()
-    protected consoleHelper = new ConsoleHelper()
-    protected moonrakerClient = getMoonrakerClient()
 
     public constructor(interaction: CommandInteraction, commandId: string) {
-        if (!this.commandGenerator.isCustomCommand(commandId)) {
+        const commandGenerator = new DiscordCommandGenerator()
+
+        if (!commandGenerator.isCustomCommand(commandId)) {
             return
         }
 
@@ -25,12 +20,18 @@ export class CustomCommand {
     }
 
     protected async execute(interaction: CommandInteraction, commandId: string) {
-        const customCommandData = this.commandGenerator.getCustomCommandData(commandId)
+        const commandGenerator = new DiscordCommandGenerator()
+        const localeHelper = new LocaleHelper()
+        const locale = localeHelper.getLocale()
+        const consoleHelper = new ConsoleHelper()
+        const moonrakerClient = getMoonrakerClient()
+
+        const customCommandData = commandGenerator.getCustomCommandData(commandId)
 
         await interaction.deferReply()
 
         if (customCommandData.macros !== undefined) {
-            await this.consoleHelper.executeGcodeCommands(customCommandData.macros,
+            await consoleHelper.executeGcodeCommands(customCommandData.macros,
                 interaction.channel)
         }
 
@@ -38,14 +39,14 @@ export class CustomCommand {
             for (const websocketCommand of customCommandData.websocket_commands) {
                 logRegular(`Execute Websocket Command ${websocketCommand}...`)
                 try {
-                    await this.moonrakerClient.send(websocketCommand)
+                    await moonrakerClient.send(websocketCommand)
                 } catch {
                     logWarn(`The Websocket Command ${websocketCommand} timed out...`)
                 }
             }
         }
 
-        await interaction.editReply(this.locale.messages.answers.custom_command_executed
+        await interaction.editReply(locale.messages.answers.custom_command_executed
             .replace(/\${username}/g, interaction.user.tag)
             .replace(/\${custom_command}/g, commandId))
     }
