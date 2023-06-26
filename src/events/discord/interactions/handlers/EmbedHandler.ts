@@ -8,11 +8,6 @@ import {MetadataHelper} from "../../../../helper/MetadataHelper";
 import {formatTime} from "../../../../helper/DataHelper";
 
 export class EmbedHandler {
-    protected moonrakerClient = getMoonrakerClient()
-    protected localeHelper = new LocaleHelper()
-    protected locale = this.localeHelper.getLocale()
-    protected embedHelper = new EmbedHelper()
-    protected metadataHelper = new MetadataHelper()
 
     public async execute(message: Message, user: User, data, interaction = null) {
         if (typeof data.embed === 'undefined') {
@@ -23,6 +18,11 @@ export class EmbedHandler {
             await interaction.deferReply()
         }
 
+        const localeHelper = new LocaleHelper()
+        const locale = localeHelper.getLocale()
+        const embedHelper = new EmbedHelper()
+        const metadataHelper = new MetadataHelper()
+
         await message.edit({components: null, embeds: null})
         await message.removeAttachments()
 
@@ -31,7 +31,7 @@ export class EmbedHandler {
         let author = ''
 
         if(currentEmbed !== undefined) {
-            author = this.embedHelper.getAuthorName(currentEmbed)
+            author = embedHelper.getAuthorName(currentEmbed)
         }
 
         let metaData = {
@@ -40,10 +40,10 @@ export class EmbedHandler {
         }
 
         if (data.functions.includes('fetch_author_metadata')) {
-            metaData = await this.metadataHelper.getMetaData(author)
+            metaData = await metadataHelper.getMetaData(author)
 
             if (interaction !== null && typeof metaData === 'undefined') {
-                await interaction.editReply(this.locale.messages.errors.file_not_found)
+                await interaction.editReply(locale.messages.errors.file_not_found)
                 return
             }
 
@@ -51,10 +51,10 @@ export class EmbedHandler {
             metaData.filename = author
         }
 
-        const embedData = await this.embedHelper.generateEmbed(data.embed, metaData)
+        const embedData = await embedHelper.generateEmbed(data.embed, metaData)
 
         if (data.functions.includes('fetch_author_metadata')) {
-            const thumbnail = await this.metadataHelper.getThumbnail(author)
+            const thumbnail = await metadataHelper.getThumbnail(author)
 
             embedData.embed.embeds[0].setThumbnail(`attachment://${thumbnail.name}`)
             embedData.embed['files'].push(thumbnail)

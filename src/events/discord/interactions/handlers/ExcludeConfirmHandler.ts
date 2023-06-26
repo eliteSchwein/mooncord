@@ -5,9 +5,6 @@ import {LocaleHelper} from "../../../../helper/LocaleHelper";
 import {getMoonrakerClient} from "../../../../Application";
 
 export class ExcludeConfirmHandler {
-    protected moonrakerClient = getMoonrakerClient()
-    protected localeHelper = new LocaleHelper()
-    protected locale = this.localeHelper.getLocale()
 
     public async execute(message: Message, user: User, data, interaction = null) {
         if (!data.functions.includes("exclude_object")) {
@@ -18,6 +15,10 @@ export class ExcludeConfirmHandler {
             await interaction.deferReply()
         }
 
+        const moonrakerClient = getMoonrakerClient()
+        const localeHelper = new LocaleHelper()
+        const locale = localeHelper.getLocale()
+
         const objectOptions = interaction.message.components[0].components[0]['options']
         let object = undefined
 
@@ -27,12 +28,12 @@ export class ExcludeConfirmHandler {
             }
         }
 
-        await this.moonrakerClient.send({
+        await moonrakerClient.send({
             "method": "printer.gcode.script",
             "params": {"script": `EXCLUDE_OBJECT NAME=${object}`}
         }, Number.POSITIVE_INFINITY)
 
-        const answer = this.locale.messages.answers.excluded_object
+        const answer = locale.messages.answers.excluded_object
             .replace(/(\${object})/g, object)
             .replace(/(\${username})/g, interaction.user.username)
 

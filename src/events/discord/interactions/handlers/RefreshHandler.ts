@@ -8,20 +8,19 @@ import {ConfigHelper} from "../../../../helper/ConfigHelper";
 import {LocaleHelper} from "../../../../helper/LocaleHelper";
 
 export class RefreshHandler {
-    protected databaseUtil = getDatabase()
-    protected embedHelper = new EmbedHelper()
-    protected configHelper = new ConfigHelper()
-    protected localeHelper = new LocaleHelper()
-    protected locale = this.localeHelper.getLocale()
 
     public async execute(message: Message, user: User, data, interaction = null) {
         if (!data.functions.includes('refresh_status')) {
             return
         }
 
+        const embedHelper = new EmbedHelper()
+        const configHelper = new ConfigHelper()
+        const localeHelper = new LocaleHelper()
+        const locale = localeHelper.getLocale()
         const functionCache = getEntry('function')
 
-        const waitMessage = this.locale.messages.answers.status_update
+        const waitMessage = locale.messages.answers.status_update
             .replace(/(\${username})/g, interaction.user.tag)
 
         if (interaction !== null) {
@@ -33,11 +32,11 @@ export class RefreshHandler {
         }
 
         const currentStatus = functionCache.current_status
-        const currentStatusMeta = this.configHelper.getStatusMeta()[currentStatus]
+        const currentStatusMeta = configHelper.getStatusMeta()[currentStatus]
 
         await message.edit({components: null})
 
-        const newMessage = await this.embedHelper.generateEmbed(currentStatusMeta.embed_id)
+        const newMessage = await embedHelper.generateEmbed(currentStatusMeta.embed_id)
 
         await message.removeAttachments()
         await message.edit(newMessage.embed)

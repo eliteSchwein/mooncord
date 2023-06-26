@@ -8,13 +8,6 @@ import {LocaleHelper} from "../../../../helper/LocaleHelper";
 import {ConsoleHelper} from "../../../../helper/ConsoleHelper";
 
 export class MacroHandler {
-    protected databaseUtil = getDatabase()
-    protected embedHelper = new EmbedHelper()
-    protected configHelper = new ConfigHelper()
-    protected moonrakerClient = getMoonrakerClient()
-    protected localeHelper = new LocaleHelper()
-    protected locale = this.localeHelper.getLocale()
-    protected consoleHelper = new ConsoleHelper()
 
     public async execute(message: Message, user: User, data, interaction = null) {
         if (typeof data.macros === 'undefined') {
@@ -24,7 +17,11 @@ export class MacroHandler {
             return
         }
 
-        const gcodeValid = await this.consoleHelper.executeGcodeCommands(data.macros,
+        const localeHelper = new LocaleHelper()
+        const locale = localeHelper.getLocale()
+        const consoleHelper = new ConsoleHelper()
+
+        const gcodeValid = await consoleHelper.executeGcodeCommands(data.macros,
             interaction.channel,
             data.macro_message === true)
 
@@ -38,18 +35,18 @@ export class MacroHandler {
             label = `${data.emoji} ${label}`
         }
 
-        let answer = this.locale.messages.answers.macros_executed
+        let answer = locale.messages.answers.macros_executed
             .replace(/\${username}/g, interaction.user.tag)
             .replace(/(\${button_label})/g, label)
 
         if (gcodeValid === 0) {
-            answer = this.locale.messages.errors.macros_failed
+            answer = locale.messages.errors.macros_failed
                 .replace(/\${username}/g, interaction.user.tag)
                 .replace(/(\${button_label})/g, label)
         }
 
         if (gcodeValid === -1) {
-            answer = this.locale.messages.errors.execute_running
+            answer = locale.messages.errors.execute_running
                 .replace(/\${username}/g, interaction.user.tag)
         }
 

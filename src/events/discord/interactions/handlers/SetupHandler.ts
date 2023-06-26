@@ -8,10 +8,6 @@ import {getEntry} from "../../../../utils/CacheUtil";
 import {logRegular} from "../../../../helper/LoggerHelper";
 
 export class SetupHandler {
-    protected moonrakerClient = getMoonrakerClient()
-    protected localeHelper = new LocaleHelper()
-    protected locale = this.localeHelper.getLocale()
-    protected embedHelper = new EmbedHelper()
 
     public async execute(message: Message, user: User, data, interaction = null) {
         if (!data.functions.includes("setup_close")) {

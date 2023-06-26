@@ -9,11 +9,6 @@ import {PageHelper} from "../../../../helper/PageHelper";
 import {logNotice} from "../../../../helper/LoggerHelper";
 
 export class PageHandler {
-    protected databaseUtil = getDatabase()
-    protected embedHelper = new EmbedHelper()
-    protected configHelper = new ConfigHelper()
-    protected localeHelper = new LocaleHelper()
-    protected locale = this.localeHelper.getLocale()
 
     public async execute(message: Message, user: User, data, interaction = null) {
         if (!data.functions.includes("page_up") &&
@@ -31,8 +26,14 @@ export class PageHandler {
             await interaction.deferReply()
         }
 
+        const databaseUtil = getDatabase()
+        const embedHelper = new EmbedHelper()
+        const configHelper = new ConfigHelper()
+        const localeHelper = new LocaleHelper()
+        const locale = localeHelper.getLocale()
+
         const embed = message.embeds[0]
-        const embedData = this.embedHelper.getRawEmbedByTitle(embed.title)
+        const embedData = embedHelper.getRawEmbedByTitle(embed.title)
 
         if (typeof embedData === 'undefined') {
             return
@@ -48,16 +49,16 @@ export class PageHandler {
 
         if (Object.keys(pageData).length === 0) {
             if (interaction.replied) {
-                await interaction.editReply(this.localeHelper.getCommandNotReadyError(interaction.user.username))
+                await interaction.editReply(localeHelper.getCommandNotReadyError(interaction.user.username))
             } else {
-                await message.reply(this.localeHelper.getCommandNotReadyError(interaction.user.username))
+                await message.reply(localeHelper.getCommandNotReadyError(interaction.user.username))
             }
             return
         }
 
         logNotice(`select Page ${pageData.pages} for ${embedData.embedID}`)
 
-        const answer = await this.embedHelper.generateEmbed(embedData.embedID, pageData)
+        const answer = await embedHelper.generateEmbed(embedData.embedID, pageData)
 
         await message.edit({components: null})
         await message.removeAttachments()

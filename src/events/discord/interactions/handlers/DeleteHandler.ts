@@ -6,10 +6,6 @@ import {LocaleHelper} from "../../../../helper/LocaleHelper";
 import {EmbedHelper} from "../../../../helper/EmbedHelper";
 
 export class DeleteHandler {
-    protected moonrakerClient = getMoonrakerClient()
-    protected localeHelper = new LocaleHelper()
-    protected locale = this.localeHelper.getLocale()
-    protected embedHelper = new EmbedHelper()
 
     public async execute(message: Message, user: User, data, interaction = null) {
         if (!data.functions.includes("delete")) {
@@ -18,6 +14,11 @@ export class DeleteHandler {
         if (typeof data.root_path === 'undefined') {
             return
         }
+
+        const moonrakerClient = getMoonrakerClient()
+        const localeHelper = new LocaleHelper()
+        const locale = localeHelper.getLocale()
+        const embedHelper = new EmbedHelper()
 
         const currentEmbed = message.embeds[0] as MessageEmbed
 
@@ -32,19 +33,19 @@ export class DeleteHandler {
         }
 
         const rootPath = data.root_path
-        const filename = this.embedHelper.getAuthorName(currentEmbed)
+        const filename = embedHelper.getAuthorName(currentEmbed)
 
-        const feedback = await this.moonrakerClient.send({
+        const feedback = await moonrakerClient.send({
             "method": "server.files.delete_file",
             "params": {"path": `${rootPath}/${filename}`}
         })
 
         if (interaction !== null && typeof feedback.error !== 'undefined') {
-            await interaction.editReply(this.locale.messages.errors.file_not_found)
+            await interaction.editReply(locale.messages.errors.file_not_found)
             return
         }
 
-        const answer = this.locale.messages.answers.file_deleted
+        const answer = locale.messages.answers.file_deleted
             .replace(/(\${root})/g, rootPath)
             .replace(/(\${filename})/g, filename)
 
