@@ -19,7 +19,7 @@ export class RestartCommand {
         this.execute(interaction)
     }
 
-    protected async execute(interaction: CommandInteraction) {
+    private async execute(interaction: CommandInteraction) {
         const service = interaction.options.getString(this.syntaxLocale.commands.restart.options.service.name)
 
         await interaction.deferReply()
@@ -37,7 +37,7 @@ export class RestartCommand {
         await interaction.editReply(result)
     }
 
-    protected async restartService(service: string) {
+    private async restartService(service: string) {
         const result = await this.moonrakerClient.send({"method": "machine.services.restart", "params": {service}})
 
         if (typeof result.error !== 'undefined') {
@@ -51,7 +51,7 @@ export class RestartCommand {
             .replace(/(\${username})/g, this.user.tag)
     }
 
-    protected async restartFirmware() {
+    private async restartFirmware() {
         void await this.moonrakerClient.send({"method": "printer.firmware_restart"})
 
         return this.locale.messages.answers.firmware_restart_successful

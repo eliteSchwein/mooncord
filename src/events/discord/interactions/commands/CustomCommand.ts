@@ -19,7 +19,7 @@ export class CustomCommand {
         this.execute(interaction, commandId)
     }
 
-    protected async execute(interaction: CommandInteraction, commandId: string) {
+    private async execute(interaction: CommandInteraction, commandId: string) {
         const commandGenerator = new DiscordCommandGenerator()
         const localeHelper = new LocaleHelper()
         const locale = localeHelper.getLocale()

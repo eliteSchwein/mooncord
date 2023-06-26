@@ -18,7 +18,7 @@ export class ExecuteCommand {
         this.execute(interaction)
     }
 
-    protected async execute(interaction: CommandInteraction) {
+    private async execute(interaction: CommandInteraction) {
         const databaseUtil = getDatabase()
         const configHelper = new ConfigHelper()
         const localeHelper = new LocaleHelper()

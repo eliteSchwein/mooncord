@@ -16,7 +16,7 @@ export class ConfigCommand {
         this.execute(interaction)
     }
 
-    protected async execute(interaction: CommandInteraction) {
+    private async execute(interaction: CommandInteraction) {
         const localeHelper = new LocaleHelper()
         const syntaxLocale = localeHelper.getSyntaxLocale()
         const embedHelper = new EmbedHelper()
@@ -45,7 +45,7 @@ export class ConfigCommand {
         }
     }
 
-    protected async uploadConfiguration(interaction: CommandInteraction) {
+    private async uploadConfiguration(interaction: CommandInteraction) {
         const localeHelper = new LocaleHelper()
         const locale = localeHelper.getLocale()
         const syntaxLocale = localeHelper.getSyntaxLocale()

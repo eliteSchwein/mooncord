@@ -13,7 +13,7 @@ export class EmergencyStopCommand {
         this.execute(interaction)
     }
 
-    protected async execute(interaction: CommandInteraction) {
+    private async execute(interaction: CommandInteraction) {
         const moonrakerClient = getMoonrakerClient()
         const localeHelper = new LocaleHelper()
         const locale = localeHelper.getLocale()

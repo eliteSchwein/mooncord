@@ -20,7 +20,7 @@ export class PowerDeviceCommand {
         this.execute(interaction)
     }
 
-    protected async execute(interaction: CommandInteraction) {
+    private async execute(interaction: CommandInteraction) {
         const powerDevice = interaction.options.getString(this.syntaxLocale.commands.power.options.device.name)
         const powerDeviceData = this.powerDeviceHelper.getPowerDeviceData(powerDevice)
 

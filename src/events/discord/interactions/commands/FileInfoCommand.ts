@@ -16,7 +16,7 @@ export class FileInfoCommand {
         void this.execute(interaction)
     }
 
-    protected async execute(interaction: CommandInteraction) {
+    private async execute(interaction: CommandInteraction) {
         const localeHelper = new LocaleHelper()
         const locale = localeHelper.getLocale()
         const syntaxLocale = localeHelper.getSyntaxLocale()

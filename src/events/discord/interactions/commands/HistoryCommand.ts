@@ -15,7 +15,7 @@ export class HistoryCommand {
         this.execute(interaction)
     }
 
-    protected async execute(interaction: CommandInteraction) {
+    private async execute(interaction: CommandInteraction) {
         const embedHelper = new EmbedHelper()
         const historyHelper = new HistoryHelper()
         const localeHelper = new LocaleHelper()

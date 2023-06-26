@@ -15,7 +15,7 @@ export class NotifyCommand {
         void this.execute(interaction)
     }
 
-    protected async execute(interaction: CommandInteraction) {
+    private async execute(interaction: CommandInteraction) {
         const databaseUtil = getDatabase()
         const notifyList = databaseUtil.getDatabaseEntry('notify')
         const localeHelper = new LocaleHelper()

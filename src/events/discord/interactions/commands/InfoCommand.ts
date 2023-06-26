@@ -12,7 +12,7 @@ export class InfoCommand {
         this.execute(interaction)
     }
 
-    protected async execute(interaction: CommandInteraction) {
+    private async execute(interaction: CommandInteraction) {
         const message = await new EmbedHelper().generateEmbed('info')
 
         void interaction.reply(message.embed)

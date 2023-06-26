@@ -16,7 +16,7 @@ export class GetLodCommand {
         this.execute(interaction)
     }
 
-    protected async execute(interaction: CommandInteraction) {
+    private async execute(interaction: CommandInteraction) {
         const localeHelper = new LocaleHelper()
         const syntaxLocale = localeHelper.getSyntaxLocale()
         await interaction.deferReply({ephemeral: true})
@@ -34,7 +34,7 @@ export class GetLodCommand {
         await interaction.editReply(request)
     }
 
-    protected async readMoonCordLog() {
+    private async readMoonCordLog() {
         const localeHelper = new LocaleHelper()
         const locale = localeHelper.getLocale()
 
@@ -53,7 +53,7 @@ export class GetLodCommand {
         }
     }
 
-    protected async retrieveServiceLog(service: string) {
+    private async retrieveServiceLog(service: string) {
         const config = new ConfigHelper()
         const localeHelper = new LocaleHelper()
         const locale = localeHelper.getLocale()

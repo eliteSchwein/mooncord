@@ -14,8 +14,7 @@ export class PidtuneCommand {
         this.execute(interaction)
     }
 
-    protected async execute(interaction: CommandInteraction) {
-        const databaseUtil = getDatabase()
+    private async execute(interaction: CommandInteraction) {
         const localeHelper = new LocaleHelper()
         const syntaxLocale = localeHelper.getSyntaxLocale()
         const locale = localeHelper.getLocale()

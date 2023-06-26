@@ -15,7 +15,7 @@ export class AdminCommand {
         this.execute(interaction)
     }
 
-    protected async execute(interaction: CommandInteraction) {
+    private async execute(interaction: CommandInteraction) {
         const databaseUtil = new DatabaseUtil()
         const localeHelper = new LocaleHelper()
         const syntaxLocale = localeHelper.getSyntaxLocale()

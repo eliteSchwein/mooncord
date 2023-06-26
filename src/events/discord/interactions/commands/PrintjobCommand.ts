@@ -10,14 +10,6 @@ import {getMoonrakerClient} from "../../../../Application";
 import {formatTime} from "../../../../helper/DataHelper";
 
 export class PrintjobCommand {
-    protected localeHelper = new LocaleHelper()
-    protected locale = this.localeHelper.getLocale()
-    protected syntaxLocale = this.localeHelper.getSyntaxLocale()
-    protected metadataHelper = new MetadataHelper()
-    protected embedHelper = new EmbedHelper()
-    protected buttonsCache = getEntry('buttons')
-    protected moonrakerClient = getMoonrakerClient()
-    protected functionCache = getEntry('function')
 
     public constructor(interaction: CommandInteraction, commandId: string) {
         if (commandId !== 'printjob') {
@@ -27,51 +19,59 @@ export class PrintjobCommand {
         void this.execute(interaction)
     }
 
-    protected async execute(interaction: CommandInteraction) {
+    private async execute(interaction: CommandInteraction) {
         const subCommand = interaction.options.getSubcommand()
+        const localeHelper = new LocaleHelper()
+        const locale = localeHelper.getLocale()
+        const syntaxLocale = localeHelper.getSyntaxLocale()
 
         switch (subCommand) {
-            case this.syntaxLocale.commands.printjob.options.pause.name: {
-                await this.triggerMacro('printjob_pause', interaction, this.locale.messages.answers.printjob_pause, 'pause')
+            case syntaxLocale.commands.printjob.options.pause.name: {
+                await this.triggerMacro('printjob_pause', interaction, locale.messages.answers.printjob_pause, 'pause')
                 break
             }
-            case this.syntaxLocale.commands.printjob.options.cancel.name: {
-                await this.triggerMacro('printjob_cancel', interaction, this.locale.messages.answers.printjob_cancel)
+            case syntaxLocale.commands.printjob.options.cancel.name: {
+                await this.triggerMacro('printjob_cancel', interaction, locale.messages.answers.printjob_cancel)
                 break
             }
-            case this.syntaxLocale.commands.printjob.options.resume.name: {
-                await this.triggerMacro('printjob_resume', interaction, this.locale.messages.answers.printjob_resume, 'printing')
+            case syntaxLocale.commands.printjob.options.resume.name: {
+                await this.triggerMacro('printjob_resume', interaction, locale.messages.answers.printjob_resume, 'printing')
                 break
             }
-            case this.syntaxLocale.commands.printjob.options.start.name: {
+            case syntaxLocale.commands.printjob.options.start.name: {
                 await this.requestPrintjob(interaction.options.getString(
-                    this.syntaxLocale.commands.printjob.options.start.options.file.name
+                    syntaxLocale.commands.printjob.options.start.options.file.name
                 ), interaction)
                 break
             }
         }
     }
 
-    protected async requestPrintjob(printFile: string, interaction: CommandInteraction) {
+    private async requestPrintjob(printFile: string, interaction: CommandInteraction) {
         await interaction.deferReply()
+
+        const localeHelper = new LocaleHelper()
+        const locale = localeHelper.getLocale()
+        const metadataHelper = new MetadataHelper()
+        const embedHelper = new EmbedHelper()
 
         if (!printFile.endsWith('.gcode')) {
             printFile = `${printFile}.gcode`
         }
 
-        const metadata = await this.metadataHelper.getMetaData(printFile)
+        const metadata = await metadataHelper.getMetaData(printFile)
 
         if (typeof metadata === 'undefined') {
-            await interaction.editReply(this.locale.messages.errors.file_not_found)
+            await interaction.editReply(locale.messages.errors.file_not_found)
             return
         }
 
-        const thumbnail = await this.metadataHelper.getThumbnail(printFile)
+        const thumbnail = await metadataHelper.getThumbnail(printFile)
 
         metadata.estimated_time = formatTime(metadata.estimated_time)
         metadata.filename = printFile
 
-        const embedData = await this.embedHelper.generateEmbed('printjob_start_request', metadata)
+        const embedData = await embedHelper.generateEmbed('printjob_start_request', metadata)
         const embed = embedData.embed.embeds[0] as MessageEmbed
 
         embed.setThumbnail(`attachment://${thumbnail.name}`)
@@ -82,8 +82,11 @@ export class PrintjobCommand {
         await interaction.editReply(embedData.embed)
     }
 
-    protected async triggerMacro(buttonId: string, interaction: CommandInteraction, subLocale, status = '') {
-        const buttonData = this.buttonsCache[buttonId]
+    private async triggerMacro(buttonId: string, interaction: CommandInteraction, subLocale, status = '') {
+        const buttonsCache = getEntry('buttons')
+        const buttonData = buttonsCache[buttonId]
+        const moonrakerClient = getMoonrakerClient()
+        const functionCache = getEntry('function')
 
         if (typeof buttonData.macros === 'undefined') {
             return
@@ -97,7 +100,7 @@ export class PrintjobCommand {
 
         const requiredStates = buttonData.required_states
 
-        if (status === this.functionCache.current_status) {
+        if (status === functionCache.current_status) {
             const message = subLocale.status_same
                 .replace(/(\${username})/g, interaction.user.tag)
 
@@ -105,7 +108,7 @@ export class PrintjobCommand {
             return
         }
 
-        if (!requiredStates.includes(this.functionCache.current_status)) {
+        if (!requiredStates.includes(functionCache.current_status)) {
             const message = subLocale.status_not_valid
                 .replace(/(\${username})/g, interaction.user.tag)
 
@@ -115,7 +118,7 @@ export class PrintjobCommand {
 
         for (const macro of buttonData.macros) {
             logNotice(`executing macro: ${macro}`)
-            void this.moonrakerClient.send({
+            void moonrakerClient.send({
                 "method": "printer.gcode.script",
                 "params": {"script": macro}
             }, Number.POSITIVE_INFINITY)

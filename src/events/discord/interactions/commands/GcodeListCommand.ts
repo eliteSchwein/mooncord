@@ -16,7 +16,7 @@ export class GcodeListCommand {
         this.execute(interaction)
     }
 
-    protected async execute(interaction: CommandInteraction) {
+    private async execute(interaction: CommandInteraction) {
         const localeHelper = new LocaleHelper()
         const embedHelper = new EmbedHelper()
 

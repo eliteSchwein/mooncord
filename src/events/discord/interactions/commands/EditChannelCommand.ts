@@ -15,7 +15,7 @@ export class EditChannelCommand {
         this.execute(interaction)
     }
 
-    protected async execute(interaction: CommandInteraction) {
+    private async execute(interaction: CommandInteraction) {
         const databaseUtil = getDatabase()
         const broadcastList = databaseUtil.getDatabaseEntry('guilds')
         const localeHelper = new LocaleHelper()

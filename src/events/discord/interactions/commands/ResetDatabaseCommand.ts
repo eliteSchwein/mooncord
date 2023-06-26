@@ -5,9 +5,6 @@ import {getDatabase} from "../../../../Application";
 import {LocaleHelper} from "../../../../helper/LocaleHelper";
 
 export class ResetDatabaseCommand {
-    protected databaseUtil = getDatabase()
-    protected localeHelper = new LocaleHelper()
-    protected locale = this.localeHelper.getLocale()
 
     public constructor(interaction: CommandInteraction, commandId: string) {
         if (commandId !== 'reset_database') {
@@ -17,11 +14,14 @@ export class ResetDatabaseCommand {
         this.execute(interaction)
     }
 
-    protected async execute(interaction: CommandInteraction) {
+    private async execute(interaction: CommandInteraction) {
         await interaction.deferReply()
+        const databaseUtil = getDatabase()
+        const localeHelper = new LocaleHelper()
+        const locale = localeHelper.getLocale()
 
-        await this.databaseUtil.resetDatabase()
+        await databaseUtil.resetDatabase()
 
-        await interaction.editReply(this.locale.messages.answers.reset_database)
+        await interaction.editReply(locale.messages.answers.reset_database)
     }
 }

@@ -7,11 +7,6 @@ import {PageHelper} from "../../../../helper/PageHelper";
 import {EmbedHelper} from "../../../../helper/EmbedHelper";
 
 export class TimelapseListCommand {
-    protected databaseUtil = getDatabase()
-    protected localeHelper = new LocaleHelper()
-    protected locale = this.localeHelper.getLocale()
-    protected syntaxLocale = this.localeHelper.getSyntaxLocale()
-    protected embedHelper = new EmbedHelper()
 
     public constructor(interaction: CommandInteraction, commandId: string) {
         if (commandId !== 'listtimelapses') {
@@ -21,21 +16,24 @@ export class TimelapseListCommand {
         this.execute(interaction)
     }
 
-    protected async execute(interaction: CommandInteraction) {
+    private async execute(interaction: CommandInteraction) {
         await interaction.deferReply()
+        const localeHelper = new LocaleHelper()
+        const locale = localeHelper.getLocale()
+        const embedHelper = new EmbedHelper()
 
         const pageHelper = new PageHelper('timelapse_files')
         const pageData = pageHelper.getPage(false, 2)
 
         if (Object.keys(pageData) === undefined || Object.keys(pageData).length === 0) {
-            const message = this.locale.messages.errors.no_timelapses
+            const message = locale.messages.errors.no_timelapses
                 .replace(/(\${username})/g, interaction.user.tag)
 
             await interaction.editReply(message)
             return
         }
 
-        const embed = await this.embedHelper.generateEmbed('timelapse_files', pageData)
+        const embed = await embedHelper.generateEmbed('timelapse_files', pageData)
 
         await interaction.editReply(embed.embed)
     }
