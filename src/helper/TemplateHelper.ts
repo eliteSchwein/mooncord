@@ -371,7 +371,7 @@ export class TemplateHelper {
         return printerInfoStateMessage
     }
 
-    protected async parseImage(imageID: string) {
+    private async parseImage(imageID: string) {
         const metadataHelper = new MetadataHelper()
         if (typeof imageID === 'undefined') {
             return

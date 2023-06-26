@@ -12,17 +12,13 @@ import {ExecuteModal} from "./modals/ExecuteModal";
 
 
 export class ModalInteraction {
-    protected config = new ConfigHelper()
-    protected localeHelper = new LocaleHelper()
-    protected permissionHelper = new PermissionHelper()
-    protected inputGenerator = new DiscordInputGenerator()
 
     // @ts-ignore
     public constructor(interaction: Interaction) {
         void this.execute(interaction)
     }
 
-    protected async execute(interaction: Interaction) {
+    private async execute(interaction: Interaction) {
         if (!interaction.isModalSubmit()) {
             return
         }
@@ -41,12 +37,17 @@ export class ModalInteraction {
             }
         }
 
+        const config = new ConfigHelper()
+        const localeHelper = new LocaleHelper()
+        const permissionHelper = new PermissionHelper()
+        const inputGenerator = new DiscordInputGenerator()
+
         logNotice(`${interaction.user.tag} submitted modal: ${logFeedback}`)
 
-        if (!this.permissionHelper.hasPermission(interaction.user, interaction.guild, modalId)) {
+        if (!permissionHelper.hasPermission(interaction.user, interaction.guild, modalId)) {
             await interaction.reply({
-                content: this.localeHelper.getNoPermission(interaction.user.tag),
-                ephemeral: this.config.showNoPermissionPrivate()
+                content: localeHelper.getNoPermission(interaction.user.tag),
+                ephemeral: config.showNoPermissionPrivate()
             })
             logWarn(`${interaction.user.tag} doesnt have the permission for: ${modalId}`)
             return;
@@ -61,6 +62,6 @@ export class ModalInteraction {
             return
         }
 
-        await interaction.reply(this.localeHelper.getCommandNotReadyError(interaction.user.tag))
+        await interaction.reply(localeHelper.getCommandNotReadyError(interaction.user.tag))
     }
 }

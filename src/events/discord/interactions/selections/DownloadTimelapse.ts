@@ -10,10 +10,6 @@ import {ConfigHelper} from "../../../../helper/ConfigHelper";
 import {unlinkSync} from "fs";
 
 export class DownloadTimelapse {
-    protected timelapseHelper = new TimelapseHelper()
-    protected localeHelper = new LocaleHelper()
-    protected configHelper = new ConfigHelper()
-    protected locale = this.localeHelper.getLocale()
 
     public constructor(interaction: SelectMenuInteraction, selectionId: string) {
         if (selectionId !== 'timelapse_download') {
@@ -23,16 +19,20 @@ export class DownloadTimelapse {
         void this.execute(interaction)
     }
 
-    protected async execute(interaction: SelectMenuInteraction) {
+    private async execute(interaction: SelectMenuInteraction) {
         await interaction.deferReply()
+        const timelapseHelper = new TimelapseHelper()
+        const localeHelper = new LocaleHelper()
+        const configHelper = new ConfigHelper()
+        const locale = localeHelper.getLocale()
 
         const timelapseFile = findValueByPartial(getEntry('timelapse_files'), interaction.values[0], 'path')
 
-        const placeholderMessage = this.locale.messages.answers.timelapse_render
+        const placeholderMessage = locale.messages.answers.timelapse_render
             .replace(/(\${timelapsefile})/g, timelapseFile)
 
         const placeholderImage = new MessageAttachment(
-            resolve(__dirname, `../assets/icon-sets/${this.configHelper.getIconSet()}/timelapse-render.png`),
+            resolve(__dirname, `../assets/icon-sets/${configHelper.getIconSet()}/timelapse-render.png`),
             'snapshot-error.png'
         )
 
@@ -43,10 +43,10 @@ export class DownloadTimelapse {
 
         await interaction.deleteReply()
 
-        const timelapseMessage = this.locale.messages.answers.timelapse_download
+        const timelapseMessage = locale.messages.answers.timelapse_download
             .replace(/(\${timelapsefile})/g, timelapseFile)
 
-        const timelapseContent = await this.timelapseHelper.downloadTimelapse(timelapseFile, timelapseMessage)
+        const timelapseContent = await timelapseHelper.downloadTimelapse(timelapseFile, timelapseMessage)
 
         await currentMessage.edit(timelapseContent.message)
 

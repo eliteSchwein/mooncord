@@ -79,7 +79,7 @@ export class NotificationHelper {
         return true
     }
 
-    protected async notifyUsers(message) {
+    private async notifyUsers(message) {
         if (this.discordClient === null) {
             return
         }
@@ -97,7 +97,7 @@ export class NotificationHelper {
         }
     }
 
-    protected async broadcastGuilds(message) {
+    private async broadcastGuilds(message) {
         for (const guildId in this.broadcastList) {
             const guildMeta = this.broadcastList[guildId]
             try {
@@ -120,7 +120,7 @@ export class NotificationHelper {
         }
     }
 
-    protected async broadcastChannels(channels, message) {
+    private async broadcastChannels(channels, message) {
         for (let channel of channels) {
             if (channel.constructor.name === 'Array') {
                 channel = channel[1]

@@ -7,8 +7,6 @@ import {getDatabase} from "../../Application";
 import {EmbedHelper} from "../../helper/EmbedHelper";
 
 export class VerifyHandler {
-    protected database = getDatabase()
-    protected embedHelper = new EmbedHelper()
 
     public constructor(discordClient: Client) {
         discordClient.on("messageCreate", async message => {
@@ -35,8 +33,10 @@ export class VerifyHandler {
             }
 
             const controllerId = message.author.id
+            const database = getDatabase()
+            const embedHelper = new EmbedHelper()
 
-            const permissions = this.database.getDatabaseEntry('permissions')
+            const permissions = database.getDatabaseEntry('permissions')
 
             if (permissions['controllers'].includes(controllerId)) {
                 logError(`${message.author.tag} is already a Controller!!!`)
@@ -48,14 +48,14 @@ export class VerifyHandler {
 
                 setData('setup_code', undefined)
 
-                await this.database.updateDatabaseEntry('permissions', permissions)
+                await database.updateDatabaseEntry('permissions', permissions)
 
                 await message.reply('You have now the Controller Permission over me')
             }
 
             setData('tmp_controller', undefined)
 
-            const setupMessage = await this.embedHelper.generateEmbed('setup_1')
+            const setupMessage = await embedHelper.generateEmbed('setup_1')
 
             await message.channel.send(setupMessage.embed)
         })

@@ -7,10 +7,6 @@ import {VersionHelper} from "../../../helper/VersionHelper";
 import {logRegular} from "../../../helper/LoggerHelper";
 
 export class UpdateNotification {
-    protected embedHelper = new EmbedHelper()
-    protected notificationHelper = new NotificationHelper()
-    protected versionHelper = new VersionHelper()
-
     public async parse(message) {
         if (typeof (message.method) === 'undefined') {
             return
@@ -25,17 +21,21 @@ export class UpdateNotification {
 
         updateData('updates', message.params[0])
 
-        if (!this.versionHelper.updateAvailable()) {
+        const embedHelper = new EmbedHelper()
+        const notificationHelper = new NotificationHelper()
+        const versionHelper = new VersionHelper()
+
+        if (!versionHelper.updateAvailable()) {
             return
         }
 
         logRegular('There are some Updates available...')
 
-        if (this.notificationHelper.isEmbedBlocked('system_update')) {
+        if (notificationHelper.isEmbedBlocked('system_update')) {
             return
         }
 
-        const embed = await this.embedHelper.generateEmbed('system_update')
-        void this.notificationHelper.broadcastMessage(embed.embed)
+        const embed = await embedHelper.generateEmbed('system_update')
+        void notificationHelper.broadcastMessage(embed.embed)
     }
 }

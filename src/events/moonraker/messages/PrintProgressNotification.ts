@@ -7,22 +7,20 @@ import {updateTimes} from "../../../helper/TimeHelper";
 import {getEntry} from "../../../utils/CacheUtil";
 
 export class PrintProgressNotification {
-    protected functionCache = getEntry('function')
-    protected configHelper = new ConfigHelper()
-    protected statusHelper = new StatusHelper()
-
     public parse(message) {
-        if (this.functionCache.current_status !== 'printing') {
+        const functionCache = getEntry('function')
+
+        if (functionCache.current_status !== 'printing') {
             return
         }
 
         updateTimes()
         updateLayers()
 
-        if (!this.configHelper.isStatusPerPercent()) {
+        if (!new ConfigHelper().isStatusPerPercent()) {
             return
         }
 
-        this.statusHelper.update()
+        new StatusHelper().update()
     }
 }

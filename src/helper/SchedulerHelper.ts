@@ -127,7 +127,7 @@ export class SchedulerHelper {
         }
     }
 
-    protected async pollServerInfo() {
+    private async pollServerInfo() {
         if (this.functionCache.server_info_in_query) {
             return
         }
@@ -163,7 +163,7 @@ export class SchedulerHelper {
         await this.statusHelper.update()
     }
 
-    protected async requestPrintInfo() {
+    private async requestPrintInfo() {
         const printerInfo = await this.moonrakerClient.send({"method": "printer.info"})
 
         updateData('printer_info', printerInfo.result)

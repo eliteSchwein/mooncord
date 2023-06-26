@@ -5,7 +5,6 @@ import {getEntry} from "../../../utils/CacheUtil";
 import {logRegular} from "../../../helper/LoggerHelper";
 
 export class InviteMessage {
-    protected moonrakerClient = getMoonrakerClient()
 
     public async execute(message: string) {
         if (!message.startsWith('mooncord.invite')) {
@@ -16,7 +15,7 @@ export class InviteMessage {
 
         logRegular('Send Invite URL to Klipper Console...')
 
-        await this.moonrakerClient.send({
+        await getMoonrakerClient().send({
             "method": "printer.gcode.script",
             "params": {"script": `RESPOND PREFIX=mooncord.response MSG=${inviteUrl}`}
         })

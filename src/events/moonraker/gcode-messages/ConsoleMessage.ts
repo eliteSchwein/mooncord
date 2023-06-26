@@ -4,8 +4,6 @@ import {getEntry, setData} from "../../../utils/CacheUtil";
 import {ConsoleHelper} from "../../../helper/ConsoleHelper";
 
 export class ConsoleMessage {
-    protected cache = getEntry('execute')
-    protected consoleHelper = new ConsoleHelper()
 
     public async parse(message) {
         if (typeof (message.method) === 'undefined') {
@@ -18,23 +16,23 @@ export class ConsoleMessage {
             return
         }
 
-        this.cache = getEntry('execute')
+        const cache = getEntry('execute')
 
         const gcodeResponse = message.params[0]
-        const commandToExecute = this.cache.to_execute_command
+        const commandToExecute = cache.to_execute_command
 
         if (!gcodeResponse.includes(commandToExecute)) {
             return
         }
 
         if (gcodeResponse.startsWith('//')) {
-            this.cache.unknown_commands.push(commandToExecute)
+            cache.unknown_commands.push(commandToExecute)
         }
 
         if (gcodeResponse.startsWith('!!')) {
-            this.cache.error_commands.push(commandToExecute)
+            cache.error_commands.push(commandToExecute)
         }
 
-        setData('execute', this.cache)
+        setData('execute', cache)
     }
 }

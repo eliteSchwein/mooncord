@@ -9,11 +9,6 @@ import {PermissionHelper} from "../../helper/PermissionHelper";
 import {uploadAttachment} from "../../helper/DataHelper";
 
 export class GCodeUploadHandler {
-    protected moonrakerClient = getMoonrakerClient()
-    protected configHelper = new ConfigHelper()
-    protected localeHelper = new LocaleHelper()
-    protected permissionHelper = new PermissionHelper()
-    protected locale = this.localeHelper.getLocale()
 
     public constructor(discordClient: Client) {
         discordClient.on("messageCreate", async message => {
@@ -31,7 +26,13 @@ export class GCodeUploadHandler {
                 return
             }
 
-            if (!this.permissionHelper.hasPermission(message.author, message.guild, 'gcode_upload')) {
+            const moonrakerClient = getMoonrakerClient()
+            const configHelper = new ConfigHelper()
+            const localeHelper = new LocaleHelper()
+            const permissionHelper = new PermissionHelper()
+            const locale = localeHelper.getLocale()
+
+            if (!permissionHelper.hasPermission(message.author, message.guild, 'gcode_upload')) {
                 logWarn(`${message.author.tag} doesnt have the permission to upload gcode files!`)
                 return;
             }
@@ -43,7 +44,7 @@ export class GCodeUploadHandler {
                 return
             }
 
-            await message.reply(this.locale.messages.errors.upload_failed
+            await message.reply(locale.messages.errors.upload_failed
                 .replace(/(\${filename})/g, attachment.name)
                 .replace(/(\${username})/g, message.author.tag))
         })

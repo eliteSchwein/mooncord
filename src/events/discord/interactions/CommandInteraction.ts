@@ -35,16 +35,12 @@ import {HistoryCommand} from "./commands/HistoryCommand";
 import {TimelapseListCommand} from "./commands/TimelapseListCommand";
 
 export class CommandInteraction {
-    protected config = new ConfigHelper()
-    protected commandGenerator = new DiscordCommandGenerator()
-    protected localeHelper = new LocaleHelper()
-    protected permissionHelper = new PermissionHelper()
 
     public constructor(interaction: Interaction) {
         void this.execute(interaction)
     }
 
-    protected async execute(interaction: Interaction) {
+    private async execute(interaction: Interaction) {
         if (!interaction.isCommand()) {
             return
         }
@@ -55,11 +51,16 @@ export class CommandInteraction {
             logFeedback = `${logFeedback} ${option.name}:${option.value}`
         }
 
-        const commandId = this.commandGenerator.getCommandId(interaction.commandName)
+        const config = new ConfigHelper()
+        const commandGenerator = new DiscordCommandGenerator()
+        const localeHelper = new LocaleHelper()
+        const permissionHelper = new PermissionHelper()
+
+        const commandId = commandGenerator.getCommandId(interaction.commandName)
 
         let permissionId = commandId
 
-        if (this.commandGenerator.isCustomCommand(commandId)) {
+        if (commandGenerator.isCustomCommand(commandId)) {
             permissionId = 'custom_command'
         }
 
@@ -69,10 +70,10 @@ export class CommandInteraction {
 
         logNotice(`${interaction.user.tag} executed command: ${logFeedback}`)
 
-        if (!this.permissionHelper.hasPermission(interaction.user, interaction.guild, permissionId)) {
+        if (!permissionHelper.hasPermission(interaction.user, interaction.guild, permissionId)) {
             await interaction.reply({
-                content: this.localeHelper.getNoPermission(interaction.user.tag),
-                ephemeral: this.config.showNoPermissionPrivate()
+                content: localeHelper.getNoPermission(interaction.user.tag),
+                ephemeral: config.showNoPermissionPrivate()
             })
             logWarn(`${interaction.user.tag} doesnt have the permission for: ${interaction.commandName} (${commandId})`)
             return;
@@ -111,6 +112,6 @@ export class CommandInteraction {
             return
         }
 
-        await interaction.reply(this.localeHelper.getCommandNotReadyError(interaction.user.tag))
+        await interaction.reply(localeHelper.getCommandNotReadyError(interaction.user.tag))
     }
 }

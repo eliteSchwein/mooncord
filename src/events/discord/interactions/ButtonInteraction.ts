@@ -25,18 +25,12 @@ import {NotificationHandler} from "./handlers/NotificationHandler";
 import {CameraSettingHandler} from "./handlers/CameraSettingHandler";
 
 export class ButtonInteraction {
-    protected config = new ConfigHelper()
-    protected permissionHelper = new PermissionHelper()
-    protected localeHelper = new LocaleHelper()
-    protected locale = this.localeHelper.getLocale()
-    protected buttonsCache = getEntry('buttons')
-    protected functionCache = getEntry('function')
 
     public constructor(interaction: Interaction) {
         void this.execute(interaction)
     }
 
-    protected async execute(interaction: Interaction) {
+    private async execute(interaction: Interaction) {
         if (!interaction.isButton()) {
             return
         }
@@ -47,15 +41,22 @@ export class ButtonInteraction {
             return
         }
 
-        const buttonData = this.buttonsCache[buttonId]
+        const config = new ConfigHelper()
+        const permissionHelper = new PermissionHelper()
+        const localeHelper = new LocaleHelper()
+        const locale = localeHelper.getLocale()
+        const buttonsCache = getEntry('buttons')
+        const functionCache = getEntry('function')
+
+        const buttonData = buttonsCache[buttonId]
         const requiredStates = buttonData.required_states
 
         logNotice(`${interaction.user.tag} pressed button: ${buttonId}`)
 
-        if (!this.permissionHelper.hasPermission(interaction.user, interaction.guild, buttonId)) {
+        if (!permissionHelper.hasPermission(interaction.user, interaction.guild, buttonId)) {
             await interaction.reply({
-                content: this.localeHelper.getNoPermission(interaction.user.tag),
-                ephemeral: this.config.showNoPermissionPrivate()
+                content: localeHelper.getNoPermission(interaction.user.tag),
+                ephemeral: config.showNoPermissionPrivate()
             })
             logWarn(`${interaction.user.tag} doesnt have the permission for: ${interaction.customId}`)
             return;
@@ -63,8 +64,8 @@ export class ButtonInteraction {
 
         if (typeof requiredStates !== 'undefined') {
 
-            if (!requiredStates.includes(this.functionCache.current_status)) {
-                const message = this.locale.messages.errors.not_ready
+            if (!requiredStates.includes(functionCache.current_status)) {
+                const message = locale.messages.errors.not_ready
                     .replace(/(\${username})/g, interaction.user.tag)
 
                 await interaction.reply(message)
@@ -97,6 +98,6 @@ export class ButtonInteraction {
             return
         }
 
-        await interaction.reply(this.localeHelper.getCommandNotReadyError(interaction.user.tag))
+        await interaction.reply(localeHelper.getCommandNotReadyError(interaction.user.tag))
     }
 }

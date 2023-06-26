@@ -7,10 +7,6 @@ import {NotificationHelper} from "../../../helper/NotificationHelper";
 import Parse from "regex-parser";
 
 export class DisplayUpdateNotification {
-    protected embedHelper = new EmbedHelper()
-    protected configHelper = new ConfigHelper()
-    protected notificationHelper = new NotificationHelper()
-    protected m117Config = this.configHelper.getM117NotifactionConfig()
 
     public async parse(message) {
         if (typeof (message.method) === 'undefined') {
@@ -19,7 +15,13 @@ export class DisplayUpdateNotification {
         if (typeof (message.params) === 'undefined') {
             return
         }
-        if (!this.m117Config.enable) {
+
+        const embedHelper = new EmbedHelper()
+        const configHelper = new ConfigHelper()
+        const notificationHelper = new NotificationHelper()
+        const m117Config = configHelper.getM117NotifactionConfig()
+
+        if (!m117Config.enable) {
             return
         }
 
@@ -41,8 +43,8 @@ export class DisplayUpdateNotification {
             return
         }
 
-        const blacklist = this.m117Config.blacklist
-        const whitelist = this.m117Config.whitelist
+        const blacklist = m117Config.blacklist
+        const whitelist = m117Config.whitelist
 
         let whitelistValid = (whitelist.length <= 0)
 
@@ -64,14 +66,14 @@ export class DisplayUpdateNotification {
             return
         }
 
-        if (this.notificationHelper.isEmbedBlocked('notification')) {
+        if (notificationHelper.isEmbedBlocked('notification')) {
             return
         }
 
         logRegular(`Broadcast Message: ${displayMessage}`)
 
-        const embed = await this.embedHelper.generateEmbed('notification', {'message': displayMessage})
+        const embed = await embedHelper.generateEmbed('notification', {'message': displayMessage})
 
-        this.notificationHelper.broadcastMessage(embed.embed)
+        notificationHelper.broadcastMessage(embed.embed)
     }
 }

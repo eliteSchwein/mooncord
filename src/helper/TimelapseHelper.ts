@@ -105,7 +105,7 @@ export class TimelapseHelper {
         }
     }
 
-    protected async compressTimelapse(timelapseInput: string, timelapseName: string) {
+    private async compressTimelapse(timelapseInput: string, timelapseName: string) {
         const absolutePath = (this.configHelper.getTempPath().startsWith('..')) ? path.join(__dirname, this.configHelper.getTempPath()) : this.configHelper.getTempPath()
         const tempPathShort = path.join(absolutePath, `compressed-${timelapseName}`)
         let renderComplete = false

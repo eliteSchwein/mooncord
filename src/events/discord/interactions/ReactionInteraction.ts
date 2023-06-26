@@ -21,19 +21,12 @@ import {MacroHandler} from "./handlers/MacroHandler";
 import {DeleteMessageHandler} from "./handlers/DeleteMessageHandler";
 
 export class ReactionInteraction {
-    protected config = new ConfigHelper()
-    protected permissionHelper = new PermissionHelper()
-    protected localeHelper = new LocaleHelper()
-    protected locale = this.localeHelper.getLocale()
-    protected functionCache = getEntry('function')
-    protected reactionMetaCache = findValue('config.reaction_meta')
-    protected reactionCache = findValue('config.input_meta.reactions')
 
     public constructor(interaction: MessageReaction | PartialMessageReaction) {
         void this.execute(interaction)
     }
 
-    protected async execute(interaction: MessageReaction | PartialMessageReaction) {
+    private async execute(interaction: MessageReaction | PartialMessageReaction) {
         const emoji = interaction.emoji.toString()
         const message = interaction.message as Message
 
@@ -45,19 +38,23 @@ export class ReactionInteraction {
             return
         }
 
-        const reactionId = this.reactionMetaCache[emoji]
+        const permissionHelper = new PermissionHelper()
+        const reactionMetaCache = findValue('config.reaction_meta')
+        const reactionCache = findValue('config.input_meta.reactions')
+
+        const reactionId = reactionMetaCache[emoji]
 
         if (reactionId === undefined) {
             return
         }
 
-        const reactionData = this.reactionCache[reactionId]
+        const reactionData = reactionCache[reactionId]
 
         const user = interaction.users.cache.first()
 
         logNotice(`${user.tag} reacted: ${reactionId}`)
 
-        if (!this.permissionHelper.hasPermission(user, interaction.message.guild, reactionId)) {
+        if (!permissionHelper.hasPermission(user, interaction.message.guild, reactionId)) {
             logWarn(`${user.tag} doesnt have the permission for: ${reactionId}`)
             return;
         }

@@ -8,11 +8,6 @@ import {HistoryHelper} from "../../../helper/HistoryHelper";
 import {TempHelper} from "../../../helper/TempHelper";
 
 export class SubscriptionNotification {
-    protected statusHelper = new StatusHelper()
-    protected metadataHelper = new MetadataHelper()
-    protected functionCache = getEntry('function')
-    protected usageHelper = new UsageHelper()
-    protected historyHelper = new HistoryHelper()
 
     public parse(message) {
         if (typeof (message.method) === 'undefined') {
@@ -38,22 +33,26 @@ export class SubscriptionNotification {
         tempHelper.updateHeaterTargets()
     }
 
-    protected async parsePrintStats(printStatsData) {
+    private async parsePrintStats(printStatsData) {
         if (typeof printStatsData.state === 'undefined') {
             return
         }
 
+        const statusHelper = new StatusHelper()
+        const metadataHelper = new MetadataHelper()
+        const historyHelper = new HistoryHelper()
+
         let status = printStatsData.state
 
         if (status === 'printing') {
-            await this.metadataHelper.updateMetaData(findValue('state.print_stats.filename'))
-            await this.statusHelper.update('start')
+            await metadataHelper.updateMetaData(findValue('state.print_stats.filename'))
+            await statusHelper.update('start')
         }
 
-        await this.statusHelper.update(status)
+        await statusHelper.update(status)
 
         if (status === 'complete') {
-            await this.historyHelper.parseData()
+            await historyHelper.parseData()
         }
     }
 }

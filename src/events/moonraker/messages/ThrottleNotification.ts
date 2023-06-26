@@ -9,12 +9,6 @@ import {EmbedHelper} from "../../../helper/EmbedHelper";
 import {LocaleHelper} from "../../../helper/LocaleHelper";
 
 export class ThrottleNotification {
-    protected localeHelper = new LocaleHelper()
-    protected locale = this.localeHelper.getLocale()
-    protected configHelper = new ConfigHelper()
-    protected discordClient = getDiscordClient()
-    protected notificationHelper = new NotificationHelper()
-    protected embedHelper = new EmbedHelper()
     protected validFlags = [
         'Under-Voltage Detected',
         'Temperature Limit Active',
@@ -34,7 +28,7 @@ export class ThrottleNotification {
             return
         }
 
-        if (!this.configHelper.notifyOnMoonrakerThrottle()) {
+        if (!new ConfigHelper().notifyOnMoonrakerThrottle()) {
             return
         }
 
@@ -52,7 +46,7 @@ export class ThrottleNotification {
         }
     }
 
-    protected async broadcastThrottle(flag: string, currentThrottleState) {
+    private async broadcastThrottle(flag: string, currentThrottleState) {
         if (!this.validFlags.includes(flag)) {
             return
         }
@@ -68,12 +62,19 @@ export class ThrottleNotification {
 
         setData('throttle', currentThrottleState)
 
-        if (this.notificationHelper.isEmbedBlocked(`throttle_${localeKey}`)) {
+        const localeHelper = new LocaleHelper()
+        const locale = localeHelper.getLocale()
+        const configHelper = new ConfigHelper()
+        const discordClient = getDiscordClient()
+        const notificationHelper = new NotificationHelper()
+        const embedHelper = new EmbedHelper()
+
+        if (notificationHelper.isEmbedBlocked(`throttle_${localeKey}`)) {
             return
         }
 
-        const embed = await this.embedHelper.generateEmbed(`throttle_${localeKey}`)
+        const embed = await embedHelper.generateEmbed(`throttle_${localeKey}`)
 
-        this.notificationHelper.broadcastMessage(embed.embed)
+        notificationHelper.broadcastMessage(embed.embed)
     }
 }

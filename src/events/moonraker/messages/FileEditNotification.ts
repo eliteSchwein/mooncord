@@ -5,8 +5,6 @@ import {getMoonrakerClient} from "../../../Application";
 import {logNotice} from "../../../helper/LoggerHelper";
 
 export class FileEditNotification {
-    protected moonrakerClient = getMoonrakerClient()
-    protected fileListHelper = new FileListHelper(this.moonrakerClient)
 
     public parse(message) {
         if (typeof (message.method) === 'undefined') {
@@ -21,6 +19,7 @@ export class FileEditNotification {
         }
 
         const fileData = message.params[0]
+        const fileListHelper = new FileListHelper()
 
         logNotice(`File ${fileData.item.path} changed: ${fileData.action}`)
 
@@ -28,8 +27,8 @@ export class FileEditNotification {
             logNotice(`Source File: ${fileData.source_item.path}`)
         }
 
-        this.fileListHelper.retrieveFiles('config', 'config_files')
-        this.fileListHelper.retrieveFiles('gcodes', 'gcode_files')
-        this.fileListHelper.retrieveFiles('timelapse', 'timelapse_files', /(.*\.mp4)/g)
+        fileListHelper.retrieveFiles('config', 'config_files')
+        fileListHelper.retrieveFiles('gcodes', 'gcode_files')
+        fileListHelper.retrieveFiles('timelapse', 'timelapse_files', /(.*\.mp4)/g)
     }
 }

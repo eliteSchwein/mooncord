@@ -12,17 +12,6 @@ import {TempHelper} from "../../../../helper/TempHelper";
 import {ExcludeGraph} from "../../../../helper/graphs/ExcludeGraph";
 
 export class ExcludeObjectsSelection {
-    protected databaseUtil = getDatabase()
-    protected embedHelper = new EmbedHelper()
-    protected configHelper = new ConfigHelper()
-    protected moonrakerClient = getMoonrakerClient()
-    protected localeHelper = new LocaleHelper()
-    protected locale = this.localeHelper.getLocale()
-    protected syntaxLocale = this.localeHelper.getSyntaxLocale()
-    protected metadataHelper = new MetadataHelper()
-    protected functionCache = getEntry('function')
-    protected tempHelper = new TempHelper()
-    protected excludeGraph = new ExcludeGraph()
 
     public constructor(interaction: SelectMenuInteraction, selectionId: string) {
         if (selectionId !== 'exclude_objects') {
@@ -32,13 +21,15 @@ export class ExcludeObjectsSelection {
         void this.execute(interaction)
     }
 
-    protected async execute(interaction: SelectMenuInteraction) {
+    private async execute(interaction: SelectMenuInteraction) {
         await interaction.deferReply()
 
         const object = interaction.values[0]
 
-        const embedData = await this.embedHelper.generateEmbed('exclude_detail', {object})
-        const excludeGraph = await this.excludeGraph.renderGraph(object)
+        const embedHelper = new EmbedHelper()
+
+        const embedData = await embedHelper.generateEmbed('exclude_detail', {object})
+        const excludeGraph = await new ExcludeGraph().renderGraph(object)
         const embed = embedData.embed.embeds[0] as MessageEmbed
         const components = embedData.embed['components']
         const selectMenu = components[0].components[0]

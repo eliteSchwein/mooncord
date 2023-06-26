@@ -10,14 +10,6 @@ import {MetadataHelper} from "../../../../helper/MetadataHelper";
 import {findValueByPartial, formatTime} from "../../../../helper/DataHelper";
 
 export class ViewPrintJobSelection {
-    protected databaseUtil = getDatabase()
-    protected embedHelper = new EmbedHelper()
-    protected configHelper = new ConfigHelper()
-    protected moonrakerClient = getMoonrakerClient()
-    protected localeHelper = new LocaleHelper()
-    protected locale = this.localeHelper.getLocale()
-    protected metadataHelper = new MetadataHelper()
-
     public constructor(interaction: SelectMenuInteraction, selectionId: string) {
         if (selectionId !== 'printlist_view_printjob') {
             return
@@ -26,24 +18,29 @@ export class ViewPrintJobSelection {
         void this.execute(interaction)
     }
 
-    protected async execute(interaction: SelectMenuInteraction) {
+    private async execute(interaction: SelectMenuInteraction) {
         await interaction.deferReply()
+
+        const embedHelper = new EmbedHelper()
+        const localeHelper = new LocaleHelper()
+        const locale = localeHelper.getLocale()
+        const metadataHelper = new MetadataHelper()
 
         const gcodeFile = findValueByPartial(getEntry('gcode_files'), interaction.values[0], 'path')
 
-        const metadata = await this.metadataHelper.getMetaData(gcodeFile)
+        const metadata = await metadataHelper.getMetaData(gcodeFile)
 
         if (typeof metadata === 'undefined') {
-            await interaction.editReply(this.locale.messages.errors.file_not_found)
+            await interaction.editReply(locale.messages.errors.file_not_found)
             return
         }
 
-        const thumbnail = await this.metadataHelper.getThumbnail(gcodeFile)
+        const thumbnail = await metadataHelper.getThumbnail(gcodeFile)
 
         metadata.estimated_time = formatTime(metadata.estimated_time)
         metadata.filename = gcodeFile
 
-        const embedData = await this.embedHelper.generateEmbed('fileinfo', metadata)
+        const embedData = await embedHelper.generateEmbed('fileinfo', metadata)
         const embed = embedData.embed.embeds[0] as MessageEmbed
 
         embed.setThumbnail(`attachment://${thumbnail.name}`)

@@ -8,10 +8,6 @@ import {InviteMessage} from "../gcode-messages/InviteMessage";
 import {BroadcastMessage} from "../gcode-messages/BroadcastMessage";
 
 export class GcodeResponseNotification {
-    protected moonrakerClient = getMoonrakerClient()
-    protected fileListHelper = new FileListHelper(this.moonrakerClient)
-    protected stateCache = getEntry('state')
-    protected statusHelper = new StatusHelper()
 
     public parse(message) {
         if (typeof (message.method) === 'undefined') {
@@ -27,8 +23,10 @@ export class GcodeResponseNotification {
             return
         }
 
+        const statusHelper = new StatusHelper()
+
         if (param === '// action:cancel') {
-            this.statusHelper.update('stop')
+            statusHelper.update('stop')
         }
 
         void new InviteMessage().execute(param)

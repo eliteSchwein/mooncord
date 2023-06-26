@@ -8,11 +8,6 @@ import {getDatabase} from "../../../../Application";
 import {LocaleHelper} from "../../../../helper/LocaleHelper";
 
 export class DownloadConfig {
-    protected databaseUtil = getDatabase()
-    protected localeHelper = new LocaleHelper()
-    protected syntaxLocale = this.localeHelper.getSyntaxLocale()
-    protected locale = this.localeHelper.getLocale()
-    protected config = new ConfigHelper()
 
     public constructor(interaction: SelectMenuInteraction, selectionId: string) {
         if (selectionId !== 'config_file_download') {
@@ -22,7 +17,7 @@ export class DownloadConfig {
         void this.execute(interaction)
     }
 
-    protected async execute(interaction: SelectMenuInteraction) {
+    private async execute(interaction: SelectMenuInteraction) {
         await interaction.deferReply({ephemeral: true})
 
         const file = interaction.values[0]
@@ -31,14 +26,17 @@ export class DownloadConfig {
     }
 
     private async retrieveConfig(config: string) {
+        const localeHelper = new LocaleHelper()
+        const locale = localeHelper.getLocale()
+        const configHelper = new ConfigHelper()
 
         logRegular(`downloading config for ${config}...`)
 
         try {
-            const result = await axios.get(`${this.config.getMoonrakerUrl()}/server/files/config/${config}`, {
+            const result = await axios.get(`${configHelper.getMoonrakerUrl()}/server/files/config/${config}`, {
                 responseType: 'arraybuffer',
                 headers: {
-                    'X-Api-Key': this.config.getMoonrakerApiKey()
+                    'X-Api-Key': configHelper.getMoonrakerApiKey()
                 }
             })
 
@@ -46,7 +44,7 @@ export class DownloadConfig {
 
             if (bufferSize > Number.parseInt('8000000')) {
                 logError(`Configuration ${config} to big, Configfile: ${bufferSize}byte Limit: 8000000byte`)
-                return this.locale.messages.errors.config_too_large
+                return locale.messages.errors.config_too_large
                     .replace(/(\${config})/g, `\`${config}\``)
             }
 
@@ -57,16 +55,16 @@ export class DownloadConfig {
         } catch (error) {
             if (typeof error.code !== 'undefined') {
                 logError(`${config} Config Download failed: ${error.config.url}: ${error.code}`)
-                return this.locale.messages.errors.config_failed
+                return locale.messages.errors.config_failed
                     .replace(/(\${config})/g, config)
                     .replace(/(\${reason})/g, `${error.code}`)
             }
             logError(`${config} Config Download failed: ${error.config.url}: ${error.response.status} ${error.response.statusText}`)
             if (error.response.status === 404) {
-                return this.locale.messages.errors.config_not_found
+                return locale.messages.errors.config_not_found
                     .replace(/(\${config})/g, config)
             }
-            return this.locale.messages.errors.config_failed
+            return locale.messages.errors.config_failed
                 .replace(/(\${config})/g, config)
                 .replace(/(\${reason})/g, `${error.response.status} ${error.response.statusText}`)
         }

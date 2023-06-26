@@ -4,8 +4,6 @@ import {logNotice} from "../../../helper/LoggerHelper";
 import {PowerDeviceHelper} from "../../../helper/PowerDeviceHelper";
 
 export class PowerDeviceNotification {
-    protected powerDeviceHelper = new PowerDeviceHelper()
-
     public parse(message) {
         if (typeof (message.method) === 'undefined') {
             return
@@ -22,6 +20,6 @@ export class PowerDeviceNotification {
 
         logNotice(`Power Device ${powerDeviceData.device} switched ${powerDeviceData.status}`)
 
-        this.powerDeviceHelper.updatePowerDevice(powerDeviceData)
+        new PowerDeviceHelper().updatePowerDevice(powerDeviceData)
     }
 }

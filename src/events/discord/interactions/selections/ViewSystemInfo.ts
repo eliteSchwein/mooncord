@@ -9,14 +9,6 @@ import {MetadataHelper} from "../../../../helper/MetadataHelper";
 import {MCUHelper} from "../../../../helper/MCUHelper";
 
 export class ViewSystemInfo {
-    protected databaseUtil = getDatabase()
-    protected embedHelper = new EmbedHelper()
-    protected configHelper = new ConfigHelper()
-    protected moonrakerClient = getMoonrakerClient()
-    protected localeHelper = new LocaleHelper()
-    protected locale = this.localeHelper.getLocale()
-    protected metadataHelper = new MetadataHelper()
-    protected mcuHelper = new MCUHelper()
 
     public constructor(interaction: SelectMenuInteraction, selectionId: string) {
         if (selectionId !== 'systeminfo_select') {
@@ -26,19 +18,22 @@ export class ViewSystemInfo {
         void this.execute(interaction)
     }
 
-    protected async execute(interaction: SelectMenuInteraction) {
+    private async execute(interaction: SelectMenuInteraction) {
         await interaction.deferReply()
         const currentMessage = interaction.message as Message
 
+        const embedHelper = new EmbedHelper()
+        const mcuHelper = new MCUHelper()
+
         const component = interaction.values[0]
 
-        let embedData = await this.embedHelper.generateEmbed('systeminfo_cpu')
+        let embedData: any
 
         if (component.startsWith('mcu')) {
-            const mcuData = this.mcuHelper.getMCULoad(component)
-            embedData = await this.embedHelper.generateEmbed(`systeminfo_mcu`, mcuData)
+            const mcuData = mcuHelper.getMCULoad(component)
+            embedData = await embedHelper.generateEmbed(`systeminfo_mcu`, mcuData)
         } else {
-            embedData = await this.embedHelper.generateEmbed(`systeminfo_${component}`)
+            embedData = await embedHelper.generateEmbed(`systeminfo_${component}`)
         }
 
         await currentMessage.edit({components: null})

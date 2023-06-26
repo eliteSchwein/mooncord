@@ -4,8 +4,6 @@ import {getEntry, setData} from "../../../utils/CacheUtil";
 import {sleep} from "../../../helper/DataHelper";
 
 export class TimelapseMacroNotification {
-    protected functionCache = getEntry('function')
-
     public async parse(message) {
         if (typeof (message.params) === 'undefined') {
             return
@@ -21,14 +19,16 @@ export class TimelapseMacroNotification {
             return
         }
 
+        const cache = getEntry('function')
+
         const macroPaused = timelapseMacro.is_paused
 
         if (!macroPaused) {
             await sleep(200)
         }
 
-        this.functionCache.ignore_pause = timelapseMacro.is_paused
+        cache.ignore_pause = timelapseMacro.is_paused
 
-        setData('function', this.functionCache)
+        setData('function', cache)
     }
 }

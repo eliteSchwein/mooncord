@@ -95,7 +95,7 @@ export class MetadataHelper {
         return new MessageAttachment(thumbnailBuffer, 'thumbnail.png')
     }
 
-    protected async getBase64(url: string) {
+    private async getBase64(url: string) {
         const response = await axios.get(url,
             {
                 responseType: 'arraybuffer',

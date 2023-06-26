@@ -16,18 +16,12 @@ import {ExcludeObjectsSelection} from "./selections/ExcludeObjects";
 import {DownloadTimelapse} from "./selections/DownloadTimelapse";
 
 export class SelectInteraction {
-    protected permissionHelper = new PermissionHelper()
-    protected localeHelper = new LocaleHelper()
-    protected locale = this.localeHelper.getLocale()
-    protected selectionsCache = getEntry('selections')
-    protected functionCache = getEntry('function')
-    protected config = new ConfigHelper()
 
     public constructor(interaction: Interaction) {
         void this.execute(interaction)
     }
 
-    protected async execute(interaction: Interaction) {
+    private async execute(interaction: Interaction) {
         if (!interaction.isSelectMenu()) {
             return
         }
@@ -42,15 +36,22 @@ export class SelectInteraction {
             return
         }
 
-        const selectData = this.selectionsCache[selectId]
+        const permissionHelper = new PermissionHelper()
+        const localeHelper = new LocaleHelper()
+        const locale = localeHelper.getLocale()
+        const selectionsCache = getEntry('selections')
+        const functionCache = getEntry('function')
+        const config = new ConfigHelper()
+
+        const selectData = selectionsCache[selectId]
 
         logNotice(`${interaction.user.tag} pressed selection: ${selectId}`)
         logNotice(`value/s: ${logValues}`)
 
-        if (!this.permissionHelper.hasPermission(interaction.user, interaction.guild, selectId)) {
+        if (!permissionHelper.hasPermission(interaction.user, interaction.guild, selectId)) {
             await interaction.reply({
-                content: this.localeHelper.getNoPermission(interaction.user.tag),
-                ephemeral: this.config.showNoPermissionPrivate()
+                content: localeHelper.getNoPermission(interaction.user.tag),
+                ephemeral: config.showNoPermissionPrivate()
             })
             logWarn(`${interaction.user.tag} doesnt have the permission for: ${interaction.customId}`)
             return;
@@ -69,7 +70,7 @@ export class SelectInteraction {
             return
         }
 
-        await interaction.reply(this.localeHelper.getCommandNotReadyError(interaction.user.tag))
+        await interaction.reply(localeHelper.getCommandNotReadyError(interaction.user.tag))
     }
 
 }

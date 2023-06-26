@@ -96,7 +96,7 @@ export class DatabaseUtil {
         return database
     }
 
-    protected async writeDump() {
+    private async writeDump() {
         await writeFile(path.resolve(__dirname, '../database_dump.json'), JSON.stringify(database, null, 4), {
             encoding: 'utf8',
             flag: 'w+'
