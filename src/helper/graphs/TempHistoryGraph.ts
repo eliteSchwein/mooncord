@@ -11,33 +11,31 @@ import sharp from "sharp";
 import {MessageAttachment} from "discord.js";
 
 export default class TempHistoryGraph {
-    protected configHelper = new ConfigHelper()
-    protected localeHelper = new LocaleHelper()
-    protected locale = this.localeHelper.getLocale()
-    protected svgHelper = new SvgHelper()
-    protected tempValueLimit = 0
-    protected tempCache = getEntry('temps')
-    protected functionCache = getEntry('function')
-    protected stateCache = getEntry('state')
-
     public constructor() {
     }
 
     public getColors() {
-        return this.configHelper.getIcons(/temp\d+$/g)
+        return new ConfigHelper().getIcons(/temp\d+$/g)
     }
 
     public async renderGraph(sensor = undefined) {
         const moonrakerClient = App.getMoonrakerClient()
         const serverConfigCache = getEntry('server_config')
-        const tempLabel = this.locale.graph.temp_history.temperature
-        const powerLabel = this.locale.graph.temp_history.power
-        const powerColor = this.configHelper.getEntriesByFilter(/^color power_color/)
+        const configHelper = new ConfigHelper()
+        const localeHelper = new LocaleHelper()
+        const locale = localeHelper.getLocale()
+        const svgHelper = new SvgHelper()
+        const tempCache = getEntry('temps')
+        const tempLabel = locale.graph.temp_history.temperature
+        const powerLabel = locale.graph.temp_history.power
+        const powerColor = configHelper.getEntriesByFilter(/^color power_color/)
+
+        let tempValueLimit = 0
 
 
         logRegular('render temp chart...')
 
-        this.tempValueLimit = metaData.value_limit
+        tempValueLimit = metaData.value_limit
 
         const tempHistoryRequest = await moonrakerClient.send({'method': 'server.temperature_store'})
 
@@ -60,7 +58,7 @@ export default class TempHistoryGraph {
             }
 
             const sensorData = tempHistoryRequest.result[sensorIndex]
-            const color = this.tempCache.colors[sensorIndex].color
+            const color = tempCache.colors[sensorIndex].color
             const sensorTempMax = Math.max.apply(null, sensorData.temperatures)
             const sensorTargetMax = Math.max.apply(null, sensorData.targets)
 
@@ -88,12 +86,12 @@ export default class TempHistoryGraph {
             width += 120
         }
 
-        let tempLabels = this.svgHelper.generateIntervalsOf(10, 0, max + 5)
+        let tempLabels = svgHelper.generateIntervalsOf(10, 0, max + 5)
         if (tempLabels.length > 12) {
-            tempLabels = this.svgHelper.generateIntervalsOf(20, 0, max + 15)
+            tempLabels = svgHelper.generateIntervalsOf(20, 0, max + 15)
         }
         if (tempLabels.length > 24) {
-            tempLabels = this.svgHelper.generateIntervalsOf(30, 0, max + 25)
+            tempLabels = svgHelper.generateIntervalsOf(30, 0, max + 25)
         }
 
         max = tempLabels[tempLabels.length - 1]
@@ -104,14 +102,14 @@ export default class TempHistoryGraph {
                     label: lineData.label,
                     color: lineData.color,
                     type: 'temp',
-                    coords: this.svgHelper.convertToCoords(lineData.temperatures, max, offsetHeight, resHeight)
+                    coords: svgHelper.convertToCoords(lineData.temperatures, max, offsetHeight, resHeight)
                 })
 
                 lines.push({
                     label: lineData.label,
                     color: lineData.color,
                     type: 'target',
-                    coords: this.svgHelper.convertToCoords(lineData.targets, max, offsetHeight, resHeight)
+                    coords: svgHelper.convertToCoords(lineData.targets, max, offsetHeight, resHeight)
                 })
 
                 if (sensor !== undefined) {
@@ -119,7 +117,7 @@ export default class TempHistoryGraph {
                         label: lineData.label,
                         color: powerColor,
                         type: 'power',
-                        coords: this.svgHelper.convertToCoords(lineData.powers, 1, offsetHeight, resHeight)
+                        coords: svgHelper.convertToCoords(lineData.powers, 1, offsetHeight, resHeight)
                     })
                 }
             }

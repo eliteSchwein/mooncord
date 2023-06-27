@@ -13,8 +13,6 @@ import * as StackTrace from 'stacktrace-js'
 import {logEmpty, logError, logRegular} from "./LoggerHelper"
 
 export class MetadataHelper {
-    protected configHelper = new ConfigHelper()
-
     public async getMetaData(filename: string) {
         const metaData = await getMoonrakerClient().send({"method": "server.files.metadata", "params": {filename}})
 
@@ -43,6 +41,7 @@ export class MetadataHelper {
 
     public async getThumbnail(filename: string) {
         const metaDataCache = getEntry('meta_data')
+        const configHelper = new ConfigHelper()
 
         if (metaDataCache !== undefined &&
             metaDataCache.filename === filename &&
@@ -56,9 +55,9 @@ export class MetadataHelper {
         const metaData = await this.getMetaData(filename)
         const pathFragments = filename.split('/').slice(0, -1)
         const rootPath = (pathFragments.length > 0) ? `${pathFragments.join('/')}/` : ''
-        const placeholderPath = path.resolve(__dirname, `../assets/icon-sets/${this.configHelper.getIconSet()}/thumbnail_not_found.png`)
+        const placeholderPath = path.resolve(__dirname, `../assets/icon-sets/${configHelper.getIconSet()}/thumbnail_not_found.png`)
         const placeholder = new MessageAttachment(placeholderPath, 'thumbnail_not_found.png')
-        const url = this.configHelper.getMoonrakerUrl()
+        const url = configHelper.getMoonrakerUrl()
 
         if (typeof metaData === 'undefined') {
             return placeholder
@@ -84,7 +83,7 @@ export class MetadataHelper {
             logError('Thumbnail Error:')
             logError(`Url: ${thumbnailURL}`)
             logError(`Error: ${reason}`)
-            if (this.configHelper.traceOnWebErrors()) {
+            if (configHelper.traceOnWebErrors()) {
                 logError(trace)
             }
             return placeholder
@@ -100,7 +99,7 @@ export class MetadataHelper {
             {
                 responseType: 'arraybuffer',
                 headers: {
-                    'X-Api-Key': this.configHelper.getMoonrakerApiKey()
+                    'X-Api-Key': new ConfigHelper().getMoonrakerApiKey()
                 }
             })
         return Buffer.from(response.data, 'binary').toString('base64')

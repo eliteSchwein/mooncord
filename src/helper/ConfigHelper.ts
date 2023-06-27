@@ -9,7 +9,6 @@ import {logError, logRegular, logWarn} from "./LoggerHelper";
 const args = process.argv.slice(2)
 
 export class ConfigHelper {
-    protected configPath = args[0]
 
     public loadCache() {
         logRegular("load Config Cache...")
@@ -161,11 +160,11 @@ export class ConfigHelper {
     }
 
     public getUserConfig() {
-        return this.parseConfig(this.configPath, 'mooncord.cfg')
+        return this.parseConfig(args[0], 'mooncord.cfg')
     }
 
     public getUserConfigPath() {
-        return this.configPath
+        return args[0]
     }
 
     public writeUserConfig(modifiedConfig) {

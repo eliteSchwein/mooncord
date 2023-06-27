@@ -6,11 +6,11 @@ import {ConfigHelper} from './ConfigHelper'
 import {logEmpty, logError, logRegular} from "./LoggerHelper"
 
 export class APIKeyHelper {
-    protected config = new ConfigHelper()
 
     public async getOneShotToken() {
-        const apiKey = this.config.getMoonrakerApiKey()
-        const url = this.config.getMoonrakerUrl()
+        const config = new ConfigHelper()
+        const apiKey = config.getMoonrakerApiKey()
+        const url = config.getMoonrakerUrl()
 
         if (apiKey === '' || apiKey === undefined) {
             return ''
@@ -34,7 +34,7 @@ export class APIKeyHelper {
             logError('Token Error:')
             logError(`Url: ${url}/access/oneshot_token`)
             logError(`Error: ${reason}`)
-            if (this.config.traceOnWebErrors()) {
+            if (config.traceOnWebErrors()) {
                 logError(trace)
             }
             return ''

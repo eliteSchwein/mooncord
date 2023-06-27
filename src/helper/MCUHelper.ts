@@ -3,12 +3,12 @@
 import {findValue, getEntry} from "../utils/CacheUtil";
 
 export class MCUHelper {
-    protected stateCache = getEntry('state')
 
     public getMCUOptions() {
+        const stateCache = getEntry('state')
         const options = []
 
-        for (const key in this.stateCache) {
+        for (const key in stateCache) {
             if (key.startsWith('mcu')) {
                 options.push({
                     "label": key,

@@ -7,11 +7,9 @@ import {MetadataHelper} from "./MetadataHelper";
 import {ConfigHelper} from "./ConfigHelper";
 import HistoryGraph from "./graphs/HistoryGraph";
 import {getMoonrakerClient} from "../Application";
+import {HistoryHelper} from "./HistoryHelper";
 
 export class FileListHelper {
-    protected historyGraph = new HistoryGraph()
-    protected configHelper = new ConfigHelper()
-
     public retrieveFiles(root: string, cacheKey: string, filter?: RegExp) {
         logRegular(`Retrieve Files from ${root}...`)
         const moonrakerClient = getMoonrakerClient()
@@ -58,7 +56,7 @@ export class FileListHelper {
                 }
 
                 const jobs = historyCache.jobs.jobs
-                const iconConfig = this.historyGraph.getIcons()
+                const iconConfig = new HistoryGraph().getIcons()
 
                 for(const resultPartial of result) {
                     let partialJobs = jobs.filter((element) => {return resultPartial.path === element.filename})

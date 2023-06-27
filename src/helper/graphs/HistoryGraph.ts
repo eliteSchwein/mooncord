@@ -10,16 +10,12 @@ import {MessageAttachment} from "discord.js";
 import SvgHelper from "../SvgHelper";
 
 export default class HistoryGraph {
-    protected configHelper = new ConfigHelper()
-    protected localeHelper = new LocaleHelper()
-    protected locale = this.localeHelper.getLocale()
-    protected svgHelper = new SvgHelper()
-
     public getIcons() {
+        const configHelper = new ConfigHelper()
         const icons:any = {}
 
         for(const iconKey of metaData.icons) {
-            const iconData = this.configHelper.getIcons(new RegExp(`${iconKey}`, 'g'))
+            const iconData = configHelper.getIcons(new RegExp(`${iconKey}`, 'g'))
 
             if(iconData.length === 0) {
                 continue
@@ -34,6 +30,7 @@ export default class HistoryGraph {
     public async renderGraph() {
         const printStats = new HistoryHelper().getPrintStats()
         const icons = this.getIcons()
+        const svgHelper = new SvgHelper()
         const graphData = []
 
         logRegular('render history graph...')
@@ -49,7 +46,7 @@ export default class HistoryGraph {
         const resWidth = 300
         const resHeight = 300
 
-        const donutData = this.svgHelper.calculateDonut(150, 150, 125, 45, graphData)
+        const donutData = svgHelper.calculateDonut(150, 150, 125, 45, graphData)
 
         let svg = `<svg
             version="1.1"

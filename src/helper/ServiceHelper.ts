@@ -6,14 +6,14 @@ import {getEntry} from "../utils/CacheUtil";
 import {logWarn} from "./LoggerHelper";
 
 export class ServiceHelper {
-    protected moonrakerClient = getMoonrakerClient()
-    protected functionCache = getEntry('function')
-    protected currentStatus = this.functionCache.current_status
-
     public async restartServiceByFile(fileName: string) {
         if (/^(.*\.(?!(cfg|conf|json)$))?[^.]*$/g.test(fileName)) {
             return false
         }
+
+        const moonrakerClient = getMoonrakerClient()
+        const functionCache = getEntry('function')
+        const currentStatus = functionCache.current_status
 
         let service = servicesMeta[fileName]
 
@@ -21,12 +21,12 @@ export class ServiceHelper {
             service = 'klipper'
         }
 
-        if (this.currentStatus !== 'ready') {
-            logWarn(`Service Restart for ${service} failed because the Print Status is ${this.currentStatus}`)
+        if (currentStatus !== 'ready') {
+            logWarn(`Service Restart for ${service} failed because the Print Status is ${currentStatus}`)
             return false
         }
 
-        const serviceRestartRequest = await this.moonrakerClient.send({
+        const serviceRestartRequest = await moonrakerClient.send({
             "method": "machine.services.restart",
             "params": {"service": service}
         }, Number.POSITIVE_INFINITY)

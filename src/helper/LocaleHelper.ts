@@ -8,9 +8,6 @@ import {ConfigHelper} from "./ConfigHelper";
 import {logRegular} from "./LoggerHelper";
 
 export class LocaleHelper {
-    protected config = new ConfigHelper()
-    protected fallbackLocalePath = path.resolve(__dirname, '../locales/en.json')
-
     public constructor() {
     }
 
@@ -69,7 +66,7 @@ export class LocaleHelper {
     }
 
     protected loadLocales() {
-        const localeConfig = this.config.getLocale()
+        const localeConfig = new ConfigHelper().getLocale()
         const localePath = path.resolve(__dirname, `../locales/${localeConfig.locale}.json`)
         const syntaxLocalePath = path.resolve(__dirname, `../locales/${localeConfig.syntax}.json`)
 
@@ -81,7 +78,7 @@ export class LocaleHelper {
     }
 
     protected loadFallback() {
-        const fallbackLocaleRaw = readFileSync(this.fallbackLocalePath, {encoding: 'utf8'})
+        const fallbackLocaleRaw = readFileSync(path.resolve(__dirname, '../locales/en.json'), {encoding: 'utf8'})
 
         setData('locale', JSON.parse(fallbackLocaleRaw))
         setData('syntax_locale', JSON.parse(fallbackLocaleRaw))

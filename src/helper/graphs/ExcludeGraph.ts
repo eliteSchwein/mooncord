@@ -9,20 +9,13 @@ import sharp from "sharp";
 import {MessageAttachment} from "discord.js";
 
 export class ExcludeGraph {
-    protected configHelper = new ConfigHelper()
-    protected localeHelper = new LocaleHelper()
-    protected historyHelper = new HistoryHelper()
-    protected locale = this.localeHelper.getLocale()
-    protected tempValueLimit = 0
-    protected tempCache = getEntry('temps')
-    protected functionCache = getEntry('function')
-    protected stateCache = getEntry('state')
-
     public async renderGraph(currentObject: string) {
-        const excludeObjects = this.stateCache.exclude_object.objects
-        const excludedObjects = this.stateCache.exclude_object.excluded_objects
-        const axisMaximum = this.stateCache.toolhead.axis_maximum
-        const colors = this.configHelper.getColors(/exclude.*/g, true)
+        const configHelper = new ConfigHelper()
+        const stateCache = getEntry('state')
+        const excludeObjects = stateCache.exclude_object.objects
+        const excludedObjects = stateCache.exclude_object.excluded_objects
+        const axisMaximum = stateCache.toolhead.axis_maximum
+        const colors = configHelper.getColors(/exclude.*/g, true)
 
         logRegular('render exclude object graph...')
 
