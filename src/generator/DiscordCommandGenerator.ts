@@ -21,21 +21,18 @@ import {Routes} from "discord-api-types/v10"
 import {RouteLike} from "@discordjs/rest";
 
 export class DiscordCommandGenerator {
-    protected localeHelper = new LocaleHelper()
-    protected configHelper = new ConfigHelper()
-    protected locale = this.localeHelper.getLocale()
-    protected commandStructure = {}
-    protected customCommandStructure = {}
 
     public constructor() {
         const commandStructureFile = readFileSync(path.resolve(__dirname, '../src/meta/command_structure.json'))
-        this.commandStructure = JSON.parse(commandStructureFile.toString('utf8'))
-        this.customCommandStructure = this.getCustomCommandStructure()
-        mergeDeep(this.commandStructure, this.customCommandStructure)
+        const commandStructure = JSON.parse(commandStructureFile.toString('utf8'))
+        const customCommandStructure = this.getCustomCommandStructure()
+        mergeDeep(commandStructure, customCommandStructure)
+
+        setData('command_structure', commandStructure)
     }
 
     public getCustomCommandData(key: string) {
-        const customCommandsConfig = this.configHelper.getEntriesByFilter(/^command /g, true)
+        const customCommandsConfig = new ConfigHelper().getEntriesByFilter(/^command /g, true)
         return customCommandsConfig[key]
     }
 
@@ -44,18 +41,18 @@ export class DiscordCommandGenerator {
         const commandList = []
         const commandCache = {}
         const commandStructureFile = readFileSync(path.resolve(__dirname, '../src/meta/command_structure.json'))
-        this.commandStructure = JSON.parse(commandStructureFile.toString('utf8'))
-        this.customCommandStructure = this.getCustomCommandStructure()
-        mergeDeep(this.commandStructure, this.customCommandStructure)
+        const commandStructure = JSON.parse(commandStructureFile.toString('utf8'))
+        const customCommandStructure = this.getCustomCommandStructure()
+        mergeDeep(commandStructure, customCommandStructure)
 
         logRegular('get current commands...')
         const currentCommands = await rest.get(Routes.applicationCommands(App.getDiscordClient().getClient().user.id))
         const commandKeys = []
 
-        for (const commandIndex in this.commandStructure) {
+        for (const commandIndex in commandStructure) {
             let command: any
-            if (Object.keys(this.customCommandStructure).includes(commandIndex)) {
-                command = this.customCommandStructure[commandIndex]
+            if (Object.keys(customCommandStructure).includes(commandIndex)) {
+                command = customCommandStructure[commandIndex]
             } else {
                 command = this.buildCommand(commandIndex)
             }
@@ -110,12 +107,21 @@ export class DiscordCommandGenerator {
     }
 
     public isCustomCommand(command: string) {
-        return Object.keys(this.customCommandStructure).includes(command)
+        return Object.keys(this.getCustomCommandStructure()).includes(command)
     }
 
-    protected buildCommand(command: string) {
-        const messageLocale = Object.assign({}, this.localeHelper.getLocale().commands[command])
-        const syntaxLocale = Object.assign({}, this.localeHelper.getSyntaxLocale().commands[command])
+    private getConfigStructure() {
+        const commandStructureFile = readFileSync(path.resolve(__dirname, '../src/meta/command_structure.json'))
+        const commandStructure = JSON.parse(commandStructureFile.toString('utf8'))
+
+        return commandStructure
+    }
+
+    private buildCommand(command: string) {
+        const localeHelper = new LocaleHelper()
+        const messageLocale = Object.assign({}, localeHelper.getLocale().commands[command])
+        const syntaxLocale = Object.assign({}, localeHelper.getSyntaxLocale().commands[command])
+        const commandStructure = getEntry('command_structure')
 
         const builder = {
             name: syntaxLocale.command,
@@ -123,10 +129,10 @@ export class DiscordCommandGenerator {
             options: []
         }
 
-        for (const index in this.commandStructure[command]) {
+        for (const index in commandStructure[command]) {
             this.buildCommandOption(
                 builder,
-                this.commandStructure[command],
+                commandStructure[command],
                 index,
                 syntaxLocale,
                 messageLocale)
@@ -135,7 +141,7 @@ export class DiscordCommandGenerator {
         return builder
     }
 
-    protected buildChoices(choices: any, syntaxMeta: any) {
+    private buildChoices(choices: any, syntaxMeta: any) {
         for (const index in choices) {
             const choice = choices[index]
 
@@ -150,7 +156,7 @@ export class DiscordCommandGenerator {
         return choices
     }
 
-    protected buildCommandOption(builder: any, meta: any, option: any, syntaxMeta: any, messageMeta: any) {
+    private buildCommandOption(builder: any, meta: any, option: any, syntaxMeta: any, messageMeta: any) {
         if (typeof (meta) === 'undefined') {
             return
         }
@@ -186,7 +192,7 @@ export class DiscordCommandGenerator {
 
         if (typeof (optionMeta.choices) !== 'undefined') {
             if (optionMeta.choices === '${systemInfoChoices}') {
-                optionBuilder.choices = this.localeHelper.getSystemComponents()
+                optionBuilder.choices = new LocaleHelper().getSystemComponents()
             } else if (optionMeta.choices === '${serviceChoices}') {
                 optionBuilder.choices = getServiceChoices()
             } else if (optionMeta.choices === '${preheatProfileChoices}') {
@@ -213,21 +219,22 @@ export class DiscordCommandGenerator {
     }
 
     private getCustomCommandStructure() {
-        const customCommandsConfig = this.configHelper.getEntriesByFilter(/^command /g, true)
+        const customCommandsConfig = new ConfigHelper().getEntriesByFilter(/^command /g, true)
         const customCommands = {}
+        const commandStructure = this.getConfigStructure()
 
         for (const name of Object.keys(customCommandsConfig)) {
-
-            if (Object.keys(this.commandStructure).includes(name)) {
+            if (Object.keys(commandStructure).includes(name)) {
                 continue
             }
+
             const customCommandData = customCommandsConfig[name]
             if (customCommandData.macros === undefined && customCommandData.websocket_commands === undefined) {
                 this.showCustomCommandError(`The Custom Command ${name} is invalid, it doesnt have any macros or websocket_commands configured!`)
                 continue
             }
             const customCommandDescription = (customCommandData.description === null)
-                ? this.locale.messages.errors.custom_command_descript
+                ? new LocaleHelper().getLocale().messages.errors.custom_command_descript
                 : customCommandData.description
 
             customCommands[name] = {

@@ -9,11 +9,6 @@ import {LocaleHelper} from "../helper/LocaleHelper";
 import {MCUHelper} from "../helper/MCUHelper";
 
 export class DiscordInputGenerator {
-    protected config = new ConfigHelper()
-    protected localeHelper = new LocaleHelper()
-    protected inputMeta = this.config.getInputMeta()
-    protected mcuHelper = new MCUHelper()
-
     public generateInputCache() {
         this.generateCacheForSection('buttons');
         this.generateCacheForSection('selections');
@@ -80,6 +75,8 @@ export class DiscordInputGenerator {
             return
         }
 
+        const mcuHelper = new MCUHelper()
+
         for (const selectionData of selections) {
             const row = new MessageActionRow()
 
@@ -108,7 +105,7 @@ export class DiscordInputGenerator {
             }
 
             if (selectionData.mcu_options) {
-                selectionData.data = [...selectionData.data, ...this.mcuHelper.getMCUOptions()]
+                selectionData.data = [...selectionData.data, ...mcuHelper.getMCUOptions()]
             }
 
             for (const data of selectionData.data) {
@@ -159,14 +156,18 @@ export class DiscordInputGenerator {
         return componentRows
     }
 
-    protected generateCacheForSection(section: string) {
-        let sectionConfig = this.localeHelper.getLocale()[section]
+    private generateCacheForSection(section: string) {
+        const config = new ConfigHelper()
+        const localeHelper = new LocaleHelper()
+        const inputMeta = config.getInputMeta()
 
-        if (this.config.isButtonSyntaxLocale()) {
-            sectionConfig = this.localeHelper.getSyntaxLocale()[section]
+        let sectionConfig = localeHelper.getLocale()[section]
+
+        if (config.isButtonSyntaxLocale()) {
+            sectionConfig = localeHelper.getSyntaxLocale()[section]
         }
 
-        const meta = this.inputMeta[section]
+        const meta = inputMeta[section]
 
         if(section === 'buttons') {
             for(const key in meta) {

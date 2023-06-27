@@ -7,16 +7,16 @@ import {setData} from "../utils/CacheUtil";
 import {LocaleHelper} from "../helper/LocaleHelper";
 
 export class DiscordStatusGenerator {
-    protected localeHelper = new LocaleHelper()
-    protected configHelper = new ConfigHelper()
-    protected statusMeta = this.configHelper.getStatusMeta()
 
     public generateStatusCache() {
         const tempCache = {}
-        const locale = this.localeHelper.getLocale()
+        const localeHelper = new LocaleHelper()
+        const configHelper = new ConfigHelper()
+        const statusMeta = configHelper.getStatusMeta()
+        const locale = localeHelper.getLocale()
 
-        for (const statusId in this.statusMeta) {
-            const statusData = this.statusMeta[statusId]
+        for (const statusId in statusMeta) {
+            const statusData = statusMeta[statusId]
             const statusLocale = locale.embeds[statusData.embed_id]
             tempCache[statusId] = statusData
 
