@@ -23,6 +23,7 @@ import {StatusHelper} from "../helper/StatusHelper";
 import {TempHelper} from "../helper/TempHelper";
 import {PowerDeviceHelper} from "../helper/PowerDeviceHelper";
 import {HistoryHelper} from "../helper/HistoryHelper";
+import {WebcamHelper} from "../helper/WebcamHelper";
 
 const requests: any = {}
 let messageHandler: MessageHandler
@@ -132,6 +133,7 @@ export class MoonrakerClient {
         })
 
         new TempHelper().generateColors(data.result.status)
+        void new WebcamHelper().generateCache()
     }
 
     public changeLogPath() {

@@ -9,10 +9,19 @@ import {resolve} from "path"
 import {logEmpty, logError, logRegular} from "./LoggerHelper";
 import {MoonrakerClient} from "../clients/MoonrakerClient";
 import StackTrace from "stacktrace-js";
+import {getMoonrakerClient} from "../Application";
 
 export class WebcamHelper {
     protected configHelper = new ConfigHelper()
     protected moonrakerClient: MoonrakerClient
+
+    public async generateCache() {
+        const moonrakerClient = getMoonrakerClient()
+
+        const webcamEntries = await moonrakerClient.send({"method": "server.webcams.list"})
+
+        console.log(webcamEntries)
+    }
 
     public async retrieveWebcam(moonrakerClient: MoonrakerClient, name = 'default') {
         this.moonrakerClient = moonrakerClient
