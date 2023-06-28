@@ -10,23 +10,49 @@ import {logEmpty, logError, logRegular} from "./LoggerHelper";
 import {MoonrakerClient} from "../clients/MoonrakerClient";
 import StackTrace from "stacktrace-js";
 import {getMoonrakerClient} from "../Application";
+import {getEntry, setData} from "../utils/CacheUtil";
 
 export class WebcamHelper {
-    protected configHelper = new ConfigHelper()
-    protected moonrakerClient: MoonrakerClient
-
     public async generateCache() {
         const moonrakerClient = getMoonrakerClient()
 
         const webcamEntries = await moonrakerClient.send({"method": "server.webcams.list"})
+        const webcamData = webcamEntries.result.webcams
 
-        console.log(webcamEntries)
+        const webcamCache = {
+            entries: {},
+            active: webcamData[0].name
+        }
+
+        for(const data of webcamData) {
+            if(!data.enabled) {
+                continue
+            }
+
+            webcamCache.entries[data.name] = data
+
+            let webcamConfig = new ConfigHelper().getEntriesByFilter(/^webcam$/g)[0][data.name]
+
+            if(webcamConfig === undefined) {
+                webcamConfig = {
+                    enable_before_snapshot_commands: false,
+                    delay_before_snapshot_commands: 0,
+                    enable_after_snapshot_commands: false,
+                    delay_after_snapshot_commands: 0
+                }
+            }
+
+            webcamCache.entries[data.name].mooncord_config = webcamConfig
+        }
+
+        setData('webcam', webcamCache)
     }
 
-    public async retrieveWebcam(moonrakerClient: MoonrakerClient, name = 'default') {
-        this.moonrakerClient = moonrakerClient
+    public async retrieveWebcam() {
+        const cache = getEntry('webcam')
+        const webcamData = cache.entries[cache.active]
 
-        const webcamData = this.configHelper.getEntriesByFilter(/^webcam$/g)[0][name]
+        console.log(webcamData)
 
         const beforeStatus = {
             'enable': webcamData.enable_before_snapshot_commands,
@@ -156,6 +182,8 @@ export class WebcamHelper {
             return
         }
 
+        const moonrakerClient = getMoonrakerClient()
+
         await sleep(config.delay)
 
         let index = 0
@@ -166,7 +194,7 @@ export class WebcamHelper {
             if (execute.startsWith("gcode:")) {
                 const gcode = execute.replace("gcode:", "")
                 try {
-                    await this.moonrakerClient
+                    await moonrakerClient
                         .send(
                             {"method": "printer.gcode.script", "params": {"script": gcode}},
                             this.configHelper.getGcodeExecuteTimeout() * 1000
