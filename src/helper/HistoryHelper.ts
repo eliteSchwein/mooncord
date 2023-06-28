@@ -9,19 +9,13 @@ import {MoonrakerClient} from "../clients/MoonrakerClient";
 import HistoryGraph from "./graphs/HistoryGraph";
 
 export class HistoryHelper {
-    protected configHelper = new ConfigHelper()
-    protected localeHelper = new LocaleHelper()
-    protected locale = this.localeHelper.getLocale()
-    protected printJobs = {
-        jobs: [],
-        count: 0
-    }
-    protected printTotals = {}
-    protected cache = getEntry('history')
+    public getPrintJobStats() {
+        const cache = getEntry('history')
 
-    public constructor() {
-        this.printJobs = this.cache.jobs
-        this.printTotals = this.cache.total
+        return {
+            printTotals: cache.total,
+            printJobs: cache.jobs
+        }
     }
 
     public async parseData() {
@@ -34,35 +28,36 @@ export class HistoryHelper {
             return
         }
 
-        this.printJobs = printJobsRequest.result
-        this.printTotals = printTotalRequest.result
+        const cache = getEntry('history')
 
-        this.cache.total = this.printTotals
-        this.cache.jobs = this.printJobs
+        cache.total = printJobsRequest.result
+        cache.jobs = printTotalRequest.result
 
-        setData('history', this.cache)
+        setData('history', cache)
     }
 
     public getPrintJobs() {
-        return this.printJobs
+        return this.getPrintJobStats().printJobs
     }
 
     public getPrintTotals() {
-        return this.printTotals
+        return this.getPrintJobStats().printTotals
     }
 
     public getPrintStats() {
+        const printJobs = this.getPrintJobs()
+
         const printStats = {
-            count: this.printJobs.count,
+            count: printJobs.count,
             stats: {}
         }
 
-        if (this.printJobs.jobs === undefined) {
+        if (printJobs.jobs === undefined) {
             printStats.count = 0
             return printStats
         }
 
-        for (const printJob of this.printJobs.jobs) {
+        for (const printJob of printJobs.jobs) {
             if (printStats.stats[printJob.status] === undefined) {
                 printStats.stats[printJob.status] = 1
                 continue
@@ -76,6 +71,7 @@ export class HistoryHelper {
     public parseFields() {
         const chartConfigSection = new HistoryGraph().getIcons()
         const printStats = this.getPrintStats()
+        const locale = new LocaleHelper().getLocale()
         const fields = []
 
         for (const printStat in printStats.stats) {
@@ -87,8 +83,8 @@ export class HistoryHelper {
                 inline: true
             }
 
-            valueData.push(`\`${this.locale.embeds.fields.count}\`:${printStatCount}`)
-            valueData.push(`\`${this.locale.embeds.fields.color}\`:${chartConfigSection[printStat].icon}`)
+            valueData.push(`\`${locale.embeds.fields.count}\`:${printStatCount}`)
+            valueData.push(`\`${locale.embeds.fields.color}\`:${chartConfigSection[printStat].icon}`)
 
             fieldData.value = valueData.join('\n')
 

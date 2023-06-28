@@ -9,15 +9,14 @@ import {logRegular} from "./LoggerHelper";
 import {TemplateHelper} from "./TemplateHelper";
 
 export class EmbedHelper {
-    protected localeHelper = new LocaleHelper()
-    protected configHelper = new ConfigHelper()
-    protected embedMeta = this.configHelper.getEmbedMeta()
-    protected templateHelper = new TemplateHelper()
 
     public loadCache() {
         logRegular("load Embeds Cache...")
-        const embeds = this.embedMeta
-        const embedsLocale = this.localeHelper.getEmbeds()
+        const localeHelper = new LocaleHelper()
+        const configHelper = new ConfigHelper()
+        const embedMeta = configHelper.getEmbedMeta()
+        const embeds = embedMeta
+        const embedsLocale = localeHelper.getEmbeds()
 
         mergeDeep(embeds, embedsLocale)
 
@@ -59,6 +58,6 @@ export class EmbedHelper {
     }
 
     public async generateEmbed(embedID: string, providedPlaceholders = null, providedFields = null, providedValues = null) {
-        return await this.templateHelper.parseTemplate('embed', embedID, providedPlaceholders, providedFields, providedValues)
+        return await new TemplateHelper().parseTemplate('embed', embedID, providedPlaceholders, providedFields, providedValues)
     }
 }

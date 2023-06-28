@@ -12,23 +12,15 @@ import TempHistoryGraph from "./graphs/TempHistoryGraph";
 
 export class TempHelper {
     protected cache = getEntry('state')
-    protected configHelper = new ConfigHelper()
-    protected localeHelper = new LocaleHelper()
-    protected tempHistoryGraph = new TempHistoryGraph()
-    protected colors = this.tempHistoryGraph.getColors()
-    protected locale = this.localeHelper.getLocale()
-    protected tempCache = getEntry('temps')
-    protected functionCache = getEntry('function')
-    protected notificationHelper = new NotificationHelper()
     protected colorIndex = 0
-    protected tempMeta = temp_meta
 
     public generateColors(cache: any) {
         this.cache = cache
         logRegular("Generate Sensor Colors...")
 
         const colorCache = {}
-        const temperatureSensors = this.tempMeta.temperature_sensors
+        const temperatureSensors = temp_meta.temperature_sensors
+        const colors = new TempHistoryGraph().getColors()
 
         for (const cacheKey in this.cache) {
             const cacheKeySplit = cacheKey.split(' ')
@@ -39,13 +31,13 @@ export class TempHelper {
             }
 
             colorCache[cacheKey] = {
-                icon: this.colors[this.colorIndex].icon,
-                color: this.colors[this.colorIndex].color
+                icon: colors[this.colorIndex].icon,
+                color: colors[this.colorIndex].color
             }
 
             this.colorIndex++
 
-            if (this.colorIndex === this.colors.length) {
+            if (this.colorIndex === colors.length) {
                 this.colorIndex = 0
             }
         }
@@ -60,10 +52,10 @@ export class TempHelper {
             "fields": [],
             "cache_ids": []
         }
-        let supportedSensors = this.tempMeta.supported_sensors
+        let supportedSensors = temp_meta.supported_sensors
 
         if (minimal) {
-            supportedSensors = this.tempMeta.minimal_supported_sensors
+            supportedSensors = temp_meta.minimal_supported_sensors
         }
 
         for (const sensorType of supportedSensors) {
@@ -79,29 +71,30 @@ export class TempHelper {
     }
 
     public isCold(temperature: number) {
-        return temperature < this.tempMeta.cold_meta.hot_temp
+        return temperature < temp_meta.cold_meta.hot_temp
     }
 
     public isSlowFan(speed: number) {
-        return speed < (this.tempMeta.slow_fan_meta.fast_fan / 100)
+        return speed < (temp_meta.slow_fan_meta.fast_fan / 100)
     }
 
     public parseFieldsSet(key: string, hideColor = false) {
-        const allias = this.tempMeta.alliases[key]
+        const allias = temp_meta.alliases[key]
 
         const cacheData = this.parseCacheFields(key)
+        const configHelper = new ConfigHelper()
 
         if (typeof allias !== 'undefined') {
             key = allias
         }
 
-        const mappingData = this.tempMeta[key]
+        const mappingData = temp_meta[key]
         const fields = []
         const cacheIds = []
 
         for (const cacheKey in cacheData) {
             const title = this.parseFieldTitle(cacheKey)
-            let icon = this.configHelper.getIcons(new RegExp(`${mappingData.icon}`, 'g'))[0].icon
+            let icon = configHelper.getIcons(new RegExp(`${mappingData.icon}`, 'g'))[0].icon
 
             const keyData = {
                 name: `${icon} ${title}`,
@@ -110,27 +103,27 @@ export class TempHelper {
             }
 
             if (typeof cacheData[cacheKey].temperature !== 'undefined' &&
-                this.tempMeta.temperature_sensors.includes(key) &&
+                temp_meta.temperature_sensors.includes(key) &&
                 !hideColor) {
 
                 mappingData.fields.color = {
                     label: '${embeds.fields.color}',
-                    icon: this.tempCache.colors[cacheKey].icon
+                    icon: getEntry('temps').colors[cacheKey].icon
                 }
             }
 
             if (typeof cacheData[cacheKey].temperature !== 'undefined' &&
-                this.tempMeta.heater_types.includes(key)) {
+                temp_meta.heater_types.includes(key)) {
                 if (this.isCold(cacheData[cacheKey].temperature)) {
-                    icon = this.configHelper.getIcons(new RegExp(`${this.tempMeta.cold_meta.icon}`, 'g'))[0].icon
+                    icon = configHelper.getIcons(new RegExp(`${temp_meta.cold_meta.icon}`, 'g'))[0].icon
                     keyData.name = `${icon} ${this.parseFieldTitle(cacheKey)}`
                 }
             }
 
             if (typeof cacheData[cacheKey].speed !== 'undefined' &&
-                this.tempMeta.fan_types.includes(key)) {
+                temp_meta.fan_types.includes(key)) {
                 if (this.isSlowFan(cacheData[cacheKey].speed)) {
-                    icon = this.configHelper.getIcons(new RegExp(`${this.tempMeta.slow_fan_meta.icon}`, 'g'))[0].icon
+                    icon = configHelper.getIcons(new RegExp(`${temp_meta.slow_fan_meta.icon}`, 'g'))[0].icon
                     keyData.name = `${icon} ${this.parseFieldTitle(cacheKey)}`
                 }
             }
@@ -204,19 +197,20 @@ export class TempHelper {
         const heaterData = findValue(`state.configfile.config.${heater}`)
         const heaterMaxTemp = Number(heaterData.max_temp)
         const heaterMinTemp = Number(heaterData.min_temp)
+        const locale = new LocaleHelper().getLocale()
 
         if (heaterTemp === null) {
             return false
         }
 
         if (heaterTemp > heaterMaxTemp) {
-            return this.locale.messages.errors.preheat_over_max
+            return locale.messages.errors.preheat_over_max
                 .replace(/(\${max_temp})/g, heaterMaxTemp)
                 .replace(/(\${temp})/g, heaterTemp)
         }
 
         if (heaterTemp < heaterMinTemp) {
-            return this.locale.messages.errors.preheat_below_min
+            return locale.getLocale().messages.errors.preheat_below_min
                 .replace(/(\${min_temp})/g, heaterMinTemp)
                 .replace(/(\${temp})/g, heaterTemp)
         }
@@ -242,13 +236,16 @@ export class TempHelper {
             return
         }
 
-        const config = this.configHelper.getConfig().notifications
+        const configHelper = new ConfigHelper()
+        const functionCache = getEntry('function')
+
+        const config = configHelper.getConfig().notifications
 
         if (!config.temp_notifications) {
             return
         }
 
-        const tempTargets = this.functionCache.temp_targets
+        const tempTargets = functionCache.temp_targets
 
         const heaters = this.getHeaters()
 
@@ -281,22 +278,18 @@ export class TempHelper {
             }
         }
 
-        this.functionCache.temp_targets = tempTargets
+        functionCache.temp_targets = tempTargets
 
-        setData('function', this.functionCache)
+        setData('function', functionCache)
     }
 
     public async notifyHeaterTargetNotifications() {
-        this.functionCache = getEntry('function')
+        const functionCache = getEntry('function')
 
-        const tempTargets = this.functionCache.temp_targets
+        const tempTargets = functionCache.temp_targets
 
-        const config = this.configHelper.getConfig().notifications
-
-        this.localeHelper = new LocaleHelper()
-        this.locale = this.localeHelper.getLocale()
-
-        this.notificationHelper = new NotificationHelper()
+        const config = new ConfigHelper().getConfig().notifications
+        const locale = new LocaleHelper().getLocale()
 
         if (!config.temp_notifications) {
             return
@@ -323,24 +316,24 @@ export class TempHelper {
             if (heaterData.delay === 0 && !heaterData.sended) {
                 tempTargets[heater].sended = true
 
-                const message = this.locale.messages.answers.temp_target_reached
+                const message = locale.messages.answers.temp_target_reached
                     .replace(/(\${heater})/g, heater)
                     .replace(/(\${target})/g, heaterData.target)
 
-                void this.notificationHelper.broadcastMessage(message)
+                void new NotificationHelper().broadcastMessage(message)
                 continue
             }
 
             tempTargets[heater].delay--
         }
 
-        this.functionCache.temp_targets = tempTargets
+        functionCache.temp_targets = tempTargets
 
-        setData('function', this.functionCache)
+        setData('function', functionCache)
     }
 
-    protected parseFieldTitle(key: string) {
-        const hideList = this.tempMeta.hide_types
+    private parseFieldTitle(key: string) {
+        const hideList = temp_meta.hide_types
 
         hideList.some(hideType => key = key.replace(hideType, ''))
 
@@ -351,7 +344,7 @@ export class TempHelper {
         return key
     }
 
-    protected parseCacheFields(key) {
+    private parseCacheFields(key) {
         const result = {}
 
         for (const cacheKey in this.cache) {

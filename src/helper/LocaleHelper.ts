@@ -65,7 +65,7 @@ export class LocaleHelper {
         return components
     }
 
-    protected loadLocales() {
+    private loadLocales() {
         const localeConfig = new ConfigHelper().getLocale()
         const localePath = path.resolve(__dirname, `../locales/${localeConfig.locale}.json`)
         const syntaxLocalePath = path.resolve(__dirname, `../locales/${localeConfig.syntax}.json`)
@@ -77,7 +77,7 @@ export class LocaleHelper {
         updateData('syntax_locale', JSON.parse(syntaxLocaleRaw))
     }
 
-    protected loadFallback() {
+    private loadFallback() {
         const fallbackLocaleRaw = readFileSync(path.resolve(__dirname, '../locales/en.json'), {encoding: 'utf8'})
 
         setData('locale', JSON.parse(fallbackLocaleRaw))
