@@ -55,7 +55,7 @@ export class FileListHelper {
                     return
                 }
 
-                const jobs = historyCache.jobs.jobs
+                const jobs = historyCache.total.jobs
                 const iconConfig = new HistoryGraph().getIcons()
 
                 for(const resultPartial of result) {

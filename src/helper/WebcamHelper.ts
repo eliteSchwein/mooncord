@@ -30,19 +30,6 @@ export class WebcamHelper {
             }
 
             webcamCache.entries[data.name] = data
-
-            let webcamConfig = new ConfigHelper().getEntriesByFilter(/^webcam$/g)[0][data.name]
-
-            if(webcamConfig === undefined) {
-                webcamConfig = {
-                    enable_before_snapshot_commands: false,
-                    delay_before_snapshot_commands: 0,
-                    enable_after_snapshot_commands: false,
-                    delay_after_snapshot_commands: 0
-                }
-            }
-
-            webcamCache.entries[data.name].mooncord_config = webcamConfig
         }
 
         setData('webcam', webcamCache)
@@ -51,18 +38,20 @@ export class WebcamHelper {
     public async retrieveWebcam() {
         const cache = getEntry('webcam')
         const webcamData = cache.entries[cache.active]
+        const configHelper = new ConfigHelper()
+        const snapshotConfig = configHelper.getEntriesByFilter(/^snapshot$/g)[0]
 
         console.log(webcamData)
 
         const beforeStatus = {
-            'enable': webcamData.enable_before_snapshot_commands,
-            'execute': webcamData.before_snapshot_commands,
-            'delay': webcamData.delay_before_snapshot_commands
+            'enable': snapshotConfig.enable_before_snapshot_commands,
+            'execute': snapshotConfig.before_snapshot_commands,
+            'delay': snapshotConfig.delay_before_snapshot_commands
         }
         const afterStatus = {
-            'enable': webcamData.enable_after_snapshot_commands,
-            'execute': webcamData.after_snapshot_commands,
-            'delay': webcamData.delay_after_snapshot_commands
+            'enable': snapshotConfig.enable_after_snapshot_commands,
+            'execute': snapshotConfig.after_snapshot_commands,
+            'delay': snapshotConfig.delay_after_snapshot_commands
         }
 
         logRegular('Run Webcam pre Tasks if present...')
@@ -73,7 +62,7 @@ export class WebcamHelper {
             const res = await axios({
                 method: 'get',
                 responseType: 'arraybuffer',
-                url: webcamData.url,
+                url: webcamData.snapshot_url,
                 timeout: 2000
             })
 
@@ -85,48 +74,26 @@ export class WebcamHelper {
 
             // Only run Sharp if they want the image modifed
             if (
-                webcamData.brightness ||
-                webcamData.contrast ||
-                webcamData.greyscale ||
-                webcamData.horizontal_mirror ||
-                webcamData.rotate ||
-                webcamData.sepia ||
-                webcamData.vertical_mirror
+                webcamData.flip_horizontal ||
+                webcamData.flip_vertical ||
+                webcamData.rotation
             ) {
                 const image = sharp(buffer)
 
-                if(webcamData.horizontal_mirror && webcamData.vertical_mirror && webcamData.rotate === 0) {
-                    webcamData.rotate = 180
-                    webcamData.horizontal_mirror = false
-                    webcamData.vertical_mirror = false
-                }
-
                 image
-                    .rotate(webcamData.rotate)
-                    .flip(webcamData.vertical_mirror)
-                    .flop(webcamData.horizontal_mirror)
-                    .greyscale(webcamData.greyscale)
+                    .rotate(webcamData.rotation)
+                    .flip(webcamData.flip_vertical)
+                    .flop(webcamData.flip_horizontal)
 
-                if (webcamData.brightness) {
-                    image.modulate({
-                        brightness: (webcamData.brightness + 1)
-                    })
-                }
-
-                if (webcamData.contrast) {
-                    image.linear(webcamData.contrast + 1, -(128 * (webcamData.contrast + 1)) + 128)
-                }
-
-                if (webcamData.sepia) {
-                    image.recomb([
-                        [0.3588, 0.7044, 0.1368],
-                        [0.299, 0.587, 0.114],
-                        [0.2392, 0.4696, 0.0912],
-                    ])
+                if(webcamData.flip_horizontal && webcamData.flip_vertical && webcamData.rotation === 0) {
+                    image
+                        .rotate(180)
+                        .flip(false)
+                        .flop(false)
                 }
 
                 image.png({
-                    quality: webcamData.quality
+                    quality: 80
                 })
 
                 const editBuffer = await image.toBuffer()
@@ -153,7 +120,7 @@ export class WebcamHelper {
             logError('Webcam Error:')
             logError(`Url: ${webcamData.url}`)
             logError(`Error: ${reason}`)
-            if (this.configHelper.traceOnWebErrors()) {
+            if (configHelper.traceOnWebErrors()) {
                 logError(trace)
             }
 
@@ -161,7 +128,7 @@ export class WebcamHelper {
             await this.executePostProcess(afterStatus)
 
             return new MessageAttachment(
-                resolve(__dirname, `../assets/icon-sets/${this.configHelper.getIconSet()}/snapshot-error.png`),
+                resolve(__dirname, `../assets/icon-sets/${configHelper.getIconSet()}/snapshot-error.png`),
                 'snapshot-error.png'
             )
         }
@@ -197,7 +164,7 @@ export class WebcamHelper {
                     await moonrakerClient
                         .send(
                             {"method": "printer.gcode.script", "params": {"script": gcode}},
-                            this.configHelper.getGcodeExecuteTimeout() * 1000
+                            new ConfigHelper().getGcodeExecuteTimeout() * 1000
                         )
                 } catch (error) {
                     logError(error)

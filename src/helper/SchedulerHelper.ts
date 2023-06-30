@@ -7,6 +7,7 @@ import {StatusHelper} from "./StatusHelper";
 import {UsageHelper} from "./UsageHelper";
 import {clearInterval} from "timers";
 import {TempHelper} from "./TempHelper";
+import {WebcamHelper} from "./WebcamHelper";
 
 export class SchedulerHelper {
     protected configHelper = new ConfigHelper()
@@ -71,6 +72,9 @@ export class SchedulerHelper {
     protected scheduleModerate() {
         this.moderateScheduler = setInterval(async () => {
             const machineInfo = await this.moonrakerClient.send({"method": "machine.system_info"})
+            const webcamHelper = new WebcamHelper()
+
+            await webcamHelper.retrieveWebcam()
 
             setData('machine_info', machineInfo.result)
 
