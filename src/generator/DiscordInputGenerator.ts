@@ -15,10 +15,14 @@ export class DiscordInputGenerator {
         this.generateCacheForSection('inputs');
     }
 
-    public generateButtons(buttons) {
+    public generateButtons(buttons, buttonsPerRow: 0) {
         const rows = []
-        const limit = 4
+        let limit = 4
         let currentButton = 0
+
+        if(buttonsPerRow > 0) {
+            limit = buttonsPerRow - 1
+        }
 
         rows.push(new MessageActionRow())
 

@@ -172,7 +172,7 @@ export class TemplateHelper {
 
         const thumbnail = await this.parseImage(messageObjectData.thumbnail)
         const image = await this.parseImage(messageObjectData.image)
-        const buttons = this.inputGenerator.generateButtons(messageObjectData.buttons)
+        const buttons = this.inputGenerator.generateButtons(messageObjectData.buttons, unformattedData.buttons_per_row)
         const selections = this.inputGenerator.generateSelections(messageObjectData.selections)
         const inputs = this.inputGenerator.generateInputs(messageObjectData.inputs)
 
@@ -382,7 +382,7 @@ export class TemplateHelper {
         }
 
         if (imageID === 'webcam') {
-            return this.webcamHelper.retrieveWebcam(app.getMoonrakerClient())
+            return this.webcamHelper.retrieveWebcam()
         }
 
         if (imageID === 'thumbnail') {

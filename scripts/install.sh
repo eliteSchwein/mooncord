@@ -20,7 +20,6 @@ MCTOKEN=""
 MCWEBTOKEN=""
 MCURL="http://127.0.0.1"
 MCMOONRAKERSERVICE="moonraker"
-MCCAMURL="http://127.0.0.1/webcam/?action=snapshot"
 WRITECONFIG=true
 
 questions()
@@ -99,19 +98,6 @@ questions()
         done
     fi
     ok_msg "Moonraker URL set: $MCURL"
-
-    if [ "$MCCAMURL" == "http://127.0.0.1/webcam/?action=snapshot" ];
-    then
-        status_msg "Please enter your Snapshot URL"
-        while true; do
-            read -p "$cyan URL (leave empty if $MCCAMURL is valid): $default" snapshot_url
-            case $snapshot_url in
-                "") break;;
-                * ) MCCAMURL="$snapshot_url"; break;;
-            esac
-        done
-    fi
-    ok_msg "Snapshot URL set: $MCCAMURL"
 }
 
 install_packages()
@@ -198,13 +184,11 @@ generate_config() {
     MCURL_ESC=$(sed "s/\//\\\\\//g" <<< $MCURL)
     MCTOKEN_ESC=$(sed "s/\//\\\\\//g" <<< $MCTOKEN)
     MCWEBTOKEN_ESC=$(sed "s/\//\\\\\//g" <<< $MCWEBTOKEN)
-    MCCAMURL_ESC=$(sed "s/\//\\\\\//g" <<< $MCCAMURL)
     MCSERVICENAME_ESC=$(sed "s/\//\\\\\//g" <<< $MCSERVICENAME)
 
     CONFIG=$(sed "s/MC_URL/$MCURL_ESC/g" <<< $CONFIG)
     CONFIG=$(sed "s/MC_TOKEN/$MCTOKEN_ESC/g" <<< $CONFIG)
     CONFIG=$(sed "s/MC_WEB_TOKEN/$MCWEBTOKEN_ESC/g" <<< $CONFIG)
-    CONFIG=$(sed "s/MC_WEBCAM_URL/$MCCAMURL_ESC/g" <<< $CONFIG)
     CONFIG=$(sed "s/MC_SERVICE_NAME/$MCSERVICENAME_ESC/g" <<< $CONFIG)
 
     if [ ! -d "$MCCONFIGPATH/" ];
@@ -300,7 +284,6 @@ do
             --moonraker_token) MCWEBTOKEN=${VALUE};;
             --moonraker_url) MCURL=${VALUE};;
             --moonraker_service) MCMOONRAKERSERVICE=${VALUE};;
-            --webcam_url) MCCAMURL=${VALUE};;
             *)   
     esac    
 done
