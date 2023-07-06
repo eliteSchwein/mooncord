@@ -14,6 +14,7 @@ import {ShowTempSelection} from "./selections/ShowTemp";
 import {DownloadConfig} from "./selections/DownloadConfig";
 import {ExcludeObjectsSelection} from "./selections/ExcludeObjects";
 import {DownloadTimelapse} from "./selections/DownloadTimelapse";
+import {WebcamChange} from "./selections/WebcamChange";
 
 export class SelectInteraction {
 
@@ -38,12 +39,7 @@ export class SelectInteraction {
 
         const permissionHelper = new PermissionHelper()
         const localeHelper = new LocaleHelper()
-        const locale = localeHelper.getLocale()
-        const selectionsCache = getEntry('selections')
-        const functionCache = getEntry('function')
         const config = new ConfigHelper()
-
-        const selectData = selectionsCache[selectId]
 
         logNotice(`${interaction.user.tag} pressed selection: ${selectId}`)
         logNotice(`value/s: ${logValues}`)
@@ -63,6 +59,7 @@ export class SelectInteraction {
         void new DownloadConfig(interaction, selectId)
         void new ExcludeObjectsSelection(interaction, selectId)
         void new DownloadTimelapse(interaction, selectId)
+        void new WebcamChange(interaction, selectId)
 
         await sleep(2000)
 
