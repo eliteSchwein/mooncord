@@ -7,6 +7,7 @@ import {findValue, getExcludeChoices, getHeaterChoices, setData} from "../utils/
 import {MessageActionRow, MessageButton, MessageSelectMenu, TextInputComponent} from "discord.js";
 import {LocaleHelper} from "../helper/LocaleHelper";
 import {MCUHelper} from "../helper/MCUHelper";
+import {WebcamHelper} from "../helper/WebcamHelper";
 
 export class DiscordInputGenerator {
     public generateInputCache() {
@@ -110,6 +111,10 @@ export class DiscordInputGenerator {
 
             if (selectionData.mcu_options) {
                 selectionData.data = [...selectionData.data, ...mcuHelper.getMCUOptions()]
+            }
+
+            if (selectionData.webcam_options) {
+                selectionData.data = [...selectionData.data, ...new WebcamHelper().getWebcamChoices()]
             }
 
             for (const data of selectionData.data) {

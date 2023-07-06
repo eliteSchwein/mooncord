@@ -498,6 +498,12 @@
             "option_description": "Click for Exclude",
             "options": []
         },
+        "status_webcam": {
+            "label": "Select a Webcam",
+            "option_label": "${data.label}",
+            "option_description": "Click for Webcam",
+            "options": []
+        },
         "config_file_download": {
             "label": "Select a File",
             "option_label": "${data.name}",

@@ -35,13 +35,25 @@ export class WebcamHelper {
         setData('webcam', webcamCache)
     }
 
+    public getWebcamChoices() {
+        const stateCache = getEntry('webcam')
+        const options = []
+
+        for (const key in stateCache.entries) {
+            options.push({
+                "label": key,
+                "value": key
+            })
+        }
+
+        return options
+    }
+
     public async retrieveWebcam() {
         const cache = getEntry('webcam')
         const webcamData = cache.entries[cache.active]
         const configHelper = new ConfigHelper()
         const snapshotConfig = configHelper.getEntriesByFilter(/^snapshot$/g)[0]
-
-        console.log(webcamData)
 
         const beforeStatus = {
             'enable': snapshotConfig.enable_before_snapshot_commands,
