@@ -9,6 +9,12 @@ red=$(echo -en "\e[91m")
 cyan=$(echo -en "\e[96m")
 default=$(echo -en "\e[39m")
 
+is_bookworm() {
+    if [[ -f /etc/os-release ]]; then
+        grep -cq "bookworm" /etc/os-release &> /dev/null && echo "1" || echo "0"
+    fi
+}
+
 warn_msg(){
   echo -e "${red}<!!!!> $1${default}"
 }
@@ -36,7 +42,12 @@ status_msg "Add NodeJS 16.x Repo"
 curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
 
 status_msg "Install NodeJS 16.X or higher"
-sudo apt-get install -y nodejs npm
+if [[ "$(is_bookworm)" = "1" ]];
+then
+    sudo apt-get install -y nodejs npm
+else
+    sudo apt-get install -y nodejs
+fi
 
 status_msg "Rebuild NPM, this will take some time please wait....."
 npm rebuild

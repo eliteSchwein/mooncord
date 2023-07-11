@@ -114,7 +114,13 @@ install_packages()
         curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
 
         status_msg "Install NodeJS 16.X or higher"
-        sudo apt-get install -y nodejs npm
+
+        if [[ "$(is_bookworm)" = "1" ]];
+        then
+            sudo apt-get install -y nodejs npm
+        else
+            sudo apt-get install -y nodejs
+        fi
 
         status_msg "Install Dependencies, this will take some time please wait....."
         sudo npm i -g npm@latest
@@ -287,6 +293,12 @@ do
             *)   
     esac    
 done
+
+is_bookworm() {
+    if [[ -f /etc/os-release ]]; then
+        grep -cq "bookworm" /etc/os-release &> /dev/null && echo "1" || echo "0"
+    fi
+}
 
 if [[ ${UID} == '0' ]]; then
     warn_msg "You cant run this script as Root!"
