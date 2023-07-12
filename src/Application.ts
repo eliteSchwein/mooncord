@@ -23,6 +23,7 @@ import {SchedulerHelper} from "./helper/SchedulerHelper";
 import {StatusHelper} from "./helper/StatusHelper";
 import {waitUntil} from "async-wait-until";
 import {ModalHelper} from "./helper/ModalHelper";
+import {createInterface} from "readline";
 
 const args = process.argv.slice(2)
 
@@ -92,9 +93,22 @@ async function init() {
         logEmpty()
     }
 
+    if (process.platform === "win32") {
+        const rl = createInterface({
+            input: process.stdin,
+            output: process.stdout
+        });
+
+        rl.on("SIGINT", function () {
+            process.emit("SIGINT");
+        });
+    }
+
+    process.on('SIGINT', () => {});
+    process.on('SIGQUIT', () => {});
+
     logRegular(`please invite the bot on a Server: 
         ${getEntry('invite_url')}`)
-    logWarn('please dont use ctrl + c for copying the script, this will stop the install script!')
     logEmpty()
     logRegular(`after the invite please write the following code in a text channel:`)
     logNotice(setupCode)
