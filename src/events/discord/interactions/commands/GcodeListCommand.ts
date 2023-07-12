@@ -26,7 +26,8 @@ export class GcodeListCommand {
         const pageData = pageHelper.getPage(false, 2)
 
         if (Object.keys(pageData) === undefined || Object.keys(pageData).length === 0) {
-            await interaction.editReply(localeHelper.getCommandNotReadyError(interaction.user.username))
+            await interaction.editReply(localeHelper.getLocale().messages.errors.no_gcodes
+                .replace(/(\${username})/g, interaction.user.tag))
             return
         }
 

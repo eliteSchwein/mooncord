@@ -31,7 +31,8 @@ export class HistoryCommand {
         const printStats = historyHelper.getPrintStats()
 
         if (printStats.count === 0) {
-            await interaction.editReply(localeHelper.getCommandNotReadyError(interaction.user.username))
+            await interaction.editReply(localeHelper.getLocale().messages.errors.no_history
+                .replace(/(\${username})/g, interaction.user.tag))
             return
         }
 

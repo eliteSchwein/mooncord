@@ -346,6 +346,9 @@
             }
         },
         "errors": {
+            "no_history": "There is currently no print history, `${username}`!",
+            "no_gcodes": "There are currently no gcode files, `${username}`!",
+            "no_configs": "There are currently no config files, `${username}`!",
             "no_timelapses": "There are currently no timelapse videos, `${username}`!",
             "custom_command_descript": "Configured Custom Command",
             "execute_running": "The Command Executer is already running, please try again later, `${username}`!",

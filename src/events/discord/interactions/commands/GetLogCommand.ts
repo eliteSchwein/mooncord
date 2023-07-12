@@ -68,8 +68,8 @@ export class GetLodCommand {
 
             const bufferSize = Buffer.byteLength(<Buffer>result.data)
 
-            if (bufferSize > Number.parseInt('8000000')) {
-                logError(`${service} Log to big, Logfile: ${bufferSize}byte Limit: 8000000byte`)
+            if (bufferSize > Number.parseInt('25000000')) {
+                logError(`${service} Log to big, Logfile: ${bufferSize}byte Limit: 25mb`)
                 return locale.messages.errors.log_too_large
                     .replace(/(\${service})/g, `\`${service}\``)
             }
