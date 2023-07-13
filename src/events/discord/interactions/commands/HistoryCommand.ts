@@ -23,7 +23,8 @@ export class HistoryCommand {
         const serverComponents = getEntry('server_info').components
 
         if (!serverComponents.includes('history')) {
-            await interaction.reply(localeHelper.getCommandNotReadyError(interaction.user.username))
+            await interaction.reply(localeHelper.getLocale().messages.errors.no_history
+                .replace(/(\${username})/g, interaction.user.tag))
             return
         }
 

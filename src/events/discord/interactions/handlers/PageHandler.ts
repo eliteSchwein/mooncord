@@ -49,9 +49,11 @@ export class PageHandler {
 
         if (Object.keys(pageData).length === 0) {
             if (interaction.replied) {
-                await interaction.editReply(localeHelper.getCommandNotReadyError(interaction.user.username))
+                await interaction.editReply(localeHelper.getLocale().messages.errors.no_entries
+                    .replace(/(\${username})/g, interaction.user.tag))
             } else {
-                await message.reply(localeHelper.getCommandNotReadyError(interaction.user.username))
+                await message.reply(localeHelper.getLocale().messages.errors.no_entries
+                    .replace(/(\${username})/g, interaction.user.tag))
             }
             return
         }

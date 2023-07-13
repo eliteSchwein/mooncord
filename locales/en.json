@@ -348,6 +348,8 @@
         "errors": {
             "no_history": "There is currently no print history, `${username}`!",
             "no_gcodes": "There are currently no gcode files, `${username}`!",
+            "no_power_device": "The Power Device couldn't be found, `${username}`!",
+            "no_entries": "The current Page is empty, `${username}`!",
             "no_configs": "There are currently no config files, `${username}`!",
             "no_timelapses": "There are currently no timelapse videos, `${username}`!",
             "custom_command_descript": "Configured Custom Command",
