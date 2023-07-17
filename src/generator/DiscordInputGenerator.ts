@@ -117,6 +117,11 @@ export class DiscordInputGenerator {
                 selectionData.data = [...selectionData.data, ...new WebcamHelper().getWebcamChoices()]
             }
 
+            if(selectionData.min_entries !== undefined &&
+                selectionData.min_entries > selectionData.data.length) {
+                continue
+            }
+
             for (const data of selectionData.data) {
                 const selectionMetaRaw = JSON.stringify(selectionData)
 
