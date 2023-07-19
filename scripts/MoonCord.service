@@ -2,11 +2,13 @@
 Description=MoonCord
 Wants=MC_MOONRAKER_SERVICE.service
 After=MC_MOONRAKER_SERVICE.service
-StartLimitIntervalSec=0
+StartLimitIntervalSec=500
+StartLimitBurst=5
 
 [Service]
 Type=simple
-RestartSec=1
+Restart=on-failure
+RestartSec=5s
 User=MC_USER
 WorkingDirectory=MC_DIR
 ExecStart=MC_NPM run start MC_CONFIG_PATH

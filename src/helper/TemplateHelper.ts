@@ -17,6 +17,8 @@ import {HistoryHelper} from "./HistoryHelper";
 import HistoryGraph from "./graphs/HistoryGraph";
 import TempHistoryGraph from "./graphs/TempHistoryGraph";
 import {ExcludeGraph} from "./graphs/ExcludeGraph";
+import {SpoolmanHelper} from "./SpoolmanHelper";
+import {afterEach} from "node:test";
 
 export class TemplateHelper {
     protected localeHelper = new LocaleHelper()
@@ -32,7 +34,7 @@ export class TemplateHelper {
     protected tempGraph = new TempHistoryGraph()
     protected excludeGraph = new ExcludeGraph()
 
-    public parseRawTemplate(type: string, id: string) {
+    public async parseRawTemplate(type: string, id: string) {
         const unformattedData = Object.assign({}, getEntry(`${type}s`)[id])
         const partials = unformattedData.partials
 
@@ -55,7 +57,7 @@ export class TemplateHelper {
         }
 
         if(unformattedData.partials !== undefined) {
-            unformattedData.field = this.parsePartials(partials, unformattedData.field)
+            unformattedData.field = await this.parsePartials(partials, unformattedData.field)
 
             if (unformattedData.partials.includes('temp_inputs')) {
                 // @ts-ignore
@@ -79,8 +81,15 @@ export class TemplateHelper {
         return unformattedData
     }
 
-    protected parsePartials(partials: any[], field: any[]) {
+    protected async parsePartials(partials: any[], field: any[]) {
+        const spoolmanHelper = new SpoolmanHelper()
+
         if (partials.includes('versions')) {
+            field = [...field, ...this.versionHelper.getFields()]
+        }
+
+        if (partials.includes('spoolman')) {
+            const newFields = await spoolmanHelper.getFields()
             field = [...field, ...this.versionHelper.getFields()]
         }
 
@@ -123,7 +132,7 @@ export class TemplateHelper {
             return false
         }
 
-        const unformattedData = this.parseRawTemplate(type, id)
+        const unformattedData = await this.parseRawTemplate(type, id)
 
         if (providedFields !== null) {
             mergeDeep(unformattedData, {field: providedFields})
@@ -172,7 +181,7 @@ export class TemplateHelper {
 
         const thumbnail = await this.parseImage(messageObjectData.thumbnail)
         const image = await this.parseImage(messageObjectData.image)
-        const buttons = this.inputGenerator.generateButtons(messageObjectData.buttons, unformattedData.buttons_per_row)
+        const buttons = this.inputGenerator.generateButtons(messageObjectData.buttons, unformattedData['buttons_per_row'])
         const selections = this.inputGenerator.generateSelections(messageObjectData.selections)
         const inputs = this.inputGenerator.generateInputs(messageObjectData.inputs)
 
