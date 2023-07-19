@@ -212,6 +212,7 @@
             "title": "System Updates"
         },
         "fields": {
+            "active_spool": "Active Spool",
             "total_filament_used": "Total Filament",
             "total_time": "Total Time",
             "total_print_time": "Total Print Time",
@@ -343,7 +344,9 @@
             "power_device":{
                 "on": "The Power Device `${power_device}` is now on, `${username}`!",
                 "off": "The Power Device `${power_device}` is now off, `${username}`!"
-            }
+            },
+            "empty_spool": "No Spool active!",
+            "current_spool": "Spool ID: "
         },
         "errors": {
             "no_history": "There is currently no print history, `${username}`!",

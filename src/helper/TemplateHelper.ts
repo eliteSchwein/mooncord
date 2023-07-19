@@ -90,7 +90,7 @@ export class TemplateHelper {
 
         if (partials.includes('spoolman')) {
             const newFields = await spoolmanHelper.getFields()
-            field = [...field, ...this.versionHelper.getFields()]
+            field = [...field, ...newFields]
         }
 
         if (partials.includes('updates')) {
