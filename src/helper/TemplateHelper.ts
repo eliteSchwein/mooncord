@@ -21,22 +21,10 @@ import {SpoolmanHelper} from "./SpoolmanHelper";
 import {afterEach} from "node:test";
 
 export class TemplateHelper {
-    protected localeHelper = new LocaleHelper()
-    protected configHelper = new ConfigHelper()
-    protected inputGenerator = new DiscordInputGenerator()
-    protected tempHelper = new TempHelper()
-    protected versionHelper = new VersionHelper()
-    protected powerDeviceHelper = new PowerDeviceHelper()
-    protected webcamHelper = new WebcamHelper()
-    protected historyHelper = new HistoryHelper()
-
-    protected historyGraph = new HistoryGraph()
-    protected tempGraph = new TempHistoryGraph()
-    protected excludeGraph = new ExcludeGraph()
-
     public async parseRawTemplate(type: string, id: string) {
         const unformattedData = Object.assign({}, getEntry(`${type}s`)[id])
         const partials = unformattedData.partials
+        const tempHelper = new TempHelper()
 
         if(unformattedData.field === undefined) {
             unformattedData.field = []
@@ -62,7 +50,7 @@ export class TemplateHelper {
             if (unformattedData.partials.includes('temp_inputs')) {
                 // @ts-ignore
                 const rawTempInputData = this.getInputData('inputs', ['temp_target_input'])[0]
-                const heaters = this.tempHelper.getHeaters()
+                const heaters = tempHelper.getHeaters()
 
                 if(unformattedData.inputs === undefined) {
                     unformattedData.inputs = []
@@ -71,7 +59,7 @@ export class TemplateHelper {
                 for (const heater of heaters) {
                     const heaterInput = Object.assign({}, rawTempInputData)
                     heaterInput.id = heater
-                    heaterInput.value = this.tempHelper.getHeaterTarget(heater)
+                    heaterInput.value = tempHelper.getHeaterTarget(heater)
                     heaterInput.label = heaterInput.label.replace(/\${heater}/g, heater)
                     unformattedData.inputs.push(heaterInput)
                 }
@@ -83,9 +71,11 @@ export class TemplateHelper {
 
     protected async parsePartials(partials: any[], field: any[]) {
         const spoolmanHelper = new SpoolmanHelper()
+        const tempHelper = new TempHelper()
+        const versionHelper = new VersionHelper()
 
         if (partials.includes('versions')) {
-            field = [...field, ...this.versionHelper.getFields()]
+            field = [...field, ...versionHelper.getFields()]
         }
 
         if (partials.includes('spoolman')) {
@@ -94,23 +84,23 @@ export class TemplateHelper {
         }
 
         if (partials.includes('updates')) {
-            field = [...field, ...this.versionHelper.getUpdateFields()]
+            field = [...field, ...versionHelper.getUpdateFields()]
         }
 
         if (partials.includes('temp') || partials.includes('temps')) {
-            field = [...field, ...this.tempHelper.parseFields().fields]
+            field = [...field, ...tempHelper.parseFields().fields]
         }
 
         if (partials.includes('minimal_temp') || partials.includes('minimal_temps')) {
-            field = [...field, ...this.tempHelper.parseFields(true).fields]
+            field = [...field, ...tempHelper.parseFields(true).fields]
         }
 
         if (partials.includes('print_history')) {
-            field = [...field, ...this.historyHelper.parseFields()]
+            field = [...field, ...new HistoryHelper().parseFields()]
         }
 
         if (partials.includes('power_devices')) {
-            field = [...field, ...this.powerDeviceHelper.parseFields()]
+            field = [...field, ...new PowerDeviceHelper().parseFields()]
         }
 
         return field
@@ -179,11 +169,13 @@ export class TemplateHelper {
 
         const messageObjectData = JSON.parse(messageObjectRaw)
 
+        const inputGenerator = new DiscordInputGenerator()
+
         const thumbnail = await this.parseImage(messageObjectData.thumbnail)
         const image = await this.parseImage(messageObjectData.image)
-        const buttons = this.inputGenerator.generateButtons(messageObjectData.buttons, unformattedData['buttons_per_row'])
-        const selections = this.inputGenerator.generateSelections(messageObjectData.selections)
-        const inputs = this.inputGenerator.generateInputs(messageObjectData.inputs)
+        const buttons = inputGenerator.generateButtons(messageObjectData.buttons, unformattedData['buttons_per_row'])
+        const selections = inputGenerator.generateSelections(messageObjectData.selections)
+        const inputs = inputGenerator.generateInputs(messageObjectData.inputs)
 
         for(const selectionId in selections) {
             components.push(selections[selectionId])
@@ -391,7 +383,7 @@ export class TemplateHelper {
         }
 
         if (imageID === 'webcam') {
-            return this.webcamHelper.retrieveWebcam()
+            return new WebcamHelper().retrieveWebcam()
         }
 
         if (imageID === 'thumbnail') {
@@ -399,18 +391,18 @@ export class TemplateHelper {
         }
 
         if (imageID === 'tempGraph') {
-            return await this.tempGraph.renderGraph()
+            return await new TempHistoryGraph().renderGraph()
         }
 
         if (imageID === 'historyGraph') {
-            return await this.historyGraph.renderGraph()
+            return await new HistoryGraph().renderGraph()
         }
 
         if (imageID === 'excludeGraph') {
-            return await this.excludeGraph.renderGraph(undefined)
+            return await new ExcludeGraph().renderGraph(undefined)
         }
 
-        const imagePath = path.resolve(__dirname, `../assets/icon-sets/${this.configHelper.getIconSet()}/${imageID}`)
+        const imagePath = path.resolve(__dirname, `../assets/icon-sets/${new ConfigHelper().getIconSet()}/${imageID}`)
         return new MessageAttachment(imagePath, imageID)
     }
 }
