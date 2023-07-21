@@ -4,9 +4,6 @@ import {findValue} from "../utils/CacheUtil";
 import {LocaleHelper} from "./LocaleHelper";
 
 export class VersionHelper {
-    protected localeHelper = new LocaleHelper()
-    protected locale = this.localeHelper.getLocale()
-
     public getFields() {
         const versionData = findValue('updates.version_info')
         const fields = []
@@ -29,6 +26,8 @@ export class VersionHelper {
     public getUpdateFields() {
         const versionData = findValue('updates.version_info')
         const fields = []
+        const locale = new LocaleHelper().getLocale()
+
         for (const component in versionData) {
             if (component !== 'system') {
                 const remoteVersion = (versionData[component].version !== versionData[component].remote_version) ? `\n🆕 ${versionData[component].remote_version}` : ''
@@ -38,8 +37,8 @@ export class VersionHelper {
                 })
             } else {
                 fields.push({
-                    name: this.locale.embeds.fields.system,
-                    value: `${this.locale.embeds.fields.packages}: ${versionData[component].package_count}`
+                    name: locale.embeds.fields.system,
+                    value: `${locale.embeds.fields.packages}: ${versionData[component].package_count}`
                 })
             }
         }

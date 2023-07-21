@@ -8,13 +8,10 @@ import {getConfigFiles, getEntry} from "../utils/CacheUtil";
 export class PageHelper {
     protected data: []
     protected pageLocale: any
-    protected configHelper = new ConfigHelper()
-    protected localeHelper = new LocaleHelper()
-    protected locale = this.localeHelper.getLocale()
 
     public constructor(pageId: string) {
         this.data = this.getValuesForPageId(pageId)
-        this.pageLocale = this.locale.pages[pageId]
+        this.pageLocale = new LocaleHelper().getLocale().pages[pageId]
     }
 
     public getPage(pageUp: boolean, currentPage: number) {
@@ -33,7 +30,7 @@ export class PageHelper {
 
     protected getEntries(page: number) {
         let entries = ''
-        const max = this.configHelper.getEntriesPerPage() - 1
+        const max = new ConfigHelper().getEntriesPerPage() - 1
         const rawEntries = []
         for (let i = (page * max) + page;
              i <= Math.min(this.data.length - 1, max + (page * max) + page);
@@ -48,7 +45,7 @@ export class PageHelper {
     }
 
     protected getLastPage() {
-        return Math.ceil(this.data.length / this.configHelper.getEntriesPerPage())
+        return Math.ceil(this.data.length / new ConfigHelper().getEntriesPerPage())
     }
 
     protected getNewPage(pageUp: boolean, currentPage: number) {

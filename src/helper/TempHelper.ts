@@ -11,18 +11,16 @@ import * as temp_meta from "../meta/temp_meta.json"
 import TempHistoryGraph from "./graphs/TempHistoryGraph";
 
 export class TempHelper {
-    protected cache = getEntry('state')
-    protected colorIndex = 0
-
-    public generateColors(cache: any) {
-        this.cache = cache
+    public generateColors() {
+        const cache = getEntry('state')
         logRegular("Generate Sensor Colors...")
 
         const colorCache = {}
         const temperatureSensors = temp_meta.temperature_sensors
         const colors = new TempHistoryGraph().getColors()
+        let  colorIndex = 0
 
-        for (const cacheKey in this.cache) {
+        for (const cacheKey in cache) {
             const cacheKeySplit = cacheKey.split(' ')
             const keySearch = cacheKeySplit[0].replace(/\d/g, '')
 
@@ -31,14 +29,14 @@ export class TempHelper {
             }
 
             colorCache[cacheKey] = {
-                icon: colors[this.colorIndex].icon,
-                color: colors[this.colorIndex].color
+                icon: colors[colorIndex].icon,
+                color: colors[colorIndex].color
             }
 
-            this.colorIndex++
+            colorIndex++
 
-            if (this.colorIndex === colors.length) {
-                this.colorIndex = 0
+            if (colorIndex === colors.length) {
+                colorIndex = 0
             }
         }
 
@@ -166,11 +164,11 @@ export class TempHelper {
     }
 
     public getHeaterTarget(heater: string) {
-        return this.cache[heater].target
+        return getEntry('state')[heater].target
     }
 
     public getHeaterTemp(heater: string) {
-        return this.cache[heater].temperature
+        return getEntry('state')[heater].temperature
     }
 
     public getHeaterConfigData(heater: string) {
@@ -228,11 +226,13 @@ export class TempHelper {
     }
 
     public getHeaters() {
-        return this.cache.heaters.available_heaters
+        return getEntry('state').heaters.available_heaters
     }
 
     public updateHeaterTargets() {
-        if (this.cache === undefined) {
+        const cache = getEntry('state')
+
+        if (cache === undefined) {
             return
         }
 
@@ -346,13 +346,14 @@ export class TempHelper {
 
     private parseCacheFields(key) {
         const result = {}
+        const cache = getEntry('state')
 
-        for (const cacheKey in this.cache) {
+        for (const cacheKey in cache) {
             const cacheKeySplit = cacheKey.split(' ')
             const keySearch = cacheKeySplit[0].replace(/\d/g, '')
 
             if (keySearch === key) {
-                result[cacheKey] = this.cache[cacheKey]
+                result[cacheKey] = cache[cacheKey]
             }
         }
 

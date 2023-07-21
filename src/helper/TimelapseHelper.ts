@@ -17,27 +17,7 @@ import {TemplateHelper} from "./TemplateHelper";
 import {getEntry} from "../utils/CacheUtil";
 
 export class TimelapseHelper {
-    protected inputGenerator = new DiscordInputGenerator()
-    protected configHelper = new ConfigHelper()
-    protected moonrakerClient = getMoonrakerClient()
-    protected localeHelper = new LocaleHelper()
-    protected locale = this.localeHelper.getLocale()
-    protected notificationHelper = new NotificationHelper()
-    protected templateHelper = new TemplateHelper()
-    protected ffmpegRender = Ffmpeg()
-    protected functionCache = getEntry('function')
     protected timelapseFile = {}
-    protected ffmpegArguments = [
-        "-pix_fmt yuv420p",
-        "-preset veryslow",
-        "-g 5",
-        "-crf 33",
-        "-vf scale=800:-1"
-    ]
-
-    public constructor() {
-        this.ffmpegRender.setFfmpegPath(ffmpegInstall.path)
-    }
 
     private async finishTimelapse(fileId: string) {
         const path = this.timelapseFile[fileId].path
@@ -57,8 +37,9 @@ export class TimelapseHelper {
 
     public async downloadTimelapse(filename: string, timelapseMessage: string) {
         logRegular(`Downloading Timelapse ${filename}`)
+        const config = new ConfigHelper()
         const fileId = Math.random().toString(36).substring(2,7)
-        const path = resolve(this.configHelper.getTempPath(), `timelapse_${fileId}.mp4`)
+        const path = resolve(config.getTempPath(), `timelapse_${fileId}.mp4`)
         const writer = createWriteStream(path)
 
         this.timelapseFile[fileId] = {
@@ -67,10 +48,10 @@ export class TimelapseHelper {
             path: path
         }
 
-        const result = await axios.get(`${this.configHelper.getMoonrakerUrl()}/server/files/timelapse/${filename}`, {
+        const result = await axios.get(`${config.getMoonrakerUrl()}/server/files/timelapse/${filename}`, {
             responseType: 'stream',
             headers: {
-                'X-Api-Key': this.configHelper.getMoonrakerApiKey()
+                'X-Api-Key': config.getMoonrakerApiKey()
             }
         })
 
@@ -89,7 +70,7 @@ export class TimelapseHelper {
         // @ts-ignore
         const buttonData = this.templateHelper.getInputData('buttons', ['to_timelapselist'])
         const components = []
-        const buttons = this.inputGenerator.generateButtons(buttonData)
+        const buttons = new DiscordInputGenerator().generateButtons(buttonData)
 
         for (const rowId in buttons) {
             components.push(buttons[rowId])
@@ -106,26 +87,40 @@ export class TimelapseHelper {
     }
 
     private async compressTimelapse(timelapseInput: string, timelapseName: string) {
-        const absolutePath = (this.configHelper.getTempPath().startsWith('..')) ? path.join(__dirname, this.configHelper.getTempPath()) : this.configHelper.getTempPath()
+        const config = new ConfigHelper()
+        const absolutePath = (config.getTempPath().startsWith('..')) ?
+            path.join(__dirname, config.getTempPath()) :
+            config.getTempPath()
         const tempPathShort = path.join(absolutePath, `compressed-${timelapseName}`)
+        const functionCache = getEntry('function')
         let renderComplete = false
+        const ffmpegArguments = [
+            "-pix_fmt yuv420p",
+            "-preset veryslow",
+            "-g 5",
+            "-crf 33",
+            "-vf scale=800:-1"
+        ]
 
         logRegular(`Compress Timelapse: ${timelapseName}`)
-        if (this.functionCache.current_status === 'printing') {
+        if (functionCache.current_status === 'printing') {
             logNotice('use single thread for ffmpeg because a print is running')
-            this.ffmpegArguments.push('-threads 1')
+            ffmpegArguments.push('-threads 1')
         }
 
-        this.ffmpegRender
+        const ffmpegRender = Ffmpeg()
+
+        ffmpegRender
+            .setFfmpegPath(ffmpegInstall.path)
             .addInput(timelapseInput)
             .noAudio()
             .output(tempPathShort)
-            .outputOptions(this.ffmpegArguments)
+            .outputOptions(ffmpegArguments)
             .on('end', async (stdout, stderr) => {
                 renderComplete = true
             })
 
-        this.ffmpegRender.run()
+        ffmpegRender.run()
 
         await waitUntil(() => renderComplete === true, {timeout: Number.POSITIVE_INFINITY})
 

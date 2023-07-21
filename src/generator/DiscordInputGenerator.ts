@@ -16,7 +16,7 @@ export class DiscordInputGenerator {
         this.generateCacheForSection('inputs');
     }
 
-    public generateButtons(buttons, buttonsPerRow: 0) {
+    public generateButtons(buttons, buttonsPerRow = 0) {
         const rows = []
         let limit = 4
         let currentButton = 0

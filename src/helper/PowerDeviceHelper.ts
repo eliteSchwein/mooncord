@@ -7,17 +7,10 @@ import {LocaleHelper} from "./LocaleHelper";
 import {getMoonrakerClient} from "../Application";
 
 export class PowerDeviceHelper {
-    protected localeHelper = new LocaleHelper()
-    protected powerDeviceCache = getEntry('power_devices')
-    protected powerDeviceMeta = getEntry('config')['power_device_meta']
-    protected locale = this.localeHelper.getLocale()
-
-    public constructor() {
-    }
-
     public getPowerDeviceData(powerDeviceName: string) {
-        for (const index in this.powerDeviceCache) {
-            const powerDevice = this.powerDeviceCache[index]
+        const powerDeviceCache = getEntry('power_devices')
+        for (const index in powerDeviceCache) {
+            const powerDevice = powerDeviceCache[index]
 
             if (powerDevice.device = powerDeviceName) {
                 return powerDevice
@@ -41,25 +34,30 @@ export class PowerDeviceHelper {
     }
 
     public updatePowerDevice(powerDeviceData: any) {
-        for (const index in this.powerDeviceCache) {
-            const powerDevice = this.powerDeviceCache[index]
+        const powerDeviceCache = getEntry('power_devices')
+        for (const index in powerDeviceCache) {
+            const powerDevice = powerDeviceCache[index]
 
             if (powerDeviceData.device = powerDevice.device) {
-                this.powerDeviceCache[index] = powerDeviceData
+                powerDeviceCache[index] = powerDeviceData
             }
         }
 
-        setData('power_devices', this.powerDeviceCache)
+        setData('power_devices', powerDeviceCache)
     }
 
     public parseFields() {
         const fields = []
-        const onLabel = this.locale.embeds.fields.on
-            .replace(/(\${icon})/g, this.powerDeviceMeta.on.icon)
-        const offLabel = this.locale.embeds.fields.off
-            .replace(/(\${icon})/g, this.powerDeviceMeta.off.icon)
+        const locale = new LocaleHelper().getLocale()
+        const powerDeviceCache = getEntry('power_devices')
+        const powerDeviceMeta = getEntry('config')['power_device_meta']
 
-        for (const powerDevice of this.powerDeviceCache) {
+        const onLabel = locale.embeds.fields.on
+            .replace(/(\${icon})/g, powerDeviceMeta.on.icon)
+        const offLabel = locale.embeds.fields.off
+            .replace(/(\${icon})/g, powerDeviceMeta.off.icon)
+
+        for (const powerDevice of powerDeviceCache) {
             fields.push({
                 'name': powerDevice.device,
                 'value': (powerDevice.status === 'on') ? onLabel : offLabel
