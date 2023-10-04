@@ -38,10 +38,13 @@ sudo rm -rf /usr/local/lib/node_modules
 status_msg "Remove old Node Version"
 sudo rm  /usr/local/bin/node
 
-status_msg "Add NodeJS 16.x Repo"
-curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
+status_msg "Add NodeJS 20.x Repo"
+sudo mkdir -p /etc/apt/keyrings
+curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | sudo gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
+echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_20.x nodistro main" | sudo tee /etc/apt/sources.list.d/nodesource.list
+sudo apt-get update
 
-status_msg "Install NodeJS 16.X or higher"
+status_msg "Install NodeJS 20.X or higher"
 if [[ "$(is_bookworm)" = "1" ]];
 then
     sudo apt-get install -y nodejs npm
