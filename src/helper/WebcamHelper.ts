@@ -15,13 +15,33 @@ import {getEntry, setData} from "../utils/CacheUtil";
 export class WebcamHelper {
     public async generateCache() {
         const moonrakerClient = getMoonrakerClient()
+        const config = new ConfigHelper()
 
         const webcamEntries = await moonrakerClient.send({"method": "server.webcams.list"})
         const webcamData = webcamEntries.result.webcams
+        let webcamConfigs = config.getEntriesByFilter(/^webcam$/g)
+        let activeWebcam = ''
+
+        if(webcamConfigs.length > 0) {
+            webcamConfigs = webcamConfigs[0]
+        }
 
         const webcamCache = {
             entries: {},
-            active: webcamData[0].name
+            active: ''
+        }
+
+        for(const webcamName in webcamConfigs) {
+            const webcamConfig = webcamConfigs[webcamName]
+
+            if(activeWebcam === '') {
+                activeWebcam = webcamName
+            }
+
+            webcamConfig.snapshot_url = webcamConfig.url
+            webcamConfig.name = webcamName
+
+            webcamCache.entries[webcamName] = webcamConfig
         }
 
         for(const data of webcamData) {
@@ -29,8 +49,14 @@ export class WebcamHelper {
                 continue
             }
 
+            if(activeWebcam === '') {
+                activeWebcam = data.name
+            }
+
             webcamCache.entries[data.name] = data
         }
+
+        webcamCache.active = activeWebcam
 
         setData('webcam', webcamCache)
     }
@@ -128,9 +154,11 @@ export class WebcamHelper {
             const reason = error as string
             const trace = await StackTrace.get()
 
+            console.log(webcamData)
+
             logEmpty()
             logError('Webcam Error:')
-            logError(`Url: ${webcamData.url}`)
+            logError(`Url: ${webcamData.snapshot_url}`)
             logError(`Error: ${reason}`)
             if (configHelper.traceOnWebErrors()) {
                 logError(trace)
