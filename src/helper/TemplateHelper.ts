@@ -276,7 +276,7 @@ export class TemplateHelper {
         }
     }
 
-    public getInputData(type: string, data: []) {
+    public getInputData(type: string, data: any[]) {
         const inputData = []
         const metaData = Object.assign({}, getEntry(type))
 

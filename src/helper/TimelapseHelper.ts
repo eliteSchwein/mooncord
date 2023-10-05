@@ -67,8 +67,7 @@ export class TimelapseHelper {
 
         delete this.timelapseFile[fileId]
 
-        // @ts-ignore
-        const buttonData = this.templateHelper.getInputData('buttons', ['to_timelapselist'])
+        const buttonData = new TemplateHelper().getInputData('buttons', ['to_timelapselist'])
         const components = []
         const buttons = new DiscordInputGenerator().generateButtons(buttonData)
 

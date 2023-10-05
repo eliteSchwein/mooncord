@@ -62,10 +62,6 @@ export class ThrottleNotification {
 
         setData('throttle', currentThrottleState)
 
-        const localeHelper = new LocaleHelper()
-        const locale = localeHelper.getLocale()
-        const configHelper = new ConfigHelper()
-        const discordClient = getDiscordClient()
         const notificationHelper = new NotificationHelper()
         const embedHelper = new EmbedHelper()
 
@@ -75,6 +71,6 @@ export class ThrottleNotification {
 
         const embed = await embedHelper.generateEmbed(`throttle_${localeKey}`)
 
-        notificationHelper.broadcastMessage(embed.embed)
+        void notificationHelper.broadcastMessage(embed.embed)
     }
 }

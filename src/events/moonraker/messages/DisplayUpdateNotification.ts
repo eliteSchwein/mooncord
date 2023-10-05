@@ -74,6 +74,6 @@ export class DisplayUpdateNotification {
 
         const embed = await embedHelper.generateEmbed('notification', {'message': displayMessage})
 
-        notificationHelper.broadcastMessage(embed.embed)
+        void notificationHelper.broadcastMessage(embed.embed)
     }
 }

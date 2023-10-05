@@ -16,13 +16,13 @@ export class NotificationHelper {
     protected localeHelper = new LocaleHelper()
     protected locale = this.localeHelper.getLocale()
 
-    public broadcastMessage(message) {
+    public async broadcastMessage(message) {
         if (!this.getEntries()) {
             return
         }
 
-        this.broadcastGuilds(message)
-        void this.notifyUsers(message)
+        await this.broadcastGuilds(message)
+        await this.notifyUsers(message)
     }
 
     public async removeOldStatus(channel: TextChannel) {

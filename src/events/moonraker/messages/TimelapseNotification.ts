@@ -17,17 +17,6 @@ export class TimelapseNotification {
     protected localeHelper = new LocaleHelper()
     protected locale = this.localeHelper.getLocale()
     protected notificationHelper = new NotificationHelper()
-    protected ffmpegRender = Ffmpeg()
-    protected ffmpegArguments = [
-        "-pix_fmt yuv420p",
-        "-preset veryslow",
-        "-crf 33",
-        "-vf scale=800:-1"
-    ]
-
-    public constructor() {
-        this.ffmpegRender.setFfmpegPath(ffmpegInstall.path)
-    }
 
     public async parse(message) {
         if (typeof (message.method) === 'undefined') {
@@ -41,7 +30,7 @@ export class TimelapseNotification {
             return
         }
 
-        if (!this.configHelper.notifyOnMoonrakerThrottle()) {
+        if (!this.configHelper.notifyOnTimelapseFinish()) {
             return
         }
 

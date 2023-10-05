@@ -29,6 +29,6 @@ export class BroadcastMessage {
 
         const embed = await embedHelper.generateEmbed('notification', {'message': notificationMessage}, null, {color})
 
-        notificationHelper.broadcastMessage(embed.embed)
+        void notificationHelper.broadcastMessage(embed.embed)
     }
 }
