@@ -9,12 +9,6 @@ red=$(echo -en "\e[91m")
 cyan=$(echo -en "\e[96m")
 default=$(echo -en "\e[39m")
 
-is_bookworm() {
-    if [[ -f /etc/os-release ]]; then
-        grep -cq "bookworm" /etc/os-release &> /dev/null && echo "1" || echo "0"
-    fi
-}
-
 warn_msg(){
   echo -e "${red}<!!!!> $1${default}"
 }
@@ -45,12 +39,7 @@ echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.co
 sudo apt-get update
 
 status_msg "Install NodeJS 20.X or higher"
-if [[ "$(is_bookworm)" = "1" ]];
-then
-    sudo apt-get install -y nodejs npm
-else
-    sudo apt-get install -y nodejs
-fi
+sudo apt-get install -y nodejs
 
 status_msg "Rebuild NPM, this will take some time please wait....."
 npm rebuild
