@@ -1,12 +1,14 @@
 'use strict'
 
-import {Client} from "discord.js";
+import {Client, MessageEmbed} from "discord.js";
 import {getMoonrakerClient} from "../../Application";
 import {ConfigHelper} from "../../helper/ConfigHelper";
 import {LocaleHelper} from "../../helper/LocaleHelper";
 import {logWarn} from "../../helper/LoggerHelper";
 import {PermissionHelper} from "../../helper/PermissionHelper";
 import {uploadAttachment} from "../../helper/DataHelper";
+import {EmbedHelper} from "../../helper/EmbedHelper";
+import {MetadataHelper} from "../../helper/MetadataHelper";
 
 export class GCodeUploadHandler {
 
@@ -15,32 +17,46 @@ export class GCodeUploadHandler {
             if (message.author.id === discordClient.user.id) {
                 return
             }
-            if (message.attachments.size === 0) {
-                return
-            }
 
-            const attachment = message.attachments.at(0)
-            const url = attachment.url
-
-            if (!url.endsWith('.gcode')) {
-                return
-            }
-
-            const moonrakerClient = getMoonrakerClient()
-            const configHelper = new ConfigHelper()
-            const localeHelper = new LocaleHelper()
             const permissionHelper = new PermissionHelper()
-            const locale = localeHelper.getLocale()
 
             if (!permissionHelper.hasPermission(message.author, message.guild, 'gcode_upload')) {
                 logWarn(`${message.author.tag} doesnt have the permission to upload gcode files!`)
                 return;
             }
 
+            if (message.attachments.size === 0) {
+                return
+            }
+
+            const attachment = message.attachments.at(0)
+            const fileName = attachment.name
+
+            if (!fileName.endsWith('.gcode')) {
+                return
+            }
+
+            const localeHelper = new LocaleHelper()
+            const embedHelper = new EmbedHelper()
+            const locale = localeHelper.getLocale()
+
+            await message.channel.sendTyping()
+
             const uploadRequest = await uploadAttachment(attachment)
 
             if (uploadRequest) {
-                await message.react('✅')
+                const metaDataHelper = new MetadataHelper()
+                const metaData = await metaDataHelper.getMetaData(fileName)
+                const thumbnail = await metaDataHelper.getThumbnail(fileName)
+                const embedData = await embedHelper.generateEmbed('printjob_start_request', metaData)
+                const embed = embedData.embed.embeds[0] as MessageEmbed
+
+                embed.setThumbnail(`attachment://${thumbnail.name}`)
+
+                embedData.embed.embeds = [embed]
+                embedData.embed['files'] = [thumbnail]
+
+                await message.reply(embedData.embed)
                 return
             }
 
