@@ -80,14 +80,20 @@ async function init() {
 
     await statusHelper.update(null, true, discordClient)
 
-    if(!args.includes('setup')) {
+    if(!args.includes('setup') && args.length < 3) {
         return
     }
 
-    const setupCode = (Math.random() + 1).toString(36).substring(2)
+    let setupUser = args[2]
+
+    if(!setupUser.includes('#')) {
+        setupUser = `${setupUser}#0`
+    }
+
+    setupUser = setupUser.toLowerCase()
 
     setData('setup_mode', true)
-    setData('setup_code', setupCode)
+    setData('setup_user', setupUser)
 
     for (let i = 0; i < 1024; i++) {
         logEmpty()
@@ -110,8 +116,8 @@ async function init() {
     logRegular(`please invite the bot on a Server: 
         ${getEntry('invite_url')}`)
     logEmpty()
-    logRegular(`after the invite please write the following code in a text channel:`)
-    logNotice(setupCode)
+    logRegular(`after the invite please write with your user:`)
+    logNotice(setupUser)
 }
 
 export function reloadCache() {

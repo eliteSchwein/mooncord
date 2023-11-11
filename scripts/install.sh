@@ -20,6 +20,7 @@ MCTOKEN=""
 MCWEBTOKEN=""
 MCURL="http://127.0.0.1"
 MCMOONRAKERSERVICE="moonraker"
+MCCONTROLLER=""
 WRITECONFIG=true
 
 questions()
@@ -98,6 +99,16 @@ questions()
         done
     fi
     ok_msg "Moonraker URL set: $MCURL"
+
+    status_msg "Please enter your Discord Tag"
+    while true; do
+        read -p "$cyan Tag (example#0001): $default" discord_tag
+        case $discord_tag in
+            "") warn_msg "Please Enter your Discord Tag (example#123 or example)";;
+            * ) MCCONTROLLER="$discord_tag"; break;;
+        esac
+    done
+    ok_msg "Discord Tag set: $MCCONTROLLER"
 }
 
 install_packages()
@@ -219,7 +230,7 @@ generate_config() {
 
 verify_Controller() {
     ok_msg "Temporary Start MoonCord for the Controller verification"
-    npm start $MCCONFIGPATH setup
+    npm start $MCCONFIGPATH setup $MCCONTROLLER
 }
 
 start_MoonCord() {

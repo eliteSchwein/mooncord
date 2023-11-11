@@ -14,36 +14,37 @@ export class VerifyHandler {
                 return
             }
 
-            const setupCode = getEntry('setup_code')
+            let setupUser = getEntry('setup_user')
 
-            if (typeof setupCode === 'undefined') {
+            if (typeof setupUser === 'undefined') {
                 return
             }
+
+            const user = message.author.tag
+            const controllerId = message.author.id
 
             const content = message.content.trim()
 
             if(content === '') {
-                console.log(message)
                 return
             }
 
-            if(content !== setupCode) {
-                logError(`Message (${content}) doesnt match the setup code: ${setupCode}!!!`)
+            if(user !== setupUser) {
+                logError(`Message (${user}) doesnt match the setup user: ${setupUser}!!!`)
                 return
             }
 
-            const controllerId = message.author.id
             const database = getDatabase()
             const embedHelper = new EmbedHelper()
 
             const permissions = database.getDatabaseEntry('permissions')
 
             if (permissions['controllers'].includes(controllerId)) {
-                logError(`${message.author.tag} is already a Controller!!!`)
+                logError(`${user} is already a Controller!!!`)
                 await message.reply('You are already a Controller')
                 //return
             } else {
-                logRegular(`add ${message.author.tag}'s ID into the Controller List (${controllerId})...`)
+                logRegular(`add ${user}'s ID into the Controller List (${controllerId})...`)
                 permissions['controllers'].push(controllerId)
 
                 setData('setup_code', undefined)
