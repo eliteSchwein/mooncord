@@ -217,6 +217,7 @@ generate_config() {
 
     if [ ! -d "/tmp/$MCSERVICENAME_ESC/" ];
     then
+      rm -rf "$MCLOGPATH/mooncord.log" > /dev/null
       mkdir "/tmp/$MCSERVICENAME_ESC/"
       touch "/tmp/$MCSERVICENAME_ESC/mooncord.log"
       ln -s "/tmp/$MCSERVICENAME_ESC/mooncord.log" "$MCLOGPATH/mooncord.log"
