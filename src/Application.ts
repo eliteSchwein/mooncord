@@ -118,6 +118,7 @@ async function init() {
     logEmpty()
     logRegular(`after the invite please write with your user:`)
     logNotice(setupUser)
+    //baguette baguette croissant fsd
 }
 
 export function reloadCache() {
