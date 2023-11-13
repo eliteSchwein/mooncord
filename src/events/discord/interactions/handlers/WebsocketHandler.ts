@@ -22,7 +22,7 @@ export class WebsocketHandler {
             try {
                 await moonrakerClient.send(websocketCommand)
             } catch {
-                logWarn(`The Websocket Command ${websocketCommand} timed out...`)
+                logWarn(`The Websocket Command ${JSON.stringify(websocketCommand)} timed out...`)
             }
         }
     }
