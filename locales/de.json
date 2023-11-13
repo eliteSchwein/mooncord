@@ -113,12 +113,12 @@
         "printjob_start": {
             "content": "Druckauftrag gestartet: `${state.print_stats.filename}`",
             "title": "Druck gestartet",
-            "activity": "starte ${state.print_stats.filename}"
+            "activity": "🖨️ starte ${state.print_stats.filename}"
         },
         "printjob_complete": {
             "content": "Druck abgeschlossen",
             "title": "Druck abgeschlossen",
-            "activity": "Druck abgeschlossen"
+            "activity": "✅ Druck abgeschlossen"
         },
         "printjob_pause": {
             "content": "Printjob ${state.print_stats.filename} is paused",
@@ -128,12 +128,12 @@
         "printjob_printing": {
             "content": "Druckauftrag ${state.print_stats.filename} ist bei ${percent:0:state.display_status.progress}%",
             "title": "Druck Fortschritt",
-            "activity": "Druckfortschritt: ${percent:0:state.display_status.progress}%"
+            "activity": "🖨️ Druckfortschritt: ${percent:0:state.display_status.progress}%"
         },
         "printjob_stop": {
             "content": "Druck angehalten",
             "title": "Druck angehalten",
-            "activity": "Druck angehalten"
+            "activity": "🛑 Druck angehalten"
         },
         "temperatures": {
             "title": "Temperatur"
@@ -144,37 +144,37 @@
         "disconnected": {
             "content": "Drucker hat die Verbindung zu Klipper verloren!",
             "title": "Drucker getrennt!",
-            "activity": "warte auf Klipper"
+            "activity": "⚠️ Firmware getrennt!"
         },
         "moonraker_disconnected": {
             "content": "Moonraker Verbindung verloren!",
             "title": "Verbindung verloren!",
-            "activity": "warte auf Moonraker"
+            "activity": "⚠️ keine Verbindung!"
         },
         "error": {
             "content": "Ein Fehler ist aufgetreten!",
             "title": "Ein Fehler ist aufgetreten!",
-            "activity": "warte auf Nutzer"
+            "activity": "⚠️ Fehler aufgetreten!"
         },
         "offline": {
             "content": "Moonraker oder Klipper haben die Verbindung verloren!",
             "title": "Verbindung verloren!",
-            "activity": "warte auf Moonraker"
+            "activity": "⚠️ keine Verbindung!"
         },
         "shutdown": {
             "content": "Klipper Firmware wurde heruntergefahren!",
             "title": "Klipper fährt herunter",
-            "activity": "warte auf Klipper"
+            "activity": "⚠️ Klipper aus!"
         },
         "ready": {
             "content": "Drucker ist bereit zum drucken",
             "title": "Drucker Bereit",
-            "activity": "warte auf einen Druck Auftrag..."
+            "activity": "💤 bereit"
         },
         "startup": {
             "content": "Drucker fährt hoch",
             "title": "Drucker fährt hoch",
-            "activity": "Drucker fährt hoch"
+            "activity": "⏱️ fährt hoch"
         },
         "throttle_temperature_limit_active": {
             "content": "System vom Drucker ist gerade gedrosselt",

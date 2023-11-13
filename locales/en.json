@@ -129,27 +129,27 @@
         "printjob_start":{
             "content": "Printjob started: `${state.print_stats.filename}`",
             "title": "Print started",
-            "activity": "start ${state.print_stats.filename}"
+            "activity": "🖨️ start ${state.print_stats.filename}"
         },
         "printjob_complete":{
             "content": "Printjob is complete",
             "title": "Print Complete",
-            "activity": "Finished Print"
+            "activity": "✅ finished Print"
         },
         "printjob_pause":{
             "content": "Printjob ${state.print_stats.filename} is paused",
             "title": "Print Paused",
-            "activity": "take a Break"
+            "activity": "☕ take a Break"
         },
         "printjob_printing":{
             "content": "Printjob ${state.print_stats.filename} is at ${percent:0:state.display_status.progress}%",
             "title": "Printing",
-            "activity": "Printing: ${percent:0:state.display_status.progress}%"
+            "activity": "🖨️ printing: ${percent:0:state.display_status.progress}%"
         },
         "printjob_stop":{
             "content": "The Printjob stopped",
             "title": "Print stopped",
-            "activity": "Print stopped"
+            "activity": "🛑 Print stopped"
         },
         "temperatures": {
             "title": "Temperatures"
@@ -160,37 +160,37 @@
         "disconnected":{
             "content": "Printer got disconnected from Klipper!",
             "title": "Printer Disconnected!",
-            "activity": "wait for Klipper"
+            "activity": "⚠️ firmware disconnected!"
         },
         "moonraker_disconnected":{
             "content": "Moonraker Connection got lost!",
             "title": "Moonraker Connection lost!",
-            "activity": "wait for Moonraker"
+            "activity": "⚠️ no connection!"
         },
         "error":{
             "content": "An Error occured!",
             "title": "An Error occured!",
-            "activity": "wait for User"
+            "activity": "⚠️ error occured!"
         },
         "offline":{
             "content": "Moonraker or Klipper Connection got lost!",
             "title": "Connection Lost!",
-            "activity": "wait for Moonraker"
+            "activity": "⚠️ no connection!"
         },
         "shutdown":{
             "content": "Klipper firmware has a shutdown!",
             "title": "Klipper Shutdown",
-            "activity": "wait for Klipper"
+            "activity": "⚠️ klipper shutdown!"
         },
         "ready":{
             "content": "Printer is ready to print",
             "title": "Printer Ready",
-            "activity": "for GCODE File..."
+            "activity": "💤 ready to print"
         },
         "startup":{
             "content": "Printer is starting",
             "title": "Printer starting",
-            "activity": "Printer start"
+            "activity": "⏱️ Printer starting"
         },
         "throttle_temperature_limit_active": {
             "content": "System of Printer is currently throttled",

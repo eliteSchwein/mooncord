@@ -155,13 +155,12 @@ export class StatusHelper {
 
         if (typeof statusMeta.activity !== 'undefined') {
             this.discordClient.getClient().user.setPresence({
-                status: statusMeta.activity.status
+                status: statusMeta.activity_status,
+                activities: [{
+                    name: statusEmbed.activity,
+                    type: statusMeta.activity_type
+                }]
             })
-
-            this.discordClient.getClient().user.setActivity(
-                statusEmbed.activity,
-                {type: statusMeta.activity.type}
-            )
         }
     }
 
