@@ -87,10 +87,8 @@ async function init() {
     let setupUser = args[2]
 
     if(!setupUser.includes('#')) {
-        setupUser = `${setupUser}#0`
+        setupUser = setupUser.toLowerCase()
     }
-
-    setupUser = setupUser.toLowerCase()
 
     setData('setup_mode', true)
     setData('setup_user', setupUser)

@@ -92,10 +92,13 @@ export class WebcamHelper {
             'delay': snapshotConfig.delay_after_snapshot_commands
         }
 
-        logRegular('Run Webcam pre Tasks if present...')
-        await this.executePostProcess(beforeStatus)
-
         try {
+            if(webcamData === undefined)
+                throw new Error('Config Error: Webcam has invalid config or was not found')
+
+            logRegular('Run Webcam pre Tasks if present...')
+            await this.executePostProcess(beforeStatus)
+
             logRegular('Retrieve Webcam Snapshot...')
             const res = await axios({
                 method: 'get',
@@ -154,11 +157,14 @@ export class WebcamHelper {
             const reason = error as string
             const trace = await StackTrace.get()
 
-            console.log(webcamData)
+            let url = 'not configured'
+
+            if(webcamData !== undefined)
+                url = webcamData.snapshot_url
 
             logEmpty()
             logError('Webcam Error:')
-            logError(`Url: ${webcamData.snapshot_url}`)
+            logError(`Url: ${url}`)
             logError(`Error: ${reason}`)
             if (configHelper.traceOnWebErrors()) {
                 logError(trace)

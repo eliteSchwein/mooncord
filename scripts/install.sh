@@ -102,7 +102,7 @@ questions()
 
     status_msg "Please enter your Discord Tag"
     while true; do
-        read -p "$cyan Tag (example#0001): $default" discord_tag
+        read -p "$cyan Tag (example#0001 or example): $default" discord_tag
         case $discord_tag in
             "") warn_msg "Please Enter your Discord Tag (example#123 or example)";;
             * ) MCCONTROLLER="$discord_tag"; break;;
