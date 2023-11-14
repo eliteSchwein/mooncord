@@ -41,7 +41,7 @@ export class UsageHelper {
             findValue('machine_info.system_info.cpu_info.memory_units'))
 
         const freeMemoryRaw = findValue('state.system_stats.memavail')
-        const usedMemoryRaw = (totalMemoryRaw * 1024) / freeMemoryRaw
+        const usedMemoryRaw = totalMemoryRaw - freeMemoryRaw * 1024
 
         const totalMemory = (totalMemoryRaw / (1024 ** 3))
             .toFixed(2)
@@ -49,7 +49,7 @@ export class UsageHelper {
         const freeMemory = (freeMemoryRaw / (1024 ** 2))
             .toFixed(2)
 
-        const usedMemory = (usedMemoryRaw / (1024 ** 2))
+        const usedMemory = (usedMemoryRaw / (1024 ** 3))
             .toFixed(2)
 
         updateData('usage', {
