@@ -10,7 +10,7 @@ import {TempHelper} from "./TempHelper";
 import {VersionHelper} from "./VersionHelper";
 import {MetadataHelper} from "./MetadataHelper";
 import * as app from "../Application";
-import path from "path";
+import path, {resolve} from "path";
 import {WebcamHelper} from "./WebcamHelper";
 import {PowerDeviceHelper} from "./PowerDeviceHelper";
 import {HistoryHelper} from "./HistoryHelper";
@@ -374,6 +374,7 @@ export class TemplateHelper {
 
     private async parseImage(imageID: string) {
         const metadataHelper = new MetadataHelper()
+
         if (typeof imageID === 'undefined') {
             return
         }
@@ -382,8 +383,19 @@ export class TemplateHelper {
             return imageID
         }
 
+        if(imageID === 'placeholder') {
+            return new MessageAttachment(
+                resolve(__dirname, `../assets/placeholder.png`),
+                'placeholder.png'
+            )
+        }
+
         if (imageID === 'webcam') {
             return new WebcamHelper().retrieveWebcam()
+        }
+
+        if (imageID === 'placeholderWebcam') {
+            return new WebcamHelper().getFallbackImage()
         }
 
         if (imageID === 'thumbnail') {

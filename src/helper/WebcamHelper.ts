@@ -173,11 +173,17 @@ export class WebcamHelper {
             logRegular('Run Webcam follow up Tasks if present...')
             await this.executePostProcess(afterStatus)
 
-            return new MessageAttachment(
-                resolve(__dirname, `../assets/icon-sets/${configHelper.getIconSet()}/snapshot-error.png`),
-                'snapshot-error.png'
-            )
+            return this.getFallbackImage()
         }
+    }
+
+    public getFallbackImage() {
+        const configHelper = new ConfigHelper()
+
+        return new MessageAttachment(
+            resolve(__dirname, `../assets/icon-sets/${configHelper.getIconSet()}/snapshot-error.png`),
+            'snapshot-error.png'
+        )
     }
 
     private triggerWebsite(url, post) {

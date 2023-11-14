@@ -31,6 +31,7 @@ export class StatusHelper {
         const stateCache = getEntry('state')
         const klipperStatus = stateCache.print_stats.state
         const progress = stateCache.display_status.progress.toFixed(2)
+        const overridePlaceholders = {}
 
         if (functionCache.status_cooldown !== 0) {
             logNotice('Status cooldown is currently active!')
@@ -136,14 +137,20 @@ export class StatusHelper {
             'status_in_query': true
         })
 
-        const statusEmbed = await this.embedHelper.generateEmbed(statusMeta.embed_id)
+        const postEmbed = status === 'printing' && this.checkPercentMatch() && !this.notificationHelper.isEmbedBlocked(statusMeta.embed_id) ||
+            status !== 'printing' && !this.notificationHelper.isEmbedBlocked(statusMeta.embed_id)
+
+        if(!postEmbed) {
+            overridePlaceholders['image'] = 'placeholder'
+        }
+
+        const statusEmbed = await this.embedHelper.generateEmbed(statusMeta.embed_id, overridePlaceholders)
 
         if (this.discordClient === null) {
             this.discordClient = app.getDiscordClient()
         }
 
-        if (status === 'printing' && this.checkPercentMatch() && !this.notificationHelper.isEmbedBlocked(statusMeta.embed_id) ||
-            status !== 'printing' && !this.notificationHelper.isEmbedBlocked(statusMeta.embed_id)) {
+        if (postEmbed) {
             void this.notificationHelper.broadcastMessage(statusEmbed.embed)
         }
 
