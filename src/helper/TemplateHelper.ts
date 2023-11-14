@@ -19,6 +19,8 @@ import TempHistoryGraph from "./graphs/TempHistoryGraph";
 import {ExcludeGraph} from "./graphs/ExcludeGraph";
 import {SpoolmanHelper} from "./SpoolmanHelper";
 import {afterEach} from "node:test";
+import {existsSync} from "fs";
+import {logWarn} from "./LoggerHelper";
 
 export class TemplateHelper {
     public async parseRawTemplate(type: string, id: string) {
@@ -414,7 +416,16 @@ export class TemplateHelper {
             return await new ExcludeGraph().renderGraph(undefined)
         }
 
-        const imagePath = path.resolve(__dirname, `../assets/icon-sets/${new ConfigHelper().getIconSet()}/${imageID}`)
+        const iconSet = new ConfigHelper().getIconSet()
+
+        const imagePath = path.resolve(__dirname, `../assets/icon-sets/${iconSet}/${imageID}`)
+
+        if(!existsSync(imagePath)) {
+            logWarn(`image ${imageID} not found in the assets`)
+
+            return new MessageAttachment(path.resolve(__dirname, `../assets/icon-sets/${iconSet}/image_not_found.png`), 'image_not_found.png')
+        }
+
         return new MessageAttachment(imagePath, imageID)
     }
 }
