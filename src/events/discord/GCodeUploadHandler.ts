@@ -18,13 +18,6 @@ export class GCodeUploadHandler {
                 return
             }
 
-            const permissionHelper = new PermissionHelper()
-
-            if (!permissionHelper.hasPermission(message.author, message.guild, 'gcode_upload')) {
-                logWarn(`${message.author.tag} doesnt have the permission to upload gcode files!`)
-                return;
-            }
-
             if (message.attachments.size === 0) {
                 return
             }
@@ -34,6 +27,13 @@ export class GCodeUploadHandler {
 
             if (!fileName.endsWith('.gcode')) {
                 return
+            }
+
+            const permissionHelper = new PermissionHelper()
+
+            if (!permissionHelper.hasPermission(message.author, message.guild, 'gcode_upload')) {
+                logWarn(`${message.author.tag} doesnt have the permission to upload gcode files!`)
+                return;
             }
 
             const localeHelper = new LocaleHelper()
