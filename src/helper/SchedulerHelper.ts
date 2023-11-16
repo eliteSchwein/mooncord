@@ -72,9 +72,6 @@ export class SchedulerHelper {
     protected scheduleModerate() {
         this.moderateScheduler = setInterval(async () => {
             const machineInfo = await this.moonrakerClient.send({"method": "machine.system_info"})
-            const webcamHelper = new WebcamHelper()
-
-            await webcamHelper.retrieveWebcam()
 
             setData('machine_info', machineInfo.result)
 
