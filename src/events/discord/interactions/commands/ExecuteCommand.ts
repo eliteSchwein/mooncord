@@ -37,6 +37,8 @@ export class ExecuteCommand {
             return
         }
 
+        await interaction.deferReply()
+
         const gcodeValid = await consoleHelper.executeGcodeCommands([gcodeArgument], interaction.channel)
 
         let answer = locale.messages.answers.execute_successful
@@ -52,6 +54,6 @@ export class ExecuteCommand {
                 .replace(/\${username}/g, interaction.user.tag)
         }
 
-        await interaction.reply(answer)
+        await interaction.editReply(answer)
     }
 }
