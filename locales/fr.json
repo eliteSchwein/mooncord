@@ -90,7 +90,7 @@
         },
         "info": {
             "title": "Information",
-            "description": "Version: ${package_config.version}\nAuthor: ${package_config.author}\nHomepage: ${package_config.homepage}\n${config.custom_info}"
+            "description": "Version: ${package_config.version}\nAuthor: ${package_config.author}\nHomepage: ${package_config.homepage}\n${config.general.custom_info}"
         },
         "history": {
             "title": "Historique d'impression"

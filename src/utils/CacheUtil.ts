@@ -7,6 +7,7 @@ import * as util from "util";
 import {mergeDeep} from "../helper/DataHelper";
 import {get} from 'lodash'
 import {LocaleHelper} from "../helper/LocaleHelper";
+import {ConfigHelper} from "../helper/ConfigHelper";
 
 const cacheData: any = {
     function: {
@@ -176,13 +177,15 @@ export function getPowerDeviceChoices() {
 
 export function getPreheatProfileChoices() {
     const choices = []
+    const configPresets = new ConfigHelper().getEntriesByFilter(/^preset /g, true)
 
-    for (const profile in cacheData.config.presets) {
+    for (const profile in configPresets) {
         choices.push({
             "name": profile,
             "value": profile
         })
     }
+
     return choices
 }
 

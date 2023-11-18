@@ -21,8 +21,8 @@ export class HistoryHelper {
     public async parseData() {
         logRegular('Retrieve history data...')
         const moonrakerClient = getMoonrakerClient()
-        const printJobsRequest = await moonrakerClient.send({"method": "server.history.list"})
-        const printTotalRequest = await moonrakerClient.send({"method": "server.history.totals"})
+        const printJobsRequest = await moonrakerClient.send({"method": "server.history.totals"})
+        const printTotalRequest = await moonrakerClient.send({"method": "server.history.list"})
 
         if (printJobsRequest.result === undefined || printTotalRequest.result === undefined) {
             return

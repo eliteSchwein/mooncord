@@ -24,11 +24,11 @@ export class PermissionHelper {
     }
 
     public hasPermission(user: User, guild: Guild, command: string) {
-        let commandPermission = this.config.getEntriesByFilter(new RegExp(`/^command ${command}/`, 'g'))[0]
-        const buttonPermission = this.config.getEntriesByFilter(new RegExp(`/^button ${command}/`, 'g'))[0]
-        const selectPermission = this.config.getEntriesByFilter(new RegExp(`/^select_menu ${command}/`, 'g'))[0]
-        const modalPermission = this.config.getEntriesByFilter(new RegExp(`/^modal ${command}/`, 'g'))[0]
-        const reactPermission = this.config.getEntriesByFilter(new RegExp(`/^reaction ${command}/`, 'g'))[0]
+        let commandPermission = this.config.getEntriesByFilter(new RegExp(`^command ${command}`, 'g'))[0]
+        const buttonPermission = this.config.getEntriesByFilter(new RegExp(`^button ${command}`, 'g'))[0]
+        const selectPermission = this.config.getEntriesByFilter(new RegExp(`^select_menu ${command}`, 'g'))[0]
+        const modalPermission = this.config.getEntriesByFilter(new RegExp(`^modal ${command}`, 'g'))[0]
+        const reactPermission = this.config.getEntriesByFilter(new RegExp(`^reaction ${command}`, 'g'))[0]
 
         if (typeof reactPermission !== 'undefined') {
             if (reactPermission.users === "*") {

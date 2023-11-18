@@ -90,7 +90,7 @@
         },
         "info": {
             "title": "Informatie",
-            "description": "Versie: ${package_config.version}\nAuteur: ${package_config.author}\nHomepage: ${package_config.homepage}\n${config.custom_info}"
+            "description": "Versie: ${package_config.version}\nAuteur: ${package_config.author}\nHomepage: ${package_config.homepage}\n${config.general.custom_info}"
         },
         "history": {
             "title": "Printgeschiedenis"

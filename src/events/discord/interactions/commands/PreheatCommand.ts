@@ -7,6 +7,7 @@ import {LocaleHelper} from "../../../../helper/LocaleHelper";
 import {logRegular} from "../../../../helper/LoggerHelper";
 import {TempHelper} from "../../../../helper/TempHelper";
 import {ModalHelper} from "../../../../helper/ModalHelper";
+import {ConfigHelper} from "../../../../helper/ConfigHelper";
 
 export class PreheatCommand {
     public constructor(interaction: CommandInteraction, commandId: string) {
@@ -104,11 +105,11 @@ export class PreheatCommand {
     private async heatProfile(profileName: string) {
         const moonrakerClient = getMoonrakerClient()
         const tempHelper = new TempHelper()
-        const preset = Object.assign({}, findValue(`config.presets.${profileName}`))
+        const preset = new ConfigHelper().getEntriesByFilter(new RegExp(`^preset ${profileName}$`, "g"), false)[0]
 
-        for (const gcode in preset.gcode) {
-            logRegular(`execute ${gcode}...`)
-            await moonrakerClient.send({"method": "printer.gcode.script", "params": {"script": gcode}})
+        if(preset.gcode) {
+            logRegular(`execute ${preset.gcode}...`)
+            await moonrakerClient.send({"method": "printer.gcode.script", "params": {"script": preset.gcode}})
         }
 
         delete preset.gcode

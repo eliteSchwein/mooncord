@@ -90,7 +90,7 @@
         },
         "info": {
             "title": "Informații",
-            "description": "Versiunea: ${package_config.version}\nAutor: ${package_config.author}\nPagina de start: ${package_config.homepage}\n${config.custom_info}"
+            "description": "Versiunea: ${package_config.version}\nAutor: ${package_config.author}\nPagina de start: ${package_config.homepage}\n${config.general.custom_info}"
         },
         "history": {
             "title": "Istoricul lucrărilor de imprimare"
