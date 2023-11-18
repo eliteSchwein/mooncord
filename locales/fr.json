@@ -113,12 +113,12 @@
         "printjob_start": {
             "content": "Impression démarrer: `${state.print_stats.filename}`",
             "title": "Impression démarrer",
-            "activity": "start ${state.print_stats.filename}"
+            "activity": "\uD83D\uDDA8\uFE0F start ${state.print_stats.filename}"
         },
         "printjob_complete": {
             "content": "Impression complète",
             "title": "Impression complète",
-            "activity": "Impression finie"
+            "activity": "✅ Impression finie"
         },
         "printjob_pause": {
             "content": "L'impression ${state.print_stats.filename} est en pause",
@@ -128,12 +128,12 @@
         "printjob_printing": {
             "content": "Impression ${state.print_stats.filename} est à ${percent:0:state.display_status.progress}%",
             "title": "Impression",
-            "activity": "Impression: ${percent:0:state.display_status.progress}%"
+            "activity": "\uD83D\uDDA8\uFE0F Impression: ${percent:0:state.display_status.progress}%"
         },
         "printjob_stop": {
             "content": "Impression stopper",
             "title": "Impression stopper",
-            "activity": "Impression stopper"
+            "activity": "\uD83D\uDED1 Impression stopper"
         },
         "temperatures": {
             "title": "Temperature"
@@ -149,32 +149,32 @@
         "moonraker_disconnected": {
             "content": "Connection avec Moonraker perdu !",
             "title": "Connection avec Moonraker perdue !",
-            "activity": "en attente de Moonraker"
+            "activity": "⚠\uFE0F en attente de Moonraker"
         },
         "error": {
             "content": "Une erreur s'est produite !",
             "title": "Une erreur s'est produite !",
-            "activity": "en attente de l'utilisateur"
+            "activity": "⚠\uFE0F en attente de l'utilisateur"
         },
         "offline": {
             "content": "La connection avec Moonraker or Klipper est perdu !",
             "title": "Connection perdu !",
-            "activity": "en attente de Moonraker"
+            "activity": "⚠\uFE0F en attente de Moonraker"
         },
         "shutdown": {
             "content": "Le firmware de Klipper s'est arrêté !",
             "title": "Klipper s'est arrêté",
-            "activity": "en attente de Klipper"
+            "activity": "⚠\uFE0F en attente de Klipper"
         },
         "ready": {
             "content": "L'imprimante est prête à imprimer",
             "title": "Impression prête",
-            "activity": "pour le fichier GCODE..."
+            "activity": "\uD83D\uDCA4 pour le fichier GCODE..."
         },
         "startup": {
             "content": "L'imprimante démarre",
             "title": "Démarrage de l'impression",
-            "activity": "L'impression commance"
+            "activity": "⏱\uFE0F L'impression commance"
         },
         "throttle_temperature_limit_active": {
             "content": "Le système de l'imprimante est actuellement bridé",
