@@ -226,7 +226,7 @@ export class ConfigHelper {
     }
 
     public notifyOnMoonrakerThrottle() {
-        return this.getEntriesByFilter(/^notifications$/g)[0].show_no_permission_private
+        return this.getEntriesByFilter(/^notifications$/g)[0].moonraker_throttle
     }
 
     public dumpCacheOnStart() {
