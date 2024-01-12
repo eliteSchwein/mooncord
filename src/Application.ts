@@ -87,7 +87,7 @@ async function init() {
     let setupUser = args[2] as string|undefined
 
     if(!setupUser) {
-        logError(`missing last argument for the setup mode, example: npm start PATH/TO/CONFIG/ setup USERNAME`)
+        logError(`missing last argument for the setup mode, example: npm start /PATH/TO/CONFIG/ setup USERNAME`)
         process.exit(5)
     }
 
