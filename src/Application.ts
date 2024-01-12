@@ -84,7 +84,12 @@ async function init() {
         return
     }
 
-    let setupUser = args[2]
+    let setupUser = args[2] as string|undefined
+
+    if(!setupUser) {
+        logError(`missing last argument for the setup mode, example: npm start PATH/TO/CONFIG/ setup USERNAME`)
+        process.exit(5)
+    }
 
     if(!setupUser.includes('#')) {
         setupUser = setupUser.toLowerCase()

@@ -53,6 +53,16 @@ questions()
     fi
     ok_msg "Klipper Log Path set: $MCLOGPATH"
 
+    status_msg "Please enter your Discord Tag"
+    while true; do
+        read -p "$cyan Tag (example#0001 or example): $default" discord_tag
+        case $discord_tag in
+            "") warn_msg "Please Enter your Discord Tag (example#123 or example)";;
+            * ) MCCONTROLLER="$discord_tag"; break;;
+        esac
+    done
+    ok_msg "Discord Tag set: $MCCONTROLLER"
+
     if [ -f "$MCCONFIGPATH/mooncord.cfg" ];
     then
         status_msg "MoonCord config found, do you want to overwrite it?"
@@ -99,16 +109,6 @@ questions()
         done
     fi
     ok_msg "Moonraker URL set: $MCURL"
-
-    status_msg "Please enter your Discord Tag"
-    while true; do
-        read -p "$cyan Tag (example#0001 or example): $default" discord_tag
-        case $discord_tag in
-            "") warn_msg "Please Enter your Discord Tag (example#123 or example)";;
-            * ) MCCONTROLLER="$discord_tag"; break;;
-        esac
-    done
-    ok_msg "Discord Tag set: $MCCONTROLLER"
 }
 
 install_packages()
