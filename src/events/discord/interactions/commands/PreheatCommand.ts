@@ -59,7 +59,8 @@ export class PreheatCommand {
         let heaterList = ''
 
         for (const heater of availableHeaters) {
-            const heaterTemp = interaction.options.getInteger(heater)
+            const heaterName = heater.replace(/(heater_generic )/g, '')
+            const heaterTemp = interaction.options.getInteger(heaterName)
             const heaterData = tempHelper.getHeaterConfigData(heater)
             const heaterMaxTemp = Number(heaterData.max_temp)
             const heaterMinTemp = Number(heaterData.min_temp)
@@ -86,7 +87,7 @@ export class PreheatCommand {
 
             argumentFound = true
             heaterList = `\`${heater}: ${heaterTemp}C°\`, ${heaterList}`
-            await tempHelper.heatHeater(heater, heaterTemp)
+            await tempHelper.heatHeater(heaterName, heaterTemp)
         }
 
         if (!argumentFound) {

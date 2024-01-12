@@ -95,8 +95,9 @@ export function getHeaterArguments() {
 
     const {description} = heater
 
-    for (const heater of heaters) {
+    for (let heater of heaters) {
         const heaterData = cacheData.state.configfile.config[heater]
+        heater = heater.replace(/(heater_generic )/g, '')
         const heaterMaxTemp = Number(heaterData.max_temp)
         const heaterMinTemp = Number(heaterData.min_temp)
         options[heater] = {
