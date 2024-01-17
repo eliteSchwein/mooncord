@@ -2,6 +2,7 @@
   "icons": [
     "klippy_shutdown",
     "error",
+    "interrupted",
     "cancelled",
     "completed",
     "in_progress"
