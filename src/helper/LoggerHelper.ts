@@ -112,6 +112,10 @@ export function logWarn(message) {
     console.log(`${getLevel('warn')} ${getTimeStamp()} ${util.format(message)}`.yellow)
 }
 
+export function logCustom(message, level = "info") {
+    console.log(`${getLevel(level)} ${getTimeStamp()} ${util.format(message)}`)
+}
+
 export function logEmpty() {
     console.log('')
 }

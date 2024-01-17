@@ -102,7 +102,15 @@ export class PermissionHelper {
             return
         }
 
-        return member.roles.cache.some((role) => this.botAdmins.roles.includes(role.id))
+        const roles = this.botAdmins.roles
+
+        for(const role of member.roles.cache) {
+            if(roles.includes(role[1].id)) {
+                return true
+            }
+        }
+
+        return false
     }
 
     public isController(user: User, guild: Guild) {
@@ -140,7 +148,15 @@ export class PermissionHelper {
         }
 
         if (typeof member !== 'undefined') {
-            return member.roles.cache.some((role) => permissions.roles.includes(role.id))
+            const roles = this.botAdmins.roles
+
+            for(const role of member.roles.cache) {
+                if(roles.includes(role[1].id)) {
+                    return true
+                }
+            }
+
+            return false
         }
     }
 }

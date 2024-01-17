@@ -5,7 +5,7 @@ import * as util from 'util'
 import {DiscordClient} from './clients/DiscordClient'
 import {MoonrakerClient} from './clients/MoonrakerClient'
 import {
-    hookProcess,
+    hookProcess, logCustom,
     logEmpty,
     logError,
     logNotice,
@@ -116,10 +116,9 @@ async function init() {
     process.on('SIGINT', () => {});
     process.on('SIGQUIT', () => {});
 
-    logRegular(`please invite the bot on a Server: 
-        ${getEntry('invite_url')}`)
+    logCustom(`${"please invite the bot on a Server:".black.bgGreen} ${getEntry('invite_url').white}`)
     logEmpty()
-    logRegular(`after the invite please write with your user:`)
+    logCustom(`After inviting the bot. Please DM the bot to complete the setup.`.black.bgGreen)
     logNotice(setupUser)
     //baguette baguette croissant fsd
 }
