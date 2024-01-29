@@ -7,7 +7,6 @@ import sharp from "sharp";
 import {MessageAttachment} from "discord.js";
 import {resolve} from "path"
 import {logEmpty, logError, logRegular} from "./LoggerHelper";
-import {MoonrakerClient} from "../clients/MoonrakerClient";
 import StackTrace from "stacktrace-js";
 import {getMoonrakerClient} from "../Application";
 import {getEntry, setData} from "../utils/CacheUtil";
@@ -31,6 +30,18 @@ export class WebcamHelper {
             active: ''
         }
 
+        for(const data of webcamData) {
+            if(!data.enabled) {
+                continue
+            }
+
+            if(activeWebcam === '') {
+                activeWebcam = data.name
+            }
+
+            webcamCache.entries[data.name] = data
+        }
+
         for(const webcamName in webcamConfigs) {
             const webcamConfig = webcamConfigs[webcamName]
 
@@ -42,18 +53,6 @@ export class WebcamHelper {
             webcamConfig.name = webcamName
 
             webcamCache.entries[webcamName] = webcamConfig
-        }
-
-        for(const data of webcamData) {
-            if(!data.enabled) {
-                continue
-            }
-
-            if(activeWebcam === '') {
-                activeWebcam = data.name
-            }
-
-            webcamCache.entries[data.name] = data
         }
 
         webcamCache.active = activeWebcam
