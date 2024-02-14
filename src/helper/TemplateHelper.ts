@@ -175,6 +175,7 @@ export class TemplateHelper {
 
         const thumbnail = await this.parseImage(messageObjectData.thumbnail)
         const image = await this.parseImage(messageObjectData.image)
+        const footerIcon = await this.parseImage(messageObjectData.footer_icon)
         const buttons = inputGenerator.generateButtons(messageObjectData.buttons, unformattedData['buttons_per_row'])
         const selections = inputGenerator.generateSelections(messageObjectData.selections)
         const inputs = inputGenerator.generateInputs(messageObjectData.inputs)
@@ -211,8 +212,16 @@ export class TemplateHelper {
         }
 
         if (typeof messageObjectData.footer !== 'undefined') {
-            messageObject.setFooter({'text': messageObjectData.footer})
+            const footerObject: any = {'text': messageObjectData.footer}
+
+            if(typeof footerIcon === 'string')
+                footerObject.iconURL = footerIcon
+
+            messageObject.setFooter(footerObject)
         }
+
+        if(messageObjectData.timestamp)
+            messageObject.setTimestamp()
 
         if (messageObjectData.content !== undefined) {
             response.content = messageObjectData.content
@@ -295,6 +304,13 @@ export class TemplateHelper {
         const placeholderId = placeholder
             .replace(/(\${)/g, '')
             .replace(/}/g, '')
+
+        if(placeholderId === 'current_timestamp') {
+            return {
+                'content': `${Date.now()}`,
+                'double_dash': true
+            }
+        }
 
         if (providedPlaceholders !== null) {
             const providedParser = providedPlaceholders[placeholderId]
