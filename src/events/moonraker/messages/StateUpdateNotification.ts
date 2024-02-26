@@ -9,7 +9,7 @@ export class StateUpdateNotification {
 
     public async parse(message) {
         if (typeof (message.method) === 'undefined') {
-            return
+            return false
         }
 
         const moonrakerClient = getMoonrakerClient()
@@ -20,6 +20,8 @@ export class StateUpdateNotification {
             updateData('function', {
                 'poll_printer_info': true
             })
+
+            return true
         }
 
         if (message.method === 'notify_klippy_shutdown') {
@@ -27,6 +29,8 @@ export class StateUpdateNotification {
             updateData('function', {
                 'poll_printer_info': true
             })
+
+            return true
         }
 
         if (message.method === 'notify_klippy_ready') {
@@ -41,6 +45,10 @@ export class StateUpdateNotification {
             await reconnectDiscord()
             await restartScheduler()
             await statusHelper.update()
+
+            return true
         }
+
+        return false
     }
 }

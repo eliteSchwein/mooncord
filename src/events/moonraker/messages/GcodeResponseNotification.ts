@@ -9,18 +9,18 @@ import {BroadcastMessage} from "../gcode-messages/BroadcastMessage";
 
 export class GcodeResponseNotification {
 
-    public parse(message) {
+    public async parse(message) {
         if (typeof (message.method) === 'undefined') {
-            return
+            return false
         }
         if (typeof (message.params) === 'undefined') {
-            return
+            return false
         }
 
         const param = message.params[0]
 
         if (message.method !== 'notify_gcode_response') {
-            return
+            return false
         }
 
         const statusHelper = new StatusHelper()
@@ -29,7 +29,9 @@ export class GcodeResponseNotification {
             statusHelper.update('stop')
         }
 
-        void new InviteMessage().execute(param)
-        void new BroadcastMessage().execute(param)
+        await new InviteMessage().execute(param)
+        await new BroadcastMessage().execute(param)
+
+        return true
     }
 }

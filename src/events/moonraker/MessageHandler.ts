@@ -19,7 +19,7 @@ import {PowerDeviceNotification} from "./messages/PowerDeviceNotification";
 export class MessageHandler {
 
     public constructor(websocket: Websocket) {
-        websocket.addEventListener(WebsocketEvents.message, ((instance, ev) => {
+        websocket.addEventListener(WebsocketEvents.message, (async (instance, ev) => {
             const messageData = JSON.parse(ev.data)
 
             if (typeof (messageData) === 'undefined') {
@@ -30,19 +30,35 @@ export class MessageHandler {
                 'event_count': websocket.underlyingWebsocket['_eventsCount']
             })
 
-            void new TimelapseMacroNotification().parse(messageData)
-            void new SubscriptionNotification().parse(messageData)
-            void new ConsoleMessage().parse(messageData)
-            void new ProcStatsNotification().parse(messageData)
-            void new UpdateNotification().parse(messageData)
-            void new FileEditNotification().parse(messageData)
-            void new StateUpdateNotification().parse(messageData)
-            void new GcodeResponseNotification().parse(messageData)
-            void new ThrottleNotification().parse(messageData)
-            void new TimelapseNotification().parse(messageData)
-            void new DisplayUpdateNotification().parse(messageData)
-            void new PrintProgressNotification().parse(messageData)
-            void new PowerDeviceNotification().parse(messageData)
+            // sync events
+            if(new ProcStatsNotification().parse(messageData))
+                return
+            if(new FileEditNotification().parse(messageData))
+                return
+            if(new PowerDeviceNotification().parse(messageData))
+                return
+
+            // async events
+            if(await new SubscriptionNotification().parse(messageData))
+                return
+            if(await new TimelapseMacroNotification().parse(messageData))
+                return
+            if(await new ConsoleMessage().parse(messageData))
+                return
+            if(await new StateUpdateNotification().parse(messageData))
+                return
+            if(await new TimelapseNotification().parse(messageData))
+                return
+            if(await new DisplayUpdateNotification().parse(messageData))
+                return
+            if(await new PrintProgressNotification().parse(messageData))
+                return
+            if(await new GcodeResponseNotification().parse(messageData))
+                return
+            if(await new ThrottleNotification().parse(messageData))
+                return
+            if(await new UpdateNotification().parse(messageData))
+                return
         }))
     }
 }

@@ -16,20 +16,20 @@ export class ThrottleNotification {
     ]
     protected cooldownValue = 120
 
-    public parse(message) {
+    public async parse(message) {
         if (typeof (message.method) === 'undefined') {
-            return
+            return false
         }
         if (typeof (message.params) === 'undefined') {
-            return
+            return false
         }
 
         if (message.method !== 'notify_cpu_throttled') {
-            return
+            return false
         }
 
         if (!new ConfigHelper().notifyOnMoonrakerThrottle()) {
-            return
+            return false
         }
 
         const {flags} = message.params[0]
@@ -42,8 +42,10 @@ export class ThrottleNotification {
                 setData('throttle', currentThrottleState)
                 continue
             }
-            this.broadcastThrottle(flag, currentThrottleState)
+            await this.broadcastThrottle(flag, currentThrottleState)
         }
+
+        return true
     }
 
     private async broadcastThrottle(flag: string, currentThrottleState) {

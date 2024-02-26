@@ -60215,15 +60215,16 @@ var import_websocket_ts = __toESM(require_lib());
 var ProcStatsNotification = class {
   parse(message) {
     if (typeof message.method === "undefined") {
-      return;
+      return false;
     }
     if (typeof message.params === "undefined") {
-      return;
+      return false;
     }
     if (message.method !== "notify_proc_stat_update") {
-      return;
+      return false;
     }
     setData("proc_stats", message.params[0]);
+    return true;
   }
 };
 
@@ -60393,23 +60394,24 @@ var StatusHelper = class {
 
 // src/events/moonraker/messages/SubscriptionNotification.ts
 var SubscriptionNotification = class {
-  parse(message) {
+  async parse(message) {
     if (typeof message.method === "undefined") {
-      return;
+      return false;
     }
     if (typeof message.params === "undefined") {
-      return;
+      return false;
     }
     const param = message.params[0];
     if (message.method !== "notify_status_update") {
-      return;
+      return false;
     }
     updateData("state", param);
     if (typeof param.print_stats !== "undefined") {
-      void this.parsePrintStats(param.print_stats);
+      await this.parsePrintStats(param.print_stats);
     }
     const tempHelper = new TempHelper();
     tempHelper.updateHeaterTargets();
+    return true;
   }
   async parsePrintStats(printStatsData) {
     if (typeof printStatsData.state === "undefined") {
@@ -60434,27 +60436,28 @@ var SubscriptionNotification = class {
 var UpdateNotification = class {
   async parse(message) {
     if (typeof message.method === "undefined") {
-      return;
+      return false;
     }
     if (typeof message.params === "undefined") {
-      return;
+      return false;
     }
     if (message.method !== "notify_update_refreshed") {
-      return;
+      return false;
     }
     updateData("updates", message.params[0]);
     const embedHelper2 = new EmbedHelper();
     const notificationHelper = new NotificationHelper();
     const versionHelper = new VersionHelper();
     if (!versionHelper.updateAvailable()) {
-      return;
+      return false;
     }
     logRegular("There are some Updates available...");
     if (notificationHelper.isEmbedBlocked("system_update")) {
-      return;
+      return false;
     }
     const embed = await embedHelper2.generateEmbed("system_update");
     void notificationHelper.broadcastMessage(embed.embed);
+    return true;
   }
 };
 
@@ -60529,13 +60532,13 @@ var FileListHelper = class {
 var FileEditNotification = class {
   parse(message) {
     if (typeof message.method === "undefined") {
-      return;
+      return false;
     }
     if (typeof message.params === "undefined") {
-      return;
+      return false;
     }
     if (message.method !== "notify_filelist_changed") {
-      return;
+      return false;
     }
     const fileData = message.params[0];
     const fileListHelper = new FileListHelper();
@@ -60546,6 +60549,7 @@ var FileEditNotification = class {
     fileListHelper.retrieveFiles("config", "config_files");
     fileListHelper.retrieveFiles("gcodes", "gcode_files");
     fileListHelper.retrieveFiles("timelapse", "timelapse_files", /(.*\.mp4)/g);
+    return true;
   }
 };
 
@@ -60553,7 +60557,7 @@ var FileEditNotification = class {
 var StateUpdateNotification = class {
   async parse(message) {
     if (typeof message.method === "undefined") {
-      return;
+      return false;
     }
     const moonrakerClient2 = getMoonrakerClient();
     const statusHelper2 = new StatusHelper();
@@ -60562,12 +60566,14 @@ var StateUpdateNotification = class {
       updateData("function", {
         "poll_printer_info": true
       });
+      return true;
     }
     if (message.method === "notify_klippy_shutdown") {
       await statusHelper2.update("shutdown");
       updateData("function", {
         "poll_printer_info": true
       });
+      return true;
     }
     if (message.method === "notify_klippy_ready") {
       updateData("function", {
@@ -60580,7 +60586,9 @@ var StateUpdateNotification = class {
       await reconnectDiscord();
       await restartScheduler();
       await statusHelper2.update();
+      return true;
     }
+    return false;
   }
 };
 
@@ -60623,39 +60631,41 @@ var BroadcastMessage = class {
 
 // src/events/moonraker/messages/GcodeResponseNotification.ts
 var GcodeResponseNotification = class {
-  parse(message) {
+  async parse(message) {
     if (typeof message.method === "undefined") {
-      return;
+      return false;
     }
     if (typeof message.params === "undefined") {
-      return;
+      return false;
     }
     const param = message.params[0];
     if (message.method !== "notify_gcode_response") {
-      return;
+      return false;
     }
     const statusHelper2 = new StatusHelper();
     if (param === "// action:cancel") {
       statusHelper2.update("stop");
     }
-    void new InviteMessage().execute(param);
-    void new BroadcastMessage().execute(param);
+    await new InviteMessage().execute(param);
+    await new BroadcastMessage().execute(param);
+    return true;
   }
 };
 
 // src/events/moonraker/messages/PrintProgressNotification.ts
 var PrintProgressNotification = class {
-  parse(message) {
+  async parse(message) {
     const functionCache = getEntry("function");
     if (functionCache.current_status !== "printing") {
-      return;
+      return false;
     }
     updateTimes();
     updateLayers();
     if (!new ConfigHelper().isStatusPerPercent()) {
-      return;
+      return false;
     }
-    new StatusHelper().update();
+    await new StatusHelper().update();
+    return true;
   }
 };
 
@@ -60669,18 +60679,18 @@ var ThrottleNotification = class {
     ];
     this.cooldownValue = 120;
   }
-  parse(message) {
+  async parse(message) {
     if (typeof message.method === "undefined") {
-      return;
+      return false;
     }
     if (typeof message.params === "undefined") {
-      return;
+      return false;
     }
     if (message.method !== "notify_cpu_throttled") {
-      return;
+      return false;
     }
     if (!new ConfigHelper().notifyOnMoonrakerThrottle()) {
-      return;
+      return false;
     }
     const { flags } = message.params[0];
     const currentThrottleState = getEntry("throttle");
@@ -60690,8 +60700,9 @@ var ThrottleNotification = class {
         setData("throttle", currentThrottleState);
         continue;
       }
-      this.broadcastThrottle(flag, currentThrottleState);
+      await this.broadcastThrottle(flag, currentThrottleState);
     }
+    return true;
   }
   async broadcastThrottle(flag, currentThrottleState) {
     if (!this.validFlags.includes(flag)) {
@@ -60725,23 +60736,23 @@ var TimelapseNotification = class {
   }
   async parse(message) {
     if (typeof message.method === "undefined") {
-      return;
+      return false;
     }
     if (typeof message.params === "undefined") {
-      return;
+      return false;
     }
     if (message.method !== "notify_timelapse_event") {
-      return;
+      return false;
     }
     if (!this.configHelper.notifyOnTimelapseFinish()) {
-      return;
+      return false;
     }
     const param = message.params[0];
     if (param.action !== "render") {
-      return;
+      return false;
     }
     if (param.status !== "success") {
-      return;
+      return false;
     }
     const printfile = param.printfile === "" ? "n/a" : param.printfile;
     const timelapseMessage = this.locale.messages.answers.timelapse.replace(/(\${printfile})/g, printfile);
@@ -60752,6 +60763,7 @@ var TimelapseNotification = class {
     if (global.gc) {
       global.gc();
     }
+    return true;
   }
 };
 
@@ -60760,31 +60772,31 @@ var import_regex_parser = __toESM(require_lib2());
 var DisplayUpdateNotification = class {
   async parse(message) {
     if (typeof message.method === "undefined") {
-      return;
+      return false;
     }
     if (typeof message.params === "undefined") {
-      return;
+      return false;
     }
     const embedHelper2 = new EmbedHelper();
     const configHelper2 = new ConfigHelper();
     const notificationHelper = new NotificationHelper();
     const m117Config = configHelper2.getM117NotifactionConfig();
     if (!m117Config.enable) {
-      return;
+      return false;
     }
     const param = message.params[0];
     if (message.method !== "notify_status_update") {
-      return;
+      return false;
     }
     if (typeof param.display_status === "undefined") {
-      return;
+      return false;
     }
     if (typeof param.display_status.message === "undefined") {
-      return;
+      return false;
     }
     const displayMessage = param.display_status.message;
     if (displayMessage === null) {
-      return;
+      return false;
     }
     const blacklist = m117Config.blacklist;
     const whitelist = m117Config.whitelist;
@@ -60792,7 +60804,7 @@ var DisplayUpdateNotification = class {
     for (const blacklistItem of blacklist) {
       const blacklistRegex = (0, import_regex_parser.default)(blacklistItem);
       if (blacklistRegex.test(displayMessage)) {
-        return;
+        return false;
       }
     }
     for (const whitelistItem of whitelist) {
@@ -60802,14 +60814,15 @@ var DisplayUpdateNotification = class {
       }
     }
     if (!whitelistValid) {
-      return;
+      return false;
     }
     if (notificationHelper.isEmbedBlocked("notification")) {
-      return;
+      return false;
     }
     logRegular(`Broadcast Message: ${displayMessage}`);
     const embed = await embedHelper2.generateEmbed("notification", { "message": displayMessage });
-    void notificationHelper.broadcastMessage(embed.embed);
+    await notificationHelper.broadcastMessage(embed.embed);
+    return true;
   }
 };
 
@@ -60817,19 +60830,19 @@ var DisplayUpdateNotification = class {
 var ConsoleMessage = class {
   async parse(message) {
     if (typeof message.method === "undefined") {
-      return;
+      return false;
     }
     if (typeof message.params === "undefined") {
-      return;
+      return false;
     }
     if (message.method !== "notify_gcode_response") {
-      return;
+      return false;
     }
     const cache = getEntry("execute");
     const gcodeResponse = message.params[0];
     const commandToExecute = cache.to_execute_command;
     if (!gcodeResponse.includes(commandToExecute)) {
-      return;
+      return false;
     }
     if (gcodeResponse.startsWith("//")) {
       cache.unknown_commands.push(commandToExecute);
@@ -60838,6 +60851,7 @@ var ConsoleMessage = class {
       cache.error_commands.push(commandToExecute);
     }
     setData("execute", cache);
+    return true;
   }
 };
 
@@ -60845,15 +60859,15 @@ var ConsoleMessage = class {
 var TimelapseMacroNotification = class {
   async parse(message) {
     if (typeof message.params === "undefined") {
-      return;
+      return false;
     }
     const params = message.params[0];
     const timelapseMacro = params["gcode_macro TIMELAPSE_TAKE_FRAME"];
     if (timelapseMacro === void 0) {
-      return;
+      return false;
     }
     if (timelapseMacro.is_paused === void 0) {
-      return;
+      return false;
     }
     const cache = getEntry("function");
     const macroPaused = timelapseMacro.is_paused;
@@ -60862,6 +60876,7 @@ var TimelapseMacroNotification = class {
     }
     cache.ignore_pause = timelapseMacro.is_paused;
     setData("function", cache);
+    return true;
   }
 };
 
@@ -60869,24 +60884,25 @@ var TimelapseMacroNotification = class {
 var PowerDeviceNotification = class {
   parse(message) {
     if (typeof message.method === "undefined") {
-      return;
+      return false;
     }
     if (typeof message.params === "undefined") {
-      return;
+      return false;
     }
     if (message.method !== "notify_power_changed") {
-      return;
+      return false;
     }
     const powerDeviceData = message.params[0];
     logNotice(`Power Device ${powerDeviceData.device} switched ${powerDeviceData.status}`);
     new PowerDeviceHelper().updatePowerDevice(powerDeviceData);
+    return true;
   }
 };
 
 // src/events/moonraker/MessageHandler.ts
 var MessageHandler2 = class {
   constructor(websocket) {
-    websocket.addEventListener(import_websocket_ts.WebsocketEvents.message, (instance, ev) => {
+    websocket.addEventListener(import_websocket_ts.WebsocketEvents.message, async (instance, ev) => {
       const messageData = JSON.parse(ev.data);
       if (typeof messageData === "undefined") {
         return;
@@ -60894,19 +60910,32 @@ var MessageHandler2 = class {
       updateData("moonraker_client", {
         "event_count": websocket.underlyingWebsocket["_eventsCount"]
       });
-      void new TimelapseMacroNotification().parse(messageData);
-      void new SubscriptionNotification().parse(messageData);
-      void new ConsoleMessage().parse(messageData);
-      void new ProcStatsNotification().parse(messageData);
-      void new UpdateNotification().parse(messageData);
-      void new FileEditNotification().parse(messageData);
-      void new StateUpdateNotification().parse(messageData);
-      void new GcodeResponseNotification().parse(messageData);
-      void new ThrottleNotification().parse(messageData);
-      void new TimelapseNotification().parse(messageData);
-      void new DisplayUpdateNotification().parse(messageData);
-      void new PrintProgressNotification().parse(messageData);
-      void new PowerDeviceNotification().parse(messageData);
+      if (new ProcStatsNotification().parse(messageData))
+        return;
+      if (new FileEditNotification().parse(messageData))
+        return;
+      if (new PowerDeviceNotification().parse(messageData))
+        return;
+      if (await new SubscriptionNotification().parse(messageData))
+        return;
+      if (await new TimelapseMacroNotification().parse(messageData))
+        return;
+      if (await new ConsoleMessage().parse(messageData))
+        return;
+      if (await new StateUpdateNotification().parse(messageData))
+        return;
+      if (await new TimelapseNotification().parse(messageData))
+        return;
+      if (await new DisplayUpdateNotification().parse(messageData))
+        return;
+      if (await new PrintProgressNotification().parse(messageData))
+        return;
+      if (await new GcodeResponseNotification().parse(messageData))
+        return;
+      if (await new ThrottleNotification().parse(messageData))
+        return;
+      if (await new UpdateNotification().parse(messageData))
+        return;
     });
   }
 };
@@ -61229,6 +61258,9 @@ var SchedulerHelper = class {
       const machineInfo = await this.moonrakerClient.send({ "method": "machine.system_info" });
       setData("machine_info", machineInfo.result);
       await this.usageHelper.updateDiskUsage();
+      if (global.gc) {
+        global.gc();
+      }
     }, 6e4);
   }
   scheduleStatus() {

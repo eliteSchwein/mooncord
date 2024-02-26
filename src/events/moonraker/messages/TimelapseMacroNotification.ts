@@ -6,17 +6,17 @@ import {sleep} from "../../../helper/DataHelper";
 export class TimelapseMacroNotification {
     public async parse(message) {
         if (typeof (message.params) === 'undefined') {
-            return
+            return false
         }
 
         const params = message.params[0]
         const timelapseMacro = params['gcode_macro TIMELAPSE_TAKE_FRAME']
 
         if (timelapseMacro === undefined) {
-            return
+            return false
         }
         if (timelapseMacro.is_paused === undefined) {
-            return
+            return false
         }
 
         const cache = getEntry('function')
@@ -30,5 +30,7 @@ export class TimelapseMacroNotification {
         cache.ignore_pause = timelapseMacro.is_paused
 
         setData('function', cache)
+
+        return true
     }
 }

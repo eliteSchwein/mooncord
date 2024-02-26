@@ -7,13 +7,13 @@ export class ConsoleMessage {
 
     public async parse(message) {
         if (typeof (message.method) === 'undefined') {
-            return
+            return false
         }
         if (typeof (message.params) === 'undefined') {
-            return
+            return false
         }
         if (message.method !== 'notify_gcode_response') {
-            return
+            return false
         }
 
         const cache = getEntry('execute')
@@ -22,7 +22,7 @@ export class ConsoleMessage {
         const commandToExecute = cache.to_execute_command
 
         if (!gcodeResponse.includes(commandToExecute)) {
-            return
+            return false
         }
 
         if (gcodeResponse.startsWith('//')) {
@@ -34,5 +34,7 @@ export class ConsoleMessage {
         }
 
         setData('execute', cache)
+
+        return true
     }
 }

@@ -76,6 +76,10 @@ export class SchedulerHelper {
             setData('machine_info', machineInfo.result)
 
             await this.usageHelper.updateDiskUsage()
+
+            if (global.gc) {
+                global.gc()
+            }
         }, 60000)
     }
 

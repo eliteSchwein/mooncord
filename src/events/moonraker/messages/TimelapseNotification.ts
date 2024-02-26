@@ -20,27 +20,27 @@ export class TimelapseNotification {
 
     public async parse(message) {
         if (typeof (message.method) === 'undefined') {
-            return
+            return false
         }
         if (typeof (message.params) === 'undefined') {
-            return
+            return false
         }
 
         if (message.method !== 'notify_timelapse_event') {
-            return
+            return false
         }
 
         if (!this.configHelper.notifyOnTimelapseFinish()) {
-            return
+            return false
         }
 
         const param = message.params[0]
 
         if (param.action !== 'render') {
-            return
+            return false
         }
         if (param.status !== 'success') {
-            return
+            return false
         }
 
         const printfile = (param.printfile === '') ? 'n/a' : param.printfile
@@ -58,5 +58,7 @@ export class TimelapseNotification {
         if (global.gc) {
             global.gc()
         }
+
+        return true
     }
 }

@@ -5,16 +5,18 @@ import {setData} from "../../../utils/CacheUtil";
 export class ProcStatsNotification {
     public parse(message) {
         if (typeof (message.method) === 'undefined') {
-            return
+            return false
         }
         if (typeof (message.params) === 'undefined') {
-            return
+            return false
         }
 
         if (message.method !== 'notify_proc_stat_update') {
-            return
+            return false
         }
 
         setData('proc_stats', message.params[0])
+
+        return true
     }
 }

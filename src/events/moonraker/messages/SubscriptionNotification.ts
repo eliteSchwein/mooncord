@@ -9,28 +9,30 @@ import {TempHelper} from "../../../helper/TempHelper";
 
 export class SubscriptionNotification {
 
-    public parse(message) {
+    public async parse(message) {
         if (typeof (message.method) === 'undefined') {
-            return
+            return false
         }
         if (typeof (message.params) === 'undefined') {
-            return
+            return false
         }
 
         const param = message.params[0]
 
         if (message.method !== 'notify_status_update') {
-            return
+            return false
         }
 
         updateData('state', param)
 
         if (typeof param.print_stats !== 'undefined') {
-            void this.parsePrintStats(param.print_stats)
+            await this.parsePrintStats(param.print_stats)
         }
 
         const tempHelper = new TempHelper()
         tempHelper.updateHeaterTargets()
+
+        return true
     }
 
     private async parsePrintStats(printStatsData) {

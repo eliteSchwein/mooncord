@@ -8,14 +8,14 @@ export class FileEditNotification {
 
     public parse(message) {
         if (typeof (message.method) === 'undefined') {
-            return
+            return false
         }
         if (typeof (message.params) === 'undefined') {
-            return
+            return false
         }
 
         if (message.method !== 'notify_filelist_changed') {
-            return
+            return false
         }
 
         const fileData = message.params[0]
@@ -30,5 +30,7 @@ export class FileEditNotification {
         fileListHelper.retrieveFiles('config', 'config_files')
         fileListHelper.retrieveFiles('gcodes', 'gcode_files')
         fileListHelper.retrieveFiles('timelapse', 'timelapse_files', /(.*\.mp4)/g)
+
+        return true
     }
 }

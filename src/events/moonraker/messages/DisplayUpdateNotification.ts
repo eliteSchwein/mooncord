@@ -10,10 +10,10 @@ export class DisplayUpdateNotification {
 
     public async parse(message) {
         if (typeof (message.method) === 'undefined') {
-            return
+            return false
         }
         if (typeof (message.params) === 'undefined') {
-            return
+            return false
         }
 
         const embedHelper = new EmbedHelper()
@@ -22,25 +22,25 @@ export class DisplayUpdateNotification {
         const m117Config = configHelper.getM117NotifactionConfig()
 
         if (!m117Config.enable) {
-            return
+            return false
         }
 
         const param = message.params[0]
 
         if (message.method !== 'notify_status_update') {
-            return
+            return false
         }
         if (typeof param.display_status === 'undefined') {
-            return
+            return false
         }
         if (typeof param.display_status.message === 'undefined') {
-            return
+            return false
         }
 
         const displayMessage = param.display_status.message
 
         if (displayMessage === null) {
-            return
+            return false
         }
 
         const blacklist = m117Config.blacklist
@@ -51,7 +51,7 @@ export class DisplayUpdateNotification {
         for (const blacklistItem of blacklist) {
             const blacklistRegex = Parse(blacklistItem)
             if (blacklistRegex.test(displayMessage)) {
-                return
+                return false
             }
         }
 
@@ -63,17 +63,19 @@ export class DisplayUpdateNotification {
         }
 
         if (!whitelistValid) {
-            return
+            return false
         }
 
         if (notificationHelper.isEmbedBlocked('notification')) {
-            return
+            return false
         }
 
         logRegular(`Broadcast Message: ${displayMessage}`)
 
         const embed = await embedHelper.generateEmbed('notification', {'message': displayMessage})
 
-        void notificationHelper.broadcastMessage(embed.embed)
+        await notificationHelper.broadcastMessage(embed.embed)
+
+        return true
     }
 }
