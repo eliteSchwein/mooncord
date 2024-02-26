@@ -6,7 +6,7 @@
   "scripts": {
     "migrateJson": "node src/migration/ConfigMigration.js",
     "start": "node --max-old-space-size=32 --expose-gc dist/index.js",
-    "debugstart": "node --inspect --max-old-space-size=32 --trace_gc --expose-gc --trace-deprecation --trace-warnings --trace-uncaught --track-heap-objects dist/index.js",
+    "debugstart": "node --inspect 0.0.0.0 --max-old-space-size=32 --trace_gc --expose-gc --trace-deprecation --trace-warnings --trace-uncaught --track-heap-objects dist/index.js",
     "checkcodestyle": "npx eslint ./**",
     "autofixcodestyle": "npx eslint ./** --fix",
     "generatelocale": "node src/helper/LocaleGenerationHelper.js",
