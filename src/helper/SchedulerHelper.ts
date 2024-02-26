@@ -50,22 +50,22 @@ export class SchedulerHelper {
             updateData('moonraker_client', {
                 'event_count': this.moonrakerClient.getWebsocket().underlyingWebsocket['_eventsCount']
             })
-
-            if (this.functionCache.poll_printer_info) {
-                void this.pollServerInfo()
-            }
         }, 250)
     }
 
     protected scheduleLoad() {
-        this.loadScheduler = setInterval(() => {
+        this.loadScheduler = setInterval(async () => {
             this.usageHelper.updateMemoryUsage()
             this.usageHelper.updateKlipperLoad()
             this.usageHelper.updateSystemLoad()
 
-            void this.tempHelper.notifyHeaterTargetNotifications()
+            await this.tempHelper.notifyHeaterTargetNotifications()
 
             this.updateThrottleCooldown()
+
+            if (this.functionCache.poll_printer_info) {
+                await this.pollServerInfo()
+            }
         }, 1000)
     }
 
@@ -80,7 +80,7 @@ export class SchedulerHelper {
     }
 
     protected scheduleStatus() {
-        this.statusScheduler = setInterval(async () => {
+        this.statusScheduler = setInterval(() => {
             if (this.configHelper.isStatusPerPercent()) {
                 this.updateStatusCooldown()
             } else {
