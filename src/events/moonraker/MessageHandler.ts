@@ -31,16 +31,12 @@ export class MessageHandler {
             })
 
             // sync events
-            if(new ProcStatsNotification().parse(messageData))
-                return
-            if(new FileEditNotification().parse(messageData))
-                return
-            if(new PowerDeviceNotification().parse(messageData))
-                return
+            new ProcStatsNotification().parse(messageData)
+            new FileEditNotification().parse(messageData)
+            new PowerDeviceNotification().parse(messageData)
 
             // async events
-            if(await new SubscriptionNotification().parse(messageData))
-                return
+            await new SubscriptionNotification().parse(messageData)
             if(await new TimelapseMacroNotification().parse(messageData))
                 return
             if(await new ConsoleMessage().parse(messageData))
