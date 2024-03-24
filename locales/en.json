@@ -363,7 +363,7 @@
             "command_disabled": "The Command is disabled!",
             "command_failed": "An Error occured!",
             "command_timeout": "Command execution failed!",
-            "command_idle_only": "The Command is only im idle state available, `${username}`!",
+            "command_idle_only": "The Command is only in the idle state available, `${username}`!",
             "file_not_found": "File not Found!",
             "guild_only": "This Command is only available in a Server, `${username}`",
             "no_data": "There was no Data found for `${component}`!",
