@@ -3,6 +3,7 @@
 import {existsSync, mkdirSync, readFileSync} from 'fs'
 import path from "path";
 import {mergeDeep} from "./DataHelper";
+import parseConfig from "js-conf-parser";
 import {getEntry, setData, updateData} from "../utils/CacheUtil";
 import {logError, logRegular, logWarn} from "./LoggerHelper";
 
@@ -22,110 +23,7 @@ export class ConfigHelper {
     }
 
     public parseConfig(path: string, filename: string) {
-        if(!existsSync(`${path}/${filename}`)) {
-            logError(`Config File ${path}/${filename} is not present, skipping!`)
-            return {}
-        }
-        let file = readFileSync(`${path}/${filename}`, {encoding: "utf-8"})
-        file = file.replace(/#.*/g, '')
-        const lines = file.replace(/\r/g, '').split('\n')
-        let result = {}
-        let objects = {}
-        let tempKey = undefined
-        for(const line of lines) {
-            if(/^\[include\s(.*\.cfg)\]$/g.test(line)) {
-                const subFile = line.split(' ')[1].replace(']','')
-                const subData = this.parseConfig(path, subFile)
-                mergeDeep(result, subData)
-                continue
-            }
-
-            const webcamHeader = line.match(/^\[webcam.*\]$/g)
-            if(webcamHeader) {
-                const name = webcamHeader[0].replace(/\[|\]/g, '').split(' ')
-                if(name.length < 2) {
-                    name[1] = 'default'
-                }
-                if(result[name[0]] === undefined) {
-                    result[name[0]] = {}
-                }
-
-                objects = {}
-                result[name[0]][name[1]] = objects
-                continue
-            }
-            const header = line.match(/^\[([^\]]+)\]$/)
-            if(header) {
-                if(objects[tempKey] !== undefined && objects[tempKey].length === 0) {
-                    objects[tempKey] = undefined
-                }
-                tempKey = undefined
-                const name = header[1]
-                objects = {}
-                result[name] = objects
-                continue
-            }
-            const value = line.match(/^([^;][^:]*):(.*)$/)
-            if(value) {
-                const key = value[1].trim()
-
-                if(value[2].trim() === '') {
-                    tempKey = value[1]
-                    objects[value[1]] = []
-                    continue
-                }
-
-                let realValue = this.parseValue(value[2].trim())
-
-                if(key.match(/[0-9]+_/g)) {
-                    const index = Number(key.match(/[0-9]+/g)) - 1
-                    const objectRawKey = key.replace(/[0-9]+/g, '')
-                    const objectKeys = objectRawKey.split('_')
-                    const objectKey = objectKeys[0]
-                    const objectKeyValue = objectKeys[1]
-
-                    if(objects[objectKey] === undefined) {
-                        objects[objectKey] = []
-                    }
-
-                    if(objects[objectKeys[0]][index] === undefined) {
-                        objects[objectKeys[0]].push({[objectKeyValue]: realValue})
-                    } else {
-                        objects[objectKeys[0]][index][objectKeyValue] = realValue
-                    }
-                    continue
-                }
-
-                if(key.startsWith('- {') && objects[tempKey] !== undefined) {
-                    realValue = this.parseValue(`${key}:${value[2].trim()}`)
-                    objects[tempKey].push(realValue)
-                    continue
-                }
-
-                if(key.startsWith('- ') && objects[tempKey] !== undefined) {
-                    objects[tempKey].push({key: key.substring(2), value: realValue})
-                    continue
-                }
-                if(objects[tempKey] !== undefined && objects[tempKey].length === 0) {
-                    objects[tempKey] = undefined
-                }
-                tempKey = undefined
-                objects[value[1]] = realValue
-                continue
-            }
-            if(tempKey !== undefined && objects[tempKey] !== undefined) {
-                const currentLine = this.parseValue(line.trim())
-                if(currentLine === undefined || currentLine.length === 0) {
-                    continue
-                }
-                objects[tempKey].push(currentLine)
-            }
-            if(objects[tempKey] !== undefined && objects[tempKey].length === 0) {
-                objects[tempKey] = undefined
-            }
-        }
-
-        return result
+        return parseConfig(path, filename)
     }
 
     private parseValue(value: string) {
