@@ -107,6 +107,10 @@ export class ConfigHelper {
         return this.getEntriesByFilter(/^status$/g)[0].min_interval
     }
 
+    public getStatusCooldown() {
+        return this.getEntriesByFilter(/^status$/g)[0].cooldown
+    }
+
     public isStatusPerPercent() {
         return this.getEntriesByFilter(/^status$/g)[0].use_percent
     }

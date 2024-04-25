@@ -20,9 +20,8 @@ export class StatusHelper {
     protected notificationHelper = new NotificationHelper()
 
     public async update(status: string = null, bypassChecks: boolean = false, discordClient: DiscordClient = null) {
-        if (typeof discordClient === null) {
+        if (typeof discordClient === null)
             discordClient = app.getDiscordClient()
-        }
 
         this.bypassChecks = bypassChecks
         this.discordClient = discordClient
@@ -33,14 +32,8 @@ export class StatusHelper {
         const progress = stateCache.display_status.progress.toFixed(2)
         const overridePlaceholders = {}
 
-        if (functionCache.status_cooldown !== 0) {
-            logNotice('Status cooldown is currently active!')
+        if (typeof serverInfo === 'undefined')
             return
-        }
-
-        if (typeof serverInfo === 'undefined') {
-            return
-        }
 
         if (typeof status === 'undefined' || status === null) {
             if (serverInfo.klippy_state !== 'ready') {
@@ -50,65 +43,51 @@ export class StatusHelper {
             }
         }
 
-        if (status === 'standby') {
+        if (status === 'standby')
             status = 'ready'
-        }
 
-        if (status === 'initializing') {
+        if (status === 'initializing')
             status = 'startup'
-        }
 
-        if (status === 'paused') {
+        if (status === 'paused')
             status = 'pause'
-        }
 
-        if (status === 'cancelled') {
+        if (status === 'cancelled')
             status = 'stop'
-        }
 
-        if (status === 'pause' && functionCache.ignore_pause) {
+        if (status === 'pause' && functionCache.ignore_pause)
             return
-        }
 
-        if (typeof status === 'undefined') {
+        if (typeof status === 'undefined')
             return
-        }
 
         const currentStatus = functionCache.current_status
+
+        const statusMeta = this.statusMeta[status]
+        const currentStatusMeta = this.statusMeta[currentStatus]
 
         if (status === 'start' && currentStatus === 'pause') {
             this.bypassChecks = true
             status = 'printing'
         }
 
-        if (status === 'ready' && currentStatus === 'printing') {
+        if (status === 'ready' && currentStatus === 'printing')
             await this.update('stop')
-        }
 
-        if (status === 'printing' && currentStatus === 'startup') {
+        if (status === 'printing' && currentStatus === 'startup')
             await this.update('start')
-        }
 
-        if (status === 'complete' && currentStatus === 'startup') {
+        if (status === 'complete' && currentStatus === 'startup')
             status = 'ready'
-        }
 
-        const currentStatusMeta = this.statusMeta[currentStatus]
-        const statusMeta = this.statusMeta[status]
-        if (!currentStatusMeta.allow_same && status === currentStatus) {
+        if (!currentStatusMeta.allow_same && status === currentStatus)
             return
-        }
-        if (currentStatusMeta.prevent !== undefined && currentStatusMeta.prevent.includes(status)) {
+
+        if (currentStatusMeta.prevent !== undefined && currentStatusMeta.prevent.includes(status))
             return
-        }
-        if (status === 'printing' && !this.checkPercentSame()) {
+
+        if (status === 'printing' && !this.checkPercentSame())
             return
-        }
-        if (statusMeta.cooldown !== undefined) {
-            updateData('function', {
-                'status_cooldown': statusMeta.cooldown
-            })
-        }
 
         updateData('function', {
             'current_status': status
@@ -129,6 +108,11 @@ export class StatusHelper {
             logRegular(`klipper status changed to ${status}...`)
         }
 
+        if (functionCache.status_cooldown !== 0 && statusMeta.cooldown !== undefined) {
+            // logNotice('Status cooldown is currently active!')
+            return
+        }
+
         functionCache = getEntry('function')
 
         await waitUntil(() => !functionCache.status_in_query, {timeout: 40_000, intervalBetweenAttempts: 500})
@@ -140,18 +124,22 @@ export class StatusHelper {
         const postEmbed = status === 'printing' && this.checkPercentMatch() && !this.notificationHelper.isEmbedBlocked(statusMeta.embed_id) ||
             status !== 'printing' && !this.notificationHelper.isEmbedBlocked(statusMeta.embed_id)
 
-        if(!postEmbed) {
+        if(!postEmbed)
             overridePlaceholders['image'] = 'placeholder'
-        }
 
         const statusEmbed = await this.embedHelper.generateEmbed(statusMeta.embed_id, overridePlaceholders)
 
-        if (this.discordClient === null) {
+        if (this.discordClient === null)
             this.discordClient = app.getDiscordClient()
-        }
 
-        if (postEmbed) {
+        if (postEmbed)
             void this.notificationHelper.broadcastMessage(statusEmbed.embed)
+
+        if (statusMeta.cooldown !== undefined && this.configHelper.isStatusPerPercent()) {
+            updateData('function', {
+                'status_cooldown': this.configHelper.getStatusCooldown(),
+                'status_interval': this.configHelper.getStatusMinInterval()
+            })
         }
 
         this.bypassChecks = false
@@ -175,21 +163,17 @@ export class StatusHelper {
         const progress = findValue('state.display_status.progress').toFixed(2)
         const currentProgress = findValue('function.current_percent')
 
-        if (this.bypassChecks) {
+        if (this.bypassChecks)
             return true
-        }
 
-        if (progress === currentProgress) {
+        if (progress === currentProgress)
             return false
-        }
 
-        if (progress === 0 || progress === 100) {
+        if (progress === 0 || progress === 100)
             return true
-        }
 
-        if (progress < currentProgress) {
+        if (progress < currentProgress)
             return false
-        }
 
         return true
     }
@@ -198,17 +182,14 @@ export class StatusHelper {
         let progress = findValue('state.display_status.progress').toFixed(2)
         progress = (progress * 100).toFixed(2)
 
-        if (this.bypassChecks) {
+        if (this.bypassChecks)
             return true
-        }
 
-        if (!this.configHelper.isStatusPerPercent()) {
+        if (!this.configHelper.isStatusPerPercent())
             return true
-        }
 
-        if (progress % this.configHelper.getStatusInterval().toFixed(2) === 0) {
+        if (progress % this.configHelper.getStatusInterval().toFixed(2) === 0)
             return true
-        }
 
         return false
     }

@@ -7,7 +7,6 @@ import {StatusHelper} from "./StatusHelper";
 import {UsageHelper} from "./UsageHelper";
 import {clearInterval} from "timers";
 import {TempHelper} from "./TempHelper";
-import {WebcamHelper} from "./WebcamHelper";
 
 export class SchedulerHelper {
     protected configHelper = new ConfigHelper()
@@ -43,9 +42,8 @@ export class SchedulerHelper {
         this.highScheduler = setInterval(() => {
             this.functionCache = getEntry('function')
 
-            if (typeof this.moonrakerClient.getWebsocket() === 'undefined') {
+            if (typeof this.moonrakerClient.getWebsocket() === 'undefined')
                 return
-            }
 
             updateData('moonraker_client', {
                 'event_count': this.moonrakerClient.getWebsocket().underlyingWebsocket['_eventsCount']
@@ -63,9 +61,8 @@ export class SchedulerHelper {
 
             this.updateThrottleCooldown()
 
-            if (this.functionCache.poll_printer_info) {
+            if (this.functionCache.poll_printer_info)
                 await this.pollServerInfo()
-            }
         }, 1000)
     }
 
@@ -77,47 +74,57 @@ export class SchedulerHelper {
 
             await this.usageHelper.updateDiskUsage()
 
-            if (global.gc) {
+            if (global.gc)
                 global.gc()
-            }
         }, 60000)
     }
 
     protected scheduleStatus() {
         this.statusScheduler = setInterval(() => {
-            if (this.configHelper.isStatusPerPercent()) {
+            if (this.configHelper.isStatusPerPercent())
                 this.updateStatusCooldown()
-            } else {
+            else
                 this.postPrintProgress()
-            }
         }, this.getStatusInterval())
     }
 
     protected updateThrottleCooldown() {
         const currentThrottleState = getEntry('throttle')
 
-        if (currentThrottleState.cooldown === 0) {
+        if (currentThrottleState.cooldown === 0)
             currentThrottleState.throttle_states = []
-        } else {
+        else
             currentThrottleState.cooldown--
-        }
 
         setData('throttle', currentThrottleState)
     }
 
     protected postPrintProgress() {
-        if (this.functionCache.current_status !== 'printing') {
+        if (this.functionCache.current_status !== 'printing')
             return
-        }
 
-        this.statusHelper.update('printing')
+        void this.statusHelper.update('printing')
     }
 
-    protected updateStatusCooldown() {
+    protected async updateStatusCooldown() {
         const statusCooldown = this.functionCache.status_cooldown
-        if (statusCooldown === 0) {
+        const statusInterval = this.functionCache.status_interval
+
+        if (statusInterval === 0 && statusCooldown === 0 && this.functionCache.current_status === 'printing') {
+            await this.statusHelper.update('printing')
+
+            this.functionCache = getEntry('function')
+            this.functionCache.status_interval = this.configHelper.getStatusMinInterval()
+
+            updateData('function', this.functionCache)
             return
-        }
+        } else if(statusInterval !== 0 && statusCooldown === 0)
+            this.functionCache.status_interval--
+
+        updateData('function', this.functionCache)
+
+        if (statusCooldown === 0)
+            return
 
         this.functionCache.status_cooldown--
 
@@ -125,17 +132,15 @@ export class SchedulerHelper {
     }
 
     protected getStatusInterval() {
-        if (this.configHelper.isStatusPerPercent()) {
-            return this.configHelper.getStatusMinInterval() * 1000
-        } else {
+        if (this.configHelper.isStatusPerPercent())
+            return 1000
+        else
             return this.configHelper.getStatusInterval() * 1000 * 60
-        }
     }
 
     private async pollServerInfo() {
-        if (this.functionCache.server_info_in_query) {
+        if (this.functionCache.server_info_in_query)
             return
-        }
 
         updateData('function', {
             'server_info_in_query': true
@@ -144,16 +149,13 @@ export class SchedulerHelper {
         const currentStatus = findValue('function.current_status')
         const serverInfo = await this.moonrakerClient.send({"method": "server.info"})
 
-        if (typeof serverInfo.result === 'undefined') {
+        if (typeof serverInfo.result === 'undefined')
             return
-        }
-        if (typeof serverInfo.result.klippy_state === 'undefined') {
+        if (typeof serverInfo.result.klippy_state === 'undefined')
             return
-        }
 
-        if (currentStatus !== serverInfo.result.klippy_state) {
+        if (currentStatus !== serverInfo.result.klippy_state)
             await this.requestPrintInfo()
-        }
 
         updateData('server_info', serverInfo.result)
 
@@ -161,9 +163,8 @@ export class SchedulerHelper {
             'server_info_in_query': false
         })
 
-        if (serverInfo.result.klippy_state === 'ready') {
+        if (serverInfo.result.klippy_state === 'ready')
             return
-        }
 
         await this.statusHelper.update()
     }

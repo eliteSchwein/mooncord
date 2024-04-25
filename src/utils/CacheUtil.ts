@@ -17,6 +17,7 @@ const cacheData: any = {
         poll_printer_info: false,
         current_percent: 0,
         status_cooldown: 0,
+        status_interval: 0,
         log_path: '',
         ignore_pause: false,
         temp_targets: {}
