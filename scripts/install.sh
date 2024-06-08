@@ -78,7 +78,7 @@ questions()
 
     if [ "$MCTOKEN" == "" ];
     then
-        status_msg "Please enter your Discord Token"
+        status_msg "Please enter your Discord Bot Token"
         while true; do
             read -p "$cyan Token: $default" discord_token
             case $discord_token in
