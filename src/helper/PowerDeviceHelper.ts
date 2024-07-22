@@ -12,7 +12,7 @@ export class PowerDeviceHelper {
         for (const index in powerDeviceCache) {
             const powerDevice = powerDeviceCache[index]
 
-            if (powerDevice.device = powerDeviceName) {
+            if (powerDevice.device === powerDeviceName) {
                 return powerDevice
             }
         }

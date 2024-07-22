@@ -8,3 +8,4 @@ cache_dump.json
 database_dump.json
 mooncord.log
 dist/mooncord.log
+temp/
