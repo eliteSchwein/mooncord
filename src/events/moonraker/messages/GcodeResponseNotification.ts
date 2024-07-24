@@ -6,6 +6,7 @@ import {getEntry} from "../../../utils/CacheUtil";
 import {StatusHelper} from "../../../helper/StatusHelper";
 import {InviteMessage} from "../gcode-messages/InviteMessage";
 import {BroadcastMessage} from "../gcode-messages/BroadcastMessage";
+import {PromptMessage} from "../gcode-messages/PromptMessage";
 
 export class GcodeResponseNotification {
 
@@ -29,6 +30,7 @@ export class GcodeResponseNotification {
             statusHelper.update('stop')
         }
 
+        await new PromptMessage().execute(param)
         await new InviteMessage().execute(param)
         await new BroadcastMessage().execute(param)
 
