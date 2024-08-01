@@ -24,6 +24,7 @@ import {StatusHelper} from "./helper/StatusHelper";
 import {waitUntil} from "async-wait-until";
 import {ModalHelper} from "./helper/ModalHelper";
 import {createInterface} from "readline";
+import {PromptHelper} from "./helper/PromptHelper";
 
 const args = process.argv.slice(2)
 
@@ -49,6 +50,7 @@ const discordClient = new DiscordClient()
 
 const schedulerHelper = new SchedulerHelper()
 const statusHelper = new StatusHelper()
+const promptHelper = new PromptHelper()
 
 void init()
 
@@ -165,6 +167,7 @@ function initCache() {
     localeHelper.loadCache()
     embedHelper.loadCache()
     modalHelper.loadCache()
+    promptHelper.loadCache()
 }
 
 export function getMoonrakerClient() {

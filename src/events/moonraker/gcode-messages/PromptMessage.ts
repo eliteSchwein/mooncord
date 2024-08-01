@@ -1,25 +1,16 @@
 'use strict'
 
-import {getMoonrakerClient} from "../../../Application";
-import {getEntry} from "../../../utils/CacheUtil";
-import {logRegular} from "../../../helper/LoggerHelper";
+import {PromptHelper} from "../../../helper/PromptHelper";
 
 export class PromptMessage {
 
     public async execute(message: string) {
-        console.log(message)
-        return
-        if (!message.startsWith('mooncord.invite')) {
+        if (!message.startsWith('// action:prompt_')) {
             return
         }
+        const content = message.replace('// action:prompt_', '')
+        const promptHelper = new PromptHelper()
 
-        const inviteUrl = getEntry('invite_url')
-
-        logRegular('Send Invite URL to Klipper Console...')
-
-        await getMoonrakerClient().send({
-            "method": "printer.gcode.script",
-            "params": {"script": `RESPOND PREFIX=mooncord.response MSG=${inviteUrl}`}
-        })
+        promptHelper.addComponent(content)
     }
 }

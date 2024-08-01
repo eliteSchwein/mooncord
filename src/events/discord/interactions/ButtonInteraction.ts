@@ -23,6 +23,7 @@ import {DeleteMessageHandler} from "./handlers/DeleteMessageHandler";
 import {SetupHandler} from "./handlers/SetupHandler";
 import {NotificationHandler} from "./handlers/NotificationHandler";
 import {CameraSettingHandler} from "./handlers/CameraSettingHandler";
+import {PromptHelper} from "../../../helper/PromptHelper";
 
 export class ButtonInteraction {
 
@@ -47,6 +48,12 @@ export class ButtonInteraction {
         const locale = localeHelper.getLocale()
         const buttonsCache = getEntry('buttons')
         const functionCache = getEntry('function')
+
+        if(buttonId.startsWith('prompt_gcode|')) {
+            const gcode = buttonId.substring(13)
+            await new PromptHelper().handePromptGcodeButton(gcode, interaction)
+            return
+        }
 
         const buttonData = buttonsCache[buttonId]
         const requiredStates = buttonData.required_states

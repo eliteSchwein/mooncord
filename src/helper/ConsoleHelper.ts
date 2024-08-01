@@ -73,12 +73,6 @@ export class ConsoleHelper {
             await channel.send(unknownEmbed.embed)
         }
 
-        if (cache.successful_commands.length > 0 && showExecuted) {
-            const successfulDescription = `\`\`\`${cache.successful_commands.join('\n')}\`\`\``
-            const successfulEmbed = await embedHelper.generateEmbed('execute_successful', {gcode_commands: successfulDescription})
-            await channel.send(successfulEmbed.embed)
-        }
-
         cache.running = false
 
         setData('execute', cache)

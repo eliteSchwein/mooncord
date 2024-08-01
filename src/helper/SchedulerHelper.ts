@@ -7,6 +7,7 @@ import {StatusHelper} from "./StatusHelper";
 import {UsageHelper} from "./UsageHelper";
 import {clearInterval} from "timers";
 import {TempHelper} from "./TempHelper";
+import {PromptHelper} from "./PromptHelper";
 
 export class SchedulerHelper {
     protected configHelper = new ConfigHelper()
@@ -19,6 +20,7 @@ export class SchedulerHelper {
     protected loadScheduler: NodeJS.Timer
     protected usageHelper = new UsageHelper()
     protected tempHelper = new TempHelper()
+    protected promptHelper = new PromptHelper()
 
     public init(moonrakerClient: MoonrakerClient) {
         this.moonrakerClient = moonrakerClient
@@ -56,6 +58,7 @@ export class SchedulerHelper {
             this.usageHelper.updateMemoryUsage()
             this.usageHelper.updateKlipperLoad()
             this.usageHelper.updateSystemLoad()
+            this.promptHelper.purgePrompt()
 
             await this.tempHelper.notifyHeaterTargetNotifications()
 

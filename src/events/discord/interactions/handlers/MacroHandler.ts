@@ -53,7 +53,7 @@ export class MacroHandler {
         if (interaction !== null && interaction.replied) {
             await interaction.followUp({ephemeral: false, content: answer})
         } else {
-            await message.reply(answer)
+            await interaction.reply(answer)
         }
     }
 }
