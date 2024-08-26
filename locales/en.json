@@ -456,6 +456,9 @@
         "klipper_restart": {
             "label": "Restart Firmware"
         },
+        "host": {
+            "label": "Host"
+        },
         "reconnect": {
             "label": "Reconnect"
         },

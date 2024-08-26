@@ -28,10 +28,18 @@ export class RestartCommand {
 
         let result
 
-        if (service === 'FirmwareRestart') {
-            result = await this.restartFirmware()
-        } else {
-            result = await this.restartService(service)
+        switch (service) {
+            case "FirmwareRestart": {
+                result = await this.restartFirmware()
+                break
+            }
+            case "Host": {
+                result = await this.restartHost()
+                break
+            }
+            default: {
+                result = await this.restartService(service)
+            }
         }
 
         await interaction.editReply(result)
@@ -53,6 +61,13 @@ export class RestartCommand {
 
     private async restartFirmware() {
         void await this.moonrakerClient.send({"method": "printer.firmware_restart"})
+
+        return this.locale.messages.answers.firmware_restart_successful
+            .replace(/(\${username})/g, this.user.tag)
+    }
+
+    private async restartHost() {
+        void await this.moonrakerClient.send({"method": "machine.reboot"})
 
         return this.locale.messages.answers.firmware_restart_successful
             .replace(/(\${username})/g, this.user.tag)

@@ -207,6 +207,11 @@ export function getServiceChoices() {
         "name": localeHelper.getSyntaxLocale().buttons.klipper_restart.label,
         "value": "FirmwareRestart"
     })
+
+    choices.push({
+        "name": localeHelper.getSyntaxLocale().buttons.host.label,
+        "value": "Host"
+    })
     return choices
 }
 
