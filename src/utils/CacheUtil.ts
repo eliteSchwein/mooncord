@@ -212,6 +212,7 @@ export function getServiceChoices() {
         "name": localeHelper.getSyntaxLocale().buttons.host.label,
         "value": "Host"
     })
+
     return choices
 }
 
