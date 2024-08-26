@@ -92,25 +92,25 @@ export function stripAnsi(input: string) {
 
 export function parseCalculatedPlaceholder(fragments) {
     if (fragments[0] === 'percent') {
-        return formatPercent(fragments[2], fragments[1])
+        return formatPercent(parseFloat(fragments[2]), parseInt(fragments[1]))
     }
     if (fragments[0] === 'reduce') {
-        return formatReduce(fragments[3], fragments[1], fragments[2])
+        return formatReduce(parseFloat(fragments[3]), parseFloat(fragments[1]), parseInt(fragments[2]))
     }
     if (fragments[0] === 'round') {
-        return fragments[2].toFixed(fragments[1])
+        return parseFloat(fragments[2]).toFixed(parseInt(fragments[1]))
     }
     if (fragments[0] === 'max') {
         return limitToMax(parseInt(fragments[2]), parseInt(fragments[1]))
     }
     if (fragments[0] === 'formatDate') {
-        return formatDate(fragments[1])
+        return formatDate(parseInt(fragments[1]))
     }
     if (fragments[0] === 'formatTime') {
-        return formatTime(fragments[1])
+        return formatTime(parseInt(fragments[1]))
     }
     if (fragments[0] === 'timestamp') {
-        return formatTimestamp(fragments[1])
+        return formatTimestamp(parseInt(fragments[1]))
     }
 }
 
