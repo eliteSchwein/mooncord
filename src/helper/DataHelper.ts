@@ -56,6 +56,14 @@ export function findValueByPartial(data, partial: string, key: string) {
     }
 }
 
+export function limitToMax(input: number, max: number) {
+    if(max < input) {
+        return max
+    }
+
+    return input
+}
+
 export function limitString(input: string, length: number) {
     if (input.length < length) {
         return input
@@ -84,22 +92,25 @@ export function stripAnsi(input: string) {
 
 export function parseCalculatedPlaceholder(fragments) {
     if (fragments[0] === 'percent') {
-        return formatPercent(findValue(fragments[2]), fragments[1])
+        return formatPercent(fragments[2], fragments[1])
     }
     if (fragments[0] === 'reduce') {
-        return formatReduce(findValue(fragments[3]), fragments[1], fragments[2])
+        return formatReduce(fragments[3], fragments[1], fragments[2])
     }
     if (fragments[0] === 'round') {
-        return findValue(fragments[2]).toFixed(fragments[1])
+        return fragments[2].toFixed(fragments[1])
+    }
+    if (fragments[0] === 'max') {
+        return limitToMax(parseInt(fragments[2]), parseInt(fragments[1]))
     }
     if (fragments[0] === 'formatDate') {
-        return formatDate(findValue(fragments[1]))
+        return formatDate(fragments[1])
     }
     if (fragments[0] === 'formatTime') {
-        return formatTime(findValue(fragments[1]))
+        return formatTime(fragments[1])
     }
     if (fragments[0] === 'timestamp') {
-        return formatTimestamp(findValue(fragments[1]))
+        return formatTimestamp(fragments[1])
     }
 }
 

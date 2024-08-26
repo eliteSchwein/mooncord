@@ -11,6 +11,9 @@
         "gcode_files": {
             "entry_label": "`${data.label}`"
         },
+        "log_files": {
+            "entry_label": "`${data.path}`"
+        },
         "timelapse_files": {
             "entry_label": "`${data.path}`"
         },
@@ -96,6 +99,11 @@
         },
         "gcode_files": {
             "title": "Gcode Files",
+            "description": "${page_entries}",
+            "footer": "Page ${pages}"
+        },
+        "log_files": {
+            "title": "Log Files",
             "description": "${page_entries}",
             "footer": "Page ${pages}"
         },
@@ -351,6 +359,7 @@
         "errors": {
             "no_history": "There is currently no print history, `${username}`!",
             "no_gcodes": "There are currently no gcode files, `${username}`!",
+            "no_logs": "There are currently no log files, `${username}`!",
             "no_power_device": "The Power Device couldn't be found, `${username}`!",
             "no_entries": "The current Page is empty, `${username}`!",
             "no_configs": "There are currently no config files, `${username}`!",
@@ -456,6 +465,12 @@
         "last_page_printlist":  {
             "label": "Last Page"
         },
+        "next_page_loglist":  {
+            "label": "Next Page"
+        },
+        "last_page_loglist":  {
+            "label": "Last Page"
+        },
         "next_page_timelapselist":  {
             "label": "Next Page"
         },
@@ -521,6 +536,11 @@
             "label": "Select a File",
             "option_label": "${data.path}",
             "option_description": "Click for more Details"
+        },
+        "loglist_download_log": {
+            "label": "Select a File",
+            "option_label": "${data.path}",
+            "option_description": "Click for Download"
         },
         "timelapse_download": {
             "label": "Select a File",
@@ -737,15 +757,9 @@
                 }
             }
         },
-        "get_log": {
-            "description": "Retrieve a Log.",
-            "command": "getlog",
-            "options": {
-                "log_file": {
-                    "name": "logfile",
-                    "description": "Specifies the Log File."
-                }
-            }
+        "listlogs": {
+            "description": "List all Logs.",
+            "command": "listlogs"
         },
         "get_user_id": {
             "description": "Retrieve the User ID.",

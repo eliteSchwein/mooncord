@@ -340,6 +340,21 @@ export class TemplateHelper {
 
         if (placeholderId.includes(':')) {
             const templateFragments = placeholderId.split(':')
+
+            for (const index in templateFragments) {
+                const templateFragment = templateFragments[index]
+
+                const cacheMatch = findValue(templateFragment)
+                const providedMatch = providedPlaceholders[templateFragment]
+
+                if(cacheMatch) {
+                    templateFragments[index] = cacheMatch
+                }
+
+                if(providedMatch) {
+                    templateFragments[index] = providedMatch
+                }
+            }
             cacheParser = parseCalculatedPlaceholder(templateFragments)
         }
 

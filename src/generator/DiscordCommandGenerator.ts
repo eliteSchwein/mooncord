@@ -54,7 +54,7 @@ export class DiscordCommandGenerator {
             if (Object.keys(customCommandStructure).includes(commandIndex)) {
                 command = customCommandStructure[commandIndex]
             } else {
-                command = this.buildCommand(commandIndex)
+                command = await this.buildCommand(commandIndex)
             }
             commandKeys.push(command.name)
             commandList.push(command)

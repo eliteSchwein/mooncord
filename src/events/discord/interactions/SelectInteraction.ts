@@ -15,6 +15,7 @@ import {DownloadConfig} from "./selections/DownloadConfig";
 import {ExcludeObjectsSelection} from "./selections/ExcludeObjects";
 import {DownloadTimelapse} from "./selections/DownloadTimelapse";
 import {WebcamChange} from "./selections/WebcamChange";
+import {DownloadLogSelection} from "./selections/DownloadLog";
 
 export class SelectInteraction {
 
@@ -60,6 +61,7 @@ export class SelectInteraction {
         void new ExcludeObjectsSelection(interaction, selectId)
         void new DownloadTimelapse(interaction, selectId)
         void new WebcamChange(interaction, selectId)
+        void new DownloadLogSelection(interaction, selectId)
 
         await sleep(2000)
 

@@ -94,6 +94,7 @@ export class MoonrakerClient {
 
         fileListHelper.retrieveFiles('config', 'config_files')
         fileListHelper.retrieveFiles('gcodes', 'gcode_files')
+        fileListHelper.retrieveFiles('logs', 'log_files')
         fileListHelper.retrieveFiles('timelapse', 'timelapse_files', /(.*\.mp4)/g)
 
         const subscriptionObjects: any = {

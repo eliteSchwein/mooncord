@@ -8,6 +8,7 @@ import {mergeDeep} from "../helper/DataHelper";
 import {get} from 'lodash'
 import {LocaleHelper} from "../helper/LocaleHelper";
 import {ConfigHelper} from "../helper/ConfigHelper";
+import {getMoonrakerClient} from "../Application";
 
 const cacheData: any = {
     function: {

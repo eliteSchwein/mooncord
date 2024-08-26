@@ -10,7 +10,7 @@ import {ConfigHelper} from "../../../helper/ConfigHelper";
 import {LocaleHelper} from "../../../helper/LocaleHelper";
 import {TempCommand} from "./commands/TempCommand";
 import {RestartCommand} from "./commands/RestartCommand";
-import {GetLodCommand} from "./commands/GetLogCommand";
+import {ListLogsCommand} from "./commands/ListLogsCommand";
 import {UserIdCommand} from "./commands/UserIdCommand";
 import {ResetDatabaseCommand} from "./commands/ResetDatabaseCommand";
 import {NotifyCommand} from "./commands/NotifyCommand";
@@ -85,7 +85,7 @@ export class CommandInteraction {
         void new DumpCommand(interaction, commandId)
         void new TempCommand(interaction, commandId)
         void new RestartCommand(interaction, commandId)
-        void new GetLodCommand(interaction, commandId)
+        void new ListLogsCommand(interaction, commandId)
         void new UserIdCommand(interaction, commandId)
         void new ResetDatabaseCommand(interaction, commandId)
         void new NotifyCommand(interaction, commandId)

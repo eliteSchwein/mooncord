@@ -22,6 +22,7 @@ export class PageHelper {
         const entries = this.getEntries(page.calcPage)
 
         return {
+            'page_entries_count': entries.raw_entries.length,
             'page_entries': entries.entries,
             'pages': `${page.labelPage}/${this.getLastPage()}`,
             'raw_entries': entries.raw_entries
@@ -53,10 +54,8 @@ export class PageHelper {
         let page = currentPage - 1
 
         if (pageUp) {
-            if (page !== lastPage - 1) {
-                page++
-            }
-            if(page === lastPage - 1) {
+            page++
+            if(page === lastPage) {
                 page = 0
             }
         } else if (page !== 0) {

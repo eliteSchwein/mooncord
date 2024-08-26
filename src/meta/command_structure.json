@@ -126,26 +126,7 @@
       "choices": "${serviceChoices}"
     }
   },
-  "get_log": {
-    "log_file": {
-      "type": "string",
-      "required": true,
-      "choices": [
-        {
-          "name": "Klipper",
-          "value": "klippy"
-        },
-        {
-          "name": "Moonraker",
-          "value": "moonraker"
-        },
-        {
-          "name": "MoonCord",
-          "value": "mooncord"
-        }
-      ]
-    }
-  },
+  "listlogs": {},
   "info": {},
   "listgcodes": {},
   "listtimelapses": {},
