@@ -345,7 +345,11 @@ export class TemplateHelper {
                 const templateFragment = templateFragments[index]
 
                 const cacheMatch = findValue(templateFragment)
-                const providedMatch = providedPlaceholders[templateFragment]
+                let providedMatch = undefined
+
+                if(providedPlaceholders) {
+                    providedMatch = providedPlaceholders[templateFragment]
+                }
 
                 if(cacheMatch) {
                     templateFragments[index] = cacheMatch
@@ -355,6 +359,7 @@ export class TemplateHelper {
                     templateFragments[index] = providedMatch
                 }
             }
+
             cacheParser = parseCalculatedPlaceholder(templateFragments)
         }
 
