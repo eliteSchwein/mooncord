@@ -1,3 +1,7 @@
 {
-  "example": 123
+  "execute_unknown": "c90000",
+  "execute_error": "c90000",
+  "execute_successful": "25db00",
+  "fileinfo": "0099ff",
+  "configs_download": "00FF00"
 }
