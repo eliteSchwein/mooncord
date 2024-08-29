@@ -16,7 +16,7 @@ import {
 } from './helper/LoggerHelper'
 import {DatabaseUtil} from './utils/DatabaseUtil'
 import {LocaleHelper} from "./helper/LocaleHelper";
-import {getEntry, setData} from './utils/CacheUtil'
+import {getEntry, loadTheme, setData} from './utils/CacheUtil'
 import {ConfigHelper} from "./helper/ConfigHelper";
 import {EmbedHelper} from "./helper/EmbedHelper";
 import {SchedulerHelper} from "./helper/SchedulerHelper";
@@ -168,6 +168,7 @@ function initCache() {
     embedHelper.loadCache()
     modalHelper.loadCache()
     promptHelper.loadCache()
+    configHelper.loadThemeCache()
 }
 
 export function getMoonrakerClient() {

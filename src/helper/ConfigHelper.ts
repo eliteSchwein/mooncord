@@ -164,7 +164,7 @@ export class ConfigHelper {
     }
 
     public getIconSet() {
-        return this.getEntriesByFilter(/^message$/g)[0].icon_set
+        return this.getEntriesByFilter(/^message$/g)[0].asset
     }
 
     public getEmbedMeta() {
@@ -173,6 +173,16 @@ export class ConfigHelper {
 
     public getModalMeta() {
         return this.getEntriesByFilter(/^modal /g, true)
+    }
+
+    public loadThemeCache() {
+        logRegular('load Theme data...')
+
+        const assetName = this.getIconSet()
+        const themePath = path.resolve(__dirname, `../assets/icon-sets/${assetName}/theme.json`)
+        const themeConfig = JSON.parse(readFileSync(themePath, 'utf8'))
+
+        setData('theme', themeConfig)
     }
 
     public getInputMeta() {

@@ -232,8 +232,3 @@ async function writeDump() {
     })
     logSuccess('Dumped Cache!')
 }
-
-export async function loadTheme() {
-    logRegular('load Theme data...')
-    console.log(cacheData.config)
-}
