@@ -2,7 +2,7 @@
 
 import * as fs from "fs";
 import * as path from "path";
-import {logSuccess} from "../helper/LoggerHelper";
+import {logRegular, logSuccess} from "../helper/LoggerHelper";
 import * as util from "util";
 import {mergeDeep} from "../helper/DataHelper";
 import {get} from 'lodash'
@@ -231,4 +231,9 @@ async function writeDump() {
         flag: 'w+'
     })
     logSuccess('Dumped Cache!')
+}
+
+export async function loadTheme() {
+    logRegular('load Theme data...')
+    console.log(cacheData.config)
 }
