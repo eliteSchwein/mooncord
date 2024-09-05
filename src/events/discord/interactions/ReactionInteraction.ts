@@ -2,8 +2,6 @@
 
 import {Message, MessageReaction, PartialMessageReaction} from "discord.js";
 import {PermissionHelper} from "../../../helper/PermissionHelper";
-import {ConfigHelper} from "../../../helper/ConfigHelper";
-import {LocaleHelper} from "../../../helper/LocaleHelper";
 import {findValue, getEntry} from "../../../utils/CacheUtil";
 import {logNotice, logWarn} from "../../../helper/LoggerHelper";
 import {WebsocketHandler} from "./handlers/WebsocketHandler";
@@ -19,6 +17,10 @@ import {ListHandler} from "./handlers/ListHandler";
 import {PageHandler} from "./handlers/PageHandler";
 import {MacroHandler} from "./handlers/MacroHandler";
 import {DeleteMessageHandler} from "./handlers/DeleteMessageHandler";
+import {CameraSettingHandler} from "./handlers/CameraSettingHandler";
+import DownloadHandler from "./handlers/DownloadHandler";
+import {SetupHandler} from "./handlers/SetupHandler";
+import {NotificationHandler} from "./handlers/NotificationHandler";
 
 export class ReactionInteraction {
 
@@ -59,6 +61,8 @@ export class ReactionInteraction {
             return;
         }
 
+        await new MacroHandler().execute(message, user, reactionData)
+        await new CameraSettingHandler().execute(message, user, reactionData)
         await new WebsocketHandler().execute(message, user, reactionData)
         await new ExcludeConfirmHandler().execute(message, user, reactionData)
         await new ModalHandler().execute(message, user, reactionData)
@@ -69,8 +73,10 @@ export class ReactionInteraction {
         await new ReconnectHandler().execute(message, user, reactionData)
         await new RefreshHandler().execute(message, user, reactionData)
         await new ListHandler().execute(message, user, reactionData)
+        await new DownloadHandler().execute(message, user, reactionData)
         await new PageHandler().execute(message, user, reactionData)
-        await new MacroHandler().execute(message, user, reactionData)
         await new DeleteMessageHandler().execute(message, user, reactionData)
+        await new SetupHandler().execute(message, user, reactionData)
+        await new NotificationHandler().execute(message, user, reactionData)
     }
 }

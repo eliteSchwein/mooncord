@@ -6,6 +6,7 @@ import axios from "axios";
 import {ConfigHelper} from "../../../../helper/ConfigHelper";
 import {getDatabase} from "../../../../Application";
 import {LocaleHelper} from "../../../../helper/LocaleHelper";
+import {downloadFile} from "../../../../helper/DataHelper";
 
 export class DownloadConfig {
 
@@ -28,27 +29,19 @@ export class DownloadConfig {
     private async retrieveConfig(config: string) {
         const localeHelper = new LocaleHelper()
         const locale = localeHelper.getLocale()
-        const configHelper = new ConfigHelper()
 
         logRegular(`downloading config for ${config}...`)
 
         try {
-            const result = await axios.get(`${configHelper.getMoonrakerUrl()}/server/files/config/${config}`, {
-                responseType: 'arraybuffer',
-                headers: {
-                    'X-Api-Key': configHelper.getMoonrakerApiKey()
-                }
-            })
+            const result = await downloadFile("config", config)
 
-            const bufferSize = Buffer.byteLength(<Buffer>result.data)
-
-            if (bufferSize > Number.parseInt('8000000')) {
-                logError(`Configuration ${config} to big, Configfile: ${bufferSize}byte Limit: 8000000byte`)
+            if (result.size > Number.parseInt('8000000')) {
+                logError(`Configuration ${config} to big, Configfile: ${result.size}byte Limit: 8000000byte`)
                 return locale.messages.errors.config_too_large
                     .replace(/(\${config})/g, `\`${config}\``)
             }
 
-            const attachment = new MessageAttachment(<Buffer>result.data, `${config}`)
+            const attachment = new MessageAttachment(result.data, `${config}`)
 
             logSuccess(`Configuration ${config} Download successful!`)
             return {files: [attachment]}

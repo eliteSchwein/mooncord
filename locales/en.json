@@ -387,6 +387,7 @@
             "log_too_large": "The Log for `${service}` is too big!",
             "log_failed": "The Download of the `${service}` Log failed: `${reason}`!",
             "log_not_found": "There is currently no Log for `${service}`",
+            "file_too_large": "The File `${filename}` is too big!",
             "pidtune_fail": "PID Tuning failed for `${heater}`, `${username}`!\nReason:\n```\n${reason}```",
             "missing_arguments": "The Command is missing Arguments, `${username}`!",
             "upload_failed": "The Upload for `${filename}` failed, `${username}`!"
@@ -434,6 +435,9 @@
         },
         "printjob_start": {
             "label": "Print"
+        },
+        "printjob_download": {
+            "label": "Download"
         },
         "printjob_exclude": {
             "label": "Exclude"

@@ -179,10 +179,10 @@ export function formatDate(seconds) {
         })
 }
 
-export async function downloadFile(root:string, fileName: string) {
+export async function downloadFile(root: string, fileName: string) {
     const config = new ConfigHelper()
 
-    const result = await axios.get(`${config.getMoonrakerUrl()}/server/files/logs/${logFile}`, {
+    const result = await axios.get(`${config.getMoonrakerUrl()}/server/files/${root}/${fileName}`, {
         responseType: 'arraybuffer',
         headers: {
             'X-Api-Key': config.getMoonrakerApiKey()
@@ -193,7 +193,7 @@ export async function downloadFile(root:string, fileName: string) {
 
     return {
         size: bufferSize,
-        file: <Buffer>result.data
+        data: <Buffer>result.data
     }
 }
 

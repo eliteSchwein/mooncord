@@ -24,6 +24,7 @@ import {SetupHandler} from "./handlers/SetupHandler";
 import {NotificationHandler} from "./handlers/NotificationHandler";
 import {CameraSettingHandler} from "./handlers/CameraSettingHandler";
 import {PromptHelper} from "../../../helper/PromptHelper";
+import DownloadHandler from "./handlers/DownloadHandler";
 
 export class ButtonInteraction {
 
@@ -94,6 +95,7 @@ export class ButtonInteraction {
         await new ReconnectHandler().execute(message, interaction.user, buttonData, interaction)
         await new RefreshHandler().execute(message, interaction.user, buttonData, interaction)
         await new ListHandler().execute(message, interaction.user, buttonData, interaction)
+        await new DownloadHandler().execute(message, interaction.user, buttonData, interaction)
         await new PageHandler().execute(message, interaction.user, buttonData, interaction)
         await new DeleteMessageHandler().execute(message, interaction.user, buttonData, interaction)
         await new SetupHandler().execute(message, interaction.user, buttonData, interaction)

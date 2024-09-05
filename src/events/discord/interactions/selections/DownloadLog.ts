@@ -7,7 +7,7 @@ import {EmbedHelper} from "../../../../helper/EmbedHelper";
 import {ConfigHelper} from "../../../../helper/ConfigHelper";
 import {LocaleHelper} from "../../../../helper/LocaleHelper";
 import {MetadataHelper} from "../../../../helper/MetadataHelper";
-import {findValueByPartial, formatTime} from "../../../../helper/DataHelper";
+import {downloadFile, findValueByPartial, formatTime} from "../../../../helper/DataHelper";
 import axios from "axios";
 import {logError, logSuccess} from "../../../../helper/LoggerHelper";
 import util from "util";
@@ -52,27 +52,19 @@ export class DownloadLogSelection {
     }
 
     private async retrieveLog(logFile: string) {
-        const config = new ConfigHelper()
         const localeHelper = new LocaleHelper()
         const locale = localeHelper.getLocale()
 
         try {
-            const result = await axios.get(`${config.getMoonrakerUrl()}/server/files/logs/${logFile}`, {
-                responseType: 'arraybuffer',
-                headers: {
-                    'X-Api-Key': config.getMoonrakerApiKey()
-                }
-            })
+            const result = await downloadFile("logs", logFile)
 
-            const bufferSize = Buffer.byteLength(<Buffer>result.data)
-
-            if (bufferSize > Number.parseInt('25000000')) {
-                logError(`${logFile} Log to big, Logfile: ${bufferSize}byte Limit: 25mb`)
+            if (result.size > Number.parseInt('25000000')) {
+                logError(`${logFile} Log to big, Logfile: ${result.size}byte Limit: 25mb`)
                 return locale.messages.errors.log_too_large
                     .replace(/(\${service})/g, `\`${logFile}\``)
             }
 
-            const attachment = new MessageAttachment(<Buffer>result.data, `${logFile}.log`)
+            const attachment = new MessageAttachment(result.data, `${logFile}.log`)
 
             logSuccess(`${logFile} Log Download successful!`)
             return attachment
