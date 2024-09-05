@@ -88,6 +88,16 @@ export class ConfigHelper {
             url = url.substring(0, url.length - 1)
         }
 
+        if(url.startsWith('ws://')) {
+            url = url.substring(4)
+            url = `http://${url}`
+        }
+
+        if(url.startsWith('wss://')) {
+            url = url.substring(5)
+            url = `https://${url}`
+        }
+
         return url
     }
 
