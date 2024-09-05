@@ -179,6 +179,24 @@ export function formatDate(seconds) {
         })
 }
 
+export async function downloadFile(root:string, fileName: string) {
+    const config = new ConfigHelper()
+
+    const result = await axios.get(`${config.getMoonrakerUrl()}/server/files/logs/${logFile}`, {
+        responseType: 'arraybuffer',
+        headers: {
+            'X-Api-Key': config.getMoonrakerApiKey()
+        }
+    })
+
+    const bufferSize = Buffer.byteLength(<Buffer>result.data)
+
+    return {
+        size: bufferSize,
+        file: <Buffer>result.data
+    }
+}
+
 export async function uploadAttachment(attachment: MessageAttachment, fileRoot = 'gcodes', filePath = '') {
     try {
         logNotice(`Upload for ${attachment.name} started`)
