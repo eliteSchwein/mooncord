@@ -11,6 +11,7 @@ import {EmbedHelper} from "../../helper/EmbedHelper";
 import {MetadataHelper} from "../../helper/MetadataHelper";
 
 export class GCodeUploadHandler {
+    protected typingInterval = 0
 
     public constructor(discordClient: Client) {
         discordClient.on("messageCreate", async message => {
@@ -76,12 +77,31 @@ export class GCodeUploadHandler {
     }
 
     private async uploadMultipleFiles(message: Message){
-        for(const attachment of message.attachments) {
+        const localeHelper = new LocaleHelper()
+        const locale = localeHelper.getLocale()
+
+        for(const attachment of message.attachments.values()) {
             const fileName = attachment.name
 
             if (!fileName.endsWith('.gcode')) {
                 continue
             }
+
+            await message.channel.sendTyping()
+
+            const uploadRequest = await uploadAttachment(attachment)
+
+            if(!uploadRequest) {
+                await message.reply(locale.messages.errors.upload_failed
+                    .replace(/(\${filename})/g, attachment.name)
+                    .replace(/(\${username})/g, message.author.tag))
+
+                return
+            }
+
+            await message.reply(locale.messages.answers.upload_successful
+                .replace(/(\${filename})/g, attachment.name)
+                .replace(/(\${username})/g, message.author.tag))
         }
     }
 }
