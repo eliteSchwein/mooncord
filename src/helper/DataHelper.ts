@@ -193,7 +193,9 @@ export async function downloadFile(root: string, fileName: string) {
 
     return {
         size: bufferSize,
-        data: <Buffer>result.data
+        data: <Buffer>result.data,
+        overSizeLimit: bufferSize > config.getUploadLimit(),
+        sizeLimit: config.getUploadLimit()
     }
 }
 

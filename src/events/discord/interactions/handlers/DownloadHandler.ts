@@ -31,7 +31,7 @@ export default class DownloadHandler {
 
         const result = await downloadFile(rootPath, fileName)
 
-        if (result.size > Number.parseInt('25000000')) {
+        if (result.overSizeLimit) {
             await interaction.editReply(locale.messages.errors.file_too_large
                 .replace(/(\${filename})/g, `\`\`js\n${fileName}\`\``));
             return

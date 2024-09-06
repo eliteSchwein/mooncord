@@ -58,8 +58,8 @@ export class DownloadLogSelection {
         try {
             const result = await downloadFile("logs", logFile)
 
-            if (result.size > Number.parseInt('25000000')) {
-                logError(`${logFile} Log to big, Logfile: ${result.size}byte Limit: 25mb`)
+            if (result.overSizeLimit) {
+                logError(`${logFile} Log to big, Logfile: ${result.size}byte Limit: ${result.sizeLimit / 1000000}mb`)
                 return locale.messages.errors.log_too_large
                     .replace(/(\${service})/g, `\`${logFile}\``)
             }

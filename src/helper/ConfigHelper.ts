@@ -81,6 +81,10 @@ export class ConfigHelper {
         return this.getEntriesByFilter(/^connection$/g)[0].moonraker_socket_url
     }
 
+    public getUploadLimit() {
+        return this.getEntriesByFilter(/^connection$/g)[0].discord_upload_limit * 1000000
+    }
+
     public getMoonrakerUrl() {
         let url = this.getEntriesByFilter(/^connection$/g)[0].moonraker_url
 
