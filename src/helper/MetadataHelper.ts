@@ -1,7 +1,6 @@
 'use strict'
 
 import {getMoonrakerClient} from "../Application";
-import {MoonrakerClient} from "../clients/MoonrakerClient";
 import {getEntry, setData, updateData} from "../utils/CacheUtil";
 import {ConfigHelper} from "./ConfigHelper";
 import path from "path";
@@ -40,17 +39,7 @@ export class MetadataHelper {
     }
 
     public async getThumbnail(filename: string) {
-        const metaDataCache = getEntry('meta_data')
         const configHelper = new ConfigHelper()
-
-        if (metaDataCache !== undefined &&
-            metaDataCache.filename === filename &&
-            typeof metaDataCache.thumbnail !== 'undefined') {
-
-            const thumbnailBuffer = Buffer.from(metaDataCache.thumbnail, 'base64')
-
-            return new MessageAttachment(thumbnailBuffer, 'thumbnail.png')
-        }
 
         const metaData = await this.getMetaData(filename)
         const pathFragments = filename.split('/').slice(0, -1)
@@ -69,12 +58,12 @@ export class MetadataHelper {
         const thumbnailFile = metaData.thumbnails.reduce((prev, current) => {
             return (prev.size > current.size) ? prev : current
         })
+
         const thumbnailPath = thumbnailFile.relative_path
         const thumbnailURL = encodeURI(`${url}/server/files/gcodes/${rootPath}${thumbnailPath}`)
-        let thumbnail: string
+        let thumbnail: Buffer
         try {
-            thumbnail = await this.getBase64(thumbnailURL)
-            updateData('meta_data', {thumbnail})
+            thumbnail = await this.getBuffer(thumbnailURL)
             logRegular(`retrieved Thumbnail for ${filename}`)
         } catch (error) {
             const reason = error as string
@@ -89,12 +78,10 @@ export class MetadataHelper {
             return placeholder
         }
 
-        const thumbnailBuffer = Buffer.from(thumbnail, 'base64')
-
-        return new MessageAttachment(thumbnailBuffer, 'thumbnail.png')
+        return new MessageAttachment(thumbnail, 'thumbnail.png')
     }
 
-    private async getBase64(url: string) {
+    private async getBuffer(url: string) {
         const response = await axios.get(url,
             {
                 responseType: 'arraybuffer',
@@ -102,6 +89,6 @@ export class MetadataHelper {
                     'X-Api-Key': new ConfigHelper().getMoonrakerApiKey()
                 }
             })
-        return Buffer.from(response.data, 'binary').toString('base64')
+        return Buffer.from(response.data, 'binary')
     }
 }
