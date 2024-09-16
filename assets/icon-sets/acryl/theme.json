@@ -42,5 +42,5 @@
   "throttle_under_voltage_detected": "c90000",
   "throttle_temperature_limit_active": "c90000",
   "throttle_frequency_capped": "c90000",
-  "system_update": "fbff00"
+  "system_update": "0099ff"
 }

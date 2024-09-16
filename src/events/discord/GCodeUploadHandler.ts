@@ -30,8 +30,6 @@ export class GCodeUploadHandler {
                 return;
             }
 
-            await message.channel.sendTyping()
-
             if(message.attachments.size > 1) {
                 await this.uploadMultipleFiles(message)
                 return
@@ -48,6 +46,8 @@ export class GCodeUploadHandler {
         if (!fileName.endsWith('.gcode')) {
             return
         }
+
+        await message.channel.sendTyping()
 
         const localeHelper = new LocaleHelper()
         const embedHelper = new EmbedHelper()
