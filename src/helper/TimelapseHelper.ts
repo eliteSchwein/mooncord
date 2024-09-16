@@ -5,11 +5,7 @@ import {logNotice, logRegular, logSuccess} from "./LoggerHelper";
 import {createWriteStream, statSync, unlinkSync} from "fs";
 import {waitUntil} from "async-wait-until";
 import {ConfigHelper} from "./ConfigHelper";
-import {getMoonrakerClient} from "../Application";
-import {LocaleHelper} from "./LocaleHelper";
-import {NotificationHelper} from "./NotificationHelper";
 import Ffmpeg from "fluent-ffmpeg";
-import * as ffmpegInstall from "@ffmpeg-installer/ffmpeg";
 import axios from "axios";
 import {MessageAttachment} from "discord.js";
 import {DiscordInputGenerator} from "../generator/DiscordInputGenerator";
@@ -110,7 +106,6 @@ export class TimelapseHelper {
         const ffmpegRender = Ffmpeg()
 
         ffmpegRender
-            .setFfmpegPath(ffmpegInstall.path)
             .addInput(timelapseInput)
             .noAudio()
             .output(tempPathShort)
