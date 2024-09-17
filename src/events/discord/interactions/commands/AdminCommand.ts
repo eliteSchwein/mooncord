@@ -1,15 +1,13 @@
 import BaseCommand from "./BaseCommand";
-import {CommandInteraction} from "discord.js";
+import {ChatInputCommandInteraction} from "discord.js";
 import {removeFromArray} from "../../../../helper/DataHelper";
 
 export default class AdminCommand extends BaseCommand {
     commandId = 'admin'
 
-    async handleCommand(interaction: CommandInteraction) {
+    async handleCommand(interaction: ChatInputCommandInteraction) {
         interaction.options
-        // @ts-ignore
         const role = interaction.options.getRole(this.syntaxLocale.commands.admin.options.role.options.role.name)
-        // @ts-ignore
         const user = interaction.options.getUser(this.syntaxLocale.commands.admin.options.user.options.user.name)
 
         const permissions = this.database.getDatabaseEntry('permissions')

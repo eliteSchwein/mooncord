@@ -1,7 +1,7 @@
-import {CommandInteraction} from "discord.js";
 import {LocaleHelper} from "../../../../helper/LocaleHelper";
 import {DatabaseUtil} from "../../../../utils/DatabaseUtil";
 import {ConfigHelper} from "../../../../helper/ConfigHelper";
+import {ChatInputCommandInteraction} from "discord.js";
 
 export default class BaseCommand {
     protected localeHelper = new LocaleHelper()
@@ -12,7 +12,7 @@ export default class BaseCommand {
 
     commandId = ''
 
-    public constructor(interaction: CommandInteraction, commandId: string) {
+    public constructor(interaction: ChatInputCommandInteraction, commandId: string) {
         if (commandId !== this.commandId) {
             return
         }
@@ -20,7 +20,7 @@ export default class BaseCommand {
         void this.handleCommand(interaction)
     }
 
-    async handleCommand(interaction: CommandInteraction) {
+    async handleCommand(interaction: ChatInputCommandInteraction) {
         // here the command stuff, extend this class
     }
 }
