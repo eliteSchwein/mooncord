@@ -1,25 +1,11 @@
-'use strict'
+import BaseCommand from "./BaseCommand";
+import {ChatInputCommandInteraction, User} from "discord.js";
 
-import {CommandInteraction, User} from "discord.js";
-import {getMoonrakerClient} from "../../../../Application";
-import {LocaleHelper} from "../../../../helper/LocaleHelper";
-
-export class RestartCommand {
-    protected localeHelper = new LocaleHelper()
-    protected locale = this.localeHelper.getLocale()
-    protected syntaxLocale = this.localeHelper.getSyntaxLocale()
-    protected moonrakerClient = getMoonrakerClient()
+export default class RestartCommand extends BaseCommand {
+    commandId = 'restart'
     protected user: User
 
-    public constructor(interaction: CommandInteraction, commandId: string) {
-        if (commandId !== 'restart') {
-            return
-        }
-
-        this.execute(interaction)
-    }
-
-    private async execute(interaction: CommandInteraction) {
+    async handleCommand(interaction: ChatInputCommandInteraction) {
         const service = interaction.options.getString(this.syntaxLocale.commands.restart.options.service.name)
 
         await interaction.deferReply()
