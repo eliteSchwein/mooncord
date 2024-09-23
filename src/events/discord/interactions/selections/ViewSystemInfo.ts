@@ -7,22 +7,15 @@ import {ConfigHelper} from "../../../../helper/ConfigHelper";
 import {LocaleHelper} from "../../../../helper/LocaleHelper";
 import {MetadataHelper} from "../../../../helper/MetadataHelper";
 import {MCUHelper} from "../../../../helper/MCUHelper";
+import BaseSelection from "./BaseSelection";
 
-export class ViewSystemInfo {
+export class ViewSystemInfo extends BaseSelection {
+    selectionId = 'systeminfo_select'
 
-    public constructor(interaction: SelectMenuInteraction, selectionId: string) {
-        if (selectionId !== 'systeminfo_select') {
-            return
-        }
-
-        void this.execute(interaction)
-    }
-
-    private async execute(interaction: SelectMenuInteraction) {
+    async handleSelection(interaction: SelectMenuInteraction) {
         await interaction.deferReply()
         const currentMessage = interaction.message as Message
 
-        const embedHelper = new EmbedHelper()
         const mcuHelper = new MCUHelper()
 
         const component = interaction.values[0]
@@ -31,9 +24,9 @@ export class ViewSystemInfo {
 
         if (component.startsWith('mcu')) {
             const mcuData = mcuHelper.getMCULoad(component)
-            embedData = await embedHelper.generateEmbed(`systeminfo_mcu`, mcuData)
+            embedData = await this.embedHelper.generateEmbed(`systeminfo_mcu`, mcuData)
         } else {
-            embedData = await embedHelper.generateEmbed(`systeminfo_${component}`)
+            embedData = await this.embedHelper.generateEmbed(`systeminfo_${component}`)
         }
 
         await currentMessage.edit({components: null})

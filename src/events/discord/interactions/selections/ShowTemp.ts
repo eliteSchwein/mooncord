@@ -1,31 +1,17 @@
 'use strict'
 
 import type {Message, SelectMenuInteraction} from "discord.js";
-import {MessageEmbed} from "discord.js";
 
-import {getDatabase, getMoonrakerClient} from "../../../../Application";
-import {ConfigHelper} from "../../../../helper/ConfigHelper";
-import {EmbedHelper} from "../../../../helper/EmbedHelper";
-import {LocaleHelper} from "../../../../helper/LocaleHelper";
-import {MetadataHelper} from "../../../../helper/MetadataHelper";
-import {getEntry} from "../../../../utils/CacheUtil";
 import {TempHelper} from "../../../../helper/TempHelper";
 import TempHistoryGraph from "../../../../helper/graphs/TempHistoryGraph";
+import BaseSelection from "./BaseSelection";
 
-export class ShowTempSelection {
+export class ShowTempSelection extends BaseSelection{
+    selectionId = 'show_temp'
 
-    public constructor(interaction: SelectMenuInteraction, selectionId: string) {
-        if (selectionId !== 'show_temp') {
-            return
-        }
-
-        void this.execute(interaction)
-    }
-
-    private async execute(interaction: SelectMenuInteraction) {
+    async handleSelection(interaction: SelectMenuInteraction) {
         await interaction.deferReply()
 
-        const embedHelper = new EmbedHelper()
         const tempHelper = new TempHelper()
 
         const heater = interaction.values[0]
@@ -38,9 +24,9 @@ export class ShowTempSelection {
             }
         }
 
-        const embedData = await embedHelper.generateEmbed('single_temperature', {heater}, [tempField])
+        const embedData = await this.embedHelper.generateEmbed('single_temperature', {heater}, [tempField])
         const tempGraph = await new TempHistoryGraph().renderGraph(heater)
-        const embed = embedData.embed.embeds[0] as MessageEmbed
+        const embed = embedData.embed.embeds[0]
         const components = embedData.embed['components']
         let files = [tempGraph]
 

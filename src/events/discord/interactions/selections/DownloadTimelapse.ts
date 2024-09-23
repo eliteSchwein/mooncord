@@ -2,18 +2,16 @@
 
 import {AttachmentBuilder, Message, SelectMenuInteraction} from "discord.js";
 import {getEntry} from "../../../../utils/CacheUtil";
-import {LocaleHelper} from "../../../../helper/LocaleHelper";
 import {findValueByPartial} from "../../../../helper/DataHelper";
 import {TimelapseHelper} from "../../../../helper/TimelapseHelper";
 import {resolve} from "path";
-import {ConfigHelper} from "../../../../helper/ConfigHelper";
 import {unlinkSync} from "fs";
 import BaseSelection from "./BaseSelection";
 
 export class DownloadTimelapse extends BaseSelection {
     selectionId = 'timelapse_download'
 
-    private async execute(interaction: SelectMenuInteraction) {
+    async handleSelection(interaction: SelectMenuInteraction) {
         await interaction.deferReply()
         const timelapseHelper = new TimelapseHelper()
 

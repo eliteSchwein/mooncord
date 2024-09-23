@@ -1,36 +1,21 @@
 'use strict'
 
-import {Message, MessageEmbed, SelectMenuInteraction} from "discord.js";
+import {Message, SelectMenuInteraction} from "discord.js";
 
-import {getDatabase, getMoonrakerClient} from "../../../../Application";
-import {ConfigHelper} from "../../../../helper/ConfigHelper";
-import {EmbedHelper} from "../../../../helper/EmbedHelper";
-import {LocaleHelper} from "../../../../helper/LocaleHelper";
-import {MetadataHelper} from "../../../../helper/MetadataHelper";
-import {getEntry} from "../../../../utils/CacheUtil";
-import {TempHelper} from "../../../../helper/TempHelper";
 import {ExcludeGraph} from "../../../../helper/graphs/ExcludeGraph";
+import BaseSelection from "./BaseSelection";
 
-export class ExcludeObjectsSelection {
+export class ExcludeObjectsSelection extends BaseSelection {
+    selectionId = 'exclude_objects'
 
-    public constructor(interaction: SelectMenuInteraction, selectionId: string) {
-        if (selectionId !== 'exclude_objects') {
-            return
-        }
-
-        void this.execute(interaction)
-    }
-
-    private async execute(interaction: SelectMenuInteraction) {
+    async handleSelection(interaction: SelectMenuInteraction) {
         await interaction.deferReply()
 
         const object = interaction.values[0]
 
-        const embedHelper = new EmbedHelper()
-
-        const embedData = await embedHelper.generateEmbed('exclude_detail', {object})
+        const embedData = await this.embedHelper.generateEmbed('exclude_detail', {object})
         const excludeGraph = await new ExcludeGraph().renderGraph(object)
-        const embed = embedData.embed.embeds[0] as MessageEmbed
+        const embed = embedData.embed.embeds[0]
         const components = embedData.embed['components']
         const selectMenu = components[0].components[0]
 
