@@ -6,7 +6,7 @@ import {getDatabase} from "../../../../Application";
 import {EmbedHelper} from "../../../../helper/EmbedHelper";
 import {ConfigHelper} from "../../../../helper/ConfigHelper";
 import {LocaleHelper} from "../../../../helper/LocaleHelper";
-import BaseHandler from "./BaseHandler";
+import BaseHandler from "../abstracts/BaseHandler";
 
 export class RefreshHandler extends BaseHandler{
     async isValid(message: Message, user: User, data, interaction = null) {

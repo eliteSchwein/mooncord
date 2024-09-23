@@ -1,4 +1,4 @@
-import BaseCommand from "./BaseCommand";
+import BaseCommand from "../abstracts/BaseCommand";
 import {ChatInputCommandInteraction} from "discord.js";
 import {DiscordCommandGenerator} from "../../../../generator/DiscordCommandGenerator";
 import {logRegular, logWarn} from "../../../../helper/LoggerHelper";

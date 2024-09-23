@@ -7,7 +7,7 @@ import {ConfigHelper} from "../../../../helper/ConfigHelper";
 import {LocaleHelper} from "../../../../helper/LocaleHelper";
 import {MetadataHelper} from "../../../../helper/MetadataHelper";
 import {MCUHelper} from "../../../../helper/MCUHelper";
-import BaseSelection from "./BaseSelection";
+import BaseSelection from "../abstracts/BaseSelection";
 
 export class ViewSystemInfo extends BaseSelection {
     selectionId = 'systeminfo_select'

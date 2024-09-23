@@ -1,4 +1,4 @@
-import BaseCommand from "./BaseCommand";
+import BaseCommand from "../abstracts/BaseCommand";
 import {ChatInputCommandInteraction} from "discord.js";
 import {getEntry} from "../../../../utils/CacheUtil";
 import {HistoryHelper} from "../../../../helper/HistoryHelper";

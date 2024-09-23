@@ -6,7 +6,7 @@ import {EmbedHelper} from "../../../../helper/EmbedHelper";
 import {ConfigHelper} from "../../../../helper/ConfigHelper";
 import {LocaleHelper} from "../../../../helper/LocaleHelper";
 import {ConsoleHelper} from "../../../../helper/ConsoleHelper";
-import BaseHandler from "./BaseHandler";
+import BaseHandler from "../abstracts/BaseHandler";
 
 export class MacroHandler extends BaseHandler{
     async isValid(message: Message, user: User, data, interaction = null) {

@@ -1,4 +1,4 @@
-import BaseCommand from "./BaseCommand";
+import BaseCommand from "../abstracts/BaseCommand";
 import {ChatInputCommandInteraction, User} from "discord.js";
 
 export default class RestartCommand extends BaseCommand {

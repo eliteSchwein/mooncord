@@ -3,7 +3,7 @@
 import {Message, User} from "discord.js";
 import {LocaleHelper} from "../../../../helper/LocaleHelper";
 import {getMoonrakerClient} from "../../../../Application";
-import BaseHandler from "./BaseHandler";
+import BaseHandler from "../abstracts/BaseHandler";
 
 export class ExcludeConfirmHandler extends BaseHandler{
     async isValid(message: Message, user: User, data, interaction = null) {

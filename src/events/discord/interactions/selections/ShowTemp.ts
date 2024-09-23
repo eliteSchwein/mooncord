@@ -4,7 +4,7 @@ import type {Message, StringSelectMenuInteraction} from "discord.js";
 
 import {TempHelper} from "../../../../helper/TempHelper";
 import TempHistoryGraph from "../../../../helper/graphs/TempHistoryGraph";
-import BaseSelection from "./BaseSelection";
+import BaseSelection from "../abstracts/BaseSelection";
 
 export class ShowTempSelection extends BaseSelection{
     selectionId = 'show_temp'

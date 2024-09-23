@@ -7,7 +7,7 @@ import {EmbedHelper} from "../../../../helper/EmbedHelper";
 import {ConfigHelper} from "../../../../helper/ConfigHelper";
 import {getEntry, setData} from "../../../../utils/CacheUtil";
 import {readFileSync, writeFileSync} from "fs";
-import BaseHandler from "./BaseHandler";
+import BaseHandler from "../abstracts/BaseHandler";
 
 export class CameraSettingHandler extends BaseHandler {
     async isValid(message: Message, user: User, data, interaction = null) {

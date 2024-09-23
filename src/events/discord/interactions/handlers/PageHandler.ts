@@ -7,7 +7,7 @@ import {ConfigHelper} from "../../../../helper/ConfigHelper";
 import {LocaleHelper} from "../../../../helper/LocaleHelper";
 import {PageHelper} from "../../../../helper/PageHelper";
 import {logNotice} from "../../../../helper/LoggerHelper";
-import BaseHandler from "./BaseHandler";
+import BaseHandler from "../abstracts/BaseHandler";
 
 export class PageHandler extends BaseHandler{
     async isValid(message: Message, user: User, data, interaction = null) {

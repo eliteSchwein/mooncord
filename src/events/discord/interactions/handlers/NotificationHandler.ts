@@ -4,7 +4,7 @@ import {Message, User} from "discord.js";
 import {getDatabase, getMoonrakerClient} from "../../../../Application";
 import {EmbedHelper} from "../../../../helper/EmbedHelper";
 import {removeFromArray} from "../../../../helper/DataHelper";
-import BaseHandler from "./BaseHandler";
+import BaseHandler from "../abstracts/BaseHandler";
 
 export class NotificationHandler extends BaseHandler {
     async isValid(message: Message, user: User, data, interaction = null) {

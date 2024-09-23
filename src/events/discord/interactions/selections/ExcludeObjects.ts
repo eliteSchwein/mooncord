@@ -3,7 +3,7 @@
 import {Message, StringSelectMenuInteraction} from "discord.js";
 
 import {ExcludeGraph} from "../../../../helper/graphs/ExcludeGraph";
-import BaseSelection from "./BaseSelection";
+import BaseSelection from "../abstracts/BaseSelection";
 
 export class ExcludeObjectsSelection extends BaseSelection {
     selectionId = 'exclude_objects'

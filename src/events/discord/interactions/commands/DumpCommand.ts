@@ -1,4 +1,4 @@
-import BaseCommand from "./BaseCommand";
+import BaseCommand from "../abstracts/BaseCommand";
 import {AttachmentBuilder, ChatInputCommandInteraction} from "discord.js";
 import * as CacheUtil from "../../../../utils/CacheUtil";
 import path from "path";

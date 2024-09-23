@@ -1,6 +1,6 @@
 import {AttachmentBuilder, Message, User} from "discord.js";
 import {downloadFile} from "../../../../helper/DataHelper";
-import BaseHandler from "./BaseHandler";
+import BaseHandler from "../abstracts/BaseHandler";
 
 export default class DownloadHandler extends BaseHandler{
     async isValid(message: Message, user: User, data, interaction = null) {

@@ -6,7 +6,7 @@ import {LocaleHelper} from "../../../../helper/LocaleHelper";
 import {EmbedHelper} from "../../../../helper/EmbedHelper";
 import {getEntry} from "../../../../utils/CacheUtil";
 import {logRegular} from "../../../../helper/LoggerHelper";
-import BaseHandler from "./BaseHandler";
+import BaseHandler from "../abstracts/BaseHandler";
 
 export class SetupHandler extends BaseHandler{
     async isValid(message: Message, user: User, data, interaction = null) {

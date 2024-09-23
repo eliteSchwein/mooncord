@@ -5,7 +5,7 @@ import {EmbedHelper} from "../../../../helper/EmbedHelper";
 import {LocaleHelper} from "../../../../helper/LocaleHelper";
 import {MetadataHelper} from "../../../../helper/MetadataHelper";
 import {getMoonrakerClient} from "../../../../Application";
-import BaseHandler from "./BaseHandler";
+import BaseHandler from "../abstracts/BaseHandler";
 
 export class PrintJobStartHandler extends BaseHandler{
     async isValid(message: Message, user: User, data, interaction = null) {

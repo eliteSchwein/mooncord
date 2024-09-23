@@ -6,7 +6,7 @@ import {findValueByPartial} from "../../../../helper/DataHelper";
 import {TimelapseHelper} from "../../../../helper/TimelapseHelper";
 import {resolve} from "path";
 import {unlinkSync} from "fs";
-import BaseSelection from "./BaseSelection";
+import BaseSelection from "../abstracts/BaseSelection";
 
 export class DownloadTimelapse extends BaseSelection {
     selectionId = 'timelapse_download'

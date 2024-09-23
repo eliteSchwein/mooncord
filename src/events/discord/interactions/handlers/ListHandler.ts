@@ -2,7 +2,7 @@
 
 import {Message, User} from "discord.js";
 import {PageHelper} from "../../../../helper/PageHelper";
-import BaseHandler from "./BaseHandler";
+import BaseHandler from "../abstracts/BaseHandler";
 
 export class ListHandler extends BaseHandler {
     async isValid(message: Message, user: User, data, interaction = null) {

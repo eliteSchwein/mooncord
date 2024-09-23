@@ -1,7 +1,7 @@
 'use strict'
 
 import {Message, User} from "discord.js";
-import BaseHandler from "./BaseHandler";
+import BaseHandler from "../abstracts/BaseHandler";
 
 export class DeleteMessageHandler extends BaseHandler{
     async isValid(message: Message, user: User, data, interaction = null) {

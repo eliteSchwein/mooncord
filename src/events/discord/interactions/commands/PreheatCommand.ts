@@ -1,4 +1,4 @@
-import BaseCommand from "./BaseCommand";
+import BaseCommand from "../abstracts/BaseCommand";
 import {ChatInputCommandInteraction, CommandInteraction} from "discord.js";
 import {findValue, getEntry} from "../../../../utils/CacheUtil";
 import {TempHelper} from "../../../../helper/TempHelper";

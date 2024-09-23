@@ -1,7 +1,7 @@
 'use strict'
 
 import {EmbedBuilder, Message, User} from "discord.js";
-import BaseHandler from "./BaseHandler";
+import BaseHandler from "../abstracts/BaseHandler";
 
 export class DeleteHandler extends BaseHandler {
     async isValid(message: Message, user: User, data, interaction = null) {

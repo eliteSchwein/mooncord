@@ -3,7 +3,7 @@
 import {Message, User} from "discord.js";
 import {findValue} from "../../../../utils/CacheUtil";
 import {EmbedHelper} from "../../../../helper/EmbedHelper";
-import BaseHandler from "./BaseHandler";
+import BaseHandler from "../abstracts/BaseHandler";
 
 export class MessageHandler extends BaseHandler{
     async isValid(message: Message, user: User, data, interaction = null) {

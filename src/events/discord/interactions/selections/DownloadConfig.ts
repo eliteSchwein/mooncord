@@ -3,7 +3,7 @@
 import {AttachmentBuilder, StringSelectMenuInteraction} from "discord.js";
 import {logError, logRegular, logSuccess} from "../../../../helper/LoggerHelper";
 import {downloadFile} from "../../../../helper/DataHelper";
-import BaseSelection from "./BaseSelection";
+import BaseSelection from "../abstracts/BaseSelection";
 
 export class DownloadConfig extends BaseSelection {
     selectionId = 'config_file_download'

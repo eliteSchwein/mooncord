@@ -3,7 +3,7 @@
 import {ModalSubmitInteraction} from "discord.js";
 import {ConsoleHelper} from "../../../../helper/ConsoleHelper";
 import {LocaleHelper} from "../../../../helper/LocaleHelper";
-import BaseModal from "./BaseModal";
+import BaseModal from "../abstracts/BaseModal";
 
 export class ExecuteModal extends BaseModal{
     modalId = 'execute_modal'

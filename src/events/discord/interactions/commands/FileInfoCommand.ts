@@ -1,4 +1,4 @@
-import BaseCommand from "./BaseCommand";
+import BaseCommand from "../abstracts/BaseCommand";
 import {ChatInputCommandInteraction, EmbedBuilder} from "discord.js";
 import {formatTime} from "../../../../helper/DataHelper";
 

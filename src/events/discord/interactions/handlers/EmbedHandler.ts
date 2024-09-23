@@ -2,7 +2,7 @@
 
 import {Message, User} from "discord.js";
 import {formatTime} from "../../../../helper/DataHelper";
-import BaseHandler from "./BaseHandler";
+import BaseHandler from "../abstracts/BaseHandler";
 
 export class EmbedHandler extends BaseHandler{
     async isValid(message: Message, user: User, data, interaction = null) {

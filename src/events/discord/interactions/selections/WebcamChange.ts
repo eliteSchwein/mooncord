@@ -2,7 +2,7 @@ import {StringSelectMenuInteraction} from "discord.js";
 import {getEntry, setData} from "../../../../utils/CacheUtil";
 import {EmbedHelper} from "../../../../helper/EmbedHelper";
 import {ConfigHelper} from "../../../../helper/ConfigHelper";
-import BaseSelection from "./BaseSelection";
+import BaseSelection from "../abstracts/BaseSelection";
 
 export class WebcamChange extends BaseSelection{
     selectionId = 'status_webcam'

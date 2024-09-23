@@ -3,7 +3,7 @@
 import {ModalSubmitInteraction} from "discord.js";
 import {LocaleHelper} from "../../../../helper/LocaleHelper";
 import {TempHelper} from "../../../../helper/TempHelper";
-import BaseModal from "./BaseModal";
+import BaseModal from "../abstracts/BaseModal";
 
 export class TempTargetModal extends BaseModal {
     modalId = 'temp_target'

@@ -1,4 +1,4 @@
-import BaseCommand from "./BaseCommand";
+import BaseCommand from "../abstracts/BaseCommand";
 import {ChannelType, ChatInputCommandInteraction, TextChannel} from "discord.js";
 import {removeFromArray} from "../../../../helper/DataHelper";
 

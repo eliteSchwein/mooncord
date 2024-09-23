@@ -11,7 +11,7 @@ import {downloadFile, findValueByPartial, formatTime} from "../../../../helper/D
 import axios from "axios";
 import {logError, logSuccess} from "../../../../helper/LoggerHelper";
 import util from "util";
-import BaseSelection from "./BaseSelection";
+import BaseSelection from "../abstracts/BaseSelection";
 
 export class DownloadLogSelection extends BaseSelection {
     selectionId = 'loglist_download_log'

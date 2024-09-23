@@ -4,7 +4,7 @@ import {Message, User} from "discord.js";
 import {EmbedHelper} from "../../../../helper/EmbedHelper";
 import {ModalHelper} from "../../../../helper/ModalHelper";
 import {TemplateHelper} from "../../../../helper/TemplateHelper";
-import BaseHandler from "./BaseHandler";
+import BaseHandler from "../abstracts/BaseHandler";
 
 export class ModalHandler extends BaseHandler {
     async isValid(message: Message, user: User, data, interaction = null) {
