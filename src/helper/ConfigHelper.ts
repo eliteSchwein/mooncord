@@ -219,10 +219,6 @@ export class ConfigHelper {
         return this.getConfig().language.date_locale
     }
 
-    public getDiscordRequestTimeout() {
-        return this.getEntriesByFilter(/^connection$/g)[0].discord_request_timeout
-    }
-
     public getEntriesPerPage() {
         return this.getEntriesByFilter(/^message$/g)[0].page_entries
     }

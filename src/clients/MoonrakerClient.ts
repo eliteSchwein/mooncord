@@ -1,7 +1,7 @@
 'use strict'
 
 import {ConfigHelper} from '../helper/ConfigHelper'
-import {Websocket, WebsocketBuilder, WebsocketEvents} from 'websocket-ts'
+import {Websocket, WebsocketBuilder, WebsocketEvent} from 'websocket-ts'
 import {APIKeyHelper} from '../helper/APIKeyHelper'
 import {waitUntil} from 'async-wait-until'
 import {
@@ -55,15 +55,15 @@ export class MoonrakerClient {
         this.websocket = new WebsocketBuilder(`${socketUrl}?token=${oneShotToken}`)
             .build()
 
-        this.websocket.addEventListener(WebsocketEvents.close, ((async (instance, ev) => {
+        this.websocket.addEventListener(WebsocketEvent.close, ((async (instance, ev) => {
             await this.closeHandler(instance, ev)
         })))
 
-        this.websocket.addEventListener(WebsocketEvents.error, ((async (instance, ev) => {
+        this.websocket.addEventListener(WebsocketEvent.error, ((async (instance, ev) => {
             await this.errorHandler(instance, ev)
         })))
 
-        this.websocket.addEventListener(WebsocketEvents.open, ((async (instance, ev) => {
+        this.websocket.addEventListener(WebsocketEvent.open, ((async (instance, ev) => {
             clearInterval(this.reconnectScheduler)
 
             await this.reconnectHandler(instance, ev)
@@ -133,7 +133,7 @@ export class MoonrakerClient {
             'event_count': this.websocket.underlyingWebsocket['_eventsCount']
         })
 
-        new TempHelper().generateColors(data.result.status)
+        new TempHelper().generateColors()
         void new WebcamHelper().generateCache()
     }
 
@@ -286,7 +286,7 @@ export class MoonrakerClient {
 
     private registerEvents() {
         logRegular('Register Events...')
-        this.websocket.addEventListener(WebsocketEvents.message, ((instance, ev) => {
+        this.websocket.addEventListener(WebsocketEvent.message, ((instance, ev) => {
             const messageData = JSON.parse(ev.data)
 
             if (typeof (messageData) === 'undefined') {

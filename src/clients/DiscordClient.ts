@@ -1,4 +1,4 @@
-import {Client, Intents} from 'discord.js'
+import {ActivityType, Client, GatewayIntentBits, Partials} from 'discord.js'
 
 import {getDatabase} from '../Application'
 import {ConfigHelper} from '../helper/ConfigHelper'
@@ -12,12 +12,12 @@ import {DiscordStatusGenerator} from "../generator/DiscordStatusGenerator";
 import {LocaleHelper} from "../helper/LocaleHelper";
 import {MetadataHelper} from "../helper/MetadataHelper";
 import {GCodeUploadHandler} from "../events/discord/GCodeUploadHandler";
-'use strict'
-
 import {VerifyHandler} from "../events/discord/VerifyHandler";
 // @ts-ignore
 import {REST} from '@discordjs/rest'
 import {ReconnectHandler} from "../events/discord/ReconnectHandler";
+
+'use strict'
 
 let interactionHandler: InteractionHandler
 let reconnectHandler: ReconnectHandler
@@ -42,22 +42,20 @@ export class DiscordClient {
 
         this.discordClient = new Client({
             intents: [
-                Intents.FLAGS.DIRECT_MESSAGES,
-                Intents.FLAGS.DIRECT_MESSAGE_REACTIONS,
-                Intents.FLAGS.GUILDS,
-                Intents.FLAGS.GUILD_MESSAGES,
-                Intents.FLAGS.GUILD_WEBHOOKS,
-                Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
-                Intents.FLAGS.GUILD_INTEGRATIONS
+                GatewayIntentBits.DirectMessages,
+                GatewayIntentBits.DirectMessageReactions,
+                GatewayIntentBits.Guilds,
+                GatewayIntentBits.GuildMessages,
+                GatewayIntentBits.GuildMessageReactions,
+                GatewayIntentBits.GuildIntegrations
             ],
             partials: [
-                'MESSAGE',
-                'CHANNEL',
-                'REACTION',
-                'GUILD_MEMBER',
-                'USER'
-            ],
-            restRequestTimeout: config.getDiscordRequestTimeout() * 1000
+                Partials.Message,
+                Partials.Channel,
+                Partials.Reaction,
+                Partials.GuildMember,
+                Partials.User
+            ]
         })
 
         logRegular('Connect to Discord...')
@@ -94,7 +92,7 @@ export class DiscordClient {
 
         this.discordClient.user.setActivity(
             localeHelper.getLocale().embeds.startup.activity,
-            {type: 'LISTENING'}
+            {type: ActivityType.Listening}
         )
 
         if (config.dumpCacheOnStart()) {
