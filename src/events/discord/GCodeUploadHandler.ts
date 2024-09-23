@@ -1,6 +1,6 @@
 'use strict'
 
-import {Client, Message, MessageAttachment, MessageEmbed} from "discord.js";
+import {Client, Message} from "discord.js";
 import {getMoonrakerClient} from "../../Application";
 import {ConfigHelper} from "../../helper/ConfigHelper";
 import {LocaleHelper} from "../../helper/LocaleHelper";
@@ -43,6 +43,10 @@ export class GCodeUploadHandler {
         const attachment = message.attachments.at(0)
         const fileName = attachment.name
 
+        if(!message.channel.isSendable()) {
+            return
+        }
+
         if (!fileName.endsWith('.gcode')) {
             return
         }
@@ -60,7 +64,7 @@ export class GCodeUploadHandler {
             const metaData = await metaDataHelper.getMetaData(fileName)
             const thumbnail = await metaDataHelper.getThumbnail(fileName)
             const embedData = await embedHelper.generateEmbed('printjob_start_request', metaData)
-            const embed = embedData.embed.embeds[0] as MessageEmbed
+            const embed = embedData.embed.embeds[0]
 
             embed.setThumbnail(`attachment://${thumbnail.name}`)
 
@@ -85,6 +89,10 @@ export class GCodeUploadHandler {
 
             if (!fileName.endsWith('.gcode')) {
                 continue
+            }
+
+            if(!message.channel.isSendable()) {
+                return
             }
 
             await message.channel.sendTyping()
