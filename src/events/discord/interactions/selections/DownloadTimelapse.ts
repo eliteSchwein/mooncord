@@ -1,6 +1,6 @@
 'use strict'
 
-import {AttachmentBuilder, Message, SelectMenuInteraction} from "discord.js";
+import {AttachmentBuilder, Message, StringSelectMenuInteraction} from "discord.js";
 import {getEntry} from "../../../../utils/CacheUtil";
 import {findValueByPartial} from "../../../../helper/DataHelper";
 import {TimelapseHelper} from "../../../../helper/TimelapseHelper";
@@ -11,7 +11,7 @@ import BaseSelection from "./BaseSelection";
 export class DownloadTimelapse extends BaseSelection {
     selectionId = 'timelapse_download'
 
-    async handleSelection(interaction: SelectMenuInteraction) {
+    async handleSelection(interaction: StringSelectMenuInteraction) {
         await interaction.deferReply()
         const timelapseHelper = new TimelapseHelper()
 

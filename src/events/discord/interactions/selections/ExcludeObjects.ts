@@ -1,6 +1,6 @@
 'use strict'
 
-import {Message, SelectMenuInteraction} from "discord.js";
+import {Message, StringSelectMenuInteraction} from "discord.js";
 
 import {ExcludeGraph} from "../../../../helper/graphs/ExcludeGraph";
 import BaseSelection from "./BaseSelection";
@@ -8,7 +8,7 @@ import BaseSelection from "./BaseSelection";
 export class ExcludeObjectsSelection extends BaseSelection {
     selectionId = 'exclude_objects'
 
-    async handleSelection(interaction: SelectMenuInteraction) {
+    async handleSelection(interaction: StringSelectMenuInteraction) {
         await interaction.deferReply()
 
         const object = interaction.values[0]

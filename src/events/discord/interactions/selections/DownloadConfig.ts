@@ -1,6 +1,6 @@
 'use strict'
 
-import {AttachmentBuilder, SelectMenuInteraction} from "discord.js";
+import {AttachmentBuilder, StringSelectMenuInteraction} from "discord.js";
 import {logError, logRegular, logSuccess} from "../../../../helper/LoggerHelper";
 import {downloadFile} from "../../../../helper/DataHelper";
 import BaseSelection from "./BaseSelection";
@@ -8,7 +8,7 @@ import BaseSelection from "./BaseSelection";
 export class DownloadConfig extends BaseSelection {
     selectionId = 'config_file_download'
 
-    async handleSelection(interaction: SelectMenuInteraction) {
+    async handleSelection(interaction: StringSelectMenuInteraction) {
         await interaction.deferReply({ephemeral: true})
 
         const file = interaction.values[0]

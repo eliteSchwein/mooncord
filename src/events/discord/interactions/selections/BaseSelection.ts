@@ -7,7 +7,7 @@ import {ConsoleHelper} from "../../../../helper/ConsoleHelper";
 import {ModalHelper} from "../../../../helper/ModalHelper";
 import {MetadataHelper} from "../../../../helper/MetadataHelper";
 import {getMoonrakerClient} from "../../../../Application";
-import {SelectMenuInteraction} from "discord.js";
+import {StringSelectMenuInteraction} from "discord.js";
 
 export default class BaseSelection {
     protected localeHelper = new LocaleHelper()
@@ -26,7 +26,7 @@ export default class BaseSelection {
 
     selectionId = ''
 
-    public constructor(interaction: SelectMenuInteraction, selectionId: string) {
+    public constructor(interaction: StringSelectMenuInteraction, selectionId: string) {
         if (selectionId !== this.selectionId) {
             return
         }
@@ -34,7 +34,7 @@ export default class BaseSelection {
         void this.handleSelection(interaction)
     }
 
-    async handleSelection(interaction: SelectMenuInteraction) {
+    async handleSelection(interaction: StringSelectMenuInteraction) {
 
     }
 }

@@ -1,6 +1,6 @@
 'use strict'
 
-import type {Message, SelectMenuInteraction} from "discord.js";
+import type {Message, StringSelectMenuInteraction} from "discord.js";
 
 import {TempHelper} from "../../../../helper/TempHelper";
 import TempHistoryGraph from "../../../../helper/graphs/TempHistoryGraph";
@@ -9,7 +9,7 @@ import BaseSelection from "./BaseSelection";
 export class ShowTempSelection extends BaseSelection{
     selectionId = 'show_temp'
 
-    async handleSelection(interaction: SelectMenuInteraction) {
+    async handleSelection(interaction: StringSelectMenuInteraction) {
         await interaction.deferReply()
 
         const tempHelper = new TempHelper()

@@ -1,6 +1,6 @@
 'use strict'
 
-import {Message, SelectMenuInteraction} from "discord.js";
+import {Message, StringSelectMenuInteraction} from "discord.js";
 import {getEntry} from "../../../../utils/CacheUtil";
 import {findValueByPartial, formatTime} from "../../../../helper/DataHelper";
 import BaseSelection from "./BaseSelection";
@@ -8,7 +8,7 @@ import BaseSelection from "./BaseSelection";
 export class ViewPrintJobSelection extends BaseSelection {
     selectionId = 'printlist_view_printjob'
 
-    async handleSelection(interaction: SelectMenuInteraction) {
+    async handleSelection(interaction: StringSelectMenuInteraction) {
         await interaction.deferReply()
 
         const gcodeFile = findValueByPartial(getEntry('gcode_files'), interaction.values[0], 'path')

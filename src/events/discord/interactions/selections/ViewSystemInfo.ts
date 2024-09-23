@@ -1,6 +1,6 @@
 'use strict'
 
-import {Message, SelectMenuInteraction} from "discord.js";
+import {Message, StringSelectMenuInteraction} from "discord.js";
 import {getDatabase, getMoonrakerClient} from "../../../../Application";
 import {EmbedHelper} from "../../../../helper/EmbedHelper";
 import {ConfigHelper} from "../../../../helper/ConfigHelper";
@@ -12,7 +12,7 @@ import BaseSelection from "./BaseSelection";
 export class ViewSystemInfo extends BaseSelection {
     selectionId = 'systeminfo_select'
 
-    async handleSelection(interaction: SelectMenuInteraction) {
+    async handleSelection(interaction: StringSelectMenuInteraction) {
         await interaction.deferReply()
         const currentMessage = interaction.message as Message
 

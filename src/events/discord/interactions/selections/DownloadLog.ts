@@ -1,6 +1,6 @@
 'use strict'
 
-import {AttachmentBuilder, Message, SelectMenuInteraction} from "discord.js";
+import {AttachmentBuilder, Message, StringSelectMenuInteraction} from "discord.js";
 import {getEntry} from "../../../../utils/CacheUtil";
 import {getDatabase, getMoonrakerClient} from "../../../../Application";
 import {EmbedHelper} from "../../../../helper/EmbedHelper";
@@ -16,7 +16,7 @@ import BaseSelection from "./BaseSelection";
 export class DownloadLogSelection extends BaseSelection {
     selectionId = 'loglist_download_log'
 
-    async handleSelection(interaction: SelectMenuInteraction) {
+    async handleSelection(interaction: StringSelectMenuInteraction) {
         await interaction.deferReply({ephemeral: true})
 
         let attachments = []
