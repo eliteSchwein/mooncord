@@ -1,26 +1,22 @@
 'use strict'
 
-import {Message, MessageEmbed, User} from "discord.js";
-import {getMoonrakerClient} from "../../../../Application";
-import {LocaleHelper} from "../../../../helper/LocaleHelper";
-import {EmbedHelper} from "../../../../helper/EmbedHelper";
+import {EmbedBuilder, Message, User} from "discord.js";
+import BaseHandler from "./BaseHandler";
 
-export class DeleteHandler {
-
-    public async execute(message: Message, user: User, data, interaction = null) {
+export class DeleteHandler extends BaseHandler {
+    async isValid(message: Message, user: User, data, interaction = null) {
         if (!data.functions.includes("delete")) {
-            return
+            return false
         }
         if (typeof data.root_path === 'undefined') {
-            return
+            return false
         }
 
-        const moonrakerClient = getMoonrakerClient()
-        const localeHelper = new LocaleHelper()
-        const locale = localeHelper.getLocale()
-        const embedHelper = new EmbedHelper()
+        return true
+    }
 
-        const currentEmbed = message.embeds[0] as MessageEmbed
+    async handleHandler(message: Message, user: User, data, interaction = null) {
+        const currentEmbed = message.embeds[0]
 
         if (currentEmbed.author === null) {
             return
@@ -33,19 +29,19 @@ export class DeleteHandler {
         }
 
         const rootPath = data.root_path
-        const filename = embedHelper.getAuthorName(currentEmbed)
+        const filename = this.embedHelper.getAuthorName(currentEmbed)
 
-        const feedback = await moonrakerClient.send({
+        const feedback = await this.moonrakerClient.send({
             "method": "server.files.delete_file",
             "params": {"path": `${rootPath}/${filename}`}
         })
 
         if (interaction !== null && typeof feedback.error !== 'undefined') {
-            await interaction.editReply(locale.messages.errors.file_not_found)
+            await interaction.editReply(this.locale.messages.errors.file_not_found)
             return
         }
 
-        const answer = locale.messages.answers.file_deleted
+        const answer = this.locale.messages.answers.file_deleted
             .replace(/(\${root})/g, rootPath)
             .replace(/(\${filename})/g, filename)
 

@@ -1,43 +1,38 @@
-import {Message, MessageAttachment, User} from "discord.js";
-import {ConfigHelper} from "../../../../helper/ConfigHelper";
-import {EmbedHelper} from "../../../../helper/EmbedHelper";
+import {AttachmentBuilder, Message, User} from "discord.js";
 import {downloadFile} from "../../../../helper/DataHelper";
-import {LocaleHelper} from "../../../../helper/LocaleHelper";
-import util from "util";
-import {logError} from "../../../../helper/LoggerHelper";
+import BaseHandler from "./BaseHandler";
 
-export default class DownloadHandler {
-    public async execute(message: Message, user: User, data, interaction = null) {
+export default class DownloadHandler extends BaseHandler{
+    async isValid(message: Message, user: User, data, interaction = null) {
         if (!data.functions.includes("download")) {
-            return
+            return false
         }
         if(message.embeds.length === 0) {
-            return
+            return false
         }
         if (typeof data.root_path === 'undefined') {
-            return
+            return false
         }
+        return true
+    }
 
+    async handleHandler(message: Message, user: User, data, interaction = null) {
         if (interaction !== null && !interaction.replied && !interaction.deferred) {
             await interaction.deferReply({ephemeral: true})
         }
 
-        const embedHelper = new EmbedHelper()
-        const localeHelper = new LocaleHelper()
-        const locale = localeHelper.getLocale()
-
-        const fileName = embedHelper.getAuthorName(message.embeds[0])
+        const fileName = this.embedHelper.getAuthorName(message.embeds[0])
         const rootPath = data.root_path
 
         const result = await downloadFile(rootPath, fileName)
 
         if (result.overSizeLimit) {
-            await interaction.editReply(locale.messages.errors.file_too_large
+            await interaction.editReply(this.locale.messages.errors.file_too_large
                 .replace(/(\${filename})/g, `\`\`js\n${fileName}\`\``));
             return
         }
 
-        const attachment = new MessageAttachment(result.data, fileName)
+        const attachment = new AttachmentBuilder(result.data, {name: fileName})
 
         await interaction.editReply({files: [attachment]});
     }

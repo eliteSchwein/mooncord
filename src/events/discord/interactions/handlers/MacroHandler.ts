@@ -6,22 +6,22 @@ import {EmbedHelper} from "../../../../helper/EmbedHelper";
 import {ConfigHelper} from "../../../../helper/ConfigHelper";
 import {LocaleHelper} from "../../../../helper/LocaleHelper";
 import {ConsoleHelper} from "../../../../helper/ConsoleHelper";
+import BaseHandler from "./BaseHandler";
 
-export class MacroHandler {
-
-    public async execute(message: Message, user: User, data, interaction = null) {
+export class MacroHandler extends BaseHandler{
+    async isValid(message: Message, user: User, data, interaction = null) {
         if (typeof data.macros === 'undefined') {
-            return
+            return false
         }
         if (data.macros.empty) {
-            return
+            return false
         }
 
-        const localeHelper = new LocaleHelper()
-        const locale = localeHelper.getLocale()
-        const consoleHelper = new ConsoleHelper()
+        return true
+    }
 
-        const gcodeValid = await consoleHelper.executeGcodeCommands(data.macros,
+    async handleHandler(message: Message, user: User, data, interaction = null) {
+        const gcodeValid = await this.consoleHelper.executeGcodeCommands(data.macros,
             interaction.channel,
             data.macro_message === true)
 
@@ -35,18 +35,18 @@ export class MacroHandler {
             label = `${data.emoji} ${label}`
         }
 
-        let answer = locale.messages.answers.macros_executed
+        let answer = this.locale.messages.answers.macros_executed
             .replace(/\${username}/g, interaction.user.tag)
             .replace(/(\${button_label})/g, label)
 
         if (gcodeValid === 0) {
-            answer = locale.messages.errors.macros_failed
+            answer = this.locale.messages.errors.macros_failed
                 .replace(/\${username}/g, interaction.user.tag)
                 .replace(/(\${button_label})/g, label)
         }
 
         if (gcodeValid === -1) {
-            answer = locale.messages.errors.execute_running
+            answer = this.locale.messages.errors.execute_running
                 .replace(/\${username}/g, interaction.user.tag)
         }
 

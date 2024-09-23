@@ -7,17 +7,18 @@ import {EmbedHelper} from "../../../../helper/EmbedHelper";
 import {ConfigHelper} from "../../../../helper/ConfigHelper";
 import {getEntry, setData} from "../../../../utils/CacheUtil";
 import {readFileSync, writeFileSync} from "fs";
+import BaseHandler from "./BaseHandler";
 
-export class CameraSettingHandler {
-    public async execute(message: Message, user: User, data, interaction = null) {
-        if (!data.functions.includes("camera_mirror_horizontal") &&
+export class CameraSettingHandler extends BaseHandler {
+    async isValid(message: Message, user: User, data, interaction = null) {
+        return !(!data.functions.includes("camera_mirror_horizontal") &&
             !data.functions.includes("camera_mirror_vertical") &&
-            !data.functions.includes("camera_rotate")) {
-            return
-        }
+            !data.functions.includes("camera_rotate"));
+    }
+
+    async handleHandler(message: Message, user: User, data, interaction = null) {
         const cache = getEntry('webcam')
         const webcamData = cache.entries[cache.active]
-        const moonrakerClient = getMoonrakerClient()
 
         if(data.functions.includes("camera_mirror_horizontal")) {
             webcamData.flip_horizontal = !webcamData.flip_horizontal
@@ -35,6 +36,6 @@ export class CameraSettingHandler {
             }
         }
 
-        await moonrakerClient.send({"method": "server.webcams.post_item","params": webcamData})
+        await this.moonrakerClient.send({"method": "server.webcams.post_item","params": webcamData})
     }
 }

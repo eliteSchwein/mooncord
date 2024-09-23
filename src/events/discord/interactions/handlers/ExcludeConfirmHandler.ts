@@ -3,21 +3,17 @@
 import {Message, User} from "discord.js";
 import {LocaleHelper} from "../../../../helper/LocaleHelper";
 import {getMoonrakerClient} from "../../../../Application";
+import BaseHandler from "./BaseHandler";
 
-export class ExcludeConfirmHandler {
+export class ExcludeConfirmHandler extends BaseHandler{
+    async isValid(message: Message, user: User, data, interaction = null) {
+        return data.functions.includes("exclude_object");
+    }
 
-    public async execute(message: Message, user: User, data, interaction = null) {
-        if (!data.functions.includes("exclude_object")) {
-            return
-        }
-
+    async handleHandler(message: Message, user: User, data, interaction = null) {
         if (interaction !== null && !interaction.deferred && !interaction.replied) {
             await interaction.deferReply()
         }
-
-        const moonrakerClient = getMoonrakerClient()
-        const localeHelper = new LocaleHelper()
-        const locale = localeHelper.getLocale()
 
         const objectOptions = interaction.message.components[0].components[0]['options']
         let object = undefined
@@ -28,12 +24,12 @@ export class ExcludeConfirmHandler {
             }
         }
 
-        await moonrakerClient.send({
+        await this.moonrakerClient.send({
             "method": "printer.gcode.script",
             "params": {"script": `EXCLUDE_OBJECT NAME=${object}`}
         }, Number.POSITIVE_INFINITY)
 
-        const answer = locale.messages.answers.excluded_object
+        const answer = this.locale.messages.answers.excluded_object
             .replace(/(\${object})/g, object)
             .replace(/(\${username})/g, interaction.user.username)
 

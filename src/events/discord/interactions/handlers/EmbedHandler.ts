@@ -1,37 +1,28 @@
 'use strict'
 
-import {Message, MessageEmbed, User} from "discord.js";
-import {getMoonrakerClient} from "../../../../Application";
-import {LocaleHelper} from "../../../../helper/LocaleHelper";
-import {EmbedHelper} from "../../../../helper/EmbedHelper";
-import {MetadataHelper} from "../../../../helper/MetadataHelper";
+import {Message, User} from "discord.js";
 import {formatTime} from "../../../../helper/DataHelper";
+import BaseHandler from "./BaseHandler";
 
-export class EmbedHandler {
+export class EmbedHandler extends BaseHandler{
+    async isValid(message: Message, user: User, data, interaction = null) {
+        return typeof data.embed !== 'undefined';
+    }
 
-    public async execute(message: Message, user: User, data, interaction = null) {
-        if (typeof data.embed === 'undefined') {
-            return
-        }
-
+    public async handleHandler(message: Message, user: User, data, interaction = null) {
         if (interaction !== null && !interaction.replied && !interaction.deferred) {
             await interaction.deferReply()
         }
 
-        const localeHelper = new LocaleHelper()
-        const locale = localeHelper.getLocale()
-        const embedHelper = new EmbedHelper()
-        const metadataHelper = new MetadataHelper()
-
         await message.edit({components: null, embeds: null})
         await message.removeAttachments()
 
-        const currentEmbed = message.embeds[0] as MessageEmbed
+        const currentEmbed = message.embeds[0]
 
         let author = ''
 
         if(currentEmbed !== undefined) {
-            author = embedHelper.getAuthorName(currentEmbed)
+            author = this.embedHelper.getAuthorName(currentEmbed)
         }
 
         let metaData = {
@@ -40,10 +31,10 @@ export class EmbedHandler {
         }
 
         if (data.functions.includes('fetch_author_metadata')) {
-            metaData = await metadataHelper.getMetaData(author)
+            metaData = await this.metadataHelper.getMetaData(author)
 
             if (interaction !== null && typeof metaData === 'undefined') {
-                await interaction.editReply(locale.messages.errors.file_not_found)
+                await interaction.editReply(this.locale.messages.errors.file_not_found)
                 return
             }
 
@@ -51,10 +42,10 @@ export class EmbedHandler {
             metaData.filename = author
         }
 
-        const embedData = await embedHelper.generateEmbed(data.embed, metaData)
+        const embedData = await this.embedHelper.generateEmbed(data.embed, metaData)
 
         if (data.functions.includes('fetch_author_metadata')) {
-            const thumbnail = await metadataHelper.getThumbnail(author)
+            const thumbnail = await this.metadataHelper.getThumbnail(author)
 
             embedData.embed.embeds[0].setThumbnail(`attachment://${thumbnail.name}`)
             embedData.embed['files'].push(thumbnail)

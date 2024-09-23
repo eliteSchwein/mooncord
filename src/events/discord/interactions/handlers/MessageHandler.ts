@@ -3,16 +3,14 @@
 import {Message, User} from "discord.js";
 import {findValue} from "../../../../utils/CacheUtil";
 import {EmbedHelper} from "../../../../helper/EmbedHelper";
+import BaseHandler from "./BaseHandler";
 
-export class MessageHandler {
+export class MessageHandler extends BaseHandler{
+    async isValid(message: Message, user: User, data, interaction = null) {
+        return typeof data.message !== 'undefined';
+    }
 
-    public async execute(message: Message, user: User, data, interaction = null) {
-        if (typeof data.message === 'undefined') {
-            return
-        }
-
-        const embedHelper = new EmbedHelper()
-
+    async handleHandler(message: Message, user: User, data, interaction = null) {
         const embed = message.embeds[0]
 
         let label = data.label
@@ -34,8 +32,8 @@ export class MessageHandler {
         newMessage = newMessage
             .replace(/(\${username})/g, interaction.user.tag)
             .replace(/(\${button_label})/g, label)
-            .replace(/(\${embed_author})/g, embedHelper.getAuthorName(embed))
-            .replace(/(\${embed_title})/g, embedHelper.getTitle(embed))
+            .replace(/(\${embed_author})/g, this.embedHelper.getAuthorName(embed))
+            .replace(/(\${embed_title})/g, this.embedHelper.getTitle(embed))
 
 
         if (interaction !== null && interaction.replied) {

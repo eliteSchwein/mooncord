@@ -1,15 +1,15 @@
 'use strict'
 
 import {Message, User} from "discord.js";
-import {getDatabase, getMoonrakerClient} from "../../../../Application";
-import {EmbedHelper} from "../../../../helper/EmbedHelper";
-import {ConfigHelper} from "../../../../helper/ConfigHelper";
-import {LocaleHelper} from "../../../../helper/LocaleHelper";
 import {PageHelper} from "../../../../helper/PageHelper";
+import BaseHandler from "./BaseHandler";
 
-export class ListHandler {
+export class ListHandler extends BaseHandler {
+    async isValid(message: Message, user: User, data, interaction = null) {
+        return true
+    }
 
-    public async execute(message: Message, user: User, data, interaction = null) {
+    async handleHandler(message: Message, user: User, data, interaction = null) {
         const listId = data.list
         if (!listId) {
             return
@@ -19,11 +19,10 @@ export class ListHandler {
             await interaction.deferReply()
         }
 
-        const embedHelper = new EmbedHelper()
         const pageHelper = new PageHelper(listId)
         const pageData = pageHelper.getPage(false, 2)
 
-        const answer = await embedHelper.generateEmbed(listId, pageData)
+        const answer = await this.embedHelper.generateEmbed(listId, pageData)
 
         await message.edit({components: null})
         await message.removeAttachments()
