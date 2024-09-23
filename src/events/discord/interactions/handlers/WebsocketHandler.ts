@@ -3,8 +3,15 @@
 import {Message, User} from "discord.js";
 import {getMoonrakerClient} from "../../../../Application";
 import {logRegular, logWarn} from "../../../../helper/LoggerHelper";
+import BaseHandler from "./BaseHandler";
 
-export class WebsocketHandler {
+export class WebsocketHandler extends BaseHandler{
+    async isValid(message: Message, user: User, data, interaction = null) {
+        if (!data.websocket_requests) {
+            return false
+        }
+        return true
+    }
 
     public async execute(message: Message, user: User, data, interaction = null) {
         if (!data.websocket_requests) {

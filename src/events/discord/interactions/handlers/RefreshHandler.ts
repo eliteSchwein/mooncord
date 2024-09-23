@@ -6,21 +6,17 @@ import {getDatabase} from "../../../../Application";
 import {EmbedHelper} from "../../../../helper/EmbedHelper";
 import {ConfigHelper} from "../../../../helper/ConfigHelper";
 import {LocaleHelper} from "../../../../helper/LocaleHelper";
+import BaseHandler from "./BaseHandler";
 
-export class RefreshHandler {
+export class RefreshHandler extends BaseHandler{
+    async isValid(message: Message, user: User, data, interaction = null) {
+        return data.functions.includes('refresh_status');
+    }
 
-    public async execute(message: Message, user: User, data, interaction = null) {
-        if (!data.functions.includes('refresh_status')) {
-            return
-        }
-
-        const embedHelper = new EmbedHelper()
-        const configHelper = new ConfigHelper()
-        const localeHelper = new LocaleHelper()
-        const locale = localeHelper.getLocale()
+    async handleHandler(message: Message, user: User, data, interaction = null) {
         const functionCache = getEntry('function')
 
-        const waitMessage = locale.messages.answers.status_update
+        const waitMessage = this.locale.messages.answers.status_update
             .replace(/(\${username})/g, interaction.user.tag)
 
         if (interaction !== null) {
@@ -32,11 +28,11 @@ export class RefreshHandler {
         }
 
         const currentStatus = functionCache.current_status
-        const currentStatusMeta = configHelper.getStatusMeta()[currentStatus]
+        const currentStatusMeta = this.config.getStatusMeta()[currentStatus]
 
         await message.edit({components: null})
 
-        const newMessage = await embedHelper.generateEmbed(currentStatusMeta.embed_id)
+        const newMessage = await this.embedHelper.generateEmbed(currentStatusMeta.embed_id)
 
         await message.removeAttachments()
         await message.edit(newMessage.embed)

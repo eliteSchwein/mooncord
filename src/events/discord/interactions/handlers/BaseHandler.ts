@@ -36,6 +36,7 @@ export default class BaseHandler {
         return false
     }
 
+    // yes we handle the Handler. big suprise what?
     async handleHandler(message: Message, user: User, data, interaction = null) {
 
     }

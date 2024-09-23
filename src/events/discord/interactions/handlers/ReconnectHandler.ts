@@ -2,14 +2,14 @@
 
 import {Message, User} from "discord.js";
 import * as App from '../../../../Application'
+import BaseHandler from "./BaseHandler";
 
-export class ReconnectHandler {
+export class ReconnectHandler extends BaseHandler{
+    async isValid(message: Message, user: User, data, interaction = null) {
+        return data.functions.includes("reconnect");
+    }
 
-    public async execute(message: Message, user: User, data, interaction = null) {
-        if (!data.functions.includes("reconnect")) {
-            return
-        }
-
+    async handleHandler(message: Message, user: User, data, interaction = null) {
         await App.reconnectMoonraker()
     }
 }

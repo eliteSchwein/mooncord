@@ -7,33 +7,31 @@ import {ConfigHelper} from "../../../../helper/ConfigHelper";
 import {LocaleHelper} from "../../../../helper/LocaleHelper";
 import {PageHelper} from "../../../../helper/PageHelper";
 import {logNotice} from "../../../../helper/LoggerHelper";
+import BaseHandler from "./BaseHandler";
 
-export class PageHandler {
-
-    public async execute(message: Message, user: User, data, interaction = null) {
+export class PageHandler extends BaseHandler{
+    async isValid(message: Message, user: User, data, interaction = null) {
         if (!data.functions.includes("page_up") &&
             !data.functions.includes("page_down")) {
-            return
+            return false
         }
 
         if (message.embeds.length === 0) {
-            return
+            return false
         }
 
+        return true
+    }
+
+    async handleHandler(message: Message, user: User, data, interaction = null) {
         if (interaction !== null &&
             !interaction.replied &&
             !interaction.deferred) {
             await interaction.deferReply()
         }
 
-        const databaseUtil = getDatabase()
-        const embedHelper = new EmbedHelper()
-        const configHelper = new ConfigHelper()
-        const localeHelper = new LocaleHelper()
-        const locale = localeHelper.getLocale()
-
         const embed = message.embeds[0]
-        const embedData = embedHelper.getRawEmbedByTitle(embed.title)
+        const embedData = this.embedHelper.getRawEmbedByTitle(embed.title)
 
         if (typeof embedData === 'undefined') {
             return
@@ -49,10 +47,10 @@ export class PageHandler {
 
         if (Object.keys(pageData).length === 0) {
             if (interaction.replied) {
-                await interaction.editReply(localeHelper.getLocale().messages.errors.no_entries
+                await interaction.editReply(this.locale.messages.errors.no_entries
                     .replace(/(\${username})/g, interaction.user.tag))
             } else {
-                await message.reply(localeHelper.getLocale().messages.errors.no_entries
+                await message.reply(this.locale.messages.errors.no_entries
                     .replace(/(\${username})/g, interaction.user.tag))
             }
             return
@@ -60,7 +58,7 @@ export class PageHandler {
 
         logNotice(`select Page ${pageData.pages} for ${embedData.embedID}`)
 
-        const answer = await embedHelper.generateEmbed(embedData.embedID, pageData)
+        const answer = await this.embedHelper.generateEmbed(embedData.embedID, pageData)
 
         await message.edit({components: null})
         await message.removeAttachments()
