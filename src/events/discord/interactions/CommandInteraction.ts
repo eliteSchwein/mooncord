@@ -1,38 +1,38 @@
 'use strict'
 
-import {Interaction} from "discord.js";
-import {InfoCommand} from "./commands/InfoCommand";
+import {ChatInputCommandInteraction, Interaction} from "discord.js";
 import {DiscordCommandGenerator} from "../../../generator/DiscordCommandGenerator";
-import {DumpCommand} from "./commands/DumpCommand";
 import {logNotice, logWarn} from "../../../helper/LoggerHelper";
 import {PermissionHelper} from "../../../helper/PermissionHelper";
 import {ConfigHelper} from "../../../helper/ConfigHelper";
 import {LocaleHelper} from "../../../helper/LocaleHelper";
-import {TempCommand} from "./commands/TempCommand";
-import {RestartCommand} from "./commands/RestartCommand";
-import {ListLogsCommand} from "./commands/ListLogsCommand";
-import {UserIdCommand} from "./commands/UserIdCommand";
-import {ResetDatabaseCommand} from "./commands/ResetDatabaseCommand";
-import {NotifyCommand} from "./commands/NotifyCommand";
-import {EmergencyStopCommand} from "./commands/EmergencyStopCommand";
-import {StatusCommand} from "./commands/StatusCommand";
 import {sleep} from "../../../helper/DataHelper";
-import {EditChannelCommand} from "./commands/EditChannelCommand";
-import {GcodeListCommand} from "./commands/GcodeListCommand";
+import AdminCommand from "./commands/AdminCommand";
 import {FileInfoCommand} from "./commands/FileInfoCommand";
-import {PrintjobCommand} from "./commands/PrintjobCommand";
-import {SystemInfoCommand} from "./commands/SystemInfoCommand";
-import {AdminCommand} from "./commands/AdminCommand";
-import {PreheatCommand} from "./commands/PreheatCommand";
-import {PidtuneCommand} from "./commands/PidtuneCommand";
-import {SaveConfigCommand} from "./commands/SaveConfigCommand";
-import {TuneCommand} from "./commands/TuneCommand";
-import {ConfigCommand} from "./commands/ConfigCommand";
-import {ExecuteCommand} from "./commands/ExecuteCommand";
-import {CustomCommand} from "./commands/CustomCommand";
-import {PowerDeviceCommand} from "./commands/PowerDeviceCommand";
-import {HistoryCommand} from "./commands/HistoryCommand";
-import {TimelapseListCommand} from "./commands/TimelapseListCommand";
+import InfoCommand from "./commands/InfoCommand";
+import DumpCommand from "./commands/DumpCommand";
+import TempCommand from "./commands/TempCommand";
+import RestartCommand from "./commands/RestartCommand";
+import ListLogsCommand from "./commands/ListLogsCommand";
+import UserIdCommand from "./commands/UserIdCommand";
+import ResetDatabaseCommand from "./commands/ResetDatabaseCommand";
+import NotifyCommand from "./commands/NotifyCommand";
+import EmergencyStopCommand from "./commands/EmergencyStopCommand";
+import StatusCommand from "./commands/StatusCommand";
+import EditChannelCommand from "./commands/EditChannelCommand";
+import GcodeListCommand from "./commands/GcodeListCommand";
+import PrintjobCommand from "./commands/PrintjobCommand";
+import SystemInfoCommand from "./commands/SystemInfoCommand";
+import PreheatCommand from "./commands/PreheatCommand";
+import PidtuneCommand from "./commands/PidtuneCommand";
+import SaveConfigCommand from "./commands/SaveConfigCommand";
+import TuneCommand from "./commands/TuneCommand";
+import ConfigCommand from "./commands/ConfigCommand";
+import ExecuteCommand from "./commands/ExecuteCommand";
+import CustomCommand from "./commands/CustomCommand";
+import PowerDeviceCommand from "./commands/PowerDeviceCommand";
+import HistoryCommand from "./commands/HistoryCommand";
+import TimelapseListCommand from "./commands/TimelapseListCommand";
 
 export class CommandInteraction {
 
@@ -41,7 +41,7 @@ export class CommandInteraction {
     }
 
     private async execute(interaction: Interaction) {
-        if (!interaction.isCommand()) {
+        if (!interaction.isChatInputCommand()) {
             return
         }
 

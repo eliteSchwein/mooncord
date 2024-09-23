@@ -1,8 +1,6 @@
 'use strict'
 
 import {Client, Message} from "discord.js";
-import {getMoonrakerClient} from "../../Application";
-import {ConfigHelper} from "../../helper/ConfigHelper";
 import {LocaleHelper} from "../../helper/LocaleHelper";
 import {logWarn} from "../../helper/LoggerHelper";
 import {PermissionHelper} from "../../helper/PermissionHelper";
@@ -11,8 +9,6 @@ import {EmbedHelper} from "../../helper/EmbedHelper";
 import {MetadataHelper} from "../../helper/MetadataHelper";
 
 export class GCodeUploadHandler {
-    protected typingInterval = 0
-
     public constructor(discordClient: Client) {
         discordClient.on("messageCreate", async message => {
             if (message.author.id === discordClient.user.id) {

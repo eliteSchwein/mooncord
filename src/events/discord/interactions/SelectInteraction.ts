@@ -24,7 +24,7 @@ export class SelectInteraction {
     }
 
     private async execute(interaction: Interaction) {
-        if (!interaction.isSelectMenu()) {
+        if (!interaction.isStringSelectMenu()) {
             return
         }
 
