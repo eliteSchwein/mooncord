@@ -1,6 +1,6 @@
 'use strict'
 
-import {Message, MessageAttachment, MessageEmbed, SelectMenuInteraction} from "discord.js";
+import {AttachmentBuilder, Message, SelectMenuInteraction} from "discord.js";
 import {getEntry} from "../../../../utils/CacheUtil";
 import {getDatabase, getMoonrakerClient} from "../../../../Application";
 import {EmbedHelper} from "../../../../helper/EmbedHelper";
@@ -11,17 +11,12 @@ import {downloadFile, findValueByPartial, formatTime} from "../../../../helper/D
 import axios from "axios";
 import {logError, logSuccess} from "../../../../helper/LoggerHelper";
 import util from "util";
+import BaseSelection from "./BaseSelection";
 
-export class DownloadLogSelection {
-    public constructor(interaction: SelectMenuInteraction, selectionId: string) {
-        if (selectionId !== 'loglist_download_log') {
-            return
-        }
+export class DownloadLogSelection extends BaseSelection {
+    selectionId = 'loglist_download_log'
 
-        void this.execute(interaction)
-    }
-
-    private async execute(interaction: SelectMenuInteraction) {
+    async handleSelection(interaction: SelectMenuInteraction) {
         await interaction.deferReply({ephemeral: true})
 
         let attachments = []
@@ -40,11 +35,9 @@ export class DownloadLogSelection {
         try {
             await interaction.editReply({files: attachments});
         } catch (error) {
-            const localeHelper = new LocaleHelper()
-            const locale = localeHelper.getLocale()
             const formattedError = util.format(error)
 
-            await interaction.editReply(locale.messages.errors.log_failed
+            await interaction.editReply(this.locale.messages.errors.log_failed
                 .replace(/(\${service})/g, 'N/A')
                 .replace(/(\${reason})/g, `\`\`js\n${formattedError}\`\``));
             logError(`Logs Upload failed! Reason: ${util.format(formattedError)}`)
@@ -52,35 +45,32 @@ export class DownloadLogSelection {
     }
 
     private async retrieveLog(logFile: string) {
-        const localeHelper = new LocaleHelper()
-        const locale = localeHelper.getLocale()
-
         try {
             const result = await downloadFile("logs", logFile)
 
             if (result.overSizeLimit) {
                 logError(`${logFile} Log to big, Logfile: ${result.size}byte Limit: ${result.sizeLimit / 1000000}mb`)
-                return locale.messages.errors.log_too_large
+                return this.locale.messages.errors.log_too_large
                     .replace(/(\${service})/g, `\`${logFile}\``)
             }
 
-            const attachment = new MessageAttachment(result.data, `${logFile}.log`)
+            const attachment = new AttachmentBuilder(result.data, {name: `${logFile}.log`})
 
             logSuccess(`${logFile} Log Download successful!`)
             return attachment
         } catch (error) {
             if (typeof error.code !== 'undefined') {
                 logError(`${logFile} Log Download failed: ${error.config.url}: ${error.code}`)
-                return locale.messages.errors.log_failed
+                return this.locale.messages.errors.log_failed
                     .replace(/(\${service})/g, logFile)
                     .replace(/(\${reason})/g, `${error.code}`)
             }
             logError(`${logFile} Log Download failed: ${error.config.url}: ${error.response.status} ${error.response.statusText}`)
             if (error.response.status === 404) {
-                return locale.messages.errors.log_not_found
+                return this.locale.messages.errors.log_not_found
                     .replace(/(\${service})/g, logFile)
             }
-            return locale.messages.errors.log_failed
+            return this.locale.messages.errors.log_failed
                 .replace(/(\${service})/g, logFile)
                 .replace(/(\${reason})/g, `${error.response.status} ${error.response.statusText}`)
         }
