@@ -28,7 +28,7 @@ export function convertStyle(style: string) {
 
 export function convertActivityStyle(type: string) {
     if(!type) {
-        return ActivityType.Listening
+        return ActivityType.Custom
     }
     type = type.trim().toUpperCase()
     return ActivityType[type.charAt(0) + type.substring(1).toLowerCase()]
