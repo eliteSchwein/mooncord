@@ -1,6 +1,6 @@
 'use strict'
 
-import {Guild, Permissions, User} from "discord.js";
+import {Guild, PermissionsBitField, User} from "discord.js";
 import {ConfigHelper} from "./ConfigHelper";
 import {DatabaseUtil} from "../utils/DatabaseUtil";
 
@@ -87,7 +87,7 @@ export class PermissionHelper {
         const member = this.getMember(user, guild)
 
         if (typeof member !== 'undefined') {
-            return member.permissions.has(Permissions.FLAGS.ADMINISTRATOR, true)
+            return member.permissions.has('Administrator', true)
         }
     }
 

@@ -1,12 +1,10 @@
 'use strict'
 
 import {ConfigHelper} from "../ConfigHelper";
-import {LocaleHelper} from "../LocaleHelper";
-import {HistoryHelper} from "../HistoryHelper";
 import {getEntry} from "../../utils/CacheUtil";
 import {logRegular} from "../LoggerHelper";
 import sharp from "sharp";
-import {MessageAttachment} from "discord.js";
+import {AttachmentBuilder} from "discord.js";
 
 export class ExcludeGraph {
     public async renderGraph(currentObject: string) {
@@ -49,6 +47,6 @@ ${svg}
 </svg>
 `
         const graphBuffer = await sharp(Buffer.from(svg)).png().toBuffer()
-        return new MessageAttachment(graphBuffer, 'excludeGraph.png')
+        return new AttachmentBuilder(graphBuffer, {name: 'excludeGraph.png'})
     }
 }

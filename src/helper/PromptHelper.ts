@@ -1,11 +1,12 @@
 import {logError, logNotice, logRegular, logSuccess, logWarn} from "./LoggerHelper";
 import {getEntry, setData} from "../utils/CacheUtil";
-import {Interaction, Message, MessageActionRow, MessageButton, MessageEmbed} from "discord.js";
 import {NotificationHelper} from "./NotificationHelper";
 import {PermissionHelper} from "./PermissionHelper";
 import {ConfigHelper} from "./ConfigHelper";
 import {LocaleHelper} from "./LocaleHelper";
 import {ConsoleHelper} from "./ConsoleHelper";
+import {ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, Interaction} from "discord.js";
+import {convertStyle} from "./DataHelper";
 
 export class PromptHelper {
     public loadCache() {
@@ -62,26 +63,10 @@ export class PromptHelper {
         setData('prompt', cache)
     }
 
-    private convertStyle(style: string) {
-        if(!style) {
-            return "SECONDARY"
-        }
-        style = style.trim().toUpperCase()
-        switch(style) {
-            case "INFO":
-                return "PRIMARY"
-            case "WARNING":
-            case "ERROR":
-                return "DANGER"
-            default:
-                return style
-        }
-    }
-
     private showPrompt(content: any) {
-        const embed = new MessageEmbed()
+        const embed = new EmbedBuilder()
         const message = {embeds: [], components: []}
-        let currentRow = new MessageActionRow()
+        let currentRow = new ActionRowBuilder()
 
         for(const component of content.components) {
             switch (component.type) {
@@ -97,13 +82,13 @@ export class PromptHelper {
                         message.components.push(currentRow)
                     }
 
-                    const buttonGroup = new MessageActionRow()
-                    currentRow = new MessageActionRow()
+                    const buttonGroup = new ActionRowBuilder()
+                    currentRow = new ActionRowBuilder()
 
                     for(const buttonComponent of component.components) {
-                        const button = new MessageButton()
+                        const button = new ButtonBuilder()
 
-                        button.setStyle(this.convertStyle(buttonComponent.style))
+                        button.setStyle(convertStyle(buttonComponent.style))
                         button.setLabel(buttonComponent.label)
                         button.setCustomId(`prompt_gcode|${buttonComponent.gcode}`)
 
@@ -114,15 +99,15 @@ export class PromptHelper {
 
                     break
                 case "button":
-                    const button = new MessageButton()
+                    const button = new ButtonBuilder()
 
-                    button.setStyle(this.convertStyle(component.style))
+                    button.setStyle(convertStyle(component.style))
                     button.setLabel(component.label)
                     button.setCustomId(`prompt_gcode|${component.gcode}`)
 
                     if(currentRow.components.length > 4) {
                         message.components.push(currentRow)
-                        currentRow = new MessageActionRow()
+                        currentRow = new ActionRowBuilder()
                     }
 
                     currentRow.addComponents(button)

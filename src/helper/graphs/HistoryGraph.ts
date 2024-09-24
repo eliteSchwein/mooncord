@@ -6,7 +6,7 @@ import {HistoryHelper} from "../HistoryHelper";
 import {LocaleHelper} from "../LocaleHelper";
 import {logRegular} from "../LoggerHelper";
 import sharp from "sharp";
-import {MessageAttachment} from "discord.js";
+import {AttachmentBuilder} from "discord.js";
 import SvgHelper from "../SvgHelper";
 
 export default class HistoryGraph {
@@ -68,6 +68,6 @@ export default class HistoryGraph {
         `
 
         const graphBuffer = await sharp(Buffer.from(svg)).png().toBuffer()
-        return new MessageAttachment(graphBuffer, 'historyGraph.png')
+        return new AttachmentBuilder(graphBuffer, {name: 'historyGraph.png'})
     }
 }

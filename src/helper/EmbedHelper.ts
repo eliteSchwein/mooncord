@@ -3,10 +3,10 @@
 import {LocaleHelper} from "./LocaleHelper";
 import {ConfigHelper} from "./ConfigHelper";
 import {getEntry, setData} from "../utils/CacheUtil";
-import {MessageEmbed} from "discord.js";
 import {mergeDeep} from "./DataHelper";
 import {logRegular} from "./LoggerHelper";
 import {TemplateHelper} from "./TemplateHelper";
+import {AttachmentBuilder, Embed} from "discord.js";
 
 export class EmbedHelper {
 
@@ -41,7 +41,7 @@ export class EmbedHelper {
         }
     }
 
-    public getAuthorName(embed: MessageEmbed) {
+    public getAuthorName(embed: Embed) {
         if (embed.author === null) {
             return ''
         }
@@ -49,7 +49,7 @@ export class EmbedHelper {
         return embed.author.name
     }
 
-    public getTitle(embed: MessageEmbed) {
+    public getTitle(embed: Embed) {
         if (embed.title === null) {
             return ''
         }

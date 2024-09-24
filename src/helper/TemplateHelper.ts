@@ -3,7 +3,6 @@
 import {LocaleHelper} from "./LocaleHelper";
 import {ConfigHelper} from "./ConfigHelper";
 import {DiscordInputGenerator} from "../generator/DiscordInputGenerator";
-import {MessageAttachment, MessageEmbed, Modal} from "discord.js";
 import {findValue, getEntry} from "../utils/CacheUtil";
 import {mergeDeep, parseCalculatedPlaceholder} from "./DataHelper";
 import {TempHelper} from "./TempHelper";
@@ -21,6 +20,7 @@ import {SpoolmanHelper} from "./SpoolmanHelper";
 import {afterEach} from "node:test";
 import {existsSync} from "fs";
 import {logWarn} from "./LoggerHelper";
+import {AttachmentBuilder, EmbedBuilder, ModalBuilder} from "discord.js";
 
 export class TemplateHelper {
     public async parseRawTemplate(type: string, id: string) {
@@ -113,10 +113,10 @@ export class TemplateHelper {
 
         switch (type) {
             case 'modal':
-                messageObject = new Modal()
+                messageObject = new ModalBuilder()
                 break
             case 'embed':
-                messageObject = new MessageEmbed()
+                messageObject = new EmbedBuilder()
                 break
         }
 
@@ -422,9 +422,9 @@ export class TemplateHelper {
         }
 
         if(imageID === 'placeholder') {
-            return new MessageAttachment(
+            return new AttachmentBuilder(
                 resolve(__dirname, `../assets/placeholder.png`),
-                'placeholder.png'
+                {name: 'placeholder.png'}
             )
         }
 
@@ -459,9 +459,12 @@ export class TemplateHelper {
         if(!existsSync(imagePath)) {
             logWarn(`image ${imageID} not found in the assets`)
 
-            return new MessageAttachment(path.resolve(__dirname, `../assets/icon-sets/${iconSet}/image_not_found.png`), 'image_not_found.png')
+            return new AttachmentBuilder(
+                path.resolve(__dirname, `../assets/icon-sets/${iconSet}/image_not_found.png`),
+                {name: 'image_not_found.png'}
+            )
         }
 
-        return new MessageAttachment(imagePath, imageID)
+        return new AttachmentBuilder(imagePath, {name: imageID})
     }
 }

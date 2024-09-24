@@ -8,7 +8,7 @@ import * as App from "../../Application";
 import {getEntry} from "../../utils/CacheUtil";
 import {logRegular} from "../LoggerHelper";
 import sharp from "sharp";
-import {MessageAttachment} from "discord.js";
+import {AttachmentBuilder} from "discord.js";
 
 export default class TempHistoryGraph {
     public constructor() {
@@ -199,6 +199,6 @@ export default class TempHistoryGraph {
         `
 
         const graphBuffer = await sharp(Buffer.from(svg)).png().toBuffer()
-        return new MessageAttachment(graphBuffer, 'tempGraph.png')
+        return new AttachmentBuilder(graphBuffer, {name: 'tempGraph.png'})
     }
 }

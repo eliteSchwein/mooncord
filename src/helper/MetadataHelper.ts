@@ -4,12 +4,12 @@ import {getMoonrakerClient} from "../Application";
 import {getEntry, setData, updateData} from "../utils/CacheUtil";
 import {ConfigHelper} from "./ConfigHelper";
 import path from "path";
-import {MessageAttachment} from "discord.js";
 import axios from "axios";
 import {updateTimes} from "./TimeHelper";
 import {updateLayers} from "./LayerHelper";
 import * as StackTrace from 'stacktrace-js'
 import {logEmpty, logError, logRegular} from "./LoggerHelper"
+import {AttachmentBuilder} from "discord.js";
 
 export class MetadataHelper {
     public async getMetaData(filename: string) {
@@ -45,7 +45,7 @@ export class MetadataHelper {
         const pathFragments = filename.split('/').slice(0, -1)
         const rootPath = (pathFragments.length > 0) ? `${pathFragments.join('/')}/` : ''
         const placeholderPath = path.resolve(__dirname, `../assets/icon-sets/${configHelper.getIconSet()}/thumbnail_not_found.png`)
-        const placeholder = new MessageAttachment(placeholderPath, 'thumbnail_not_found.png')
+        const placeholder = new AttachmentBuilder(placeholderPath, {name: 'thumbnail_not_found.png'})
         const url = configHelper.getMoonrakerUrl()
 
         if (typeof metaData === 'undefined') {
@@ -78,7 +78,7 @@ export class MetadataHelper {
             return placeholder
         }
 
-        return new MessageAttachment(thumbnail, 'thumbnail.png')
+        return new AttachmentBuilder(thumbnail, {name: 'thumbnail.png'})
     }
 
     private async getBuffer(url: string) {

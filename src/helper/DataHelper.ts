@@ -1,14 +1,29 @@
 'use strict'
 
-import {findValue} from "../utils/CacheUtil";
 import {ConfigHelper} from "./ConfigHelper";
 import axios from "axios";
 import FormData from "form-data";
 import {logError, logNotice} from "./LoggerHelper";
-import {MessageAttachment} from "discord.js";
+import {Attachment, ButtonStyle} from "discord.js";
 
 export function isObject(item) {
     return (item && typeof item === 'object' && !Array.isArray(item));
+}
+
+export function convertStyle(style: string) {
+    if(!style) {
+        return ButtonStyle.Secondary
+    }
+    style = style.trim().toUpperCase()
+    switch(style) {
+        case "INFO":
+            return ButtonStyle.Primary
+        case "WARNING":
+        case "ERROR":
+            return ButtonStyle.Danger
+        default:
+            return ButtonStyle[style.charAt(0) + style.substring(1).toLowerCase()]
+    }
 }
 
 export function removeFromArray(array: any[], value: string | number | object) {
@@ -199,7 +214,7 @@ export async function downloadFile(root: string, fileName: string) {
     }
 }
 
-export async function uploadAttachment(attachment: MessageAttachment, fileRoot = 'gcodes', filePath = '') {
+export async function uploadAttachment(attachment: Attachment, fileRoot = 'gcodes', filePath = '') {
     try {
         logNotice(`Upload for ${attachment.name} started`)
         const attachmentData = await axios.get(attachment.url,

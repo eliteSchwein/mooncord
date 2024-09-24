@@ -54,7 +54,7 @@ export class DiscordCommandGenerator {
             if (Object.keys(customCommandStructure).includes(commandIndex)) {
                 command = customCommandStructure[commandIndex]
             } else {
-                command = await this.buildCommand(commandIndex)
+                command = this.buildCommand(commandIndex)
             }
             commandKeys.push(command.name)
             commandList.push(command)
@@ -112,9 +112,7 @@ export class DiscordCommandGenerator {
 
     private getConfigStructure() {
         const commandStructureFile = readFileSync(path.resolve(__dirname, '../src/meta/command_structure.json'))
-        const commandStructure = JSON.parse(commandStructureFile.toString('utf8'))
-
-        return commandStructure
+        return JSON.parse(commandStructureFile.toString('utf8'))
     }
 
     private buildCommand(command: string) {

@@ -7,10 +7,10 @@ import {waitUntil} from "async-wait-until";
 import {ConfigHelper} from "./ConfigHelper";
 import Ffmpeg from "fluent-ffmpeg";
 import axios from "axios";
-import {MessageAttachment} from "discord.js";
 import {DiscordInputGenerator} from "../generator/DiscordInputGenerator";
 import {TemplateHelper} from "./TemplateHelper";
 import {getEntry} from "../utils/CacheUtil";
+import {AttachmentBuilder} from "discord.js";
 
 export class TimelapseHelper {
     protected timelapseFile = {}
@@ -71,7 +71,7 @@ export class TimelapseHelper {
             components.push(buttons[rowId])
         }
 
-        const attachment = new MessageAttachment(timelapsePath, filename)
+        const attachment = new AttachmentBuilder(timelapsePath, {name: filename})
 
         return {
             message: {
@@ -89,6 +89,7 @@ export class TimelapseHelper {
         const tempPathShort = path.join(absolutePath, `compressed-${timelapseName}`)
         const functionCache = getEntry('function')
         let renderComplete = false
+        // TODO: move arguments to config
         const ffmpegArguments = [
             "-pix_fmt yuv420p",
             "-preset veryslow",
@@ -103,6 +104,7 @@ export class TimelapseHelper {
             ffmpegArguments.push('-threads 1')
         }
 
+        // TODO: ffmpeg path into config
         const ffmpegRender = Ffmpeg()
 
         ffmpegRender

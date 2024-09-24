@@ -1,7 +1,6 @@
 'use strict'
 
 import {getEntry, setData} from "../../../utils/CacheUtil";
-import {ConsoleHelper} from "../../../helper/ConsoleHelper";
 
 export class ConsoleMessage {
 

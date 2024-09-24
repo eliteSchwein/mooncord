@@ -4,12 +4,12 @@ import {ConfigHelper} from "./ConfigHelper";
 import {sleep} from "./DataHelper";
 import axios from "axios";
 import sharp from "sharp";
-import {MessageAttachment} from "discord.js";
 import {resolve} from "path"
 import {logEmpty, logError, logRegular} from "./LoggerHelper";
 import StackTrace from "stacktrace-js";
 import {getMoonrakerClient} from "../Application";
 import {getEntry, setData} from "../utils/CacheUtil";
+import {AttachmentBuilder} from "discord.js";
 
 export class WebcamHelper {
     public async generateCache() {
@@ -143,7 +143,7 @@ export class WebcamHelper {
                 logRegular('Run Webcam follow up Tasks if present...')
                 await this.executePostProcess(afterStatus)
 
-                return new MessageAttachment(editBuffer, "snapshot.png")
+                return new AttachmentBuilder(editBuffer, {name: "snapshot.png"})
             }
 
             // Else just send the normal images
@@ -151,7 +151,7 @@ export class WebcamHelper {
             logRegular('Run Webcam follow up Tasks if present...')
             await this.executePostProcess(afterStatus)
 
-            return new MessageAttachment(buffer, "snapshot.png")
+            return new AttachmentBuilder(buffer, {name: "snapshot.png"})
         } catch (error) {
             const reason = error as string
             const trace = await StackTrace.get()
@@ -179,9 +179,9 @@ export class WebcamHelper {
     public getFallbackImage() {
         const configHelper = new ConfigHelper()
 
-        return new MessageAttachment(
+        return new AttachmentBuilder(
             resolve(__dirname, `../assets/icon-sets/${configHelper.getIconSet()}/snapshot-error.png`),
-            'snapshot-error.png'
+            {name: 'snapshot-error.png'}
         )
     }
 

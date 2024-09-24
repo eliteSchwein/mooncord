@@ -4,10 +4,10 @@ import {ConfigHelper} from "../helper/ConfigHelper";
 import {limitString, mergeDeep, parsePageData} from "../helper/DataHelper";
 
 import {findValue, getExcludeChoices, getHeaterChoices, setData} from "../utils/CacheUtil";
-import {MessageActionRow, MessageButton, MessageSelectMenu, TextInputComponent} from "discord.js";
 import {LocaleHelper} from "../helper/LocaleHelper";
 import {MCUHelper} from "../helper/MCUHelper";
 import {WebcamHelper} from "../helper/WebcamHelper";
+import {ActionRowBuilder, ButtonBuilder, StringSelectMenuBuilder, TextInputBuilder} from "discord.js";
 
 export class DiscordInputGenerator {
     public generateInputCache() {
@@ -25,7 +25,7 @@ export class DiscordInputGenerator {
             limit = buttonsPerRow - 1
         }
 
-        rows.push(new MessageActionRow())
+        rows.push(new ActionRowBuilder())
 
         if (typeof (buttons) === 'undefined') {
             return
@@ -41,7 +41,7 @@ export class DiscordInputGenerator {
                 }
             }
 
-            const button = new MessageButton()
+            const button = new ButtonBuilder()
                 .setCustomId(buttonData.id)
                 .setEmoji(buttonData.emoji)
                 .setStyle(buttonData.style)
@@ -52,7 +52,7 @@ export class DiscordInputGenerator {
 
             if(currentButton > limit) {
                 if (rows[1] === undefined) {
-                    rows.push(new MessageActionRow())
+                    rows.push(new ActionRowBuilder())
                 }
 
                 rows[1].addComponents(button)
@@ -83,7 +83,7 @@ export class DiscordInputGenerator {
         const mcuHelper = new MCUHelper()
 
         for (const selectionData of selections) {
-            const row = new MessageActionRow()
+            const row = new ActionRowBuilder()
 
             if (selectionData.required_cache !== undefined) {
                 if (selectionData.required_cache.map(findValue).map(v => !v).find(v => v)) {
@@ -91,7 +91,7 @@ export class DiscordInputGenerator {
                 }
             }
 
-            const selection = new MessageSelectMenu()
+            const selection = new StringSelectMenuBuilder()
             selection.setCustomId(selectionData.id)
                 .setPlaceholder(String(selectionData.label))
                 .setMinValues(selectionData.min_value)
@@ -153,10 +153,10 @@ export class DiscordInputGenerator {
         }
 
         for (const inputData of inputs) {
-            const row = new MessageActionRow()
+            const row = new ActionRowBuilder()
 
             row.addComponents(
-                new TextInputComponent()
+                new TextInputBuilder()
                     .setCustomId(inputData.id)
                     .setLabel(inputData.label)
                     .setStyle(inputData.style)
