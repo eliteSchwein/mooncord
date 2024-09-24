@@ -1,6 +1,6 @@
 'use strict'
 
-import {Websocket, WebsocketEvents} from "websocket-ts";
+import {Websocket, WebsocketEvent} from "websocket-ts";
 import {ProcStatsNotification} from "./messages/ProcStatsNotification";
 import {SubscriptionNotification} from "./messages/SubscriptionNotification";
 import {UpdateNotification} from "./messages/UpdateNotification";
@@ -19,7 +19,7 @@ import {PowerDeviceNotification} from "./messages/PowerDeviceNotification";
 export class MessageHandler {
 
     public constructor(websocket: Websocket) {
-        websocket.addEventListener(WebsocketEvents.message, (async (instance, ev) => {
+        websocket.addEventListener(WebsocketEvent.message, (async (instance, ev) => {
             const messageData = JSON.parse(ev.data)
 
             if (typeof (messageData) === 'undefined') {
