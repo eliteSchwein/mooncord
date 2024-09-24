@@ -161,6 +161,9 @@ export class WebcamHelper {
             if(webcamData !== undefined)
                 url = webcamData.snapshot_url
 
+            if(url.startsWith('/'))
+                url = `http://localhost${url}`
+
             logEmpty()
             logError('Webcam Error:')
             logError(`Url: ${url}`)
