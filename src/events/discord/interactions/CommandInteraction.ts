@@ -1,6 +1,6 @@
 'use strict'
 
-import {ChatInputCommandInteraction, Interaction} from "discord.js";
+import {Interaction} from "discord.js";
 import {DiscordCommandGenerator} from "../../../generator/DiscordCommandGenerator";
 import {logNotice, logWarn} from "../../../helper/LoggerHelper";
 import {PermissionHelper} from "../../../helper/PermissionHelper";

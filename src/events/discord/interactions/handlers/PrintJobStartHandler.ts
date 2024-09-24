@@ -1,10 +1,6 @@
 'use strict'
 
 import {Message, User} from "discord.js";
-import {EmbedHelper} from "../../../../helper/EmbedHelper";
-import {LocaleHelper} from "../../../../helper/LocaleHelper";
-import {MetadataHelper} from "../../../../helper/MetadataHelper";
-import {getMoonrakerClient} from "../../../../Application";
 import BaseHandler from "../abstracts/BaseHandler";
 
 export class PrintJobStartHandler extends BaseHandler{

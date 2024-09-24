@@ -2,11 +2,9 @@
 
 import {ConfigHelper} from "../../../helper/ConfigHelper";
 import {getMoonrakerClient} from "../../../Application";
-import Ffmpeg from "fluent-ffmpeg";
 import {logRegular} from "../../../helper/LoggerHelper";
 import {LocaleHelper} from "../../../helper/LocaleHelper";
 import {NotificationHelper} from "../../../helper/NotificationHelper";
-import * as ffmpegInstall from "@ffmpeg-installer/ffmpeg"
 import {TimelapseHelper} from "../../../helper/TimelapseHelper";
 import {unlinkSync} from "fs";
 

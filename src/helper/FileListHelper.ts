@@ -2,12 +2,8 @@
 
 import {getEntry, setData} from "../utils/CacheUtil";
 import {logRegular} from "./LoggerHelper";
-import {MoonrakerClient} from "../clients/MoonrakerClient";
-import {MetadataHelper} from "./MetadataHelper";
-import {ConfigHelper} from "./ConfigHelper";
 import HistoryGraph from "./graphs/HistoryGraph";
 import {getMoonrakerClient} from "../Application";
-import {HistoryHelper} from "./HistoryHelper";
 
 export class FileListHelper {
     public retrieveFiles(root: string, cacheKey: string, filter?: RegExp) {

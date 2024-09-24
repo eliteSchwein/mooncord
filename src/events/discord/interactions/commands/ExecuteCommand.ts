@@ -3,6 +3,7 @@ import {ChatInputCommandInteraction} from "discord.js";
 
 export default class ExecuteCommand extends BaseCommand {
     commandId = 'execute'
+    defer = false
 
     async handleCommand(interaction: ChatInputCommandInteraction) {
         const gcodeArgument = interaction.options.getString(this.syntaxLocale.commands.execute.options.gcode.name)
@@ -12,6 +13,8 @@ export default class ExecuteCommand extends BaseCommand {
             await interaction.showModal(modal)
             return
         }
+
+        await interaction.deferReply()
 
         const gcodeValid = await this.consoleHelper.executeGcodeCommands([gcodeArgument], interaction.channel)
 

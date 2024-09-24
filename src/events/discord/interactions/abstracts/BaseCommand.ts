@@ -26,13 +26,16 @@ export default class BaseCommand {
 
     commandId: string
     ephemeral = false
+    defer = true
 
     public async executeCommand(interaction: ChatInputCommandInteraction, commandId: string) {
         if (commandId !== this.commandId) {
             return
         }
 
-        await interaction.deferReply({ephemeral: this.ephemeral})
+        if(this.defer) {
+            await interaction.deferReply({ephemeral: this.ephemeral})
+        }
         await this.handleCommand(interaction)
     }
 

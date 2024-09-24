@@ -4,7 +4,7 @@ import {findValue, getEntry, updateData} from "../utils/CacheUtil"
 import {EmbedHelper} from "./EmbedHelper";
 import * as app from "../Application";
 import {LocaleHelper} from "./LocaleHelper";
-import {logNotice, logRegular} from "./LoggerHelper";
+import {logRegular} from "./LoggerHelper";
 import {DiscordClient} from "../clients/DiscordClient";
 import {ConfigHelper} from "./ConfigHelper";
 import {NotificationHelper} from "./NotificationHelper";

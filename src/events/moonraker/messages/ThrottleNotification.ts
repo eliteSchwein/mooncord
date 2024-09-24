@@ -3,10 +3,8 @@
 import {ConfigHelper} from "../../../helper/ConfigHelper";
 import {logWarn} from "../../../helper/LoggerHelper";
 import {getEntry, setData} from "../../../utils/CacheUtil";
-import {getDiscordClient} from "../../../Application";
 import {NotificationHelper} from "../../../helper/NotificationHelper";
 import {EmbedHelper} from "../../../helper/EmbedHelper";
-import {LocaleHelper} from "../../../helper/LocaleHelper";
 
 export class ThrottleNotification {
     protected validFlags = [

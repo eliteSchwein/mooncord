@@ -4,7 +4,6 @@ import {ConfigHelper} from "../../../helper/ConfigHelper";
 import {PermissionHelper} from "../../../helper/PermissionHelper";
 import {LocaleHelper} from "../../../helper/LocaleHelper";
 import {Interaction} from "discord.js";
-import {DiscordInputGenerator} from "../../../generator/DiscordInputGenerator";
 import {logNotice, logWarn} from "../../../helper/LoggerHelper";
 import {sleep} from "../../../helper/DataHelper";
 import {TempTargetModal} from "./modals/TempTargetModal";
@@ -40,7 +39,6 @@ export class ModalInteraction {
         const config = new ConfigHelper()
         const localeHelper = new LocaleHelper()
         const permissionHelper = new PermissionHelper()
-        const inputGenerator = new DiscordInputGenerator()
 
         logNotice(`${interaction.user.tag} submitted modal: ${logFeedback}`)
 
@@ -53,15 +51,22 @@ export class ModalInteraction {
             return;
         }
 
-        void new TempTargetModal(interaction, modalId)
-        void new ExecuteModal(interaction, modalId)
+        void new TempTargetModal().executeModal(interaction, modalId)
+        void new ExecuteModal().executeModal(interaction, modalId)
 
-        await sleep(2000)
+        await sleep(1_000)
 
-        if (interaction.replied || interaction.deferred) {
+        if(!interaction.deferred && !interaction.replied) {
+            await interaction.reply(localeHelper.getCommandNotReadyError(interaction.user.tag))
             return
         }
 
-        await interaction.reply(localeHelper.getCommandNotReadyError(interaction.user.tag))
+        await sleep(60_000)
+
+        if (interaction.replied) {
+            return
+        }
+
+        await interaction.editReply(localeHelper.getCommandNotReadyError(interaction.user.tag))
     }
 }

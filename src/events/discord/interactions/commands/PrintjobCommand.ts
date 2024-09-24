@@ -1,8 +1,5 @@
 import BaseCommand from "../abstracts/BaseCommand";
-import {ChatInputCommandInteraction, CommandInteraction, AttachmentBuilder, EmbedBuilder} from "discord.js";
-import {LocaleHelper} from "../../../../helper/LocaleHelper";
-import {MetadataHelper} from "../../../../helper/MetadataHelper";
-import {EmbedHelper} from "../../../../helper/EmbedHelper";
+import {ChatInputCommandInteraction, CommandInteraction, EmbedBuilder} from "discord.js";
 import {formatTime} from "../../../../helper/DataHelper";
 import {getEntry} from "../../../../utils/CacheUtil";
 import {getMoonrakerClient} from "../../../../Application";

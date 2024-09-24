@@ -2,10 +2,6 @@
 
 import {Message, User} from "discord.js";
 import {getEntry} from "../../../../utils/CacheUtil";
-import {getDatabase} from "../../../../Application";
-import {EmbedHelper} from "../../../../helper/EmbedHelper";
-import {ConfigHelper} from "../../../../helper/ConfigHelper";
-import {LocaleHelper} from "../../../../helper/LocaleHelper";
 import BaseHandler from "../abstracts/BaseHandler";
 
 export class RefreshHandler extends BaseHandler{

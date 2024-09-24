@@ -6,7 +6,7 @@ import {getEntry, setData} from "../utils/CacheUtil";
 import {mergeDeep} from "./DataHelper";
 import {logRegular} from "./LoggerHelper";
 import {TemplateHelper} from "./TemplateHelper";
-import {AttachmentBuilder, Embed} from "discord.js";
+import {Embed} from "discord.js";
 
 export class EmbedHelper {
 

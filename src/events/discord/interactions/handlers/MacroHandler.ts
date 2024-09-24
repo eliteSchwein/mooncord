@@ -1,11 +1,6 @@
 'use strict'
 
 import {Message, User} from "discord.js";
-import {getDatabase, getMoonrakerClient} from "../../../../Application";
-import {EmbedHelper} from "../../../../helper/EmbedHelper";
-import {ConfigHelper} from "../../../../helper/ConfigHelper";
-import {LocaleHelper} from "../../../../helper/LocaleHelper";
-import {ConsoleHelper} from "../../../../helper/ConsoleHelper";
 import BaseHandler from "../abstracts/BaseHandler";
 
 export class MacroHandler extends BaseHandler{

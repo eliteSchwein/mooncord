@@ -2,7 +2,6 @@
 
 import {getEntry, setData} from "../utils/CacheUtil";
 import {logRegular} from "./LoggerHelper";
-import {MoonrakerClient} from "../clients/MoonrakerClient";
 import {LocaleHelper} from "./LocaleHelper";
 import {getMoonrakerClient} from "../Application";
 

@@ -3,7 +3,6 @@
 import {Interaction} from "discord.js";
 import {PermissionHelper} from "../../../helper/PermissionHelper";
 import {LocaleHelper} from "../../../helper/LocaleHelper";
-import {getEntry} from "../../../utils/CacheUtil";
 import {sleep} from "../../../helper/DataHelper";
 import {logNotice, logWarn} from "../../../helper/LoggerHelper";
 import {ConfigHelper} from "../../../helper/ConfigHelper";

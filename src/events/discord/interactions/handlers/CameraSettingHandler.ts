@@ -1,12 +1,7 @@
 'use strict'
 
 import {Message, User} from "discord.js";
-import {getMoonrakerClient} from "../../../../Application";
-import {LocaleHelper} from "../../../../helper/LocaleHelper";
-import {EmbedHelper} from "../../../../helper/EmbedHelper";
-import {ConfigHelper} from "../../../../helper/ConfigHelper";
-import {getEntry, setData} from "../../../../utils/CacheUtil";
-import {readFileSync, writeFileSync} from "fs";
+import {getEntry} from "../../../../utils/CacheUtil";
 import BaseHandler from "../abstracts/BaseHandler";
 
 export class CameraSettingHandler extends BaseHandler {

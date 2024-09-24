@@ -25,13 +25,15 @@ export default class BaseModal {
     protected moonrakerClient = getMoonrakerClient()
 
     modalId = ''
+    ephemeral = false
 
-    public constructor(interaction: ModalSubmitInteraction, modalId: string) {
-        if(this.modalId !== this.modalId) {
+    public async executeModal(interaction: ModalSubmitInteraction, modalId: string) {
+        if(modalId !== this.modalId) {
             return
         }
 
-        void this.handleModal(interaction)
+        await interaction.deferReply({ephemeral: this.ephemeral})
+        await this.handleModal(interaction)
     }
 
     async handleModal(interaction: ModalSubmitInteraction) {

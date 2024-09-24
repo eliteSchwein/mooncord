@@ -1,6 +1,6 @@
 'use strict'
 
-import {Guild, PermissionsBitField, User} from "discord.js";
+import {Guild, User} from "discord.js";
 import {ConfigHelper} from "./ConfigHelper";
 import {DatabaseUtil} from "../utils/DatabaseUtil";
 

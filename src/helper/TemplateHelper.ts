@@ -1,6 +1,5 @@
 'use strict'
 
-import {LocaleHelper} from "./LocaleHelper";
 import {ConfigHelper} from "./ConfigHelper";
 import {DiscordInputGenerator} from "../generator/DiscordInputGenerator";
 import {findValue, getEntry} from "../utils/CacheUtil";
@@ -8,7 +7,6 @@ import {mergeDeep, parseCalculatedPlaceholder} from "./DataHelper";
 import {TempHelper} from "./TempHelper";
 import {VersionHelper} from "./VersionHelper";
 import {MetadataHelper} from "./MetadataHelper";
-import * as app from "../Application";
 import path, {resolve} from "path";
 import {WebcamHelper} from "./WebcamHelper";
 import {PowerDeviceHelper} from "./PowerDeviceHelper";
@@ -17,7 +15,6 @@ import HistoryGraph from "./graphs/HistoryGraph";
 import TempHistoryGraph from "./graphs/TempHistoryGraph";
 import {ExcludeGraph} from "./graphs/ExcludeGraph";
 import {SpoolmanHelper} from "./SpoolmanHelper";
-import {afterEach} from "node:test";
 import {existsSync} from "fs";
 import {logWarn} from "./LoggerHelper";
 import {AttachmentBuilder, EmbedBuilder, ModalBuilder} from "discord.js";
@@ -282,7 +279,7 @@ export class TemplateHelper {
                 return {embed: response, activity: messageObjectData.activity}
             case 'modal':
                 messageObject.setCustomId(id)
-                messageObject.addComponents(components)
+                messageObject.addComponents(...components)
                 return messageObject
         }
     }

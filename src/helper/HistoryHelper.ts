@@ -3,9 +3,7 @@
 import {getMoonrakerClient} from "../Application";
 import {getEntry, setData} from "../utils/CacheUtil";
 import {logRegular} from "./LoggerHelper";
-import {ConfigHelper} from "./ConfigHelper";
 import {LocaleHelper} from "./LocaleHelper";
-import {MoonrakerClient} from "../clients/MoonrakerClient";
 import HistoryGraph from "./graphs/HistoryGraph";
 
 export class HistoryHelper {

@@ -4,7 +4,7 @@ import {ConfigHelper} from "./ConfigHelper";
 import axios from "axios";
 import FormData from "form-data";
 import {logError, logNotice} from "./LoggerHelper";
-import {ActivityType, Attachment, ButtonStyle} from "discord.js";
+import {ActivityType, Attachment, ButtonStyle, TextInputStyle} from "discord.js";
 
 export function isObject(item) {
     return (item && typeof item === 'object' && !Array.isArray(item));
@@ -32,6 +32,14 @@ export function convertActivityStyle(type: string) {
     }
     type = type.trim().toUpperCase()
     return ActivityType[type.charAt(0) + type.substring(1).toLowerCase()]
+}
+
+export function convertTextInputStyle(type: string) {
+    if(!type) {
+        return TextInputStyle.Paragraph
+    }
+    type = type.trim().toUpperCase()
+    return TextInputStyle[type.charAt(0) + type.substring(1).toLowerCase()]
 }
 
 export function removeFromArray(array: any[], value: string | number | object) {

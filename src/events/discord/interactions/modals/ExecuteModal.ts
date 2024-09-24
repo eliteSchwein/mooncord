@@ -1,8 +1,6 @@
 'use strict'
 
 import {ModalSubmitInteraction} from "discord.js";
-import {ConsoleHelper} from "../../../../helper/ConsoleHelper";
-import {LocaleHelper} from "../../../../helper/LocaleHelper";
 import BaseModal from "../abstracts/BaseModal";
 
 export class ExecuteModal extends BaseModal{
@@ -12,8 +10,6 @@ export class ExecuteModal extends BaseModal{
         const componentRows = interaction.components
         const input = componentRows[0].components[0]
         const gcodes = input.value.split('\n')
-
-        await interaction.deferReply()
 
         const gcodeValid = await this.consoleHelper.executeGcodeCommands(gcodes, interaction.channel)
 

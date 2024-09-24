@@ -1,7 +1,6 @@
 'use strict'
 
 import {ModalSubmitInteraction} from "discord.js";
-import {LocaleHelper} from "../../../../helper/LocaleHelper";
 import {TempHelper} from "../../../../helper/TempHelper";
 import BaseModal from "../abstracts/BaseModal";
 
@@ -21,7 +20,7 @@ export class TempTargetModal extends BaseModal {
             const heaterTarget = heaterInput.value
 
             if (isNaN(Number(heaterTarget))) {
-                await interaction.reply(this.locale.messages.errors.input_not_a_number
+                await interaction.editReply(this.locale.messages.errors.input_not_a_number
                     .replace(/(\${input})/g, this.locale.inputs.temp_target_input.label
                         .replace(/(\${heater})/g, heater))
                     .replace(/(\${username})/g, interaction.user.tag))
@@ -44,7 +43,7 @@ export class TempTargetModal extends BaseModal {
             .replace(/(\${username})/g, interaction.user.tag)
 
         if (!interaction.replied) {
-            await interaction.reply(finalReply)
+            await interaction.editReply(finalReply)
         } else {
             await interaction.followUp(finalReply)
         }

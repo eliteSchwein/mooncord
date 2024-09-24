@@ -5,18 +5,18 @@ import * as util from 'util'
 import {DiscordClient} from './clients/DiscordClient'
 import {MoonrakerClient} from './clients/MoonrakerClient'
 import {
-    hookProcess, logCustom,
+    hookProcess,
+    logCustom,
     logEmpty,
     logError,
     logNotice,
     logRegular,
     logSuccess,
-    logWarn,
     tempHookLog
 } from './helper/LoggerHelper'
 import {DatabaseUtil} from './utils/DatabaseUtil'
 import {LocaleHelper} from "./helper/LocaleHelper";
-import {getEntry, loadTheme, setData} from './utils/CacheUtil'
+import {getEntry, setData} from './utils/CacheUtil'
 import {ConfigHelper} from "./helper/ConfigHelper";
 import {EmbedHelper} from "./helper/EmbedHelper";
 import {SchedulerHelper} from "./helper/SchedulerHelper";

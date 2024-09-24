@@ -1,6 +1,6 @@
 'use strict'
 
-import {EmbedBuilder, Message, User} from "discord.js";
+import {Message, User} from "discord.js";
 import BaseHandler from "../abstracts/BaseHandler";
 
 export class DeleteHandler extends BaseHandler {

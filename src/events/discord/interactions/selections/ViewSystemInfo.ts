@@ -1,11 +1,6 @@
 'use strict'
 
 import {Message, StringSelectMenuInteraction} from "discord.js";
-import {getDatabase, getMoonrakerClient} from "../../../../Application";
-import {EmbedHelper} from "../../../../helper/EmbedHelper";
-import {ConfigHelper} from "../../../../helper/ConfigHelper";
-import {LocaleHelper} from "../../../../helper/LocaleHelper";
-import {MetadataHelper} from "../../../../helper/MetadataHelper";
 import {MCUHelper} from "../../../../helper/MCUHelper";
 import BaseSelection from "../abstracts/BaseSelection";
 

@@ -1,9 +1,8 @@
 'use strict'
 
-import {findValue, getEntry, updateData} from "../../../utils/CacheUtil";
+import {findValue, updateData} from "../../../utils/CacheUtil";
 import {StatusHelper} from "../../../helper/StatusHelper";
 import {MetadataHelper} from "../../../helper/MetadataHelper";
-import {UsageHelper} from "../../../helper/UsageHelper";
 import {HistoryHelper} from "../../../helper/HistoryHelper";
 import {TempHelper} from "../../../helper/TempHelper";
 

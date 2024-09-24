@@ -1,10 +1,6 @@
 'use strict'
 
 import {Message, User} from "discord.js";
-import {getDatabase} from "../../../../Application";
-import {EmbedHelper} from "../../../../helper/EmbedHelper";
-import {ConfigHelper} from "../../../../helper/ConfigHelper";
-import {LocaleHelper} from "../../../../helper/LocaleHelper";
 import {PageHelper} from "../../../../helper/PageHelper";
 import {logNotice} from "../../../../helper/LoggerHelper";
 import BaseHandler from "../abstracts/BaseHandler";

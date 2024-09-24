@@ -5,7 +5,7 @@ import path from "path";
 import {mergeDeep} from "./DataHelper";
 import parseConfig from "js-conf-parser";
 import {getEntry, setData, updateData} from "../utils/CacheUtil";
-import {logError, logRegular, logWarn} from "./LoggerHelper";
+import {logRegular, logWarn} from "./LoggerHelper";
 
 const args = process.argv.slice(2)
 

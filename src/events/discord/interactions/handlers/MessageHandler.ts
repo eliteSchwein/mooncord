@@ -2,7 +2,6 @@
 
 import {Message, User} from "discord.js";
 import {findValue} from "../../../../utils/CacheUtil";
-import {EmbedHelper} from "../../../../helper/EmbedHelper";
 import BaseHandler from "../abstracts/BaseHandler";
 
 export class MessageHandler extends BaseHandler{

@@ -1,13 +1,13 @@
 'use strict'
 
 import {ConfigHelper} from "../helper/ConfigHelper";
-import {convertStyle, limitString, mergeDeep, parsePageData} from "../helper/DataHelper";
+import {convertStyle, convertTextInputStyle, limitString, mergeDeep, parsePageData} from "../helper/DataHelper";
 
 import {findValue, getExcludeChoices, getHeaterChoices, setData} from "../utils/CacheUtil";
 import {LocaleHelper} from "../helper/LocaleHelper";
 import {MCUHelper} from "../helper/MCUHelper";
 import {WebcamHelper} from "../helper/WebcamHelper";
-import {ActionRowBuilder, ButtonBuilder, StringSelectMenuBuilder, TextInputBuilder} from "discord.js";
+import {ActionRowBuilder, ButtonBuilder, StringSelectMenuBuilder, TextInputBuilder, TextInputStyle} from "discord.js";
 
 export class DiscordInputGenerator {
     public generateInputCache() {
@@ -159,7 +159,7 @@ export class DiscordInputGenerator {
                 new TextInputBuilder()
                     .setCustomId(inputData.id)
                     .setLabel(inputData.label)
-                    .setStyle(convertStyle(inputData.style))
+                    .setStyle(convertTextInputStyle(inputData.style))
                     .setValue(String(inputData.value))
                     .setRequired(inputData.required)
             )

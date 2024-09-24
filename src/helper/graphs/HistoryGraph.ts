@@ -3,7 +3,6 @@
 import {ConfigHelper} from "../ConfigHelper";
 import * as metaData from "../../meta/history_graph_meta.json"
 import {HistoryHelper} from "../HistoryHelper";
-import {LocaleHelper} from "../LocaleHelper";
 import {logRegular} from "../LoggerHelper";
 import sharp from "sharp";
 import {AttachmentBuilder} from "discord.js";

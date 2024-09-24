@@ -1,14 +1,7 @@
 'use strict'
 
-import {AttachmentBuilder, Message, StringSelectMenuInteraction} from "discord.js";
-import {getEntry} from "../../../../utils/CacheUtil";
-import {getDatabase, getMoonrakerClient} from "../../../../Application";
-import {EmbedHelper} from "../../../../helper/EmbedHelper";
-import {ConfigHelper} from "../../../../helper/ConfigHelper";
-import {LocaleHelper} from "../../../../helper/LocaleHelper";
-import {MetadataHelper} from "../../../../helper/MetadataHelper";
-import {downloadFile, findValueByPartial, formatTime} from "../../../../helper/DataHelper";
-import axios from "axios";
+import {AttachmentBuilder, StringSelectMenuInteraction} from "discord.js";
+import {downloadFile} from "../../../../helper/DataHelper";
 import {logError, logSuccess} from "../../../../helper/LoggerHelper";
 import util from "util";
 import BaseSelection from "../abstracts/BaseSelection";

@@ -2,7 +2,7 @@
 
 import {Message, MessageReaction, PartialMessageReaction} from "discord.js";
 import {PermissionHelper} from "../../../helper/PermissionHelper";
-import {findValue, getEntry} from "../../../utils/CacheUtil";
+import {findValue} from "../../../utils/CacheUtil";
 import {logNotice, logWarn} from "../../../helper/LoggerHelper";
 import {WebsocketHandler} from "./handlers/WebsocketHandler";
 import {ExcludeConfirmHandler} from "./handlers/ExcludeConfirmHandler";
