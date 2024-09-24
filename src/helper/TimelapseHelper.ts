@@ -93,6 +93,8 @@ export class TimelapseHelper {
         let renderComplete = false
         const ffmpegArguments = ffmpegConfig.ffmpeg_arguments
 
+        ffmpegArguments.push(`-vf scale=${ffmpegConfig.ffmpeg_height}:-1`)
+
         logRegular(`Compress Timelapse: ${timelapseName}`)
         if (functionCache.current_status === 'printing') {
             logNotice('use printing arguments for ffmpeg because a print is running')
