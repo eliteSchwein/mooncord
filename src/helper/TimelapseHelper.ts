@@ -16,6 +16,7 @@ export class TimelapseHelper {
     protected timelapseFile = {}
 
     private async finishTimelapse(fileId: string) {
+        const config = new ConfigHelper()
         const path = this.timelapseFile[fileId].path
         const fileStats = statSync(path)
         const fileName = this.timelapseFile[fileId].fileName
@@ -24,7 +25,7 @@ export class TimelapseHelper {
         logSuccess(`Download Timelapse ${fileName} complete`)
         logRegular(`Timelapse ${fileName} is ${fileSizeInMegabytes}mb big`)
 
-        if(fileSizeInMegabytes > 25) {
+        if(fileSizeInMegabytes > config.getUploadLimit()) {
             this.timelapseFile[fileId].path = await this.compressTimelapse(path, fileName)
         }
 
