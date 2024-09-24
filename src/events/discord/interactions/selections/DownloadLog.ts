@@ -15,10 +15,9 @@ import BaseSelection from "../abstracts/BaseSelection";
 
 export class DownloadLogSelection extends BaseSelection {
     selectionId = 'loglist_download_log'
+    ephemeral = true
 
     async handleSelection(interaction: StringSelectMenuInteraction) {
-        await interaction.deferReply({ephemeral: true})
-
         let attachments = []
 
         for (const value of interaction.values) {

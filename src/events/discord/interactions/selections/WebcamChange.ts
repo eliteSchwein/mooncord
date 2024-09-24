@@ -8,7 +8,6 @@ export class WebcamChange extends BaseSelection{
     selectionId = 'status_webcam'
 
     async handleSelection(interaction: StringSelectMenuInteraction) {
-        await interaction.deferReply()
         const webcamCache = getEntry('webcam')
         const functionCache = getEntry('function')
 

@@ -24,14 +24,16 @@ export default class BaseSelection {
 
     protected moonrakerClient = getMoonrakerClient()
 
-    selectionId = ''
+    selectionId: string
+    ephemeral = false
 
-    public constructor(interaction: StringSelectMenuInteraction, selectionId: string) {
+    public async executeSelection(interaction: StringSelectMenuInteraction, selectionId: string) {
         if (selectionId !== this.selectionId) {
             return
         }
 
-        void this.handleSelection(interaction)
+        await interaction.deferReply({ephemeral: this.ephemeral})
+        await this.handleSelection(interaction)
     }
 
     async handleSelection(interaction: StringSelectMenuInteraction) {

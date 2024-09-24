@@ -13,7 +13,6 @@ export class ViewSystemInfo extends BaseSelection {
     selectionId = 'systeminfo_select'
 
     async handleSelection(interaction: StringSelectMenuInteraction) {
-        await interaction.deferReply()
         const currentMessage = interaction.message as Message
 
         const mcuHelper = new MCUHelper()

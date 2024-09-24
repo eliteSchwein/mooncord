@@ -9,8 +9,6 @@ export class ViewPrintJobSelection extends BaseSelection {
     selectionId = 'printlist_view_printjob'
 
     async handleSelection(interaction: StringSelectMenuInteraction) {
-        await interaction.deferReply()
-
         const gcodeFile = findValueByPartial(getEntry('gcode_files'), interaction.values[0], 'path')
 
         const metadata = await this.metadataHelper.getMetaData(gcodeFile)

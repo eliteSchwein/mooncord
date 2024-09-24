@@ -9,6 +9,7 @@ import {DiscordClient} from "../clients/DiscordClient";
 import {ConfigHelper} from "./ConfigHelper";
 import {NotificationHelper} from "./NotificationHelper";
 import {waitUntil} from "async-wait-until";
+import {convertActivityStyle} from "./DataHelper";
 
 export class StatusHelper {
     protected embedHelper = new EmbedHelper()
@@ -153,7 +154,7 @@ export class StatusHelper {
                 status: statusMeta.activity_status,
                 activities: [{
                     name: statusEmbed.activity,
-                    type: statusMeta.activity_type
+                    type: convertActivityStyle(statusMeta.activity_type)
                 }]
             })
         }

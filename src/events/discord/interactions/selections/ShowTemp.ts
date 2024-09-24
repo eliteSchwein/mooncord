@@ -10,8 +10,6 @@ export class ShowTempSelection extends BaseSelection{
     selectionId = 'show_temp'
 
     async handleSelection(interaction: StringSelectMenuInteraction) {
-        await interaction.deferReply()
-
         const tempHelper = new TempHelper()
 
         const heater = interaction.values[0]

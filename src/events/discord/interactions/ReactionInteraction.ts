@@ -25,10 +25,10 @@ import {NotificationHandler} from "./handlers/NotificationHandler";
 export class ReactionInteraction {
 
     public constructor(interaction: MessageReaction | PartialMessageReaction) {
-        void this.execute(interaction)
+        void this.executeHandler(interaction)
     }
 
-    private async execute(interaction: MessageReaction | PartialMessageReaction) {
+    private async executeHandler(interaction: MessageReaction | PartialMessageReaction) {
         const emoji = interaction.emoji.toString()
         const message = interaction.message as Message
 
@@ -61,22 +61,22 @@ export class ReactionInteraction {
             return;
         }
 
-        await new MacroHandler().execute(message, user, reactionData)
-        await new CameraSettingHandler().execute(message, user, reactionData)
-        await new WebsocketHandler().execute(message, user, reactionData)
-        await new ExcludeConfirmHandler().execute(message, user, reactionData)
-        await new ModalHandler().execute(message, user, reactionData)
-        await new PrintJobStartHandler().execute(message, user, reactionData)
-        await new MessageHandler().execute(message, user, reactionData)
-        await new EmbedHandler().execute(message, user, reactionData)
-        await new DeleteHandler().execute(message, user, reactionData)
-        await new ReconnectHandler().execute(message, user, reactionData)
-        await new RefreshHandler().execute(message, user, reactionData)
-        await new ListHandler().execute(message, user, reactionData)
-        await new DownloadHandler().execute(message, user, reactionData)
-        await new PageHandler().execute(message, user, reactionData)
-        await new DeleteMessageHandler().execute(message, user, reactionData)
-        await new SetupHandler().execute(message, user, reactionData)
-        await new NotificationHandler().execute(message, user, reactionData)
+        await new MacroHandler().executeHandler(message, user, reactionData)
+        await new CameraSettingHandler().executeHandler(message, user, reactionData)
+        await new WebsocketHandler().executeHandler(message, user, reactionData)
+        await new ExcludeConfirmHandler().executeHandler(message, user, reactionData)
+        await new ModalHandler().executeHandler(message, user, reactionData)
+        await new PrintJobStartHandler().executeHandler(message, user, reactionData)
+        await new MessageHandler().executeHandler(message, user, reactionData)
+        await new EmbedHandler().executeHandler(message, user, reactionData)
+        await new DeleteHandler().executeHandler(message, user, reactionData)
+        await new ReconnectHandler().executeHandler(message, user, reactionData)
+        await new RefreshHandler().executeHandler(message, user, reactionData)
+        await new ListHandler().executeHandler(message, user, reactionData)
+        await new DownloadHandler().executeHandler(message, user, reactionData)
+        await new PageHandler().executeHandler(message, user, reactionData)
+        await new DeleteMessageHandler().executeHandler(message, user, reactionData)
+        await new SetupHandler().executeHandler(message, user, reactionData)
+        await new NotificationHandler().executeHandler(message, user, reactionData)
     }
 }

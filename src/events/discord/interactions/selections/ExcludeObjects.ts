@@ -9,8 +9,6 @@ export class ExcludeObjectsSelection extends BaseSelection {
     selectionId = 'exclude_objects'
 
     async handleSelection(interaction: StringSelectMenuInteraction) {
-        await interaction.deferReply()
-
         const object = interaction.values[0]
 
         const embedData = await this.embedHelper.generateEmbed('exclude_detail', {object})

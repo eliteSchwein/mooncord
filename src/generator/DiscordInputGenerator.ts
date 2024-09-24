@@ -94,8 +94,8 @@ export class DiscordInputGenerator {
             const selection = new StringSelectMenuBuilder()
             selection.setCustomId(selectionData.id)
                 .setPlaceholder(String(selectionData.label))
-                .setMinValues(selectionData.min_value)
-                .setMaxValues(selectionData.max_value)
+                .setMinValues(Number.parseInt(selectionData.min_value))
+                .setMaxValues(Number.parseInt(selectionData.max_value))
 
             if (typeof selectionData.options !== 'undefined') {
                 selectionData.data = selectionData.options

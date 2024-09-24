@@ -12,7 +12,6 @@ export class DownloadTimelapse extends BaseSelection {
     selectionId = 'timelapse_download'
 
     async handleSelection(interaction: StringSelectMenuInteraction) {
-        await interaction.deferReply()
         const timelapseHelper = new TimelapseHelper()
 
         const timelapseFile = findValueByPartial(getEntry('timelapse_files'), interaction.values[0], 'path')

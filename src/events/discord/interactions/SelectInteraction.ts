@@ -54,22 +54,29 @@ export class SelectInteraction {
             return;
         }
 
-        void new ViewPrintJobSelection(interaction, selectId)
-        void new ViewSystemInfo(interaction, selectId)
-        void new ShowTempSelection(interaction, selectId)
-        void new DownloadConfig(interaction, selectId)
-        void new ExcludeObjectsSelection(interaction, selectId)
-        void new DownloadTimelapse(interaction, selectId)
-        void new WebcamChange(interaction, selectId)
-        void new DownloadLogSelection(interaction, selectId)
+        void new ViewPrintJobSelection().executeSelection(interaction, selectId)
+        void new ViewSystemInfo().executeSelection(interaction, selectId)
+        void new ShowTempSelection().executeSelection(interaction, selectId)
+        void new DownloadConfig().executeSelection(interaction, selectId)
+        void new ExcludeObjectsSelection().executeSelection(interaction, selectId)
+        void new DownloadTimelapse().executeSelection(interaction, selectId)
+        void new WebcamChange().executeSelection(interaction, selectId)
+        void new DownloadLogSelection().executeSelection(interaction, selectId)
 
-        await sleep(2000)
+        await sleep(1_000)
 
-        if (interaction.replied || interaction.deferred || interaction.isModalSubmit()) {
+        if(!interaction.deferred && !interaction.replied && !interaction.isModalSubmit()) {
+            await interaction.reply(localeHelper.getCommandNotReadyError(interaction.user.tag))
             return
         }
 
-        await interaction.reply(localeHelper.getCommandNotReadyError(interaction.user.tag))
+        await sleep(60_000)
+
+        if (interaction.replied) {
+            return
+        }
+
+        await interaction.editReply(localeHelper.getCommandNotReadyError(interaction.user.tag))
     }
 
 }

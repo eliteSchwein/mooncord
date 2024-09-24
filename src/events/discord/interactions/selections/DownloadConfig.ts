@@ -7,10 +7,9 @@ import BaseSelection from "../abstracts/BaseSelection";
 
 export class DownloadConfig extends BaseSelection {
     selectionId = 'config_file_download'
+    ephemeral = true
 
     async handleSelection(interaction: StringSelectMenuInteraction) {
-        await interaction.deferReply({ephemeral: true})
-
         const file = interaction.values[0]
 
         await interaction.editReply(await this.retrieveConfig(file))

@@ -29,10 +29,10 @@ import DownloadHandler from "./handlers/DownloadHandler";
 export class ButtonInteraction {
 
     public constructor(interaction: Interaction) {
-        void this.execute(interaction)
+        void this.executeHandler(interaction)
     }
 
-    private async execute(interaction: Interaction) {
+    private async executeHandler(interaction: Interaction) {
         if (!interaction.isButton()) {
             return
         }
@@ -83,23 +83,23 @@ export class ButtonInteraction {
 
         const message = interaction.message as Message
 
-        await new MacroHandler().execute(message, interaction.user, buttonData, interaction)
-        await new CameraSettingHandler().execute(message, interaction.user, buttonData, interaction)
-        await new WebsocketHandler().execute(message, interaction.user, buttonData, interaction)
-        await new ExcludeConfirmHandler().execute(message, interaction.user, buttonData, interaction)
-        await new ModalHandler().execute(message, interaction.user, buttonData, interaction)
-        await new PrintJobStartHandler().execute(message, interaction.user, buttonData, interaction)
-        await new MessageHandler().execute(message, interaction.user, buttonData, interaction)
-        await new EmbedHandler().execute(message, interaction.user, buttonData, interaction)
-        await new DeleteHandler().execute(message, interaction.user, buttonData, interaction)
-        await new ReconnectHandler().execute(message, interaction.user, buttonData, interaction)
-        await new RefreshHandler().execute(message, interaction.user, buttonData, interaction)
-        await new ListHandler().execute(message, interaction.user, buttonData, interaction)
-        await new DownloadHandler().execute(message, interaction.user, buttonData, interaction)
-        await new PageHandler().execute(message, interaction.user, buttonData, interaction)
-        await new DeleteMessageHandler().execute(message, interaction.user, buttonData, interaction)
-        await new SetupHandler().execute(message, interaction.user, buttonData, interaction)
-        await new NotificationHandler().execute(message, interaction.user, buttonData, interaction)
+        await new MacroHandler().executeHandler(message, interaction.user, buttonData, interaction)
+        await new CameraSettingHandler().executeHandler(message, interaction.user, buttonData, interaction)
+        await new WebsocketHandler().executeHandler(message, interaction.user, buttonData, interaction)
+        await new ExcludeConfirmHandler().executeHandler(message, interaction.user, buttonData, interaction)
+        await new ModalHandler().executeHandler(message, interaction.user, buttonData, interaction)
+        await new PrintJobStartHandler().executeHandler(message, interaction.user, buttonData, interaction)
+        await new MessageHandler().executeHandler(message, interaction.user, buttonData, interaction)
+        await new EmbedHandler().executeHandler(message, interaction.user, buttonData, interaction)
+        await new DeleteHandler().executeHandler(message, interaction.user, buttonData, interaction)
+        await new ReconnectHandler().executeHandler(message, interaction.user, buttonData, interaction)
+        await new RefreshHandler().executeHandler(message, interaction.user, buttonData, interaction)
+        await new ListHandler().executeHandler(message, interaction.user, buttonData, interaction)
+        await new DownloadHandler().executeHandler(message, interaction.user, buttonData, interaction)
+        await new PageHandler().executeHandler(message, interaction.user, buttonData, interaction)
+        await new DeleteMessageHandler().executeHandler(message, interaction.user, buttonData, interaction)
+        await new SetupHandler().executeHandler(message, interaction.user, buttonData, interaction)
+        await new NotificationHandler().executeHandler(message, interaction.user, buttonData, interaction)
 
         await sleep(2000)
 

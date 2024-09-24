@@ -79,39 +79,46 @@ export class CommandInteraction {
             return;
         }
 
-        void new AdminCommand(interaction, commandId)
-        void new FileInfoCommand(interaction, commandId)
-        void new InfoCommand(interaction, commandId)
-        void new DumpCommand(interaction, commandId)
-        void new TempCommand(interaction, commandId)
-        void new RestartCommand(interaction, commandId)
-        void new ListLogsCommand(interaction, commandId)
-        void new UserIdCommand(interaction, commandId)
-        void new ResetDatabaseCommand(interaction, commandId)
-        void new NotifyCommand(interaction, commandId)
-        void new EmergencyStopCommand(interaction, commandId)
-        void new StatusCommand(interaction, commandId)
-        void new EditChannelCommand(interaction, commandId)
-        void new GcodeListCommand(interaction, commandId)
-        void new PrintjobCommand(interaction, commandId)
-        void new SystemInfoCommand(interaction, commandId)
-        void new PreheatCommand(interaction, commandId)
-        void new PidtuneCommand(interaction, commandId)
-        void new SaveConfigCommand(interaction, commandId)
-        void new TuneCommand(interaction, commandId)
-        void new ConfigCommand(interaction, commandId)
-        void new ExecuteCommand(interaction, commandId)
-        void new CustomCommand(interaction, commandId)
-        void new PowerDeviceCommand(interaction, commandId)
-        void new HistoryCommand(interaction, commandId)
-        void new TimelapseListCommand(interaction, commandId)
+        void new AdminCommand().executeCommand(interaction, commandId)
+        void new FileInfoCommand().executeCommand(interaction, commandId)
+        void new InfoCommand().executeCommand(interaction, commandId)
+        void new DumpCommand().executeCommand(interaction, commandId)
+        void new TempCommand().executeCommand(interaction, commandId)
+        void new RestartCommand().executeCommand(interaction, commandId)
+        void new ListLogsCommand().executeCommand(interaction, commandId)
+        void new UserIdCommand().executeCommand(interaction, commandId)
+        void new ResetDatabaseCommand().executeCommand(interaction, commandId)
+        void new NotifyCommand().executeCommand(interaction, commandId)
+        void new EmergencyStopCommand().executeCommand(interaction, commandId)
+        void new StatusCommand().executeCommand(interaction, commandId)
+        void new EditChannelCommand().executeCommand(interaction, commandId)
+        void new GcodeListCommand().executeCommand(interaction, commandId)
+        void new PrintjobCommand().executeCommand(interaction, commandId)
+        void new SystemInfoCommand().executeCommand(interaction, commandId)
+        void new PreheatCommand().executeCommand(interaction, commandId)
+        void new PidtuneCommand().executeCommand(interaction, commandId)
+        void new SaveConfigCommand().executeCommand(interaction, commandId)
+        void new TuneCommand().executeCommand(interaction, commandId)
+        void new ConfigCommand().executeCommand(interaction, commandId)
+        void new ExecuteCommand().executeCommand(interaction, commandId)
+        void new CustomCommand().executeCommand(interaction, commandId)
+        void new PowerDeviceCommand().executeCommand(interaction, commandId)
+        void new HistoryCommand().executeCommand(interaction, commandId)
+        void new TimelapseListCommand().executeCommand(interaction, commandId)
 
-        await sleep(2000)
+        await sleep(1_000)
 
-        if (interaction.replied || interaction.deferred) {
+        if(!interaction.deferred && !interaction.replied && !interaction.isModalSubmit()) {
+            await interaction.reply(localeHelper.getCommandNotReadyError(interaction.user.tag))
             return
         }
 
-        await interaction.reply(localeHelper.getCommandNotReadyError(interaction.user.tag))
+        await sleep(60_000)
+
+        if (interaction.replied) {
+            return
+        }
+
+        await interaction.editReply(localeHelper.getCommandNotReadyError(interaction.user.tag))
     }
 }

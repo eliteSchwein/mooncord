@@ -6,9 +6,7 @@ import {logRegular, logWarn} from "../../../../helper/LoggerHelper";
 export default class CustomCommand extends BaseCommand {
     protected commandGenerator = new DiscordCommandGenerator()
 
-    public constructor(interaction: ChatInputCommandInteraction, commandId: string) {
-        super(interaction, commandId)
-
+    public async executeCommand(interaction: ChatInputCommandInteraction, commandId: string) {
         if (!this.commandGenerator.isCustomCommand(commandId)) {
             return
         }
