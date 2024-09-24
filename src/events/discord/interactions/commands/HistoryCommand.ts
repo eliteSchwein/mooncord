@@ -12,12 +12,11 @@ export default class HistoryCommand extends BaseCommand {
         const serverComponents = getEntry('server_info').components
 
         if (!serverComponents.includes('history')) {
-            await interaction.reply(this.locale.messages.errors.no_history
+            await interaction.editReply(this.locale.messages.errors.no_history
                 .replace(/(\${username})/g, interaction.user.tag))
             return
         }
 
-        await interaction.deferReply()
         const printStats = historyHelper.getPrintStats()
 
         if (printStats.count === 0) {

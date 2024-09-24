@@ -25,12 +25,14 @@ export default class BaseCommand {
     protected moonrakerClient = getMoonrakerClient()
 
     commandId = ''
+    ephemeral = false
 
     public constructor(interaction: ChatInputCommandInteraction, commandId: string) {
         if (commandId !== this.commandId) {
             return
         }
 
+        void interaction.deferReply({ephemeral: this.ephemeral})
         void this.handleCommand(interaction)
     }
 

@@ -15,11 +15,9 @@ export default class TuneCommand extends BaseCommand {
             const message = this.locale.messages.answers.printjob_pause.status_not_valid
                 .replace(/(\${username})/g, interaction.user.tag)
 
-            await interaction.reply(message)
+            await interaction.editReply(message)
             return
         }
-
-        await interaction.deferReply()
 
         if (speed === null && flow === null) {
             await interaction.editReply(this.locale.messages.errors.missing_arguments

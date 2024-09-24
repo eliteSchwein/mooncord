@@ -18,6 +18,6 @@ export default class UserIdCommand extends BaseCommand {
                 .replace(/\${username}/g, userArgument.tag)
         }
 
-        void interaction.reply(answer)
+        void interaction.editReply(answer)
     }
 }

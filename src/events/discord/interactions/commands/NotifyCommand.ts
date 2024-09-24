@@ -24,6 +24,6 @@ export default class NotifyCommand extends BaseCommand {
 
         await this.database.updateDatabaseEntry('notify', notifyList)
 
-        void interaction.reply(answer)
+        void interaction.editReply(answer)
     }
 }

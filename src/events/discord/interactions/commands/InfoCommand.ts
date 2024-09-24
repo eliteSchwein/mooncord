@@ -8,6 +8,6 @@ export default class InfoCommand extends BaseCommand {
     async handeCommand(interaction: ChatInputCommandInteraction) {
         const message = await new EmbedHelper().generateEmbed('info')
 
-        void interaction.reply(message.embed)
+        void interaction.editReply(message.embed)
     }
 }

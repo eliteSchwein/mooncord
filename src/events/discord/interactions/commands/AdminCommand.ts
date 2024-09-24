@@ -6,7 +6,6 @@ export default class AdminCommand extends BaseCommand {
     commandId = 'admin'
 
     async handleCommand(interaction: ChatInputCommandInteraction) {
-        interaction.options
         const role = interaction.options.getRole(this.syntaxLocale.commands.admin.options.role.options.role.name)
         const user = interaction.options.getUser(this.syntaxLocale.commands.admin.options.user.options.user.name)
 
@@ -24,7 +23,7 @@ export default class AdminCommand extends BaseCommand {
                 .replace(/(\${username})/g, interaction.user.tag)
                 .replace(/(\${mention})/g, mention)
 
-            await interaction.reply(message)
+            await interaction.editReply(message)
         } else {
             botAdmins[section].push(id)
 
@@ -32,7 +31,7 @@ export default class AdminCommand extends BaseCommand {
                 .replace(/(\${username})/g, interaction.user.tag)
                 .replace(/(\${mention})/g, mention)
 
-            await interaction.reply(message)
+            await interaction.editReply(message)
         }
 
         permissions.admins = botAdmins

@@ -13,8 +13,6 @@ export default class ExecuteCommand extends BaseCommand {
             return
         }
 
-        await interaction.deferReply()
-
         const gcodeValid = await this.consoleHelper.executeGcodeCommands([gcodeArgument], interaction.channel)
 
         let answer = this.locale.messages.answers.execute_successful

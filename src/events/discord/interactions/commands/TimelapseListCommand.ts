@@ -6,8 +6,6 @@ export default class TimelapseListCommand extends BaseCommand {
     commandId = 'listtimelapses'
 
     async handleCommand(interaction: ChatInputCommandInteraction) {
-        await interaction.deferReply()
-
         const pageHelper = new PageHelper('timelapse_files')
         const pageData = pageHelper.getPage(false, 2)
 

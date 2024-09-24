@@ -8,8 +8,6 @@ export default class RestartCommand extends BaseCommand {
     async handleCommand(interaction: ChatInputCommandInteraction) {
         const service = interaction.options.getString(this.syntaxLocale.commands.restart.options.service.name)
 
-        await interaction.deferReply()
-
         this.user = interaction.user
 
         let result

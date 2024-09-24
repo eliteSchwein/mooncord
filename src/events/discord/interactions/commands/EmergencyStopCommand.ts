@@ -5,8 +5,6 @@ export default class EmergencyStopCommand extends BaseCommand {
     commandId = 'emergency_stop'
 
     async handleCommand(interaction: ChatInputCommandInteraction) {
-        await interaction.deferReply()
-
         void await this.moonrakerClient.send({"method": "printer.emergency_stop"})
 
         const answer = this.locale.messages.answers.emergency_stop

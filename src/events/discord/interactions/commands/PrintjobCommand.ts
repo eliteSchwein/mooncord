@@ -37,8 +37,6 @@ export default class PrintjobCommand extends BaseCommand {
     }
 
     private async requestPrintjob(printFile: string, interaction: CommandInteraction) {
-        await interaction.deferReply()
-
         if (!printFile.endsWith('.gcode')) {
             printFile = `${printFile}.gcode`
         }
@@ -88,7 +86,7 @@ export default class PrintjobCommand extends BaseCommand {
             const message = subLocale.status_same
                 .replace(/(\${username})/g, interaction.user.tag)
 
-            await interaction.reply(message)
+            await interaction.editReply(message)
             return
         }
 
@@ -96,7 +94,7 @@ export default class PrintjobCommand extends BaseCommand {
             const message = subLocale.status_not_valid
                 .replace(/(\${username})/g, interaction.user.tag)
 
-            await interaction.reply(message)
+            await interaction.editReply(message)
             return
         }
 
@@ -111,6 +109,6 @@ export default class PrintjobCommand extends BaseCommand {
         const message = subLocale.status_valid
             .replace(/(\${username})/g, interaction.user.tag)
 
-        await interaction.reply(message)
+        await interaction.editReply(message)
     }
 }

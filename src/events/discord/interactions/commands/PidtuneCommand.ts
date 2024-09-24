@@ -12,12 +12,12 @@ export default class PidtuneCommand extends BaseCommand {
         const heater = interaction.options.getString(this.syntaxLocale.commands.pidtune.options.heater.name)
 
         if (functionCache.current_status !== 'ready') {
-            await interaction.reply(this.locale.messages.errors.command_idle_only
+            await interaction.editReply(this.locale.messages.errors.command_idle_only
                 .replace(/(\${username})/g, interaction.user.tag))
             return
         }
 
-        await interaction.reply(this.locale.messages.answers.pidtune_start
+        await interaction.editReply(this.locale.messages.answers.pidtune_start
             .replace(/(\${heater})/g, heater)
             .replace(/(\${temp})/g, temp)
             .replace(/(\${username})/g, interaction.user.tag))

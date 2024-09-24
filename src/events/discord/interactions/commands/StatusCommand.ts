@@ -6,8 +6,6 @@ export default class StatusCommand extends BaseCommand {
     commandId = 'status'
 
     async handleCommand(interaction: ChatInputCommandInteraction) {
-        await interaction.deferReply()
-
         const functionCache = getEntry('function')
 
         const currentStatus = functionCache.current_status

@@ -5,10 +5,9 @@ import path from "path";
 
 export default class DumpCommand extends BaseCommand {
     commandId = 'dump'
+    ephemeral = true
 
     async handleCommand(interaction: ChatInputCommandInteraction) {
-        await interaction.deferReply({ephemeral: true})
-
         const sectionArgument = interaction.options.getString(this.syntaxLocale.commands.dump.options.section.name)
 
         if (sectionArgument === 'cache') {

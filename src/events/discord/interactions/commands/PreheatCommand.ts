@@ -16,7 +16,7 @@ export default class PreheatCommand extends BaseCommand {
         const functionCache = getEntry('function')
 
         if (functionCache.current_status !== 'ready') {
-            await interaction.reply(this.locale.messages.errors.command_idle_only
+            await interaction.editReply(this.locale.messages.errors.command_idle_only
                 .replace(/(\${username})/g, interaction.user.tag))
             return
         }
@@ -26,7 +26,7 @@ export default class PreheatCommand extends BaseCommand {
                 const preset = interaction.options.getString(this.syntaxLocale.commands.preheat.options.preset.options.preset.name)
                 await this.heatProfile(preset)
 
-                await interaction.reply(this.locale.messages.answers.preheat_preset.preset
+                await interaction.editReply(this.locale.messages.answers.preheat_preset.preset
                     .replace(/(\${preset})/g, preset)
                     .replace(/(\${username})/g, interaction.user.tag))
                 break
@@ -57,7 +57,7 @@ export default class PreheatCommand extends BaseCommand {
             }
 
             if (heaterTemp > heaterMaxTemp) {
-                await interaction.reply(this.locale.messages.errors.preheat_over_max
+                await interaction.editReply(this.locale.messages.errors.preheat_over_max
                     .replace(/(\${max_temp})/g, heaterMaxTemp)
                     .replace(/(\${temp})/g, heaterTemp)
                     .replace(/(\${username})/g, interaction.user.tag))
@@ -65,7 +65,7 @@ export default class PreheatCommand extends BaseCommand {
             }
 
             if (heaterTemp < heaterMinTemp) {
-                await interaction.reply(this.locale.messages.errors.preheat_below_min
+                await interaction.editReply(this.locale.messages.errors.preheat_below_min
                     .replace(/(\${min_temp})/g, heaterMinTemp)
                     .replace(/(\${temp})/g, heaterTemp)
                     .replace(/(\${username})/g, interaction.user.tag))
@@ -85,7 +85,7 @@ export default class PreheatCommand extends BaseCommand {
 
         heaterList = heaterList.slice(0, Math.max(0, heaterList.length - 2))
 
-        await interaction.reply(this.locale.messages.answers.preheat_preset.manual
+        await interaction.editReply(this.locale.messages.answers.preheat_preset.manual
             .replace(/(\${heater_list})/g, heaterList)
             .replace(/(\${username})/g, interaction.user.tag))
     }

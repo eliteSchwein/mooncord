@@ -7,8 +7,6 @@ export default class ListLogsCommand extends BaseCommand {
     commandId = 'listlogs'
 
     async handleCommand(interaction: ChatInputCommandInteraction) {
-        await interaction.deferReply()
-
         const pageHelper = new PageHelper('log_files')
         const pageData = pageHelper.getPage(false, 2)
 

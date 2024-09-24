@@ -20,8 +20,6 @@ export default class CustomCommand extends BaseCommand {
     async handleCustomCommand(interaction: ChatInputCommandInteraction, commandId: string) {
         const customCommandData = this.commandGenerator.getCustomCommandData(commandId)
 
-        await interaction.deferReply()
-
         if (customCommandData.macros !== undefined) {
             await this.consoleHelper.executeGcodeCommands(customCommandData.macros,
                 interaction.channel)

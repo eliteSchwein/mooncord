@@ -13,21 +13,21 @@ export default class EditChannelCommand extends BaseCommand {
         let channel = interaction.channel
 
         if (channel === null) {
-            void interaction.reply(this.locale.messages.errors.guild_only
+            void interaction.editReply(this.locale.messages.errors.guild_only
                 .replace(/\${username}/g, user.tag))
             return
         }
 
         // @ts-ignore
         if (channel.type === ChannelType.DM) {
-            void interaction.reply(this.locale.messages.errors.guild_only
+            void interaction.editReply(this.locale.messages.errors.guild_only
                 .replace(/\${username}/g, user.tag))
             return
         }
 
         if (channelOption !== null) {
             if (channelOption.type !== ChannelType.GuildText) {
-                void interaction.reply(this.locale.messages.errors.not_textchannel
+                void interaction.editReply(this.locale.messages.errors.not_textchannel
                     .replace(/\${username}/g, user.tag)
                     .replace(/\${channel}/g, channelOption.name))
                 return
@@ -62,6 +62,6 @@ export default class EditChannelCommand extends BaseCommand {
 
         await this.database.updateDatabaseEntry('guilds', broadcastList)
 
-        void interaction.reply(answer)
+        void interaction.editReply(answer)
     }
 }

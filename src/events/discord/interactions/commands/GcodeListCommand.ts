@@ -6,8 +6,6 @@ export default class GcodeListCommand extends BaseCommand {
     commandId = 'listgcodes'
 
     async handleCommand(interaction: ChatInputCommandInteraction) {
-        await interaction.deferReply()
-
         const pageHelper = new PageHelper('gcode_files')
         const pageData = pageHelper.getPage(false, 2)
 

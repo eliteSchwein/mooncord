@@ -6,8 +6,6 @@ export default class SaveConfigCommand extends BaseCommand {
     commandId = 'saveconfig'
 
     async handleCommand(interaction: ChatInputCommandInteraction) {
-        await interaction.deferReply()
-
         logRegular('saving configuration...')
 
         await this.moonrakerClient.send({"method": "printer.gcode.script", "params": {"script": `SAVE_CONFIG`}})

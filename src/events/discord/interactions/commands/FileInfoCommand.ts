@@ -15,7 +15,7 @@ export class FileInfoCommand extends BaseCommand {
         const metadata = await this.metadataHelper.getMetaData(filename)
 
         if (typeof metadata === 'undefined') {
-            await interaction.reply(this.locale.messages.errors.file_not_found)
+            await interaction.editReply(this.locale.messages.errors.file_not_found)
             return
         }
 
@@ -32,6 +32,6 @@ export class FileInfoCommand extends BaseCommand {
         embedData.embed.embeds = [embed]
         embedData.embed['files'] = [thumbnail]
 
-        await interaction.reply(embedData.embed)
+        await interaction.editReply(embedData.embed)
     }
 }

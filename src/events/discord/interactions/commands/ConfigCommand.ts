@@ -7,8 +7,6 @@ export default class ConfigCommand extends BaseCommand {
     commandId = 'config'
 
     async handle(client: Client, interaction: ChatInputCommandInteraction) {
-        await interaction.deferReply()
-
         if (interaction.options.getSubcommand() === this.syntaxLocale.commands.config.options.get.name) {
             const pageHelper = new PageHelper('configs_download')
             const pageData = pageHelper.getPage(false, 2)

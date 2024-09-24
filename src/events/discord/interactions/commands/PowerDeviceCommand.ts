@@ -11,11 +11,9 @@ export default class PowerDeviceCommand extends BaseCommand {
         const powerDeviceData = new PowerDeviceHelper().getPowerDeviceData(powerDevice)
 
         if (powerDevice === null || powerDeviceData === null) {
-            await interaction.reply(this.locale.messages.errors.no_power_device
+            await interaction.editReply(this.locale.messages.errors.no_power_device
                 .replace(/(\${username})/g, interaction.user.tag))
         }
-
-        await interaction.deferReply()
 
         const newState = (powerDeviceData.status === 'on') ? 'off' : 'on'
 
