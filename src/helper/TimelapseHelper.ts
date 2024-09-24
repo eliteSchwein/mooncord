@@ -92,7 +92,7 @@ export class TimelapseHelper {
         const functionCache = getEntry('function')
         let renderComplete = false
         const ffmpegInputArguments = ffmpegConfig.ffmpeg_input_arguments
-        const ffmpegOutputArguments = ffmpegConfig.ffmpeg_arguments
+        const ffmpegOutputArguments = ffmpegConfig.ffmpeg_output_arguments
 
         ffmpegOutputArguments.push(`-vf scale=${ffmpegConfig.ffmpeg_height}:-1`)
 
