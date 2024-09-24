@@ -91,15 +91,16 @@ export class TimelapseHelper {
         const tempPathShort = path.join(absolutePath, `compressed-${timelapseName}`)
         const functionCache = getEntry('function')
         let renderComplete = false
-        const ffmpegArguments = ffmpegConfig.ffmpeg_arguments
+        const ffmpegInputArguments = ffmpegConfig.ffmpeg_input_arguments
+        const ffmpegOutputArguments = ffmpegConfig.ffmpeg_arguments
 
-        ffmpegArguments.push(`-vf scale=${ffmpegConfig.ffmpeg_height}:-1`)
+        ffmpegOutputArguments.push(`-vf scale=${ffmpegConfig.ffmpeg_height}:-1`)
 
         logRegular(`Compress Timelapse: ${timelapseName}`)
         if (functionCache.current_status === 'printing') {
             logNotice('use printing arguments for ffmpeg because a print is running')
             for(const ffmpegArgument of ffmpegConfig.ffmpeg_arguments_printing) {
-                ffmpegArguments.push(ffmpegArgument)
+                ffmpegOutputArguments.push(ffmpegArgument)
             }
         }
 
@@ -107,10 +108,11 @@ export class TimelapseHelper {
 
         ffmpegRender
             .format('mp4')
+            .addInputOptions(ffmpegInputArguments)
             .addInput(timelapseInput)
             .noAudio()
             .output(tempPathShort)
-            .outputOptions(ffmpegArguments)
+            .outputOptions(ffmpegOutputArguments)
             .on('end', async (stdout, stderr) => {
                 renderComplete = true
             })
