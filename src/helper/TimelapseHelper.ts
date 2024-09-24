@@ -112,6 +112,9 @@ export class TimelapseHelper {
             .on('end', async (stdout, stderr) => {
                 renderComplete = true
             })
+            .on('start', (cmd) => {
+                logNotice(`ffmpeg command: ${cmd}`)
+            })
 
         ffmpegRender.run()
 
