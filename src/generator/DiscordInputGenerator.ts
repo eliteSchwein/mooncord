@@ -1,7 +1,7 @@
 'use strict'
 
 import {ConfigHelper} from "../helper/ConfigHelper";
-import {limitString, mergeDeep, parsePageData} from "../helper/DataHelper";
+import {convertStyle, limitString, mergeDeep, parsePageData} from "../helper/DataHelper";
 
 import {findValue, getExcludeChoices, getHeaterChoices, setData} from "../utils/CacheUtil";
 import {LocaleHelper} from "../helper/LocaleHelper";
@@ -44,7 +44,7 @@ export class DiscordInputGenerator {
             const button = new ButtonBuilder()
                 .setCustomId(buttonData.id)
                 .setEmoji(buttonData.emoji)
-                .setStyle(buttonData.style)
+                .setStyle(convertStyle(buttonData.style))
 
             if (buttonData.label !== null && buttonData.label !== undefined) {
                 button.setLabel(buttonData.label)
@@ -159,7 +159,7 @@ export class DiscordInputGenerator {
                 new TextInputBuilder()
                     .setCustomId(inputData.id)
                     .setLabel(inputData.label)
-                    .setStyle(inputData.style)
+                    .setStyle(convertStyle(inputData.style))
                     .setValue(String(inputData.value))
                     .setRequired(inputData.required)
             )
