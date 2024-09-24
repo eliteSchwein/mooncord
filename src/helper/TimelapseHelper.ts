@@ -83,28 +83,23 @@ export class TimelapseHelper {
 
     private async compressTimelapse(timelapseInput: string, timelapseName: string) {
         const config = new ConfigHelper()
+        const ffmpegConfig = config.getEntriesByFilter(/^timelapse$/g)[0]
         const absolutePath = (config.getTempPath().startsWith('..')) ?
             path.join(__dirname, config.getTempPath()) :
             config.getTempPath()
         const tempPathShort = path.join(absolutePath, `compressed-${timelapseName}`)
         const functionCache = getEntry('function')
         let renderComplete = false
-        // TODO: move arguments to config
-        const ffmpegArguments = [
-            "-pix_fmt yuv420p",
-            "-preset veryslow",
-            "-g 5",
-            "-crf 33",
-            "-vf scale=800:-1"
-        ]
+        const ffmpegArguments = ffmpegConfig.ffmpeg_arguments
 
         logRegular(`Compress Timelapse: ${timelapseName}`)
         if (functionCache.current_status === 'printing') {
-            logNotice('use single thread for ffmpeg because a print is running')
-            ffmpegArguments.push('-threads 1')
+            logNotice('use printing arguments for ffmpeg because a print is running')
+            for(const ffmpegArgument of ffmpegConfig.ffmpeg_arguments_printing) {
+                ffmpegArguments.push(ffmpegArgument)
+            }
         }
 
-        // TODO: ffmpeg path into config
         const ffmpegRender = Ffmpeg()
 
         ffmpegRender
