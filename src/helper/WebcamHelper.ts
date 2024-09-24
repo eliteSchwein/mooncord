@@ -95,6 +95,9 @@ export class WebcamHelper {
             if(webcamData === undefined)
                 throw new Error('Config Error: Webcam has invalid config or was not found')
 
+            if(webcamData.snapshot_url.startsWith('/'))
+                webcamData.snapshot_url = `http://localhost${webcamData.snapshot_url}`
+
             logRegular('Run Webcam pre Tasks if present...')
             await this.executePostProcess(beforeStatus)
 
@@ -160,9 +163,6 @@ export class WebcamHelper {
 
             if(webcamData !== undefined)
                 url = webcamData.snapshot_url
-
-            if(url.startsWith('/'))
-                url = `http://localhost${url}`
 
             logEmpty()
             logError('Webcam Error:')
