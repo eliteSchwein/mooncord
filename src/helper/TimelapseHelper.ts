@@ -26,9 +26,9 @@ export class TimelapseHelper {
         logRegular(`Timelapse ${fileName} is ${fileSizeInMegabytes}mb big`)
 
         console.log(fileSizeInMegabytes)
-        console.log(config.getUploadLimit())
+        console.log(config.getUploadLimit() / 1000000)
 
-        if(fileSizeInMegabytes > config.getUploadLimit()) {
+        if(fileSizeInMegabytes > (config.getUploadLimit() / 1000000)) {
             this.timelapseFile[fileId].path = await this.compressTimelapse(path, fileName)
         }
 
