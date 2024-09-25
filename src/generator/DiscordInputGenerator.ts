@@ -43,8 +43,11 @@ export class DiscordInputGenerator {
 
             const button = new ButtonBuilder()
                 .setCustomId(buttonData.id)
-                .setEmoji(buttonData.emoji)
                 .setStyle(convertStyle(buttonData.style))
+
+            if(buttonData.emoji) {
+                button.setEmoji(buttonData.emoji)
+            }
 
             if (buttonData.label !== null && buttonData.label !== undefined) {
                 button.setLabel(buttonData.label)
