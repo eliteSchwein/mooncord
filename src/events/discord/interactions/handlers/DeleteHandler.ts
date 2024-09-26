@@ -22,6 +22,8 @@ export class DeleteHandler extends BaseHandler {
             return
         }
 
+        const filename = this.embedHelper.getAuthorName(currentEmbed)
+
         if (interaction !== null &&
             !interaction.replied &&
             !interaction.deferred) {
@@ -29,7 +31,6 @@ export class DeleteHandler extends BaseHandler {
         }
 
         const rootPath = data.root_path
-        const filename = this.embedHelper.getAuthorName(currentEmbed)
 
         const feedback = await this.moonrakerClient.send({
             "method": "server.files.delete_file",
