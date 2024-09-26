@@ -25,6 +25,7 @@ import {NotificationHandler} from "./handlers/NotificationHandler";
 import {CameraSettingHandler} from "./handlers/CameraSettingHandler";
 import {PromptHelper} from "../../../helper/PromptHelper";
 import DownloadHandler from "./handlers/DownloadHandler";
+import {ClearAttachmentsHandler} from "./handlers/ClearAttachmentsHandler";
 
 export class ButtonInteraction {
 
@@ -83,7 +84,9 @@ export class ButtonInteraction {
 
         const message = interaction.message as Message
 
+        await new ClearAttachmentsHandler().executeHandler(message, interaction.user, buttonData, interaction)
         await new MacroHandler().executeHandler(message, interaction.user, buttonData, interaction)
+        await new DeleteHandler().executeHandler(message, interaction.user, buttonData, interaction)
         await new CameraSettingHandler().executeHandler(message, interaction.user, buttonData, interaction)
         await new WebsocketHandler().executeHandler(message, interaction.user, buttonData, interaction)
         await new ExcludeConfirmHandler().executeHandler(message, interaction.user, buttonData, interaction)
@@ -91,7 +94,6 @@ export class ButtonInteraction {
         await new PrintJobStartHandler().executeHandler(message, interaction.user, buttonData, interaction)
         await new MessageHandler().executeHandler(message, interaction.user, buttonData, interaction)
         await new EmbedHandler().executeHandler(message, interaction.user, buttonData, interaction)
-        await new DeleteHandler().executeHandler(message, interaction.user, buttonData, interaction)
         await new ReconnectHandler().executeHandler(message, interaction.user, buttonData, interaction)
         await new RefreshHandler().executeHandler(message, interaction.user, buttonData, interaction)
         await new ListHandler().executeHandler(message, interaction.user, buttonData, interaction)

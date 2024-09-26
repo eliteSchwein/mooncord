@@ -21,6 +21,7 @@ import {CameraSettingHandler} from "./handlers/CameraSettingHandler";
 import DownloadHandler from "./handlers/DownloadHandler";
 import {SetupHandler} from "./handlers/SetupHandler";
 import {NotificationHandler} from "./handlers/NotificationHandler";
+import {ClearAttachmentsHandler} from "./handlers/ClearAttachmentsHandler";
 
 export class ReactionInteraction {
 
@@ -61,7 +62,9 @@ export class ReactionInteraction {
             return;
         }
 
+        await new ClearAttachmentsHandler().executeHandler(message, user, reactionData)
         await new MacroHandler().executeHandler(message, user, reactionData)
+        await new DeleteHandler().executeHandler(message, user, reactionData)
         await new CameraSettingHandler().executeHandler(message, user, reactionData)
         await new WebsocketHandler().executeHandler(message, user, reactionData)
         await new ExcludeConfirmHandler().executeHandler(message, user, reactionData)
@@ -69,7 +72,6 @@ export class ReactionInteraction {
         await new PrintJobStartHandler().executeHandler(message, user, reactionData)
         await new MessageHandler().executeHandler(message, user, reactionData)
         await new EmbedHandler().executeHandler(message, user, reactionData)
-        await new DeleteHandler().executeHandler(message, user, reactionData)
         await new ReconnectHandler().executeHandler(message, user, reactionData)
         await new RefreshHandler().executeHandler(message, user, reactionData)
         await new ListHandler().executeHandler(message, user, reactionData)
