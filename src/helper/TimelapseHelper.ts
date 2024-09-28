@@ -109,7 +109,13 @@ export class TimelapseHelper {
         ffmpegRender
             .format('mp4')
             .addInput(timelapseInput)
-            .addInputOptions(ffmpegInputArguments)
+
+        if(ffmpegInputArguments) {
+            ffmpegRender
+                .addInputOptions(ffmpegInputArguments)
+        }
+
+        ffmpegRender
             .noAudio()
             .output(tempPathShort)
             .outputOptions(ffmpegOutputArguments)
