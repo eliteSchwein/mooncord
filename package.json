@@ -9,6 +9,7 @@
     "debugstart": "node --inspect=0.0.0.0:3000 --max-old-space-size=64 --trace_gc --expose-gc --trace-deprecation --trace-warnings --trace-uncaught --track-heap-objects dist/index.js",
     "checkcodestyle": "npx eslint ./**",
     "autofixcodestyle": "npx eslint ./** --fix",
+    "ncu": "ncu",
     "generatelocale": "node src/helper/LocaleGenerationHelper.js",
     "build": "esbuild src/Application.ts --tree-shaking=true --target=es2020 --bundle --minify --color=true --platform=node --external:discord.js --external:sharp --define:process.env.FLUENTFFMPEG_COV=false --outfile=dist/index.js",
     "watch": "esbuild src/Application.ts --tree-shaking=true --target=es2020 --bundle --color=true --platform=node --watch --external:discord.js --external:sharp --define:process.env.FLUENTFFMPEG_COV=false --outfile=dist/index.js"
@@ -29,7 +30,6 @@
     "@types/fluent-ffmpeg": "^2.1.26",
     "@types/node": "^22.7.4",
     "@types/readline-sync": "^1.4.8",
-    "@types/sharp": "^0.32.0",
     "async-wait-until": "2.0.12",
     "axios": "^1.7.7",
     "bytes": "^3.1.2",
