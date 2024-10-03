@@ -281,7 +281,10 @@
     },
     "messages": {
         "answers": {
-            "update_wait": "Fetching updates, please wait...",
+            "update": {
+                "wait": "Fetching updates, please wait...",
+                "request": "System Update requested, `${username}`!"
+            },
             "setup": {
                 "finish": "You finished or closed the setup, `${username}`!"
             },
@@ -292,7 +295,6 @@
                 "preset": "Preheating for `${preset}`, `${username}`!",
                 "manual": "Preheating ${heater_list}, `${username}`!"
             },
-            "update_request": "System Update requested, `${username}`!",
             "restart_successful": "The Restart of `${service}` was successful, `${username}`!",
             "firmware_restart_successful": "The Firmware is restarting, `${username}`!",
             "timelapse": "Timelapse for `${printfile}`",
