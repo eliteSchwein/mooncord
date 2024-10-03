@@ -8,6 +8,7 @@ import {
     getPowerDeviceChoices,
     getPreheatProfileChoices,
     getServiceChoices,
+    getSystemInfoChoices,
     setData
 } from "../utils/CacheUtil";
 import {LocaleHelper} from "../helper/LocaleHelper";
@@ -21,6 +22,7 @@ import {Routes} from "discord-api-types/v10"
 import {RouteLike} from "@discordjs/rest";
 
 export class DiscordCommandGenerator {
+    protected config = new ConfigHelper()
 
     public constructor() {
         const commandStructureFile = readFileSync(path.resolve(__dirname, '../src/meta/command_structure.json'))
@@ -32,7 +34,7 @@ export class DiscordCommandGenerator {
     }
 
     public getCustomCommandData(key: string) {
-        const customCommandsConfig = new ConfigHelper().getEntriesByFilter(/^command /g, true)
+        const customCommandsConfig = this.config.getEntriesByFilter(/^command /g, true)
         return customCommandsConfig[key]
     }
 
@@ -189,9 +191,7 @@ export class DiscordCommandGenerator {
         optionBuilder.required = optionMeta.required
 
         if (typeof (optionMeta.choices) !== 'undefined') {
-            if (optionMeta.choices === '${systemInfoChoices}') {
-                optionBuilder.choices = new LocaleHelper().getSystemComponents()
-            } else if (optionMeta.choices === '${serviceChoices}') {
+            if (optionMeta.choices === '${serviceChoices}') {
                 optionBuilder.choices = getServiceChoices()
             } else if (optionMeta.choices === '${preheatProfileChoices}') {
                 optionBuilder.choices = getPreheatProfileChoices()
@@ -199,6 +199,8 @@ export class DiscordCommandGenerator {
                 optionBuilder.choices = getPowerDeviceChoices()
             } else if (optionMeta.choices === '${heaterChoices}') {
                 optionBuilder.choices = getHeaterChoices()
+            } else if (optionMeta.choices === '${systemInfoChoices}') {
+                optionBuilder.choices = getSystemInfoChoices()
             } else {
                 optionBuilder.choices = this.buildChoices(optionMeta.choices, syntaxMeta.options[option].choices)
             }
@@ -217,7 +219,7 @@ export class DiscordCommandGenerator {
     }
 
     private getCustomCommandStructure() {
-        const customCommandsConfig = new ConfigHelper().getEntriesByFilter(/^command /g, true)
+        const customCommandsConfig = this.config.getEntriesByFilter(/^command /g, true)
         const customCommands = {}
         const commandStructure = this.getConfigStructure()
 

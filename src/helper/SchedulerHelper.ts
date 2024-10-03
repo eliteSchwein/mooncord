@@ -85,7 +85,7 @@ export class SchedulerHelper {
     protected scheduleStatus() {
         this.statusScheduler = setInterval(() => {
             if (this.configHelper.isStatusPerPercent())
-                this.updateStatusCooldown()
+                void this.updateStatusCooldown()
             else
                 this.postPrintProgress()
         }, this.getStatusInterval())

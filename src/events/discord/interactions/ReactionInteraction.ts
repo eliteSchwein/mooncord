@@ -22,6 +22,7 @@ import DownloadHandler from "./handlers/DownloadHandler";
 import {SetupHandler} from "./handlers/SetupHandler";
 import {NotificationHandler} from "./handlers/NotificationHandler";
 import {ClearAttachmentsHandler} from "./handlers/ClearAttachmentsHandler";
+import {WaitMessageHandler} from "./handlers/WaitMessageHandler";
 
 export class ReactionInteraction {
 
@@ -62,6 +63,7 @@ export class ReactionInteraction {
             return;
         }
 
+        await new WaitMessageHandler().executeHandler(message, user, reactionData)
         await new ClearAttachmentsHandler().executeHandler(message, user, reactionData)
         await new MacroHandler().executeHandler(message, user, reactionData)
         await new DeleteHandler().executeHandler(message, user, reactionData)

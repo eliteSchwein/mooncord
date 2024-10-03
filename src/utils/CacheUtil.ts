@@ -8,6 +8,7 @@ import {mergeDeep} from "../helper/DataHelper";
 import {get} from 'lodash'
 import {LocaleHelper} from "../helper/LocaleHelper";
 import {ConfigHelper} from "../helper/ConfigHelper";
+import {MCUHelper} from "../helper/MCUHelper";
 
 const cacheData: any = {
     function: {
@@ -175,6 +176,13 @@ export function getPowerDeviceChoices() {
     }
 
     return choices
+}
+
+export function getSystemInfoChoices() {
+    const mcuHelper = new MCUHelper()
+    const syntaxLocale = new LocaleHelper().getSyntaxLocale()
+
+    return [...syntaxLocale.commands.systeminfo.options.component.choices, ...mcuHelper.getMCUChoices()]
 }
 
 export function getPreheatProfileChoices() {

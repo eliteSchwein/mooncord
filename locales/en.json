@@ -281,6 +281,7 @@
     },
     "messages": {
         "answers": {
+            "update_wait": "Fetching updates, please wait...",
             "setup": {
                 "finish": "You finished or closed the setup, `${username}`!"
             },
@@ -803,7 +804,51 @@
         },
         "systeminfo": {
             "description": "Get the current System Information.",
-            "command": "systeminfo"
+            "command": "systeminfo",
+            "options": {
+                "component": {
+                    "name": "component",
+                    "description": "Select a Component.",
+                    "choices": [
+                        {
+                            "name": "CPU",
+                            "value": "cpu"
+                        },
+                        {
+                            "name": "Memory",
+                            "value": "memory"
+                        },
+                        {
+                            "name": "System",
+                            "value": "system"
+                        },
+                        {
+                            "name": "Moonraker",
+                            "value": "moonraker"
+                        },
+                        {
+                            "name": "Klipper",
+                            "value": "klipper"
+                        },
+                        {
+                            "name": "Discord Client",
+                            "value": "discord"
+                        },
+                        {
+                            "name": "Moonraker Client",
+                            "value": "moonraker_client"
+                        },
+                        {
+                            "name": "Power Devices",
+                            "value": "power_devices"
+                        },
+                        {
+                            "name": "Updates",
+                            "value": "update"
+                        }
+                    ]
+                }
+            }
         },
         "notify": {
             "description": "Should I DM you with the current print status?",

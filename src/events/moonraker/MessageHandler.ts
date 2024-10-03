@@ -26,6 +26,8 @@ export class MessageHandler {
                 return
             }
 
+            //console.log(messageData)
+
             updateData('moonraker_client', {
                 'event_count': websocket.underlyingWebsocket['_eventsCount']
             })

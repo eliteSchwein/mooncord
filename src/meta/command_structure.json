@@ -152,7 +152,13 @@
     }
   },
   "status": {},
-  "systeminfo": {},
+  "systeminfo": {
+    "component": {
+      "type": "string",
+      "required": false,
+      "choices": "${systemInfoChoices}"
+    }
+  },
   "temp": {},
   "history": {}
 }

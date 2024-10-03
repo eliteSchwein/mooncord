@@ -26,6 +26,7 @@ import {CameraSettingHandler} from "./handlers/CameraSettingHandler";
 import {PromptHelper} from "../../../helper/PromptHelper";
 import DownloadHandler from "./handlers/DownloadHandler";
 import {ClearAttachmentsHandler} from "./handlers/ClearAttachmentsHandler";
+import {WaitMessageHandler} from "./handlers/WaitMessageHandler";
 
 export class ButtonInteraction {
 
@@ -84,6 +85,7 @@ export class ButtonInteraction {
 
         const message = interaction.message as Message
 
+        await new WaitMessageHandler().executeHandler(message, interaction.user, buttonData, interaction)
         await new ClearAttachmentsHandler().executeHandler(message, interaction.user, buttonData, interaction)
         await new MacroHandler().executeHandler(message, interaction.user, buttonData, interaction)
         await new DeleteHandler().executeHandler(message, interaction.user, buttonData, interaction)

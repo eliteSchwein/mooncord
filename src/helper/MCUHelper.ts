@@ -20,6 +20,22 @@ export class MCUHelper {
         return options
     }
 
+    public getMCUChoices() {
+        const stateCache = getEntry('state')
+        const options = []
+
+        for (const key in stateCache) {
+            if (key.startsWith('mcu')) {
+                options.push({
+                    "name": key,
+                    "value": key
+                })
+            }
+        }
+
+        return options
+    }
+
     public getMCULoad(mcu: string) {
         const rawMCUData = findValue(`state.${mcu}`)
 

@@ -8,7 +8,7 @@ export class DeleteMessageHandler extends BaseHandler{
         return data.functions.includes("delete_message");
     }
 
-    public async handleHandler(message: Message, user: User, data, interaction = null) {
+    async handleHandler(message: Message, user: User, data, interaction = null) {
         await message.delete()
     }
 }

@@ -9,7 +9,7 @@ export class EmbedHandler extends BaseHandler{
         return typeof data.embed !== 'undefined';
     }
 
-    public async handleHandler(message: Message, user: User, data, interaction = null) {
+    async handleHandler(message: Message, user: User, data, interaction = null) {
         if (interaction !== null && !interaction.replied && !interaction.deferred) {
             await interaction.deferReply()
         }
