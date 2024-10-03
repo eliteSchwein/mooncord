@@ -4,7 +4,7 @@ import {Websocket, WebsocketEvent} from "websocket-ts";
 import {ProcStatsNotification} from "./messages/ProcStatsNotification";
 import {SubscriptionNotification} from "./messages/SubscriptionNotification";
 import {UpdateNotification} from "./messages/UpdateNotification";
-import {updateData} from "../../utils/CacheUtil";
+import {getEntry, setData, updateData} from "../../utils/CacheUtil";
 import {FileEditNotification} from "./messages/FileEditNotification";
 import {StateUpdateNotification} from "./messages/StateUpdateNotification";
 import {GcodeResponseNotification} from "./messages/GcodeResponseNotification";
@@ -15,6 +15,7 @@ import {DisplayUpdateNotification} from "./messages/DisplayUpdateNotification";
 import {ConsoleMessage} from "./gcode-messages/ConsoleMessage";
 import {TimelapseMacroNotification} from "./messages/TimelapseMacroNotification";
 import {PowerDeviceNotification} from "./messages/PowerDeviceNotification";
+import {removeFromArray} from "../../helper/DataHelper";
 
 export class MessageHandler {
 
@@ -23,6 +24,17 @@ export class MessageHandler {
             const messageData = JSON.parse(ev.data)
 
             if (typeof (messageData) === 'undefined') {
+                return
+            }
+
+            const websocketCache = getEntry('websocket')
+            const blockedMethods = websocketCache.blocked
+
+            if(messageData.method && blockedMethods && blockedMethods.includes(messageData.method)) {
+                removeFromArray(blockedMethods, messageData.method)
+
+                websocketCache.blocked = blockedMethods
+                setData('websocket', websocketCache)
                 return
             }
 

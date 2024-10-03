@@ -4,6 +4,7 @@ import {Message, User} from "discord.js";
 import {getMoonrakerClient} from "../../../../Application";
 import {logNotice, logRegular, logWarn} from "../../../../helper/LoggerHelper";
 import BaseHandler from "../abstracts/BaseHandler";
+import {getEntry, setData} from "../../../../utils/CacheUtil";
 
 export class WebsocketHandler extends BaseHandler {
     async isValid(message: Message, user: User, data, interaction = null) {
@@ -24,6 +25,14 @@ export class WebsocketHandler extends BaseHandler {
             websocketTimeout = Number.POSITIVE_INFINITY
         } else if(data.websocket_timeout) {
             websocketTimeout = data.websocket_timeout
+        }
+
+        if(data.websocket_prevent_methods) {
+            const websocketCache = getEntry('websocket')
+            for(const preventMethod of data.websocket_prevent_methods) {
+                websocketCache.blocked.push(preventMethod)
+            }
+            setData('websocket', websocketCache)
         }
 
         const moonrakerClient = getMoonrakerClient()

@@ -11,6 +11,9 @@ import {ConfigHelper} from "../helper/ConfigHelper";
 import {MCUHelper} from "../helper/MCUHelper";
 
 const cacheData: any = {
+    websocket: {
+      blocked: []
+    },
     function: {
         current_status: 'botstart',
         status_in_query: false,
