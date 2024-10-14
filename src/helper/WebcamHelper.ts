@@ -212,8 +212,8 @@ export class WebcamHelper {
         while (index < config.execute.length) {
             const execute = config.execute[index]
             logRegular(`Execute Webcam Task ${index + 1} from ${config.execute.length}: ${execute}`)
-            if (execute.startsWith("gcode:")) {
-                const gcode = execute.replace("gcode:", "")
+            if (execute.key.toLowerCase() === 'gcode') {
+                const gcode = execute.value
                 try {
                     await moonrakerClient
                         .send(
@@ -224,12 +224,12 @@ export class WebcamHelper {
                     logError(error)
                 }
             }
-            if (execute.startsWith("website_post:")) {
-                const url = execute.replace("website_post:", "")
+            if (execute.key.toLowerCase() === 'website_post') {
+                const url = execute.value
                 this.triggerWebsite(url, true)
             }
-            if (execute.startsWith("website:")) {
-                const url = execute.replace("website:", "")
+            if (execute.key.toLowerCase() === 'website') {
+                const url = execute.value
                 this.triggerWebsite(url, false)
             }
             await sleep(config.delay)
