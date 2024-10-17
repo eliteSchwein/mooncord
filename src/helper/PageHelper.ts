@@ -6,10 +6,18 @@ import {parsePageData} from "./DataHelper";
 import {getConfigFiles, getEntry} from "../utils/CacheUtil";
 
 export class PageHelper {
+    protected config = new ConfigHelper()
     protected data: []
+    protected embeds = []
     protected pageLocale: any
 
     public constructor(pageId: string) {
+        const embedData = this.config.getEntriesByFilter(new RegExp(`^embed ${pageId}`, 'g'))[0]
+
+        if(embedData && embedData.page_embed_entries) {
+            this.embeds = embedData.page_embed_entries
+        }
+
         this.data = this.getValuesForPageId(pageId)
         this.pageLocale = new LocaleHelper().getLocale().pages[pageId]
     }
@@ -30,6 +38,7 @@ export class PageHelper {
     }
 
     protected getEntries(page: number) {
+        console.log(this.data)
         let entries = ''
         const max = new ConfigHelper().getEntriesPerPage() - 1
         const rawEntries = []
@@ -68,10 +77,6 @@ export class PageHelper {
     }
 
     protected getValuesForPageId(pageId: string) {
-        if (pageId === 'configs_download') {
-            return getConfigFiles()
-        }
-
         const cacheEntry = getEntry(pageId)
 
         if (cacheEntry !== undefined && cacheEntry !== null) {
