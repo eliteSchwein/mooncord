@@ -4,6 +4,8 @@ import {ConfigHelper} from "./ConfigHelper";
 import {LocaleHelper} from "./LocaleHelper";
 import {parsePageData} from "./DataHelper";
 import {getConfigFiles, getEntry} from "../utils/CacheUtil";
+import {EmbedHandler} from "../events/discord/interactions/handlers/EmbedHandler";
+import {EmbedHelper} from "./EmbedHelper";
 
 export class PageHelper {
     protected config = new ConfigHelper()
@@ -22,23 +24,32 @@ export class PageHelper {
         this.pageLocale = new LocaleHelper().getLocale().pages[pageId]
     }
 
-    public getPage(pageUp: boolean, currentPage: number) {
-        if (this.getEntries(0).entries === '') {
-            return {}
-        }
+    public async getPage(pageUp: boolean, currentPage: number) {
         const page = this.getNewPage(pageUp, currentPage)
-        const entries = this.getEntries(page.calcPage)
+        if(this.embeds.length > 0 && page.calcPage < this.embeds.length) {
+            const embedId = this.embeds[page.calcPage]
+            const embed = await (new EmbedHelper()).generateEmbed(embedId, {pages: `${page.labelPage}/${this.getLastPage()}`})
+
+            return {
+                embed: embed.embed,
+                pages: `${page.labelPage}/${this.getLastPage()}`,
+            }
+        }
+        if (this.getEntries(0).entries === '') {
+            return null
+        }
+        const calcPage = page.calcPage - this.embeds.length
+        const entries = this.getEntries(calcPage)
 
         return {
-            'page_entries_count': entries.raw_entries.length,
-            'page_entries': entries.entries,
-            'pages': `${page.labelPage}/${this.getLastPage()}`,
-            'raw_entries': entries.raw_entries
+            page_entries_count: entries.raw_entries.length,
+            page_entries: entries.entries,
+            pages: `${page.labelPage}/${this.getLastPage()}`,
+            raw_entries: entries.raw_entries
         }
     }
 
     protected getEntries(page: number) {
-        console.log(this.data)
         let entries = ''
         const max = new ConfigHelper().getEntriesPerPage() - 1
         const rawEntries = []
@@ -55,7 +66,7 @@ export class PageHelper {
     }
 
     protected getLastPage() {
-        return Math.ceil(this.data.length / new ConfigHelper().getEntriesPerPage())
+        return Math.ceil(this.data.length / new ConfigHelper().getEntriesPerPage()) + this.embeds.length
     }
 
     protected getNewPage(pageUp: boolean, currentPage: number) {
