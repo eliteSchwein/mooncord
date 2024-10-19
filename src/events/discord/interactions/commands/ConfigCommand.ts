@@ -6,20 +6,18 @@ import {uploadAttachment} from "../../../../helper/DataHelper";
 export default class ConfigCommand extends BaseCommand {
     commandId = 'config'
 
-    async handle(client: Client, interaction: ChatInputCommandInteraction) {
+    async handleCommand(interaction: ChatInputCommandInteraction) {
         if (interaction.options.getSubcommand() === this.syntaxLocale.commands.config.options.get.name) {
             const pageHelper = new PageHelper('configs_download')
-            const pageData = pageHelper.getPage(false, 2)
+            const pageData = await pageHelper.getPage(false, 2)
 
-            if (Object.keys(pageData).length === 0) {
+            if (!pageData) {
                 await interaction.editReply(this.locale.messages.errors.no_configs
                     .replace(/(\${username})/g, interaction.user.tag))
                 return
             }
 
-            const embed = await this.embedHelper.generateEmbed('configs_download', pageData)
-
-            await interaction.editReply(embed.embed)
+            await interaction.editReply(pageData.embed)
 
             return
         }

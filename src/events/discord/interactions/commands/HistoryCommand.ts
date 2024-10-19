@@ -35,13 +35,7 @@ export default class HistoryCommand extends BaseCommand {
             return
         }
 
-        if(pageData.embed) {
-            await interaction.editReply(pageData.embed)
-            return
-        }
-
-        const embed = await this.embedHelper.generateEmbed('history', pageData)
-
-        await interaction.editReply(embed.embed)
+        await interaction.editReply(pageData.embed)
+        return
     }
 }

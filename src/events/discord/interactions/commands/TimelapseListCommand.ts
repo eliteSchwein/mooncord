@@ -7,9 +7,9 @@ export default class TimelapseListCommand extends BaseCommand {
 
     async handleCommand(interaction: ChatInputCommandInteraction) {
         const pageHelper = new PageHelper('timelapse_files')
-        const pageData = pageHelper.getPage(false, 2)
+        const pageData = await pageHelper.getPage(false, 2)
 
-        if (Object.keys(pageData) === undefined || Object.keys(pageData).length === 0) {
+        if (!pageData) {
             const message = this.locale.messages.errors.no_timelapses
                 .replace(/(\${username})/g, interaction.user.tag)
 
@@ -17,8 +17,6 @@ export default class TimelapseListCommand extends BaseCommand {
             return
         }
 
-        const embed = await this.embedHelper.generateEmbed('timelapse_files', pageData)
-
-        await interaction.editReply(embed.embed)
+        await interaction.editReply(pageData.embed)
     }
 }

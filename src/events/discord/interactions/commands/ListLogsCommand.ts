@@ -8,18 +8,14 @@ export default class ListLogsCommand extends BaseCommand {
 
     async handleCommand(interaction: ChatInputCommandInteraction) {
         const pageHelper = new PageHelper('log_files')
-        const pageData = pageHelper.getPage(false, 2)
+        const pageData = await pageHelper.getPage(false, 2)
 
-        if (Object.keys(pageData) === undefined || Object.keys(pageData).length === 0) {
+        if (!pageData) {
             await interaction.editReply(this.locale.messages.errors.no_logs
                 .replace(/(\${username})/g, interaction.user.tag))
             return
         }
 
-        const data = mergeDeep(pageData, {'select_max_value': 5})
-
-        const embed = await this.embedHelper.generateEmbed('log_files', data)
-
-        await interaction.editReply(embed.embed)
+        await interaction.editReply(pageData.embed)
     }
 }

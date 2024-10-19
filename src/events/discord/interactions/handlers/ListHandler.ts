@@ -20,14 +20,12 @@ export class ListHandler extends BaseHandler {
         }
 
         const pageHelper = new PageHelper(listId)
-        const pageData = pageHelper.getPage(false, 2)
-
-        const answer = await this.embedHelper.generateEmbed(listId, pageData)
+        const pageData = await pageHelper.getPage(false, 2)
 
         await message.edit({components: null})
         await message.removeAttachments()
 
-        await message.edit(answer.embed)
+        await interaction.edit(pageData.embed)
 
         if (interaction !== null && !interaction.replied) {
             await interaction.deleteReply()

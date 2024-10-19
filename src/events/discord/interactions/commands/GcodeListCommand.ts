@@ -15,13 +15,7 @@ export default class GcodeListCommand extends BaseCommand {
             return
         }
 
-        if(pageData.embed) {
-            await interaction.editReply(pageData.embed)
-            return
-        }
-
-        const embed = await this.embedHelper.generateEmbed('gcode_files', pageData)
-
-        await interaction.editReply(embed.embed)
+        await interaction.editReply(pageData.embed)
+        return
     }
 }

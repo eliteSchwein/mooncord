@@ -12,6 +12,7 @@ export class PageHelper {
     protected config = new ConfigHelper()
     protected template = new TemplateHelper()
     protected data: []
+    protected embedId: string
     protected embeds = []
     protected cacheKey: string|undefined = undefined
     protected pageLocale: any
@@ -28,6 +29,7 @@ export class PageHelper {
 
         this.data = this.getValuesForPageId(pageId)
         this.pageLocale = new LocaleHelper().getLocale().pages[pageId]
+        this.embedId = pageId
     }
 
     public async getPage(pageUp: boolean, currentPage: number) {
@@ -41,17 +43,23 @@ export class PageHelper {
                 pages: `${page.labelPage}/${this.getLastPage()}`,
             }
         }
+        console.log(this.getEntries(0))
         if (this.getEntries(0).entries === '') {
             return null
         }
         const calcPage = page.calcPage - this.embeds.length
         const entries = this.getEntries(calcPage)
 
-        return {
+        const embed = await (new EmbedHelper()).generateEmbed(this.embedId, {
             page_entries_count: entries.raw_entries.length,
             page_entries: entries.entries,
             pages: `${page.labelPage}/${this.getLastPage()}`,
             raw_entries: entries.raw_entries
+        })
+
+        return {
+            embed: embed.embed,
+            pages: `${page.labelPage}/${this.getLastPage()}`,
         }
     }
 

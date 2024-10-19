@@ -48,7 +48,7 @@ export class PageHandler extends BaseHandler{
 
         const pageData = await pageHelper.getPage(data.functions.includes("page_up"), currentPage)
 
-        if (Object.keys(pageData).length === 0) {
+        if (!pageData) {
             if (interaction.replied) {
                 await interaction.editReply(this.locale.messages.errors.no_entries
                     .replace(/(\${username})/g, interaction.user.tag))
@@ -64,22 +64,12 @@ export class PageHandler extends BaseHandler{
         await message.edit({components: null})
         await message.removeAttachments()
 
-        if(pageData.embed) {
-            await message.edit(pageData.embed)
-
-            if (interaction !== null && !interaction.replied) {
-                await interaction.deleteReply()
-            }
-
-            return
-        }
-
-        const answer = await this.embedHelper.generateEmbed(embedData.embedID, pageData)
-
-        await message.edit(answer.embed)
+        await message.edit(pageData.embed)
 
         if (interaction !== null && !interaction.replied) {
             await interaction.deleteReply()
         }
+
+        return
     }
 }
