@@ -11,6 +11,9 @@
         "gcode_files": {
             "entry_label": "`${data.label}`"
         },
+        "history": {
+            "entry_label": "`${data.filename}` ${icon:data.status}"
+        },
         "log_files": {
             "entry_label": "`${data.path}`"
         },
@@ -117,7 +120,13 @@
             "description": "Version: ${package_config.version}\nAuthor: ${package_config.author}\nHomepage: ${package_config.homepage}\n${config.general.custom_info}"
         },
         "history": {
-            "title": "Printjob History"
+            "title": "Printjob History",
+            "description": "${page_entries}",
+            "footer": "Page ${pages}"
+        },
+        "history_graph": {
+            "title": "Printjob History",
+            "footer": "Page ${pages}"
         },
         "notification": {
             "content": "Printer Notification",
@@ -474,6 +483,12 @@
             "label": "Next Page"
         },
         "last_page_printlist":  {
+            "label": "Last Page"
+        },
+        "next_page_history":  {
+            "label": "Next Page"
+        },
+        "last_page_history":  {
             "label": "Last Page"
         },
         "next_page_loglist":  {

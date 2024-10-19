@@ -5,6 +5,7 @@ import axios from "axios";
 import FormData from "form-data";
 import {logError, logNotice} from "./LoggerHelper";
 import {ActivityType, Attachment, ButtonStyle, TextInputStyle} from "discord.js";
+import * as metaData from "../meta/history_graph_meta.json";
 
 export function isObject(item) {
     return (item && typeof item === 'object' && !Array.isArray(item));
@@ -122,6 +123,10 @@ export function stripAnsi(input: string) {
 }
 
 export function parseCalculatedPlaceholder(fragments) {
+    if (fragments[0] === 'icon') {
+        const icons = getIcons()
+        return icons[fragments[1]].icon
+    }
     if (fragments[0] === 'percent') {
         return formatPercent(parseFloat(fragments[2]), parseInt(fragments[1]))
     }
@@ -143,6 +148,23 @@ export function parseCalculatedPlaceholder(fragments) {
     if (fragments[0] === 'timestamp') {
         return formatTimestamp(parseInt(fragments[1]))
     }
+}
+
+export function getIcons() {
+    const configHelper = new ConfigHelper()
+    const icons:any = {}
+
+    for(const iconKey of metaData.icons) {
+        const iconData = configHelper.getIcons(new RegExp(`${iconKey}`, 'g'))
+
+        if(iconData.length === 0) {
+            continue
+        }
+
+        icons[iconKey] = iconData[0]
+    }
+
+    return icons
 }
 
 export function getObjectValue<T, K extends keyof T>(obj: T, key: K): T[K] {

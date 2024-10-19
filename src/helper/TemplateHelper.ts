@@ -18,6 +18,7 @@ import {SpoolmanHelper} from "./SpoolmanHelper";
 import {existsSync} from "fs";
 import {logWarn} from "./LoggerHelper";
 import {AttachmentBuilder, EmbedBuilder, ModalBuilder} from "discord.js";
+import {get} from "lodash";
 
 export class TemplateHelper {
     public async parseRawTemplate(type: string, id: string) {
@@ -133,7 +134,6 @@ export class TemplateHelper {
 
         let messageObjectRaw = JSON.stringify(unformattedData)
 
-        const placeholders = messageObjectRaw.matchAll(/(\${).*?}/g)
         let files = []
         let components = []
         const response = {
@@ -141,30 +141,7 @@ export class TemplateHelper {
             content: null
         }
 
-        if (placeholders !== null) {
-            for (const placeholder of placeholders) {
-                const placeholderId = String(placeholder).match(/(\${).*?}/g)[0]
-                const placeholderContent = this.parsePlaceholder(placeholderId, providedPlaceholders)
-
-                if (placeholderContent.content === null || placeholderContent.content === '') {
-                    continue
-                }
-
-                if (placeholderContent.content === '$clear') {
-                    placeholderContent.content = ''
-                }
-
-                if (!placeholderContent.double_dash) {
-                    const startPos = messageObjectRaw.indexOf(placeholderId)
-                    const endPos = startPos + placeholderId.length
-                    messageObjectRaw = messageObjectRaw.slice(0, startPos - 1) +
-                        placeholderContent.content +
-                        messageObjectRaw.slice(endPos + 1)
-                } else {
-                    messageObjectRaw = messageObjectRaw.replace(placeholderId, placeholderContent.content)
-                }
-            }
-        }
+        messageObjectRaw = this.parsePlaceholder(messageObjectRaw, providedPlaceholders)
 
         const messageObjectData = JSON.parse(messageObjectRaw)
 
@@ -297,7 +274,38 @@ export class TemplateHelper {
         return inputData
     }
 
-    protected parsePlaceholder(placeholder: string, providedPlaceholders = null) {
+    public parsePlaceholder(input: string, providedPlaceholders = null) {
+        const placeholders = input.matchAll(/(\${).*?}/g)
+
+        if (placeholders !== null) {
+            for (const placeholder of placeholders) {
+                const placeholderId = String(placeholder).match(/(\${).*?}/g)[0]
+                const placeholderContent = this.parsePlaceholderContent(placeholderId, providedPlaceholders)
+
+                if (placeholderContent.content === null || placeholderContent.content === '') {
+                    continue
+                }
+
+                if (placeholderContent.content === '$clear') {
+                    placeholderContent.content = ''
+                }
+
+                if (!placeholderContent.double_dash) {
+                    const startPos = input.indexOf(placeholderId)
+                    const endPos = startPos + placeholderId.length
+                    input = input.slice(0, startPos - 1) +
+                        placeholderContent.content +
+                        input.slice(endPos + 1)
+                } else {
+                    input = input.replace(placeholderId, placeholderContent.content)
+                }
+            }
+        }
+
+        return input
+    }
+
+    protected parsePlaceholderContent(placeholder: string, providedPlaceholders = null) {
         const placeholderId = placeholder
             .replace(/(\${)/g, '')
             .replace(/}/g, '')
@@ -345,7 +353,7 @@ export class TemplateHelper {
                 let providedMatch = undefined
 
                 if(providedPlaceholders) {
-                    providedMatch = providedPlaceholders[templateFragment]
+                    providedMatch = get(providedPlaceholders, templateFragment)
                 }
 
                 if(cacheMatch) {

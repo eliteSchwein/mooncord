@@ -4,7 +4,7 @@ import {getMoonrakerClient} from "../Application";
 import {getEntry, setData} from "../utils/CacheUtil";
 import {logRegular} from "./LoggerHelper";
 import {LocaleHelper} from "./LocaleHelper";
-import HistoryGraph from "./graphs/HistoryGraph";
+import {getIcons} from "./DataHelper";
 
 export class HistoryHelper {
     public getPrintJobStats() {
@@ -67,7 +67,7 @@ export class HistoryHelper {
     }
 
     public parseFields() {
-        const chartConfigSection = new HistoryGraph().getIcons()
+        const chartConfigSection = getIcons()
         const printStats = this.getPrintStats()
         const locale = new LocaleHelper().getLocale()
         const fields = []

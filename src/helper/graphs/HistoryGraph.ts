@@ -7,28 +7,13 @@ import {logRegular} from "../LoggerHelper";
 import sharp from "sharp";
 import {AttachmentBuilder} from "discord.js";
 import SvgHelper from "../SvgHelper";
+import {getIcons} from "../DataHelper";
 
 export default class HistoryGraph {
-    public getIcons() {
-        const configHelper = new ConfigHelper()
-        const icons:any = {}
-
-        for(const iconKey of metaData.icons) {
-            const iconData = configHelper.getIcons(new RegExp(`${iconKey}`, 'g'))
-
-            if(iconData.length === 0) {
-                continue
-            }
-
-            icons[iconKey] = iconData[0]
-        }
-
-        return icons
-    }
 
     public async renderGraph() {
         const printStats = new HistoryHelper().getPrintStats()
-        const icons = this.getIcons()
+        const icons = getIcons()
         const svgHelper = new SvgHelper()
         const graphData = []
 

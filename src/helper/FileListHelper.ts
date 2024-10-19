@@ -2,8 +2,8 @@
 
 import {getEntry, setData} from "../utils/CacheUtil";
 import {logRegular} from "./LoggerHelper";
-import HistoryGraph from "./graphs/HistoryGraph";
 import {getMoonrakerClient} from "../Application";
+import {getIcons} from "./DataHelper";
 
 export class FileListHelper {
     public retrieveFiles(root: string, cacheKey: string, filter?: RegExp) {
@@ -52,7 +52,7 @@ export class FileListHelper {
                 }
 
                 const jobs = historyCache.jobs.jobs
-                const iconConfig = new HistoryGraph().getIcons()
+                const iconConfig = getIcons()
 
                 for(const resultPartial of result) {
                     let partialJobs = jobs.filter((element) => {return resultPartial.path === element.filename})

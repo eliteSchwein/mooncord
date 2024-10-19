@@ -3,14 +3,17 @@
 import {ConfigHelper} from "./ConfigHelper";
 import {LocaleHelper} from "./LocaleHelper";
 import {parsePageData} from "./DataHelper";
-import {getConfigFiles, getEntry} from "../utils/CacheUtil";
+import {findValue, getConfigFiles, getEntry} from "../utils/CacheUtil";
 import {EmbedHandler} from "../events/discord/interactions/handlers/EmbedHandler";
 import {EmbedHelper} from "./EmbedHelper";
+import {TemplateHelper} from "./TemplateHelper";
 
 export class PageHelper {
     protected config = new ConfigHelper()
+    protected template = new TemplateHelper()
     protected data: []
     protected embeds = []
+    protected cacheKey: string|undefined = undefined
     protected pageLocale: any
 
     public constructor(pageId: string) {
@@ -18,6 +21,9 @@ export class PageHelper {
 
         if(embedData && embedData.page_embed_entries) {
             this.embeds = embedData.page_embed_entries
+        }
+        if(embedData && embedData.page_cache_key) {
+            this.cacheKey = embedData.page_cache_key
         }
 
         this.data = this.getValuesForPageId(pageId)
@@ -51,15 +57,15 @@ export class PageHelper {
 
     protected getEntries(page: number) {
         let entries = ''
-        const max = new ConfigHelper().getEntriesPerPage() - 1
+        const max = this.config.getEntriesPerPage() - 1
         const rawEntries = []
         for (let i = (page * max) + page;
              i <= Math.min(this.data.length - 1, max + (page * max) + page);
              i++) {
             const entry = this.data[i]
             rawEntries.push(entry)
-            const label = parsePageData(this.pageLocale.entry_label, entry)
-
+            let label = parsePageData(this.pageLocale.entry_label, entry)
+            label = this.template.parsePlaceholder(label, {data: entry})
             entries = `${entries}${label}\n`
         }
         return {'entries': entries, 'raw_entries': rawEntries}
@@ -88,7 +94,7 @@ export class PageHelper {
     }
 
     protected getValuesForPageId(pageId: string) {
-        const cacheEntry = getEntry(pageId)
+        const cacheEntry = findValue((this.cacheKey) ? this.cacheKey : pageId)
 
         if (cacheEntry !== undefined && cacheEntry !== null) {
             return cacheEntry

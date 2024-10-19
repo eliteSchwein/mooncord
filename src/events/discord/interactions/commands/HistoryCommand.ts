@@ -2,6 +2,7 @@ import BaseCommand from "../abstracts/BaseCommand";
 import {ChatInputCommandInteraction} from "discord.js";
 import {getEntry} from "../../../../utils/CacheUtil";
 import {HistoryHelper} from "../../../../helper/HistoryHelper";
+import {PageHelper} from "../../../../helper/PageHelper";
 
 export default class HistoryCommand extends BaseCommand {
     commandId = 'history'
@@ -25,8 +26,22 @@ export default class HistoryCommand extends BaseCommand {
             return
         }
 
-        const message = await this.embedHelper.generateEmbed('history')
+        const pageHelper = new PageHelper('history')
+        const pageData = await pageHelper.getPage(false, 2)
 
-        void interaction.editReply(message.embed)
+        if (!pageData) {
+            await interaction.editReply(this.locale.messages.errors.no_history
+                .replace(/(\${username})/g, interaction.user.tag))
+            return
+        }
+
+        if(pageData.embed) {
+            await interaction.editReply(pageData.embed)
+            return
+        }
+
+        const embed = await this.embedHelper.generateEmbed('history', pageData)
+
+        await interaction.editReply(embed.embed)
     }
 }

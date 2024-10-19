@@ -27,7 +27,7 @@ export class PageHandler extends BaseHandler{
         }
 
         const embed = message.embeds[0]
-        const embedData = this.embedHelper.getRawEmbedByTitle(embed.title)
+        let embedData = this.embedHelper.getRawEmbedByTitle(embed.title)
 
         if (typeof embedData === 'undefined') {
             return
@@ -35,11 +35,18 @@ export class PageHandler extends BaseHandler{
 
         const filterFooter = embedData.embedData.footer.replace(/(\${pages})/g, '')
 
+        if(embedData.embedData.page_embed_parent) {
+            embedData = {
+                embedID: embedData.embedData.page_embed_parent,
+                embedData: this.config.getEntriesByFilter(new RegExp(`^embed ${embedData.embedData.page_embed_parent}`, 'g'))[0]
+            }
+        }
+
         const pages = embed.footer.text.replace(filterFooter, '').split('/')
         const currentPage = Number.parseInt(pages[0])
         const pageHelper = new PageHelper(embedData.embedID)
 
-        const pageData = pageHelper.getPage(data.functions.includes("page_up"), currentPage)
+        const pageData = await pageHelper.getPage(data.functions.includes("page_up"), currentPage)
 
         if (Object.keys(pageData).length === 0) {
             if (interaction.replied) {
@@ -54,10 +61,20 @@ export class PageHandler extends BaseHandler{
 
         logNotice(`select Page ${pageData.pages} for ${embedData.embedID}`)
 
-        const answer = await this.embedHelper.generateEmbed(embedData.embedID, pageData)
-
         await message.edit({components: null})
         await message.removeAttachments()
+
+        if(pageData.embed) {
+            await message.edit(pageData.embed)
+
+            if (interaction !== null && !interaction.replied) {
+                await interaction.deleteReply()
+            }
+
+            return
+        }
+
+        const answer = await this.embedHelper.generateEmbed(embedData.embedID, pageData)
 
         await message.edit(answer.embed)
 
