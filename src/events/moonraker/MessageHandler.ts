@@ -16,6 +16,7 @@ import {ConsoleMessage} from "./gcode-messages/ConsoleMessage";
 import {TimelapseMacroNotification} from "./messages/TimelapseMacroNotification";
 import {PowerDeviceNotification} from "./messages/PowerDeviceNotification";
 import {removeFromArray} from "../../helper/DataHelper";
+import {HistoryUpdateNotification} from "./messages/HistoryUpdateNotification";
 
 export class MessageHandler {
 
@@ -51,6 +52,8 @@ export class MessageHandler {
 
             // async events
             await new SubscriptionNotification().parse(messageData)
+            if(await new HistoryUpdateNotification().parse(messageData))
+                return
             if(await new TimelapseMacroNotification().parse(messageData))
                 return
             if(await new ConsoleMessage().parse(messageData))
