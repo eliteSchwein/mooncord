@@ -565,7 +565,7 @@
         },
         "history_detail_select": {
             "label": "Select a Entry",
-            "option_label": "${data.path}",
+            "option_label": "${data.filename}",
             "option_description": "Click for more Details"
         },
         "loglist_download_log": {
