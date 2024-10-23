@@ -38,7 +38,7 @@ export class DiscordClient {
         logEmpty()
         logSuccess('Load Discord Client...')
 
-        this.close()
+        await this.close()
 
         this.discordClient = new Client({
             intents: [
@@ -146,11 +146,11 @@ export class DiscordClient {
         return this.discordClient
     }
 
-    public close() {
+    public async close() {
         if (typeof this.discordClient === 'undefined') {
             return
         }
         this.discordClient.removeAllListeners()
-        this.discordClient.destroy()
+        await this.discordClient.destroy()
     }
 }

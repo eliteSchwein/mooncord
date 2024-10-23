@@ -36,7 +36,7 @@ export class MoonrakerClient {
     protected reconnectAttempt = 1
 
     public async connect() {
-        logSuccess('Connect to MoonRaker...')
+        logSuccess('Connect to Moonraker...')
 
         this.ready = false
 
@@ -83,7 +83,7 @@ export class MoonrakerClient {
         this.getCacheData({"method": "machine.system_info"}, 'machine_info')
         this.getCacheData({"method": "machine.proc_stats"}, 'proc_stats')
 
-        logRegular('Retrieve Subscribable MoonRaker Objects...')
+        logRegular('Retrieve Subscribable Moonraker Objects...')
         const objects = await this.send({"method": "printer.objects.list"})
 
         await new HistoryHelper().parseData()
@@ -109,7 +109,7 @@ export class MoonrakerClient {
 
         delete subscriptionObjects.webhooks
 
-        logRegular('Subscribe to MoonRaker Objects...')
+        logRegular('Subscribe to Moonraker Objects...')
         const data = await this.send({
             "method": "printer.objects.subscribe",
             "params": {"objects": subscriptionObjects}
@@ -149,7 +149,7 @@ export class MoonrakerClient {
 
         changeTempPath(config.getTempPath())
 
-        logSuccess('MoonRaker Client is ready')
+        logSuccess('Moonraker Client is ready')
     }
 
     public sendThread(message, timeout = 10_000) {
@@ -157,7 +157,7 @@ export class MoonrakerClient {
             try {
                 await this.send(message, timeout)
             } catch (e) {
-                logError(`An Error occured while sending a Websocket Request`)
+                logError(`An Error occurred while sending a Websocket Request`)
                 logError(`Reason: ${e}`)
                 logError(`Websocket Request: ${JSON.stringify(message, null, 4)}`)
             }
@@ -258,7 +258,7 @@ export class MoonrakerClient {
 
         const statusHelper = new StatusHelper()
 
-        logSuccess('Reconnected to MoonRaker')
+        logSuccess('Reconnected to Moonraker')
 
         this.reconnectAttempt = 1
 

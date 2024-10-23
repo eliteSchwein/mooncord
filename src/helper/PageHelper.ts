@@ -3,8 +3,7 @@
 import {ConfigHelper} from "./ConfigHelper";
 import {LocaleHelper} from "./LocaleHelper";
 import {parsePageData} from "./DataHelper";
-import {findValue, getConfigFiles, getEntry} from "../utils/CacheUtil";
-import {EmbedHandler} from "../events/discord/interactions/handlers/EmbedHandler";
+import {findValue} from "../utils/CacheUtil";
 import {EmbedHelper} from "./EmbedHelper";
 import {TemplateHelper} from "./TemplateHelper";
 

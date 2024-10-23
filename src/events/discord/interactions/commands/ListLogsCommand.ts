@@ -1,7 +1,6 @@
 import BaseCommand from "../abstracts/BaseCommand";
 import {ChatInputCommandInteraction} from "discord.js";
 import {PageHelper} from "../../../../helper/PageHelper";
-import {mergeDeep} from "../../../../helper/DataHelper";
 
 export default class ListLogsCommand extends BaseCommand {
     commandId = 'listlogs'

@@ -1,7 +1,5 @@
 'use strict'
 
-import {ConfigHelper} from "../ConfigHelper";
-import * as metaData from "../../meta/history_graph_meta.json"
 import {HistoryHelper} from "../HistoryHelper";
 import {logRegular} from "../LoggerHelper";
 import sharp from "sharp";

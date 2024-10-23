@@ -2,7 +2,7 @@
 
 import {Message, User} from "discord.js";
 import {getMoonrakerClient} from "../../../../Application";
-import {logNotice, logRegular, logWarn} from "../../../../helper/LoggerHelper";
+import {logRegular, logWarn} from "../../../../helper/LoggerHelper";
 import BaseHandler from "../abstracts/BaseHandler";
 import {getEntry, setData} from "../../../../utils/CacheUtil";
 
