@@ -42,7 +42,7 @@ export class PageHelper {
                 pages: `${page.labelPage}/${this.getLastPage()}`,
             }
         }
-        console.log(this.getEntries(0))
+
         if (this.getEntries(0).entries === '') {
             return null
         }
