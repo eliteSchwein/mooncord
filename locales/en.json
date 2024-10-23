@@ -563,6 +563,11 @@
             "option_label": "${data.path}",
             "option_description": "Click for more Details"
         },
+        "history_detail_select": {
+            "label": "Select a Entry",
+            "option_label": "${data.path}",
+            "option_description": "Click for more Details"
+        },
         "loglist_download_log": {
             "label": "Select a File",
             "option_label": "${data.path}",
