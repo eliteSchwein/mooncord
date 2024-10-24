@@ -1,6 +1,7 @@
 import BaseSelection from "../abstracts/BaseSelection";
 import {StringSelectMenuInteraction} from "discord.js";
 import {getEntry} from "../../../../utils/CacheUtil";
+import _ from "lodash";
 
 export class HistoryDetail extends BaseSelection {
     selectionId = 'history_detail_select'
@@ -17,13 +18,7 @@ export class HistoryDetail extends BaseSelection {
             in_progress: []
         }
 
-        let job = undefined
-
-        for(const jobPartial of jobs) {
-            if(jobPartial.id !== jobId) continue
-
-            job = jobPartial
-        }
+        const job = _.find(jobs, { id: jobId })
 
         for(const jobPartial of jobs) {
             if(jobPartial.filename !== job.filename) continue
