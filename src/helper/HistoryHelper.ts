@@ -65,9 +65,8 @@ export class HistoryHelper {
         return printStats
     }
 
-    public parseFields() {
+    public parseFields(printStats = this.getPrintStats()) {
         const chartConfigSection = getIcons()
-        const printStats = this.getPrintStats()
         const locale = new LocaleHelper().getLocale()
         const fields = []
 

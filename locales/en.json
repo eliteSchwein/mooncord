@@ -125,7 +125,8 @@
             "footer": "Page ${pages}"
         },
         "history_detail": {
-            "title": "Printjob Details"
+            "title": "Printjob Details",
+            "description": "Print Time: ${estimated_time}\nSlicer: ${slicer}\nSlicer Version: ${slicer_version}\nHeight: ${object_height}mm"
         },
         "history_graph": {
             "title": "Printjob History",
@@ -508,6 +509,9 @@
         },
         "to_printlist": {
             "label": "to List"
+        },
+        "to_history": {
+            "label": "to History"
         },
         "to_timelapselist": {
             "label": "to List"

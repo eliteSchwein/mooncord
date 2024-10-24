@@ -3,6 +3,8 @@ import {Message, StringSelectMenuInteraction} from "discord.js";
 import {getEntry} from "../../../../utils/CacheUtil";
 import _ from "lodash";
 import HistoryGraph from "../../../../helper/graphs/HistoryGraph";
+import {HistoryHelper} from "../../../../helper/HistoryHelper";
+import {formatTime} from "../../../../helper/DataHelper";
 
 export class HistoryDetail extends BaseSelection {
     selectionId = 'history_detail_select'
@@ -11,9 +13,11 @@ export class HistoryDetail extends BaseSelection {
         const jobId = interaction.values[0]
         const jobs = getEntry('history').jobs.jobs
         const historyGraph = new HistoryGraph()
+        const historyHelper = new HistoryHelper()
         const similarJobs = { }
 
-        const job = _.find(jobs, { id: jobId })
+        const job = _.find(jobs, { job_id: jobId })
+
         const gcodeFile = job.filename
 
         for(const jobPartial of jobs) {
@@ -25,18 +29,23 @@ export class HistoryDetail extends BaseSelection {
             similarJobs[jobPartial.status] += 1
         }
 
-        const thumbnail = await this.metadataHelper.getThumbnail(gcodeFile)
-        const graph = await historyGraph.renderGraph(
+        const jobStats =
             {
                 count: Object.keys(similarJobs).length,
                 stats: similarJobs
-            })
+            };
 
-        const embedData = await this.embedHelper.generateEmbed('history_detail', job)
+        const thumbnail = await this.metadataHelper.getThumbnail(gcodeFile)
+        const graph = await historyGraph.renderGraph(jobStats)
+
+        job.metadata.estimated_time = formatTime(job.metadata.estimated_time)
+
+        const embedData = await this.embedHelper.generateEmbed('history_detail', {...job, ...job.metadata})
         const embed = embedData.embed.embeds[0]
 
         embed.setThumbnail(`attachment://${thumbnail.name}`)
         embed.setImage(`attachment://${graph.name}`)
+        embed.addFields(historyHelper.parseFields(jobStats))
 
         embedData.embed.embeds = [embed]
         embedData.embed['files'] = [thumbnail, graph]

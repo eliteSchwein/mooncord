@@ -25,7 +25,7 @@ export class ListHandler extends BaseHandler {
         await message.edit({components: null})
         await message.removeAttachments()
 
-        await interaction.edit(pageData.embed)
+        await message.edit(pageData.embed)
 
         if (interaction !== null && !interaction.replied) {
             await interaction.deleteReply()
