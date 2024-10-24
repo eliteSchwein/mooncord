@@ -124,6 +124,9 @@
             "description": "${page_entries}",
             "footer": "Page ${pages}"
         },
+        "history_detail": {
+            "title": "Printjob Details"
+        },
         "history_graph": {
             "title": "Printjob History",
             "footer": "Page ${pages}"

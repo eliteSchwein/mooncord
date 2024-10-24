@@ -9,8 +9,7 @@ import {getIcons} from "../DataHelper";
 
 export default class HistoryGraph {
 
-    public async renderGraph() {
-        const printStats = new HistoryHelper().getPrintStats()
+    public async renderGraph(printStats = new HistoryHelper().getPrintStats()) {
         const icons = getIcons()
         const svgHelper = new SvgHelper()
         const graphData = []

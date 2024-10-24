@@ -9,6 +9,7 @@
   "log_files": "0099ff",
   "info": "0099ff",
   "history": "0099ff",
+  "history_detail": "0099ff",
   "notification": "03f4fc",
   "printjob_cancel_request": "c90000",
   "printjob_start_request": "0099ff",

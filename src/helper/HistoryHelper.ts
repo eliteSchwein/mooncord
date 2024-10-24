@@ -57,8 +57,7 @@ export class HistoryHelper {
 
         for (const printJob of printJobs.jobs) {
             if (printStats.stats[printJob.status] === undefined) {
-                printStats.stats[printJob.status] = 1
-                continue
+                printStats.stats[printJob.status] = 0
             }
             printStats.stats[printJob.status] += 1
         }
