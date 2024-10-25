@@ -4,7 +4,7 @@ import {Message, User} from "discord.js";
 import {formatTime} from "../../../../helper/DataHelper";
 import BaseHandler from "../abstracts/BaseHandler";
 
-export class EmbedHandler extends BaseHandler{
+export class EmbedHandler extends BaseHandler {
     async isValid(message: Message, user: User, data, interaction = null) {
         return typeof data.embed !== 'undefined';
     }
@@ -21,7 +21,7 @@ export class EmbedHandler extends BaseHandler{
 
         let author = ''
 
-        if(currentEmbed !== undefined) {
+        if (currentEmbed !== undefined) {
             author = this.embedHelper.getAuthorName(currentEmbed)
         }
 

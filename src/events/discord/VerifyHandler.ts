@@ -25,11 +25,11 @@ export class VerifyHandler {
 
             const content = message.content.trim()
 
-            if(content === '') {
+            if (content === '') {
                 return
             }
 
-            if(user !== setupUser) {
+            if (user !== setupUser) {
                 logError(`Message (${user}) doesnt match the setup user: ${setupUser}!!!`)
                 return
             }

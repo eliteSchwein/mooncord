@@ -26,37 +26,6 @@ export class ConfigHelper {
         return parseConfig(path, filename)
     }
 
-    private parseValue(value: string) {
-        let realValue: any = value
-
-        if(realValue === '') {
-            return undefined
-        }
-
-        if(realValue.startsWith('- ')) {
-            realValue = realValue.substring(2)
-        }
-
-        const numberValue = Number(value)
-        if(!isNaN(numberValue)) {
-            realValue = numberValue
-        }
-        if(realValue === 'true') {
-            realValue = true
-        }
-        if(realValue === 'false') {
-            realValue = false
-        }
-        if(typeof realValue === 'string' && realValue.match(/^\{.*\}/g)) {
-            realValue = JSON.parse(realValue)
-        }
-        if(typeof realValue === 'string') {
-            realValue = realValue.replace(/\'/g,'')
-        }
-
-        return realValue
-    }
-
     public getUserConfig() {
         return this.parseConfig(args[0], 'mooncord.cfg')
     }
@@ -88,16 +57,16 @@ export class ConfigHelper {
     public getMoonrakerUrl() {
         let url = this.getEntriesByFilter(/^connection$/g)[0].moonraker_url
 
-        if(url.endsWith('/')) {
+        if (url.endsWith('/')) {
             url = url.substring(0, url.length - 1)
         }
 
-        if(url.startsWith('ws://')) {
+        if (url.startsWith('ws://')) {
             url = url.substring(4)
             url = `http://${url}`
         }
 
-        if(url.startsWith('wss://')) {
+        if (url.startsWith('wss://')) {
             url = url.substring(5)
             url = `https://${url}`
         }
@@ -156,7 +125,7 @@ export class ConfigHelper {
     public getLogPath() {
         const path = this.getEntriesByFilter(/^logger$/g)[0].path
 
-        if(path === undefined || path === '') {
+        if (path === undefined || path === '') {
             return this.getTempPath()
         }
 
@@ -247,19 +216,19 @@ export class ConfigHelper {
         let result: any = []
         const config = this.getConfig()
 
-        if(asObject) {
+        if (asObject) {
             result = {}
         }
 
         for (const key in config) {
-            if(!key.match(/icon.*/g)) {
+            if (!key.match(/icon.*/g)) {
                 continue
             }
-            if(!key.match(filter)) {
+            if (!key.match(filter)) {
                 continue
             }
 
-            if(asObject) {
+            if (asObject) {
                 const realKey = key.replace(/^icon /g, '')
                 result[realKey] = config[key]
             } else {
@@ -274,19 +243,19 @@ export class ConfigHelper {
         let result: any = []
         const config = this.getConfig()
 
-        if(asObject) {
+        if (asObject) {
             result = {}
         }
 
         for (const key in config) {
-            if(!key.match(/color.*/g)) {
+            if (!key.match(/color.*/g)) {
                 continue
             }
-            if(!key.match(filter)) {
+            if (!key.match(filter)) {
                 continue
             }
 
-            if(asObject) {
+            if (asObject) {
                 const realKey = key.replace(/^color /g, '')
                 result[realKey] = config[key]
             } else {
@@ -301,16 +270,16 @@ export class ConfigHelper {
         let result: any = []
         const config = this.getConfig()
 
-        if(asObject) {
+        if (asObject) {
             result = {}
         }
 
         for (const key in config) {
-            if(!key.match(filter)) {
+            if (!key.match(filter)) {
                 continue
             }
 
-            if(asObject) {
+            if (asObject) {
                 const realKey = key.replace(filter, '')
                 result[realKey] = config[key]
             } else {
@@ -319,5 +288,36 @@ export class ConfigHelper {
         }
 
         return result
+    }
+
+    private parseValue(value: string) {
+        let realValue: any = value
+
+        if (realValue === '') {
+            return undefined
+        }
+
+        if (realValue.startsWith('- ')) {
+            realValue = realValue.substring(2)
+        }
+
+        const numberValue = Number(value)
+        if (!isNaN(numberValue)) {
+            realValue = numberValue
+        }
+        if (realValue === 'true') {
+            realValue = true
+        }
+        if (realValue === 'false') {
+            realValue = false
+        }
+        if (typeof realValue === 'string' && realValue.match(/^\{.*\}/g)) {
+            realValue = JSON.parse(realValue)
+        }
+        if (typeof realValue === 'string') {
+            realValue = realValue.replace(/\'/g, '')
+        }
+
+        return realValue
     }
 }

@@ -12,7 +12,7 @@ import {MCUHelper} from "../helper/MCUHelper";
 
 const cacheData: any = {
     websocket: {
-      blocked: []
+        blocked: []
     },
     function: {
         current_status: 'botstart',

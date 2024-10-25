@@ -4,7 +4,7 @@ import {Message, User} from "discord.js";
 import {getEntry} from "../../../../utils/CacheUtil";
 import BaseHandler from "../abstracts/BaseHandler";
 
-export class RefreshHandler extends BaseHandler{
+export class RefreshHandler extends BaseHandler {
     async isValid(message: Message, user: User, data, interaction = null) {
         return data.functions.includes('refresh_status');
     }

@@ -10,7 +10,7 @@ export default class SystemInfoCommand extends BaseCommand {
 
         let embed: any
 
-        if(componentArgument !== null) {
+        if (componentArgument !== null) {
             if (componentArgument.startsWith('mcu')) {
                 const mcuHelper = new MCUHelper()
 

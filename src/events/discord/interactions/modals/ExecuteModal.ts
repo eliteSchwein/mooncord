@@ -3,7 +3,7 @@
 import {ModalSubmitInteraction} from "discord.js";
 import BaseModal from "../abstracts/BaseModal";
 
-export class ExecuteModal extends BaseModal{
+export class ExecuteModal extends BaseModal {
     modalId = 'execute_modal'
 
     async handleModal(interaction: ModalSubmitInteraction) {

@@ -1,7 +1,5 @@
 'use strict'
 
-import {FileListHelper} from "../../../helper/FileListHelper";
-import {logNotice} from "../../../helper/LoggerHelper";
 import {HistoryHelper} from "../../../helper/HistoryHelper";
 
 export class HistoryUpdateNotification {

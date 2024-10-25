@@ -20,7 +20,7 @@ export default class HistoryGraph {
             graphData.push({
                 label: printStat,
                 value: printStats.stats[printStat],
-                color: '#'+icons[printStat].color
+                color: '#' + icons[printStat].color
             })
         }
 

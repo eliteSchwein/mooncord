@@ -6,7 +6,7 @@ export class SpoolmanHelper {
 
         const request = await moonrakerClient.send({"method": "server.spoolman.get_spool_id"})
 
-        if(request.error !== undefined) {
+        if (request.error !== undefined) {
             return []
         }
 
@@ -14,7 +14,7 @@ export class SpoolmanHelper {
 
         return [{
             name: "${embeds.fields.active_spool}",
-            value: (spoolId === null) ? "${locale.messages.answers.empty_spool}" : "${locale.messages.answers.current_spool} "+spoolId
+            value: (spoolId === null) ? "${locale.messages.answers.empty_spool}" : "${locale.messages.answers.current_spool} " + spoolId
         }]
     }
 }

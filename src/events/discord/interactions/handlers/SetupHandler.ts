@@ -5,13 +5,13 @@ import {getEntry} from "../../../../utils/CacheUtil";
 import {logRegular} from "../../../../helper/LoggerHelper";
 import BaseHandler from "../abstracts/BaseHandler";
 
-export class SetupHandler extends BaseHandler{
+export class SetupHandler extends BaseHandler {
     async isValid(message: Message, user: User, data, interaction = null) {
         if (!data.functions.includes("setup_close")) {
             return false
         }
 
-        if(!getEntry('setup_mode')) {
+        if (!getEntry('setup_mode')) {
             return false
         }
 

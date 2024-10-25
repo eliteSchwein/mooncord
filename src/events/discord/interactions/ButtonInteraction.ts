@@ -52,7 +52,7 @@ export class ButtonInteraction {
         const buttonsCache = getEntry('buttons')
         const functionCache = getEntry('function')
 
-        if(buttonId.startsWith('prompt_gcode|')) {
+        if (buttonId.startsWith('prompt_gcode|')) {
             const gcode = buttonId.substring(13)
             await new PromptHelper().handePromptGcodeButton(gcode, interaction)
             return

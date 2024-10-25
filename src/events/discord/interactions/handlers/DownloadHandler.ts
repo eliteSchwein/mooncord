@@ -2,12 +2,12 @@ import {AttachmentBuilder, Message, User} from "discord.js";
 import {downloadFile} from "../../../../helper/DataHelper";
 import BaseHandler from "../abstracts/BaseHandler";
 
-export default class DownloadHandler extends BaseHandler{
+export default class DownloadHandler extends BaseHandler {
     async isValid(message: Message, user: User, data, interaction = null) {
         if (!data.functions.includes("download")) {
             return false
         }
-        if(message.embeds.length === 0) {
+        if (message.embeds.length === 0) {
             return false
         }
         if (typeof data.root_path === 'undefined') {

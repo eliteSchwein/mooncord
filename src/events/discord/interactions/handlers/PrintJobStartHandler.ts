@@ -3,10 +3,11 @@
 import {Message, User} from "discord.js";
 import BaseHandler from "../abstracts/BaseHandler";
 
-export class PrintJobStartHandler extends BaseHandler{
+export class PrintJobStartHandler extends BaseHandler {
     async isValid(message: Message, user: User, data, interaction = null) {
         return data.functions.includes("start_print");
     }
+
     async handleHandler(message: Message, user: User, data, interaction = null) {
         const embed = message.embeds[0]
 

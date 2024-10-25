@@ -121,7 +121,7 @@ export class SchedulerHelper {
 
             updateData('function', this.functionCache)
             return
-        } else if(statusInterval !== 0 && statusCooldown === 0)
+        } else if (statusInterval !== 0 && statusCooldown === 0)
             this.functionCache.status_interval--
 
         updateData('function', this.functionCache)

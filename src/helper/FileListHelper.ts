@@ -20,7 +20,7 @@ export class FileListHelper {
                 return
             }
 
-            result.sort((a, b) => (a.modified < b.modified) ? 1: -1)
+            result.sort((a, b) => (a.modified < b.modified) ? 1 : -1)
 
             if (filter !== undefined && filter !== null) {
                 const filteredResult = []
@@ -37,12 +37,12 @@ export class FileListHelper {
 
             setData(cacheKey, result)
 
-            if(root === 'gcodes') {
+            if (root === 'gcodes') {
                 const tempResult = []
                 const historyCache = getEntry('history')
 
-                if(historyCache === undefined || historyCache.jobs === undefined) {
-                    for(const resultPartial of result) {
+                if (historyCache === undefined || historyCache.jobs === undefined) {
+                    for (const resultPartial of result) {
                         resultPartial.label = resultPartial.path
                         tempResult.push(resultPartial)
                     }
@@ -54,22 +54,26 @@ export class FileListHelper {
                 const jobs = historyCache.jobs.jobs
                 const iconConfig = getIcons()
 
-                for(const resultPartial of result) {
-                    let partialJobs = jobs.filter((element) => {return resultPartial.path === element.filename})
+                for (const resultPartial of result) {
+                    let partialJobs = jobs.filter((element) => {
+                        return resultPartial.path === element.filename
+                    })
 
-                    if(partialJobs.length === 0) {
+                    if (partialJobs.length === 0) {
                         resultPartial.label = resultPartial.path
                         tempResult.push(resultPartial)
                         continue
                     }
 
-                    partialJobs.sort((a, b) => (a.start_time < b.start_time) ? 1: -1)
+                    partialJobs.sort((a, b) => (a.start_time < b.start_time) ? 1 : -1)
 
                     const lastStatus = partialJobs[0].status
 
-                    partialJobs = partialJobs.filter((element => {return element.status === lastStatus}))
+                    partialJobs = partialJobs.filter((element => {
+                        return element.status === lastStatus
+                    }))
 
-                    if(lastStatus === 'in_progress') {
+                    if (lastStatus === 'in_progress') {
                         resultPartial.label = `${resultPartial.path} ${iconConfig.in_progress.list_icon}`
                     } else {
                         resultPartial.label = `${resultPartial.path} ${partialJobs.length}${iconConfig[lastStatus].list_icon}`

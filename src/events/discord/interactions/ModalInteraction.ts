@@ -56,7 +56,7 @@ export class ModalInteraction {
 
         await sleep(1_000)
 
-        if(!interaction.deferred && !interaction.replied) {
+        if (!interaction.deferred && !interaction.replied) {
             await interaction.reply(localeHelper.getCommandNotReadyError(interaction.user.tag))
             return
         }

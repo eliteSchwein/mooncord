@@ -26,7 +26,7 @@ export default class BaseHandler {
 
     // execute order 66
     public async executeHandler(message: Message, user: User, data, interaction = null) {
-        if(!(await this.isValid(message, user, data, interaction))) {
+        if (!(await this.isValid(message, user, data, interaction))) {
             return
         }
 

@@ -45,7 +45,7 @@ export class MoonrakerClient {
         const oneShotToken = await new APIKeyHelper().getOneShotToken()
         let socketUrl = config.getMoonrakerSocketUrl()
 
-        if(socketUrl === undefined ||
+        if (socketUrl === undefined ||
             socketUrl === '') {
             socketUrl = `${config.getMoonrakerUrl()}/websocket`
         }

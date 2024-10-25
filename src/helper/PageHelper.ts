@@ -13,16 +13,16 @@ export class PageHelper {
     protected data: []
     protected embedId: string
     protected embeds = []
-    protected cacheKey: string|undefined = undefined
+    protected cacheKey: string | undefined = undefined
     protected pageLocale: any
 
     public constructor(pageId: string) {
         const embedData = this.config.getEntriesByFilter(new RegExp(`^embed ${pageId}`, 'g'))[0]
 
-        if(embedData && embedData.page_embed_entries) {
+        if (embedData && embedData.page_embed_entries) {
             this.embeds = embedData.page_embed_entries
         }
-        if(embedData && embedData.page_cache_key) {
+        if (embedData && embedData.page_cache_key) {
             this.cacheKey = embedData.page_cache_key
         }
 
@@ -33,7 +33,7 @@ export class PageHelper {
 
     public async getPage(pageUp: boolean, currentPage: number) {
         const page = this.getNewPage(pageUp, currentPage)
-        if(this.embeds.length > 0 && page.calcPage < this.embeds.length) {
+        if (this.embeds.length > 0 && page.calcPage < this.embeds.length) {
             const embedId = this.embeds[page.calcPage]
             const embed = await (new EmbedHelper()).generateEmbed(embedId, {pages: `${page.labelPage}/${this.getLastPage()}`})
 
@@ -88,7 +88,7 @@ export class PageHelper {
 
         if (pageUp) {
             page++
-            if(page === lastPage) {
+            if (page === lastPage) {
                 page = 0
             }
         } else if (page !== 0) {

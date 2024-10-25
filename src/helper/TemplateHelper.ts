@@ -26,7 +26,7 @@ export class TemplateHelper {
         const partials = unformattedData.partials
         const tempHelper = new TempHelper()
 
-        if(unformattedData.field === undefined) {
+        if (unformattedData.field === undefined) {
             unformattedData.field = []
         }
 
@@ -44,7 +44,7 @@ export class TemplateHelper {
             delete unformattedData.textinputs
         }
 
-        if(unformattedData.partials !== undefined) {
+        if (unformattedData.partials !== undefined) {
             unformattedData.field = await this.parsePartials(partials, unformattedData.field)
 
             if (unformattedData.partials.includes('temp_inputs')) {
@@ -52,7 +52,7 @@ export class TemplateHelper {
                 const rawTempInputData = this.getInputData('inputs', ['temp_target_input'])[0]
                 const heaters = tempHelper.getHeaters()
 
-                if(unformattedData.inputs === undefined) {
+                if (unformattedData.inputs === undefined) {
                     unformattedData.inputs = []
                 }
 
@@ -67,43 +67,6 @@ export class TemplateHelper {
         }
 
         return unformattedData
-    }
-
-    protected async parsePartials(partials: any[], field: any[]) {
-        const spoolmanHelper = new SpoolmanHelper()
-        const tempHelper = new TempHelper()
-        const versionHelper = new VersionHelper()
-
-        if (partials.includes('versions')) {
-            field = [...field, ...versionHelper.getFields()]
-        }
-
-        if (partials.includes('spoolman')) {
-            const newFields = await spoolmanHelper.getFields()
-            field = [...field, ...newFields]
-        }
-
-        if (partials.includes('updates')) {
-            field = [...field, ...versionHelper.getUpdateFields()]
-        }
-
-        if (partials.includes('temp') || partials.includes('temps')) {
-            field = [...field, ...tempHelper.parseFields().fields]
-        }
-
-        if (partials.includes('minimal_temp') || partials.includes('minimal_temps')) {
-            field = [...field, ...tempHelper.parseFields(true).fields]
-        }
-
-        if (partials.includes('print_history')) {
-            field = [...field, ...new HistoryHelper().parseFields()]
-        }
-
-        if (partials.includes('power_devices')) {
-            field = [...field, ...new PowerDeviceHelper().parseFields()]
-        }
-
-        return field
     }
 
     public async parseTemplate(type: string, id: string, providedPlaceholders = null, providedFields = null, providedValues = null) {
@@ -154,7 +117,7 @@ export class TemplateHelper {
         const selections = inputGenerator.generateSelections(messageObjectData.selections)
         const inputs = inputGenerator.generateInputs(messageObjectData.inputs)
 
-        for(const selectionId in selections) {
+        for (const selectionId in selections) {
             components.push(selections[selectionId])
         }
 
@@ -188,13 +151,13 @@ export class TemplateHelper {
         if (typeof messageObjectData.footer !== 'undefined') {
             const footerObject: any = {'text': messageObjectData.footer}
 
-            if(typeof footerIcon === 'string')
+            if (typeof footerIcon === 'string')
                 footerObject.iconURL = footerIcon
 
             messageObject.setFooter(footerObject)
         }
 
-        if(messageObjectData.timestamp)
+        if (messageObjectData.timestamp)
             messageObject.setTimestamp()
 
         if (messageObjectData.content !== undefined) {
@@ -305,12 +268,49 @@ export class TemplateHelper {
         return input
     }
 
+    protected async parsePartials(partials: any[], field: any[]) {
+        const spoolmanHelper = new SpoolmanHelper()
+        const tempHelper = new TempHelper()
+        const versionHelper = new VersionHelper()
+
+        if (partials.includes('versions')) {
+            field = [...field, ...versionHelper.getFields()]
+        }
+
+        if (partials.includes('spoolman')) {
+            const newFields = await spoolmanHelper.getFields()
+            field = [...field, ...newFields]
+        }
+
+        if (partials.includes('updates')) {
+            field = [...field, ...versionHelper.getUpdateFields()]
+        }
+
+        if (partials.includes('temp') || partials.includes('temps')) {
+            field = [...field, ...tempHelper.parseFields().fields]
+        }
+
+        if (partials.includes('minimal_temp') || partials.includes('minimal_temps')) {
+            field = [...field, ...tempHelper.parseFields(true).fields]
+        }
+
+        if (partials.includes('print_history')) {
+            field = [...field, ...new HistoryHelper().parseFields()]
+        }
+
+        if (partials.includes('power_devices')) {
+            field = [...field, ...new PowerDeviceHelper().parseFields()]
+        }
+
+        return field
+    }
+
     protected parsePlaceholderContent(placeholder: string, providedPlaceholders = null) {
         const placeholderId = placeholder
             .replace(/(\${)/g, '')
             .replace(/}/g, '')
 
-        if(placeholderId === 'current_timestamp') {
+        if (placeholderId === 'current_timestamp') {
             return {
                 'content': `${Date.now()}`,
                 'double_dash': true
@@ -352,15 +352,15 @@ export class TemplateHelper {
                 const cacheMatch = findValue(templateFragment)
                 let providedMatch = undefined
 
-                if(providedPlaceholders) {
+                if (providedPlaceholders) {
                     providedMatch = get(providedPlaceholders, templateFragment)
                 }
 
-                if(cacheMatch) {
+                if (cacheMatch) {
                     templateFragments[index] = cacheMatch
                 }
 
-                if(providedMatch) {
+                if (providedMatch) {
                     templateFragments[index] = providedMatch
                 }
             }
@@ -426,7 +426,7 @@ export class TemplateHelper {
             return imageID
         }
 
-        if(imageID === 'placeholder') {
+        if (imageID === 'placeholder') {
             return new AttachmentBuilder(
                 resolve(__dirname, `../assets/placeholder.png`),
                 {name: 'placeholder.png'}
@@ -461,7 +461,7 @@ export class TemplateHelper {
 
         const imagePath = path.resolve(__dirname, `../assets/icon-sets/${iconSet}/${imageID}`)
 
-        if(!existsSync(imagePath)) {
+        if (!existsSync(imagePath)) {
             logWarn(`image ${imageID} not found in the assets`)
 
             return new AttachmentBuilder(

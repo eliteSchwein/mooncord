@@ -15,27 +15,10 @@ import {AttachmentBuilder} from "discord.js";
 export class TimelapseHelper {
     protected timelapseFile = {}
 
-    private async finishTimelapse(fileId: string) {
-        const config = new ConfigHelper()
-        const path = this.timelapseFile[fileId].path
-        const fileStats = statSync(path)
-        const fileName = this.timelapseFile[fileId].fileName
-        const fileSizeInMegabytes = Math.round((fileStats.size / (1024 * 1000)) * 100) / 100
-
-        logSuccess(`Download Timelapse ${fileName} complete`)
-        logRegular(`Timelapse ${fileName} is ${fileSizeInMegabytes}mb big`)
-
-        if(fileSizeInMegabytes > (config.getUploadLimit() / 1000000)) {
-            this.timelapseFile[fileId].path = await this.compressTimelapse(path, fileName)
-        }
-
-        this.timelapseFile[fileId].finish = true
-    }
-
     public async downloadTimelapse(filename: string, timelapseMessage: string) {
         logRegular(`Downloading Timelapse ${filename}`)
         const config = new ConfigHelper()
-        const fileId = Math.random().toString(36).substring(2,7)
+        const fileId = Math.random().toString(36).substring(2, 7)
         const path = resolve(config.getTempPath(), `timelapse_${fileId}.mp4`)
         const writer = createWriteStream(path)
 
@@ -82,6 +65,23 @@ export class TimelapseHelper {
         }
     }
 
+    private async finishTimelapse(fileId: string) {
+        const config = new ConfigHelper()
+        const path = this.timelapseFile[fileId].path
+        const fileStats = statSync(path)
+        const fileName = this.timelapseFile[fileId].fileName
+        const fileSizeInMegabytes = Math.round((fileStats.size / (1024 * 1000)) * 100) / 100
+
+        logSuccess(`Download Timelapse ${fileName} complete`)
+        logRegular(`Timelapse ${fileName} is ${fileSizeInMegabytes}mb big`)
+
+        if (fileSizeInMegabytes > (config.getUploadLimit() / 1000000)) {
+            this.timelapseFile[fileId].path = await this.compressTimelapse(path, fileName)
+        }
+
+        this.timelapseFile[fileId].finish = true
+    }
+
     private async compressTimelapse(timelapseInput: string, timelapseName: string) {
         const config = new ConfigHelper()
         const ffmpegConfig = config.getEntriesByFilter(/^timelapse$/g)[0]
@@ -99,7 +99,7 @@ export class TimelapseHelper {
         logRegular(`Compress Timelapse: ${timelapseName}`)
         if (functionCache.current_status === 'printing') {
             logNotice('use printing arguments for ffmpeg because a print is running')
-            for(const ffmpegArgument of ffmpegConfig.ffmpeg_arguments_printing) {
+            for (const ffmpegArgument of ffmpegConfig.ffmpeg_arguments_printing) {
                 ffmpegOutputArguments.push(ffmpegArgument)
             }
         }
@@ -110,7 +110,7 @@ export class TimelapseHelper {
             .format('mp4')
             .addInput(timelapseInput)
 
-        if(ffmpegInputArguments) {
+        if (ffmpegInputArguments) {
             ffmpegRender
                 .addInputOptions(ffmpegInputArguments)
         }

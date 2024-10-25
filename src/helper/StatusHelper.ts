@@ -125,7 +125,7 @@ export class StatusHelper {
         const postEmbed = status === 'printing' && this.checkPercentMatch() && !this.notificationHelper.isEmbedBlocked(statusMeta.embed_id) ||
             status !== 'printing' && !this.notificationHelper.isEmbedBlocked(statusMeta.embed_id)
 
-        if(!postEmbed)
+        if (!postEmbed)
             overridePlaceholders['image'] = 'placeholder'
 
         const statusEmbed = await this.embedHelper.generateEmbed(statusMeta.embed_id, overridePlaceholders)

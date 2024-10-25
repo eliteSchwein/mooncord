@@ -12,11 +12,11 @@ export function isObject(item) {
 }
 
 export function convertStyle(style: string) {
-    if(!style) {
+    if (!style) {
         return ButtonStyle.Secondary
     }
     style = style.trim().toUpperCase()
-    switch(style) {
+    switch (style) {
         case "INFO":
             return ButtonStyle.Primary
         case "WARNING":
@@ -28,7 +28,7 @@ export function convertStyle(style: string) {
 }
 
 export function convertActivityStyle(type: string) {
-    if(!type) {
+    if (!type) {
         return ActivityType.Custom
     }
     type = type.trim().toUpperCase()
@@ -36,7 +36,7 @@ export function convertActivityStyle(type: string) {
 }
 
 export function convertTextInputStyle(type: string) {
-    if(!type) {
+    if (!type) {
         return TextInputStyle.Paragraph
     }
     type = type.trim().toUpperCase()
@@ -89,7 +89,7 @@ export function findValueByPartial(data, partial: string, key: string) {
 }
 
 export function limitToMax(input: number, max: number) {
-    if(max < input) {
+    if (max < input) {
         return max
     }
 
@@ -152,12 +152,12 @@ export function parseCalculatedPlaceholder(fragments) {
 
 export function getIcons() {
     const configHelper = new ConfigHelper()
-    const icons:any = {}
+    const icons: any = {}
 
-    for(const iconKey of metaData.icons) {
+    for (const iconKey of metaData.icons) {
         const iconData = configHelper.getIcons(new RegExp(`${iconKey}`, 'g'))
 
-        if(iconData.length === 0) {
+        if (iconData.length === 0) {
             continue
         }
 

@@ -21,7 +21,7 @@ export class WebcamHelper {
         let webcamConfigs = config.getEntriesByFilter(/^webcam$/g)
         let activeWebcam = ''
 
-        if(webcamConfigs.length > 0) {
+        if (webcamConfigs.length > 0) {
             webcamConfigs = webcamConfigs[0]
         }
 
@@ -30,22 +30,22 @@ export class WebcamHelper {
             active: ''
         }
 
-        for(const data of webcamData) {
-            if(!data.enabled) {
+        for (const data of webcamData) {
+            if (!data.enabled) {
                 continue
             }
 
-            if(activeWebcam === '') {
+            if (activeWebcam === '') {
                 activeWebcam = data.name
             }
 
             webcamCache.entries[data.name] = data
         }
 
-        for(const webcamName in webcamConfigs) {
+        for (const webcamName in webcamConfigs) {
             const webcamConfig = webcamConfigs[webcamName]
 
-            if(activeWebcam === '') {
+            if (activeWebcam === '') {
                 activeWebcam = webcamName
             }
 
@@ -92,10 +92,10 @@ export class WebcamHelper {
         }
 
         try {
-            if(webcamData === undefined)
+            if (webcamData === undefined)
                 throw new Error('Config Error: Webcam has invalid config or was not found')
 
-            if(webcamData.snapshot_url.startsWith('/'))
+            if (webcamData.snapshot_url.startsWith('/'))
                 webcamData.snapshot_url = `http://localhost${webcamData.snapshot_url}`
 
             logRegular('Run Webcam pre Tasks if present...')
@@ -109,7 +109,7 @@ export class WebcamHelper {
                 timeout: 2000
             })
 
-            if(!res.headers['content-type'].startsWith('image')) {
+            if (!res.headers['content-type'].startsWith('image')) {
                 throw new Error('the Webcam URL is not a static image!')
             }
 
@@ -128,7 +128,7 @@ export class WebcamHelper {
                     .flip(webcamData.flip_vertical)
                     .flop(webcamData.flip_horizontal)
 
-                if(webcamData.flip_horizontal && webcamData.flip_vertical && webcamData.rotation === 0) {
+                if (webcamData.flip_horizontal && webcamData.flip_vertical && webcamData.rotation === 0) {
                     image
                         .rotate(180)
                         .flip(false)
@@ -161,7 +161,7 @@ export class WebcamHelper {
 
             let url = 'not configured'
 
-            if(webcamData !== undefined)
+            if (webcamData !== undefined)
                 url = webcamData.snapshot_url
 
             logEmpty()

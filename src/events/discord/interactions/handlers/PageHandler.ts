@@ -5,7 +5,7 @@ import {PageHelper} from "../../../../helper/PageHelper";
 import {logNotice} from "../../../../helper/LoggerHelper";
 import BaseHandler from "../abstracts/BaseHandler";
 
-export class PageHandler extends BaseHandler{
+export class PageHandler extends BaseHandler {
     async isValid(message: Message, user: User, data, interaction = null) {
         if (!data.functions.includes("page_up") &&
             !data.functions.includes("page_down")) {
@@ -35,7 +35,7 @@ export class PageHandler extends BaseHandler{
 
         const filterFooter = embedData.embedData.footer.replace(/(\${pages})/g, '')
 
-        if(embedData.embedData.page_embed_parent) {
+        if (embedData.embedData.page_embed_parent) {
             embedData = {
                 embedID: embedData.embedData.page_embed_parent,
                 embedData: this.config.getEntriesByFilter(new RegExp(`^embed ${embedData.embedData.page_embed_parent}`, 'g'))[0]

@@ -31,7 +31,7 @@ export class MessageHandler {
             const websocketCache = getEntry('websocket')
             const blockedMethods = websocketCache.blocked
 
-            if(messageData.method && blockedMethods && blockedMethods.includes(messageData.method)) {
+            if (messageData.method && blockedMethods && blockedMethods.includes(messageData.method)) {
                 removeFromArray(blockedMethods, messageData.method)
 
                 websocketCache.blocked = blockedMethods
@@ -52,25 +52,25 @@ export class MessageHandler {
 
             // async events
             await new SubscriptionNotification().parse(messageData)
-            if(await new HistoryUpdateNotification().parse(messageData))
+            if (await new HistoryUpdateNotification().parse(messageData))
                 return
-            if(await new TimelapseMacroNotification().parse(messageData))
+            if (await new TimelapseMacroNotification().parse(messageData))
                 return
-            if(await new ConsoleMessage().parse(messageData))
+            if (await new ConsoleMessage().parse(messageData))
                 return
-            if(await new StateUpdateNotification().parse(messageData))
+            if (await new StateUpdateNotification().parse(messageData))
                 return
-            if(await new TimelapseNotification().parse(messageData))
+            if (await new TimelapseNotification().parse(messageData))
                 return
-            if(await new DisplayUpdateNotification().parse(messageData))
+            if (await new DisplayUpdateNotification().parse(messageData))
                 return
-            if(await new PrintProgressNotification().parse(messageData))
+            if (await new PrintProgressNotification().parse(messageData))
                 return
-            if(await new GcodeResponseNotification().parse(messageData))
+            if (await new GcodeResponseNotification().parse(messageData))
                 return
-            if(await new ThrottleNotification().parse(messageData))
+            if (await new ThrottleNotification().parse(messageData))
                 return
-            if(await new UpdateNotification().parse(messageData))
+            if (await new UpdateNotification().parse(messageData))
                 return
         }))
     }

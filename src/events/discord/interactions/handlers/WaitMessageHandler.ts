@@ -4,7 +4,7 @@ import {Message, User} from "discord.js";
 import {findValue} from "../../../../utils/CacheUtil";
 import BaseHandler from "../abstracts/BaseHandler";
 
-export class WaitMessageHandler extends BaseHandler{
+export class WaitMessageHandler extends BaseHandler {
     async isValid(message: Message, user: User, data, interaction = null) {
         return typeof data.wait_message !== 'undefined';
     }
@@ -39,7 +39,7 @@ export class WaitMessageHandler extends BaseHandler{
             return
         }
 
-        if(interaction.deferred) {
+        if (interaction.deferred) {
             await interaction.editReply(newMessage)
             return
         }

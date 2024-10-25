@@ -6,7 +6,7 @@ import {TempHelper} from "../../../../helper/TempHelper";
 import TempHistoryGraph from "../../../../helper/graphs/TempHistoryGraph";
 import BaseSelection from "../abstracts/BaseSelection";
 
-export class ShowTempSelection extends BaseSelection{
+export class ShowTempSelection extends BaseSelection {
     selectionId = 'show_temp'
 
     async handleSelection(interaction: StringSelectMenuInteraction) {

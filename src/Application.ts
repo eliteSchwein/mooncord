@@ -82,18 +82,18 @@ async function init() {
 
     await statusHelper.update(null, true, discordClient)
 
-    if(!args.includes('setup') && args.length < 3) {
+    if (!args.includes('setup') && args.length < 3) {
         return
     }
 
-    let setupUser = args[2] as string|undefined
+    let setupUser = args[2] as string | undefined
 
-    if(!setupUser) {
+    if (!setupUser) {
         logError(`missing last argument for the setup mode, example: npm start /PATH/TO/CONFIG/ setup USERNAME`)
         process.exit(5)
     }
 
-    if(!setupUser.includes('#')) {
+    if (!setupUser.includes('#')) {
         setupUser = setupUser.toLowerCase()
     }
 
@@ -115,8 +115,10 @@ async function init() {
         });
     }
 
-    process.on('SIGINT', () => {});
-    process.on('SIGQUIT', () => {});
+    process.on('SIGINT', () => {
+    });
+    process.on('SIGQUIT', () => {
+    });
 
     logCustom(`${"please invite the bot on a Server:".black.bgGreen} ${getEntry('invite_url').white}`)
     logEmpty()
@@ -158,7 +160,7 @@ function initCache() {
     logRegular('load Package Cache...')
     setData('package_config', packageConfig)
 
-    if(firstLoad) {
+    if (firstLoad) {
         firstLoad = false
     } else {
         configHelper.loadCache()

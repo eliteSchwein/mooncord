@@ -14,15 +14,15 @@ export class HistoryDetail extends BaseSelection {
         const jobs = getEntry('history').jobs.jobs
         const historyGraph = new HistoryGraph()
         const historyHelper = new HistoryHelper()
-        const similarJobs = { }
+        const similarJobs = {}
 
-        const job = _.find(jobs, { job_id: jobId })
+        const job = _.find(jobs, {job_id: jobId})
 
         const gcodeFile = job.filename
 
-        for(const jobPartial of jobs) {
-            if(jobPartial.filename !== job.filename) continue
-            if(!similarJobs[jobPartial.status]) {
+        for (const jobPartial of jobs) {
+            if (jobPartial.filename !== job.filename) continue
+            if (!similarJobs[jobPartial.status]) {
                 similarJobs[jobPartial.status] = 0
             }
 

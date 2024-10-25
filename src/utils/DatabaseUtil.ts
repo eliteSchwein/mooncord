@@ -45,7 +45,7 @@ export class DatabaseUtil {
 
         database = mergeDeep(JSON.parse(JSON.stringify(defaultDatabase)), database)
 
-        if(Array.isArray(database.permissions.admins)) {
+        if (Array.isArray(database.permissions.admins)) {
             database.permissions.admins = JSON.parse(JSON.stringify(defaultDatabase.permissions.admins))
         }
 
@@ -71,7 +71,7 @@ export class DatabaseUtil {
             return
         }
 
-        if(getEntry('setup_mode')) {
+        if (getEntry('setup_mode')) {
             return
         }
 

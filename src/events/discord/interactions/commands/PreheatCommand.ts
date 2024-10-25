@@ -97,7 +97,7 @@ export default class PreheatCommand extends BaseCommand {
         const tempHelper = new TempHelper()
         const preset = new ConfigHelper().getEntriesByFilter(new RegExp(`^preset ${profileName}$`, "g"), false)[0]
 
-        if(preset.gcode) {
+        if (preset.gcode) {
             logRegular(`execute ${preset.gcode}...`)
             await moonrakerClient.send({"method": "printer.gcode.script", "params": {"script": preset.gcode}})
         }

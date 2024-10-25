@@ -34,7 +34,7 @@ export class ReactionInteraction {
         const emoji = interaction.emoji.toString()
         const message = interaction.message as Message
 
-        if(message.author === null) {
+        if (message.author === null) {
             return
         }
 

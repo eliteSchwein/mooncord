@@ -16,7 +16,7 @@ export class DownloadLogSelection extends BaseSelection {
         for (const value of interaction.values) {
             const attachment = await this.retrieveLog(value)
 
-            if(typeof attachment === 'string') {
+            if (typeof attachment === 'string') {
                 await interaction.editReply(attachment);
                 return
             }

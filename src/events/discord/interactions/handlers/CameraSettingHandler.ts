@@ -15,22 +15,22 @@ export class CameraSettingHandler extends BaseHandler {
         const cache = getEntry('webcam')
         const webcamData = cache.entries[cache.active]
 
-        if(data.functions.includes("camera_mirror_horizontal")) {
+        if (data.functions.includes("camera_mirror_horizontal")) {
             webcamData.flip_horizontal = !webcamData.flip_horizontal
         }
 
-        if(data.functions.includes("camera_mirror_vertical")) {
+        if (data.functions.includes("camera_mirror_vertical")) {
             webcamData.flip_vertical = !webcamData.flip_vertical
         }
 
-        if(data.functions.includes("camera_rotate")) {
+        if (data.functions.includes("camera_rotate")) {
             webcamData.rotation += 90
 
-            if(webcamData.rotation === 360) {
+            if (webcamData.rotation === 360) {
                 webcamData.rotation = 0
             }
         }
 
-        await this.moonrakerClient.send({"method": "server.webcams.post_item","params": webcamData})
+        await this.moonrakerClient.send({"method": "server.webcams.post_item", "params": webcamData})
     }
 }

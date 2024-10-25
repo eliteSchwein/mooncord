@@ -18,7 +18,7 @@ export class TempHelper {
         const colorCache = {}
         const temperatureSensors = temp_meta.temperature_sensors
         const colors = new TempHistoryGraph().getColors()
-        let  colorIndex = 0
+        let colorIndex = 0
 
         for (const cacheKey in cache) {
             const cacheKeySplit = cacheKey.split(' ')

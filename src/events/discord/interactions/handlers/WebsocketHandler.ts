@@ -21,15 +21,15 @@ export class WebsocketHandler extends BaseHandler {
 
         let websocketTimeout = 10_000
 
-        if(data.websocket_timeout && data.websocket_timeout === -1) {
+        if (data.websocket_timeout && data.websocket_timeout === -1) {
             websocketTimeout = Number.POSITIVE_INFINITY
-        } else if(data.websocket_timeout) {
+        } else if (data.websocket_timeout) {
             websocketTimeout = data.websocket_timeout
         }
 
-        if(data.websocket_prevent_methods) {
+        if (data.websocket_prevent_methods) {
             const websocketCache = getEntry('websocket')
-            for(const preventMethod of data.websocket_prevent_methods) {
+            for (const preventMethod of data.websocket_prevent_methods) {
                 websocketCache.blocked.push(preventMethod)
             }
             setData('websocket', websocketCache)

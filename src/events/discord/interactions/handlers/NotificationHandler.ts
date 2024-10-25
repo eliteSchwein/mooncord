@@ -9,6 +9,7 @@ export class NotificationHandler extends BaseHandler {
         return !(!data.functions.includes("notify_enable")
             && !data.functions.includes("notify_disable"))
     }
+
     async handleHandler(message: Message, user: User, data, interaction = null) {
         const notifyList = this.database.getDatabaseEntry('notify')
 

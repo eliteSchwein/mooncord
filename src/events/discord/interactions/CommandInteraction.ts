@@ -108,7 +108,7 @@ export class CommandInteraction {
 
         await sleep(1_000)
 
-        if(!interaction.deferred && !interaction.replied && !interaction.isModalSubmit()) {
+        if (!interaction.deferred && !interaction.replied && !interaction.isModalSubmit()) {
             await interaction.reply(localeHelper.getCommandNotReadyError(interaction.user.tag))
             return
         }

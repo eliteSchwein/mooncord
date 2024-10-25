@@ -29,7 +29,7 @@ export class PromptHelper {
         const localeHelper = new LocaleHelper()
         const consoleHelper = new ConsoleHelper()
 
-        if(!permissionHelper.isBotAdmin(interaction.user, interaction.guild) && !permissionHelper.isController(interaction.user, interaction.guild)) {
+        if (!permissionHelper.isBotAdmin(interaction.user, interaction.guild) && !permissionHelper.isController(interaction.user, interaction.guild)) {
             await interaction.reply({
                 content: localeHelper.getNoPermission(interaction.user.tag),
                 ephemeral: config.showNoPermissionPrivate()
@@ -50,80 +50,17 @@ export class PromptHelper {
     public purgePrompt() {
         const cache = getEntry('prompt')
 
-        if(cache.timeout === 0) {
+        if (cache.timeout === 0) {
             return
         }
 
-        if(cache.components.length === 0) {
+        if (cache.components.length === 0) {
             cache.timeout = 0
         } else {
             cache.timeout--
         }
 
         setData('prompt', cache)
-    }
-
-    private showPrompt(content: any) {
-        const embed = new EmbedBuilder()
-        const message = {embeds: [], components: []}
-        let currentRow = new ActionRowBuilder()
-
-        for(const component of content.components) {
-            switch (component.type) {
-                case "title":
-                    logNotice(`open prompt ${component.label}...`)
-                    embed.setTitle(component.label)
-                    break
-                case "description":
-                    embed.setDescription(component.label)
-                    break
-                case "button_group":
-                    if(currentRow.components.length > 0) {
-                        message.components.push(currentRow)
-                    }
-
-                    const buttonGroup = new ActionRowBuilder()
-                    currentRow = new ActionRowBuilder()
-
-                    for(const buttonComponent of component.components) {
-                        const button = new ButtonBuilder()
-
-                        button.setStyle(convertStyle(buttonComponent.style))
-                        button.setLabel(buttonComponent.label)
-                        button.setCustomId(`prompt_gcode|${buttonComponent.gcode}`)
-
-                        buttonGroup.addComponents(button)
-                    }
-
-                    message.components.push(buttonGroup)
-
-                    break
-                case "button":
-                    const button = new ButtonBuilder()
-
-                    button.setStyle(convertStyle(component.style))
-                    button.setLabel(component.label)
-                    button.setCustomId(`prompt_gcode|${component.gcode}`)
-
-                    if(currentRow.components.length > 4) {
-                        message.components.push(currentRow)
-                        currentRow = new ActionRowBuilder()
-                    }
-
-                    currentRow.addComponents(button)
-            }
-        }
-
-        if(currentRow.components.length > 0) {
-            message.components.push(currentRow)
-        }
-
-
-        message.embeds.push(embed)
-
-        const notificationHelper = new NotificationHelper()
-
-        void notificationHelper.broadcastMessage(message)
     }
 
     public addComponent(content: string) {
@@ -133,11 +70,11 @@ export class PromptHelper {
         let command = content.substring(0, commandIndex)
         const attributes = content.substring(commandIndex + 1)
 
-        if(commandIndex === -1) {
+        if (commandIndex === -1) {
             command = content
         }
 
-        command = command.replace(/^(footer_)/,'')
+        command = command.replace(/^(footer_)/, '')
 
         switch (command) {
             case 'show':
@@ -176,7 +113,7 @@ export class PromptHelper {
                     style: buttonPartials[2]
                 }
 
-                if(cache.group_active) {
+                if (cache.group_active) {
                     const groupIndex = cache.components.length - 1
                     const groupComponent = cache.components[groupIndex]
 
@@ -192,5 +129,68 @@ export class PromptHelper {
         }
 
         setData('prompt', cache)
+    }
+
+    private showPrompt(content: any) {
+        const embed = new EmbedBuilder()
+        const message = {embeds: [], components: []}
+        let currentRow = new ActionRowBuilder()
+
+        for (const component of content.components) {
+            switch (component.type) {
+                case "title":
+                    logNotice(`open prompt ${component.label}...`)
+                    embed.setTitle(component.label)
+                    break
+                case "description":
+                    embed.setDescription(component.label)
+                    break
+                case "button_group":
+                    if (currentRow.components.length > 0) {
+                        message.components.push(currentRow)
+                    }
+
+                    const buttonGroup = new ActionRowBuilder()
+                    currentRow = new ActionRowBuilder()
+
+                    for (const buttonComponent of component.components) {
+                        const button = new ButtonBuilder()
+
+                        button.setStyle(convertStyle(buttonComponent.style))
+                        button.setLabel(buttonComponent.label)
+                        button.setCustomId(`prompt_gcode|${buttonComponent.gcode}`)
+
+                        buttonGroup.addComponents(button)
+                    }
+
+                    message.components.push(buttonGroup)
+
+                    break
+                case "button":
+                    const button = new ButtonBuilder()
+
+                    button.setStyle(convertStyle(component.style))
+                    button.setLabel(component.label)
+                    button.setCustomId(`prompt_gcode|${component.gcode}`)
+
+                    if (currentRow.components.length > 4) {
+                        message.components.push(currentRow)
+                        currentRow = new ActionRowBuilder()
+                    }
+
+                    currentRow.addComponents(button)
+            }
+        }
+
+        if (currentRow.components.length > 0) {
+            message.components.push(currentRow)
+        }
+
+
+        message.embeds.push(embed)
+
+        const notificationHelper = new NotificationHelper()
+
+        void notificationHelper.broadcastMessage(message)
     }
 }

@@ -10,10 +10,11 @@ import {getMoonrakerClient} from "../../../../Application";
 import {StringSelectMenuInteraction} from "discord.js";
 
 export default class BaseSelection {
+    selectionId: string
+    ephemeral = false
     protected localeHelper = new LocaleHelper()
     protected locale = this.localeHelper.getLocale()
     protected syntaxLocale = this.localeHelper.getSyntaxLocale()
-
     protected database = new DatabaseUtil()
     protected config = new ConfigHelper()
     protected embedHelper = new EmbedHelper()
@@ -21,11 +22,7 @@ export default class BaseSelection {
     protected consoleHelper = new ConsoleHelper()
     protected modalHelper = new ModalHelper()
     protected metadataHelper = new MetadataHelper()
-
     protected moonrakerClient = getMoonrakerClient()
-
-    selectionId: string
-    ephemeral = false
 
     public async executeSelection(interaction: StringSelectMenuInteraction, selectionId: string) {
         if (selectionId !== this.selectionId) {

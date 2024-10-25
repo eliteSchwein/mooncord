@@ -21,7 +21,7 @@ export class DiscordInputGenerator {
         let limit = 4
         let currentButton = 0
 
-        if(buttonsPerRow > 0) {
+        if (buttonsPerRow > 0) {
             limit = buttonsPerRow - 1
         }
 
@@ -45,7 +45,7 @@ export class DiscordInputGenerator {
                 .setCustomId(buttonData.id)
                 .setStyle(convertStyle(buttonData.style))
 
-            if(buttonData.emoji) {
+            if (buttonData.emoji) {
                 button.setEmoji(buttonData.emoji)
             }
 
@@ -53,7 +53,7 @@ export class DiscordInputGenerator {
                 button.setLabel(buttonData.label)
             }
 
-            if(currentButton > limit) {
+            if (currentButton > limit) {
                 if (rows[1] === undefined) {
                     rows.push(new ActionRowBuilder())
                 }
@@ -120,7 +120,7 @@ export class DiscordInputGenerator {
                 selectionData.data = [...selectionData.data, ...new WebcamHelper().getWebcamChoices()]
             }
 
-            if(selectionData.min_entries !== undefined &&
+            if (selectionData.min_entries !== undefined &&
                 selectionData.min_entries > selectionData.data.length) {
                 continue
             }
@@ -186,11 +186,11 @@ export class DiscordInputGenerator {
 
         const meta = inputMeta[section]
 
-        if(section === 'buttons') {
-            for(const key in meta) {
+        if (section === 'buttons') {
+            for (const key in meta) {
                 const value = meta[key]
 
-                if(value.functions === undefined) {
+                if (value.functions === undefined) {
                     value.functions = []
                 }
 

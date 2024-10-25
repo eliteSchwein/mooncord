@@ -104,8 +104,8 @@ export class PermissionHelper {
 
         const roles = this.botAdmins.roles
 
-        for(const role of member.roles.cache) {
-            if(roles.includes(role[1].id)) {
+        for (const role of member.roles.cache) {
+            if (roles.includes(role[1].id)) {
                 return true
             }
         }
@@ -150,8 +150,8 @@ export class PermissionHelper {
         if (typeof member !== 'undefined') {
             const roles = this.botAdmins.roles
 
-            for(const role of member.roles.cache) {
-                if(roles.includes(role[1].id)) {
+            for (const role of member.roles.cache) {
+                if (roles.includes(role[1].id)) {
                     return true
                 }
             }

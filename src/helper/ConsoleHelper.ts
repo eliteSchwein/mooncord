@@ -16,7 +16,7 @@ export class ConsoleHelper {
 
         const moonrakerClient = getMoonrakerClient()
         const embedHelper = new EmbedHelper()
-        
+
         let cache = getEntry('execute')
 
         if (cache.running) {

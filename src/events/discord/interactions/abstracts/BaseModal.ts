@@ -10,10 +10,11 @@ import {getMoonrakerClient} from "../../../../Application";
 import {ModalSubmitInteraction} from "discord.js";
 
 export default class BaseModal {
+    modalId = ''
+    ephemeral = false
     protected localeHelper = new LocaleHelper()
     protected locale = this.localeHelper.getLocale()
     protected syntaxLocale = this.localeHelper.getSyntaxLocale()
-
     protected database = new DatabaseUtil()
     protected config = new ConfigHelper()
     protected embedHelper = new EmbedHelper()
@@ -21,14 +22,10 @@ export default class BaseModal {
     protected consoleHelper = new ConsoleHelper()
     protected modalHelper = new ModalHelper()
     protected metadataHelper = new MetadataHelper()
-
     protected moonrakerClient = getMoonrakerClient()
 
-    modalId = ''
-    ephemeral = false
-
     public async executeModal(interaction: ModalSubmitInteraction, modalId: string) {
-        if(modalId !== this.modalId) {
+        if (modalId !== this.modalId) {
             return
         }
 

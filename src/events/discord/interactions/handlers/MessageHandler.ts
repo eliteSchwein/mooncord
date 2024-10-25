@@ -4,7 +4,7 @@ import {Message, User} from "discord.js";
 import {findValue} from "../../../../utils/CacheUtil";
 import BaseHandler from "../abstracts/BaseHandler";
 
-export class MessageHandler extends BaseHandler{
+export class MessageHandler extends BaseHandler {
     async isValid(message: Message, user: User, data, interaction = null) {
         return typeof data.message !== 'undefined';
     }
@@ -43,7 +43,7 @@ export class MessageHandler extends BaseHandler{
                 return
             }
 
-            if(interaction !== null &&
+            if (interaction !== null &&
                 interaction.deferred) {
                 await interaction.editReply(newMessage)
                 return

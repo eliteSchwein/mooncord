@@ -75,7 +75,7 @@ export default class TempHistoryGraph {
                 temperatures: sensorData.temperatures,
                 targets: sensorData.targets,
                 powers: sensorData.powers,
-                color: '#'+color,
+                color: '#' + color,
                 type: 'temp'
             })
         }

@@ -26,7 +26,7 @@ export class GCodeUploadHandler {
                 return;
             }
 
-            if(message.attachments.size > 1) {
+            if (message.attachments.size > 1) {
                 await this.uploadMultipleFiles(message)
                 return
             }
@@ -39,7 +39,7 @@ export class GCodeUploadHandler {
         const attachment = message.attachments.at(0)
         const fileName = attachment.name
 
-        if(!message.channel.isSendable()) {
+        if (!message.channel.isSendable()) {
             return
         }
 
@@ -76,18 +76,18 @@ export class GCodeUploadHandler {
             .replace(/(\${username})/g, message.author.tag))
     }
 
-    private async uploadMultipleFiles(message: Message){
+    private async uploadMultipleFiles(message: Message) {
         const localeHelper = new LocaleHelper()
         const locale = localeHelper.getLocale()
 
-        for(const attachment of message.attachments.values()) {
+        for (const attachment of message.attachments.values()) {
             const fileName = attachment.name
 
             if (!fileName.endsWith('.gcode')) {
                 continue
             }
 
-            if(!message.channel.isSendable()) {
+            if (!message.channel.isSendable()) {
                 return
             }
 
@@ -95,7 +95,7 @@ export class GCodeUploadHandler {
 
             const uploadRequest = await uploadAttachment(attachment)
 
-            if(!uploadRequest) {
+            if (!uploadRequest) {
                 await message.reply(locale.messages.errors.upload_failed
                     .replace(/(\${filename})/g, attachment.name)
                     .replace(/(\${username})/g, message.author.tag))

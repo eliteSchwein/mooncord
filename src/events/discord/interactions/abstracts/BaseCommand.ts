@@ -10,10 +10,12 @@ import {ModalHelper} from "../../../../helper/ModalHelper";
 import {MetadataHelper} from "../../../../helper/MetadataHelper";
 
 export default class BaseCommand {
+    commandId: string
+    ephemeral = false
+    defer = true
     protected localeHelper = new LocaleHelper()
     protected locale = this.localeHelper.getLocale()
     protected syntaxLocale = this.localeHelper.getSyntaxLocale()
-
     protected database = new DatabaseUtil()
     protected config = new ConfigHelper()
     protected embedHelper = new EmbedHelper()
@@ -21,19 +23,14 @@ export default class BaseCommand {
     protected consoleHelper = new ConsoleHelper()
     protected modalHelper = new ModalHelper()
     protected metadataHelper = new MetadataHelper()
-
     protected moonrakerClient = getMoonrakerClient()
-
-    commandId: string
-    ephemeral = false
-    defer = true
 
     public async executeCommand(interaction: ChatInputCommandInteraction, commandId: string) {
         if (commandId !== this.commandId) {
             return
         }
 
-        if(this.defer) {
+        if (this.defer) {
             await interaction.deferReply({ephemeral: this.ephemeral})
         }
         await this.handleCommand(interaction)

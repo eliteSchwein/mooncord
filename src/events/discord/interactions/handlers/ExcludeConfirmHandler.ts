@@ -3,7 +3,7 @@
 import {Message, User} from "discord.js";
 import BaseHandler from "../abstracts/BaseHandler";
 
-export class ExcludeConfirmHandler extends BaseHandler{
+export class ExcludeConfirmHandler extends BaseHandler {
     async isValid(message: Message, user: User, data, interaction = null) {
         return data.functions.includes("exclude_object");
     }
