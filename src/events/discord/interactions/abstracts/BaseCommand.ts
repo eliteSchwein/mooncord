@@ -36,7 +36,8 @@ export default class BaseCommand {
         await this.handleCommand(interaction)
     }
 
+    // here we handle the command. what did you expect?
     async handleCommand(interaction: ChatInputCommandInteraction) {
-        // here the command stuff, extend this class
+
     }
 }

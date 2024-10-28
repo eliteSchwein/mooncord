@@ -33,6 +33,7 @@ export default class BaseModal {
         await this.handleModal(interaction)
     }
 
+    // here we handle the modal.
     async handleModal(interaction: ModalSubmitInteraction) {
 
     }

@@ -33,6 +33,7 @@ export default class BaseSelection {
         await this.handleSelection(interaction)
     }
 
+    // you select something and this will get triggert, what else?
     async handleSelection(interaction: StringSelectMenuInteraction) {
 
     }
