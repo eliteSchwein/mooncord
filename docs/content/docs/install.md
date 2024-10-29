@@ -25,3 +25,25 @@ reset the bot tokeen (you will need the token later in the install script):
 
 copy the bot token for later, you will need it later for the install script.
 ![Screenshot](img/copyToken.png)
+
+## Install script
+
+Download MoonCord and start the install script
+```shell
+cd ~/
+git clone https://github.com/eliteSchwein/mooncord.git
+cd ~/mooncord
+bash scripts/install.sh
+```
+
+Now follow the install script, below are screenshots with some explanation what the questions mean.
+
+![Screenshot](img/question1.png)
+<small>enter the absolut path to your config directory of your klipper installation, when you have a normal mainsailos you can leave this empty.</small>
+
+![Screenshot](img/question2.png)
+<small>enter the absolut path to your logs directory of your klipper installation, when you have a normal mainsailos you can leave this empty.</small>
+
+![Screenshot](img/question3.png)
+<small>enter your Discord Bot Token from [Create Discord Application](#create-discord-application)</small>
+
