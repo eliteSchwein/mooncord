@@ -47,3 +47,12 @@ Now follow the install script, below are screenshots with some explanation what 
 ![Screenshot](img/question3.png)
 <small>enter your Discord Bot Token from [Create Discord Application](#create-discord-application)</small>
 
+![Screenshot](img/question4.png)
+<small>enter your full Discord tag, both the classic one with #1234 and the new one with just the name will work.</small>
+
+![Screenshot](img/question5.png)
+<small>A present NodeJS installation was found, mooncord 1.0.3 requires nodejs 20, if you have a older or unknown nodejs Version, type Y otherwise type N.</small>
+
+![Screenshot](img/question6.png)
+<small>the install script is rebuilding NPM to make sure that the packages can successfully install. drink some coffee ☕, eat something 🍔, this step will take some time (on a rpi4 around 7 minutes)... </small>
+
