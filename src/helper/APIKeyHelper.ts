@@ -23,7 +23,8 @@ export class APIKeyHelper {
                 .get(`${url}/access/oneshot_token`, {
                     headers: {
                         'X-Api-Key': apiKey
-                    }
+                    },
+                    timeout: 500
                 })
 
             return response.data['result']

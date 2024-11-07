@@ -225,11 +225,11 @@ export class MoonrakerClient {
 
         const config = new ConfigHelper()
 
-        this.reconnectScheduler = setInterval(() => {
+        this.reconnectScheduler = setInterval(async () => {
             logRegular(`Reconnect Attempt ${this.reconnectAttempt} to Moonraker...`)
-            void this.connect()
+            await this.connect()
             this.reconnectAttempt++
-        }, config.getMoonrakerRetryInterval() * 1000)
+        }, config.getMoonrakerRetryInterval() * 15_000)
     }
 
     private async connectHandler(instance, event) {

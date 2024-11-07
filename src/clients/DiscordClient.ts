@@ -56,7 +56,14 @@ export class DiscordClient {
                 Partials.Reaction,
                 Partials.GuildMember,
                 Partials.User
-            ]
+            ],
+            presence: {
+                status: "idle",
+                activities: [{
+                    name: localeHelper.getLocale().embeds.startup.activity,
+                    type: convertActivityStyle(config.getEntriesByFilter(new RegExp(`^status startup`, 'g'))[0].activity_type)
+                }]
+            }
         })
 
         logRegular('Connect to Discord...')
@@ -88,14 +95,6 @@ export class DiscordClient {
         logSuccess(`${'Name:'.green} ${(this.discordClient.user.tag).white}`)
         logSuccess('Invite:'.green)
         console.log(getEntry('invite_url').cyan)
-
-        this.discordClient.user.setPresence({
-            status: "idle",
-            activities: [{
-                name: localeHelper.getLocale().embeds.startup.activity,
-                type: convertActivityStyle(config.getEntriesByFilter(new RegExp(`^status startup`, 'g'))[0].activity_type)
-            }]
-        })
 
         if (config.dumpCacheOnStart()) {
             await dump()
