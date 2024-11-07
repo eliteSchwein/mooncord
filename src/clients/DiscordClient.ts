@@ -89,12 +89,13 @@ export class DiscordClient {
         logSuccess('Invite:'.green)
         console.log(getEntry('invite_url').cyan)
 
-        this.discordClient.user.setPresence({status: "idle"})
-
-        this.discordClient.user.setActivity(
-            localeHelper.getLocale().embeds.startup.activity,
-            {type: convertActivityStyle(config.getEntriesByFilter(new RegExp(`^status startup`, 'g'))[0].activity_type)}
-        )
+        this.discordClient.user.setPresence({
+            status: "idle",
+            activities: [{
+                name: localeHelper.getLocale().embeds.startup.activity,
+                type: convertActivityStyle(config.getEntriesByFilter(new RegExp(`^status startup`, 'g'))[0].activity_type)
+            }]
+        })
 
         if (config.dumpCacheOnStart()) {
             await dump()
