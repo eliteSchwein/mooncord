@@ -16,6 +16,7 @@ import {VerifyHandler} from "../events/discord/VerifyHandler";
 // @ts-ignore
 import {REST} from '@discordjs/rest'
 import {ReconnectHandler} from "../events/discord/ReconnectHandler";
+import {convertActivityStyle} from "../helper/DataHelper";
 
 'use strict'
 
@@ -92,7 +93,7 @@ export class DiscordClient {
 
         this.discordClient.user.setActivity(
             localeHelper.getLocale().embeds.startup.activity,
-            {type: ActivityType.Listening}
+            {type: convertActivityStyle(config.getEntriesByFilter(new RegExp(`^status startup`, 'g'))[0].activity_type)}
         )
 
         if (config.dumpCacheOnStart()) {
