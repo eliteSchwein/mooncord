@@ -1,4 +1,65 @@
 site_name: MoonCord Wiki
+site_url: https://wiki.tludwig.dev/mooncord
+repo_url: https://github.com/eliteSchwein/mooncord
+edit_uri: edit/dev/docs/content/docs/
 nav:
   - Home: index.md
   - Installation: install.md
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - attr_list
+  - md_in_html
+  - pymdownx.blocks.caption
+  - pymdownx.critic
+  - pymdownx.caret
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.tilde
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+theme:
+  palette:
+    - scheme: slate
+      media: "(prefers-color-scheme: dark)"
+      primary: blue
+      toggle:
+        icon: material/brightness-7
+        name: Switch to light mode
+    - scheme: default
+      media: "(prefers-color-scheme: light)"
+      primary: light blue
+      toggle:
+        icon: material/brightness-4
+        name: Switch to dark mode
+  name: readthedocs
+  features:
+    - content.action.edit
+    - navigation.expand
+    - navigation.tracking
+    - navigation.instant
+    - navigation.instant.prefetch
+    - navigation.instant.progress
+    - content.code.copy
+  font: false
+  logo: img/logo.png
+  favicon: img/logo.png
+  icon:
+    admonition:
+      note: fontawesome/solid/note-sticky
+      abstract: fontawesome/solid/book
+      info: fontawesome/solid/circle-info
+      tip: fontawesome/solid/bullhorn
+      success: fontawesome/solid/check
+      question: fontawesome/solid/circle-question
+      warning: fontawesome/solid/triangle-exclamation
+      failure: fontawesome/solid/bomb
+      danger: fontawesome/solid/skull
+      bug: fontawesome/solid/robot
+      example: fontawesome/solid/flask
+      quote: fontawesome/solid/quote-left
