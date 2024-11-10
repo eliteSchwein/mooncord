@@ -5,6 +5,16 @@ edit_uri: edit/dev/docs/content/docs/
 nav:
   - Home: index.md
   - Installation: install.md
+  - Usage:
+      - Discord:
+          - /admin: sites/Usage/Discord/admin.md
+          - /config: sites/Usage/Discord/config.md
+          - /dump: sites/Usage/Discord/dump.md
+          - /editchannel: sites/Usage/Discord/editchannel.md
+          - /emergencystop: sites/Usage/Discord/emergencystop.md
+          - /execute: sites/Usage/Discord/execute.md
+          - /fileinfo: sites/Usage/Discord/fileinfo.md
+          - /history: sites/Usage/Discord/history.md
 markdown_extensions:
   - pymdownx.highlight:
       anchor_linenums: true
