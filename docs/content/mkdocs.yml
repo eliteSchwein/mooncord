@@ -14,6 +14,7 @@ nav:
           - /emergencystop: sites/Usage/Discord/emergencystop.md
           - /execute: sites/Usage/Discord/execute.md
           - /fileinfo: sites/Usage/Discord/fileinfo.md
+          - /getuserid: sites/Usage/Discord/getuserid.md
           - /history: sites/Usage/Discord/history.md
 markdown_extensions:
   - pymdownx.highlight:
@@ -22,7 +23,6 @@ markdown_extensions:
       pygments_lang_class: true
   - attr_list
   - md_in_html
-  - pymdownx.blocks.caption
   - pymdownx.critic
   - pymdownx.caret
   - pymdownx.keys
