@@ -16,6 +16,8 @@ nav:
           - /fileinfo: sites/Usage/Discord/fileinfo.md
           - /getuserid: sites/Usage/Discord/getuserid.md
           - /history: sites/Usage/Discord/history.md
+          - /info: sites/Usage/Discord/info.md
+          - /listgcodes: sites/Usage/Discord/listgcodes.md
 markdown_extensions:
   - pymdownx.highlight:
       anchor_linenums: true
