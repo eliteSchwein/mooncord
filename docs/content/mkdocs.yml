@@ -18,6 +18,16 @@ nav:
           - /history: sites/Usage/Discord/history.md
           - /info: sites/Usage/Discord/info.md
           - /listgcodes: sites/Usage/Discord/listgcodes.md
+          - /listlogs: sites/Usage/Discord/listlogs.md
+          - /listtimelapses: sites/Usage/Discord/listtimelapses.md
+          - /notifyme: sites/Usage/Discord/notifyme.md
+          - /pidtune: sites/Usage/Discord/pidtune.md
+          - /power: sites/Usage/Discord/power.md
+          - /preheat: sites/Usage/Discord/preheat.md
+          - /printjob: sites/Usage/Discord/printjob.md
+          - /reset: sites/Usage/Discord/reset.md
+          - /restart: sites/Usage/Discord/restart.md
+          - /status: sites/Usage/Discord/status.md
 markdown_extensions:
   - pymdownx.highlight:
       anchor_linenums: true
