@@ -10,6 +10,7 @@ import StackTrace from "stacktrace-js";
 import {getMoonrakerClient} from "../Application";
 import {getEntry, setData} from "../utils/CacheUtil";
 import {AttachmentBuilder} from "discord.js";
+import {Jimp, JimpMime} from "jimp";
 
 export class WebcamHelper {
     public async generateCache() {
@@ -121,30 +122,21 @@ export class WebcamHelper {
                 webcamData.flip_vertical ||
                 webcamData.rotation
             ) {
-                const image = sharp(buffer)
-
-                image
-                    .rotate(webcamData.rotation)
-                    .flip(webcamData.flip_vertical)
-                    .flop(webcamData.flip_horizontal)
-
-                if (webcamData.flip_horizontal && webcamData.flip_vertical && webcamData.rotation === 0) {
-                    image
-                        .rotate(180)
-                        .flip(false)
-                        .flop(false)
-                }
-
-                image.png({
-                    quality: 80
-                })
-
-                const editBuffer = await image.toBuffer()
 
                 buffer.fill(0)
 
                 logRegular('Run Webcam follow up Tasks if present...')
                 await this.executePostProcess(afterStatus)
+
+                let editBuffer: Buffer
+
+                switch (snapshotConfig.backend) {
+                    case 'jimp':
+                        editBuffer = await this.renderJimp(buffer, webcamData)
+                        break
+                    default:
+                        editBuffer = await this.renderSharp(buffer, webcamData)
+                }
 
                 return new AttachmentBuilder(editBuffer, {name: "snapshot.png"})
             }
@@ -186,6 +178,50 @@ export class WebcamHelper {
             resolve(__dirname, `../assets/icon-sets/${configHelper.getIconSet()}/snapshot-error.png`),
             {name: 'snapshot-error.png'}
         )
+    }
+
+    private async renderJimp(buffer: Buffer, webcamData: any) {
+        const image = await Jimp.read(buffer)
+
+        image.rotate(webcamData.rotation)
+
+        if (webcamData.flip_vertical) {
+            image.flip({vertical: true})
+        }
+        if (webcamData.flip_horizontal) {
+            image.flip({horizontal: true})
+        }
+
+        if (webcamData.flip_horizontal && webcamData.flip_vertical && webcamData.rotation === 0) {
+            image.rotate(180)
+            image.flip({horizontal: false, vertical: false})
+        }
+
+        return image.getBuffer(JimpMime.png);
+    }
+
+
+    private async renderSharp(buffer: Buffer, webcamData: any) {
+
+        const image = sharp(buffer)
+
+        image
+            .rotate(webcamData.rotation)
+            .flip(webcamData.flip_vertical)
+            .flop(webcamData.flip_horizontal)
+
+        if (webcamData.flip_horizontal && webcamData.flip_vertical && webcamData.rotation === 0) {
+            image
+                .rotate(180)
+                .flip(false)
+                .flop(false)
+        }
+
+        image.png({
+            quality: 80
+        })
+
+        return await image.toBuffer()
     }
 
     private triggerWebsite(url, post) {
