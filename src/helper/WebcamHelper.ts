@@ -21,14 +21,8 @@ export class WebcamHelper {
 
         const webcamEntries = await moonrakerClient.send({"method": "server.webcams.list"})
         const webcamData = webcamEntries.result.webcams
-        let webcamConfigs = config.getEntriesByFilter(/^webcam(?:\s|$)/g)
+        let webcamConfigs = config.getEntriesByFilter(/^webcam(?:\s|$)/g, true)
         let activeWebcam = ''
-
-        console.log(webcamConfigs)
-
-        if (webcamConfigs.length > 0) {
-            webcamConfigs = webcamConfigs[0]
-        }
 
         const webcamCache = {
             entries: {},
@@ -48,6 +42,7 @@ export class WebcamHelper {
         }
 
         for (const webcamName in webcamConfigs) {
+            console.log(webcamName)
             const webcamConfig = webcamConfigs[webcamName]
 
             if (activeWebcam === '') {
