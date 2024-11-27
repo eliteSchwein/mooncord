@@ -140,7 +140,7 @@ export class WebcamHelper {
                     case 'jimp':
                         editBuffer = await new JimpSnapshotBackend(buffer, webcamData).render()
                         break
-                    case 'graphicksmagick':
+                    case 'graphicsmagick':
                     case 'imagemagick':
                     case 'gm':
                         editBuffer = await new GraphicsMagickSnapshotBackend(buffer, webcamData).render()
