@@ -150,7 +150,11 @@ export class WebcamHelper {
                     case 'graphicsmagick':
                     case 'imagemagick':
                     case 'gm':
-                        editBuffer = await new GraphicsMagickSnapshotBackend(buffer, webcamData).render()
+                        editBuffer = await new GraphicsMagickSnapshotBackend(
+                            buffer,
+                            webcamData,
+                            snapshotConfig.backend === 'imagemagick')
+                            .render()
                         break
                     default:
                         editBuffer = await new SharpSnapshotBackend(buffer, webcamData).render()
