@@ -3,14 +3,16 @@
 import {ConfigHelper} from "./ConfigHelper";
 import {sleep} from "./DataHelper";
 import axios from "axios";
-import sharp from "sharp";
 import {resolve} from "path"
 import {logEmpty, logError, logRegular} from "./LoggerHelper";
 import StackTrace from "stacktrace-js";
 import {getMoonrakerClient} from "../Application";
 import {getEntry, setData} from "../utils/CacheUtil";
 import {AttachmentBuilder} from "discord.js";
-import {Jimp, JimpMime} from "jimp";
+import SharpSnapshotBackend from "./snapshotBackend/SharpSnapshotBackend";
+import JimpSnapshotBackend from "./snapshotBackend/JimpSnapshotBackend";
+import NoneSnapshotBackend from "./snapshotBackend/NoneSnapshotBackend";
+import GraphicsMagickSnapshotBackend from "./snapshotBackend/GraphicsMagickSnapshotBackend";
 
 export class WebcamHelper {
     public async generateCache() {
@@ -132,10 +134,18 @@ export class WebcamHelper {
 
                 switch (snapshotConfig.backend) {
                     case 'jimp':
-                        editBuffer = await this.renderJimp(buffer, webcamData)
+                        editBuffer = await new JimpSnapshotBackend(buffer, webcamData).render()
+                        break
+                    case 'none':
+                        editBuffer = await new NoneSnapshotBackend(buffer, webcamData).render()
+                        break
+                    case 'graphicksmagick':
+                    case 'imagemagick':
+                    case 'gm':
+                        editBuffer = await new GraphicsMagickSnapshotBackend(buffer, webcamData).render()
                         break
                     default:
-                        editBuffer = await this.renderSharp(buffer, webcamData)
+                        editBuffer = await new SharpSnapshotBackend(buffer, webcamData).render()
                 }
 
                 return new AttachmentBuilder(editBuffer, {name: "snapshot.png"})
@@ -178,50 +188,6 @@ export class WebcamHelper {
             resolve(__dirname, `../assets/icon-sets/${configHelper.getIconSet()}/snapshot-error.png`),
             {name: 'snapshot-error.png'}
         )
-    }
-
-    private async renderJimp(buffer: Buffer, webcamData: any) {
-        const image = await Jimp.read(buffer)
-
-        image.rotate(webcamData.rotation)
-
-        if (webcamData.flip_vertical) {
-            image.flip({vertical: true})
-        }
-        if (webcamData.flip_horizontal) {
-            image.flip({horizontal: true})
-        }
-
-        if (webcamData.flip_horizontal && webcamData.flip_vertical && webcamData.rotation === 0) {
-            image.rotate(180)
-            image.flip({horizontal: false, vertical: false})
-        }
-
-        return image.getBuffer(JimpMime.png);
-    }
-
-
-    private async renderSharp(buffer: Buffer, webcamData: any) {
-
-        const image = sharp(buffer)
-
-        image
-            .rotate(webcamData.rotation)
-            .flip(webcamData.flip_vertical)
-            .flop(webcamData.flip_horizontal)
-
-        if (webcamData.flip_horizontal && webcamData.flip_vertical && webcamData.rotation === 0) {
-            image
-                .rotate(180)
-                .flip(false)
-                .flop(false)
-        }
-
-        image.png({
-            quality: 80
-        })
-
-        return await image.toBuffer()
     }
 
     private triggerWebsite(url, post) {
