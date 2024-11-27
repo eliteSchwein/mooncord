@@ -42,8 +42,11 @@ export class WebcamHelper {
         }
 
         for (let webcamName in webcamConfigs) {
-            console.log(`debug: ${webcamName}`)
             const webcamConfig = webcamConfigs[webcamName]
+
+            if(webcamName === '') {
+                webcamName = 'default'
+            }
 
             if (activeWebcam === '') {
                 activeWebcam = webcamName
