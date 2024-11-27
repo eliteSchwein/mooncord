@@ -24,6 +24,8 @@ export class WebcamHelper {
         let webcamConfigs = config.getEntriesByFilter(/^webcam$/g)
         let activeWebcam = ''
 
+        console.log(webcamConfigs)
+
         if (webcamConfigs.length > 0) {
             webcamConfigs = webcamConfigs[0]
         }
