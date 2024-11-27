@@ -6,7 +6,7 @@ export default class SharpSnapshotBackend extends BaseSnapshotBackend {
         const image = sharp(this.buffer)
 
         image
-            .rotate(this.webcamData.rotation)
+            .rotate(360 - this.webcamData.rotation)
             .flip(this.webcamData.flip_vertical)
             .flop(this.webcamData.flip_horizontal)
 
