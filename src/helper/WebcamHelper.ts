@@ -104,7 +104,7 @@ export class WebcamHelper {
             logRegular('Run Webcam pre Tasks if present...')
             await this.executePostProcess(beforeStatus)
 
-            logRegular('Retrieve Webcam Snapshot...')
+            logRegular(`Retrieve Webcam ${webcamData.name} Snapshot...`)
             const res = await axios({
                 method: 'get',
                 responseType: 'arraybuffer',
