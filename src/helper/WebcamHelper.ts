@@ -118,6 +118,9 @@ export class WebcamHelper {
 
             const buffer = Buffer.from(res.data, 'binary')
 
+            logRegular('Run Webcam follow up Tasks if present...')
+            await this.executePostProcess(afterStatus)
+
             // Only run Sharp if they want the image modifed
             if (
                 (webcamData.flip_horizontal ||
@@ -126,10 +129,9 @@ export class WebcamHelper {
                 snapshotConfig.backend !== 'none'
             ) {
 
-                logRegular('Run Webcam follow up Tasks if present...')
-                await this.executePostProcess(afterStatus)
-
                 let editBuffer: Buffer
+
+                logRegular(`modify the Snapshot with the ${snapshotConfig.backend} backend...`)
 
                 switch (snapshotConfig.backend) {
                     case 'jimp':
@@ -148,17 +150,14 @@ export class WebcamHelper {
 
                 return new AttachmentBuilder(editBuffer, {name: "snapshot.png"})
             } else if(snapshotConfig.backend === 'none') {
+                logRegular('the none backend is active, the snapshot will be replaced with a empty pixel...')
+
                 const editBuffer = await new NoneSnapshotBackend(buffer, webcamData).render()
 
                 buffer.fill(0)
 
                 return new AttachmentBuilder(editBuffer, {name: "snapshot.png"})
             }
-
-            // Else just send the normal images
-
-            logRegular('Run Webcam follow up Tasks if present...')
-            await this.executePostProcess(afterStatus)
 
             return new AttachmentBuilder(buffer, {name: "snapshot.png"})
         } catch (error) {
