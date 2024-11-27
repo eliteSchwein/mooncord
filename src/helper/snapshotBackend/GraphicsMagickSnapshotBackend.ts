@@ -17,14 +17,14 @@ export default class GraphicsMagickSnapshotBackend extends BaseSnapshotBackend {
     }
 
     async handleRender() {
-        const image = m(this.buffer)
-            .rotate('black', this.webcamData.rotation)
-
         if(this.useImageMagick) {
             m.subClass({
                 imageMagick: this.useImageMagick
             })
         }
+
+        const image = m(this.buffer)
+            .rotate('black', this.webcamData.rotation)
 
         if (this.webcamData.flip_vertical) {
             image.flip()
