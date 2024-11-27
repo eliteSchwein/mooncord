@@ -5,9 +5,8 @@ export default class SharpSnapshotBackend extends BaseSnapshotBackend {
     async handleRender() {
         const image = sharp(this.buffer)
 
-        console.log(360 - this.webcamData.rotation)
         image
-            .rotate(360 - this.webcamData.rotation)
+            .rotate(this.webcamData.rotation)
             .flip(this.webcamData.flip_vertical)
             .flop(this.webcamData.flip_horizontal)
 
