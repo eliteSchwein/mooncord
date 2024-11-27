@@ -120,12 +120,11 @@ export class WebcamHelper {
 
             // Only run Sharp if they want the image modifed
             if (
-                webcamData.flip_horizontal ||
+                (webcamData.flip_horizontal ||
                 webcamData.flip_vertical ||
-                webcamData.rotation
+                webcamData.rotation) &&
+                snapshotConfig.backend !== 'none'
             ) {
-
-                buffer.fill(0)
 
                 logRegular('Run Webcam follow up Tasks if present...')
                 await this.executePostProcess(afterStatus)
@@ -136,9 +135,6 @@ export class WebcamHelper {
                     case 'jimp':
                         editBuffer = await new JimpSnapshotBackend(buffer, webcamData).render()
                         break
-                    case 'none':
-                        editBuffer = await new NoneSnapshotBackend(buffer, webcamData).render()
-                        break
                     case 'graphicksmagick':
                     case 'imagemagick':
                     case 'gm':
@@ -147,6 +143,14 @@ export class WebcamHelper {
                     default:
                         editBuffer = await new SharpSnapshotBackend(buffer, webcamData).render()
                 }
+
+                buffer.fill(0)
+
+                return new AttachmentBuilder(editBuffer, {name: "snapshot.png"})
+            } else if(snapshotConfig.backend === 'none') {
+                const editBuffer = await new NoneSnapshotBackend(buffer, webcamData).render()
+
+                buffer.fill(0)
 
                 return new AttachmentBuilder(editBuffer, {name: "snapshot.png"})
             }
