@@ -52,7 +52,10 @@ export class WebcamHelper {
                 activeWebcam = webcamName
             }
 
-            webcamConfig.snapshot_url = webcamConfig.url
+            if(webcamConfig.url) {
+                webcamConfig.snapshot_url = webcamConfig.url
+            }
+
             webcamConfig.name = webcamName
 
             webcamCache.entries[webcamName] = webcamConfig
