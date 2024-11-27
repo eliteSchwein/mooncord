@@ -101,6 +101,14 @@ export class WebcamHelper {
             if (webcamData === undefined)
                 throw new Error('Config Error: Webcam has invalid config or was not found')
 
+            if(snapshotConfig.backend === 'none') {
+                logRegular('the none backend is active, the snapshot will be replaced with a empty pixel...')
+
+                const editBuffer = await new NoneSnapshotBackend(Buffer.from('placeholder', 'utf8'), webcamData).render()
+
+                return new AttachmentBuilder(editBuffer, {name: "snapshot.png"})
+            }
+
             if (webcamData.snapshot_url.startsWith('/'))
                 webcamData.snapshot_url = `http://localhost${webcamData.snapshot_url}`
 
@@ -126,10 +134,9 @@ export class WebcamHelper {
 
             // Only run Sharp if they want the image modifed
             if (
-                (webcamData.flip_horizontal ||
+                webcamData.flip_horizontal ||
                 webcamData.flip_vertical ||
-                webcamData.rotation) &&
-                snapshotConfig.backend !== 'none'
+                webcamData.rotation
             ) {
 
                 let editBuffer: Buffer
@@ -148,14 +155,6 @@ export class WebcamHelper {
                     default:
                         editBuffer = await new SharpSnapshotBackend(buffer, webcamData).render()
                 }
-
-                buffer.fill(0)
-
-                return new AttachmentBuilder(editBuffer, {name: "snapshot.png"})
-            } else if(snapshotConfig.backend === 'none') {
-                logRegular('the none backend is active, the snapshot will be replaced with a empty pixel...')
-
-                const editBuffer = await new NoneSnapshotBackend(buffer, webcamData).render()
 
                 buffer.fill(0)
 
