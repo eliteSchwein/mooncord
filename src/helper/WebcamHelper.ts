@@ -41,8 +41,8 @@ export class WebcamHelper {
             webcamCache.entries[data.name] = data
         }
 
-        for (const webcamName in webcamConfigs) {
-            console.log(webcamName)
+        for (let webcamName in webcamConfigs) {
+            console.log(`debug: ${webcamName}`)
             const webcamConfig = webcamConfigs[webcamName]
 
             if (activeWebcam === '') {
