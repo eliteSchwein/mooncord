@@ -1,6 +1,10 @@
 'use strict'
 
 import {getEntry, setData} from "../../../utils/CacheUtil";
+import {PromptMessage} from "./PromptMessage";
+import {InviteMessage} from "./InviteMessage";
+import {BroadcastMessage} from "./BroadcastMessage";
+import {StatusHelper} from "../../../helper/StatusHelper";
 
 export class ConsoleMessage {
 
@@ -15,10 +19,22 @@ export class ConsoleMessage {
             return false
         }
 
+        const param = message.params[0]
+
         const cache = getEntry('execute')
 
         const gcodeResponse = message.params[0]
         const commandToExecute = cache.to_execute_command
+
+        const statusHelper = new StatusHelper()
+
+        if (param === '// action:cancel') {
+            statusHelper.update('stop')
+        }
+
+        await new PromptMessage().execute(param)
+        await new InviteMessage().execute(param)
+        await new BroadcastMessage().execute(param)
 
         if (!gcodeResponse.includes(commandToExecute)) {
             return false

@@ -7,7 +7,6 @@ import {UpdateNotification} from "./messages/UpdateNotification";
 import {getEntry, setData, updateData} from "../../utils/CacheUtil";
 import {FileEditNotification} from "./messages/FileEditNotification";
 import {StateUpdateNotification} from "./messages/StateUpdateNotification";
-import {GcodeResponseNotification} from "./messages/GcodeResponseNotification";
 import {PrintProgressNotification} from "./messages/PrintProgressNotification";
 import {ThrottleNotification} from "./messages/ThrottleNotification";
 import {TimelapseNotification} from "./messages/TimelapseNotification";
@@ -65,8 +64,6 @@ export class MessageHandler {
             if (await new DisplayUpdateNotification().parse(messageData))
                 return
             if (await new PrintProgressNotification().parse(messageData))
-                return
-            if (await new GcodeResponseNotification().parse(messageData))
                 return
             if (await new ThrottleNotification().parse(messageData))
                 return
