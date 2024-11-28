@@ -2,98 +2,106 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://wiki.tludwig.dev/mooncord/</loc>
-         <lastmod>2024-11-16</lastmod>
+         <lastmod>2024-11-28</lastmod>
     </url>
     <url>
          <loc>https://wiki.tludwig.dev/mooncord/install/</loc>
-         <lastmod>2024-11-16</lastmod>
+         <lastmod>2024-11-28</lastmod>
     </url>
     <url>
          <loc>https://wiki.tludwig.dev/mooncord/sites/Usage/Discord/admin/</loc>
-         <lastmod>2024-11-16</lastmod>
+         <lastmod>2024-11-28</lastmod>
     </url>
     <url>
          <loc>https://wiki.tludwig.dev/mooncord/sites/Usage/Discord/config/</loc>
-         <lastmod>2024-11-16</lastmod>
+         <lastmod>2024-11-28</lastmod>
     </url>
     <url>
          <loc>https://wiki.tludwig.dev/mooncord/sites/Usage/Discord/dump/</loc>
-         <lastmod>2024-11-16</lastmod>
+         <lastmod>2024-11-28</lastmod>
     </url>
     <url>
          <loc>https://wiki.tludwig.dev/mooncord/sites/Usage/Discord/editchannel/</loc>
-         <lastmod>2024-11-16</lastmod>
+         <lastmod>2024-11-28</lastmod>
     </url>
     <url>
          <loc>https://wiki.tludwig.dev/mooncord/sites/Usage/Discord/emergencystop/</loc>
-         <lastmod>2024-11-16</lastmod>
+         <lastmod>2024-11-28</lastmod>
     </url>
     <url>
          <loc>https://wiki.tludwig.dev/mooncord/sites/Usage/Discord/execute/</loc>
-         <lastmod>2024-11-16</lastmod>
+         <lastmod>2024-11-28</lastmod>
     </url>
     <url>
          <loc>https://wiki.tludwig.dev/mooncord/sites/Usage/Discord/fileinfo/</loc>
-         <lastmod>2024-11-16</lastmod>
+         <lastmod>2024-11-28</lastmod>
     </url>
     <url>
          <loc>https://wiki.tludwig.dev/mooncord/sites/Usage/Discord/getuserid/</loc>
-         <lastmod>2024-11-16</lastmod>
+         <lastmod>2024-11-28</lastmod>
     </url>
     <url>
          <loc>https://wiki.tludwig.dev/mooncord/sites/Usage/Discord/history/</loc>
-         <lastmod>2024-11-16</lastmod>
+         <lastmod>2024-11-28</lastmod>
     </url>
     <url>
          <loc>https://wiki.tludwig.dev/mooncord/sites/Usage/Discord/info/</loc>
-         <lastmod>2024-11-16</lastmod>
+         <lastmod>2024-11-28</lastmod>
     </url>
     <url>
          <loc>https://wiki.tludwig.dev/mooncord/sites/Usage/Discord/listgcodes/</loc>
-         <lastmod>2024-11-16</lastmod>
+         <lastmod>2024-11-28</lastmod>
     </url>
     <url>
          <loc>https://wiki.tludwig.dev/mooncord/sites/Usage/Discord/listlogs/</loc>
-         <lastmod>2024-11-16</lastmod>
+         <lastmod>2024-11-28</lastmod>
     </url>
     <url>
          <loc>https://wiki.tludwig.dev/mooncord/sites/Usage/Discord/listtimelapses/</loc>
-         <lastmod>2024-11-16</lastmod>
+         <lastmod>2024-11-28</lastmod>
     </url>
     <url>
          <loc>https://wiki.tludwig.dev/mooncord/sites/Usage/Discord/notifyme/</loc>
-         <lastmod>2024-11-16</lastmod>
+         <lastmod>2024-11-28</lastmod>
     </url>
     <url>
          <loc>https://wiki.tludwig.dev/mooncord/sites/Usage/Discord/pidtune/</loc>
-         <lastmod>2024-11-16</lastmod>
+         <lastmod>2024-11-28</lastmod>
     </url>
     <url>
          <loc>https://wiki.tludwig.dev/mooncord/sites/Usage/Discord/power/</loc>
-         <lastmod>2024-11-16</lastmod>
+         <lastmod>2024-11-28</lastmod>
     </url>
     <url>
          <loc>https://wiki.tludwig.dev/mooncord/sites/Usage/Discord/preheat/</loc>
-         <lastmod>2024-11-16</lastmod>
+         <lastmod>2024-11-28</lastmod>
     </url>
     <url>
          <loc>https://wiki.tludwig.dev/mooncord/sites/Usage/Discord/printjob/</loc>
-         <lastmod>2024-11-16</lastmod>
+         <lastmod>2024-11-28</lastmod>
     </url>
     <url>
          <loc>https://wiki.tludwig.dev/mooncord/sites/Usage/Discord/reset/</loc>
-         <lastmod>2024-11-16</lastmod>
+         <lastmod>2024-11-28</lastmod>
     </url>
     <url>
          <loc>https://wiki.tludwig.dev/mooncord/sites/Usage/Discord/restart/</loc>
-         <lastmod>2024-11-16</lastmod>
+         <lastmod>2024-11-28</lastmod>
     </url>
     <url>
          <loc>https://wiki.tludwig.dev/mooncord/sites/Usage/Discord/status/</loc>
-         <lastmod>2024-11-16</lastmod>
+         <lastmod>2024-11-28</lastmod>
     </url>
     <url>
          <loc>https://wiki.tludwig.dev/mooncord/sites/Usage/Discord/systeminfo/</loc>
-         <lastmod>2024-11-16</lastmod>
+         <lastmod>2024-11-28</lastmod>
+    </url>
+    <url>
+         <loc>https://wiki.tludwig.dev/mooncord/sites/Usage/Discord/temp/</loc>
+         <lastmod>2024-11-28</lastmod>
+    </url>
+    <url>
+         <loc>https://wiki.tludwig.dev/mooncord/sites/Usage/Discord/tune/</loc>
+         <lastmod>2024-11-28</lastmod>
     </url>
 </urlset>

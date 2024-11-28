@@ -28,6 +28,9 @@ nav:
           - /reset: sites/Usage/Discord/reset.md
           - /restart: sites/Usage/Discord/restart.md
           - /status: sites/Usage/Discord/status.md
+          - /systeminfo: sites/Usage/Discord/systeminfo.md
+          - /temp: sites/Usage/Discord/temp.md
+          - /tune: sites/Usage/Discord/tune.md
 markdown_extensions:
   - pymdownx.highlight:
       anchor_linenums: true
