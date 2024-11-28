@@ -45,6 +45,14 @@ nav:
       - advanced:
           - "[status]": sites/Configuration/Advanced/status.md
           - "[snapshot]": sites/Configuration/Advanced/snapshot.md
+          - "[message]": sites/Configuration/Advanced/message.md
+          - "[general]": sites/Configuration/Advanced/general.md
+          - "[language]": sites/Configuration/Advanced/language.md
+          - embed:
+              - "[color NAME]": sites/Configuration/Advanced/Embed/color.md
+              - "[icon NAME]": sites/Configuration/Advanced/Embed/icon.md
+              - "[status NAME]": sites/Configuration/Advanced/Embed/status.md
+              - "[embed NAME]": sites/Configuration/Advanced/Embed/embed.md
 markdown_extensions:
   - pymdownx.highlight:
       anchor_linenums: true
@@ -99,7 +107,7 @@ theme:
       question: fontawesome/solid/circle-question
       warning: fontawesome/solid/triangle-exclamation
       failure: fontawesome/solid/bomb
-      danger: fontawesome/solid/skull
+      danger: fontawesome/solid/triangle-exclamation
       bug: fontawesome/solid/robot
       example: fontawesome/solid/flask
       quote: fontawesome/solid/quote-left
