@@ -38,6 +38,13 @@ nav:
       - OS:
           - systemctl: sites/Usage/OS/systemctl.md
           - docker: sites/Usage/OS/docker.md
+  - Configuration:
+      - "[connection]": sites/Configuration/connection.md
+      - "[logger]": sites/Configuration/logger.md
+      - "[webcam NAME]": sites/Configuration/webcam.md
+      - advanced:
+          - "[status]": sites/Configuration/Advanced/status.md
+          - "[snapshot]": sites/Configuration/Advanced/snapshot.md
 markdown_extensions:
   - pymdownx.highlight:
       anchor_linenums: true
@@ -55,6 +62,7 @@ markdown_extensions:
   - admonition
   - pymdownx.details
   - pymdownx.superfences
+  - tables
 theme:
   palette:
     - scheme: slate
