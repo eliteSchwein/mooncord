@@ -104,4 +104,24 @@
          <loc>https://wiki.tludwig.dev/mooncord/sites/Usage/Discord/tune/</loc>
          <lastmod>2024-11-28</lastmod>
     </url>
+    <url>
+         <loc>https://wiki.tludwig.dev/mooncord/sites/Usage/GCode/broadcast/</loc>
+         <lastmod>2024-11-28</lastmod>
+    </url>
+    <url>
+         <loc>https://wiki.tludwig.dev/mooncord/sites/Usage/GCode/invite/</loc>
+         <lastmod>2024-11-28</lastmod>
+    </url>
+    <url>
+         <loc>https://wiki.tludwig.dev/mooncord/sites/Usage/GCode/prompt/</loc>
+         <lastmod>2024-11-28</lastmod>
+    </url>
+    <url>
+         <loc>https://wiki.tludwig.dev/mooncord/sites/Usage/OS/docker/</loc>
+         <lastmod>2024-11-28</lastmod>
+    </url>
+    <url>
+         <loc>https://wiki.tludwig.dev/mooncord/sites/Usage/OS/systemctl/</loc>
+         <lastmod>2024-11-28</lastmod>
+    </url>
 </urlset>
