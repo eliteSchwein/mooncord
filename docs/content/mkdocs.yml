@@ -31,6 +31,13 @@ nav:
           - /systeminfo: sites/Usage/Discord/systeminfo.md
           - /temp: sites/Usage/Discord/temp.md
           - /tune: sites/Usage/Discord/tune.md
+      - GCode:
+          - invite: sites/Usage/GCode/invite.md
+          - broadcast: sites/Usage/GCode/broadcast.md
+          - prompt: sites/Usage/GCode/prompt.md
+      - OS:
+          - systemctl: sites/Usage/OS/systemctl.md
+          - docker: sites/Usage/OS/docker.md
 markdown_extensions:
   - pymdownx.highlight:
       anchor_linenums: true
