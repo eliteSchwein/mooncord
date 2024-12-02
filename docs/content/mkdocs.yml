@@ -54,6 +54,8 @@ nav:
               - "[icon NAME]": sites/Configuration/Advanced/Embed/icon.md
               - "[status NAME]": sites/Configuration/Advanced/Embed/status.md
               - "[embed NAME]": sites/Configuration/Advanced/Embed/embed.md
+  - Misc:
+      - "Setup Mode": sites/Misc/setupmode.md
 markdown_extensions:
   - pymdownx.highlight:
       anchor_linenums: true
