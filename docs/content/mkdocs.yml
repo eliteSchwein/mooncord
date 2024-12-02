@@ -56,6 +56,7 @@ nav:
               - "[embed NAME]": sites/Configuration/Advanced/Embed/embed.md
   - Misc:
       - "Setup Mode": sites/Misc/setupmode.md
+      - "Multi Installation": sites/Misc/multiinstall.md
 markdown_extensions:
   - pymdownx.highlight:
       anchor_linenums: true

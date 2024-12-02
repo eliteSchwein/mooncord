@@ -3,10 +3,14 @@
 !!! warning
     the configuration is for advanced users only.
 
-`temp_unit: °C`  
+```c
+temp_unit: °C
+```
 <small>unit for the temperature.</small>  
-
-`custom_info: Thanks for installing MoonCord and Happy Printing ❤`  
+<br>
+```c
+custom_info: Thanks for installing MoonCord and Happy Printing ❤
+```
 <small>custom message in the info command.</small>  
 
 <br><br>

@@ -1,7 +1,11 @@
 # /admin user/role
 
-`/admin user`  
+```shell
+/admin user <user>
+```
 <small>this command adds or removes a user as Bot Admin.</small>
 <br><br>
-`/admin role`  
+```shell
+/admin role <role>
+```
 <small>this command adds or removes a role as Bot Admin.</small>

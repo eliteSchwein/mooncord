@@ -1,6 +1,8 @@
 # /listgcodes
 
-`/listgcodes`  
+```shell
+/listgcodes
+```
 <small>open gcode files overview.</small>  
 <br><br>
 ![Screenshot](../../../img/discord/listgcodes_1.png)

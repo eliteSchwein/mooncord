@@ -18,7 +18,7 @@
       
       
       <link rel="icon" href="../../../../img/logo.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.42">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.44">
     
     
       
@@ -1545,6 +1545,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Misc/multiinstall/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Multi Installation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1598,7 +1619,8 @@
 <p class="admonition-title">Warning</p>
 <p>the configuration is for advanced users only.</p>
 </div>
-<p><code>backend: sharp</code><br />
+<p><div class="language-c highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nl">backend</span><span class="p">:</span><span class="w"> </span><span class="n">sharp</span>
+</span></code></pre></div>
 <small>define the backend of the snapshot converter.</small>  </p>
 <table>
 <thead>
@@ -1635,35 +1657,53 @@
 <p class="admonition-title">Info</p>
 <p>the graphicsmagick (gm) backend requires that you install graphicsmagick (on debian <code>sudo apt install graphicsmagick</code>) manuelly.</p>
 </div>
-<p><code>before_snapshot_commands:</code><br />
-<small>add commands before the snapshot (how they should look like is a bit below).</small>  </p>
-<p><code>enable_before_snapshot_commands: false</code><br />
-<small>enable commands before snapshot.</small></p>
-<p><code>delay_before_snapshot_commands: 0</code><br />
-<small>delay between commands.</small></p>
-<p><code>after_snapshot_commands:</code><br />
-<small>add commands after the snapshot (how they should look like is a bit below).</small></p>
-<p><code>enable_after_snapshot_commands: false</code><br />
-<small>enable commands after snapshot.</small></p>
-<p><code>delay_after_snapshot_commands: 0</code><br />
+<p><br>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nl">before_snapshot_commands</span><span class="p">:</span>
+</span></code></pre></div>
+<small>add commands before the snapshot (how they should look like is a bit below).</small> <br />
+<br>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nl">enable_before_snapshot_commands</span><span class="p">:</span><span class="w"> </span><span class="nb">false</span>
+</span></code></pre></div>
+<small>enable commands before snapshot.</small> <br />
+<br>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nl">delay_before_snapshot_commands</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span>
+</span></code></pre></div>
+<small>delay between commands.</small> <br />
+<br>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nl">after_snapshot_commands</span><span class="p">:</span>
+</span></code></pre></div>
+<small>add commands after the snapshot (how they should look like is a bit below).</small> <br />
+<br>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nl">enable_after_snapshot_commands</span><span class="p">:</span><span class="w"> </span><span class="nb">false</span>
+</span></code></pre></div>
+<small>enable commands after snapshot.</small> <br />
+<br>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nl">delay_after_snapshot_commands</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span>
+</span></code></pre></div>
 <small>delay between commands.</small><br />
 <br><br>
-command configuration:</p>
-<p><code>- gcode: GCODE</code><br />
-<small>trigger a gcode command.</small></p>
-<p><code>- website: URL</code><br />
-<small>trigger a get request for a website.</small></p>
-<p><code>- website_post: URL</code><br />
+command configuration:
+<br>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="o">-</span><span class="w"> </span><span class="n">gcode</span><span class="o">:</span><span class="w"> </span><span class="n">GCODE</span>
+</span></code></pre></div>
+<small>trigger a gcode command.</small>
+<br>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="o">-</span><span class="w"> </span><span class="n">website</span><span class="o">:</span><span class="w"> </span><span class="n">URL</span>
+</span></code></pre></div>
+<small>trigger a get request for a website.</small>
+<br>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="o">-</span><span class="w"> </span><span class="n">website_post</span><span class="o">:</span><span class="w"> </span><span class="n">URL</span>
+</span></code></pre></div>
 <small>trigger a get post for a website.</small></p>
 <p><br><br>
-<div class="language-console highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="go">[snapshot]</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="go">backend: sharp</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="go">before_snapshot_commands:</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="go">enable_before_snapshot_commands: false</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="go">delay_before_snapshot_commands: 0</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="go">after_snapshot_commands:</span>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="go">enable_after_snapshot_commands: false</span>
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="go">delay_after_snapshot_commands: 0</span>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="go">[snapshot]</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="go">backend: sharp</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="go">before_snapshot_commands:</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="go">enable_before_snapshot_commands: false</span>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="go">delay_before_snapshot_commands: 0</span>
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="go">after_snapshot_commands:</span>
+</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="go">enable_after_snapshot_commands: false</span>
+</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="go">delay_after_snapshot_commands: 0</span>
 </span></code></pre></div>
 <small>default configuration.</small></p>
 

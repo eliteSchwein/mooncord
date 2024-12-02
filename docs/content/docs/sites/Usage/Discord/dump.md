@@ -1,7 +1,11 @@
 # /dump database/cache
 
-`/dump database`  
+```shell
+/dump database
+```
 <small>sends a dump of the mooncord database.</small>
 <br><br>
-`/dump cache`  
+```shell
+/dump cache
+```
 <small>sends a dump of the mooncord cache.</small>

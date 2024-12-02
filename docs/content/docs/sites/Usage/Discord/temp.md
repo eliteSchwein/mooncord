@@ -1,7 +1,9 @@
 # /temp
 
-`/temp`  
-<small>shows the temperature embed.</small>
+```shell
+/temp
+```
+<small>shows the temperature embed.</small>  
 <br><br>
 ![Screenshot](../../../img/discord/temp_1.png)
 ```console

@@ -1,6 +1,8 @@
 # /listtimelapses
 
-`/listtimelapses`  
+```shell
+/listtimelapses
+```
 <small>open gcode files overview.</small>  
 <br><br>
 ![Screenshot](../../../img/discord/listtimelapses_1.png)

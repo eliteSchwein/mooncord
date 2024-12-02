@@ -18,7 +18,7 @@
       
       
       <link rel="icon" href="../../../img/logo.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.42">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.44">
     
     
       
@@ -1545,6 +1545,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Misc/multiinstall/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Multi Installation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1594,23 +1615,32 @@
 
 
 <h1 id="connection">[connection]</h1>
-<p><code>moonraker_socket_url:</code><br />
-<small>websocket url for moonraker, only fill this when the socket url is different from moonraker_url.</small>  </p>
-<p><code>moonraker_url: http://127.0.0.1</code><br />
-<small>website url for moonraker.</small>  </p>
-<p><code>moonraker_token:</code><br />
-<small>moonraker api token, only fill this when you have force_logins enabled in your moonraker config.</small></p>
-<p><code>moonraker_retry_interval: 2</code><br />
-<small>reconnecting interval in seconds.</small>  </p>
-<p><code>bot_token: ASDASD12231ADASDA</code><br />
+<p><div class="language-c highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nl">moonraker_socket_url</span><span class="p">:</span>
+</span></code></pre></div>
+<small>websocket url for moonraker, only fill this when the socket url is different from moonraker_url.</small>
+<br><br />
+<div class="language-c highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nl">moonraker_url</span><span class="p">:</span><span class="w"> </span><span class="n">http</span><span class="o">:</span><span class="c1">//127.0.0.1</span>
+</span></code></pre></div>
+<small>website url for moonraker.</small><br />
+<br>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nl">moonraker_token</span><span class="p">:</span>
+</span></code></pre></div>
+<small>moonraker api token, only fill this when you have force_logins enabled in your moonraker config.</small><br />
+<br>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nl">moonraker_retry_interval</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span>
+</span></code></pre></div>
+<small>reconnecting interval in seconds.</small><br />
+<br>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nl">bot_token</span><span class="p">:</span><span class="w"> </span><span class="n">ASDASD12231ADASDA</span>
+</span></code></pre></div>
 <small>discord bot token, see <a href="/mooncord/install/#create-discord-application">Preparations</a>.</small></p>
 <p><br><br>
-<div class="language-console highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="go">[connection]</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="go">moonraker_socket_url:</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="go">moonraker_url: http://127.0.0.1</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="go">moonraker_token:</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="go">moonraker_retry_interval: 2</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="go">bot_token:</span>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="go">[connection]</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="go">moonraker_socket_url:</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="go">moonraker_url: http://127.0.0.1</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="go">moonraker_token:</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="go">moonraker_retry_interval: 2</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="go">bot_token:</span>
 </span></code></pre></div>
 <small>default configuration.</small></p>
 

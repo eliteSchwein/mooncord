@@ -6,10 +6,14 @@
 !!! danger
     the configuration for embeds is complicated. very complicated, only touch the configuration if you are 100% sure that you know what you are doing. if you missconfigure something the bot will break. **there are no fallbacks.**
 
-`color: COLOR`  
-<small>Color Hex Code without #.</small>
-
-`image: IMAGE`
+```c
+color: COLOR
+```
+<small>Color Hex Code without #.</small>  
+<br>
+```c
+image: IMAGE
+```
 
 | Name              | Description                                              |
 |-------------------|----------------------------------------------------------|
@@ -21,24 +25,29 @@
 | excludeGraph      | use the exclude graph image                              |
 | *.png             | use a image from the assets                              |
 
-`footer: FOOTER`  
-<small>footer of the embed (you can also use unicode icons).</small>
-
-`timestamp: true`  
-<small>show the timestamp of the embed.</small>
-
+<br>
+```c
+footer: FOOTER
+```
+<small>footer of the embed (you can also use unicode icons).</small>  
+<br>
+```c
+timestamp: true
+```
+<small>show the timestamp of the embed.</small>  
+<br>
 ```console
 select_menus: 
 - SELECTION
 ```
-<small>add select menu(es) to the embed.</small>
-
+<small>add select menu(es) to the embed.</small>  
+<br>
 ```console
 buttons: 
 - BUTTON
 ```
-<small>add select button(s) to the embed.</small>
-
+<small>add select button(s) to the embed.</small>  
+<br>
 fields:
 ```console
 field1_name: NAME
@@ -46,8 +55,8 @@ field1_value: VALUE
 field2_name: NAME
 field2_value: VALUE
 ```
-<small>add fields to the embed.</small>
-
+<small>add fields to the embed.</small>  
+<br>
 ```console
 partials: 
 - PARTIAL
@@ -69,16 +78,24 @@ partials:
 !!! warning
     the configuration below is merged from the locale.
 
-`description: DESCRIPTION`  
-<small>description of the embed (you can also use unicode icons and some discord markdown).</small>
-
-`content: CONTENT`  
-<small>content of the embed.</small>
-
-`title: TITLE`  
-<small>title of the embed.</small>
-
-`activity: ACTIVITY`  
+```c
+description: DESCRIPTION
+```
+<small>description of the embed (you can also use unicode icons and some discord markdown).</small>  
+<br>
+```c
+content: CONTENT
+```
+<small>content of the embed.</small>  
+<br>
+```c
+title: TITLE
+```
+<small>title of the embed.</small>  
+<br>
+```c
+activity: ACTIVITY
+```
 <small>activity message (in custom mode it also supports unicode icons, you set the type in [[status]](/mooncord/sites/Configuration/Advanced/Embed/status/)).</small>
 
 <br><br>

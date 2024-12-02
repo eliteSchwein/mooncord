@@ -3,19 +3,29 @@
 !!! warning
     the configuration is for advanced users only.
 
-`use_percent: true`  
+```c
+use_percent: true
+```
 <small>use percent as interval for the automatic status messages.</small>  
-
-`update_interval: 10`  
+<br>
+```c
+update_interval: 10
+```
 <small>interval of the automatic status messages in seconds or percent (if use_percent is active).</small>  
-
-`cooldown: 5`  
-<small>cooldown for automatic status messages.</small>
-
-`min_interval: 15`  
-<small>minimum interval between automatic status messages.</small>
-
-`gcode_timeout: 600`  
+<br>
+```c
+cooldown: 5
+```
+<small>cooldown for automatic status messages.</small>  
+<br>
+```c
+min_interval: 15
+```
+<small>minimum interval between automatic status messages.</small>  
+<br>
+```c
+gcode_timeout: 600
+```
 <small>timeout for triggered gcode (for example macro button or snapshot command).</small>
 
 <br><br>

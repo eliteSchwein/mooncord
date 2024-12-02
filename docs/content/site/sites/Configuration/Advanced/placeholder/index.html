@@ -18,7 +18,7 @@
       
       
       <link rel="icon" href="../../../../img/logo.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.42">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.44">
     
     
       
@@ -1545,6 +1545,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Misc/multiinstall/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Multi Installation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1602,27 +1623,48 @@
 <p class="admonition-title">Danger</p>
 <p>using the wrong placeholder could cause the bot to fail, also its possible that you accidentally leak data that you dont want to leak (for example the bot token). <strong>there are no fallbacks.</strong></p>
 </div>
-<p><code>${key.key.key}</code><br />
-<small>this just prints directly from the cache, you can dump the cache with the <a href="/mooncord/sites/Usage/Discord/dump/">dump command</a>.</small>  </p>
-<p><code>$clear</code><br />
-<small>places a empty string.</small>  </p>
-<p><code>${current_timestamp}</code><br />
-<small>places the current timestamp.</small>  </p>
-<p><code>${icon:id}</code><br />
-<small>places a icon from the <a href="/mooncord/sites/Configuration/Advanced/Embed/icon/">config</a>.</small></p>
-<p><code>${percent:digits:value}</code><br />
-<small>convert a float/double to a percent value.</small>  </p>
-<p><code>${reduce:digits:factor:value}</code><br />
-<small>reduce a value by factor.</small>  </p>
-<p><code>${round:digits:value}</code><br />
-<small>round a value.</small>  </p>
-<p><code>${max:max:value}</code><br />
-<small>limit a value to max (for example max is 5 and value is 6, this function will limit to 5).</small>  </p>
-<p><code>${formatDate:value}</code><br />
-<small>format Date.</small>  </p>
-<p><code>${formatTime:value}</code><br />
-<small>format Time.</small>  </p>
-<p><code>${timestamp:value}</code><br />
+<p><div class="language-c highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">$</span><span class="p">{</span><span class="n">key</span><span class="p">.</span><span class="n">key</span><span class="p">.</span><span class="n">key</span><span class="p">}</span>
+</span></code></pre></div>
+<small>this just prints directly from the cache, you can dump the cache with the <a href="/mooncord/sites/Usage/Discord/dump/">dump command</a>.</small><br />
+<br>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">$clear</span>
+</span></code></pre></div>
+<small>places a empty string.</small><br />
+<br>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">$</span><span class="p">{</span><span class="n">current_timestamp</span><span class="p">}</span>
+</span></code></pre></div>
+<small>places the current timestamp.</small>  <br />
+<br>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">$</span><span class="p">{</span><span class="n">icon</span><span class="o">:</span><span class="n">id</span><span class="p">}</span>
+</span></code></pre></div>
+<small>places a icon from the <a href="/mooncord/sites/Configuration/Advanced/Embed/icon/">config</a>.</small><br />
+<br>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">$</span><span class="p">{</span><span class="n">percent</span><span class="o">:</span><span class="n">digits</span><span class="o">:</span><span class="n">value</span><span class="p">}</span>
+</span></code></pre></div>
+<small>convert a float/double to a percent value.</small><br />
+<br>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">$</span><span class="p">{</span><span class="n">reduce</span><span class="o">:</span><span class="n">digits</span><span class="o">:</span><span class="n">factor</span><span class="o">:</span><span class="n">value</span><span class="p">}</span>
+</span></code></pre></div>
+<small>reduce a value by factor.</small><br />
+<br>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">$</span><span class="p">{</span><span class="n">round</span><span class="o">:</span><span class="n">digits</span><span class="o">:</span><span class="n">value</span><span class="p">}</span>
+</span></code></pre></div>
+<small>round a value.</small><br />
+<br>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">$</span><span class="p">{</span><span class="n">max</span><span class="o">:</span><span class="n">max</span><span class="o">:</span><span class="n">value</span><span class="p">}</span>
+</span></code></pre></div>
+<small>limit a value to max (for example max is 5 and value is 6, this function will limit to 5).</small><br />
+<br>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="n">$</span><span class="p">{</span><span class="n">formatDate</span><span class="o">:</span><span class="n">value</span><span class="p">}</span>
+</span></code></pre></div>
+<small>format Date.</small><br />
+<br>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="n">$</span><span class="p">{</span><span class="n">formatTime</span><span class="o">:</span><span class="n">value</span><span class="p">}</span>
+</span></code></pre></div>
+<small>format Time.</small><br />
+<br>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="n">$</span><span class="p">{</span><span class="n">timestamp</span><span class="o">:</span><span class="n">value</span><span class="p">}</span>
+</span></code></pre></div>
 <small>convert value to timestamp.</small></p>
 
 

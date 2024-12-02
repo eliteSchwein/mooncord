@@ -3,16 +3,25 @@
 !!! warning
     the configuration is for advanced users only.
 
-`date_locale: de-DE`  
+<br>
+```c
+date_locale: de-DE
+```
 <small>locale for dates.</small>  
-
-`messages: en`  
+<br>
+```c
+messages: en
+```
 <small>locale for the messages.</small>  
-
-`commands: en`  
-<small>locale for the commands.</small>
-
-`buttons_use_commands_language: false`  
+<br>
+```c
+commands: en
+```
+<small>locale for the commands.</small>  
+<br>
+```c
+buttons_use_commands_language: false
+```
 <small>use command locale for button.</small>
 
 <br><br>

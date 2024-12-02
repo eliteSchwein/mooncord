@@ -18,7 +18,7 @@
       
       
       <link rel="icon" href="../../../../../img/logo.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.42">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.44">
     
     
       
@@ -1545,6 +1545,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Misc/multiinstall/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Multi Installation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1598,26 +1619,34 @@
 <p class="admonition-title">Warning</p>
 <p>the configuration is for advanced users only.</p>
 </div>
-<p><code>embed_id: EMBED</code><br />
-<small>Embed for status.</small></p>
-<p><code>allow_same: false</code><br />
-<small>allow that the same status can get again triggered.</small></p>
-<p><div class="language-console highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="go">prevent: </span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="go">- OTHER_STATUS</span>
+<p><div class="language-c highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nl">embed_id</span><span class="p">:</span><span class="w"> </span><span class="n">EMBED</span>
 </span></code></pre></div>
-<small>prevent other status states.</small></p>
-<p><code>activity_status: dnd</code><br />
-<small>bot status (the small circle icon on the profile).</small></p>
-<p><code>activity_type: CUSTOM</code><br />
+<small>Embed for status.</small><br />
+<br>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nl">allow_same</span><span class="p">:</span><span class="w"> </span><span class="nb">false</span>
+</span></code></pre></div>
+<small>allow that the same status can get again triggered.</small><br />
+<br>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="go">prevent: </span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="go">- OTHER_STATUS</span>
+</span></code></pre></div>
+<small>prevent other status states.</small><br />
+<br>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nl">activity_status</span><span class="p">:</span><span class="w"> </span><span class="n">dnd</span>
+</span></code></pre></div>
+<small>bot status (the small circle icon on the profile).</small><br />
+<br>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nl">activity_type</span><span class="p">:</span><span class="w"> </span><span class="n">CUSTOM</span>
+</span></code></pre></div>
 <small>bot status type.</small></p>
 <p><br><br>
-<div class="language-console highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="go">[status shutdown]</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="go">embed_id: shutdown</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="go">allow_same: false</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="go">prevent:</span>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="go">- pause</span>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="go">activity_status: dnd</span>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="go">activity_type: CUSTOM</span>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="go">[status shutdown]</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="go">embed_id: shutdown</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="go">allow_same: false</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="go">prevent:</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="go">- pause</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="go">activity_status: dnd</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="go">activity_type: CUSTOM</span>
 </span></code></pre></div>
 <small>shutdown configuration merged with locale as reference.</small></p>
 

@@ -1,6 +1,8 @@
 # /history
 
-`/history`  
+```shell
+/history
+```
 <small>open print history.</small>  
 <br><br>
 ![Screenshot](../../../img/discord/history_1.png)  

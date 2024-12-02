@@ -3,7 +3,9 @@
 !!! warning
     the configuration is for advanced users only.
 
-`backend: sharp`  
+```c
+backend: sharp
+```
 <small>define the backend of the snapshot converter.</small>  
 
 | Backend             | Description                                                                      | Performance |
@@ -15,34 +17,53 @@
 
 !!! info
     the graphicsmagick (gm) backend requires that you install graphicsmagick (on debian `sudo apt install graphicsmagick`) manuelly.
-
-`before_snapshot_commands:`  
-<small>add commands before the snapshot (how they should look like is a bit below).</small>  
-
-`enable_before_snapshot_commands: false`  
-<small>enable commands before snapshot.</small>
-
-`delay_before_snapshot_commands: 0`  
-<small>delay between commands.</small>
-
-`after_snapshot_commands:`  
-<small>add commands after the snapshot (how they should look like is a bit below).</small>
-
-`enable_after_snapshot_commands: false`  
-<small>enable commands after snapshot.</small>
-
-`delay_after_snapshot_commands: 0`  
+  
+<br>
+```c
+before_snapshot_commands:
+```
+<small>add commands before the snapshot (how they should look like is a bit below).</small>   
+<br>
+```c
+enable_before_snapshot_commands: false
+```
+<small>enable commands before snapshot.</small>   
+<br>
+```c
+delay_before_snapshot_commands: 0
+```
+<small>delay between commands.</small>   
+<br>
+```c
+after_snapshot_commands:
+```
+<small>add commands after the snapshot (how they should look like is a bit below).</small>   
+<br>
+```c
+enable_after_snapshot_commands: false
+```
+<small>enable commands after snapshot.</small>   
+<br>
+```c
+delay_after_snapshot_commands: 0
+```
 <small>delay between commands.</small>  
 <br><br>
 command configuration:
-
-`- gcode: GCODE`  
+<br>
+```c
+- gcode: GCODE
+```
 <small>trigger a gcode command.</small>
-
-`- website: URL`  
+<br>
+```c
+- website: URL
+```
 <small>trigger a get request for a website.</small>
-
-`- website_post: URL`  
+<br>
+```c
+- website_post: URL
+```
 <small>trigger a get post for a website.</small>
 
 <br><br>

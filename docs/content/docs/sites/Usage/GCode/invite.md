@@ -1,4 +1,6 @@
-# RESPOND PREFIX=mooncord.invite MSG=get
+# invite gcode command
 
-`RESPOND PREFIX=mooncord.invite MSG=get`  
+```shell
+RESPOND PREFIX=mooncord.invite MSG=get
+```
 <small>get the bot invite url via gcode.</small>

@@ -3,7 +3,9 @@
 !!! warning
     the configuration is for advanced users only.
 
-`color: COLOR`  
+```c
+color: COLOR
+```
 <small>Color Hex Code without #.</small>  
 
 <br><br>

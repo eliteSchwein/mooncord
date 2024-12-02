@@ -3,22 +3,30 @@
 !!! warning
     the configuration is for advanced users only.
 
-`embed_id: EMBED`  
-<small>Embed for status.</small>
-
-`allow_same: false`  
-<small>allow that the same status can get again triggered.</small>
-
+```c
+embed_id: EMBED
+```
+<small>Embed for status.</small>  
+<br>
+```c
+allow_same: false
+```
+<small>allow that the same status can get again triggered.</small>  
+<br>
 ```console
 prevent: 
 - OTHER_STATUS
 ```
-<small>prevent other status states.</small>
-
-`activity_status: dnd`  
-<small>bot status (the small circle icon on the profile).</small>
-
-`activity_type: CUSTOM`  
+<small>prevent other status states.</small>  
+<br>
+```c
+activity_status: dnd
+```
+<small>bot status (the small circle icon on the profile).</small>  
+<br>
+```c
+activity_type: CUSTOM
+```
 <small>bot status type.</small>
 
 <br><br>

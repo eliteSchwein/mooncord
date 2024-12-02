@@ -18,7 +18,7 @@
       
       
       <link rel="icon" href="../../../../../img/logo.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.42">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.44">
     
     
       
@@ -1545,6 +1545,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Misc/multiinstall/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Multi Installation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1602,9 +1623,12 @@
 <p class="admonition-title">Danger</p>
 <p>the configuration for embeds is complicated. very complicated, only touch the configuration if you are 100% sure that you know what you are doing. if you missconfigure something the bot will break. <strong>there are no fallbacks.</strong></p>
 </div>
-<p><code>color: COLOR</code><br />
-<small>Color Hex Code without #.</small></p>
-<p><code>image: IMAGE</code></p>
+<p><div class="language-c highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nl">color</span><span class="p">:</span><span class="w"> </span><span class="n">COLOR</span>
+</span></code></pre></div>
+<small>Color Hex Code without #.</small><br />
+<br>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nl">image</span><span class="p">:</span><span class="w"> </span><span class="n">IMAGE</span>
+</span></code></pre></div></p>
 <table>
 <thead>
 <tr>
@@ -1643,28 +1667,36 @@
 </tr>
 </tbody>
 </table>
-<p><code>footer: FOOTER</code><br />
-<small>footer of the embed (you can also use unicode icons).</small></p>
-<p><code>timestamp: true</code><br />
-<small>show the timestamp of the embed.</small></p>
-<p><div class="language-console highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="go">select_menus: </span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="go">- SELECTION</span>
+<p><br>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nl">footer</span><span class="p">:</span><span class="w"> </span><span class="n">FOOTER</span>
 </span></code></pre></div>
-<small>add select menu(es) to the embed.</small></p>
-<p><div class="language-console highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="go">buttons: </span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="go">- BUTTON</span>
+<small>footer of the embed (you can also use unicode icons).</small><br />
+<br>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nl">timestamp</span><span class="p">:</span><span class="w"> </span><span class="nb">true</span>
 </span></code></pre></div>
-<small>add select button(s) to the embed.</small></p>
-<p>fields:
-<div class="language-console highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="go">field1_name: NAME</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="go">field1_value: VALUE</span>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="go">field2_name: NAME</span>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="go">field2_value: VALUE</span>
+<small>show the timestamp of the embed.</small><br />
+<br>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="go">select_menus: </span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="go">- SELECTION</span>
 </span></code></pre></div>
-<small>add fields to the embed.</small></p>
-<div class="language-console highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="go">partials: </span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="go">- PARTIAL</span>
+<small>add select menu(es) to the embed.</small><br />
+<br>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="go">buttons: </span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="go">- BUTTON</span>
 </span></code></pre></div>
+<small>add select button(s) to the embed.</small><br />
+<br>
+fields:
+<div class="language-console highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="go">field1_name: NAME</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="go">field1_value: VALUE</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="go">field2_name: NAME</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="go">field2_value: VALUE</span>
+</span></code></pre></div>
+<small>add fields to the embed.</small><br />
+<br>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="go">partials: </span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="go">- PARTIAL</span>
+</span></code></pre></div></p>
 <table>
 <thead>
 <tr>
@@ -1709,28 +1741,35 @@
 <p class="admonition-title">Warning</p>
 <p>the configuration below is merged from the locale.</p>
 </div>
-<p><code>description: DESCRIPTION</code><br />
-<small>description of the embed (you can also use unicode icons and some discord markdown).</small></p>
-<p><code>content: CONTENT</code><br />
-<small>content of the embed.</small></p>
-<p><code>title: TITLE</code><br />
-<small>title of the embed.</small></p>
-<p><code>activity: ACTIVITY</code><br />
+<p><div class="language-c highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nl">description</span><span class="p">:</span><span class="w"> </span><span class="n">DESCRIPTION</span>
+</span></code></pre></div>
+<small>description of the embed (you can also use unicode icons and some discord markdown).</small><br />
+<br>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nl">content</span><span class="p">:</span><span class="w"> </span><span class="n">CONTENT</span>
+</span></code></pre></div>
+<small>content of the embed.</small><br />
+<br>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="nl">title</span><span class="p">:</span><span class="w"> </span><span class="n">TITLE</span>
+</span></code></pre></div>
+<small>title of the embed.</small><br />
+<br>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="nl">activity</span><span class="p">:</span><span class="w"> </span><span class="n">ACTIVITY</span>
+</span></code></pre></div>
 <small>activity message (in custom mode it also supports unicode icons, you set the type in <a href="/mooncord/sites/Configuration/Advanced/Embed/status/">[status]</a>).</small></p>
 <p><br><br>
-<div class="language-console highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="go">[embed shutdown]</span>
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="go">content: &#39;Klipper firmware has a shutdown!&#39;</span>
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="go">title: &#39;Klipper Shutdown&#39;</span>
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="go">activity: &#39;⚠️ klipper shutdown!&#39;</span>
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="go">color: &#39;${theme.shutdown}&#39;</span>
-</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="go">image: webcam</span>
-</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="go">footer: &#39;🕑&#39;</span>
-</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="go">timestamp: true</span>
-</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="go">description: ```${state_message}```</span>
-</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="go">select_menus:</span>
-</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="go">- status_webcam</span>
-</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="go">buttons:</span>
-</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="go">- klipper_restart</span>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="go">[embed shutdown]</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="go">content: &#39;Klipper firmware has a shutdown!&#39;</span>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="go">title: &#39;Klipper Shutdown&#39;</span>
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="go">activity: &#39;⚠️ klipper shutdown!&#39;</span>
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="go">color: &#39;${theme.shutdown}&#39;</span>
+</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="go">image: webcam</span>
+</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="go">footer: &#39;🕑&#39;</span>
+</span><span id="__span-12-8"><a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a><span class="go">timestamp: true</span>
+</span><span id="__span-12-9"><a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a><span class="go">description: ```${state_message}```</span>
+</span><span id="__span-12-10"><a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a><span class="go">select_menus:</span>
+</span><span id="__span-12-11"><a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a><span class="go">- status_webcam</span>
+</span><span id="__span-12-12"><a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a><span class="go">buttons:</span>
+</span><span id="__span-12-13"><a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a><span class="go">- klipper_restart</span>
 </span></code></pre></div>
 <small>shutdown configuration merged with locale as reference.</small></p>
 
