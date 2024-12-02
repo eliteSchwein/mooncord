@@ -57,6 +57,9 @@ nav:
   - Misc:
       - "Setup Mode": sites/Misc/setupmode.md
       - "Multi Installation": sites/Misc/multiinstall.md
+      - "Uninstall": sites/Misc/uninstall.md
+      - "Dev Build": sites/Misc/devbuild.md
+      - "Credits": sites/Misc/credits.md
 markdown_extensions:
   - pymdownx.highlight:
       anchor_linenums: true
@@ -64,6 +67,9 @@ markdown_extensions:
       pygments_lang_class: true
   - attr_list
   - md_in_html
+  - def_list
+  - pymdownx.tasklist:
+      custom_checkbox: true
   - pymdownx.critic
   - pymdownx.caret
   - pymdownx.keys
