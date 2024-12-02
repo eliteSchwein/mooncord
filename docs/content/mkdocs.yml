@@ -48,6 +48,7 @@ nav:
           - "[message]": sites/Configuration/Advanced/message.md
           - "[general]": sites/Configuration/Advanced/general.md
           - "[language]": sites/Configuration/Advanced/language.md
+          - placeholder: sites/Configuration/Advanced/placeholder.md
           - embed:
               - "[color NAME]": sites/Configuration/Advanced/Embed/color.md
               - "[icon NAME]": sites/Configuration/Advanced/Embed/icon.md

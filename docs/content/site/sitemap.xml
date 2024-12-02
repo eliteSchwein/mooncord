@@ -2,174 +2,178 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://wiki.tludwig.dev/mooncord/</loc>
-         <lastmod>2024-11-28</lastmod>
+         <lastmod>2024-12-02</lastmod>
     </url>
     <url>
          <loc>https://wiki.tludwig.dev/mooncord/install/</loc>
-         <lastmod>2024-11-28</lastmod>
+         <lastmod>2024-12-02</lastmod>
     </url>
     <url>
          <loc>https://wiki.tludwig.dev/mooncord/sites/Configuration/connection/</loc>
-         <lastmod>2024-11-28</lastmod>
+         <lastmod>2024-12-02</lastmod>
     </url>
     <url>
          <loc>https://wiki.tludwig.dev/mooncord/sites/Configuration/logger/</loc>
-         <lastmod>2024-11-28</lastmod>
+         <lastmod>2024-12-02</lastmod>
     </url>
     <url>
          <loc>https://wiki.tludwig.dev/mooncord/sites/Configuration/webcam/</loc>
-         <lastmod>2024-11-28</lastmod>
+         <lastmod>2024-12-02</lastmod>
     </url>
     <url>
          <loc>https://wiki.tludwig.dev/mooncord/sites/Configuration/Advanced/general/</loc>
-         <lastmod>2024-11-28</lastmod>
+         <lastmod>2024-12-02</lastmod>
     </url>
     <url>
          <loc>https://wiki.tludwig.dev/mooncord/sites/Configuration/Advanced/language/</loc>
-         <lastmod>2024-11-28</lastmod>
+         <lastmod>2024-12-02</lastmod>
     </url>
     <url>
          <loc>https://wiki.tludwig.dev/mooncord/sites/Configuration/Advanced/message/</loc>
-         <lastmod>2024-11-28</lastmod>
+         <lastmod>2024-12-02</lastmod>
+    </url>
+    <url>
+         <loc>https://wiki.tludwig.dev/mooncord/sites/Configuration/Advanced/placeholder/</loc>
+         <lastmod>2024-12-02</lastmod>
     </url>
     <url>
          <loc>https://wiki.tludwig.dev/mooncord/sites/Configuration/Advanced/snapshot/</loc>
-         <lastmod>2024-11-28</lastmod>
+         <lastmod>2024-12-02</lastmod>
     </url>
     <url>
          <loc>https://wiki.tludwig.dev/mooncord/sites/Configuration/Advanced/status/</loc>
-         <lastmod>2024-11-28</lastmod>
+         <lastmod>2024-12-02</lastmod>
     </url>
     <url>
          <loc>https://wiki.tludwig.dev/mooncord/sites/Configuration/Advanced/Embed/color/</loc>
-         <lastmod>2024-11-28</lastmod>
+         <lastmod>2024-12-02</lastmod>
     </url>
     <url>
          <loc>https://wiki.tludwig.dev/mooncord/sites/Configuration/Advanced/Embed/embed/</loc>
-         <lastmod>2024-11-28</lastmod>
+         <lastmod>2024-12-02</lastmod>
     </url>
     <url>
          <loc>https://wiki.tludwig.dev/mooncord/sites/Configuration/Advanced/Embed/icon/</loc>
-         <lastmod>2024-11-28</lastmod>
+         <lastmod>2024-12-02</lastmod>
     </url>
     <url>
          <loc>https://wiki.tludwig.dev/mooncord/sites/Configuration/Advanced/Embed/status/</loc>
-         <lastmod>2024-11-28</lastmod>
+         <lastmod>2024-12-02</lastmod>
     </url>
     <url>
          <loc>https://wiki.tludwig.dev/mooncord/sites/Usage/Discord/admin/</loc>
-         <lastmod>2024-11-28</lastmod>
+         <lastmod>2024-12-02</lastmod>
     </url>
     <url>
          <loc>https://wiki.tludwig.dev/mooncord/sites/Usage/Discord/config/</loc>
-         <lastmod>2024-11-28</lastmod>
+         <lastmod>2024-12-02</lastmod>
     </url>
     <url>
          <loc>https://wiki.tludwig.dev/mooncord/sites/Usage/Discord/dump/</loc>
-         <lastmod>2024-11-28</lastmod>
+         <lastmod>2024-12-02</lastmod>
     </url>
     <url>
          <loc>https://wiki.tludwig.dev/mooncord/sites/Usage/Discord/editchannel/</loc>
-         <lastmod>2024-11-28</lastmod>
+         <lastmod>2024-12-02</lastmod>
     </url>
     <url>
          <loc>https://wiki.tludwig.dev/mooncord/sites/Usage/Discord/emergencystop/</loc>
-         <lastmod>2024-11-28</lastmod>
+         <lastmod>2024-12-02</lastmod>
     </url>
     <url>
          <loc>https://wiki.tludwig.dev/mooncord/sites/Usage/Discord/execute/</loc>
-         <lastmod>2024-11-28</lastmod>
+         <lastmod>2024-12-02</lastmod>
     </url>
     <url>
          <loc>https://wiki.tludwig.dev/mooncord/sites/Usage/Discord/fileinfo/</loc>
-         <lastmod>2024-11-28</lastmod>
+         <lastmod>2024-12-02</lastmod>
     </url>
     <url>
          <loc>https://wiki.tludwig.dev/mooncord/sites/Usage/Discord/getuserid/</loc>
-         <lastmod>2024-11-28</lastmod>
+         <lastmod>2024-12-02</lastmod>
     </url>
     <url>
          <loc>https://wiki.tludwig.dev/mooncord/sites/Usage/Discord/history/</loc>
-         <lastmod>2024-11-28</lastmod>
+         <lastmod>2024-12-02</lastmod>
     </url>
     <url>
          <loc>https://wiki.tludwig.dev/mooncord/sites/Usage/Discord/info/</loc>
-         <lastmod>2024-11-28</lastmod>
+         <lastmod>2024-12-02</lastmod>
     </url>
     <url>
          <loc>https://wiki.tludwig.dev/mooncord/sites/Usage/Discord/listgcodes/</loc>
-         <lastmod>2024-11-28</lastmod>
+         <lastmod>2024-12-02</lastmod>
     </url>
     <url>
          <loc>https://wiki.tludwig.dev/mooncord/sites/Usage/Discord/listlogs/</loc>
-         <lastmod>2024-11-28</lastmod>
+         <lastmod>2024-12-02</lastmod>
     </url>
     <url>
          <loc>https://wiki.tludwig.dev/mooncord/sites/Usage/Discord/listtimelapses/</loc>
-         <lastmod>2024-11-28</lastmod>
+         <lastmod>2024-12-02</lastmod>
     </url>
     <url>
          <loc>https://wiki.tludwig.dev/mooncord/sites/Usage/Discord/notifyme/</loc>
-         <lastmod>2024-11-28</lastmod>
+         <lastmod>2024-12-02</lastmod>
     </url>
     <url>
          <loc>https://wiki.tludwig.dev/mooncord/sites/Usage/Discord/pidtune/</loc>
-         <lastmod>2024-11-28</lastmod>
+         <lastmod>2024-12-02</lastmod>
     </url>
     <url>
          <loc>https://wiki.tludwig.dev/mooncord/sites/Usage/Discord/power/</loc>
-         <lastmod>2024-11-28</lastmod>
+         <lastmod>2024-12-02</lastmod>
     </url>
     <url>
          <loc>https://wiki.tludwig.dev/mooncord/sites/Usage/Discord/preheat/</loc>
-         <lastmod>2024-11-28</lastmod>
+         <lastmod>2024-12-02</lastmod>
     </url>
     <url>
          <loc>https://wiki.tludwig.dev/mooncord/sites/Usage/Discord/printjob/</loc>
-         <lastmod>2024-11-28</lastmod>
+         <lastmod>2024-12-02</lastmod>
     </url>
     <url>
          <loc>https://wiki.tludwig.dev/mooncord/sites/Usage/Discord/reset/</loc>
-         <lastmod>2024-11-28</lastmod>
+         <lastmod>2024-12-02</lastmod>
     </url>
     <url>
          <loc>https://wiki.tludwig.dev/mooncord/sites/Usage/Discord/restart/</loc>
-         <lastmod>2024-11-28</lastmod>
+         <lastmod>2024-12-02</lastmod>
     </url>
     <url>
          <loc>https://wiki.tludwig.dev/mooncord/sites/Usage/Discord/status/</loc>
-         <lastmod>2024-11-28</lastmod>
+         <lastmod>2024-12-02</lastmod>
     </url>
     <url>
          <loc>https://wiki.tludwig.dev/mooncord/sites/Usage/Discord/systeminfo/</loc>
-         <lastmod>2024-11-28</lastmod>
+         <lastmod>2024-12-02</lastmod>
     </url>
     <url>
          <loc>https://wiki.tludwig.dev/mooncord/sites/Usage/Discord/temp/</loc>
-         <lastmod>2024-11-28</lastmod>
+         <lastmod>2024-12-02</lastmod>
     </url>
     <url>
          <loc>https://wiki.tludwig.dev/mooncord/sites/Usage/Discord/tune/</loc>
-         <lastmod>2024-11-28</lastmod>
+         <lastmod>2024-12-02</lastmod>
     </url>
     <url>
          <loc>https://wiki.tludwig.dev/mooncord/sites/Usage/GCode/broadcast/</loc>
-         <lastmod>2024-11-28</lastmod>
+         <lastmod>2024-12-02</lastmod>
     </url>
     <url>
          <loc>https://wiki.tludwig.dev/mooncord/sites/Usage/GCode/invite/</loc>
-         <lastmod>2024-11-28</lastmod>
+         <lastmod>2024-12-02</lastmod>
     </url>
     <url>
          <loc>https://wiki.tludwig.dev/mooncord/sites/Usage/GCode/prompt/</loc>
-         <lastmod>2024-11-28</lastmod>
+         <lastmod>2024-12-02</lastmod>
     </url>
     <url>
          <loc>https://wiki.tludwig.dev/mooncord/sites/Usage/OS/docker/</loc>
-         <lastmod>2024-11-28</lastmod>
+         <lastmod>2024-12-02</lastmod>
     </url>
     <url>
          <loc>https://wiki.tludwig.dev/mooncord/sites/Usage/OS/systemctl/</loc>
-         <lastmod>2024-11-28</lastmod>
+         <lastmod>2024-12-02</lastmod>
     </url>
 </urlset>
