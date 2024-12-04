@@ -59,6 +59,7 @@ nav:
       - "Multi Installation": sites/Misc/multiinstall.md
       - "Uninstall": sites/Misc/uninstall.md
       - "Dev Build": sites/Misc/devbuild.md
+      - "Translation": sites/Misc/translation.md
       - "Credits": sites/Misc/credits.md
 markdown_extensions:
   - pymdownx.highlight:
