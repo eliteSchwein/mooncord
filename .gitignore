@@ -9,3 +9,5 @@ database_dump.json
 mooncord.log
 dist/mooncord.log
 temp/
+
+docs/content/site
