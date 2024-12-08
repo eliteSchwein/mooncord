@@ -11,6 +11,12 @@
         "gcode_files": {
             "entry_label": "`${data.path}`"
         },
+        "history": {
+            "entry_label": "`${data.filename}` ${icon:data.status}"
+        },
+        "log_files": {
+            "entry_label": "`${data.path}`"
+        },
         "timelapse_files": {
             "entry_label": "`${data.path}`"
         },
@@ -19,6 +25,22 @@
         }
     },
     "embeds": {
+        "setup_1": {
+            "title": "Setup Step 1",
+            "description": "Welcome to MoonCord! \n this Setup will help you to setup me."
+        },
+        "setup_2": {
+            "title": "Setup Step 2",
+            "description": "Do you want private notifications?"
+        },
+        "setup_3": {
+            "title": "Setup Step 3",
+            "description": "Is the Camera correctly configured? You can edit the cam settings below."
+        },
+        "setup_4": {
+            "title": "Setup Step 4",
+            "description": "The Setup is now finished, you can go back and check if everything is correctly set."
+        },
         "execute_error": {
             "title": "GCode Command/s erronée ",
             "description": "${gcode_commands}"
@@ -83,6 +105,11 @@
             "description": "${page_entries}",
             "footer": "Page ${pages}"
         },
+        "log_files": {
+            "title": "Log Files",
+            "description": "${page_entries}",
+            "footer": "Page ${pages}"
+        },
         "timelapse_files": {
             "title": "Dossier des Timelapse",
             "description": "${page_entries}",
@@ -93,7 +120,17 @@
             "description": "Version: ${package_config.version}\nAuthor: ${package_config.author}\nHomepage: ${package_config.homepage}\n${config.general.custom_info}"
         },
         "history": {
-            "title": "Historique d'impression"
+            "title": "Historique d'impression",
+            "description": "${page_entries}",
+            "footer": "Page ${pages}"
+        },
+        "history_detail": {
+            "title": "Printjob Details",
+            "description": "Print Time: ${estimated_time}\nSlicer: ${slicer}\nSlicer Version: ${slicer_version}\nHeight: ${object_height}mm"
+        },
+        "history_graph": {
+            "title": "Printjob History",
+            "footer": "Page ${pages}"
         },
         "notification": {
             "content": "Notification de l'imprimante ",
@@ -113,7 +150,7 @@
         "printjob_start": {
             "content": "Impression démarrer: `${state.print_stats.filename}`",
             "title": "Impression démarrer",
-            "activity": "\uD83D\uDDA8\uFE0F start ${state.print_stats.filename}"
+            "activity": "🖨️ start ${state.print_stats.filename}"
         },
         "printjob_complete": {
             "content": "Impression complète",
@@ -128,12 +165,12 @@
         "printjob_printing": {
             "content": "Impression ${state.print_stats.filename} est à ${percent:0:state.display_status.progress}%",
             "title": "Impression",
-            "activity": "\uD83D\uDDA8\uFE0F Impression: ${percent:0:state.display_status.progress}%"
+            "activity": "🖨️ Impression: ${percent:0:state.display_status.progress}%"
         },
         "printjob_stop": {
             "content": "Impression stopper",
             "title": "Impression stopper",
-            "activity": "\uD83D\uDED1 Impression stopper"
+            "activity": "🛑 Impression stopper"
         },
         "temperatures": {
             "title": "Temperature"
@@ -149,32 +186,32 @@
         "moonraker_disconnected": {
             "content": "Connection avec Moonraker perdu !",
             "title": "Connection avec Moonraker perdue !",
-            "activity": "⚠\uFE0F en attente de Moonraker"
+            "activity": "⚠️ en attente de Moonraker"
         },
         "error": {
             "content": "Une erreur s'est produite !",
             "title": "Une erreur s'est produite !",
-            "activity": "⚠\uFE0F en attente de l'utilisateur"
+            "activity": "⚠️ en attente de l'utilisateur"
         },
         "offline": {
             "content": "La connection avec Moonraker or Klipper est perdu !",
             "title": "Connection perdu !",
-            "activity": "⚠\uFE0F en attente de Moonraker"
+            "activity": "⚠️ en attente de Moonraker"
         },
         "shutdown": {
             "content": "Le firmware de Klipper s'est arrêté !",
             "title": "Klipper s'est arrêté",
-            "activity": "⚠\uFE0F en attente de Klipper"
+            "activity": "⚠️ en attente de Klipper"
         },
         "ready": {
             "content": "L'imprimante est prête à imprimer",
             "title": "Impression prête",
-            "activity": "\uD83D\uDCA4 pour le fichier GCODE..."
+            "activity": "💤 pour le fichier GCODE..."
         },
         "startup": {
             "content": "L'imprimante démarre",
             "title": "Démarrage de l'impression",
-            "activity": "⏱\uFE0F L'impression commance"
+            "activity": "⏱️ L'impression commance"
         },
         "throttle_temperature_limit_active": {
             "content": "Le système de l'imprimante est actuellement bridé",
@@ -196,6 +233,7 @@
             "title": "Mises à jour du système"
         },
         "fields": {
+            "active_spool": "Active Spool",
             "total_filament_used": "Filament Total Utilisé",
             "total_time": "Temps Total",
             "total_print_time": "Temps Total d'Impression",
@@ -264,6 +302,13 @@
     },
     "messages": {
         "answers": {
+            "update": {
+                "wait": "Fetching updates, please wait...",
+                "request": "System Update requested, `${username}`!"
+            },
+            "setup": {
+                "finish": "You finished or closed the setup, `${username}`!"
+            },
             "temp_target_reached": "Le chauffage `${heater}` à atteint la température cible `${target}°C`!",
             "custom_command_executed": "La commande personnalisée `${custom_command}` a été exécutée, `${username}`!",
             "execute_successful": "Commandes Gcode exécutées avec succès, `${username}`!",
@@ -271,7 +316,6 @@
                 "preset": "Préchauffage pour `${preset}`, `${username}`!",
                 "manual": "Préchauffage ${heater_list}, `${username}`!"
             },
-            "update_request": "Demande de mise à jour du système, `${username}`!",
             "restart_successful": "Le redémarrage pour `${service}` a réussi !",
             "firmware_restart_successful": "Le Firmware redémarre !",
             "timelapse": "Timelapse pour `${printfile}`",
@@ -317,6 +361,7 @@
             "printjob_clear": "Le travail d'impression en cours a été effacé, `${username}`!",
             "printjob_request_abort": "La demande d'impression pour `${embed_author}` a été abandonnée, `${username}`!",
             "printjob_delete_abort": "La demande de suppression d'un travail d'impression pour `${embed_author}` a été abandonnée, `${username}`!",
+            "printjob_delete_accepted": "Print Job `${embed_author}` got deleted, `${username}`!",
             "printjob_executed": "Demande d'impression exécutée, `${username}`!",
             "reconnect": "MoonCord se reconnecte à Moonraker et Discord, `${username}`!",
             "pidtune_start": "Démarrage du réglage PID à `${temp}°C` pour `${heater}`, `${username}`!",
@@ -333,9 +378,19 @@
                 "on": "L'appareil d'alimentation `${power_device}` est allumé, `${username}`!",
                 "off": "L'appareil d'alimentation `${power_device}` est etteint, `${username}`!"
             },
+            "empty_spool": "No Spool active!",
+            "current_spool": "Spool ID: ",
+            "update_request": "Demande de mise à jour du système, `${username}`!",
             "execute_success": "Commande exécutée !"
         },
         "errors": {
+            "no_history": "There is currently no print history, `${username}`!",
+            "no_gcodes": "There are currently no gcode files, `${username}`!",
+            "no_logs": "There are currently no log files, `${username}`!",
+            "no_power_device": "The Power Device couldn't be found, `${username}`!",
+            "no_entries": "The current Page is empty, `${username}`!",
+            "no_configs": "There are currently no config files, `${username}`!",
+            "no_timelapses": "There are currently no timelapse videos, `${username}`!",
             "custom_command_descript": "Configured Custom Command",
             "execute_running": "Commandes déjà en cours d'exécution, veuillez réessayer plus tard, `${username}`!",
             "macros_failed": "Les macros pour `${button_label}` ont échoué, `${username}`!",
@@ -359,12 +414,40 @@
             "log_too_large": "Le Log de`${service}` est trop gros!",
             "log_failed": "Le téléchargement des log `${service}` a échoué: `${reason}`!",
             "log_not_found": "Il n'y a aucun log pour `${service}`",
+            "file_too_large": "The File `${filename}` is too big!",
             "pidtune_fail": "Echec du réglage PID pour `${heater}`, `${username}`!\nReason:\n```\n${reason}```",
             "missing_arguments": "Il manque des arguments à la commande, `${username}`!",
             "upload_failed": "Le téléchargement de `${filename}` a échoué, `${username}`!"
         }
     },
     "buttons": {
+        "setup_cancel": {
+            "label": "Cancel"
+        },
+        "setup_finish": {
+            "label": "Finish"
+        },
+        "enable_notifyme": {
+            "label": "Yes"
+        },
+        "disable_notifyme": {
+            "label": "No"
+        },
+        "setup_next_4": {
+            "label": "Next"
+        },
+        "setup_last_3": {
+            "label": "Last"
+        },
+        "setup_last_2": {
+            "label": "Last"
+        },
+        "setup_next_2": {
+            "label": "Next"
+        },
+        "setup_last_1": {
+            "label": "Last"
+        },
         "printjob_pause": {
             "label": "Pause"
         },
@@ -379,6 +462,9 @@
         },
         "printjob_start": {
             "label": "Imprimer"
+        },
+        "printjob_download": {
+            "label": "Download"
         },
         "printjob_exclude": {
             "label": "Exclure"
@@ -401,6 +487,9 @@
         "klipper_restart": {
             "label": "Redémarrer le système"
         },
+        "host": {
+            "label": "Host"
+        },
         "reconnect": {
             "label": "Reconnecter"
         },
@@ -410,6 +499,18 @@
         "last_page_printlist": {
             "label": "Page précédente"
         },
+        "next_page_history": {
+            "label": "Next Page"
+        },
+        "last_page_history": {
+            "label": "Last Page"
+        },
+        "next_page_loglist": {
+            "label": "Next Page"
+        },
+        "last_page_loglist": {
+            "label": "Last Page"
+        },
         "next_page_timelapselist": {
             "label": "Page suivante"
         },
@@ -418,6 +519,9 @@
         },
         "to_printlist": {
             "label": "à la liste"
+        },
+        "to_history": {
+            "label": "to History"
         },
         "to_timelapselist": {
             "label": "à la liste"
@@ -463,6 +567,12 @@
             "option_description": "Cliquez pour exclure",
             "options": []
         },
+        "status_webcam": {
+            "label": "Select a Webcam",
+            "option_label": "${data.label}",
+            "option_description": "Click for Webcam",
+            "options": []
+        },
         "config_file_download": {
             "label": "Sélectionner un fichier",
             "option_label": "${data.name}",
@@ -472,6 +582,16 @@
             "label": "Sélectionnez un ficher...",
             "option_label": "${data.path}",
             "option_description": "Cliquez pour plus de détails"
+        },
+        "history_detail_select": {
+            "label": "Select a Entry",
+            "option_label": "${data.filename}",
+            "option_description": "Click for more Details"
+        },
+        "loglist_download_log": {
+            "label": "Select a File",
+            "option_label": "${data.path}",
+            "option_description": "Click for Download"
         },
         "timelapse_download": {
             "label": "Sélectionnez un ficher",
@@ -669,15 +789,9 @@
                 }
             }
         },
-        "get_log": {
-            "description": "Récupére le log.",
-            "command": "recuplog",
-            "options": {
-                "log_file": {
-                    "name": "Fichier du log",
-                    "description": "Spécifiez le fichier du log."
-                }
-            }
+        "listlogs": {
+            "description": "List all Logs.",
+            "command": "listlogs"
         },
         "get_user_id": {
             "description": "Récupérer l'ID utilisateur.",
@@ -713,7 +827,51 @@
         },
         "systeminfo": {
             "description": "Obtenir les informations actuelles du système.",
-            "command": "systeminfo"
+            "command": "systeminfo",
+            "options": {
+                "component": {
+                    "name": "component",
+                    "description": "Select a Component.",
+                    "choices": [
+                        {
+                            "name": "CPU",
+                            "value": "cpu"
+                        },
+                        {
+                            "name": "Memory",
+                            "value": "memory"
+                        },
+                        {
+                            "name": "System",
+                            "value": "system"
+                        },
+                        {
+                            "name": "Moonraker",
+                            "value": "moonraker"
+                        },
+                        {
+                            "name": "Klipper",
+                            "value": "klipper"
+                        },
+                        {
+                            "name": "Discord Client",
+                            "value": "discord"
+                        },
+                        {
+                            "name": "Moonraker Client",
+                            "value": "moonraker_client"
+                        },
+                        {
+                            "name": "Power Devices",
+                            "value": "power_devices"
+                        },
+                        {
+                            "name": "Updates",
+                            "value": "update"
+                        }
+                    ]
+                }
+            }
         },
         "notify": {
             "description": "Dois-je vous informer de l'état actuel de l'impression ?",
@@ -758,6 +916,16 @@
         "history": {
             "description": "Afficher l'historique des impressions.",
             "command": "history"
+        },
+        "get_log": {
+            "description": "Récupére le log.",
+            "command": "recuplog",
+            "options": {
+                "log_file": {
+                    "name": "Fichier du log",
+                    "description": "Spécifiez le fichier du log."
+                }
+            }
         }
     },
     "graph": {

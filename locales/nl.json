@@ -11,6 +11,12 @@
         "gcode_files": {
             "entry_label": "`${data.path}`"
         },
+        "history": {
+            "entry_label": "`${data.filename}` ${icon:data.status}"
+        },
+        "log_files": {
+            "entry_label": "`${data.path}`"
+        },
         "timelapse_files": {
             "entry_label": "`${data.path}`"
         },
@@ -19,6 +25,22 @@
         }
     },
     "embeds": {
+        "setup_1": {
+            "title": "Setup Step 1",
+            "description": "Welcome to MoonCord! \n this Setup will help you to setup me."
+        },
+        "setup_2": {
+            "title": "Setup Step 2",
+            "description": "Do you want private notifications?"
+        },
+        "setup_3": {
+            "title": "Setup Step 3",
+            "description": "Is the Camera correctly configured? You can edit the cam settings below."
+        },
+        "setup_4": {
+            "title": "Setup Step 4",
+            "description": "The Setup is now finished, you can go back and check if everything is correctly set."
+        },
         "execute_error": {
             "title": "Malformated GCode Command/s",
             "description": "${gcode_commands}"
@@ -83,6 +105,11 @@
             "description": "${page_entries}",
             "footer": "Pagina ${pages}"
         },
+        "log_files": {
+            "title": "Log Files",
+            "description": "${page_entries}",
+            "footer": "Page ${pages}"
+        },
         "timelapse_files": {
             "title": "Tijdsverloopbestanden",
             "description": "${page_entries}",
@@ -93,7 +120,17 @@
             "description": "Versie: ${package_config.version}\nAuteur: ${package_config.author}\nHomepage: ${package_config.homepage}\n${config.general.custom_info}"
         },
         "history": {
-            "title": "Printgeschiedenis"
+            "title": "Printgeschiedenis",
+            "description": "${page_entries}",
+            "footer": "Page ${pages}"
+        },
+        "history_detail": {
+            "title": "Printjob Details",
+            "description": "Print Time: ${estimated_time}\nSlicer: ${slicer}\nSlicer Version: ${slicer_version}\nHeight: ${object_height}mm"
+        },
+        "history_graph": {
+            "title": "Printjob History",
+            "footer": "Page ${pages}"
         },
         "notification": {
             "content": "Printer notificatie",
@@ -196,6 +233,7 @@
             "title": "Systeemupdates"
         },
         "fields": {
+            "active_spool": "Active Spool",
             "total_filament_used": "Totaal filament",
             "total_time": "Totaal tijd",
             "total_print_time": "Totale printtijd",
@@ -264,6 +302,13 @@
     },
     "messages": {
         "answers": {
+            "update": {
+                "wait": "Fetching updates, please wait...",
+                "request": "System Update requested, `${username}`!"
+            },
+            "setup": {
+                "finish": "You finished or closed the setup, `${username}`!"
+            },
             "temp_target_reached": "De verwarming `${heater}` heeft de doeltemperatuur `${target}°C` bereikt!",
             "custom_command_executed": "Het commando `${custom_command}` werd uitgevoerd, `${username}`!",
             "execute_successful": "De Gcode-commandos zijn succesvol uitgevoerd, `${username}`!",
@@ -271,7 +316,6 @@
                 "preset": "Opwarmen van `${preset}`, `${username}`!",
                 "manual": "Bezig met opwarmen van ${heater_list}, `${username}`!"
             },
-            "update_request": "Systeemupdate aangevraagd, `${username}`!",
             "restart_successful": "Het herstarten van `${service}` is gelukt!",
             "firmware_restart_successful": "De firmware start opnieuw!",
             "timelapse": "Timelapse voor `${printfile}`",
@@ -317,6 +361,7 @@
             "printjob_clear": "De huidige printopdracht is gewist, `${username}`!",
             "printjob_request_abort": "De printopdracht voor `${embed_author}` is afgebroken, `${username}`!",
             "printjob_delete_abort": "Het verwijderen van de printopdracht van `${embed_author}` is afgebroken, `${username}`!",
+            "printjob_delete_accepted": "Print Job `${embed_author}` got deleted, `${username}`!",
             "printjob_executed": "Printopdrachtverzoek ingediend, `${username}`!",
             "reconnect": "MoonCord zet een nieuwe verbinding op naar Moonraker en Discord, `${username}`!",
             "pidtune_start": "Start met PID-tuning op `${temp}°C` voor `${heater}`, `${username}`!",
@@ -333,9 +378,19 @@
                 "on": "De stroombron `${power_device}` staat nu aan, `${username}`!",
                 "off": "De stroombron `${power_device}` staat nu uit, `${username}`!"
             },
+            "empty_spool": "No Spool active!",
+            "current_spool": "Spool ID: ",
+            "update_request": "Systeemupdate aangevraagd, `${username}`!",
             "execute_success": "Commando uitgevoerd!"
         },
         "errors": {
+            "no_history": "There is currently no print history, `${username}`!",
+            "no_gcodes": "There are currently no gcode files, `${username}`!",
+            "no_logs": "There are currently no log files, `${username}`!",
+            "no_power_device": "The Power Device couldn't be found, `${username}`!",
+            "no_entries": "The current Page is empty, `${username}`!",
+            "no_configs": "There are currently no config files, `${username}`!",
+            "no_timelapses": "There are currently no timelapse videos, `${username}`!",
             "custom_command_descript": "Geconfigureerde opdrachten",
             "execute_running": "Reeds bezig met een commando-uitvoer, probeer het later nogmaals, `${username}`!",
             "macros_failed": "De uitvoer van de macro voor `${button_label}` is mislukt, `${username}`!",
@@ -359,12 +414,40 @@
             "log_too_large": "Het logboek voor `${service}` is te groot!",
             "log_failed": "Het downloaden van het logboek voor `${service}` is mislukt: `${reason}`!",
             "log_not_found": "Er is momenteel geen logboek voor `${service}`",
+            "file_too_large": "The File `${filename}` is too big!",
             "pidtune_fail": "PID-tuning van `${heater}` is mislukt, `${username}`!\nReden:\n```\n${reason}```",
             "missing_arguments": "Het commando mist verplichte argument(en), `${username}`!",
             "upload_failed": "Het uploaden van `${filename}` is mislukt, `${username}`!"
         }
     },
     "buttons": {
+        "setup_cancel": {
+            "label": "Cancel"
+        },
+        "setup_finish": {
+            "label": "Finish"
+        },
+        "enable_notifyme": {
+            "label": "Yes"
+        },
+        "disable_notifyme": {
+            "label": "No"
+        },
+        "setup_next_4": {
+            "label": "Next"
+        },
+        "setup_last_3": {
+            "label": "Last"
+        },
+        "setup_last_2": {
+            "label": "Last"
+        },
+        "setup_next_2": {
+            "label": "Next"
+        },
+        "setup_last_1": {
+            "label": "Last"
+        },
         "printjob_pause": {
             "label": "Pauze"
         },
@@ -379,6 +462,9 @@
         },
         "printjob_start": {
             "label": "Print"
+        },
+        "printjob_download": {
+            "label": "Download"
         },
         "printjob_exclude": {
             "label": "Uitzonderen"
@@ -401,6 +487,9 @@
         "klipper_restart": {
             "label": "Herstart firmware"
         },
+        "host": {
+            "label": "Host"
+        },
         "reconnect": {
             "label": "Opnieuw verbinden"
         },
@@ -410,6 +499,18 @@
         "last_page_printlist": {
             "label": "Laatste pagina"
         },
+        "next_page_history": {
+            "label": "Next Page"
+        },
+        "last_page_history": {
+            "label": "Last Page"
+        },
+        "next_page_loglist": {
+            "label": "Next Page"
+        },
+        "last_page_loglist": {
+            "label": "Last Page"
+        },
         "next_page_timelapselist": {
             "label": "Volgende pagina"
         },
@@ -418,6 +519,9 @@
         },
         "to_printlist": {
             "label": "naar lijst"
+        },
+        "to_history": {
+            "label": "to History"
         },
         "to_timelapselist": {
             "label": "naar lijst"
@@ -463,6 +567,12 @@
             "option_description": "Klik om uit te zonderen",
             "options": []
         },
+        "status_webcam": {
+            "label": "Select a Webcam",
+            "option_label": "${data.label}",
+            "option_description": "Click for Webcam",
+            "options": []
+        },
         "config_file_download": {
             "label": "Selecteer een bestand",
             "option_label": "${data.name}",
@@ -472,6 +582,16 @@
             "label": "Selecteer een bestand...",
             "option_label": "${data.path}",
             "option_description": "Klik voor meer details"
+        },
+        "history_detail_select": {
+            "label": "Select a Entry",
+            "option_label": "${data.filename}",
+            "option_description": "Click for more Details"
+        },
+        "loglist_download_log": {
+            "label": "Select a File",
+            "option_label": "${data.path}",
+            "option_description": "Click for Download"
         },
         "timelapse_download": {
             "label": "Selecteer een bestand...",
@@ -669,15 +789,9 @@
                 }
             }
         },
-        "get_log": {
-            "description": "Haal een logbestand op.",
-            "command": "logbestand",
-            "options": {
-                "log_file": {
-                    "name": "logbestand",
-                    "description": "Specificeert het logbestand."
-                }
-            }
+        "listlogs": {
+            "description": "List all Logs.",
+            "command": "listlogs"
         },
         "get_user_id": {
             "description": "Haal het gebruikers-id op.",
@@ -713,7 +827,51 @@
         },
         "systeminfo": {
             "description": "Laat de systeeminformatie zien.",
-            "command": "systeeminfo"
+            "command": "systeeminfo",
+            "options": {
+                "component": {
+                    "name": "component",
+                    "description": "Select a Component.",
+                    "choices": [
+                        {
+                            "name": "CPU",
+                            "value": "cpu"
+                        },
+                        {
+                            "name": "Memory",
+                            "value": "memory"
+                        },
+                        {
+                            "name": "System",
+                            "value": "system"
+                        },
+                        {
+                            "name": "Moonraker",
+                            "value": "moonraker"
+                        },
+                        {
+                            "name": "Klipper",
+                            "value": "klipper"
+                        },
+                        {
+                            "name": "Discord Client",
+                            "value": "discord"
+                        },
+                        {
+                            "name": "Moonraker Client",
+                            "value": "moonraker_client"
+                        },
+                        {
+                            "name": "Power Devices",
+                            "value": "power_devices"
+                        },
+                        {
+                            "name": "Updates",
+                            "value": "update"
+                        }
+                    ]
+                }
+            }
         },
         "notify": {
             "description": "Zal ik je een persoonlijk bericht sturen met de printvoortgang?",
@@ -758,6 +916,16 @@
         "history": {
             "description": "Laat de printgeschiedenis zien.",
             "command": "geschiedenis"
+        },
+        "get_log": {
+            "description": "Haal een logbestand op.",
+            "command": "logbestand",
+            "options": {
+                "log_file": {
+                    "name": "logbestand",
+                    "description": "Specificeert het logbestand."
+                }
+            }
         }
     },
     "graph": {

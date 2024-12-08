@@ -11,6 +11,12 @@
         "gcode_files": {
             "entry_label": "`${data.path}`"
         },
+        "history": {
+            "entry_label": "`${data.filename}` ${icon:data.status}"
+        },
+        "log_files": {
+            "entry_label": "`${data.path}`"
+        },
         "timelapse_files": {
             "entry_label": "`${data.path}`"
         },
@@ -19,6 +25,22 @@
         }
     },
     "embeds": {
+        "setup_1": {
+            "title": "Setup Schritt 1",
+            "description": "Willkommen bei MoonCord! \n dieses Setup hilft dir dabei mich aufzusetzen."
+        },
+        "setup_2": {
+            "title": "Setup Schritt 2",
+            "description": "Willst du private Benachrichtigungen?"
+        },
+        "setup_3": {
+            "title": "Setup Schritt 3",
+            "description": "Ist die Kamera korrekt eingestellt? du kannst unten die Kamera einstellen.."
+        },
+        "setup_4": {
+            "title": "Setup Schritt 4",
+            "description": "Das Setup ist nun abgeschlossen. du kannst alle Daten nochmal überprüfen."
+        },
         "execute_error": {
             "title": "Falsch formattierte GCode Befehl/e",
             "description": "${gcode_commands}"
@@ -83,6 +105,11 @@
             "description": "${page_entries}",
             "footer": "Seite ${pages}"
         },
+        "log_files": {
+            "title": "Log Files",
+            "description": "${page_entries}",
+            "footer": "Page ${pages}"
+        },
         "timelapse_files": {
             "title": "Zeitraffer Dateien",
             "description": "${page_entries}",
@@ -93,7 +120,17 @@
             "description": "Version: ${package_config.version}\nAuthor: ${package_config.author}\nHomepage: ${package_config.homepage}\n${config.general.custom_info}"
         },
         "history": {
-            "title": "Druckverlauf"
+            "title": "Druckverlauf",
+            "description": "${page_entries}",
+            "footer": "Page ${pages}"
+        },
+        "history_detail": {
+            "title": "Druckauftrag Informationen",
+            "description": "Print Time: ${estimated_time}\nSlicer: ${slicer}\nSlicer Version: ${slicer_version}\nHeight: ${object_height}mm"
+        },
+        "history_graph": {
+            "title": "Druckauftrag Verlauf",
+            "footer": "Page ${pages}"
         },
         "notification": {
             "content": "Drucker Benachrichtigung",
@@ -196,6 +233,7 @@
             "title": "System Aktualisierungen"
         },
         "fields": {
+            "active_spool": "Aktive Spule",
             "total_filament_used": "insgesamtes Filament",
             "total_time": "insgesamte Zeit",
             "total_print_time": "insgesamte Druckzeit",
@@ -264,6 +302,13 @@
     },
     "messages": {
         "answers": {
+            "update": {
+                "wait": "Lade Updates, bitte warten...",
+                "request": "System Update beauftragt, `${username}`!"
+            },
+            "setup": {
+                "finish": "Du hast das Setup beendet oder abgebrochen, `${username}`!"
+            },
             "temp_target_reached": "Das Heizelement `${heater}` hat die Ziel Temperatur `${target}°C` erreicht!",
             "custom_command_executed": "Der eigene Befehl `${custom_command}` wurde ausgeführt, `${username}`!",
             "execute_successful": "Die GCode Befehle wurden erfolgreich ausgeführt, `${username}`!",
@@ -271,7 +316,6 @@
                 "preset": "Heize Profil `${preset}` vor, `${username}`!",
                 "manual": "Heize ${heater_list} vor, `${username}`!"
             },
-            "update_request": "System Update angefordert, `${username}`!",
             "restart_successful": "Der Neustart für `${service}` war erfolgreich!",
             "firmware_restart_successful": "Die Firmware startet neu!",
             "timelapse": "Zeitraffer für `${printfile}`",
@@ -317,6 +361,7 @@
             "printjob_clear": "Der aktuelle Druckjob wurde aus der Auftragsschleife entfernt, `${username}`!",
             "printjob_request_abort": "Druckauftrag für `${embed_author}` abgebrochen, `${username}`!",
             "printjob_delete_abort": "Druckauftrag Löschung für `${embed_author}` abgebrochen, `${username}`!",
+            "printjob_delete_accepted": "Print Job `${embed_author}` got deleted, `${username}`!",
             "printjob_executed": "Druck Auftrag gestartet, `${username}`!",
             "reconnect": "MoonCord wird sich zu Moonraker und Discord neu verbinden, `${username}`!",
             "pidtune_start": "Starte ein PID Tuning bei `${temp}°C` für `${heater}`, `${username}`!",
@@ -333,9 +378,19 @@
                 "on": "Das Energiegerät `${power_device}` ist nun aktiv, `${username}`!",
                 "off": "Das Energiegerät `${power_device}` ist nun inaktiv, `${username}`!"
             },
+            "empty_spool": "Keine Spule aktiv!",
+            "current_spool": "Spool ID: ",
+            "update_request": "System Update angefordert, `${username}`!",
             "execute_success": "Befehl ausgeführt!"
         },
         "errors": {
+            "no_history": "Es gibt aktuell kein Druckauftrag Verlauf, `${username}`!",
+            "no_gcodes": "Es gibt keine GCode Dateien, `${username}`!",
+            "no_logs": "Es gibt aktuell keine Log Dateien, `${username}`!",
+            "no_power_device": "Es wurden keine Power Devices gefunden, `${username}`!",
+            "no_entries": "die aktuelle Seite ist leer, `${username}`!",
+            "no_configs": "Es gibt aktuell keine Konfiguration Dateien, `${username}`!",
+            "no_timelapses": "Es gibt aktuell keine Timelapse Videos, `${username}`!",
             "custom_command_descript": "Konfigurierter eigener Befehl",
             "execute_running": "Der Befehl Ausführer läuft bereits, versuch es später nochmal bitte, `${username}`!",
             "macros_failed": "Die Makros für `${button_label}` sind fehlgeschlagen, `${username}`!",
@@ -359,12 +414,40 @@
             "log_too_large": "Der Log für `${service}` ist zu groß!",
             "log_failed": "Der Download für denn `${service}` Log ist fehlgeschlagen: `${reason}`!",
             "log_not_found": "Derzeit gibt es keinen Log für `${service}`",
+            "file_too_large": "The File `${filename}` is too big!",
             "pidtune_fail": "PID Tuning fehlgeschlagen für `${heater}`, `${username}`!\nGrund:\n```\n${reason}```",
             "missing_arguments": "Für denn Befehl fehlen Argumente, `${username}`!",
             "upload_failed": "Der Upload für `${filename}` ist fehlgeschlagen, `${username}`!"
         }
     },
     "buttons": {
+        "setup_cancel": {
+            "label": "Abbruch"
+        },
+        "setup_finish": {
+            "label": "Beenden"
+        },
+        "enable_notifyme": {
+            "label": "Ja"
+        },
+        "disable_notifyme": {
+            "label": "Nein"
+        },
+        "setup_next_4": {
+            "label": "Weiter"
+        },
+        "setup_last_3": {
+            "label": "Zurück"
+        },
+        "setup_last_2": {
+            "label": "Zurück"
+        },
+        "setup_next_2": {
+            "label": "Weiter"
+        },
+        "setup_last_1": {
+            "label": "Zurück"
+        },
         "printjob_pause": {
             "label": "Pause"
         },
@@ -379,6 +462,9 @@
         },
         "printjob_start": {
             "label": "Drucken"
+        },
+        "printjob_download": {
+            "label": "Download"
         },
         "printjob_exclude": {
             "label": "Ausschließen"
@@ -401,6 +487,9 @@
         "klipper_restart": {
             "label": "Firmware neustarten"
         },
+        "host": {
+            "label": "Host"
+        },
         "reconnect": {
             "label": "Neuverbinden"
         },
@@ -408,6 +497,18 @@
             "label": "Nächste Seite"
         },
         "last_page_printlist": {
+            "label": "Letzte Seite"
+        },
+        "next_page_history": {
+            "label": "Nächste Seite"
+        },
+        "last_page_history": {
+            "label": "Letzte Seite"
+        },
+        "next_page_loglist": {
+            "label": "Nächste Seite"
+        },
+        "last_page_loglist": {
             "label": "Letzte Seite"
         },
         "next_page_timelapselist": {
@@ -418,6 +519,9 @@
         },
         "to_printlist": {
             "label": "zur Liste"
+        },
+        "to_history": {
+            "label": "zum Verlauf"
         },
         "to_timelapselist": {
             "label": "zur Liste"
@@ -463,6 +567,12 @@
             "option_description": "Klicken zum ausschließen",
             "options": []
         },
+        "status_webcam": {
+            "label": "Wähle eine Kamera",
+            "option_label": "${data.label}",
+            "option_description": "Klicke für die Kamera",
+            "options": []
+        },
         "config_file_download": {
             "label": "Wähle eine Datei",
             "option_label": "${data.name}",
@@ -472,6 +582,16 @@
             "label": "Wähle eine Datei...",
             "option_label": "${data.path}",
             "option_description": "Klicken für mehr Details"
+        },
+        "history_detail_select": {
+            "label": "Wähle ein Eintrag...",
+            "option_label": "${data.filename}",
+            "option_description": "Klicken für mehr Details"
+        },
+        "loglist_download_log": {
+            "label": "Wähle eine Datei...",
+            "option_label": "${data.path}",
+            "option_description": "Klicken zum Downloaden"
         },
         "timelapse_download": {
             "label": "Wähle eine Datei...",
@@ -685,15 +805,9 @@
                 }
             }
         },
-        "get_log": {
-            "description": "Erhalte einen Log.",
-            "command": "log",
-            "options": {
-                "log_file": {
-                    "name": "logdatei",
-                    "description": "Spezifiere die Log Datei."
-                }
-            }
+        "listlogs": {
+            "description": "Liste alle Log Dateien auf.",
+            "command": "listlogs"
         },
         "get_user_id": {
             "description": "Erhalte von einen User die ID.",
@@ -729,7 +843,51 @@
         },
         "systeminfo": {
             "description": "Erhalte aktuelle System Informationen.",
-            "command": "systeminfo"
+            "command": "systeminfo",
+            "options": {
+                "component": {
+                    "name": "komponente",
+                    "description": "Wähle eine Komponente.",
+                    "choices": [
+                        {
+                            "name": "CPU",
+                            "value": "cpu"
+                        },
+                        {
+                            "name": "Memory",
+                            "value": "memory"
+                        },
+                        {
+                            "name": "System",
+                            "value": "system"
+                        },
+                        {
+                            "name": "Moonraker",
+                            "value": "moonraker"
+                        },
+                        {
+                            "name": "Klipper",
+                            "value": "klipper"
+                        },
+                        {
+                            "name": "Discord Klient",
+                            "value": "discord"
+                        },
+                        {
+                            "name": "Moonraker Klient",
+                            "value": "moonraker_client"
+                        },
+                        {
+                            "name": "Power Devices",
+                            "value": "power_devices"
+                        },
+                        {
+                            "name": "Updates",
+                            "value": "update"
+                        }
+                    ]
+                }
+            }
         },
         "notify": {
             "description": "Soll ich dir denn Druck Status via Private Nachricht schicken?",
@@ -774,6 +932,16 @@
         "history": {
             "description": "Zeigt denn Druck Verlauf.",
             "command": "verlauf"
+        },
+        "get_log": {
+            "description": "Erhalte einen Log.",
+            "command": "log",
+            "options": {
+                "log_file": {
+                    "name": "logdatei",
+                    "description": "Spezifiere die Log Datei."
+                }
+            }
         }
     },
     "graph": {
