@@ -30,7 +30,10 @@ export class StatusHelper {
         const serverInfo = getEntry('server_info')
         const stateCache = getEntry('state')
         const klipperStatus = stateCache.print_stats.state
-        const progress = stateCache.display_status.progress.toFixed(2)
+
+        let progress = stateCache.display_status.progress.toFixed(2)
+        if(isNaN(progress)) progress = 0
+
         const overridePlaceholders = {}
 
         if (typeof serverInfo === 'undefined')
