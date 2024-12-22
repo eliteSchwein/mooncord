@@ -163,9 +163,9 @@
             "activity": "Une pause ? Apéro 🍾 !!"
         },
         "printjob_printing": {
-            "content": "Impression ${state.print_stats.filename} est à ${percent:0:state.display_status.progress}%",
+            "content": "Impression ${state.print_stats.filename} est à ${percent:0:function.current_percent}%",
             "title": "Impression",
-            "activity": "🖨️ Impression: ${percent:0:state.display_status.progress}%"
+            "activity": "🖨️ Impression: ${percent:0:function.current_percent}%"
         },
         "printjob_stop": {
             "content": "Impression stopper",

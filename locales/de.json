@@ -163,9 +163,9 @@
             "activity": "Drinkt ein Bier 🍺 Prost!"
         },
         "printjob_printing": {
-            "content": "Druckauftrag ${state.print_stats.filename} ist bei ${percent:0:state.display_status.progress}%",
+            "content": "Druckauftrag ${state.print_stats.filename} ist bei ${percent:0:function.current_percent}%",
             "title": "Druck Fortschritt",
-            "activity": "🖨️ Druckfortschritt: ${percent:0:state.display_status.progress}%"
+            "activity": "🖨️ Druckfortschritt: ${percent:0:function.current_percent}%"
         },
         "printjob_stop": {
             "content": "Druck angehalten",

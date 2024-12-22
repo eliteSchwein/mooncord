@@ -163,9 +163,9 @@
             "activity": "ia o pauză, bea niște sânge 🩸 proaspăt 🧛. Hai Noroc!"
         },
         "printjob_printing": {
-            "content": "Printjob ${state.print_stats.filename} is at ${percent:0:state.display_status.progress}%",
+            "content": "Printjob ${state.print_stats.filename} is at ${percent:0:function.current_percent}%",
             "title": "Imprimare",
-            "activity": "Imprimare: ${percent:0:state.display_status.progress}%"
+            "activity": "Imprimare: ${percent:0:function.current_percent}%"
         },
         "printjob_stop": {
             "content": "The Printjob stopped",

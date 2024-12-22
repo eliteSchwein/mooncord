@@ -163,9 +163,9 @@
             "activity": "Wstrzymano wydruk"
         },
         "printjob_printing": {
-            "content": "Wydruk ${state.print_stats.filename} jest ${percent:0:state.display_status.progress}% ukończony",
+            "content": "Wydruk ${state.print_stats.filename} jest ${percent:0:function.current_percent}% ukończony",
             "title": "Drukowanie",
-            "activity": "Drukowanie: ${percent:0:state.display_status.progress}%"
+            "activity": "Drukowanie: ${percent:0:function.current_percent}%"
         },
         "printjob_stop": {
             "content": "Wydruk zatrzymany",

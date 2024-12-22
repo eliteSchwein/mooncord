@@ -166,9 +166,9 @@
             "activity": "休息一下"
         },
         "printjob_printing": {
-            "content": "Printjob ${state.print_stats.filename} is at ${percent:0:state.display_status.progress}%",
+            "content": "Printjob ${state.print_stats.filename} is at ${percent:0:function.current_percent}%",
             "title": "Printing",
-            "activity": "Printing: ${percent:0:state.display_status.progress}%"
+            "activity": "Printing: ${percent:0:function.current_percent}%"
         },
         "printjob_stop": {
             "content": "The Printjob stopped",

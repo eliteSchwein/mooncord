@@ -163,9 +163,9 @@
             "activity": "Doet even een dutje 😴"
         },
         "printjob_printing": {
-            "content": "Printopdracht ${state.print_stats.filename} is op ${percent:0:state.display_status.progress}%",
+            "content": "Printopdracht ${state.print_stats.filename} is op ${percent:0:function.current_percent}%",
             "title": "Printen",
-            "activity": "Printen: ${percent:0:state.display_status.progress}%"
+            "activity": "Printen: ${percent:0:function.current_percent}%"
         },
         "printjob_stop": {
             "content": "De printopdracht is gestopt",

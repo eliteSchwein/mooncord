@@ -163,9 +163,9 @@
             "activity": "☕ take a Break"
         },
         "printjob_printing":{
-            "content": "Printjob ${state.print_stats.filename} is at ${percent:0:state.display_status.progress}%",
+            "content": "Printjob ${state.print_stats.filename} is at ${percent:0:function.current_percent}%",
             "title": "Printing",
-            "activity": "🖨️ printing: ${percent:0:state.display_status.progress}%"
+            "activity": "🖨️ printing: ${percent:0:function.current_percent}%"
         },
         "printjob_stop":{
             "content": "The Printjob stopped",
