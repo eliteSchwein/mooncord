@@ -46,7 +46,12 @@ select_menus:
 buttons: 
 - BUTTON
 ```
-<small>add select button(s) to the embed.</small>  
+<small>add button(s) to the embed.</small>  
+<br>
+```c
+buttons_per_row: 5
+```
+<small>buttons per row (default is 5, some embeds use 3).</small>  
 <br>
 fields:
 ```console

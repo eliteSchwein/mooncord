@@ -8,6 +8,7 @@ import {ConsoleHelper} from "../../../../helper/ConsoleHelper";
 import {getMoonrakerClient} from "../../../../Application";
 import {ModalHelper} from "../../../../helper/ModalHelper";
 import {MetadataHelper} from "../../../../helper/MetadataHelper";
+import {TemplateHelper} from "../../../../helper/TemplateHelper";
 
 export default class BaseCommand {
     commandId: string
@@ -24,6 +25,7 @@ export default class BaseCommand {
     protected modalHelper = new ModalHelper()
     protected metadataHelper = new MetadataHelper()
     protected moonrakerClient = getMoonrakerClient()
+    protected templateHelper = new TemplateHelper()
 
     public async executeCommand(interaction: ChatInputCommandInteraction, commandId: string) {
         if (commandId !== this.commandId) {

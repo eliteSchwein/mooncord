@@ -8,6 +8,7 @@ import {UsageHelper} from "./UsageHelper";
 import {clearInterval} from "timers";
 import {TempHelper} from "./TempHelper";
 import {PromptHelper} from "./PromptHelper";
+import {updateAllRestEndpoints} from "./RestApiHelper";
 
 export class SchedulerHelper {
     protected configHelper = new ConfigHelper()
@@ -76,6 +77,8 @@ export class SchedulerHelper {
             setData('machine_info', machineInfo.result)
 
             await this.usageHelper.updateDiskUsage()
+
+            await updateAllRestEndpoints()
 
             if (global.gc)
                 global.gc()

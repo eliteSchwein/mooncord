@@ -8,6 +8,7 @@ import {ModalHelper} from "../../../../helper/ModalHelper";
 import {MetadataHelper} from "../../../../helper/MetadataHelper";
 import {getMoonrakerClient} from "../../../../Application";
 import {ModalSubmitInteraction} from "discord.js";
+import {TemplateHelper} from "../../../../helper/TemplateHelper";
 
 export default class BaseModal {
     modalId = ''
@@ -23,6 +24,7 @@ export default class BaseModal {
     protected modalHelper = new ModalHelper()
     protected metadataHelper = new MetadataHelper()
     protected moonrakerClient = getMoonrakerClient()
+    protected templateHelper = new TemplateHelper()
 
     public async executeModal(interaction: ModalSubmitInteraction, modalId: string) {
         if (modalId !== this.modalId) {

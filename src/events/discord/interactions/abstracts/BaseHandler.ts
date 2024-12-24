@@ -8,6 +8,7 @@ import {ModalHelper} from "../../../../helper/ModalHelper";
 import {MetadataHelper} from "../../../../helper/MetadataHelper";
 import {getMoonrakerClient} from "../../../../Application";
 import {Message, User} from "discord.js";
+import {TemplateHelper} from "../../../../helper/TemplateHelper";
 
 export default class BaseHandler {
     protected localeHelper = new LocaleHelper()
@@ -21,6 +22,7 @@ export default class BaseHandler {
     protected consoleHelper = new ConsoleHelper()
     protected modalHelper = new ModalHelper()
     protected metadataHelper = new MetadataHelper()
+    protected templateHelper = new TemplateHelper()
 
     protected moonrakerClient = getMoonrakerClient()
 

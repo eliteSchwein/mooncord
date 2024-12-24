@@ -538,6 +538,9 @@
         "clear_file": {
             "label": "Clear File"
         },
+        "toggle_timelapse": {
+            "label": "Timelapse ${isMatching:timelapse_settings.enabled:true:active:inactive}"
+        },
         "printjob_delete_request": {
             "label": "Delete"
         },

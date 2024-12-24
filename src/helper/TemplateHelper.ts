@@ -268,7 +268,7 @@ export class TemplateHelper {
         return input
     }
 
-    protected async parsePartials(partials: any[], field: any[]) {
+    private async parsePartials(partials: any[], field: any[]) {
         const spoolmanHelper = new SpoolmanHelper()
         const tempHelper = new TempHelper()
         const versionHelper = new VersionHelper()
@@ -305,7 +305,7 @@ export class TemplateHelper {
         return field
     }
 
-    protected parsePlaceholderContent(placeholder: string, providedPlaceholders = null) {
+    private parsePlaceholderContent(placeholder: string, providedPlaceholders = null) {
         const placeholderId = placeholder
             .replace(/(\${)/g, '')
             .replace(/}/g, '')
@@ -397,7 +397,7 @@ export class TemplateHelper {
         }
     }
 
-    protected getStateMessage() {
+    private getStateMessage() {
         const webhookState = findValue('state.webhooks.state')
         const webhookStateMessage = findValue('state.webhooks.state_message')
         const state = findValue('function.current_status')

@@ -8,6 +8,7 @@ import {ModalHelper} from "../../../../helper/ModalHelper";
 import {MetadataHelper} from "../../../../helper/MetadataHelper";
 import {getMoonrakerClient} from "../../../../Application";
 import {StringSelectMenuInteraction} from "discord.js";
+import {TemplateHelper} from "../../../../helper/TemplateHelper";
 
 export default class BaseSelection {
     selectionId: string
@@ -23,6 +24,7 @@ export default class BaseSelection {
     protected modalHelper = new ModalHelper()
     protected metadataHelper = new MetadataHelper()
     protected moonrakerClient = getMoonrakerClient()
+    protected templateHelper = new TemplateHelper()
 
     public async executeSelection(interaction: StringSelectMenuInteraction, selectionId: string) {
         if (selectionId !== this.selectionId) {

@@ -41,6 +41,18 @@ export class DiscordInputGenerator {
                 }
             }
 
+            if(buttonData.enabled === undefined) {
+                buttonData.enabled = true
+            }
+
+            if(typeof buttonData.enabled === 'string') {
+                buttonData.enabled = buttonData.enabled === 'true'
+            }
+
+            if(!buttonData.enabled) {
+                continue
+            }
+
             const button = new ButtonBuilder()
                 .setCustomId(buttonData.id)
                 .setStyle(convertStyle(buttonData.style))

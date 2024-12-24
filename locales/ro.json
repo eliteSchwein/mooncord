@@ -535,6 +535,9 @@
         "clear_file": {
             "label": "Ștergeți fișierul"
         },
+        "toggle_timelapse": {
+            "label": "Timelapse ${isMatching:timelapse_settings.enabled:true:active:inactive}"
+        },
         "printjob_delete_request": {
             "label": "Ștergeți"
         },

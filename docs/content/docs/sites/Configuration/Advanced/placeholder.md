@@ -59,4 +59,15 @@ ${formatTime:value}
 ```c
 ${timestamp:value}
 ```
-<small>convert value to timestamp.</small>
+<small>convert value to timestamp.</small>  
+<br>
+```c
+${isPresent:key:searchValue:validValue:invalidValue}
+```
+<small>set a value if a value is included in a object.</small>  
+<br>
+```c
+${isMatching:key:value:validValue:invalidValue}
+```
+<small>set a value if a key is matching the value.</small>  
+<br>

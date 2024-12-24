@@ -27,6 +27,7 @@ import {PromptHelper} from "../../../helper/PromptHelper";
 import DownloadHandler from "./handlers/DownloadHandler";
 import {ClearAttachmentsHandler} from "./handlers/ClearAttachmentsHandler";
 import {WaitMessageHandler} from "./handlers/WaitMessageHandler";
+import {UpdateRestHandler} from "./handlers/UpdateRestHandler";
 
 export class ButtonInteraction {
 
@@ -91,6 +92,7 @@ export class ButtonInteraction {
         await new DeleteHandler().executeHandler(message, interaction.user, buttonData, interaction)
         await new CameraSettingHandler().executeHandler(message, interaction.user, buttonData, interaction)
         await new WebsocketHandler().executeHandler(message, interaction.user, buttonData, interaction)
+        await new UpdateRestHandler().executeHandler(message, interaction.user, buttonData, interaction)
         await new ExcludeConfirmHandler().executeHandler(message, interaction.user, buttonData, interaction)
         await new ModalHandler().executeHandler(message, interaction.user, buttonData, interaction)
         await new PrintJobStartHandler().executeHandler(message, interaction.user, buttonData, interaction)

@@ -535,6 +535,9 @@
         "clear_file": {
             "label": "Entferne Datei"
         },
+        "toggle_timelapse": {
+            "label": "Timelapse ${isMatching:timelapse_settings.enabled:true:aktiv:inaktiv}"
+        },
         "printjob_delete_request": {
             "label": "Löschen"
         },

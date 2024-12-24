@@ -6,6 +6,7 @@ import FormData from "form-data";
 import {logError, logNotice} from "./LoggerHelper";
 import {ActivityType, Attachment, ButtonStyle, TextInputStyle} from "discord.js";
 import * as metaData from "../meta/history_graph_meta.json";
+import exp from "node:constants";
 
 export function isObject(item) {
     return (item && typeof item === 'object' && !Array.isArray(item));
@@ -148,6 +149,27 @@ export function parseCalculatedPlaceholder(fragments) {
     if (fragments[0] === 'timestamp') {
         return formatTimestamp(parseInt(fragments[1]))
     }
+    if (fragments[0] === 'isPresent') {
+        const isIncluded = fragments[1].includes(parseData(fragments[2]))
+
+        return (isIncluded) ? parseData(fragments[3]) : parseData(fragments[4])
+    }
+    if (fragments[0] === 'isMatching') {
+        const isValid = parseData(fragments[1]) === parseData(fragments[2])
+
+        return (isValid) ? parseData(fragments[3]) : parseData(fragments[4])
+    }
+}
+
+export function parseData(input: string) {
+    if(input === 'true') return true
+    if(input === 'false') return false
+
+    const parsedNumber = Number.parseFloat(input)
+
+    if(!isNaN(parsedNumber) && isFinite(parsedNumber)) return parsedNumber
+
+    return input
 }
 
 export function getIcons() {

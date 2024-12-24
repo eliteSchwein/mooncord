@@ -24,6 +24,7 @@ import {TempHelper} from "../helper/TempHelper";
 import {PowerDeviceHelper} from "../helper/PowerDeviceHelper";
 import {HistoryHelper} from "../helper/HistoryHelper";
 import {WebcamHelper} from "../helper/WebcamHelper";
+import {updateAllRestEndpoints} from "../helper/RestApiHelper";
 
 const requests: any = {}
 let messageHandler: MessageHandler
@@ -132,6 +133,8 @@ export class MoonrakerClient {
             'readySince': Date.now() / 1000,
             'event_count': this.websocket.underlyingWebsocket['_eventsCount']
         })
+
+        await updateAllRestEndpoints()
 
         new TempHelper().generateColors()
         void new WebcamHelper().generateCache()
