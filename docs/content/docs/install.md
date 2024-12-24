@@ -48,7 +48,8 @@ Now follow the install script, below are screenshots with some explanation what 
 <small>enter your Discord Bot Token from [Create Discord Application](#create-discord-application)</small>
 
 ![Screenshot](img/question4.png)
-<small>enter your full Discord tag, both the classic one with #1234 and the new one with just the name will work.</small>
+![Screenshot](img/question4_1.png)  
+<small>enter your full Discord tag, the smaller name (blue square in my screenshot).</small>
 
 ![Screenshot](img/question5.png)
 <small>A present NodeJS installation was found, mooncord 1.0.3 requires nodejs 20, if you have a older or unknown nodejs Version, type Y otherwise type N.</small>
