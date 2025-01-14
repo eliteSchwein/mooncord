@@ -44,7 +44,21 @@ export class DiscordClient {
         this.discordClient = new Client({
             makeCache: Options.cacheWithLimits({
                 ...Options.DefaultMakeCacheSettings,
+                ApplicationEmojiManager: 0,
+                AutoModerationRuleManager: 0,
+                BaseGuildEmojiManager: 0,
+                EntitlementManager: 0,
+                GuildBanManager: 0,
+                GuildEmojiManager: 0,
+                GuildForumThreadManager: 0,
+                GuildInviteManager: 0,
+                GuildScheduledEventManager: 0,
+                GuildStickerManager: 0,
+                GuildTextThreadManager: 0,
                 PresenceManager: 0,
+                StageInstanceManager: 0,
+                ThreadManager: 0,
+                ThreadMemberManager: 0,
                 VoiceStateManager: 0
             }),
             sweepers: {
@@ -52,6 +66,10 @@ export class DiscordClient {
                 messages: {
                     interval: 3_600,
                     lifetime: 1_800,
+                },
+                reactions: {
+                    interval: 120,
+                    lifetime: 30,
                 },
                 users: {
                     interval: 3_600,
