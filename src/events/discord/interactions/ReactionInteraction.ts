@@ -46,6 +46,8 @@ export class ReactionInteraction {
         const reactionMetaCache = findValue('config.reaction_meta')
         const reactionCache = findValue('config.input_meta.reactions')
 
+        console.log(reactionCache)
+
         const reactionId = reactionMetaCache[emoji]
 
         if (reactionId === undefined) {
