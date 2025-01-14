@@ -1,4 +1,4 @@
-import {ActivityType, Client, GatewayIntentBits, Partials} from 'discord.js'
+import {ActivityType, Client, GatewayIntentBits, Options, Partials} from 'discord.js'
 
 import {getDatabase} from '../Application'
 import {ConfigHelper} from '../helper/ConfigHelper'
@@ -42,6 +42,23 @@ export class DiscordClient {
         await this.close()
 
         this.discordClient = new Client({
+            makeCache: Options.cacheWithLimits({
+                ...Options.DefaultMakeCacheSettings,
+                ReactionManager: 0,
+                PresenceManager: 0,
+                VoiceStateManager: 0
+            }),
+            sweepers: {
+                ...Options.DefaultSweeperSettings,
+                messages: {
+                    interval: 3_600,
+                    lifetime: 1_800,
+                },
+                users: {
+                    interval: 3_600,
+                    filter: () => user => user.bot && user.id !== user.client.user.id,
+                },
+            },
             intents: [
                 GatewayIntentBits.DirectMessages,
                 GatewayIntentBits.DirectMessageReactions,
