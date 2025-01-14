@@ -67,10 +67,6 @@ export class DiscordClient {
                     interval: 3_600,
                     lifetime: 1_800,
                 },
-                reactions: {
-                    interval: 120,
-                    lifetime: 30,
-                },
                 users: {
                     interval: 3_600,
                     filter: () => user => user.bot && user.id !== user.client.user.id,
