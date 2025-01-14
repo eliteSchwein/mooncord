@@ -44,7 +44,6 @@ export class DiscordClient {
         this.discordClient = new Client({
             makeCache: Options.cacheWithLimits({
                 ...Options.DefaultMakeCacheSettings,
-                ReactionManager: 0,
                 PresenceManager: 0,
                 VoiceStateManager: 0
             }),
