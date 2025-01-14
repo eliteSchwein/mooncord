@@ -45,7 +45,7 @@ export class ReactionInteraction {
         }
 
         const permissionHelper = new PermissionHelper()
-        const reactionConfigs = this.config.getEntriesByFilter(/^reaction $/g, true)
+        const reactionConfigs = this.config.getEntriesByFilter(/^reaction /g, true)
 
         console.log(reactionConfigs)
 
