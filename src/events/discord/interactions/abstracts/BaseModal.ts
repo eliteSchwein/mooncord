@@ -7,7 +7,7 @@ import {ConsoleHelper} from "../../../../helper/ConsoleHelper";
 import {ModalHelper} from "../../../../helper/ModalHelper";
 import {MetadataHelper} from "../../../../helper/MetadataHelper";
 import {getMoonrakerClient} from "../../../../Application";
-import {ModalSubmitInteraction} from "discord.js";
+import {MessageFlagsBitField, ModalSubmitInteraction} from "discord.js";
 import {TemplateHelper} from "../../../../helper/TemplateHelper";
 
 export default class BaseModal {
@@ -31,7 +31,12 @@ export default class BaseModal {
             return
         }
 
-        await interaction.deferReply({ephemeral: this.ephemeral})
+        if (this.ephemeral) {
+            await interaction.deferReply({flags: MessageFlagsBitField.Flags.Ephemeral})
+        } else {
+            await interaction.deferReply();
+        }
+
         await this.handleModal(interaction)
     }
 

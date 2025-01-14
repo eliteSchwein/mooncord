@@ -1,7 +1,7 @@
 import {LocaleHelper} from "../../../../helper/LocaleHelper";
 import {DatabaseUtil} from "../../../../utils/DatabaseUtil";
 import {ConfigHelper} from "../../../../helper/ConfigHelper";
-import {ChatInputCommandInteraction} from "discord.js";
+import {ChatInputCommandInteraction, MessageFlagsBitField} from "discord.js";
 import {EmbedHelper} from "../../../../helper/EmbedHelper";
 import {ServiceHelper} from "../../../../helper/ServiceHelper";
 import {ConsoleHelper} from "../../../../helper/ConsoleHelper";
@@ -33,8 +33,11 @@ export default class BaseCommand {
         }
 
         if (this.defer) {
-            await interaction.deferReply({ephemeral: this.ephemeral})
+            await interaction.deferReply()
+        } else if (this.defer && this.ephemeral) {
+            await interaction.deferReply({flags: MessageFlagsBitField.Flags.Ephemeral})
         }
+
         await this.handleCommand(interaction)
     }
 

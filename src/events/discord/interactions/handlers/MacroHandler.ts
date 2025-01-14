@@ -46,7 +46,7 @@ export class MacroHandler extends BaseHandler {
         }
 
         if (interaction !== null && interaction.replied) {
-            await interaction.followUp({ephemeral: false, content: answer})
+            await interaction.followUp({content: answer})
         } else {
             await interaction.reply(answer)
         }

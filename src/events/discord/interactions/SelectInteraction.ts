@@ -1,6 +1,6 @@
 'use strict'
 
-import {Interaction} from "discord.js";
+import {Interaction, MessageFlagsBitField} from "discord.js";
 import {PermissionHelper} from "../../../helper/PermissionHelper";
 import {LocaleHelper} from "../../../helper/LocaleHelper";
 import {sleep} from "../../../helper/DataHelper";
@@ -40,16 +40,12 @@ export class SelectInteraction {
 
         const permissionHelper = new PermissionHelper()
         const localeHelper = new LocaleHelper()
-        const config = new ConfigHelper()
 
         logNotice(`${interaction.user.tag} pressed selection: ${selectId}`)
         logNotice(`value/s: ${logValues}`)
 
         if (!permissionHelper.hasPermission(interaction.user, interaction.guild, selectId)) {
-            await interaction.reply({
-                content: localeHelper.getNoPermission(interaction.user.tag),
-                ephemeral: config.showNoPermissionPrivate()
-            })
+            await permissionHelper.sendNoPermissionMessage(interaction)
             logWarn(`${interaction.user.tag} doesnt have the permission for: ${interaction.customId}`)
             return;
         }

@@ -7,7 +7,7 @@ import {ConsoleHelper} from "../../../../helper/ConsoleHelper";
 import {ModalHelper} from "../../../../helper/ModalHelper";
 import {MetadataHelper} from "../../../../helper/MetadataHelper";
 import {getMoonrakerClient} from "../../../../Application";
-import {StringSelectMenuInteraction} from "discord.js";
+import {MessageFlagsBitField, StringSelectMenuInteraction} from "discord.js";
 import {TemplateHelper} from "../../../../helper/TemplateHelper";
 
 export default class BaseSelection {
@@ -31,7 +31,12 @@ export default class BaseSelection {
             return
         }
 
-        await interaction.deferReply({ephemeral: this.ephemeral})
+        if (this.ephemeral) {
+            await interaction.deferReply({flags: MessageFlagsBitField.Flags.Ephemeral})
+        } else {
+            await interaction.deferReply();
+        }
+
         await this.handleSelection(interaction)
     }
 

@@ -1,11 +1,13 @@
 'use strict'
 
-import {Guild, User} from "discord.js";
+import {Guild, Interaction, MessageFlagsBitField, User} from "discord.js";
 import {ConfigHelper} from "./ConfigHelper";
 import {DatabaseUtil} from "../utils/DatabaseUtil";
+import {LocaleHelper} from "./LocaleHelper";
 
 export class PermissionHelper {
     protected config = new ConfigHelper()
+    protected localeHelper = new LocaleHelper()
     protected database = new DatabaseUtil()
     protected permissions = this.database.getDatabaseEntry('permissions')
     protected controllers = this.permissions.controllers
@@ -20,6 +22,21 @@ export class PermissionHelper {
         }
         if (typeof this.botAdmins.roles === "string") {
             this.botAdmins.roles = [this.botAdmins.roles]
+        }
+    }
+
+    public async sendNoPermissionMessage(interaction: Interaction) {
+        if(this.config.showNoPermissionPrivate()) {
+            // @ts-ignore
+            await interaction.reply({
+                content: this.localeHelper.getNoPermission(interaction.user.tag)
+            })
+        } else {
+            // @ts-ignore
+            await interaction.reply({
+                content: this.localeHelper.getNoPermission(interaction.user.tag),
+                flags: MessageFlagsBitField.Flags.Ephemeral
+            })
         }
     }
 

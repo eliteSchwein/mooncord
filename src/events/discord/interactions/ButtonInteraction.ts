@@ -1,6 +1,6 @@
 'use strict'
 
-import {Interaction, Message} from "discord.js";
+import {Interaction, Message, MessageFlagsBitField} from "discord.js";
 import {RefreshHandler} from "./handlers/RefreshHandler";
 import {logNotice, logWarn} from "../../../helper/LoggerHelper";
 import {PermissionHelper} from "../../../helper/PermissionHelper";
@@ -46,7 +46,6 @@ export class ButtonInteraction {
             return
         }
 
-        const config = new ConfigHelper()
         const permissionHelper = new PermissionHelper()
         const localeHelper = new LocaleHelper()
         const locale = localeHelper.getLocale()
@@ -65,10 +64,7 @@ export class ButtonInteraction {
         logNotice(`${interaction.user.tag} pressed button: ${buttonId}`)
 
         if (!permissionHelper.hasPermission(interaction.user, interaction.guild, buttonId)) {
-            await interaction.reply({
-                content: localeHelper.getNoPermission(interaction.user.tag),
-                ephemeral: config.showNoPermissionPrivate()
-            })
+            await permissionHelper.sendNoPermissionMessage(interaction)
             logWarn(`${interaction.user.tag} doesnt have the permission for: ${interaction.customId}`)
             return;
         }

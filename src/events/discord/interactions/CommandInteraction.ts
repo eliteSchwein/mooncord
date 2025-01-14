@@ -1,6 +1,6 @@
 'use strict'
 
-import {Interaction} from "discord.js";
+import {Interaction, MessageFlagsBitField} from "discord.js";
 import {DiscordCommandGenerator} from "../../../generator/DiscordCommandGenerator";
 import {logNotice, logWarn} from "../../../helper/LoggerHelper";
 import {PermissionHelper} from "../../../helper/PermissionHelper";
@@ -51,7 +51,6 @@ export class CommandInteraction {
             logFeedback = `${logFeedback} ${option.name}:${option.value}`
         }
 
-        const config = new ConfigHelper()
         const commandGenerator = new DiscordCommandGenerator()
         const localeHelper = new LocaleHelper()
         const permissionHelper = new PermissionHelper()
@@ -71,10 +70,7 @@ export class CommandInteraction {
         logNotice(`${interaction.user.tag} executed command: ${logFeedback}`)
 
         if (!permissionHelper.hasPermission(interaction.user, interaction.guild, permissionId)) {
-            await interaction.reply({
-                content: localeHelper.getNoPermission(interaction.user.tag),
-                ephemeral: config.showNoPermissionPrivate()
-            })
+            await permissionHelper.sendNoPermissionMessage(interaction)
             logWarn(`${interaction.user.tag} doesnt have the permission for: ${interaction.commandName} (${commandId})`)
             return;
         }

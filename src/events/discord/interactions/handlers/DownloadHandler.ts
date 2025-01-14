@@ -1,4 +1,4 @@
-import {AttachmentBuilder, Message, User} from "discord.js";
+import {AttachmentBuilder, Message, MessageFlagsBitField, User} from "discord.js";
 import {downloadFile} from "../../../../helper/DataHelper";
 import BaseHandler from "../abstracts/BaseHandler";
 
@@ -18,7 +18,7 @@ export default class DownloadHandler extends BaseHandler {
 
     async handleHandler(message: Message, user: User, data, interaction = null) {
         if (interaction !== null && !interaction.replied && !interaction.deferred) {
-            await interaction.deferReply({ephemeral: true})
+            await interaction.deferReply({flags: MessageFlagsBitField.Flags.Ephemeral})
         }
 
         const fileName = this.embedHelper.getAuthorName(message.embeds[0])

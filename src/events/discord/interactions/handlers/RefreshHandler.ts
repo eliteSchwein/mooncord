@@ -1,6 +1,6 @@
 'use strict'
 
-import {Message, User} from "discord.js";
+import {Message, MessageFlagsBitField, User} from "discord.js";
 import {getEntry} from "../../../../utils/CacheUtil";
 import BaseHandler from "../abstracts/BaseHandler";
 
@@ -17,7 +17,7 @@ export class RefreshHandler extends BaseHandler {
 
         if (interaction !== null) {
             if (interaction.replied) {
-                await interaction.followUp({ephemeral: true, content: waitMessage})
+                await interaction.followUp({flags: MessageFlagsBitField.Flags.Ephemeral, content: waitMessage})
             } else {
                 await interaction.update({components: null, content: waitMessage})
             }

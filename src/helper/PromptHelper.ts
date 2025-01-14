@@ -5,7 +5,14 @@ import {PermissionHelper} from "./PermissionHelper";
 import {ConfigHelper} from "./ConfigHelper";
 import {LocaleHelper} from "./LocaleHelper";
 import {ConsoleHelper} from "./ConsoleHelper";
-import {ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, Interaction} from "discord.js";
+import {
+    ActionRowBuilder,
+    ButtonBuilder,
+    ButtonStyle,
+    EmbedBuilder,
+    Interaction,
+    MessageFlagsBitField
+} from "discord.js";
 import {convertStyle} from "./DataHelper";
 
 export class PromptHelper {
@@ -24,16 +31,11 @@ export class PromptHelper {
             return
         }
 
-        const config = new ConfigHelper()
         const permissionHelper = new PermissionHelper()
-        const localeHelper = new LocaleHelper()
         const consoleHelper = new ConsoleHelper()
 
         if (!permissionHelper.isBotAdmin(interaction.user, interaction.guild) && !permissionHelper.isController(interaction.user, interaction.guild)) {
-            await interaction.reply({
-                content: localeHelper.getNoPermission(interaction.user.tag),
-                ephemeral: config.showNoPermissionPrivate()
-            })
+            await permissionHelper.sendNoPermissionMessage(interaction)
             logWarn(`${interaction.user.tag} doesnt have the permission for: ${interaction.customId}`)
             return;
         }
