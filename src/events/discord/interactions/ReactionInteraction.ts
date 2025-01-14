@@ -23,8 +23,10 @@ import {SetupHandler} from "./handlers/SetupHandler";
 import {NotificationHandler} from "./handlers/NotificationHandler";
 import {ClearAttachmentsHandler} from "./handlers/ClearAttachmentsHandler";
 import {WaitMessageHandler} from "./handlers/WaitMessageHandler";
+import {ConfigHelper} from "../../../helper/ConfigHelper";
 
 export class ReactionInteraction {
+    protected config = new ConfigHelper()
 
     public constructor(interaction: MessageReaction | PartialMessageReaction) {
         void this.executeHandler(interaction)
@@ -43,18 +45,19 @@ export class ReactionInteraction {
         }
 
         const permissionHelper = new PermissionHelper()
-        const reactionMetaCache = findValue('config.reaction_meta')
-        const reactionCache = findValue('config.input_meta.reactions')
+        const reactionConfigs = this.config.getEntriesByFilter(/^reaction $/g, true)
+        let reactionData = undefined
+        let reactionId = ''
 
-        console.log(reactionCache)
+        for (const configReactionId of reactionConfigs) {
+            const reactionConfig = reactionConfigs[configReactionId]
+            if(!reactionConfig.emoji.includes(emoji)) continue
 
-        const reactionId = reactionMetaCache[emoji]
-
-        if (reactionId === undefined) {
-            return
+            reactionId = configReactionId
+            reactionData = reactionConfig
         }
 
-        const reactionData = reactionCache[reactionId]
+        if(!reactionData) return
 
         const user = interaction.users.cache.first()
 
