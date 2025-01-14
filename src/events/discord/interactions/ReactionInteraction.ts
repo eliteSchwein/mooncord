@@ -46,13 +46,10 @@ export class ReactionInteraction {
 
         const permissionHelper = new PermissionHelper()
         const reactionConfigs = this.config.getEntriesByFilter(/^reaction $/g, true)
-
-        console.log(reactionConfigs)
-
         let reactionData = undefined
         let reactionId = ''
 
-        for (const configReactionId in reactionConfigs) {
+        for (const configReactionId of reactionConfigs) {
             const reactionConfig = reactionConfigs[configReactionId]
             if(!reactionConfig.emoji.includes(emoji)) continue
 
