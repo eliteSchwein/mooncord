@@ -173,8 +173,8 @@ export class StatusHelper {
         if (progress === currentProgress)
             return false
 
-        if (progress === 0 || progress === 100)
-            return true
+        if (progress < 1 || progress > 99)
+            return false
 
         if (progress < currentProgress)
             return false
