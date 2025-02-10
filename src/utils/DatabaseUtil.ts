@@ -40,11 +40,9 @@ export class DatabaseUtil {
         try {
             logSuccess('Check if Database is present...')
 
-            const databaseNamespaces = await this.moonrakerClient.send({
+            const databaseNamespaces = (await this.moonrakerClient.send({
                 "method": "server.database.list"
-            })
-
-            console.log(databaseNamespaces)
+            })).result.namespaces
 
             if(!databaseNamespaces.includes("mooncord")) {
                 await this.handleDatabaseMissing()
