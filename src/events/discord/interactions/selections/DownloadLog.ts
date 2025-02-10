@@ -1,8 +1,8 @@
 'use strict'
 
-import {AttachmentBuilder, StringSelectMenuInteraction} from "discord.js";
+import {AttachmentBuilder, MessageFlagsBitField, StringSelectMenuInteraction} from "discord.js";
 import {downloadFile} from "../../../../helper/DataHelper";
-import {logError, logSuccess} from "../../../../helper/LoggerHelper";
+import {logError, logRegular, logSuccess} from "../../../../helper/LoggerHelper";
 import util from "util";
 import BaseSelection from "../abstracts/BaseSelection";
 
@@ -11,7 +11,7 @@ export class DownloadLogSelection extends BaseSelection {
     ephemeral = true
 
     async handleSelection(interaction: StringSelectMenuInteraction) {
-        let attachments = []
+        let firstMessage = true
 
         for (const value of interaction.values) {
             const attachment = await this.retrieveLog(value)
@@ -21,22 +21,22 @@ export class DownloadLogSelection extends BaseSelection {
                 return
             }
 
-            attachments.push(attachment)
-        }
+            if(firstMessage) {
+                await interaction.editReply(attachment)
+                firstMessage = false
+                continue
+            }
 
-        try {
-            await interaction.editReply({files: attachments});
-        } catch (error) {
-            const formattedError = util.format(error)
-
-            await interaction.editReply(this.locale.messages.errors.log_failed
-                .replace(/(\${service})/g, 'N/A')
-                .replace(/(\${reason})/g, `\`\`js\n${formattedError}\`\``));
-            logError(`Logs Upload failed! Reason: ${util.format(formattedError)}`)
+            await interaction.followUp({
+                files: [attachment],
+                flags: MessageFlagsBitField.Flags.Ephemeral
+            })
         }
     }
 
     private async retrieveLog(logFile: string) {
+        logRegular(`downloading log ${logFile}...`)
+
         try {
             const result = await downloadFile("logs", logFile)
 

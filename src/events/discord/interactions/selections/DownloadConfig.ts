@@ -1,6 +1,6 @@
 'use strict'
 
-import {AttachmentBuilder, StringSelectMenuInteraction} from "discord.js";
+import {AttachmentBuilder, MessageFlagsBitField, StringSelectMenuInteraction} from "discord.js";
 import {logError, logRegular, logSuccess} from "../../../../helper/LoggerHelper";
 import {downloadFile} from "../../../../helper/DataHelper";
 import BaseSelection from "../abstracts/BaseSelection";
@@ -10,9 +10,27 @@ export class DownloadConfig extends BaseSelection {
     ephemeral = true
 
     async handleSelection(interaction: StringSelectMenuInteraction) {
-        const file = interaction.values[0]
+        let firstMessage = true
 
-        await interaction.editReply(await this.retrieveConfig(file))
+        for (const value of interaction.values) {
+            const attachment = await this.retrieveConfig(value)
+
+            if (typeof attachment === 'string') {
+                await interaction.editReply(attachment);
+                return
+            }
+
+            if(firstMessage) {
+                await interaction.editReply(attachment)
+                firstMessage = false
+                continue
+            }
+
+            await interaction.followUp({
+                files: [attachment],
+                flags: MessageFlagsBitField.Flags.Ephemeral
+            })
+        }
     }
 
     private async retrieveConfig(config: string) {
