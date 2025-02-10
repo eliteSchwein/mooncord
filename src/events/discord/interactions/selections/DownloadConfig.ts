@@ -50,7 +50,7 @@ export class DownloadConfig extends BaseSelection {
             const attachment = new AttachmentBuilder(result.data, {name: `${config}`})
 
             logSuccess(`Configuration ${config} Download successful!`)
-            return {files: [attachment]}
+            return attachment
         } catch (error) {
             if (typeof error.code !== 'undefined') {
                 logError(`${config} Config Download failed: ${error.config.url}: ${error.code}`)
