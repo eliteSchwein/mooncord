@@ -32,10 +32,10 @@ export default class BaseCommand {
             return
         }
 
-        if (this.defer) {
-            await interaction.deferReply()
-        } else if (this.defer && this.ephemeral) {
+        if (this.defer && this.ephemeral) {
             await interaction.deferReply({flags: MessageFlagsBitField.Flags.Ephemeral})
+        } else if (this.defer) {
+            await interaction.deferReply()
         }
 
         await this.handleCommand(interaction)
