@@ -21,7 +21,9 @@ export class DownloadConfig extends BaseSelection {
             }
 
             if(firstMessage) {
-                await interaction.editReply(attachment)
+                await interaction.editReply({
+                    files: [attachment]
+                })
                 firstMessage = false
                 continue
             }
