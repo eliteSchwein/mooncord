@@ -17,8 +17,17 @@ export class DownloadLogSelection extends BaseSelection {
             const attachment = await this.retrieveLog(value)
 
             if (typeof attachment === 'string') {
-                await interaction.editReply(attachment);
-                return
+                if(firstMessage) {
+                    await interaction.editReply(attachment);
+                    firstMessage = false
+                }
+
+                await interaction.followUp({
+                    content: attachment,
+                    flags: MessageFlagsBitField.Flags.Ephemeral
+                })
+
+                continue
             }
 
             if(firstMessage) {
@@ -48,7 +57,7 @@ export class DownloadLogSelection extends BaseSelection {
                     .replace(/(\${service})/g, `\`${logFile}\``)
             }
 
-            const attachment = new AttachmentBuilder(result.data, {name: `${logFile}.log`})
+            const attachment = new AttachmentBuilder(result.data, {name: logFile})
 
             logSuccess(`${logFile} Log Download successful!`)
             return attachment

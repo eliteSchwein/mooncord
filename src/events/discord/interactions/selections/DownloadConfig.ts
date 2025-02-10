@@ -16,8 +16,17 @@ export class DownloadConfig extends BaseSelection {
             const attachment = await this.retrieveConfig(value)
 
             if (typeof attachment === 'string') {
-                await interaction.editReply(attachment);
-                return
+                if(firstMessage) {
+                    await interaction.editReply(attachment);
+                    firstMessage = false
+                }
+
+                await interaction.followUp({
+                    content: attachment,
+                    flags: MessageFlagsBitField.Flags.Ephemeral
+                })
+
+                continue
             }
 
             if(firstMessage) {
