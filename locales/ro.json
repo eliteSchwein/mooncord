@@ -749,7 +749,8 @@
                     "description": "Selectați secțiunea pe care doriți să o descărcați.",
                     "choices": {
                         "cache": "Cache",
-                        "database": "Baza de date"
+                        "database": "Baza de date",
+                        "database_ws": "Database Websocket"
                     }
                 }
             }

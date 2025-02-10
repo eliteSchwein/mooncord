@@ -749,7 +749,8 @@
                     "description": "Selecteer een sectie om te dumpen.",
                     "choices": {
                         "cache": "Cache",
-                        "database": "Database"
+                        "database": "Database",
+                        "database_ws": "Database Websocket"
                     }
                 }
             }

@@ -752,7 +752,8 @@
                     "description": "Wybierz sekcję do zrzucenia.",
                     "choices": {
                         "cache": "Pamięć podręczna",
-                        "database": "Baza danych"
+                        "database": "Baza danych",
+                        "database_ws": "Database Websocket"
                     }
                 }
             }

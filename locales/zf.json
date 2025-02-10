@@ -752,7 +752,8 @@
                     "description": "Select the Section to dump.",
                     "choices": {
                         "cache": "Cache",
-                        "database": "Database"
+                        "database": "Database",
+                        "database_ws": "Database Websocket"
                     }
                 }
             }

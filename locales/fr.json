@@ -749,7 +749,8 @@
                     "description": "Sélectionez une Section à décharger.",
                     "choices": {
                         "cache": "Cache",
-                        "database": "Base de données"
+                        "database": "Base de données",
+                        "database_ws": "Database Websocket"
                     }
                 }
             }
