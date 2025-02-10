@@ -765,7 +765,8 @@
                     "description": "Wähle einen Bereich zum Kopieren.",
                     "choices": {
                         "cache": "Cache",
-                        "database": "Datenbank"
+                        "database": "Datenbank",
+                        "database_ws": "Websocket Datenbank"
                     }
                 }
             }

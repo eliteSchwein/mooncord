@@ -94,6 +94,9 @@
           "value": "database"
         },
         {
+          "value": "database_ws"
+        },
+        {
           "value": "cache"
         }
       ]

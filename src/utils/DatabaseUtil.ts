@@ -34,15 +34,26 @@ export class DatabaseUtil {
         this.retryLimit = this.config.getMoonrakerDatabaseRetryLimit()
     }
 
+    public async fetchDatabaseNamespaces() {
+        return await this.moonrakerClient.send({
+            "method": "server.database.list"
+        })
+    }
+
+    public async fetchDatabase() {
+        return await this.moonrakerClient.send({
+            "method": "server.database.get_item",
+            "params": {"namespace": "mooncord", "key": "dataset"}
+        })
+    }
+
     public async retrieveDatabase() {
         logEmpty()
 
         try {
             logSuccess('Check if Database is present...')
 
-            const databaseNamespaces = (await this.moonrakerClient.send({
-                "method": "server.database.list"
-            })).result.namespaces
+            const databaseNamespaces = (await this.fetchDatabaseNamespaces()).result.namespaces
 
             if(!databaseNamespaces.includes("mooncord")) {
                 await this.handleDatabaseMissing()
@@ -51,10 +62,7 @@ export class DatabaseUtil {
 
             logSuccess('Retrieve Database...')
 
-            const databaseRequest = await this.moonrakerClient.send({
-                "method": "server.database.get_item",
-                "params": {"namespace": "mooncord", "key": "dataset"}
-            })
+            const databaseRequest = await this.fetchDatabase()
 
             if (typeof databaseRequest.error !== 'undefined') {
                 throw new Error(databaseRequest.error)
@@ -127,6 +135,18 @@ export class DatabaseUtil {
     public async dump() {
         void await this.writeDump()
         return database
+    }
+
+    public async dumpWS() {
+        const data = {
+            "namespaces": await this.fetchDatabaseNamespaces(),
+            "database": await this.fetchDatabase()
+        }
+        await writeFile(path.resolve(__dirname, '../database_ws_dump.json'), JSON.stringify(data, null, 4), {
+            encoding: 'utf8',
+            flag: 'w+'
+        })
+        logSuccess('Dumped WS Database!')
     }
 
     private async writeDump() {
