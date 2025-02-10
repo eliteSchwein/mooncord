@@ -41,7 +41,7 @@ export class DownloadConfig extends BaseSelection {
         try {
             const result = await downloadFile("config", config)
 
-            if (result.size > Number.parseInt('8000000')) {
+            if (result.overSizeLimit) {
                 logError(`Configuration ${config} to big, Configfile: ${result.size}byte Limit: 8000000byte`)
                 return this.locale.messages.errors.config_too_large
                     .replace(/(\${config})/g, `\`${config}\``)
