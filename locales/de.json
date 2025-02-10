@@ -411,7 +411,7 @@
             "not_textchannel": "`${channel}` ist kein Text Kanal, `${username}`!",
             "execute_error": "Fehler: `${gcode_feedback}`",
             "execute_unknown": "Unbekannter GCode Befehl: `${gcode_feedback}`",
-            "log_too_large": "Der Log für `${service}` ist zu groß!",
+            "log_too_large": "Der Log `${service}` ist zu groß!",
             "log_failed": "Der Download für denn `${service}` Log ist fehlgeschlagen: `${reason}`!",
             "log_not_found": "Derzeit gibt es keinen Log für `${service}`",
             "file_too_large": "The File `${filename}` is too big!",
