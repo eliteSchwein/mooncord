@@ -5,8 +5,9 @@ import {logEmpty, logError, logRegular, logSuccess, logWarn} from '../helper/Log
 import {getMoonrakerClient} from "../Application";
 import path from "path";
 import {writeFile} from "fs/promises";
-import {mergeDeep} from "../helper/DataHelper";
+import {mergeDeep, sleep} from "../helper/DataHelper";
 import {getEntry} from "./CacheUtil";
+import util from "util";
 
 const defaultDatabase = {
     'guilds': {},
@@ -26,30 +27,64 @@ let database: any = {}
 export class DatabaseUtil {
     protected config = new ConfigHelper()
     protected moonrakerClient = getMoonrakerClient()
+    protected currentRetry = 0
+    protected retryLimit = 0
+
+    public constructor() {
+        this.retryLimit = this.config.getMoonrakerDatabaseRetryLimit()
+    }
 
     public async retrieveDatabase() {
         logEmpty()
-        logSuccess('Retrieve Database...')
 
-        const databaseRequest = await this.moonrakerClient.send({
-            "method": "server.database.get_item",
-            "params": {"namespace": "mooncord", "key": "dataset"}
-        })
+        try {
+            logSuccess('Check if Database is present...')
 
-        if (typeof databaseRequest.error !== 'undefined') {
-            await this.handleDatabaseMissing()
-            return
+            const databaseNamespaces = await this.moonrakerClient.send({
+                "method": "server.database.list"
+            })
+
+            console.log(databaseNamespaces)
+
+            if(!databaseNamespaces.includes("mooncord")) {
+                await this.handleDatabaseMissing()
+                return
+            }
+
+            logSuccess('Retrieve Database...')
+
+            const databaseRequest = await this.moonrakerClient.send({
+                "method": "server.database.get_item",
+                "params": {"namespace": "mooncord", "key": "dataset"}
+            })
+
+            if (typeof databaseRequest.error !== 'undefined') {
+                throw new Error(databaseRequest.error)
+            }
+
+            database = databaseRequest.result.value
+
+            database = mergeDeep(JSON.parse(JSON.stringify(defaultDatabase)), database)
+
+            if (Array.isArray(database.permissions.admins)) {
+                database.permissions.admins = JSON.parse(JSON.stringify(defaultDatabase.permissions.admins))
+            }
+
+            this.currentRetry = 0
+        } catch (error) {
+            this.currentRetry += 1
+
+            if(this.currentRetry > this.retryLimit) {
+                logError(`Couldn't retrieve data from database, stopping MoonCord now!`)
+                process.exit(5)
+            }
+
+            logWarn(`Couldn't retrieve data from database, retry ${this.currentRetry} of ${this.retryLimit} in 5 seconds. Reason: ${util.format(error)}`)
+
+            await sleep(5_000)
+
+            await this.retrieveDatabase()
         }
-
-        database = databaseRequest.result.value
-
-        database = mergeDeep(JSON.parse(JSON.stringify(defaultDatabase)), database)
-
-        if (Array.isArray(database.permissions.admins)) {
-            database.permissions.admins = JSON.parse(JSON.stringify(defaultDatabase.permissions.admins))
-        }
-
-        await this.updateDatabase()
     }
 
     public async resetDatabase() {

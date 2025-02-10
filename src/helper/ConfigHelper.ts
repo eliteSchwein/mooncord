@@ -50,6 +50,10 @@ export class ConfigHelper {
         return this.getEntriesByFilter(/^connection$/g)[0].moonraker_socket_url
     }
 
+    public getMoonrakerDatabaseRetryLimit() {
+        return this.getEntriesByFilter(/^connection$/g)[0].moonraker_database_retries
+    }
+
     public getUploadLimit() {
         return this.getEntriesByFilter(/^connection$/g)[0].discord_upload_limit * 1000000
     }
