@@ -56,7 +56,8 @@ export class DatabaseUtil {
             const databaseNamespaces = (await this.fetchDatabaseNamespaces()).result.namespaces
 
             if(!databaseNamespaces.includes("mooncord")) {
-                await this.handleDatabaseMissing()
+                logError(`the database for mooncord was not found!`)
+                process.exit(5)
                 return
             }
 
