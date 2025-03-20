@@ -177,7 +177,7 @@ export default class TempHistoryGraph extends BaseGraph{
         for (const tempLabel of tempLabels) {
             svg = `
                 ${svg}
-                <text x="125" y="${resHeight - heightIndex * tempLabelSpace}" style="font: bold 40px Arial;fill: gray;text-anchor: end">${tempLabel}</text>
+                <text x="125" y="${resHeight - heightIndex * tempLabelSpace}" style="font: 600 40px Arial;fill: gray;text-anchor: end">${tempLabel}</text>
                 <line x1="130" y1="${resHeight - heightIndex * tempLabelSpace - 10}" x2="${graphWidth + 130}" y2="${resHeight - heightIndex * tempLabelSpace - 10}" style="stroke: rgba(172,172,172,0.2);stroke-width: 3px"></line>
             `
             heightIndex++
@@ -187,7 +187,7 @@ export default class TempHistoryGraph extends BaseGraph{
             for (let i = 0; i < 11; i++) {
                 svg = `
                 ${svg}
-                <text x="${width - 105}" y="${resHeight - i * powerLabelSpace}" style="font: bold 40px Arial;fill: gray;text-anchor: start">${i * 10}</text>
+                <text x="${width - 105}" y="${resHeight - i * powerLabelSpace}" style="font: 600 40px Arial;fill: gray;text-anchor: start">${i * 10}</text>
             `
             }
         }

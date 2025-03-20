@@ -7,7 +7,7 @@ export default class BaseRenderBackend {
 
     public constructor(
         buffer: Buffer,
-        pictureConfig: any = undefined
+        pictureConfig: any = undefined,
     ) {
         this.buffer = buffer
         this.pictureConfig = pictureConfig

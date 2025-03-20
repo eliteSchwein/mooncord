@@ -1,45 +1,44 @@
-import {AttachmentBuilder} from "discord.js";
-import {ConfigHelper} from "../ConfigHelper";
-import {logRegular} from "../LoggerHelper";
+import { AttachmentBuilder } from "discord.js";
+import { ConfigHelper } from "../ConfigHelper";
+import { logRegular } from "../LoggerHelper";
 import NoneRenderBackend from "../snapshotBackend/NoneRenderBackend";
-import JimpRenderBackend from "../snapshotBackend/JimpRenderBackend";
-import GraphicsMagickRenderBackend from "../snapshotBackend/GraphicsMagickRenderBackend";
 import SharpRenderBackend from "../snapshotBackend/SharpRenderBackend";
+import {Resvg, ResvgRenderOptions} from "@resvg/resvg-js";
+import path from "path";
 
 export default class BaseGraph {
     filename: string;
-    config = new ConfigHelper()
-    renderBackend = this.config.getConfig().general.graph_render_backend
+    config = new ConfigHelper();
+    generalConfig = this.config.getConfig().general;
 
     protected async convertSvg(svg: string): Promise<AttachmentBuilder> {
-        if(this.renderBackend === 'none') {
-            logRegular('the none backend is active, the graph will be replaced with a empty pixel...')
+        let editBuffer: Buffer;
 
-            const editBuffer = await new NoneRenderBackend(Buffer.from('placeholder', 'utf8')).render()
+        switch (this.generalConfig.graph_render_backend) {
+            case "none":
+                logRegular('The none backend is active, the graph will be replaced with an empty pixel...');
 
-            return new AttachmentBuilder(editBuffer, {name: this.filename})
-        }
-
-        const buffer = Buffer.from(svg)
-
-        let editBuffer: Buffer
-
-        switch (this.renderBackend) {
-            case 'jimp':
-                editBuffer = await new JimpRenderBackend(buffer).render()
+                editBuffer = await new NoneRenderBackend(Buffer.from('placeholder', 'utf8')).render();
                 break
-            case 'graphicsmagick':
-            case 'gm':
-                editBuffer = await new GraphicsMagickRenderBackend(
-                    buffer)
-                    .render()
+            case "resvg":
+                const opts: ResvgRenderOptions = {
+                    background: 'rgba(0,0,0,0)',
+                    font: {
+                        fontDirs: [path.resolve(__dirname, '../assets/fonts/')],
+                        defaultFontSize: 40,
+                        loadSystemFonts: false,
+                        defaultFontFamily: 'Arial',
+                    },
+                }
+
+                const resvg = new Resvg(svg, opts)
+                const pngData = resvg.render()
+                editBuffer = pngData.asPng()
                 break
             default:
-                editBuffer = await new SharpRenderBackend(buffer).render()
+                editBuffer = await new SharpRenderBackend(Buffer.from(svg, 'utf-8')).render();
         }
 
-        buffer.fill(0)
-
-        return new AttachmentBuilder(editBuffer, {name: this.filename})
+        return new AttachmentBuilder(editBuffer, { name: this.filename });
     }
 }

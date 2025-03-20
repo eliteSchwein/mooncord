@@ -11,8 +11,8 @@
     "autofixcodestyle": "npx eslint ./** --fix",
     "ncu": "ncu",
     "generatelocale": "node src/helper/LocaleGenerationHelper.js",
-    "build": "esbuild src/Application.ts --tree-shaking=true --target=node20 --bundle --minify --color=true --platform=node --external:discord.js --external:sharp --define:process.env.FLUENTFFMPEG_COV=false --outfile=dist/index.js",
-    "watch": "esbuild src/Application.ts --tree-shaking=true --target=node20 --bundle --color=true --platform=node --watch --external:discord.js --external:sharp --define:process.env.FLUENTFFMPEG_COV=false --outfile=dist/index.js"
+    "build": "esbuild src/Application.ts --tree-shaking=true --target=node20 --bundle --minify --color=true --platform=node --external:discord.js --external:@resvg/resvg-js --external:sharp --define:process.env.FLUENTFFMPEG_COV=false --outfile=dist/index.js",
+    "watch": "esbuild src/Application.ts --tree-shaking=true --target=node20 --bundle --color=true --platform=node --watch --external:discord.js --external:@resvg/resvg-js --external:sharp --define:process.env.FLUENTFFMPEG_COV=false --outfile=dist/index.js"
   },
   "repository": {
     "type": "git",
@@ -26,9 +26,9 @@
   },
   "homepage": "https://github.com/eliteSchwein/mooncord#readme",
   "devDependencies": {
-    "@types/gm": "^1.25.4",
     "@discordjs/rest": "^2.4.3",
     "@types/fluent-ffmpeg": "^2.1.27",
+    "@types/gm": "^1.25.4",
     "@types/node": "^22.13.10",
     "@types/readline-sync": "^1.4.8",
     "async-wait-until": "2.0.23",
@@ -55,6 +55,7 @@
     "ws": "^8.18.1"
   },
   "dependencies": {
+    "@resvg/resvg-js": "^2.6.2",
     "discord.js": "^14.18.0",
     "sharp": "^0.33.5"
   }
