@@ -6,8 +6,15 @@ import sharp from "sharp";
 import {AttachmentBuilder} from "discord.js";
 import SvgHelper from "../SvgHelper";
 import {getIcons} from "../DataHelper";
+import {ConfigHelper} from "../ConfigHelper";
+import NoneRenderBackend from "../snapshotBackend/NoneRenderBackend";
+import JimpRenderBackend from "../snapshotBackend/JimpRenderBackend";
+import GraphicsMagickRenderBackend from "../snapshotBackend/GraphicsMagickRenderBackend";
+import SharpRenderBackend from "../snapshotBackend/SharpRenderBackend";
+import BaseGraph from "./BaseGraph";
 
-export default class HistoryGraph {
+export default class HistoryGraph extends BaseGraph{
+    filename = 'historyGraph.png'
 
     public async renderGraph(printStats = new HistoryHelper().getPrintStats()) {
         const icons = getIcons()
@@ -48,7 +55,6 @@ export default class HistoryGraph {
             </svg>
         `
 
-        const graphBuffer = await sharp(Buffer.from(svg)).png().toBuffer()
-        return new AttachmentBuilder(graphBuffer, {name: 'historyGraph.png'})
+        return await this.convertSvg(svg)
     }
 }

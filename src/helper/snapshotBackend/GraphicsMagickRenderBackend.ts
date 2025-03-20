@@ -1,19 +1,22 @@
-import BaseSnapshotBackend from "./BaseSnapshotBackend";
+import BaseRenderBackend from "./BaseRenderBackend";
 import m from "gm";
 import {waitUntil} from "async-wait-until";
 
-export default class GraphicsMagickSnapshotBackend extends BaseSnapshotBackend {
+export default class GraphicsMagickRenderBackend extends BaseRenderBackend {
     protected convertedBuffer: Buffer|undefined = undefined;
 
     async handleRender() {
         const image = m(this.buffer)
-            .rotate('black', this.webcamData.rotation)
 
-        if (this.webcamData.flip_vertical) {
-            image.flip()
-        }
-        if (this.webcamData.flip_horizontal) {
-            image.flop()
+        if(this.pictureConfig) {
+            image.rotate('black', this.pictureConfig.rotation)
+
+            if (this.pictureConfig.flip_vertical) {
+                image.flip()
+            }
+            if (this.pictureConfig.flip_horizontal) {
+                image.flop()
+            }
         }
 
         image.toBuffer('PNG', (err, buffer) => {

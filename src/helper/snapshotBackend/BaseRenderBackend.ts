@@ -1,16 +1,16 @@
 import {ConfigHelper} from "../ConfigHelper";
 
-export default class BaseSnapshotBackend {
+export default class BaseRenderBackend {
     protected buffer: Buffer
-    protected webcamData: any
+    protected pictureConfig: any
     protected config: ConfigHelper
 
     public constructor(
         buffer: Buffer,
-        webcamData: any
+        pictureConfig: any = undefined
     ) {
         this.buffer = buffer
-        this.webcamData = webcamData
+        this.pictureConfig = pictureConfig
     }
 
     public async render() {

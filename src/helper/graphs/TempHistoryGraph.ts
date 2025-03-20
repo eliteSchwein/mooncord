@@ -9,10 +9,11 @@ import {getEntry} from "../../utils/CacheUtil";
 import {logRegular} from "../LoggerHelper";
 import sharp from "sharp";
 import {AttachmentBuilder} from "discord.js";
+import NoneRenderBackend from "../snapshotBackend/NoneRenderBackend";
+import BaseGraph from "./BaseGraph";
 
-export default class TempHistoryGraph {
-    public constructor() {
-    }
+export default class TempHistoryGraph extends BaseGraph{
+    filename = 'tempGraph.png'
 
     public getColors() {
         return new ConfigHelper().getIcons(/temp\d+$/g)
@@ -21,17 +22,15 @@ export default class TempHistoryGraph {
     public async renderGraph(sensor = undefined) {
         const moonrakerClient = App.getMoonrakerClient()
         const serverConfigCache = getEntry('server_config')
-        const configHelper = new ConfigHelper()
         const localeHelper = new LocaleHelper()
         const locale = localeHelper.getLocale()
         const svgHelper = new SvgHelper()
         const tempCache = getEntry('temps')
         const tempLabel = locale.graph.temp_history.temperature
         const powerLabel = locale.graph.temp_history.power
-        const powerColor = configHelper.getEntriesByFilter(/^color power_color/)
+        const powerColor = this.config.getEntriesByFilter(/^color power_color/)
 
         let tempValueLimit = 0
-
 
         logRegular('render temp chart...')
 
@@ -198,7 +197,6 @@ export default class TempHistoryGraph {
             </svg>
         `
 
-        const graphBuffer = await sharp(Buffer.from(svg)).png().toBuffer()
-        return new AttachmentBuilder(graphBuffer, {name: 'tempGraph.png'})
+        return await this.convertSvg(svg)
     }
 }

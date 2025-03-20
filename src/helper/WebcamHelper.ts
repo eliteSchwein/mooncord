@@ -9,10 +9,10 @@ import StackTrace from "stacktrace-js";
 import {getMoonrakerClient} from "../Application";
 import {getEntry, setData} from "../utils/CacheUtil";
 import {AttachmentBuilder} from "discord.js";
-import SharpSnapshotBackend from "./snapshotBackend/SharpSnapshotBackend";
-import JimpSnapshotBackend from "./snapshotBackend/JimpSnapshotBackend";
-import NoneSnapshotBackend from "./snapshotBackend/NoneSnapshotBackend";
-import GraphicsMagickSnapshotBackend from "./snapshotBackend/GraphicsMagickSnapshotBackend";
+import SharpRenderBackend from "./snapshotBackend/SharpRenderBackend";
+import JimpRenderBackend from "./snapshotBackend/JimpRenderBackend";
+import NoneRenderBackend from "./snapshotBackend/NoneRenderBackend";
+import GraphicsMagickRenderBackend from "./snapshotBackend/GraphicsMagickRenderBackend";
 
 export class WebcamHelper {
     public async generateCache() {
@@ -104,7 +104,7 @@ export class WebcamHelper {
             if(snapshotConfig.backend === 'none') {
                 logRegular('the none backend is active, the snapshot will be replaced with a empty pixel...')
 
-                const editBuffer = await new NoneSnapshotBackend(Buffer.from('placeholder', 'utf8'), webcamData).render()
+                const editBuffer = await new NoneRenderBackend(Buffer.from('placeholder', 'utf8'), webcamData).render()
 
                 return new AttachmentBuilder(editBuffer, {name: "snapshot.png"})
             }
@@ -145,17 +145,17 @@ export class WebcamHelper {
 
                 switch (snapshotConfig.backend) {
                     case 'jimp':
-                        editBuffer = await new JimpSnapshotBackend(buffer, webcamData).render()
+                        editBuffer = await new JimpRenderBackend(buffer, webcamData).render()
                         break
                     case 'graphicsmagick':
                     case 'gm':
-                        editBuffer = await new GraphicsMagickSnapshotBackend(
+                        editBuffer = await new GraphicsMagickRenderBackend(
                             buffer,
                             webcamData)
                             .render()
                         break
                     default:
-                        editBuffer = await new SharpSnapshotBackend(buffer, webcamData).render()
+                        editBuffer = await new SharpRenderBackend(buffer, webcamData).render()
                 }
 
                 buffer.fill(0)

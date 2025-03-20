@@ -5,15 +5,21 @@ import {getEntry} from "../../utils/CacheUtil";
 import {logRegular} from "../LoggerHelper";
 import sharp from "sharp";
 import {AttachmentBuilder} from "discord.js";
+import NoneRenderBackend from "../snapshotBackend/NoneRenderBackend";
+import JimpRenderBackend from "../snapshotBackend/JimpRenderBackend";
+import GraphicsMagickRenderBackend from "../snapshotBackend/GraphicsMagickRenderBackend";
+import SharpRenderBackend from "../snapshotBackend/SharpRenderBackend";
+import BaseGraph from "./BaseGraph";
 
-export class ExcludeGraph {
+export class ExcludeGraph extends BaseGraph {
+    filename = 'excludeGraph.png'
+
     public async renderGraph(currentObject: string) {
-        const configHelper = new ConfigHelper()
         const stateCache = getEntry('state')
         const excludeObjects = stateCache.exclude_object.objects
         const excludedObjects = stateCache.exclude_object.excluded_objects
         const axisMaximum = stateCache.toolhead.axis_maximum
-        const colors = configHelper.getColors(/exclude.*/g, true)
+        const colors = this.config.getColors(/exclude.*/g, true)
 
         logRegular('render exclude object graph...')
 
@@ -46,7 +52,6 @@ ${svg}
 ${svg}
 </svg>
 `
-        const graphBuffer = await sharp(Buffer.from(svg)).png().toBuffer()
-        return new AttachmentBuilder(graphBuffer, {name: 'excludeGraph.png'})
+        return await this.convertSvg(svg)
     }
 }
