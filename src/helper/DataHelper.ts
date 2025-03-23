@@ -6,7 +6,6 @@ import FormData from "form-data";
 import {logError, logNotice} from "./LoggerHelper";
 import {ActivityType, Attachment, ButtonStyle, TextInputStyle} from "discord.js";
 import * as metaData from "../meta/history_graph_meta.json";
-import exp from "node:constants";
 
 export function isObject(item) {
     return (item && typeof item === 'object' && !Array.isArray(item));
