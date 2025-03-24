@@ -10,6 +10,7 @@ import {updateLayers} from "./LayerHelper";
 import * as StackTrace from 'stacktrace-js'
 import {logEmpty, logError, logRegular} from "./LoggerHelper"
 import {AttachmentBuilder} from "discord.js";
+import {fileFromSync} from "node-fetch";
 
 export class MetadataHelper {
     public async getMetaData(filename: string) {
@@ -38,15 +39,19 @@ export class MetadataHelper {
         updateLayers()
     }
 
-    public async getThumbnail(filename: string) {
+    public async getThumbnail(filename: string, bufferMode: boolean = false) {
         const configHelper = new ConfigHelper()
 
         const metaData = await this.getMetaData(filename)
         const pathFragments = filename.split('/').slice(0, -1)
         const rootPath = (pathFragments.length > 0) ? `${pathFragments.join('/')}/` : ''
         const placeholderPath = path.resolve(__dirname, `../assets/icon-sets/${configHelper.getIconSet()}/thumbnail_not_found.png`)
-        const placeholder = new AttachmentBuilder(placeholderPath, {name: 'thumbnail_not_found.png'})
+        let placeholder: AttachmentBuilder|Buffer = new AttachmentBuilder(placeholderPath, {name: 'thumbnail_not_found.png'})
         const url = configHelper.getMoonrakerUrl()
+
+        if(bufferMode) {
+            placeholder = Buffer.from(await fileFromSync(placeholderPath).arrayBuffer())
+        }
 
         if (typeof metaData === 'undefined') {
             return placeholder
@@ -76,6 +81,10 @@ export class MetadataHelper {
                 logError(trace)
             }
             return placeholder
+        }
+
+        if(bufferMode) {
+            return thumbnail
         }
 
         return new AttachmentBuilder(thumbnail, {name: 'thumbnail.png'})

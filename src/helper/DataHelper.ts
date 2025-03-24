@@ -6,6 +6,7 @@ import FormData from "form-data";
 import {logError, logNotice} from "./LoggerHelper";
 import {ActivityType, Attachment, ButtonStyle, TextInputStyle} from "discord.js";
 import * as metaData from "../meta/history_graph_meta.json";
+import {MetadataHelper} from "./MetadataHelper";
 
 export function isObject(item) {
     return (item && typeof item === 'object' && !Array.isArray(item));
@@ -122,41 +123,44 @@ export function stripAnsi(input: string) {
         '')
 }
 
-export function parseCalculatedPlaceholder(fragments) {
-    if (fragments[0] === 'icon') {
-        const icons = getIcons()
-        return icons[fragments[1]].icon
-    }
-    if (fragments[0] === 'percent') {
-        return formatPercent(parseFloat(fragments[2]), parseInt(fragments[1]))
-    }
-    if (fragments[0] === 'reduce') {
-        return formatReduce(parseFloat(fragments[3]), parseFloat(fragments[1]), parseInt(fragments[2]))
-    }
-    if (fragments[0] === 'round') {
-        return parseFloat(fragments[2]).toFixed(parseInt(fragments[1]))
-    }
-    if (fragments[0] === 'max') {
-        return limitToMax(parseInt(fragments[2]), parseInt(fragments[1]))
-    }
-    if (fragments[0] === 'formatDate') {
-        return formatDate(parseInt(fragments[1]))
-    }
-    if (fragments[0] === 'formatTime') {
-        return formatTime(parseInt(fragments[1]))
-    }
-    if (fragments[0] === 'timestamp') {
-        return formatTimestamp(parseInt(fragments[1]))
-    }
-    if (fragments[0] === 'isPresent') {
-        const isIncluded = fragments[1].includes(parseData(fragments[2]))
+export async function parseFunctionPlaceholders(fragments) {
+    const metadataHelper = new MetadataHelper()
 
-        return (isIncluded) ? parseData(fragments[3]) : parseData(fragments[4])
-    }
-    if (fragments[0] === 'isMatching') {
-        const isValid = parseData(fragments[1]) === parseData(fragments[2])
+    switch (fragments[0]) {
+        case "icon":
+            const icons = getIcons()
+            return icons[fragments[1]].icon
+        case "percent":
+            return formatPercent(parseFloat(fragments[2]), parseInt(fragments[1]))
+        case "reduce":
+            return formatReduce(parseFloat(fragments[3]), parseFloat(fragments[1]), parseInt(fragments[2]))
+        case "round":
+            return parseFloat(fragments[2]).toFixed(parseInt(fragments[1]))
+        case "max":
+            return limitToMax(parseInt(fragments[2]), parseInt(fragments[1]))
+        case "formatDate":
+            return formatDate(parseInt(fragments[1]))
+        case "formatTime":
+            return formatTime(parseInt(fragments[1]))
+        case "timestamp":
+            return formatTimestamp(parseInt(fragments[1]))
+        case "isPresent":
+            const isIncluded = fragments[1].includes(parseData(fragments[2]))
 
-        return (isValid) ? parseData(fragments[3]) : parseData(fragments[4])
+            return (isIncluded) ? parseData(fragments[3]) : parseData(fragments[4])
+        case "isMatching":
+            const isValid = parseData(fragments[1]) === parseData(fragments[2])
+
+            return (isValid) ? parseData(fragments[3]) : parseData(fragments[4])
+        case "thumbnail":
+            const thumbnailBuffer = await metadataHelper.getThumbnail(fragments[1], true) as Buffer
+
+            return thumbnailBuffer.toString("base64")
+        case "metadata":
+            const metadataKey = fragments[2]
+            const filename = fragments[1]
+
+
     }
 }
 

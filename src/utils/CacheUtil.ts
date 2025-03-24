@@ -51,7 +51,8 @@ const cacheData: any = {
         throttle_states: []
     },
     meta_data: {
-        filename: ''
+        filename: '',
+        history: {}
     },
     temps: {
         colors: {}

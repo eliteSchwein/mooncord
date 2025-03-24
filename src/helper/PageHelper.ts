@@ -43,11 +43,11 @@ export class PageHelper {
             }
         }
 
-        if (this.getEntries(0).entries === '') {
+        if ((await this.getEntries(0)).entries === '') {
             return null
         }
         const calcPage = page.calcPage - this.embeds.length
-        const entries = this.getEntries(calcPage)
+        const entries = await this.getEntries(calcPage)
 
         const embed = await (new EmbedHelper()).generateEmbed(this.embedId, {
             page_entries_count: entries.raw_entries.length,
@@ -62,7 +62,7 @@ export class PageHelper {
         }
     }
 
-    protected getEntries(page: number) {
+    protected async getEntries(page: number) {
         let entries = ''
         const max = this.config.getEntriesPerPage() - 1
         const rawEntries = []
@@ -72,7 +72,7 @@ export class PageHelper {
             const entry = this.data[i]
             rawEntries.push(entry)
             let label = parsePageData(this.pageLocale.entry_label, entry)
-            label = this.template.parsePlaceholder(label, {data: entry})
+            label = await this.template.parsePlaceholder(label, {data: entry})
             entries = `${entries}${label}\n`
         }
         return {'entries': entries, 'raw_entries': rawEntries}

@@ -3,7 +3,7 @@
 import {ConfigHelper} from "./ConfigHelper";
 import {DiscordInputGenerator} from "../generator/DiscordInputGenerator";
 import {findValue, getEntry} from "../utils/CacheUtil";
-import {mergeDeep, parseCalculatedPlaceholder} from "./DataHelper";
+import {mergeDeep, parseFunctionPlaceholders} from "./DataHelper";
 import {TempHelper} from "./TempHelper";
 import {VersionHelper} from "./VersionHelper";
 import {MetadataHelper} from "./MetadataHelper";
@@ -104,7 +104,7 @@ export class TemplateHelper {
             content: null
         }
 
-        messageObjectRaw = this.parsePlaceholder(messageObjectRaw, providedPlaceholders)
+        messageObjectRaw = await this.parsePlaceholder(messageObjectRaw, providedPlaceholders)
 
         const messageObjectData = JSON.parse(messageObjectRaw)
 
@@ -237,13 +237,13 @@ export class TemplateHelper {
         return inputData
     }
 
-    public parsePlaceholder(input: string, providedPlaceholders = null) {
+    public async parsePlaceholder(input: string, providedPlaceholders = null) {
         const placeholders = input.matchAll(/(\${).*?}/g)
 
         if (placeholders !== null) {
             for (const placeholder of placeholders) {
                 const placeholderId = String(placeholder).match(/(\${).*?}/g)[0]
-                const placeholderContent = this.parsePlaceholderContent(placeholderId, providedPlaceholders)
+                const placeholderContent = await this.parsePlaceholderContent(placeholderId, providedPlaceholders)
 
                 if (placeholderContent.content === null || placeholderContent.content === '') {
                     continue
@@ -305,7 +305,7 @@ export class TemplateHelper {
         return field
     }
 
-    private parsePlaceholderContent(placeholder: string, providedPlaceholders = null) {
+    private async parsePlaceholderContent(placeholder: string, providedPlaceholders = null) {
         const placeholderId = placeholder
             .replace(/(\${)/g, '')
             .replace(/}/g, '')
@@ -365,7 +365,7 @@ export class TemplateHelper {
                 }
             }
 
-            cacheParser = parseCalculatedPlaceholder(templateFragments)
+            cacheParser = await parseFunctionPlaceholders(templateFragments)
         }
 
         if (placeholderId === 'state_message') {
