@@ -21,16 +21,12 @@ export default class PageListGraph extends BaseGraph {
         const resWidth = data.graph_width
         const resHeight = data.graph_height
 
-        console.log(1)
-
         let currentOffset = 0
 
         for(const graphDataEntry of graphData) {
             const graphEntry = graphDataEntry[graphEntryKey]
             void this.parseParameters(graphParameters, graphEntry)
         }
-
-        console.log(2)
 
         let svg = `<svg
             version="1.1"
@@ -41,7 +37,6 @@ export default class PageListGraph extends BaseGraph {
 
         let graphTemplate = readFileSync(path.resolve(__dirname, `../assets/${graphFile}`)).toString('utf8')
 
-        console.log(3)
         graphTemplate = graphTemplate
             .replace(/<!--[^>]*>|<\?xml[^>]*>|<svg[^>]*>|<\/svg>/gi, '')
             .replace(/inkscape:[^\n]*/gi, '')
@@ -49,23 +44,15 @@ export default class PageListGraph extends BaseGraph {
             .replace(/xmlns:inkscape[^\n]*/gi, '')
             .replace(/<sodipodi:namedview[^>]*>/gi, '')
 
-
-        console.log(4)
-
-
         await waitUntil(() =>
             Object.keys(this.finishedParameters).length === graphData.length,
-            {timeout: 30_000, intervalBetweenAttempts: 500}
+            {timeout: 30_000, intervalBetweenAttempts: 250}
         )
-
-        console.log(5)
 
         for(const graphDataEntry of graphData) {
             const graphEntry = graphDataEntry[graphEntryKey]
             const graphEntryParameters = this.finishedParameters[graphEntry]
             let graphEntryTemplate = `${graphTemplate}`
-
-            console.log(6)
 
             graphEntryTemplate = graphEntryTemplate
                 .replace(/<g\b([^>]*?)\s*transform=".*?"([^>]*)>/gi, '<g$1$2>')
@@ -74,7 +61,6 @@ export default class PageListGraph extends BaseGraph {
             for(const graphParameter of graphEntryParameters) {
                 switch(graphParameter.type) {
                     case 'text':
-                        console.log(7)
                         graphEntryTemplate = graphEntryTemplate.replace(
                             new RegExp(
                                 `<text[^>]*id="${graphParameter.id}"[^>]*>\\s*<tspan[^>]*>.*?<\\/tspan>\\s*<\\/text>`,
@@ -86,7 +72,6 @@ export default class PageListGraph extends BaseGraph {
                         )
                         break
                     case 'image':
-                        console.log(8)
                         const imageRegex = new RegExp(
                             `<image[^>]*?\\bid=["']${graphParameter.id}["'][^>]*?>`,
                             'is'
@@ -98,7 +83,6 @@ export default class PageListGraph extends BaseGraph {
                         )
                         break
                     case 'background':
-                        console.log(9)
                         const bgRegex = new RegExp(
                             `(<[^>]*id=["']${graphParameter.id}["'][^>]*?style=["'][^"']*)fill:[^;]+`,
                             'is'
