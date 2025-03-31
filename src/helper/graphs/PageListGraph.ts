@@ -69,7 +69,13 @@ export default class PageListGraph extends BaseGraph {
                                 return match.replace(/(<tspan[^>]*>)(.*?)(<\/tspan>)/s, `$1${graphParameter.value}$3`);
                             }
                         )
-                        break;
+                        break
+                    case 'image':
+                        graphEntryTemplate = graphEntryTemplate.replace(
+                            new RegExp(`(<image[^>]*id="${graphParameter.id}"[^>]*xlink:href=")[^"]*(")`, 'i'),
+                            `$1${graphParameter.value}$2`
+                        )
+                        break
                 }
             }
 
@@ -95,6 +101,11 @@ export default class PageListGraph extends BaseGraph {
         for(const originalParam of graphParameters) {
             const graphParameter = {...originalParam}
             graphParameter.value = await this.templateHelper.parsePlaceholder(graphParameter.value, {graph_entry: graphEntry})
+
+            if(graphParameter.type === 'image' && !graphParameter.value.includes('base64')) {
+                const rawImage = readFileSync(path.resolve(__dirname, `../assets/${graphParameter.value}`))
+                graphParameter.value = rawImage.toString('base64')
+            }
 
             graphEntryParameters.push(graphParameter)
         }
