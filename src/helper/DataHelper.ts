@@ -9,6 +9,7 @@ import * as metaData from "../meta/history_graph_meta.json";
 import {MetadataHelper} from "./MetadataHelper";
 import {parseData} from "../utils/InputUtil";
 import {formatDate, formatPercent, formatReduce, formatTime, formatTimestamp, limitToMax} from "../utils/FormatUtil";
+import {get} from "lodash";
 
 export function isObject(item) {
     return (item && typeof item === 'object' && !Array.isArray(item));
@@ -100,7 +101,7 @@ export async function parseFunctionPlaceholders(fragments) {
             const metadataKey = fragments[2]
             const filename = fragments[1]
 
-            return (await metadataHelper.getMetaData(filename))[metadataKey]
+            return get(await metadataHelper.getMetaData(filename), metadataKey)
     }
 }
 
