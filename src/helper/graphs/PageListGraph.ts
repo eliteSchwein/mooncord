@@ -72,7 +72,7 @@ export default class PageListGraph extends BaseGraph {
                         break
                     case 'image':
                         const regex = new RegExp(
-                            `<image[^>]*?id=["']${graphParameter.id}["'][^>]*?xlink:href=["'][^"']*["']`,
+                            `<image[^>]*?\\bid=["']${graphParameter.id}["'][^>]*?>`,
                             'is'
                         );
 
