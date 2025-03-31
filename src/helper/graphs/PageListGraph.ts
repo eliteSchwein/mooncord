@@ -45,7 +45,11 @@ export default class PageListGraph extends BaseGraph {
             void this.parseParameters(graphParameters, graphEntry)
         }
 
-        await waitUntil(() => this.finishedQueries+1 === graphData.length, {timeout: 30_000, intervalBetweenAttempts: 500})
+        await waitUntil(() => {
+            console.log(this.finishedQueries+1)
+            console.log(graphData.length)
+            return this.finishedQueries+1 === graphData.length
+        }, {timeout: 30_000, intervalBetweenAttempts: 500})
 
         for(const graphDataEntry of graphData) {
             const graphEntry = graphDataEntry[graphEntryKey]
