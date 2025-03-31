@@ -190,7 +190,7 @@ ${l}
             xmlns="http://www.w3.org/2000/svg"
             xmlns:xlink="http://www.w3.org/1999/xlink"
             viewBox="0 0 ${l} ${c}">
-        `,h=(0,BJ.readFileSync)(IJ.default.resolve(__dirname,`../assets/${o}`)).toString("utf8");h=h.replace(/<!--[^>]*>|<?xml[^>]*>|<svg[^>]*>|<\/svg>/gi,"").replace(/inkscape:[^\n]*/gi,"").replace(/sodipodi:[^\n]*/gi,"").replace(/xmlns:inkscape[^\n]*/gi,"").replace(/<sodipodi:namedview[^>]*>/gi,"");for(let p of n){let m=p[s],g=[],b=`${h}`;b=b.replace(/(<g\n)|(<g )/gi,`<g transform="translate(0, ${u})"
+        `,h=(0,BJ.readFileSync)(IJ.default.resolve(__dirname,`../assets/${o}`)).toString("utf8");h=h.replace(/<!--[^>]*>|<\?xml[^>]*>|<svg[^>]*>|<\/svg>/gi,"").replace(/inkscape:[^\n]*/gi,"").replace(/sodipodi:[^\n]*/gi,"").replace(/xmlns:inkscape[^\n]*/gi,"").replace(/<sodipodi:namedview[^>]*>/gi,"");for(let p of n){let m=p[s],g=[],b=`${h}`;b=b.replace(/(<g\n)|(<g )/gi,`<g transform="translate(0, ${u})"
 `),u+=a;for(let w of i){let k={...w};k.value=await this.templateHelper.parsePlaceholder(k.value,{graph_entry:m}),g.push(k)}A=`
                 ${A}
                 ${b}
