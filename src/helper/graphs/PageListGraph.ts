@@ -64,6 +64,8 @@ export default class PageListGraph extends BaseGraph {
             </svg>
         `
 
+        console.log(svg)
+
         return await this.convertSvg(svg)
     }
 }

@@ -55,8 +55,6 @@ export default class HistoryGraph extends BaseGraph{
             </svg>
         `
 
-        console.log(svg)
-
         return await this.convertSvg(svg)
     }
 }
