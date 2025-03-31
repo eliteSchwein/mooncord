@@ -104,7 +104,7 @@ export default class PageListGraph extends BaseGraph {
 
             if(graphParameter.type === 'image' && !graphParameter.value.includes('base64')) {
                 const rawImage = readFileSync(path.resolve(__dirname, `../assets/${graphParameter.value}`))
-                graphParameter.value = rawImage.toString('base64url')
+                graphParameter.value =`data:image/png;base64,${rawImage.toString("base64")}`
             }
 
             graphEntryParameters.push(graphParameter)

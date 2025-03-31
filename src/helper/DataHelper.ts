@@ -101,7 +101,7 @@ export async function parseFunctionPlaceholders(fragments) {
         case "thumbnail":
             const thumbnailBuffer = await metadataHelper.getThumbnail(fragments[1], true, fragments[2] === 'small') as Buffer
 
-            return thumbnailBuffer.toString("base64url")
+            return `data:image/png;base64,${thumbnailBuffer.toString("base64")}`
         case "metadata":
             const metadataKey = fragments[2]
             const filename = fragments[1]
