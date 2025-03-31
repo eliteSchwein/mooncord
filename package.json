@@ -52,7 +52,9 @@
     "stacktrace-js": "^2.0.2",
     "typescript": "^5.8.2",
     "websocket-ts": "^2.2.1",
-    "ws": "^8.18.1"
+    "ws": "^8.18.1",
+    "@types/jsdom": "^21.1.7",
+    "jsdom": "^26.0.0"
   },
   "dependencies": {
     "@resvg/resvg-js": "^2.6.2",
