@@ -9,6 +9,7 @@ export default class PageListGraph extends BaseGraph {
 
     protected templateHelper = new TemplateHelper()
     protected finishedParameters = {}
+    protected colors = this.config.getColors(/(.*?)/g, true)
 
     public async renderGraph(data: any) {
         const graphData = data.graph_data
@@ -71,14 +72,25 @@ export default class PageListGraph extends BaseGraph {
                         )
                         break
                     case 'image':
-                        const regex = new RegExp(
+                        const imageRegex = new RegExp(
                             `<image[^>]*?\\bid=["']${graphParameter.id}["'][^>]*?>`,
                             'is'
                         )
 
                         graphEntryTemplate = graphEntryTemplate.replace(
-                            regex,
+                            imageRegex,
                             match => match.replace(/xlink:href=["'][^"']*["']/, `xlink:href="${graphParameter.value}"`)
+                        )
+                        break
+                    case 'background':
+                        const bgRegex = new RegExp(
+                            `(<[^>]*?id=["']${graphParameter.id}["'][^>]*?)\\sfill=["'][^"']*["']`,
+                            'is'
+                        )
+
+                        graphEntryTemplate = graphEntryTemplate.replace(
+                            bgRegex,
+                            `$1 fill="${graphParameter.value}"`
                         )
                         break
                 }
@@ -110,6 +122,10 @@ export default class PageListGraph extends BaseGraph {
             if(graphParameter.type === 'image' && !graphParameter.value.includes('base64')) {
                 const rawImage = readFileSync(path.resolve(__dirname, `../assets/${graphParameter.value}`))
                 graphParameter.value =`data:image/png;base64,${rawImage.toString("base64")}`
+            }
+
+            if(graphParameter.type === 'background') {
+                graphParameter.value = `#${this.colors[graphParameter.value]}`
             }
 
             graphEntryParameters.push(graphParameter)
