@@ -69,6 +69,9 @@ export async function parseFunctionPlaceholders(fragments) {
     const metadataHelper = new MetadataHelper()
 
     switch (fragments[0]) {
+        case "blank":
+            fragments = fragments.slice(1);
+            return `${fragments.join(':')}`
         case "icon":
             return getIcons()[fragments[1]].icon
         case "percent":
