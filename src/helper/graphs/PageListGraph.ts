@@ -43,11 +43,10 @@ export default class PageListGraph extends BaseGraph {
             .replace(/xmlns:inkscape[^\n]*/gi, '')
             .replace(/<sodipodi:namedview[^>]*>/gi, '')
 
-        await waitUntil(() => {
-            console.log(Object.keys(this.finishedParameters).length)
-            console.log(graphData.length)
-            return Object.keys(this.finishedParameters).length === graphData.length
-        }, {timeout: 30_000, intervalBetweenAttempts: 500})
+        await waitUntil(() =>
+            Object.keys(this.finishedParameters).length === graphData.length,
+            {timeout: 30_000, intervalBetweenAttempts: 500}
+        )
 
         for(const graphDataEntry of graphData) {
             const graphEntry = graphDataEntry[graphEntryKey]
