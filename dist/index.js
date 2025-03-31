@@ -173,7 +173,7 @@ ${s}`;break;case"retry":lse(s)&&(r[i]=s);break;case"id":cse(s)&&(r[i]=s);break;c
             `;return c=`
             ${c}
             </svg>
-        `,await this.convertSvg(c)}};var Rp=class extends Na{constructor(){super(...arguments);this.filename="excludeGraph.png"}async renderGraph(r=void 0){let n=Ie("state"),i=n.exclude_object.objects,s=n.exclude_object.excluded_objects,o=n.toolhead.axis_maximum,a=this.config.getColors(/exclude.*/g,!0);Ue("render exclude object graph...");let l=`<svg
+        `,console.log(c),await this.convertSvg(c)}};var Rp=class extends Na{constructor(){super(...arguments);this.filename="excludeGraph.png"}async renderGraph(r=void 0){let n=Ie("state"),i=n.exclude_object.objects,s=n.exclude_object.excluded_objects,o=n.toolhead.axis_maximum,a=this.config.getColors(/exclude.*/g,!0);Ue("render exclude object graph...");let l=`<svg
             version="1.1"
             xmlns="http://www.w3.org/2000/svg"
             xmlns:xlink="http://www.w3.org/1999/xlink"
