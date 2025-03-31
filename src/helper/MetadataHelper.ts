@@ -36,6 +36,8 @@ export class MetadataHelper {
 
         let metaData = metaDataCache[filename]
 
+        console.log(metaData)
+
         if(metaData && metaData.expires_at > currentDate) {
             return metaData.result
         }

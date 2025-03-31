@@ -70,7 +70,8 @@ export async function parseFunctionPlaceholders(fragments) {
 
     switch (fragments[0]) {
         case "blank":
-            fragments = fragments.slice(1);
+            fragments = fragments.slice(1)
+            console.log(`${fragments.join(':')}`)
             return `${fragments.join(':')}`
         case "icon":
             return getIcons()[fragments[1]].icon
