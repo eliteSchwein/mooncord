@@ -43,6 +43,7 @@ export default class PageListGraph extends BaseGraph {
             let graphEntryTemplate = `${graphTemplate}`
 
             graphEntryTemplate = graphEntryTemplate
+                .replace(/<g\b([^>]*?)\s*transform=".*?"([^>]*)>/gi, '<g$1$2>')
                 .replace(/(<g\n)|(<g )/gi, `<g transform="translate(0, ${currentOffset})"\n`)
 
             currentOffset += offset
