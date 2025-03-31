@@ -50,7 +50,7 @@ export default class PageListGraph extends BaseGraph {
 
         for(const graphDataEntry of graphData) {
             const graphEntry = graphDataEntry[graphEntryKey]
-            const graphEntryParameters = this.finishedParameters[graphEntryKey]
+            const graphEntryParameters = this.finishedParameters[graphEntry]
             console.log(graphEntryParameters)
             let graphEntryTemplate = `${graphTemplate}`
 
