@@ -14,7 +14,7 @@ export default class PageListGraph extends BaseGraph {
 
         for(const graphDataEntry of graphData) {
             const graphEntry = graphDataEntry[graphEntryKey]
-            console.log(graphEntry)
+            console.log(graphDataEntry)
             const graphEntryParameters = []
 
             for(const graphParameter of graphParameters) {
