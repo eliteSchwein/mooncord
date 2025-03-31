@@ -14,8 +14,9 @@ export default class PageListGraph extends BaseGraph {
         const graphEntryKey = data.graph_entry_key
         const graphFile = data.graph_file
 
-        const graphTemplate = readFileSync(path.resolve(__dirname, `../assets/${graphFile}`)).toString('utf8')
+        let graphTemplate = readFileSync(path.resolve(__dirname, `../assets/${graphFile}`)).toString('utf8')
 
+        graphTemplate = graphTemplate.replace(/<svg[^>]*>([\s\S]*?)<\/svg>/i, '')
         console.log(graphTemplate)
 
         for(const graphDataEntry of graphData) {
