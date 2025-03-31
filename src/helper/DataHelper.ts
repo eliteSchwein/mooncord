@@ -81,7 +81,7 @@ export async function parseFunctionPlaceholders(fragments) {
         case "round":
             return parseFloat(fragments[2]).toFixed(parseInt(fragments[1]))
         case "substr":
-            return String(fragments[2]).substring(0, parseInt(fragments[1]))
+            return String(parseData(fragments[2])).substring(0, parseInt(fragments[1]))
         case "max":
             return limitToMax(parseInt(fragments[2]), parseInt(fragments[1]))
         case "formatDate":
