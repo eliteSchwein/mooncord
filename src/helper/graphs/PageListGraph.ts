@@ -59,7 +59,7 @@ export default class PageListGraph extends BaseGraph {
                 .replace(/(<g\n)|(<g )/gi, `<g transform="translate(0, ${currentOffset})"\n`)
 
             const parser = new DOMParser();
-            const doc = parser.parseFromString(graphEntryTemplate, 'image/svg+xml');
+            const doc = parser.parseFromString(graphEntryTemplate, 'text/xml');
 
             for(const graphParameter of graphEntryParameters) {
                 switch(graphParameter.type) {
