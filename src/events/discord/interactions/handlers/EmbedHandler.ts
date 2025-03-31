@@ -38,7 +38,7 @@ export class EmbedHandler extends BaseHandler {
                 return
             }
 
-            metaData.estimated_time = formatTime(metaData.estimated_time)
+            
             metaData.filename = author
         }
 

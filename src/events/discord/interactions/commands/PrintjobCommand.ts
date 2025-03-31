@@ -47,7 +47,6 @@ export default class PrintjobCommand extends BaseCommand {
 
         const thumbnail = await this.metadataHelper.getThumbnail(printFile)
 
-        metadata.estimated_time = formatTime(metadata.estimated_time)
         metadata.filename = printFile
 
         const embedData = await this.embedHelper.generateEmbed('printjob_start_request', metadata)

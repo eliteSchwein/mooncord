@@ -21,7 +21,6 @@ export class ViewPrintJobSelection extends BaseSelection {
 
         const thumbnail = await this.metadataHelper.getThumbnail(gcodeFile)
 
-        metadata.estimated_time = formatTime(metadata.estimated_time)
         metadata.filename = gcodeFile
 
         const embedData = await this.embedHelper.generateEmbed('fileinfo', metadata)

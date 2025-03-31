@@ -19,7 +19,6 @@ export class FileInfoCommand extends BaseCommand {
             return
         }
 
-        metadata.estimated_time = formatTime(metadata.estimated_time)
         metadata.filename = filename
 
         const thumbnail = await this.metadataHelper.getThumbnail(filename)

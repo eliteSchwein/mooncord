@@ -11,6 +11,7 @@ import * as StackTrace from 'stacktrace-js'
 import {logEmpty, logError, logRegular} from "./LoggerHelper"
 import {AttachmentBuilder} from "discord.js";
 import {fileFromSync} from "node-fetch";
+import {formatTime} from "../utils/FormatUtil";
 
 export class MetadataHelper {
     public purgeMetaData() {
@@ -36,8 +37,6 @@ export class MetadataHelper {
 
         let metaData = metaDataCache[filename]
 
-        console.log(metaData)
-
         if(metaData && metaData.expires_at > currentDate) {
             return metaData.result
         }
@@ -48,6 +47,8 @@ export class MetadataHelper {
 
         metaData.expires_at = currentDate + 15
         metaData.result.job_status = undefined
+
+        metaData.result.estimated_time = formatTime(metaData.result.estimated_time)
 
         const historyCache = getEntry('history')
         const jobs = historyCache.jobs.jobs
