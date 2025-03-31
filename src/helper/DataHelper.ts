@@ -100,8 +100,11 @@ export async function parseFunctionPlaceholders(fragments) {
         case "metadata":
             const metadataKey = fragments[2]
             const filename = fragments[1]
+            const metaData = await metadataHelper.getMetaData(filename)
 
-            return get(await metadataHelper.getMetaData(filename), metadataKey)
+            if(!metaData) return undefined
+
+            return get(metaData, metadataKey)
     }
 }
 

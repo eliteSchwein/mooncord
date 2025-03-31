@@ -1,14 +1,7 @@
 'use strict'
 
-import {ConfigHelper} from "../ConfigHelper";
 import {getEntry} from "../../utils/CacheUtil";
 import {logRegular} from "../LoggerHelper";
-import sharp from "sharp";
-import {AttachmentBuilder} from "discord.js";
-import NoneRenderBackend from "../snapshotBackend/NoneRenderBackend";
-import JimpRenderBackend from "../snapshotBackend/JimpRenderBackend";
-import GraphicsMagickRenderBackend from "../snapshotBackend/GraphicsMagickRenderBackend";
-import SharpRenderBackend from "../snapshotBackend/SharpRenderBackend";
 import BaseGraph from "./BaseGraph";
 
 export class ExcludeGraph extends BaseGraph {
