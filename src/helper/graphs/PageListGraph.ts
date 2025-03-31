@@ -66,7 +66,7 @@ export default class PageListGraph extends BaseGraph {
                                 'gs'
                             ),
                             (match) => {
-                                return match.replace(/(<tspan[^>]*>)(.*?)(<\/tspan>)/s, `$1${newValue}$3`);
+                                return match.replace(/(<tspan[^>]*>)(.*?)(<\/tspan>)/s, `$1${graphParameter.value}$3`);
                             }
                         ))
                         break;
