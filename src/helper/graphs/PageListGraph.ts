@@ -7,16 +7,13 @@ export default class PageListGraph extends BaseGraph {
     protected templateHelper = new TemplateHelper()
 
     public async renderGraph(data: any) {
-        console.log(data)
         const graphData = data.graph_data
         const graphParameters = data.graphparameter
-        const graphEntryKey = graphData.graph_entry_key
+        const graphEntryKey = data.graph_entry_key
         const graphFile = data.graph_file
 
         for(const graphDataEntry of graphData) {
             const graphEntry = graphDataEntry[graphEntryKey]
-            console.log(graphDataEntry)
-            console.log(graphEntryKey)
             const graphEntryParameters = []
 
             for(const graphParameter of graphParameters) {
