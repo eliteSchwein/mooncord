@@ -41,6 +41,9 @@ export class MetadataHelper {
         }
 
         metaData = await getMoonrakerClient().send({"method": "server.files.metadata", "params": {filename}})
+
+        if(!metaData.result) return undefined
+
         metaData.expires_at = currentDate + 15
         metaData.result.job_status = undefined
 
