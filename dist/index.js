@@ -185,7 +185,7 @@ ${l}
             `}return l=`
 ${l}
 </svg>
-`,await this.convertSvg(l)}};var AI=class{async getFields(){let r=await Nt().send({method:"server.spoolman.get_spool_id"});if(r.error!==void 0)return[];let n=r.result.spool_id;return[{name:"${embeds.fields.active_spool}",value:n===null?"${locale.messages.answers.empty_spool}":"${locale.messages.answers.current_spool} "+n}]}};var vJ=require("fs");var Ju=require("discord.js"),_J=Xe(Jg());var IJ=Xe(require("path")),BJ=require("fs");var wx=class extends Na{constructor(){super(...arguments);this.filename="pageGraph.png";this.templateHelper=new Nn;this.finishedParameters={}}async renderGraph(r){let n=r.graph_data,i=r.graphparameter,s=r.graph_entry_key,o=r.graph_file,a=150,l=1200,c=1300,u=0;for(let p of n){let m=p[s];this.parseParameters(i,m)}let A=`<svg
+`,await this.convertSvg(l)}};var AI=class{async getFields(){let r=await Nt().send({method:"server.spoolman.get_spool_id"});if(r.error!==void 0)return[];let n=r.result.spool_id;return[{name:"${embeds.fields.active_spool}",value:n===null?"${locale.messages.answers.empty_spool}":"${locale.messages.answers.current_spool} "+n}]}};var vJ=require("fs");var Ju=require("discord.js"),_J=Xe(Jg());var IJ=Xe(require("path")),BJ=require("fs");var wx=class extends Na{constructor(){super(...arguments);this.filename="pageGraph.png";this.templateHelper=new Nn;this.finishedParameters={}}async renderGraph(r){let n=r.graph_data,i=r.graphparameter,s=r.graph_entry_key,o=r.graph_file,a=r.graph_entry_offset,l=r.graph_width,c=r.graph_height,u=0;for(let p of n){let m=p[s];this.parseParameters(i,m)}let A=`<svg
             version="1.1"
             xmlns="http://www.w3.org/2000/svg"
             xmlns:xlink="http://www.w3.org/1999/xlink"
