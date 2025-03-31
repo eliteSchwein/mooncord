@@ -192,9 +192,9 @@ ${l}
             xmlns:xlink="http://www.w3.org/1999/xlink"
             viewBox="0 0 ${l} ${c}">
         `,h=(0,tX.readFileSync)(eX.default.resolve(__dirname,`../assets/${o}`)).toString("utf8");h=h.replace(/<!--[^>]*>|<\?xml[^>]*>|<svg[^>]*>|<\/svg>/gi,"").replace(/inkscape:[^\n]*/gi,"").replace(/sodipodi:[^\n]*/gi,"").replace(/xmlns:inkscape[^\n]*/gi,"").replace(/<sodipodi:namedview[^>]*>/gi,""),await As(()=>Object.keys(this.finishedParameters).length===n.length,{timeout:3e4,intervalBetweenAttempts:500});for(let p of n){let m=p[s],g=this.finishedParameters[m],E=`${h}`;E=E.replace(/<g\b([^>]*?)\s*transform=".*?"([^>]*)>/gi,"<g$1$2>").replace(/(<g\n)|(<g )/gi,`<g transform="translate(0, ${u})"
-`);let S=new rX.DOMParser().parseFromString(E,"image/svg+xml");for(let v of g)switch(v.type){case"text":console.log(S.textContent),console.log(v);let x=S.getElementById(v.id).getElementsByTagName("tspan")[0];x.textContent=v.value;break}u+=a,A=`
+`);let S=new rX.DOMParser().parseFromString(E,"image/svg+xml");for(let v of g)switch(v.type){case"text":console.log(S.documentElement.outerHTML),console.log(v);let x=S.getElementById(v.id).getElementsByTagName("tspan")[0];x.textContent=v.value;break}u+=a,A=`
                 ${A}
-                ${S.textContent}
+                ${S.documentElement.outerHTML}
             `}return A=`
             ${A}
             </svg>

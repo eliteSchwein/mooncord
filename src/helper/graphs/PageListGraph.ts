@@ -64,7 +64,7 @@ export default class PageListGraph extends BaseGraph {
             for(const graphParameter of graphEntryParameters) {
                 switch(graphParameter.type) {
                     case 'text':
-                        console.log(doc.textContent)
+                        console.log(doc.documentElement.outerHTML)
                         console.log(graphParameter)
                         const textElement = doc.getElementById(graphParameter.id)
                         const tspan = textElement.getElementsByTagName('tspan')[0]
@@ -78,7 +78,7 @@ export default class PageListGraph extends BaseGraph {
 
             svg = `
                 ${svg}
-                ${doc.textContent}
+                ${doc.documentElement.outerHTML}
             `
         }
 
