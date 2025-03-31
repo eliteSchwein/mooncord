@@ -61,14 +61,13 @@ export default class PageListGraph extends BaseGraph {
             const parser = new DOMParser();
             const doc = parser.parseFromString(graphEntryTemplate, 'image/svg+xml');
 
-            console.log(doc);
-
             for(const graphParameter of graphEntryParameters) {
                 switch(graphParameter.type) {
                     case 'text':
-                        graphEntryTemplate = graphEntryTemplate
-                            .replace(  new RegExp(`/<text\\b[^>]*\\bid=["']${graphParameter.id}["'][^>]*>.*?<tspan\\b[^>]*>(.*?)<\\/tspan>.*?<\\/text>/s`),
-                                (match, oldContent) => match.replace(oldContent, 'YOUR_CUSTOM_CONTENT'))
+                        const textElement = doc.getElementById(graphParameter.id)
+                        const tspan = textElement.getElementsByTagName('tspan')[0]
+
+                        tspan.textContent = graphParameter.value
                         break;
                 }
             }
@@ -77,7 +76,7 @@ export default class PageListGraph extends BaseGraph {
 
             svg = `
                 ${svg}
-                ${graphEntryTemplate}
+                ${doc.textContent}
             `
         }
 
