@@ -80,8 +80,7 @@ export default class PageListGraph extends BaseGraph {
                             regex,
                             `<image$1xlink:href="${graphParameter.value}"`
                         );
-                        console.log(graphEntryTemplate.match(regex));
-                        console.log(graphEntryTemplate)
+                        console.log(graphEntryTemplate.match(regex))
                         console.log(graphParameter)
                         break
                 }
