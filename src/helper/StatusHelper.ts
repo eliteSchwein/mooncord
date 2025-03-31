@@ -9,7 +9,7 @@ import {DiscordClient} from "../clients/DiscordClient";
 import {ConfigHelper} from "./ConfigHelper";
 import {NotificationHelper} from "./NotificationHelper";
 import {waitUntil} from "async-wait-until";
-import {convertActivityStyle} from "./DataHelper";
+import {convertActivityStyle} from "../utils/ConvertUtil";
 
 export class StatusHelper {
     protected embedHelper = new EmbedHelper()

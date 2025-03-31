@@ -4,8 +4,8 @@ import 'colorts/lib/string';
 import * as util from 'util'
 import * as fs from 'fs'
 import * as path from 'path'
-import {stripAnsi} from "./DataHelper";
 import {updateData} from "../utils/CacheUtil";
+import {stripAnsi} from "../utils/FormatUtil";
 
 let tempLog = ''
 let log_file: fs.WriteStream

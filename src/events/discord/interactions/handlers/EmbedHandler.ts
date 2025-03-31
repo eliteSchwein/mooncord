@@ -1,8 +1,8 @@
 'use strict'
 
 import {Message, User} from "discord.js";
-import {formatTime} from "../../../../helper/DataHelper";
 import BaseHandler from "../abstracts/BaseHandler";
+import {formatTime} from "../../../../utils/FormatUtil";
 
 export class EmbedHandler extends BaseHandler {
     async isValid(message: Message, user: User, data, interaction = null) {

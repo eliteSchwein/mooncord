@@ -1,9 +1,9 @@
 import BaseCommand from "../abstracts/BaseCommand";
 import {ChatInputCommandInteraction, CommandInteraction, EmbedBuilder} from "discord.js";
-import {formatTime} from "../../../../helper/DataHelper";
 import {getEntry} from "../../../../utils/CacheUtil";
 import {getMoonrakerClient} from "../../../../Application";
 import {logNotice} from "../../../../helper/LoggerHelper";
+import {formatTime} from "../../../../utils/FormatUtil";
 
 export default class PrintjobCommand extends BaseCommand {
     commandId = 'printjob'

@@ -1,10 +1,9 @@
 'use strict'
 
 import {AttachmentBuilder, MessageFlagsBitField, StringSelectMenuInteraction} from "discord.js";
-import {downloadFile} from "../../../../helper/DataHelper";
 import {logError, logRegular, logSuccess} from "../../../../helper/LoggerHelper";
-import util from "util";
 import BaseSelection from "../abstracts/BaseSelection";
+import {downloadFile} from "../../../../utils/FileUtil";
 
 export class DownloadLogSelection extends BaseSelection {
     selectionId = 'loglist_download_log'

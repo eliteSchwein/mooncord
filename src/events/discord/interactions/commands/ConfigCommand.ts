@@ -1,7 +1,7 @@
 import BaseCommand from "../abstracts/BaseCommand";
 import {ChatInputCommandInteraction} from "discord.js";
 import {PageHelper} from "../../../../helper/PageHelper";
-import {uploadAttachment} from "../../../../helper/DataHelper";
+import {uploadAttachment} from "../../../../utils/FileUtil";
 
 export default class ConfigCommand extends BaseCommand {
     commandId = 'config'

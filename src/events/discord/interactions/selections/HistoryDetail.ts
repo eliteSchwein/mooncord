@@ -4,7 +4,7 @@ import {getEntry} from "../../../../utils/CacheUtil";
 import _ from "lodash";
 import HistoryGraph from "../../../../helper/graphs/HistoryGraph";
 import {HistoryHelper} from "../../../../helper/HistoryHelper";
-import {formatTime} from "../../../../helper/DataHelper";
+import {formatTime} from "../../../../utils/FormatUtil";
 
 export class HistoryDetail extends BaseSelection {
     selectionId = 'history_detail_select'

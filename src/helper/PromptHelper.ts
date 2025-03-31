@@ -13,7 +13,7 @@ import {
     Interaction,
     MessageFlagsBitField
 } from "discord.js";
-import {convertStyle} from "./DataHelper";
+import {convertButtonStyle} from "../utils/InputUtil";
 
 export class PromptHelper {
     public loadCache() {
@@ -158,7 +158,7 @@ export class PromptHelper {
                     for (const buttonComponent of component.components) {
                         const button = new ButtonBuilder()
 
-                        button.setStyle(convertStyle(buttonComponent.style))
+                        button.setStyle(convertButtonStyle(buttonComponent.style))
                         button.setLabel(buttonComponent.label)
                         button.setCustomId(`prompt_gcode|${buttonComponent.gcode}`)
 
@@ -171,7 +171,7 @@ export class PromptHelper {
                 case "button":
                     const button = new ButtonBuilder()
 
-                    button.setStyle(convertStyle(component.style))
+                    button.setStyle(convertButtonStyle(component.style))
                     button.setLabel(component.label)
                     button.setCustomId(`prompt_gcode|${component.gcode}`)
 

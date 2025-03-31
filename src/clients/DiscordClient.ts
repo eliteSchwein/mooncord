@@ -16,7 +16,7 @@ import {VerifyHandler} from "../events/discord/VerifyHandler";
 // @ts-ignore
 import {REST} from '@discordjs/rest'
 import {ReconnectHandler} from "../events/discord/ReconnectHandler";
-import {convertActivityStyle} from "../helper/DataHelper";
+import {convertActivityStyle} from "../utils/ConvertUtil";
 
 'use strict'
 

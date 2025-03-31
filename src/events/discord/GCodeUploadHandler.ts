@@ -4,9 +4,9 @@ import {Client, Message} from "discord.js";
 import {LocaleHelper} from "../../helper/LocaleHelper";
 import {logWarn} from "../../helper/LoggerHelper";
 import {PermissionHelper} from "../../helper/PermissionHelper";
-import {uploadAttachment} from "../../helper/DataHelper";
 import {EmbedHelper} from "../../helper/EmbedHelper";
 import {MetadataHelper} from "../../helper/MetadataHelper";
+import {uploadAttachment} from "../../utils/FileUtil";
 
 export class GCodeUploadHandler {
     public constructor(discordClient: Client) {

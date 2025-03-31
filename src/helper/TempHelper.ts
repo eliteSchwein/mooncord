@@ -1,7 +1,6 @@
 'use strict'
 
 import {findValue, getEntry, setData, updateData} from "../utils/CacheUtil";
-import {formatPercent} from "./DataHelper";
 import {ConfigHelper} from "./ConfigHelper";
 import {logRegular} from "./LoggerHelper";
 import * as App from "../Application"
@@ -9,6 +8,7 @@ import {LocaleHelper} from "./LocaleHelper";
 import {NotificationHelper} from "./NotificationHelper";
 import * as temp_meta from "../meta/temp_meta.json"
 import TempHistoryGraph from "./graphs/TempHistoryGraph";
+import {formatPercent} from "../utils/FormatUtil";
 
 export class TempHelper {
     public generateColors() {

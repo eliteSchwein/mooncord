@@ -1,13 +1,15 @@
 'use strict'
 
 import {ConfigHelper} from "../helper/ConfigHelper";
-import {convertStyle, convertTextInputStyle, limitString, mergeDeep, parsePageData} from "../helper/DataHelper";
+import {mergeDeep, parsePageData} from "../helper/DataHelper";
 
 import {findValue, getExcludeChoices, getHeaterChoices, setData} from "../utils/CacheUtil";
 import {LocaleHelper} from "../helper/LocaleHelper";
 import {MCUHelper} from "../helper/MCUHelper";
 import {WebcamHelper} from "../helper/WebcamHelper";
 import {ActionRowBuilder, ButtonBuilder, StringSelectMenuBuilder, TextInputBuilder, TextInputStyle} from "discord.js";
+import {limitString} from "../utils/FormatUtil";
+import {convertButtonStyle, convertTextInputStyle} from "../utils/InputUtil";
 
 export class DiscordInputGenerator {
     public generateInputCache() {
@@ -55,7 +57,7 @@ export class DiscordInputGenerator {
 
             const button = new ButtonBuilder()
                 .setCustomId(buttonData.id)
-                .setStyle(convertStyle(buttonData.style))
+                .setStyle(convertButtonStyle(buttonData.style))
 
             if (buttonData.emoji) {
                 button.setEmoji(buttonData.emoji)

@@ -2,8 +2,9 @@
 
 import {Message, StringSelectMenuInteraction} from "discord.js";
 import {getEntry} from "../../../../utils/CacheUtil";
-import {findValueByPartial, formatTime} from "../../../../helper/DataHelper";
+import {findValueByPartial} from "../../../../helper/DataHelper";
 import BaseSelection from "../abstracts/BaseSelection";
+import {formatTime} from "../../../../utils/FormatUtil";
 
 export class ViewPrintJobSelection extends BaseSelection {
     selectionId = 'printlist_view_printjob'

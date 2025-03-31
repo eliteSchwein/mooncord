@@ -2,8 +2,8 @@
 
 import {AttachmentBuilder, MessageFlagsBitField, StringSelectMenuInteraction} from "discord.js";
 import {logError, logRegular, logSuccess} from "../../../../helper/LoggerHelper";
-import {downloadFile} from "../../../../helper/DataHelper";
 import BaseSelection from "../abstracts/BaseSelection";
+import {downloadFile} from "../../../../utils/FileUtil";
 
 export class DownloadConfig extends BaseSelection {
     selectionId = 'config_file_download'
