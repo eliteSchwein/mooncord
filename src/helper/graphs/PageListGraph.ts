@@ -2,11 +2,14 @@ import BaseGraph from "./BaseGraph";
 import {TemplateHelper} from "../TemplateHelper";
 import path from "path";
 import {readFileSync} from "fs";
+import {waitUntil} from "async-wait-until";
 
 export default class PageListGraph extends BaseGraph {
     filename = 'pageGraph.png'
 
     protected templateHelper = new TemplateHelper()
+    protected finishedQueries = 0
+    protected finishedParameters = {}
 
     public async renderGraph(data: any) {
         const graphData = data.graph_data
@@ -16,7 +19,7 @@ export default class PageListGraph extends BaseGraph {
 
         const offset = 150
         const resWidth = 1200
-        const resHeight = 1200
+        const resHeight = 1400
 
         let currentOffset = 0
 
@@ -39,7 +42,14 @@ export default class PageListGraph extends BaseGraph {
 
         for(const graphDataEntry of graphData) {
             const graphEntry = graphDataEntry[graphEntryKey]
-            const graphEntryParameters = []
+            void this.parseParameters(graphParameters, graphEntry)
+        }
+
+        await waitUntil(() => this.finishedQueries+1 === graphData.length, {timeout: 30_000, intervalBetweenAttempts: 500})
+
+        for(const graphDataEntry of graphData) {
+            const graphEntry = graphDataEntry[graphEntryKey]
+            const graphEntryParameters = this.finishedParameters[graphEntryKey]
             let graphEntryTemplate = `${graphTemplate}`
 
             graphEntryTemplate = graphEntryTemplate
@@ -47,13 +57,6 @@ export default class PageListGraph extends BaseGraph {
                 .replace(/(<g\n)|(<g )/gi, `<g transform="translate(0, ${currentOffset})"\n`)
 
             currentOffset += offset
-
-            for(const originalParam of graphParameters) {
-                const graphParameter = {...originalParam}
-                graphParameter.value = await this.templateHelper.parsePlaceholder(graphParameter.value, {graph_entry: graphEntry})
-
-                graphEntryParameters.push(graphParameter)
-            }
 
             svg = `
                 ${svg}
@@ -67,5 +70,19 @@ export default class PageListGraph extends BaseGraph {
         `
 
         return await this.convertSvg(svg)
+    }
+
+    private async parseParameters(graphParameters: any, graphEntry: any) {
+        const graphEntryParameters = []
+
+        for(const originalParam of graphParameters) {
+            const graphParameter = {...originalParam}
+            graphParameter.value = await this.templateHelper.parsePlaceholder(graphParameter.value, {graph_entry: graphEntry})
+
+            graphEntryParameters.push(graphParameter)
+        }
+
+        this.finishedParameters[graphEntry] = graphEntryParameters
+        this.finishedQueries += 1
     }
 }
