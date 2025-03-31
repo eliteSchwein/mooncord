@@ -80,7 +80,7 @@ export default class PageListGraph extends BaseGraph {
             const graphParameter = {...originalParam}
             graphParameter.value = await this.templateHelper.parsePlaceholder(graphParameter.value, {graph_entry: graphEntry})
 
-            console.log(graphParameter)
+            //console.log(graphParameter)
 
             graphEntryParameters.push(graphParameter)
         }
