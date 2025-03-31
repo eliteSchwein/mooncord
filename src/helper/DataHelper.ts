@@ -3,7 +3,7 @@
 import {ConfigHelper} from "./ConfigHelper";
 import axios from "axios";
 import FormData from "form-data";
-import {logError, logNotice} from "./LoggerHelper";
+import {logEmpty, logError, logNotice} from "./LoggerHelper";
 import {ActivityType, Attachment, ButtonStyle, TextInputStyle} from "discord.js";
 import * as metaData from "../meta/history_graph_meta.json";
 import {MetadataHelper} from "./MetadataHelper";
@@ -110,6 +110,10 @@ export async function parseFunctionPlaceholders(fragments) {
             console.log(metaData)
 
             if(!metaData) return undefined
+
+            console.log(get(metaData, metadataKey))
+
+            logEmpty()
 
             return get(metaData, metadataKey)
     }
