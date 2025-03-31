@@ -57,6 +57,16 @@ export default class PageListGraph extends BaseGraph {
                 .replace(/<g\b([^>]*?)\s*transform=".*?"([^>]*)>/gi, '<g$1$2>')
                 .replace(/(<g\n)|(<g )/gi, `<g transform="translate(0, ${currentOffset})"\n`)
 
+            for(const graphParameter of graphEntryParameters) {
+                switch(graphParameter.type) {
+                    case 'text':
+                        graphEntryTemplate = graphEntryTemplate
+                            .replace(  new RegExp(`/<text\\b[^>]*\\bid=["']${graphParameter.id}["'][^>]*>.*?<tspan\\b[^>]*>(.*?)<\\/tspan>.*?<\\/text>/s`),
+                                (match, oldContent) => match.replace(oldContent, 'YOUR_CUSTOM_CONTENT'))
+                        break;
+                }
+            }
+
             currentOffset += offset
 
             svg = `
@@ -79,8 +89,6 @@ export default class PageListGraph extends BaseGraph {
         for(const originalParam of graphParameters) {
             const graphParameter = {...originalParam}
             graphParameter.value = await this.templateHelper.parsePlaceholder(graphParameter.value, {graph_entry: graphEntry})
-
-            //console.log(graphParameter)
 
             graphEntryParameters.push(graphParameter)
         }
