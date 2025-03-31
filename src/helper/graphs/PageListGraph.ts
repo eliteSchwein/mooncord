@@ -3,7 +3,6 @@ import {TemplateHelper} from "../TemplateHelper";
 import path from "path";
 import {readFileSync} from "fs";
 import {waitUntil} from "async-wait-until";
-import {DOMParser} from 'xmldom';
 
 export default class PageListGraph extends BaseGraph {
     filename = 'pageGraph.png'
@@ -58,18 +57,18 @@ export default class PageListGraph extends BaseGraph {
                 .replace(/<g\b([^>]*?)\s*transform=".*?"([^>]*)>/gi, '<g$1$2>')
                 .replace(/(<g\n)|(<g )/gi, `<g transform="translate(0, ${currentOffset})"\n`)
 
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(graphEntryTemplate, 'text/xml');
-
             for(const graphParameter of graphEntryParameters) {
                 switch(graphParameter.type) {
                     case 'text':
-                        console.log(doc.documentElement.outerHTML)
-                        console.log(graphParameter)
-                        const textElement = doc.getElementById(graphParameter.id)
-                        const tspan = textElement.getElementsByTagName('tspan')[0]
-
-                        tspan.textContent = graphParameter.value
+                        console.log(graphParameter.replace(
+                            new RegExp(
+                                `<text[^>]*id="${graphParameter.id}"[^>]*>\\s*<tspan[^>]*>.*?<\\/tspan>\\s*<\\/text>`,
+                                'gs'
+                            ),
+                            (match) => {
+                                return match.replace(/(<tspan[^>]*>)(.*?)(<\/tspan>)/s, `$1${newValue}$3`);
+                            }
+                        ))
                         break;
                 }
             }
@@ -78,7 +77,7 @@ export default class PageListGraph extends BaseGraph {
 
             svg = `
                 ${svg}
-                ${doc.documentElement.outerHTML}
+                ${graphEntryTemplate}
             `
         }
 
