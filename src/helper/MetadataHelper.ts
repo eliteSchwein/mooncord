@@ -101,7 +101,7 @@ export class MetadataHelper {
         updateLayers()
     }
 
-    public async getThumbnail(filename: string, bufferMode: boolean = false) {
+    public async getThumbnail(filename: string, bufferMode: boolean = false, small: boolean = false) {
         const configHelper = new ConfigHelper()
 
         const metaData = await this.getMetaData(filename)
@@ -125,6 +125,8 @@ export class MetadataHelper {
         const thumbnailFile = metaData.thumbnails.reduce((prev, current) => {
             return (prev.size > current.size) ? prev : current
         })
+
+        console.log(metaData.thumbnails)
 
         const thumbnailPath = thumbnailFile.relative_path
         const thumbnailURL = encodeURI(`${url}/server/files/gcodes/${rootPath}${thumbnailPath}`)
