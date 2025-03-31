@@ -76,6 +76,7 @@ export default class PageListGraph extends BaseGraph {
                             `$1${graphParameter.value}$2`
                         )
                         console.log(graphEntryTemplate)
+                        console.log(graphParameter)
                         break
                 }
             }
