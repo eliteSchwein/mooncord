@@ -107,7 +107,12 @@ export class MetadataHelper {
         const metaData = await this.getMetaData(filename)
         const pathFragments = filename.split('/').slice(0, -1)
         const rootPath = (pathFragments.length > 0) ? `${pathFragments.join('/')}/` : ''
-        const placeholderPath = path.resolve(__dirname, `../assets/icon-sets/${configHelper.getIconSet()}/thumbnail_not_found.png`)
+        let placeholderPath = path.resolve(__dirname, `../assets/icon-sets/${configHelper.getIconSet()}/thumbnail_not_found.png`)
+
+        if(small) {
+            placeholderPath = path.resolve(__dirname, `../assets/icon-sets/${configHelper.getIconSet()}/small_thumbnail_not_found.png`)
+        }
+
         let placeholder: AttachmentBuilder|Buffer = new AttachmentBuilder(placeholderPath, {name: 'thumbnail_not_found.png'})
         const url = configHelper.getMoonrakerUrl()
 
@@ -123,10 +128,11 @@ export class MetadataHelper {
         }
 
         const thumbnailFile = metaData.thumbnails.reduce((prev, current) => {
+            if(small)
+                return (prev.size < current.size) ? prev : current
+
             return (prev.size > current.size) ? prev : current
         })
-
-        console.log(metaData.thumbnails)
 
         const thumbnailPath = thumbnailFile.relative_path
         const thumbnailURL = encodeURI(`${url}/server/files/gcodes/${rootPath}${thumbnailPath}`)
