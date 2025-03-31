@@ -1,7 +1,7 @@
 'use strict'
 
 import {getMoonrakerClient} from "../Application";
-import {findValue, setData, updateData} from "../utils/CacheUtil";
+import {findValue, getEntry, setData, updateData} from "../utils/CacheUtil";
 import {ConfigHelper} from "./ConfigHelper";
 import path from "path";
 import axios from "axios";
@@ -41,7 +41,32 @@ export class MetadataHelper {
         }
 
         metaData = await getMoonrakerClient().send({"method": "server.files.metadata", "params": {filename}})
-        metaData.expires_at = currentDate + 30
+        metaData.expires_at = currentDate + 15
+        metaData.result.job_status = undefined
+
+        const historyCache = getEntry('history')
+        const jobs = historyCache.jobs.jobs
+
+        if (historyCache && historyCache.jobs) {
+            let partialJobs = jobs.filter((element) => {
+                return metaData.result.filename === element.filename
+            })
+
+            if (partialJobs.length > 0) {
+                partialJobs.sort((a, b) => (a.start_time < b.start_time) ? 1 : -1)
+
+                const lastStatus = partialJobs[0].status
+
+                partialJobs = partialJobs.filter((element => {
+                    return element.status === lastStatus
+                }))
+
+                metaData.result.job_status = {
+                    count: partialJobs.length,
+                    status: lastStatus
+                }
+            }
+        }
 
         metaDataCache[filename] = metaData
 
