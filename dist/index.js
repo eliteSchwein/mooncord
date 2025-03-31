@@ -185,7 +185,7 @@ ${l}
             `}return l=`
 ${l}
 </svg>
-`,await this.convertSvg(l)}};var AI=class{async getFields(){let r=await Nt().send({method:"server.spoolman.get_spool_id"});if(r.error!==void 0)return[];let n=r.result.spool_id;return[{name:"${embeds.fields.active_spool}",value:n===null?"${locale.messages.answers.empty_spool}":"${locale.messages.answers.current_spool} "+n}]}};var vJ=require("fs");var Ju=require("discord.js"),_J=Xe(Jg());var IJ=Xe(require("path")),BJ=require("fs"),wx=class extends Na{constructor(){super(...arguments);this.filename="pageGraph.png";this.templateHelper=new Nn}async renderGraph(r){let n=r.graph_data,i=r.graphparameter,s=r.graph_entry_key,o=r.graph_file,a=100,l=300,c=1200,u=0,A=`<svg
+`,await this.convertSvg(l)}};var AI=class{async getFields(){let r=await Nt().send({method:"server.spoolman.get_spool_id"});if(r.error!==void 0)return[];let n=r.result.spool_id;return[{name:"${embeds.fields.active_spool}",value:n===null?"${locale.messages.answers.empty_spool}":"${locale.messages.answers.current_spool} "+n}]}};var vJ=require("fs");var Ju=require("discord.js"),_J=Xe(Jg());var IJ=Xe(require("path")),BJ=require("fs"),wx=class extends Na{constructor(){super(...arguments);this.filename="pageGraph.png";this.templateHelper=new Nn}async renderGraph(r){let n=r.graph_data,i=r.graphparameter,s=r.graph_entry_key,o=r.graph_file,a=100,l=600,c=1200,u=0,A=`<svg
             version="1.1"
             xmlns="http://www.w3.org/2000/svg"
             xmlns:xlink="http://www.w3.org/1999/xlink"
