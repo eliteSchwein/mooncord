@@ -16,7 +16,7 @@ export default class PageListGraph extends BaseGraph {
             const graphEntry = graphDataEntry[graphEntryKey]
             const graphEntryParameters = []
 
-            for(const graphParameter of graphParameters) {
+            for(const graphParameter of Object.assign({}, graphParameters)) {
                 graphParameter.value = await this.templateHelper.parsePlaceholder(graphParameter.value, {graph_entry: graphEntry})
 
                 graphEntryParameters.push(graphParameter)
