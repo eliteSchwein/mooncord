@@ -29,7 +29,12 @@ export default class PageListGraph extends BaseGraph {
 
         let graphTemplate = readFileSync(path.resolve(__dirname, `../assets/${graphFile}`)).toString('utf8')
 
-        graphTemplate = graphTemplate.replace(/<svg[^>]*>|<\/svg>/gi, '')
+        graphTemplate = graphTemplate
+            .replace(/<svg[^>]*>|<\/svg>/gi, '')
+            .replace(/inkscape:[^\n]*/gi, '')
+            .replace(/xmlns:inkscape[^\n]*/gi, '')
+            .replace(/<sodipodi:namedview[^>]*>/gi, '')
+
 
         for(const graphDataEntry of graphData) {
             const graphEntry = graphDataEntry[graphEntryKey]
