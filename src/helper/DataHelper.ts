@@ -105,15 +105,16 @@ export async function parseFunctionPlaceholders(fragments) {
             const filename = fragments[1]
             const metaData = await metadataHelper.getMetaData(filename)
 
-            console.log(filename)
-            console.log(metadataKey)
-            console.log(metaData)
+            if(metadataKey.endsWith('status')) {
+                console.log(filename)
+                console.log(metadataKey)
+                console.log(metaData)
+                console.log(get(metaData, metadataKey))
+
+                logEmpty()
+            }
 
             if(!metaData) return undefined
-
-            console.log(get(metaData, metadataKey))
-
-            logEmpty()
 
             return get(metaData, metadataKey)
     }
