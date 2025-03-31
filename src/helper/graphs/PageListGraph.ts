@@ -32,6 +32,7 @@ export default class PageListGraph extends BaseGraph {
         graphTemplate = graphTemplate
             .replace(/<svg[^>]*>|<\/svg>/gi, '')
             .replace(/inkscape:[^\n]*/gi, '')
+            .replace(/sodipodi:[^\n]*/gi, '')
             .replace(/xmlns:inkscape[^\n]*/gi, '')
             .replace(/<sodipodi:namedview[^>]*>/gi, '')
 
