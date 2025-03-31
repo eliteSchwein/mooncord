@@ -30,7 +30,7 @@ export default class PageListGraph extends BaseGraph {
         let graphTemplate = readFileSync(path.resolve(__dirname, `../assets/${graphFile}`)).toString('utf8')
 
         graphTemplate = graphTemplate
-            .replace(/<svg[^>]*>|<\/svg>/gi, '')
+            .replace(/<!--[^>]*>|<?xml[^>]*>|<svg[^>]*>|<\/svg>/gi, '')
             .replace(/inkscape:[^\n]*/gi, '')
             .replace(/sodipodi:[^\n]*/gi, '')
             .replace(/xmlns:inkscape[^\n]*/gi, '')
