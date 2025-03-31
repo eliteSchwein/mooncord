@@ -19,6 +19,7 @@ import {existsSync} from "fs";
 import {logWarn} from "./LoggerHelper";
 import {AttachmentBuilder, EmbedBuilder, ModalBuilder} from "discord.js";
 import {get} from "lodash";
+import PageListGraph from "./graphs/PageListGraph";
 
 export class TemplateHelper {
     public async parseRawTemplate(type: string, id: string) {
@@ -110,9 +111,9 @@ export class TemplateHelper {
 
         const inputGenerator = new DiscordInputGenerator()
 
-        const thumbnail = await this.parseImage(messageObjectData.thumbnail)
-        const image = await this.parseImage(messageObjectData.image)
-        const footerIcon = await this.parseImage(messageObjectData.footer_icon)
+        const thumbnail = await this.parseImage(messageObjectData.thumbnail, messageObjectData)
+        const image = await this.parseImage(messageObjectData.image, messageObjectData)
+        const footerIcon = await this.parseImage(messageObjectData.footer_icon, messageObjectData)
         const buttons = inputGenerator.generateButtons(messageObjectData.buttons, unformattedData['buttons_per_row'])
         const selections = inputGenerator.generateSelections(messageObjectData.selections)
         const inputs = inputGenerator.generateInputs(messageObjectData.inputs)
@@ -415,7 +416,7 @@ export class TemplateHelper {
         return printerInfoStateMessage
     }
 
-    private async parseImage(imageID: string) {
+    private async parseImage(imageID: string, messageObjectData: any) {
         const metadataHelper = new MetadataHelper()
 
         if (typeof imageID === 'undefined') {
@@ -454,7 +455,11 @@ export class TemplateHelper {
         }
 
         if (imageID === 'excludeGraph') {
-            return await new ExcludeGraph().renderGraph(undefined)
+            return await new ExcludeGraph().renderGraph()
+        }
+
+        if (imageID === 'pageGraph') {
+            return await new PageListGraph().renderGraph(messageObjectData)
         }
 
         const iconSet = new ConfigHelper().getIconSet()

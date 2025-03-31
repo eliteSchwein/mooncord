@@ -102,7 +102,6 @@
         },
         "gcode_files": {
             "title": "Fișiere Gcode",
-            "description": "${page_entries}",
             "footer": "Pagina ${pages}"
         },
         "log_files": {

@@ -102,7 +102,6 @@
         },
         "gcode_files": {
             "title": "Dossier du Gcode",
-            "description": "${page_entries}",
             "footer": "Page ${pages}"
         },
         "log_files": {

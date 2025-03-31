@@ -102,7 +102,6 @@
         },
         "gcode_files": {
             "title": "Pliki GCODE",
-            "description": "${page_entries}",
             "footer": "Strona ${pages}"
         },
         "log_files": {

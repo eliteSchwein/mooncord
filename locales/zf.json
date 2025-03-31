@@ -105,7 +105,6 @@
         },
         "gcode_files": {
             "title": "Gcode Files",
-            "description": "${page_entries}",
             "footer": "Page ${pages}"
         },
         "log_files": {
