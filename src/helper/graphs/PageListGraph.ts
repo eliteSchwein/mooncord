@@ -7,6 +7,7 @@ export default class PageListGraph extends BaseGraph {
     protected templateHelper = new TemplateHelper()
 
     public async renderGraph(data: any) {
+        console.log(data)
         const graphData = data.graph_data
         const graphParameters = data.graphparameter
         const graphEntryKey = graphData.graph_entry_key
