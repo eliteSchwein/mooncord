@@ -60,7 +60,7 @@ export default class PageListGraph extends BaseGraph {
             for(const graphParameter of graphEntryParameters) {
                 switch(graphParameter.type) {
                     case 'text':
-                        console.log(graphParameter.replace(
+                        console.log(graphEntryTemplate.replace(
                             new RegExp(
                                 `<text[^>]*id="${graphParameter.id}"[^>]*>\\s*<tspan[^>]*>.*?<\\/tspan>\\s*<\\/text>`,
                                 'gs'
