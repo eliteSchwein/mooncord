@@ -22,6 +22,11 @@ export default class PageListGraph extends BaseGraph {
 
         let currentOffset = 0
 
+        for(const graphDataEntry of graphData) {
+            const graphEntry = graphDataEntry[graphEntryKey]
+            void this.parseParameters(graphParameters, graphEntry)
+        }
+
         let svg = `<svg
             version="1.1"
             xmlns="http://www.w3.org/2000/svg"
@@ -37,12 +42,6 @@ export default class PageListGraph extends BaseGraph {
             .replace(/sodipodi:[^\n]*/gi, '')
             .replace(/xmlns:inkscape[^\n]*/gi, '')
             .replace(/<sodipodi:namedview[^>]*>/gi, '')
-
-
-        for(const graphDataEntry of graphData) {
-            const graphEntry = graphDataEntry[graphEntryKey]
-            void this.parseParameters(graphParameters, graphEntry)
-        }
 
         await waitUntil(() => {
             console.log(Object.keys(this.finishedParameters).length)
