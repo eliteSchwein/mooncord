@@ -14,8 +14,8 @@ export default class PageListGraph extends BaseGraph {
         const graphEntryKey = data.graph_entry_key
         const graphFile = data.graph_file
 
-        const offset = 100
-        const resWidth = 600
+        const offset = 150
+        const resWidth = 1200
         const resHeight = 1200
 
         let currentOffset = 0
@@ -65,8 +65,6 @@ export default class PageListGraph extends BaseGraph {
             ${svg}
             </svg>
         `
-
-        console.log(svg)
 
         return await this.convertSvg(svg)
     }
