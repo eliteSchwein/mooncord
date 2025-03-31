@@ -37,9 +37,9 @@ export class MetadataHelper {
 
         let metaData = metaDataCache[filename]
 
-        // if(metaData && metaData.expires_at > currentDate) {
-        //     return metaData.result
-        // }
+        if(metaData && metaData.expires_at > currentDate) {
+            return metaData.result
+        }
 
         metaData = await getMoonrakerClient().send({"method": "server.files.metadata", "params": {filename}})
 
