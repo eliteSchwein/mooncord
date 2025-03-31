@@ -51,6 +51,9 @@ export class SubscriptionNotification {
         }
 
         await statusHelper.update(status)
-        await historyHelper.parseData()
+
+        if (status === 'complete') {
+            await historyHelper.parseData()
+        }
     }
 }

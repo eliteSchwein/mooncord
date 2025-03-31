@@ -94,7 +94,7 @@ export class MetadataHelper {
 
         const metaData = await this.getMetaData(filename)
 
-        setData('meta_data', metaData)
+        updateData('meta_data', metaData)
         updateData('meta_data', filename)
 
         updateTimes()
