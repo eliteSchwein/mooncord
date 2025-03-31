@@ -126,7 +126,7 @@ export default class PageListGraph extends BaseGraph {
             }
 
             if(graphParameter.type === 'background') {
-                graphParameter.value = `#${this.colors[graphParameter.value]}`
+                graphParameter.value = `#${this.colors[graphParameter.value].color}`
             }
 
             graphEntryParameters.push(graphParameter)
