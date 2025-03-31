@@ -3,7 +3,7 @@ import {TemplateHelper} from "../TemplateHelper";
 import path from "path";
 import {readFileSync} from "fs";
 import {waitUntil} from "async-wait-until";
-import JSDOM from "jsdom";
+import {DOMParser} from 'xmldom';
 
 export default class PageListGraph extends BaseGraph {
     filename = 'pageGraph.png'
@@ -58,12 +58,8 @@ export default class PageListGraph extends BaseGraph {
                 .replace(/<g\b([^>]*?)\s*transform=".*?"([^>]*)>/gi, '<g$1$2>')
                 .replace(/(<g\n)|(<g )/gi, `<g transform="translate(0, ${currentOffset})"\n`)
 
-            // @ts-ignore
-            const dom = new JSDOM()
-            const parser = new dom.window.DOMParser()
-            const doc = parser.parseFromString(graphEntryTemplate, 'image/svg+xml')
-
-            console.log(doc)
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(graphEntryTemplate, 'image/svg+xml');
 
             for(const graphParameter of graphEntryParameters) {
                 switch(graphParameter.type) {
