@@ -191,7 +191,7 @@ ${l}
             xmlns:xlink="http://www.w3.org/1999/xlink"
             viewBox="0 0 ${l} ${c}">
         `,h=(0,tD.readFileSync)(eD.default.resolve(__dirname,`../assets/${o}`)).toString("utf8");h=h.replace(/<!--[^>]*>|<\?xml[^>]*>|<svg[^>]*>|<\/svg>/gi,"").replace(/inkscape:[^\n]*/gi,"").replace(/sodipodi:[^\n]*/gi,"").replace(/xmlns:inkscape[^\n]*/gi,"").replace(/<sodipodi:namedview[^>]*>/gi,""),await cs(()=>Object.keys(this.finishedParameters).length===n.length,{timeout:3e4,intervalBetweenAttempts:500});for(let p of n){let m=p[s],g=this.finishedParameters[m],b=`${h}`;b=b.replace(/<g\b([^>]*?)\s*transform=".*?"([^>]*)>/gi,"<g$1$2>").replace(/(<g\n)|(<g )/gi,`<g transform="translate(0, ${u})"
-`);for(let w of g)switch(w.type){case"text":b=b.replace(new RegExp(`<text[^>]*id="${w.id}"[^>]*>\\s*<tspan[^>]*>.*?<\\/tspan>\\s*<\\/text>`,"gs"),B=>B.replace(/(<tspan[^>]*>)(.*?)(<\/tspan>)/s,`$1${w.value}$3`));break;case"image":let k=new RegExp(`<image([^>]*?\\bid="${w.id}"[^>]*?)xlink:href="[^"]*"`,"i");b=b.replace(k,`<image$1xlink:href="${w.value}"`),console.log(b.match(k)),console.log(w);break}u+=a,A=`
+`);for(let w of g)switch(w.type){case"text":b=b.replace(new RegExp(`<text[^>]*id="${w.id}"[^>]*>\\s*<tspan[^>]*>.*?<\\/tspan>\\s*<\\/text>`,"gs"),B=>B.replace(/(<tspan[^>]*>)(.*?)(<\/tspan>)/s,`$1${w.value}$3`));break;case"image":let k=new RegExp(`<image[^>]*?id=["']${w.id}["'][^>]*?xlink:href=["'][^"']*["']`,"is");b=b.replace(k,`<image$1xlink:href="${w.value}"`),console.log(b.match(k)),console.log(w);break}u+=a,A=`
                 ${A}
                 ${b}
             `}return A=`
