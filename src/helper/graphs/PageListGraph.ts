@@ -61,6 +61,8 @@ export default class PageListGraph extends BaseGraph {
             const parser = new DOMParser();
             const doc = parser.parseFromString(graphEntryTemplate, 'image/svg+xml');
 
+            console.log(doc);
+
             for(const graphParameter of graphEntryParameters) {
                 switch(graphParameter.type) {
                     case 'text':
