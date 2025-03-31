@@ -1,7 +1,7 @@
 'use strict'
 
 import {getMoonrakerClient} from "../Application";
-import {setData, updateData} from "../utils/CacheUtil";
+import {findValue, setData, updateData} from "../utils/CacheUtil";
 import {ConfigHelper} from "./ConfigHelper";
 import path from "path";
 import axios from "axios";
@@ -13,8 +13,39 @@ import {AttachmentBuilder} from "discord.js";
 import {fileFromSync} from "node-fetch";
 
 export class MetadataHelper {
+    public purgeMetaData() {
+        const metaDataCache = findValue('meta_data.history')
+
+        const currentDate = Date.now() / 1000
+
+        for(const filename in metaDataCache) {
+            const metaData = metaDataCache[filename]
+            if(metaData.expires_at > currentDate)
+                continue
+
+            delete metaDataCache[filename]
+        }
+
+        updateData('meta_data', {history: metaDataCache})
+    }
+
     public async getMetaData(filename: string) {
-        const metaData = await getMoonrakerClient().send({"method": "server.files.metadata", "params": {filename}})
+        const metaDataCache = findValue('meta_data.history')
+
+        const currentDate = Date.now() / 1000
+
+        let metaData = metaDataCache[filename]
+
+        if(metaData && metaData.expires_at > currentDate) {
+            return metaData.result
+        }
+
+        metaData = await getMoonrakerClient().send({"method": "server.files.metadata", "params": {filename}})
+        metaData.expires_at = currentDate + 30
+
+        metaDataCache[filename] = metaData
+
+        updateData('meta_data', {history: metaDataCache})
 
         return metaData.result
     }

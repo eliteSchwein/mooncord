@@ -69,8 +69,7 @@ export async function parseFunctionPlaceholders(fragments) {
 
     switch (fragments[0]) {
         case "icon":
-            const icons = getIcons()
-            return icons[fragments[1]].icon
+            return getIcons()[fragments[1]].icon
         case "percent":
             return formatPercent(parseFloat(fragments[2]), parseInt(fragments[1]))
         case "reduce":
@@ -101,7 +100,7 @@ export async function parseFunctionPlaceholders(fragments) {
             const metadataKey = fragments[2]
             const filename = fragments[1]
 
-
+            return (await metadataHelper.getMetaData(filename))[metadataKey]
     }
 }
 

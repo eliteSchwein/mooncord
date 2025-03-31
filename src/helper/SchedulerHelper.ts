@@ -9,6 +9,7 @@ import {clearInterval} from "timers";
 import {TempHelper} from "./TempHelper";
 import {PromptHelper} from "./PromptHelper";
 import {updateAllRestEndpoints} from "./RestApiHelper";
+import {MetadataHelper} from "./MetadataHelper";
 
 export class SchedulerHelper {
     protected configHelper = new ConfigHelper()
@@ -22,6 +23,7 @@ export class SchedulerHelper {
     protected usageHelper = new UsageHelper()
     protected tempHelper = new TempHelper()
     protected promptHelper = new PromptHelper()
+    protected metadataHelper = new MetadataHelper()
 
     public init(moonrakerClient: MoonrakerClient) {
         this.moonrakerClient = moonrakerClient
@@ -75,6 +77,8 @@ export class SchedulerHelper {
             const machineInfo = await this.moonrakerClient.send({"method": "machine.system_info"})
 
             setData('machine_info', machineInfo.result)
+
+            this.metadataHelper.purgeMetaData()
 
             await this.usageHelper.updateDiskUsage()
 
