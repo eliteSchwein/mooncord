@@ -81,6 +81,8 @@ export default class PageListGraph extends BaseGraph {
                             match => match.replace(/xlink:href=["'][^"']*["']/, `xlink:href="${graphParameter.value}"`)
                         );
 
+                        console.log(graphEntryTemplate.includes('id="statusicon"'));
+                        console.log(graphEntryTemplate.includes('xlink:href="'));
                         console.log(graphEntryTemplate.match(regex))
                         console.log(graphParameter)
                         break
