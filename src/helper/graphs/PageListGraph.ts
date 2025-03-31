@@ -1,5 +1,7 @@
 import BaseGraph from "./BaseGraph";
 import {TemplateHelper} from "../TemplateHelper";
+import path from "path";
+import {readFileSync} from "fs";
 
 export default class PageListGraph extends BaseGraph {
     filename = 'pageGraph.png'
@@ -11,6 +13,10 @@ export default class PageListGraph extends BaseGraph {
         const graphParameters = data.graphparameter
         const graphEntryKey = data.graph_entry_key
         const graphFile = data.graph_file
+
+        const graphTemplate = readFileSync(path.resolve(__dirname, `../assets/${graphFile}`))
+
+        console.log(graphTemplate)
 
         for(const graphDataEntry of graphData) {
             const graphEntry = graphDataEntry[graphEntryKey]
