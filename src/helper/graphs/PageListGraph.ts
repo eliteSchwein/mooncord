@@ -64,6 +64,7 @@ export default class PageListGraph extends BaseGraph {
             for(const graphParameter of graphEntryParameters) {
                 switch(graphParameter.type) {
                     case 'text':
+                        console.log(graphParameter)
                         const textElement = doc.getElementById(graphParameter.id)
                         const tspan = textElement.getElementsByTagName('tspan')[0]
 
