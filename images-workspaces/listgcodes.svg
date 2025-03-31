@@ -25,7 +25,7 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
      inkscape:zoom="1.4142136"
-     inkscape:cx="677.4083"
+     inkscape:cx="677.40828"
      inkscape:cy="267.28636"
      inkscape:window-width="3840"
      inkscape:window-height="2088"
@@ -44,7 +44,10 @@
        id="thumbnail"
        x="10.796705"
        y="5.8820605"
-       inkscape:svg-dpi="96" /><text
+       inkscape:svg-dpi="96"
+       inkscape:export-filename="../assets/assets/svgs/listgcodes.svg"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" /><text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:74.2504px;font-family:sans-serif;-inkscape-font-specification:sans-serif;text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#999999;stroke:#000000;stroke-width:2.32033"
        x="160.41187"
