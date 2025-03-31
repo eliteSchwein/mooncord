@@ -139,7 +139,7 @@ export class MetadataHelper {
         let thumbnail: Buffer
         try {
             thumbnail = await this.getBuffer(thumbnailURL)
-            logRegular(`retrieved Thumbnail for ${filename}`)
+            logRegular(`retrieved ${small ? 'small ': ''}Thumbnail for ${filename}`)
         } catch (error) {
             const reason = error as string
             const trace = await StackTrace.get()
