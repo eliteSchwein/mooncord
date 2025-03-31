@@ -2,9 +2,9 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="305.51483mm"
-   height="39.682938mm"
-   viewBox="0 0 1154.7017 149.98276"
+   width="400mm"
+   height="210mm"
+   viewBox="0 0 1511.811 793.70081"
    version="1.1"
    id="svg1"
    xml:space="preserve"
@@ -12,8 +12,7 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg"><defs
      id="defs1" /><g
-     id="layer1"
-     transform="translate(-10.796706,-5.8820603)"><image
+     id="layer1"><image
        width="145.73032"
        height="149.98274"
        preserveAspectRatio="none"
@@ -42,23 +41,23 @@
          y="139.24486"
          style="stroke-width:2.32033">Printtime: 3d12h35min</tspan></text><path
        id="statusbackground"
-       style="fill:#55d400;stroke:none;stroke-width:1.96336"
-       d="m 1117.0212,42.431015 c -0.727,0.03284 -1.4532,0.07841 -2.1782,0.13674 l 2.1817,-0.129537 -162.84309,0.01436 c -32.02648,3.98e-4 -52.23669,21.504286 -52.23699,48.395827 3e-4,26.891535 20.21051,48.987425 52.23699,48.987825 l 0.007,0.004 162.82209,0.17991 v 0.007 c 0.7249,0.0583 -0.7166,-0.0256 0.011,0.007 30.4276,-1e-5 48.4785,-23.33048 48.4767,-50.283378 -5e-4,-26.951491 -18.0507,-47.319758 -48.4767,-47.31977 z" /><image
-       width="82.920723"
-       height="85.340355"
+       style="fill:#55d400;stroke:none;stroke-width:1.66167"
+       d="m 1104.2213,49.931011 c -0.6153,0.02779 -1.2299,0.06636 -1.8435,0.115729 l 1.8464,-0.109633 -137.8204,0.01215 c -27.10525,3.37e-4 -44.20993,18.199912 -44.21019,40.959267 2.6e-4,22.759356 17.10494,41.459966 44.21019,41.460306 l 0.006,0.003 137.8027,0.15227 v 0.006 c 0.6135,0.0493 -0.6065,-0.0217 0.01,0.006 25.7521,0 41.0292,-19.74549 41.0277,-42.556774 -4e-4,-22.810093 -15.277,-40.048548 -41.0277,-40.048558 z" /><image
+       width="70.179024"
+       height="72.226852"
        preserveAspectRatio="xMidYMid"
        xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAC3klEQVR4Xu2YXUsWQRTHFbwKQRRK&#10;QSONSG9C6Ca0zOimrvoEfSa/RR8iBF/Sim4iEDEiUKiLIDCK6MIi+v9lJ5aHfXZeds/sGXcGDj7P&#10;47yc/2/OOTuzoyM9b6M91z+SAeQI6DmBnAI9D4BcBHMK5BToOYGcAj0PgAvzFLiNjdyAPYH98NnU&#10;i5ACFL8Fm4C9g637QEgdQFm82XgvCCkDqBLvDSFVAHXiyxAe4su3upqQIoBbELRX5Lyt3h2iw1od&#10;hNQAUPwObMqmvPT/WggpAViGqG3YpId40/UZPjytGpcKgJCdN3oP8OEB7DRVAGLiCUR7BIiK1w5g&#10;CQ6+9Cx4Jsrf48PdYWFfTgWtEUDxL2CXAwoexd+HfXUZqxFANPEaUyCqeG0AoovXBOAGnHkVI+cH&#10;60KTGvAYk53BeBdv0hYxeAc2EzDJEcbw/u9U8KrmDwVwD5Ntwv7CHsH2A5znEO48LzYh4r2q/TD/&#10;QgBQ/HPYpWLSX/jLa+cbTwidi6e/vgDuFCFvxBvNP4tQfOsIQYV4XwB8CbELGx8i8jt+592bl4+6&#10;pka8DwDXlxC8cfEIyvysavP48TWss5wfdMolBXzP5KzIq7CPA4tRPAvenGOalLtxLs4ZXO2HrWkD&#10;EPp8/oIFV2AnxcJNxTO1OGfrzQbgOlbkAWU6YOXPGEPH2ZrsvJh4OmYDwD43CwFXAiAcY8wY7GrA&#10;2A8Yw0OOyM4bf1wAsG+TSAjQfl4/RHfeF0BMCNHEu6ZAeQelIyGq+BAAkpEQXXwoAAkInYhvAqBN&#10;CJ2JbwqgDQidim8DgIHAN7izns+7E/TnaVH0OW/zyfUcYJvnGjrwHb4rBIrnc56nxU5bWwAowhWC&#10;GvFtpUB5B20QVImXAFAXCerESwGogqBSvCSAMoTfWgpeVbVtswhWzb+AH//APnVa6msWlwagVfd/&#10;vzIA9Vsk7GCOAGHA6qfPEaB+i4QdzBEgDFj99P8AGAOVQZP53ucAAAAASUVORK5CYII=&#10;"
        id="statusicon"
-       x="913.62543"
-       y="46.319031"
+       x="932.07953"
+       y="53.221588"
        style="fill:#ffffff" /><text
        xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:77.4831px;font-family:sans-serif;-inkscape-font-specification:sans-serif;text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#ffffff;stroke:none;stroke-width:1.81601"
-       x="1016.0089"
-       y="117.13711"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:65.577px;font-family:sans-serif;-inkscape-font-specification:sans-serif;text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#ffffff;stroke:none;stroke-width:1.53696"
+       x="1021.0315"
+       y="112.9575"
        id="statuscount"
        transform="scale(0.98572172,1.0144851)"><tspan
          id="tspan5"
-         x="1016.0089"
-         y="117.13711"
-         style="stroke-width:1.81601">123</tspan></text></g></svg>
+         x="1021.0315"
+         y="112.9575"
+         style="stroke-width:1.53696">123</tspan></text></g></svg>

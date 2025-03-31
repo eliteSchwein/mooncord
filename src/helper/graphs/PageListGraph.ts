@@ -18,7 +18,7 @@ export default class PageListGraph extends BaseGraph {
 
         const offset = 150
         const resWidth = 1200
-        const resHeight = 1400
+        const resHeight = 1300
 
         let currentOffset = 0
 
