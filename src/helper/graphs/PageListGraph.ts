@@ -8,7 +8,6 @@ export default class PageListGraph extends BaseGraph {
     filename = 'pageGraph.png'
 
     protected templateHelper = new TemplateHelper()
-    protected finishedQueries = 0
     protected finishedParameters = {}
 
     public async renderGraph(data: any) {
@@ -46,9 +45,9 @@ export default class PageListGraph extends BaseGraph {
         }
 
         await waitUntil(() => {
-            console.log(this.finishedQueries+1)
+            console.log(Object.keys(this.finishedParameters).length)
             console.log(graphData.length)
-            return this.finishedQueries+1 === graphData.length
+            return Object.keys(this.finishedParameters).length === graphData.length
         }, {timeout: 30_000, intervalBetweenAttempts: 500})
 
         for(const graphDataEntry of graphData) {
@@ -87,6 +86,5 @@ export default class PageListGraph extends BaseGraph {
         }
 
         this.finishedParameters[graphEntry] = graphEntryParameters
-        this.finishedQueries += 1
     }
 }
