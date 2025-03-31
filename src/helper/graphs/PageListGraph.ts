@@ -72,7 +72,7 @@ export default class PageListGraph extends BaseGraph {
                         break
                     case 'image':
                         const regex = new RegExp(
-                            `<image([^>]*\\bid="${graphParameter.id}"[^>]*)xlink:href="[^"]*"`,
+                            `<image([^>]*?\\bid="${graphParameter.id}"[^>]*?)xlink:href="[^"]*"`,
                             'i'
                         );
 
@@ -80,6 +80,7 @@ export default class PageListGraph extends BaseGraph {
                             regex,
                             `<image$1xlink:href="${graphParameter.value}"`
                         );
+                        console.log(graphEntryTemplate.match(regex));
                         console.log(graphEntryTemplate)
                         console.log(graphParameter)
                         break
