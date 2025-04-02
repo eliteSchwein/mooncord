@@ -280,6 +280,8 @@ export class TemplateHelper {
 
             await Promise.all(promises)
 
+            console.log(this.parsedPlaceholders)
+
             for (const placeholder of this.parsedPlaceholders) {
                 if (!placeholder.content.double_dash) {
                     const startPos = input.indexOf(placeholder.id)
