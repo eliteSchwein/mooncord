@@ -65,7 +65,11 @@ export class HistoryHelper {
             void this.parsePartialJobList(start, totalLimit)
         }
 
-        await waitUntil(() => this.jobListResult.count === printTotalRequest.result.job_totals.total_jobs,
+        await waitUntil(() => {
+            console.log(this.jobListResult.count)
+                console.log(printTotalRequest.result.job_totals.total_jobs)
+            return this.jobListResult.count === printTotalRequest.result.job_totals.total_jobs
+            },
             {timeout: 60_000, intervalBetweenAttempts: 500})
 
         const cache = getEntry('history')
