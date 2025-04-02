@@ -79,8 +79,6 @@ export class HistoryHelper {
         cache.total = printTotalRequest.result
         cache.jobs = jobListResult
 
-        console.log(jobListResult.jobs.length)
-
         setData('history', cache)
 
         this.jobListResult = []
