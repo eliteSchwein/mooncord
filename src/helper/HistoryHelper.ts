@@ -28,11 +28,11 @@ export class HistoryHelper {
 
         const jobListPartialResult = await this.moonrakerClient.send(printJobsCommand)
 
+        console.log(jobListPartialResult)
+
         if(jobListPartialResult.result.count) {
             this.jobListResult.count += jobListPartialResult.result.count
         }
-
-        console.log(this.jobListResult.count)
 
         if (Array.isArray(jobListPartialResult.result.jobs)) {
             const cleanedJobs = jobListPartialResult.result.jobs.map(job => {
