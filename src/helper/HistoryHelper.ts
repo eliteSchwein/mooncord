@@ -47,6 +47,8 @@ export class HistoryHelper {
             mergeDeep(jobListResult, jobListPartialResult.result)
         }
 
+        console.log(jobListResult)
+
         const cache = getEntry('history')
 
         cache.total = printTotalRequest.result
