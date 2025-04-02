@@ -101,6 +101,7 @@ export class MoonrakerClient {
         const subscriptionObjects: any = {
             'webhooks.state': null,
             'webhooks.state_message': null,
+            'configfile': ['config', 'settings', 'warnings']
         }
 
         for (const index in objects.result.objects) {
@@ -212,19 +213,22 @@ export class MoonrakerClient {
     }
 
     public clearStateData(data: any) {
-        for (const key in data['configfile']['config']) {
-            if (key.includes('bed_mesh')) {
-                delete data['configfile']['config'][key]
+        console.log(data)
+        if(data['configfile']) {
+            for (const key in data['configfile']['config']) {
+                if (key.includes('bed_mesh')) {
+                    delete data['configfile']['config'][key]
+                }
             }
-        }
-        for (const key in data['configfile']['settings']) {
-            if (key.includes('bed_mesh')) {
-                delete data['configfile']['settings'][key]
+            for (const key in data['configfile']['settings']) {
+                if (key.includes('bed_mesh')) {
+                    delete data['configfile']['settings'][key]
+                }
             }
-        }
 
-        delete data['configfile']['save_config_pending']
-        delete data['configfile']['save_config_pending_items']
+            delete data['configfile']['save_config_pending']
+            delete data['configfile']['save_config_pending_items']
+        }
         return data
     }
 
