@@ -100,34 +100,37 @@ export class MoonrakerClient {
 
         const subscriptionObjects: any = {
             'webhooks.state': null,
-            'webhooks.state_message': null
+            'webhooks.state_message': null,
+            'configfile': ['config', 'settings', 'warnings']
         }
 
         for (const index in objects.result.objects) {
             const object = objects.result.objects[index]
+
+            if(subscriptionObjects[object]) continue
+
             subscriptionObjects[object] = null
         }
 
-        console.log(subscriptionObjects)
-
-        delete subscriptionObjects.webhooks
+        delete subscriptionObjects['webhooks']
+        delete subscriptionObjects['bed_mesh']
 
         logRegular('Subscribe to Moonraker Objects...')
-        let data = await this.send({
+        let data = (await this.send({
             "method": "printer.objects.subscribe",
             "params": {"objects": subscriptionObjects}
-        })
+        })).result.status
 
         data = this.clearStateData(data)
 
         this.ready = true
 
-        setData('state', data.result.status)
+        setData('state', data)
 
-        if (typeof data.result.status !== 'undefined') {
-            if (typeof data.result.status.print_stats !== 'undefined') {
-                if (data.result.status.print_stats.filename !== null) {
-                    await new MetadataHelper().updateMetaData(data.result.status.print_stats.filename)
+        if (typeof data !== 'undefined') {
+            if (typeof data.print_stats !== 'undefined') {
+                if (data.print_stats.filename !== null) {
+                    await new MetadataHelper().updateMetaData(data.print_stats.filename)
                 }
             }
         }
@@ -208,8 +211,17 @@ export class MoonrakerClient {
         this.websocket.close()
     }
 
-    private clearStateData(data: any) {
-        console.log(data)
+    public clearStateData(data: any) {
+        for (const key in data['configfile']['config']) {
+            if (key.includes('bed_mesh')) {
+                delete data['configfile']['config'][key];
+            }
+        }
+        for (const key in data['configfile']['settings']) {
+            if (key.includes('bed_mesh')) {
+                delete data['configfile']['settings'][key];
+            }
+        }
         return data
     }
 

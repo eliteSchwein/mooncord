@@ -5,8 +5,10 @@ import {StatusHelper} from "../../../helper/StatusHelper";
 import {MetadataHelper} from "../../../helper/MetadataHelper";
 import {HistoryHelper} from "../../../helper/HistoryHelper";
 import {TempHelper} from "../../../helper/TempHelper";
+import {getMoonrakerClient} from "../../../Application";
 
 export class SubscriptionNotification {
+    protected moonrakerClient = getMoonrakerClient()
 
     public async parse(message) {
         if (typeof (message.method) === 'undefined') {
@@ -22,7 +24,7 @@ export class SubscriptionNotification {
             return false
         }
 
-        updateData('state', param)
+        updateData('state', this.moonrakerClient.clearStateData(param))
 
         if (typeof param.print_stats !== 'undefined') {
             await this.parsePrintStats(param.print_stats)
