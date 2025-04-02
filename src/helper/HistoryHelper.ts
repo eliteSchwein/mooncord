@@ -9,10 +9,7 @@ import {waitUntil} from "async-wait-until";
 
 export class HistoryHelper {
     protected moonrakerClient = getMoonrakerClient()
-    protected jobListResult = {
-        count: 0,
-        jobs: []
-    }
+    protected jobListResult = []
 
     public getPrintJobStats() {
         const cache = getEntry('history')
@@ -28,18 +25,12 @@ export class HistoryHelper {
 
         const jobListPartialResult = await this.moonrakerClient.send(printJobsCommand)
 
-        //console.log(jobListPartialResult.result)
-
-        if(jobListPartialResult.result.count) {
-            this.jobListResult.count += jobListPartialResult.result.count
-        }
-
         if (Array.isArray(jobListPartialResult.result.jobs)) {
             const cleanedJobs = jobListPartialResult.result.jobs.map(job => {
                 const { metadata, auxiliary_data, ...cleanedJob } = job
                 return cleanedJob
             })
-            this.jobListResult.jobs.push(...cleanedJobs)
+            this.jobListResult.push(...cleanedJobs)
         }
     }
 
@@ -54,8 +45,10 @@ export class HistoryHelper {
 
         const loopLimit = Math.ceil(printTotalRequest.result.job_totals.total_jobs / totalLimit)
 
-        this.jobListResult = {
-            count: 0,
+        this.jobListResult = []
+
+        const jobListResult = {
+            count: printTotalRequest.result.job_totals.total_jobs,
             jobs: []
         }
 
@@ -64,37 +57,25 @@ export class HistoryHelper {
         for (let i = 0; i < loopLimit; i++) {
             const start = i > 0 ? totalLimit * i + 1 : 0
 
-            console.log(start)
-
             promises.push(this.parsePartialJobList(start, totalLimit))
         }
 
         await Promise.all(promises)
 
-        await waitUntil(() => {
-            console.log(this.jobListResult.count)
-                console.log(printTotalRequest.result.job_totals.total_jobs)
-            return this.jobListResult.count === printTotalRequest.result.job_totals.total_jobs
-            },
-            {timeout: 60_000, intervalBetweenAttempts: 500})
-
         const cache = getEntry('history')
 
-        this.jobListResult.jobs.sort((a, b) => {
+        jobListResult.jobs = this.jobListResult
+
+        jobListResult.jobs.sort((a, b) => {
             return b.job_id.localeCompare(a.job_id)
         })
 
-        console.log(this.jobListResult)
-
         cache.total = printTotalRequest.result
-        cache.jobs = this.jobListResult
+        cache.jobs = jobListResult
 
         setData('history', cache)
 
-        this.jobListResult = {
-            count: 0,
-            jobs: []
-        }
+        this.jobListResult = []
     }
 
     public getPrintJobs() {
