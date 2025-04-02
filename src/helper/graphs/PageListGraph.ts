@@ -1,7 +1,7 @@
 import BaseGraph from "./BaseGraph";
 import {TemplateHelper} from "../TemplateHelper";
 import path from "path";
-import {readFileSync} from "fs";
+import {existsSync, readFileSync} from "fs";
 import {waitUntil} from "async-wait-until";
 
 export default class PageListGraph extends BaseGraph {
@@ -23,6 +23,15 @@ export default class PageListGraph extends BaseGraph {
 
         let currentOffset = 0
 
+        const imagePath = path.resolve(__dirname, `../assets/${graphFile}`)
+
+        if(!existsSync(imagePath)) {
+            return await this.convertSvg(`
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1" width="1" height="1">
+            </svg>
+            `)
+        }
+
         for(const graphDataEntry of graphData) {
             const graphEntry = graphDataEntry[graphEntryKey]
             void this.parseParameters(graphParameters, graphEntry)
@@ -35,7 +44,7 @@ export default class PageListGraph extends BaseGraph {
             viewBox="0 0 ${resWidth} ${resHeight}">
         `
 
-        let graphTemplate = readFileSync(path.resolve(__dirname, `../assets/${graphFile}`)).toString('utf8')
+        let graphTemplate = readFileSync(imagePath).toString('utf8')
 
         graphTemplate = graphTemplate
             .replace(/<!--[^>]*>|<\?xml[^>]*>|<svg[^>]*>|<\/svg>/gi, '')
