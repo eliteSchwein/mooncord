@@ -62,6 +62,8 @@ export class HistoryHelper {
         for (let i = 0; i < loopLimit; i++) {
             const start = i > 0 ? totalLimit * i + 1 : 0
 
+            console.log(start)
+
             void this.parsePartialJobList(start, totalLimit)
         }
 
