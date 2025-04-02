@@ -30,6 +30,10 @@ export class HistoryHelper {
                 delete job['auxiliary_data']
                 delete job['exists']
                 delete job['user']
+                if(job['metadata']) {
+                    delete job['metadata']['thumbnails']
+                    delete job['metadata']['uuid']
+                }
                 console.log(job)
                 return job
             })
