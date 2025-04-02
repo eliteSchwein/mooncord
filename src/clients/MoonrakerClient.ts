@@ -113,6 +113,7 @@ export class MoonrakerClient {
         }
 
         delete subscriptionObjects['webhooks']
+        delete subscriptionObjects['telemetry']
         delete subscriptionObjects['bed_mesh']
 
         logRegular('Subscribe to Moonraker Objects...')
