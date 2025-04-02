@@ -139,19 +139,19 @@ export class TemplateHelper {
 
         messageObject.setTitle(messageObjectData.title)
 
-        if (typeof messageObjectData.color !== 'undefined') {
+        if (messageObjectData.color) {
             messageObject.setColor(messageObjectData.color)
         }
 
-        if (typeof messageObjectData.description !== 'undefined') {
+        if (messageObjectData.description) {
             messageObject.setDescription(messageObjectData.description)
         }
 
-        if (typeof messageObjectData.author !== 'undefined') {
+        if (messageObjectData.author) {
             messageObject.setAuthor({'name': messageObjectData.author})
         }
 
-        if (typeof messageObjectData.footer !== 'undefined') {
+        if (messageObjectData.footer) {
             const footerObject: any = {'text': messageObjectData.footer}
 
             if (typeof footerIcon === 'string')
@@ -169,12 +169,16 @@ export class TemplateHelper {
 
         if (typeof thumbnail === 'object') {
             files.push(thumbnail)
-            messageObject.setThumbnail(`attachment://${thumbnail.name}`)
+            if (thumbnail instanceof AttachmentBuilder) {
+                messageObject.setThumbnail(`attachment://${thumbnail.name}`)
+            }
         }
 
         if (typeof image === 'object') {
             files.push(image)
-            messageObject.setImage(`attachment://${image.name}`)
+            if (image instanceof AttachmentBuilder) {
+                messageObject.setImage(`attachment://${image.name}`)
+            }
         }
 
         if (typeof thumbnail === 'string') {
