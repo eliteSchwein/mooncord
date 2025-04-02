@@ -27,7 +27,7 @@ export class HistoryHelper {
             return
         }
 
-        const loopLimit = Math.ceil(printTotalRequest.result.total_jobs / totalLimit)
+        const loopLimit = Math.ceil(printTotalRequest.result.job_totals.total_jobs / totalLimit)
 
         const jobListResult = {}
 
