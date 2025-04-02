@@ -269,6 +269,8 @@ export class TemplateHelper {
         const placeholders = input.matchAll(/(\${).*?}/g)
         this.parsedPlaceholders = []
 
+        console.log(placeholders)
+
         if (placeholders !== null) {
             const promises = []
 
