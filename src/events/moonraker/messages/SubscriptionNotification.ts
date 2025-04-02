@@ -22,8 +22,6 @@ export class SubscriptionNotification {
             return false
         }
 
-        console.log(param)
-
         updateData('state', param)
 
         if (typeof param.print_stats !== 'undefined') {

@@ -111,10 +111,12 @@ export class MoonrakerClient {
         delete subscriptionObjects.webhooks
 
         logRegular('Subscribe to Moonraker Objects...')
-        const data = await this.send({
+        let data = await this.send({
             "method": "printer.objects.subscribe",
             "params": {"objects": subscriptionObjects}
         })
+
+        data = this.clearStateData(data)
 
         this.ready = true
 
@@ -202,6 +204,11 @@ export class MoonrakerClient {
 
     public close() {
         this.websocket.close()
+    }
+
+    private clearStateData(data: any) {
+        console.log(data)
+        return data
     }
 
     private async errorHandler(instance, event) {
