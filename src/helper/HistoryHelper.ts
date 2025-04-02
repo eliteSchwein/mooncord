@@ -76,6 +76,8 @@ export class HistoryHelper {
             return b.job_id.localeCompare(a.job_id)
         })
 
+        delete printTotalRequest.result['auxiliary_totals']
+
         cache.total = printTotalRequest.result
         cache.jobs = jobListResult
 
