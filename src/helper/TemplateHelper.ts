@@ -22,6 +22,8 @@ import {get} from "lodash";
 import PageListGraph from "./graphs/PageListGraph";
 
 export class TemplateHelper {
+    protected parsedPlaceholders = []
+
     public async parseRawTemplate(type: string, id: string) {
         const unformattedData = Object.assign({}, getEntry(`${type}s`)[id])
         const partials = unformattedData.partials
@@ -238,30 +240,46 @@ export class TemplateHelper {
         return inputData
     }
 
+    private async parseSinglePlaceholder(placeholder: any, providedPlaceholders = null) {
+        const placeholderId = String(placeholder).match(/(\${).*?}/g)[0]
+        const placeholderContent = await this.parsePlaceholderContent(placeholderId, providedPlaceholders)
+
+        if (placeholderContent.content === null || placeholderContent.content === '') {
+            return
+        }
+
+        if (placeholderContent.content === '$clear') {
+            placeholderContent.content = ''
+        }
+
+        this.parsedPlaceholders.push({
+            id: placeholderId,
+            content: placeholderContent,
+        })
+    }
+
     public async parsePlaceholder(input: string, providedPlaceholders = null) {
         const placeholders = input.matchAll(/(\${).*?}/g)
+        this.parsedPlaceholders = []
 
         if (placeholders !== null) {
+            const promises = []
+
             for (const placeholder of placeholders) {
-                const placeholderId = String(placeholder).match(/(\${).*?}/g)[0]
-                const placeholderContent = await this.parsePlaceholderContent(placeholderId, providedPlaceholders)
+                promises.push(this.parseSinglePlaceholder(placeholder, providedPlaceholders))
+            }
 
-                if (placeholderContent.content === null || placeholderContent.content === '') {
-                    continue
-                }
+            await Promise.all(promises)
 
-                if (placeholderContent.content === '$clear') {
-                    placeholderContent.content = ''
-                }
-
-                if (!placeholderContent.double_dash) {
-                    const startPos = input.indexOf(placeholderId)
-                    const endPos = startPos + placeholderId.length
+            for (const placeholder of this.parsedPlaceholders) {
+                if (!placeholder.content.double_dash) {
+                    const startPos = input.indexOf(placeholder.id)
+                    const endPos = startPos + placeholder.id.length
                     input = input.slice(0, startPos - 1) +
-                        placeholderContent.content +
+                        placeholder.content.content +
                         input.slice(endPos + 1)
                 } else {
-                    input = input.replace(placeholderId, placeholderContent.content)
+                    input = input.replace(placeholder, placeholder.content.content)
                 }
             }
         }
