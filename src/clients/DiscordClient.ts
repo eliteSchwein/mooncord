@@ -117,7 +117,6 @@ export class DiscordClient {
             'readySince': Date.now() / 1000,
             'applicationId': this.discordClient.application.id,
             'clientId': this.discordClient.user.id,
-            'ping': this.discordClient.ws.ping,
             'event_count': this.discordClient['_eventsCount']
         })
 

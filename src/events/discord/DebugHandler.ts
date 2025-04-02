@@ -9,7 +9,6 @@ export class DebugHandler {
         discordClient.on("debug", info => {
             if (info.includes('Heartbeat acknowledged, latency of')) {
                 updateData('discord_client', {
-                    'ping': getDiscordClient().getClient().ws.ping,
                     'event_count': getDiscordClient().getClient()['_eventsCount']
                 })
             }
