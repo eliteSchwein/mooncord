@@ -19,13 +19,19 @@ export class MetadataHelper {
 
         const currentDate = Date.now() / 1000
 
+        console.log('-----')
+        console.log(currentDate)
+        console.log('######')
+
         for(const filename in metaDataCache) {
             const metaData = metaDataCache[filename]
+            console.log(metaData.expires_at)
             if(metaData.expires_at > currentDate)
                 continue
 
             delete metaDataCache[filename]
         }
+        console.log('-----')
 
         updateData('meta_data', {history: metaDataCache})
     }

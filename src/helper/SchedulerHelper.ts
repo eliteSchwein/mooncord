@@ -62,6 +62,7 @@ export class SchedulerHelper {
             this.usageHelper.updateKlipperLoad()
             this.usageHelper.updateSystemLoad()
             this.promptHelper.purgePrompt()
+            this.metadataHelper.purgeMetaData()
 
             await this.tempHelper.notifyHeaterTargetNotifications()
 
@@ -77,8 +78,6 @@ export class SchedulerHelper {
             const machineInfo = await this.moonrakerClient.send({"method": "machine.system_info"})
 
             setData('machine_info', machineInfo.result)
-
-            this.metadataHelper.purgeMetaData()
 
             await this.usageHelper.updateDiskUsage()
 
