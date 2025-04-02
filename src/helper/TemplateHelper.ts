@@ -244,7 +244,14 @@ export class TemplateHelper {
         const placeholderId = String(placeholder).match(/(\${).*?}/g)[0]
         const placeholderContent = await this.parsePlaceholderContent(placeholderId, providedPlaceholders)
 
+        console.log(placeholderContent)
+        console.log(placeholderId)
+
         if (placeholderContent.content === null || placeholderContent.content === '') {
+            this.parsedPlaceholders.push({
+                id: placeholderId,
+                content: placeholderContent,
+            })
             return
         }
 
