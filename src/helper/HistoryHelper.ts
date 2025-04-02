@@ -4,7 +4,7 @@ import {getMoonrakerClient} from "../Application";
 import {getEntry, setData} from "../utils/CacheUtil";
 import {logRegular} from "./LoggerHelper";
 import {LocaleHelper} from "./LocaleHelper";
-import {getIcons} from "./DataHelper";
+import {getIcons, mergeDeep} from "./DataHelper";
 
 export class HistoryHelper {
     public getPrintJobStats() {
@@ -18,18 +18,35 @@ export class HistoryHelper {
 
     public async parseData() {
         logRegular('Retrieve history data...')
+        const totalLimit = 50
         const moonrakerClient = getMoonrakerClient()
-        const printJobsRequest = await moonrakerClient.send({"method": "server.history.totals"})
-        const printTotalRequest = await moonrakerClient.send({"method": "server.history.list"})
+        const printTotalRequest = await moonrakerClient.send({"method": "server.history.totals"})
+        const printJobsCommand = {"method": "server.history.list", "params": {"limit": totalLimit, "start": 0}}
 
-        if (printJobsRequest.result === undefined || printTotalRequest.result === undefined) {
+        if (printTotalRequest.result === undefined) {
             return
+        }
+
+        const loopLimit = Math.ceil(printTotalRequest.result.total_jobs / totalLimit)
+
+        const jobListResult = {}
+
+        for (let i = 0; i < loopLimit; i++) {
+            printJobsCommand.params.start = 0
+
+            if(i > 0) {
+                printJobsCommand.params.start = totalLimit * i + 1
+            }
+
+            const jobListPartialResult = await moonrakerClient.send(printJobsCommand)
+
+            mergeDeep(jobListResult, jobListPartialResult.result)
         }
 
         const cache = getEntry('history')
 
-        cache.total = printJobsRequest.result
-        cache.jobs = printTotalRequest.result
+        cache.total = printTotalRequest.result
+        cache.jobs = jobListResult
 
         setData('history', cache)
     }
