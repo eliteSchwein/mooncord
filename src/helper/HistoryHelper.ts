@@ -23,28 +23,25 @@ export class HistoryHelper {
         const printTotalRequest = await moonrakerClient.send({"method": "server.history.totals"})
         const printJobsCommand = {"method": "server.history.list", "params": {"limit": totalLimit, "start": 0}}
 
-        console.log(printTotalRequest)
-
         if (printTotalRequest.result === undefined) {
             return
         }
 
         const loopLimit = Math.ceil(printTotalRequest.result.job_totals.total_jobs / totalLimit)
 
-        console.log(loopLimit)
-
-        const jobListResult = {}
+        const jobListResult = {
+            count: printTotalRequest.result.job_totals.total_jobs,
+            jobs: []
+        }
 
         for (let i = 0; i < loopLimit; i++) {
-            printJobsCommand.params.start = 0
-
-            if(i > 0) {
-                printJobsCommand.params.start = totalLimit * i + 1
-            }
+            printJobsCommand.params.start = i > 0 ? totalLimit * i + 1 : 0
 
             const jobListPartialResult = await moonrakerClient.send(printJobsCommand)
 
-            mergeDeep(jobListResult, jobListPartialResult.result)
+            if (Array.isArray(jobListPartialResult.result.jobs)) {
+                jobListResult.jobs.push(...jobListPartialResult.result.jobs);
+            }
         }
 
         console.log(jobListResult)
