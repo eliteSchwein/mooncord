@@ -262,8 +262,6 @@ export class TemplateHelper {
         const placeholders = input.matchAll(/(\${).*?}/g)
         this.parsedPlaceholders = []
 
-        console.log(placeholders)
-
         if (placeholders !== null) {
             const promises = []
 
@@ -274,8 +272,6 @@ export class TemplateHelper {
             await Promise.all(promises)
 
             for (const placeholder of this.parsedPlaceholders) {
-                console.log(placeholder)
-
                 if (!placeholder.content.double_dash) {
                     const startPos = input.indexOf(placeholder.id)
                     const endPos = startPos + placeholder.id.length
@@ -283,7 +279,7 @@ export class TemplateHelper {
                         placeholder.content.content +
                         input.slice(endPos + 1)
                 } else {
-                    input = input.replace(placeholder, placeholder.content.content)
+                    input = input.replace(placeholder.id, placeholder.content.content)
                 }
             }
         }
