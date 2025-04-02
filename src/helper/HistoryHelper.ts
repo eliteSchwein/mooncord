@@ -59,13 +59,17 @@ export class HistoryHelper {
             jobs: []
         }
 
+        const promises = []
+
         for (let i = 0; i < loopLimit; i++) {
             const start = i > 0 ? totalLimit * i + 1 : 0
 
             console.log(start)
 
-            void this.parsePartialJobList(start, totalLimit)
+            promises.push(this.parsePartialJobList(start, totalLimit))
         }
+
+        await Promise.all(promises)
 
         await waitUntil(() => {
             console.log(this.jobListResult.count)
