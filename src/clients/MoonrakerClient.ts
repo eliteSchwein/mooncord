@@ -116,8 +116,6 @@ export class MoonrakerClient {
         delete subscriptionObjects['telemetry']
         delete subscriptionObjects['bed_mesh']
 
-        console.log(subscriptionObjects)
-
         logRegular('Subscribe to Moonraker Objects...')
         let data = (await this.send({
             "method": "printer.objects.subscribe",
@@ -231,6 +229,9 @@ export class MoonrakerClient {
                 }
             }
         }
+
+        delete data['bed_mesh']
+
         return data
     }
 
