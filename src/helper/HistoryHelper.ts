@@ -5,8 +5,15 @@ import {getEntry, setData} from "../utils/CacheUtil";
 import {logRegular} from "./LoggerHelper";
 import {LocaleHelper} from "./LocaleHelper";
 import {getIcons, mergeDeep} from "./DataHelper";
+import {waitUntil} from "async-wait-until";
 
 export class HistoryHelper {
+    protected moonrakerClient = getMoonrakerClient()
+    protected jobListResult = {
+        count: 0,
+        jobs: []
+    }
+
     public getPrintJobStats() {
         const cache = getEntry('history')
 
@@ -16,12 +23,28 @@ export class HistoryHelper {
         }
     }
 
+    private async parsePartialJobList(start: number, totalLimit: number) {
+        const printJobsCommand = {"method": "server.history.list", "params": {"limit": totalLimit, "start": start}}
+
+        const jobListPartialResult = await this.moonrakerClient.send(printJobsCommand)
+
+        if(jobListPartialResult.result.count) {
+            this.jobListResult.count += jobListPartialResult.result.count
+        }
+
+        if (Array.isArray(jobListPartialResult.result.jobs)) {
+            const cleanedJobs = jobListPartialResult.result.jobs.map(job => {
+                const { metadata, auxiliary_data, ...cleanedJob } = job
+                return cleanedJob
+            })
+            this.jobListResult.jobs.push(...cleanedJobs)
+        }
+    }
+
     public async parseData() {
         logRegular('Retrieve history data...')
         const totalLimit = 50
-        const moonrakerClient = getMoonrakerClient()
-        const printTotalRequest = await moonrakerClient.send({"method": "server.history.totals"})
-        const printJobsCommand = {"method": "server.history.list", "params": {"limit": totalLimit, "start": 0}}
+        const printTotalRequest = await this.moonrakerClient.send({"method": "server.history.totals"})
 
         if (printTotalRequest.result === undefined) {
             return
@@ -29,29 +52,37 @@ export class HistoryHelper {
 
         const loopLimit = Math.ceil(printTotalRequest.result.job_totals.total_jobs / totalLimit)
 
-        const jobListResult = {
-            count: printTotalRequest.result.job_totals.total_jobs,
+        this.jobListResult = {
+            count: 0,
             jobs: []
         }
 
         for (let i = 0; i < loopLimit; i++) {
-            printJobsCommand.params.start = i > 0 ? totalLimit * i + 1 : 0
+            const start = i > 0 ? totalLimit * i + 1 : 0
 
-            const jobListPartialResult = await moonrakerClient.send(printJobsCommand)
-
-            if (Array.isArray(jobListPartialResult.result.jobs)) {
-                jobListResult.jobs.push(...jobListPartialResult.result.jobs);
-            }
+            void this.parsePartialJobList(start, totalLimit)
         }
 
-        console.log(jobListResult)
+        await waitUntil(() => this.jobListResult.count === printTotalRequest.result.job_totals.total_jobs,
+            {timeout: 60_000, intervalBetweenAttempts: 500})
 
         const cache = getEntry('history')
 
+        this.jobListResult.jobs.sort((a, b) => {
+            return b.job_id.localeCompare(a.job_id)
+        })
+
+        console.log(this.jobListResult)
+
         cache.total = printTotalRequest.result
-        cache.jobs = jobListResult
+        cache.jobs = this.jobListResult
 
         setData('history', cache)
+
+        this.jobListResult = {
+            count: 0,
+            jobs: []
+        }
     }
 
     public getPrintJobs() {
