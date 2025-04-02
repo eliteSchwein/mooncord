@@ -32,6 +32,8 @@ export class HistoryHelper {
             this.jobListResult.count += jobListPartialResult.result.count
         }
 
+        console.log(this.jobListResult.count)
+
         if (Array.isArray(jobListPartialResult.result.jobs)) {
             const cleanedJobs = jobListPartialResult.result.jobs.map(job => {
                 const { metadata, auxiliary_data, ...cleanedJob } = job
