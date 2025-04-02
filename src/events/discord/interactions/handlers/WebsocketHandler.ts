@@ -38,7 +38,7 @@ export class WebsocketHandler extends BaseHandler {
         const moonrakerClient = getMoonrakerClient()
 
         for (let websocketCommand of data.websocket_requests) {
-            websocketCommand = this.templateHelper.parsePlaceholder(JSON.stringify(websocketCommand))
+            websocketCommand = await this.templateHelper.parsePlaceholder(JSON.stringify(websocketCommand))
 
             logRegular(`Execute Websocket Command ${websocketCommand}...`)
             try {
