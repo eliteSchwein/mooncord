@@ -23,6 +23,8 @@ export class HistoryHelper {
         const printTotalRequest = await moonrakerClient.send({"method": "server.history.totals"})
         const printJobsCommand = {"method": "server.history.list", "params": {"limit": totalLimit, "start": 0}}
 
+        console.log(printTotalRequest)
+
         if (printTotalRequest.result === undefined) {
             return
         }
