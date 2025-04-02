@@ -116,6 +116,8 @@ export class MoonrakerClient {
         delete subscriptionObjects['telemetry']
         delete subscriptionObjects['bed_mesh']
 
+        console.log(subscriptionObjects)
+
         logRegular('Subscribe to Moonraker Objects...')
         let data = (await this.send({
             "method": "printer.objects.subscribe",
@@ -213,21 +215,21 @@ export class MoonrakerClient {
     }
 
     public clearStateData(data: any) {
-        console.log(data)
         if(data['configfile']) {
-            for (const key in data['configfile']['config']) {
-                if (key.includes('bed_mesh')) {
-                    delete data['configfile']['config'][key]
+            if(data['configfile']['config']) {
+                for (const key in data['configfile']['config']) {
+                    if (key.includes('bed_mesh')) {
+                        delete data['configfile']['config'][key]
+                    }
                 }
             }
-            for (const key in data['configfile']['settings']) {
-                if (key.includes('bed_mesh')) {
-                    delete data['configfile']['settings'][key]
+            if(data['configfile']['settings']) {
+                for (const key in data['configfile']['settings']) {
+                    if (key.includes('bed_mesh')) {
+                        delete data['configfile']['settings'][key]
+                    }
                 }
             }
-
-            delete data['configfile']['save_config_pending']
-            delete data['configfile']['save_config_pending_items']
         }
         return data
     }
