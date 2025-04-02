@@ -108,6 +108,8 @@ export class MoonrakerClient {
             subscriptionObjects[object] = null
         }
 
+        console.log(subscriptionObjects)
+
         delete subscriptionObjects.webhooks
 
         logRegular('Subscribe to Moonraker Objects...')
