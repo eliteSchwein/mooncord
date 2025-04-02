@@ -32,13 +32,13 @@ sudo rm -rf /usr/local/lib/node_modules
 status_msg "Remove old Node Version"
 sudo rm  /usr/local/bin/node
 
-status_msg "Add NodeJS 20.x Repo"
+status_msg "Add NodeJS 22.x Repo"
 sudo mkdir -p /etc/apt/keyrings
 curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | sudo gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
-echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_20.x nodistro main" | sudo tee /etc/apt/sources.list.d/nodesource.list
+echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_22.x nodistro main" | sudo tee /etc/apt/sources.list.d/nodesource.list
 sudo apt-get update
 
-status_msg "Install NodeJS 20.X or higher"
+status_msg "Install NodeJS 22.X or higher"
 sudo apt-get install -y nodejs
 
 status_msg "Rebuild NPM, this will take some time please wait....."

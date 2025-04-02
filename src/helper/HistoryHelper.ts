@@ -34,7 +34,6 @@ export class HistoryHelper {
                     delete job['metadata']['thumbnails']
                     delete job['metadata']['uuid']
                 }
-                console.log(job)
                 return job
             })
             this.jobListResult.push(...cleanedJobs)
