@@ -151,6 +151,8 @@ export default class PageListGraph extends BaseGraph {
             graphEntryParameters.push(graphParameter)
         }
 
+        console.log(graphEntryParameters)
+
         this.finishedParameters[graphEntry] = graphEntryParameters
     }
 }
