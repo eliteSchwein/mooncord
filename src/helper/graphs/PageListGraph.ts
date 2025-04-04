@@ -1,9 +1,7 @@
 import BaseGraph from "./BaseGraph";
-import {TemplateHelper} from "../TemplateHelper";
 import path from "path";
 import {existsSync, readFileSync} from "fs";
 import {waitUntil} from "async-wait-until";
-import {getEntry} from "../../utils/CacheUtil";
 
 export default class PageListGraph extends BaseGraph {
     filename = 'pageGraph.png'
