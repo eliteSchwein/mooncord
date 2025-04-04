@@ -78,6 +78,7 @@ export default class PageListGraph extends BaseGraph {
 
                         const match = graphEntryTemplate.match(bgRegex)
                         console.log('Match:', match)
+                        console.log(graphEntryTemplate)
 
                         graphEntryTemplate = graphEntryTemplate.replace(
                             bgRegex,
