@@ -93,7 +93,7 @@ export default class PageListGraph extends BaseGraph {
                         break
                     case 'fill':
                         const bgRegex = new RegExp(
-                            `(<[^>]*?id=["']${graphParameter.id}["'][^>]*?style=["'][^"']*?)fill:[^;"]+`,
+                            `(<[^>]*id=["']${graphParameter.id}["'][^>]*?style=["'][^"']*?)fill:[^;"]+`,
                             'is'
                         )
 
