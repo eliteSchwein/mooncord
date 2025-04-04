@@ -104,8 +104,6 @@ export default class PageListGraph extends BaseGraph {
                             bgRegex,
                             `$1fill:${graphParameter.value}`
                         )
-
-                        console.log(graphEntryTemplate)
                         break
                     case 'stroke':
                         const stRegex = new RegExp(
