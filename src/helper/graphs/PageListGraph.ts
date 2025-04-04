@@ -93,8 +93,8 @@ export default class PageListGraph extends BaseGraph {
                         break
                     case 'fill':
                         const bgRegex = new RegExp(
-                            `(<[^>]*id=["']${graphParameter.id}["'][^>]*?style=["'][^"']*)fill:[^;]+`,
-                            'gis'
+                            `(<[^>]*id=["']${graphParameter.id}["'][^>]*?style=["'][^"]*?)fill:[^;"]*`,
+                            'is'
                         )
 
                         graphEntryTemplate = graphEntryTemplate.replace(
@@ -106,8 +106,8 @@ export default class PageListGraph extends BaseGraph {
                         break
                     case 'stroke':
                         const stRegex = new RegExp(
-                            `(<[^>]*id=["']${graphParameter.id}["'][^>]*?style=["'][^"']*)stroke:[^;]+`,
-                            'gis'
+                            `(<[^>]*id=["']${graphParameter.id}["'][^>]*?style=["'][^"]*?)stroke:[^;"]*`,
+                            'is'
                         )
 
                         graphEntryTemplate = graphEntryTemplate.replace(
