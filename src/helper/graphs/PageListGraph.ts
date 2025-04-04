@@ -69,28 +69,6 @@ export default class PageListGraph extends BaseGraph {
 
             for(const graphParameter of graphEntryParameters) {
                 switch(graphParameter.type) {
-                    case 'text':
-                        graphEntryTemplate = graphEntryTemplate.replace(
-                            new RegExp(
-                                `<text[^>]*id="${graphParameter.id}"[^>]*>\\s*<tspan[^>]*>.*?<\\/tspan>\\s*<\\/text>`,
-                                'gs'
-                            ),
-                            (match) => {
-                                return match.replace(/(<tspan[^>]*>)(.*?)(<\/tspan>)/s, `$1${graphParameter.value}$3`);
-                            }
-                        )
-                        break
-                    case 'image':
-                        const imageRegex = new RegExp(
-                            `<image[^>]*?\\bid=["']${graphParameter.id}["'][^>]*?>`,
-                            'is'
-                        )
-
-                        graphEntryTemplate = graphEntryTemplate.replace(
-                            imageRegex,
-                            match => match.replace(/xlink:href=["'][^"']*["']/, `xlink:href="${graphParameter.value}"`)
-                        )
-                        break
                     case 'fill':
                         const bgRegex = new RegExp(
                             `(<[^>]*id=["']${graphParameter.id}["'][^>]*?style=["'][^"']*?)fill:[^;"]+`,
@@ -114,6 +92,28 @@ export default class PageListGraph extends BaseGraph {
                         graphEntryTemplate = graphEntryTemplate.replace(
                             stRegex,
                             `$1stroke:${graphParameter.value}`
+                        )
+                        break
+                    case 'text':
+                        graphEntryTemplate = graphEntryTemplate.replace(
+                            new RegExp(
+                                `<text[^>]*id="${graphParameter.id}"[^>]*>\\s*<tspan[^>]*>.*?<\\/tspan>\\s*<\\/text>`,
+                                'gs'
+                            ),
+                            (match) => {
+                                return match.replace(/(<tspan[^>]*>)(.*?)(<\/tspan>)/s, `$1${graphParameter.value}$3`);
+                            }
+                        )
+                        break
+                    case 'image':
+                        const imageRegex = new RegExp(
+                            `<image[^>]*?\\bid=["']${graphParameter.id}["'][^>]*?>`,
+                            'is'
+                        )
+
+                        graphEntryTemplate = graphEntryTemplate.replace(
+                            imageRegex,
+                            match => match.replace(/xlink:href=["'][^"']*["']/, `xlink:href="${graphParameter.value}"`)
                         )
                         break
                 }
