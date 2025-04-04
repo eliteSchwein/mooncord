@@ -72,7 +72,7 @@ export default class PageListGraph extends BaseGraph {
                 switch(graphParameter.type) {
                     case 'fill':
                         const bgRegex = new RegExp(
-                            `(<[^>]*?style=["'][^"']*?)fill:[^;"]+(.*?id=["']${graphParameter.id}["'][^>]*?>)`,
+                            `(<[^>]*?style=["'][^"']*?)fill:\\s*[^;"]+([^>]*?id=["']${graphParameter.id}["'][^>]*?>)`,
                             'gis'
                         )
 
