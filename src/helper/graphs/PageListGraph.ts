@@ -2,6 +2,7 @@ import BaseGraph from "./BaseGraph";
 import path from "path";
 import {existsSync, readFileSync} from "fs";
 import {waitUntil} from "async-wait-until";
+import {ImageHelper} from "../ImageHelper";
 
 export default class PageListGraph extends BaseGraph {
     filename = 'pageGraph.png'
