@@ -91,7 +91,7 @@ export default class PageListGraph extends BaseGraph {
                             match => match.replace(/xlink:href=["'][^"']*["']/, `xlink:href="${graphParameter.value}"`)
                         )
                         break
-                    case 'background':
+                    case 'fill':
                         const bgRegex = new RegExp(
                             `(<[^>]*id=["']${graphParameter.id}["'][^>]*?style=["'][^"']*)fill:[^;]+`,
                             'is'
@@ -100,6 +100,17 @@ export default class PageListGraph extends BaseGraph {
                         graphEntryTemplate = graphEntryTemplate.replace(
                             bgRegex,
                             `$1fill:${graphParameter.value}`
+                        )
+                        break
+                    case 'stroke':
+                        const stRegex = new RegExp(
+                            `(<[^>]*id=["']${graphParameter.id}["'][^>]*?style=["'][^"']*)stroke:[^;]+`,
+                            'is'
+                        )
+
+                        graphEntryTemplate = graphEntryTemplate.replace(
+                            stRegex,
+                            `$1stroke:${graphParameter.value}`
                         )
                         break
                 }
