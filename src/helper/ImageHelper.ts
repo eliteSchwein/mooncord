@@ -1,6 +1,7 @@
 import {findValue, updateData} from "../utils/CacheUtil";
 import {readFileSync} from "fs";
 import path from "path";
+import {logRegular} from "./LoggerHelper";
 
 export class ImageHelper {
     public purgeCachedImages() {
@@ -32,11 +33,13 @@ export class ImageHelper {
             return parsedImage.value
         }
 
+        logRegular(`convert ${imagePath} to base64`)
+
         const rawImage = readFileSync(path.resolve(__dirname, `../assets/${imagePath}`))
 
         parsedImage = {
             value: `data:image/png;base64,${rawImage.toString("base64")}`,
-            expires_at: currentDate + 15,
+            expires_at: currentDate + 60,
         }
 
         parsedImagesCache[imagePath] = parsedImage
