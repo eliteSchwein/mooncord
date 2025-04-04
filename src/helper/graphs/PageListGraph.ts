@@ -8,6 +8,7 @@ export default class PageListGraph extends BaseGraph {
 
     protected finishedParameters = {}
     protected colors = this.config.getColors(/(.*?)/g, true)
+    protected imageHelper = new ImageHelper()
 
     public async renderGraph(data: any) {
         const graphData = data.graph_data
@@ -143,8 +144,7 @@ export default class PageListGraph extends BaseGraph {
             graphParameter.value = await this.templateHelper.parsePlaceholder(graphParameter.value, {graph_entry: graphEntry})
 
             if(graphParameter.type === 'image' && !graphParameter.value.includes('base64')) {
-                const rawImage = readFileSync(path.resolve(__dirname, `../assets/${graphParameter.value}`))
-                graphParameter.value =`data:image/png;base64,${rawImage.toString("base64")}`
+                graphParameter.value = this.imageHelper.parseImage(graphParameter.value)
             }
 
             if(graphParameter.type === 'fill' || graphParameter.type === 'stroke') {

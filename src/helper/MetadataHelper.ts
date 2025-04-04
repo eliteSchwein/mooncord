@@ -17,9 +17,9 @@ export class MetadataHelper {
     public purgeMetaData() {
         const metaDataCache = findValue('meta_data.history')
 
-        const currentDate = Date.now() / 1000
+        if(Object.keys(metaDataCache).length === 0) return
 
-        if(metaDataCache.length === 0) return
+        const currentDate = Date.now() / 1000
 
         for(const filename in metaDataCache) {
             const metaData = metaDataCache[filename]

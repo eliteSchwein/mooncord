@@ -10,6 +10,7 @@ import {MetadataHelper} from "./MetadataHelper";
 import {parseData} from "../utils/InputUtil";
 import {formatDate, formatPercent, formatReduce, formatTime, formatTimestamp, limitToMax} from "../utils/FormatUtil";
 import {get} from "lodash";
+import {ImageHelper} from "./ImageHelper";
 
 export function isObject(item) {
     return (item && typeof item === 'object' && !Array.isArray(item));
@@ -105,6 +106,10 @@ export async function parseFunctionPlaceholders(fragments) {
             thumbnailBuffer.fill(0)
 
             return thumbnailBase64
+        case "image":
+            const imageHelper = new ImageHelper()
+
+            return imageHelper.parseImage(fragments[1])
         case "metadata":
             const metadataKey = fragments[2]
             const filename = fragments[1]

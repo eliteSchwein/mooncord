@@ -10,6 +10,7 @@ import {TempHelper} from "./TempHelper";
 import {PromptHelper} from "./PromptHelper";
 import {updateAllRestEndpoints} from "./RestApiHelper";
 import {MetadataHelper} from "./MetadataHelper";
+import {ImageHelper} from "./ImageHelper";
 
 export class SchedulerHelper {
     protected configHelper = new ConfigHelper()
@@ -24,6 +25,7 @@ export class SchedulerHelper {
     protected tempHelper = new TempHelper()
     protected promptHelper = new PromptHelper()
     protected metadataHelper = new MetadataHelper()
+    protected imageHelper = new ImageHelper()
 
     public init(moonrakerClient: MoonrakerClient) {
         this.moonrakerClient = moonrakerClient
@@ -63,6 +65,7 @@ export class SchedulerHelper {
             this.usageHelper.updateSystemLoad()
             this.promptHelper.purgePrompt()
             this.metadataHelper.purgeMetaData()
+            this.imageHelper.purgeCachedImages()
 
             await this.tempHelper.notifyHeaterTargetNotifications()
 

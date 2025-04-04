@@ -54,6 +54,9 @@ const cacheData: any = {
         filename: '',
         history: {}
     },
+    images: {
+        parsed: {}
+    },
     temps: {
         colors: {}
     },
