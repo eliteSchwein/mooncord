@@ -26,10 +26,17 @@ export class ImageHelper {
         const parsedImagesCache = findValue('images.parsed')
 
         const currentDate = Date.now() / 1000
+        const newExpireDate = currentDate + 60
 
         let parsedImage = parsedImagesCache[imagePath]
 
         if(parsedImage && parsedImage.expires_at > currentDate) {
+            parsedImage.expires_at = newExpireDate
+
+            parsedImagesCache[imagePath] = parsedImage
+
+            updateData('images', {parsed: parsedImagesCache})
+
             return parsedImage.value
         }
 
@@ -39,7 +46,7 @@ export class ImageHelper {
 
         parsedImage = {
             value: `data:image/png;base64,${rawImage.toString("base64")}`,
-            expires_at: currentDate + 60,
+            expires_at: newExpireDate,
         }
 
         parsedImagesCache[imagePath] = parsedImage
