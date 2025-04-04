@@ -42,7 +42,9 @@ export class WebsocketHandler extends BaseHandler {
 
             logRegular(`Execute Websocket Command ${websocketCommand}...`)
             try {
-                await moonrakerClient.send(JSON.parse(websocketCommand), websocketTimeout)
+                const data = await moonrakerClient.send(JSON.parse(websocketCommand), websocketTimeout)
+
+                console.log(data)
             } catch {
                 logWarn(`The Websocket Command ${websocketCommand} timed out...`)
             }
