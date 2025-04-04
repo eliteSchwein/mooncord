@@ -3,23 +3,25 @@ import {TemplateHelper} from "../TemplateHelper";
 import path from "path";
 import {existsSync, readFileSync} from "fs";
 import {waitUntil} from "async-wait-until";
+import {getEntry} from "../../utils/CacheUtil";
 
 export default class PageListGraph extends BaseGraph {
     filename = 'pageGraph.png'
 
-    protected templateHelper = new TemplateHelper()
     protected finishedParameters = {}
     protected colors = this.config.getColors(/(.*?)/g, true)
 
     public async renderGraph(data: any) {
         const graphData = data.graph_data
-        const graphParameters = data.graphparameter
-        const graphEntryKey = data.graph_entry_key
-        const graphFile = data.graph_file
+        const graphConfig = this.config.getEntriesByFilter(new RegExp(`^page_graph ${data.graph_id}`, 'g'))[0]
 
-        const offset = data.graph_entry_offset
-        const resWidth = data.graph_width
-        const resHeight = data.graph_height
+        const graphParameters = graphConfig.parameter
+        const graphEntryKey = graphConfig.entry_key
+        const graphFile = graphConfig.file
+
+        const offset = graphConfig.entry_offset
+        const resWidth = graphConfig.width
+        const resHeight = graphConfig.height
 
         let currentOffset = 0
 

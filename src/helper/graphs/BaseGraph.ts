@@ -5,11 +5,13 @@ import NoneRenderBackend from "../snapshotBackend/NoneRenderBackend";
 import SharpRenderBackend from "../snapshotBackend/SharpRenderBackend";
 import {Resvg, ResvgRenderOptions} from "@resvg/resvg-js";
 import path from "path";
+import {TemplateHelper} from "../TemplateHelper";
 
 export default class BaseGraph {
     filename: string;
     config = new ConfigHelper();
     generalConfig = this.config.getConfig().general;
+    templateHelper = new TemplateHelper()
 
     protected async convertSvg(svg: string): Promise<AttachmentBuilder> {
         let editBuffer: Buffer;
