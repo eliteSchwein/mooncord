@@ -38,11 +38,11 @@ export class WebsocketHandler extends BaseHandler {
         const moonrakerClient = getMoonrakerClient()
 
         for (let websocketCommand of data.websocket_requests) {
-            websocketCommand = await this.templateHelper.parsePlaceholder(JSON.stringify(websocketCommand))
-
             const updateCache = websocketCommand.update_cache
 
             delete websocketCommand['update_cache']
+
+            websocketCommand = await this.templateHelper.parsePlaceholder(JSON.stringify(websocketCommand))
 
             logRegular(`Execute Websocket Command ${websocketCommand}...`)
             try {
