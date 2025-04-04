@@ -144,7 +144,7 @@ export default class PageListGraph extends BaseGraph {
                 graphParameter.value =`data:image/png;base64,${rawImage.toString("base64")}`
             }
 
-            if(graphParameter.type === 'background') {
+            if(graphParameter.type === 'fill' || graphParameter.type === 'stroke') {
                 graphParameter.value = `#${this.colors[graphParameter.value].color}`
             }
 
