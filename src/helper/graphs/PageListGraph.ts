@@ -77,8 +77,6 @@ export default class PageListGraph extends BaseGraph {
                         )
 
                         const match = graphEntryTemplate.match(bgRegex)
-                        console.log('Match:', match)
-                        console.log(graphEntryTemplate)
 
                         graphEntryTemplate = graphEntryTemplate.replace(
                             bgRegex,
@@ -87,13 +85,13 @@ export default class PageListGraph extends BaseGraph {
                         break
                     case 'stroke':
                         const stRegex = new RegExp(
-                            `(<[^>]*id=["']${graphParameter.id}["'][^>]*?style=["'][^"]*?)stroke:[^;"]*`,
+                            `(<[^>]*?style=["'][^"']*?)stroke:\\s*[^;"]+([^>]*?id=["']${graphParameter.id}["'][^>]*?>)`,
                             'gis'
                         )
 
                         graphEntryTemplate = graphEntryTemplate.replace(
                             stRegex,
-                            `$1stroke:${graphParameter.value}`
+                            `$1stroke:${graphParameter.value}$2`
                         )
                         break
                     case 'text':
