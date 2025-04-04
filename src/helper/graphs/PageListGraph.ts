@@ -66,6 +66,7 @@ export default class PageListGraph extends BaseGraph {
             graphEntryTemplate = graphEntryTemplate
                 .replace(/<g\b([^>]*?)\s*transform=".*?"([^>]*)>/gi, '<g$1$2>')
                 .replace(/(<g\n)|(<g )/gi, `<g transform="translate(0, ${currentOffset})"\n`)
+                .replace('\n', ' ')
 
             for(const graphParameter of graphEntryParameters) {
                 switch(graphParameter.type) {
