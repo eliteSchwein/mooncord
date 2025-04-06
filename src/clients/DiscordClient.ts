@@ -59,7 +59,10 @@ export class DiscordClient {
                 StageInstanceManager: 0,
                 ThreadManager: 0,
                 ThreadMemberManager: 0,
-                VoiceStateManager: 0
+                VoiceStateManager: 0,
+                GuildMemberManager: 25,
+                MessageManager: 10,
+                ReactionManager: 5,
             }),
             sweepers: {
                 ...Options.DefaultSweeperSettings,
@@ -71,6 +74,10 @@ export class DiscordClient {
                     interval: 3_600,
                     filter: () => user => user.bot && user.id !== user.client.user.id,
                 },
+                guildMembers: {
+                    interval: 3_600,
+                    filter: () => member => member.user.bot && member.user.id !== member.user.client.user.id,
+                }
             },
             intents: [
                 GatewayIntentBits.DirectMessages,
@@ -93,6 +100,9 @@ export class DiscordClient {
                     name: localeHelper.getLocale().embeds.startup.activity,
                     type: convertActivityStyle(config.getEntriesByFilter(new RegExp(`^status startup`, 'g'))[0].activity_type)
                 }]
+            },
+            rest: {
+                offset: 0
             }
         })
 
