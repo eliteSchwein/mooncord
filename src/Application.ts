@@ -58,7 +58,7 @@ async function init() {
     const isSetupMode = args.includes('setup')
 
     if(isSetupMode) {
-        logNotice("Setup Mode is active")
+        logNotice("setup mode is active")
     }
 
     initCache()
