@@ -47,15 +47,19 @@ export class DatabaseUtil {
         })
     }
 
+    public async hasDatabase() {
+        logSuccess('Check if Database is present...')
+
+        const databaseNamespaces = (await this.fetchDatabaseNamespaces()).result.namespaces
+
+        return databaseNamespaces.includes("mooncord")
+    }
+
     public async retrieveDatabase() {
         logEmpty()
 
         try {
-            logSuccess('Check if Database is present...')
-
-            const databaseNamespaces = (await this.fetchDatabaseNamespaces()).result.namespaces
-
-            if(!databaseNamespaces.includes("mooncord")) {
+            if(!await this.hasDatabase()) {
                 logError(`the database for mooncord was not found!`)
                 process.exit(5)
                 return

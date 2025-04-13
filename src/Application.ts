@@ -61,11 +61,16 @@ async function init() {
 
     let currentInitState = 'Moonraker Client'
 
+    const isSetupMode = args.includes('setup') && args.length < 3
+
     try {
         await moonrakerClient.connect()
         await waitUntil(() => moonrakerClient.isReady(), {timeout: 30_000, intervalBetweenAttempts: 500})
 
         currentInitState = 'Database'
+        if(isSetupMode && !await database.hasDatabase()) {
+            await database.resetDatabase()
+        }
         await database.retrieveDatabase()
         await waitUntil(() => database.isReady(), {timeout: 30_000, intervalBetweenAttempts: 500})
 
@@ -82,7 +87,7 @@ async function init() {
 
     await statusHelper.update(null, true, discordClient)
 
-    if (!args.includes('setup') && args.length < 3) {
+    if (!isSetupMode) {
         return
     }
 
