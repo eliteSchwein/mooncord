@@ -107,6 +107,17 @@ export class DatabaseUtil {
     }
 
     public async updateDatabase() {
+        if(Object.keys(database).length === 0) {
+            logError(`couldnt update database, because the database in the ram is empty!`)
+            process.exit(5)
+            return
+        }
+        if(! await this.hasDatabase()) {
+            logError(`couldnt update database, because the database was not found!`)
+            process.exit(5)
+            return
+        }
+
         const updateRequest = await this.moonrakerClient.send({
             "method": "server.database.post_item",
             "params": {"namespace": "mooncord", "key": "dataset", "value": database}
@@ -167,6 +178,9 @@ export class DatabaseUtil {
 
         database = Object.assign({}, defaultDatabase)
 
-        await this.updateDatabase()
+        await this.moonrakerClient.send({
+            "method": "server.database.post_item",
+            "params": {"namespace": "mooncord", "key": "dataset", "value": database}
+        })
     }
 }
