@@ -55,13 +55,17 @@ const promptHelper = new PromptHelper()
 void init()
 
 async function init() {
+    const isSetupMode = args.includes('setup') && args.length < 3
+
+    if(isSetupMode) {
+        logNotice("Setup Mode is active")
+    }
+
     initCache()
 
     logEmpty()
 
     let currentInitState = 'Moonraker Client'
-
-    const isSetupMode = args.includes('setup') && args.length < 3
 
     try {
         await moonrakerClient.connect()
@@ -70,8 +74,9 @@ async function init() {
         currentInitState = 'Database'
         if(isSetupMode && !await database.hasDatabase()) {
             await database.resetDatabase()
+        } else {
+            await database.retrieveDatabase()
         }
-        await database.retrieveDatabase()
         await waitUntil(() => database.isReady(), {timeout: 30_000, intervalBetweenAttempts: 500})
 
         currentInitState = 'Discord Client'
