@@ -57,13 +57,14 @@ void init()
 async function init() {
     const isSetupMode = args.includes('setup')
 
-    if(isSetupMode) {
-        logNotice("setup mode is active")
-    }
-
     initCache()
 
     logEmpty()
+
+    if(isSetupMode) {
+        logNotice("setup mode is active")
+        setData('setup_mode', true)
+    }
 
     let currentInitState = 'Moonraker Client'
 
@@ -106,8 +107,6 @@ async function init() {
     if (!setupUser.includes('#')) {
         setupUser = setupUser.toLowerCase()
     }
-
-    setData('setup_mode', true)
     setData('setup_user', setupUser)
 
     for (let i = 0; i < 1024; i++) {
