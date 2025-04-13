@@ -55,7 +55,7 @@ const promptHelper = new PromptHelper()
 void init()
 
 async function init() {
-    const isSetupMode = args.includes('setup') && args.length < 3
+    const isSetupMode = args.includes('setup')
 
     if(isSetupMode) {
         logNotice("Setup Mode is active")
