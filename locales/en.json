@@ -146,27 +146,27 @@
             "title": "Delete Print Job?",
             "description": "Print Time: ${estimated_time}\nSlicer: ${slicer}\nSlicer Version: ${slicer_version}\nHeight: ${object_height}mm"
         },
-        "printjob_start":{
+        "printjob_start": {
             "content": "Printjob started: `${state.print_stats.filename}`",
             "title": "Print started",
             "activity": "🖨️ start ${state.print_stats.filename}"
         },
-        "printjob_complete":{
+        "printjob_complete": {
             "content": "Printjob is complete",
             "title": "Print Complete",
             "activity": "✅ finished Print"
         },
-        "printjob_pause":{
+        "printjob_pause": {
             "content": "Printjob ${state.print_stats.filename} is paused",
             "title": "Print Paused",
             "activity": "☕ take a Break"
         },
-        "printjob_printing":{
+        "printjob_printing": {
             "content": "Printjob ${state.print_stats.filename} is at ${percent:0:function.current_percent}%",
             "title": "Printing",
             "activity": "🖨️ printing: ${percent:0:function.current_percent}%"
         },
-        "printjob_stop":{
+        "printjob_stop": {
             "content": "The Printjob stopped",
             "title": "Print stopped",
             "activity": "🛑 Print stopped"
@@ -177,37 +177,37 @@
         "single_temperature": {
             "title": "Temperature for ${heater}"
         },
-        "disconnected":{
+        "disconnected": {
             "content": "Printer got disconnected from Klipper!",
             "title": "Printer Disconnected!",
             "activity": "⚠️ firmware disconnected!"
         },
-        "moonraker_disconnected":{
+        "moonraker_disconnected": {
             "content": "Moonraker Connection got lost!",
             "title": "Moonraker Connection lost!",
             "activity": "⚠️ no connection!"
         },
-        "error":{
+        "error": {
             "content": "An Error occured!",
             "title": "An Error occured!",
             "activity": "⚠️ error occured!"
         },
-        "offline":{
+        "offline": {
             "content": "Moonraker or Klipper Connection got lost!",
             "title": "Connection Lost!",
             "activity": "⚠️ no connection!"
         },
-        "shutdown":{
+        "shutdown": {
             "content": "Klipper firmware has a shutdown!",
             "title": "Klipper Shutdown",
             "activity": "⚠️ klipper shutdown!"
         },
-        "ready":{
+        "ready": {
             "content": "Printer is ready to print",
             "title": "Printer Ready",
             "activity": "💤 ready to print"
         },
-        "startup":{
+        "startup": {
             "content": "Printer is starting",
             "title": "Printer starting",
             "activity": "⏱️ Printer starting"
@@ -365,7 +365,7 @@
                 "speed_flow": "New speed factor is `${speed}%` and flow factor is `${flow}%`, `${username}`!"
             },
             "excluded_object": "The Object `${object}` got excluded, `${username}`!",
-            "power_device":{
+            "power_device": {
                 "on": "The Power Device `${power_device}` is now on, `${username}`!",
                 "off": "The Power Device `${power_device}` is now off, `${username}`!"
             },
@@ -482,28 +482,28 @@
         "reconnect": {
             "label": "Reconnect"
         },
-        "next_page_printlist":  {
+        "next_page_printlist": {
             "label": "Next Page"
         },
-        "last_page_printlist":  {
+        "last_page_printlist": {
             "label": "Last Page"
         },
-        "next_page_history":  {
+        "next_page_history": {
             "label": "Next Page"
         },
-        "last_page_history":  {
+        "last_page_history": {
             "label": "Last Page"
         },
-        "next_page_loglist":  {
+        "next_page_loglist": {
             "label": "Next Page"
         },
-        "last_page_loglist":  {
+        "last_page_loglist": {
             "label": "Last Page"
         },
-        "next_page_timelapselist":  {
+        "next_page_timelapselist": {
             "label": "Next Page"
         },
-        "last_page_timelapselist":  {
+        "last_page_timelapselist": {
             "label": "Last Page"
         },
         "to_printlist": {
@@ -536,10 +536,10 @@
         "printjob_delete_deny": {
             "label": "No"
         },
-        "next_page_configs_download":  {
+        "next_page_configs_download": {
             "label": "Next Page"
         },
-        "last_page_configs_download":  {
+        "last_page_configs_download": {
             "label": "Last Page"
         }
     },
@@ -640,7 +640,7 @@
                     "name": "speed",
                     "description": "tune your current Print Speed"
                 },
-                "flow":{
+                "flow": {
                     "name": "flow",
                     "description": "tune your current Filament Flow"
                 }
@@ -650,7 +650,7 @@
             "description": "Up- or Download a configuration",
             "command": "config",
             "options": {
-                "upload":{
+                "upload": {
                     "name": "upload",
                     "description": "Upload a configuration file",
                     "options": {
@@ -771,7 +771,7 @@
                 "channel": {
                     "name": "channel",
                     "description": "Select a Channel to add/remove it as Broadcast channel."
-                } 
+                }
             }
         },
         "emergency_stop": {

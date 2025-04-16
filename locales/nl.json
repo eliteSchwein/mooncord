@@ -9,7 +9,7 @@
     },
     "pages": {
         "gcode_files": {
-            "entry_label": "`${data.path}`"
+            "entry_label": "`${data.label}`"
         },
         "history": {
             "entry_label": "`${data.filename}` ${icon:data.status}"
@@ -21,7 +21,7 @@
             "entry_label": "`${data.path}`"
         },
         "configs_download": {
-            "entry_label": "`${data.name}`"
+            "entry_label": "`${data.path}`"
         }
     },
     "embeds": {
@@ -621,8 +621,7 @@
                     "label": "Updates",
                     "value": "update"
                 }
-            ],
-            "mcu_options": true
+            ]
         }
     },
     "commands": {

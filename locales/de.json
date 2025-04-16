@@ -9,7 +9,7 @@
     },
     "pages": {
         "gcode_files": {
-            "entry_label": "`${data.path}`"
+            "entry_label": "`${data.label}`"
         },
         "history": {
             "entry_label": "`${data.filename}` ${icon:data.status}"
@@ -21,7 +21,7 @@
             "entry_label": "`${data.path}`"
         },
         "configs_download": {
-            "entry_label": "`${data.name}`"
+            "entry_label": "`${data.path}`"
         }
     },
     "embeds": {
@@ -105,9 +105,9 @@
             "footer": "Seite ${pages}"
         },
         "log_files": {
-            "title": "Log Files",
+            "title": "Log Dateien",
             "description": "${page_entries}",
-            "footer": "Page ${pages}"
+            "footer": "Seite ${pages}"
         },
         "timelapse_files": {
             "title": "Zeitraffer Dateien",
@@ -116,20 +116,20 @@
         },
         "info": {
             "title": "Informationen",
-            "description": "Version: ${package_config.version}\nAuthor: ${package_config.author}\nHomepage: ${package_config.homepage}\n${config.general.custom_info}"
+            "description": "Version: ${package_config.version}\nAutor: ${package_config.author}\nWebseite: ${package_config.homepage}\n${config.general.custom_info}"
         },
         "history": {
             "title": "Druckverlauf",
             "description": "${page_entries}",
-            "footer": "Page ${pages}"
+            "footer": "Seite ${pages}"
         },
         "history_detail": {
             "title": "Druckauftrag Informationen",
-            "description": "Print Time: ${estimated_time}\nSlicer: ${slicer}\nSlicer Version: ${slicer_version}\nHeight: ${object_height}mm"
+            "description": "Druckzeit: ${estimated_time}\nSlicer: ${slicer}\nSlicer Version: ${slicer_version}\nHöhe: ${object_height}mm"
         },
         "history_graph": {
             "title": "Druckauftrag Verlauf",
-            "footer": "Page ${pages}"
+            "footer": "Seite ${pages}"
         },
         "notification": {
             "content": "Drucker Benachrichtigung",
@@ -157,7 +157,7 @@
             "activity": "✅ Druck abgeschlossen"
         },
         "printjob_pause": {
-            "content": "Printjob ${state.print_stats.filename} is paused",
+            "content": "Printjob ${state.print_stats.filename} ist pausiert",
             "title": "Druck pausiert",
             "activity": "Drinkt ein Bier 🍺 Prost!"
         },
@@ -292,11 +292,6 @@
             "current": "Aktuell",
             "min_temp": "Min Temperatur",
             "max_temp": "Max Temperatur"
-        },
-        "list_files": {
-            "title": "Drucker Dateien",
-            "description": "${page_entries}",
-            "footer": "Seite ${pages}"
         }
     },
     "messages": {
@@ -360,7 +355,7 @@
             "printjob_clear": "Der aktuelle Druckjob wurde aus der Auftragsschleife entfernt, `${username}`!",
             "printjob_request_abort": "Druckauftrag für `${embed_author}` abgebrochen, `${username}`!",
             "printjob_delete_abort": "Druckauftrag Löschung für `${embed_author}` abgebrochen, `${username}`!",
-            "printjob_delete_accepted": "Print Job `${embed_author}` got deleted, `${username}`!",
+            "printjob_delete_accepted": "Druckauftrag `${embed_author}` wurde gelöscht, `${username}`!",
             "printjob_executed": "Druck Auftrag gestartet, `${username}`!",
             "reconnect": "MoonCord wird sich zu Moonraker und Discord neu verbinden, `${username}`!",
             "pidtune_start": "Starte ein PID Tuning bei `${temp}°C` für `${heater}`, `${username}`!",
@@ -370,7 +365,7 @@
             "tune": {
                 "speed": "Neuer Geschwindigkeitsfaktor ist `${speed}%`, `${username}`!",
                 "flow": "Neuer Flussfaktor ist `${flow}%`, `${username}`!",
-                "speed_flow": "New speed factor is `${speed}%` and flow factor is `${flow}%`, `${username}`!"
+                "speed_flow": "Neuer Geschwindigkeitsfaktor ist `${speed}%` und neuer Flussfaktor ist `${flow}%`, `${username}`!"
             },
             "excluded_object": "Das Objekt `${object}` wurde ausgeschlossen, `${username}`!",
             "power_device": {
@@ -378,7 +373,7 @@
                 "off": "Das Energiegerät `${power_device}` ist nun inaktiv, `${username}`!"
             },
             "empty_spool": "Keine Spule aktiv!",
-            "current_spool": "Spool ID: ",
+            "current_spool": "Spulen ID: ",
             "update_request": "System Update angefordert, `${username}`!",
             "execute_success": "Befehl ausgeführt!"
         },
@@ -637,8 +632,7 @@
                     "label": "Updates",
                     "value": "update"
                 }
-            ],
-            "mcu_options": true
+            ]
         }
     },
     "commands": {
