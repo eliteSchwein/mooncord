@@ -4,8 +4,7 @@ import {getMoonrakerClient} from "../Application";
 import {getEntry, setData} from "../utils/CacheUtil";
 import {logRegular} from "./LoggerHelper";
 import {LocaleHelper} from "./LocaleHelper";
-import {getIcons, mergeDeep} from "./DataHelper";
-import {waitUntil} from "async-wait-until";
+import {getIcons} from "./DataHelper";
 
 export class HistoryHelper {
     protected moonrakerClient = getMoonrakerClient()

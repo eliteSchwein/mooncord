@@ -1,6 +1,5 @@
 import BaseCommand from "../abstracts/BaseCommand";
 import {ChatInputCommandInteraction, EmbedBuilder} from "discord.js";
-import {formatTime} from "../../../../utils/FormatUtil";
 
 export class FileInfoCommand extends BaseCommand {
     commandId = 'fileinfo'

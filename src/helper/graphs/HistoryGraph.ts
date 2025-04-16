@@ -2,15 +2,8 @@
 
 import {HistoryHelper} from "../HistoryHelper";
 import {logRegular} from "../LoggerHelper";
-import sharp from "sharp";
-import {AttachmentBuilder} from "discord.js";
 import SvgHelper from "../SvgHelper";
 import {getIcons} from "../DataHelper";
-import {ConfigHelper} from "../ConfigHelper";
-import NoneRenderBackend from "../snapshotBackend/NoneRenderBackend";
-import JimpRenderBackend from "../snapshotBackend/JimpRenderBackend";
-import GraphicsMagickRenderBackend from "../snapshotBackend/GraphicsMagickRenderBackend";
-import SharpRenderBackend from "../snapshotBackend/SharpRenderBackend";
 import BaseGraph from "./BaseGraph";
 
 export default class HistoryGraph extends BaseGraph{

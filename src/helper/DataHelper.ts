@@ -1,10 +1,7 @@
 'use strict'
 
 import {ConfigHelper} from "./ConfigHelper";
-import axios from "axios";
-import FormData from "form-data";
-import {logEmpty, logError, logNotice} from "./LoggerHelper";
-import {ActivityType, Attachment, ButtonStyle, TextInputStyle} from "discord.js";
+import {ActivityType, ButtonStyle, TextInputStyle} from "discord.js";
 import * as metaData from "../meta/history_graph_meta.json";
 import {MetadataHelper} from "./MetadataHelper";
 import {parseData} from "../utils/InputUtil";

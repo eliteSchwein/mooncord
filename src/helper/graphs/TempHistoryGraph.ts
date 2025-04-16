@@ -1,15 +1,11 @@
 'use strict'
 
-import * as metaData from "../../meta/temp_history_meta.json"
 import {ConfigHelper} from "../ConfigHelper";
 import {LocaleHelper} from "../LocaleHelper";
 import SvgHelper from "../SvgHelper";
 import * as App from "../../Application";
 import {getEntry} from "../../utils/CacheUtil";
 import {logRegular} from "../LoggerHelper";
-import sharp from "sharp";
-import {AttachmentBuilder} from "discord.js";
-import NoneRenderBackend from "../snapshotBackend/NoneRenderBackend";
 import BaseGraph from "./BaseGraph";
 
 export default class TempHistoryGraph extends BaseGraph{

@@ -1,11 +1,10 @@
 'use strict'
 
-import {Interaction, MessageFlagsBitField} from "discord.js";
+import {Interaction} from "discord.js";
 import {PermissionHelper} from "../../../helper/PermissionHelper";
 import {LocaleHelper} from "../../../helper/LocaleHelper";
 import {sleep} from "../../../helper/DataHelper";
 import {logNotice, logWarn} from "../../../helper/LoggerHelper";
-import {ConfigHelper} from "../../../helper/ConfigHelper";
 import * as util from "util"
 import {ViewPrintJobSelection} from "./selections/ViewPrintJob";
 import {ViewSystemInfo} from "./selections/ViewSystemInfo";

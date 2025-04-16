@@ -3,7 +3,6 @@ import {ChatInputCommandInteraction, CommandInteraction, EmbedBuilder} from "dis
 import {getEntry} from "../../../../utils/CacheUtil";
 import {getMoonrakerClient} from "../../../../Application";
 import {logNotice} from "../../../../helper/LoggerHelper";
-import {formatTime} from "../../../../utils/FormatUtil";
 
 export default class PrintjobCommand extends BaseCommand {
     commandId = 'printjob'

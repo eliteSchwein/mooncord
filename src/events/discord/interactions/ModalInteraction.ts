@@ -1,9 +1,8 @@
 'use strict'
 
-import {ConfigHelper} from "../../../helper/ConfigHelper";
 import {PermissionHelper} from "../../../helper/PermissionHelper";
 import {LocaleHelper} from "../../../helper/LocaleHelper";
-import {Interaction, MessageFlagsBitField} from "discord.js";
+import {Interaction} from "discord.js";
 import {logNotice, logWarn} from "../../../helper/LoggerHelper";
 import {sleep} from "../../../helper/DataHelper";
 import {TempTargetModal} from "./modals/TempTargetModal";

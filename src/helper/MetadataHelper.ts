@@ -1,7 +1,7 @@
 'use strict'
 
 import {getMoonrakerClient} from "../Application";
-import {findValue, getEntry, setData, updateData} from "../utils/CacheUtil";
+import {findValue, getEntry, updateData} from "../utils/CacheUtil";
 import {ConfigHelper} from "./ConfigHelper";
 import path from "path";
 import axios from "axios";

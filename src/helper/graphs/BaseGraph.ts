@@ -1,6 +1,6 @@
-import { AttachmentBuilder } from "discord.js";
-import { ConfigHelper } from "../ConfigHelper";
-import { logRegular } from "../LoggerHelper";
+import {AttachmentBuilder} from "discord.js";
+import {ConfigHelper} from "../ConfigHelper";
+import {logRegular} from "../LoggerHelper";
 import NoneRenderBackend from "../snapshotBackend/NoneRenderBackend";
 import SharpRenderBackend from "../snapshotBackend/SharpRenderBackend";
 import {Resvg, ResvgRenderOptions} from "@resvg/resvg-js";

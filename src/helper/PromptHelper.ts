@@ -2,17 +2,8 @@ import {logNotice, logRegular, logWarn} from "./LoggerHelper";
 import {getEntry, setData} from "../utils/CacheUtil";
 import {NotificationHelper} from "./NotificationHelper";
 import {PermissionHelper} from "./PermissionHelper";
-import {ConfigHelper} from "./ConfigHelper";
-import {LocaleHelper} from "./LocaleHelper";
 import {ConsoleHelper} from "./ConsoleHelper";
-import {
-    ActionRowBuilder,
-    ButtonBuilder,
-    ButtonStyle,
-    EmbedBuilder,
-    Interaction,
-    MessageFlagsBitField
-} from "discord.js";
+import {ActionRowBuilder, ButtonBuilder, EmbedBuilder, Interaction} from "discord.js";
 import {convertButtonStyle} from "../utils/InputUtil";
 
 export class PromptHelper {
