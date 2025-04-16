@@ -30,11 +30,7 @@ export default class TempHistoryGraph extends BaseGraph{
         const powerLabel = locale.graph.temp_history.power
         const powerColor = this.config.getEntriesByFilter(/^color power_color/)
 
-        let tempValueLimit = 0
-
         logRegular('render temp chart...')
-
-        tempValueLimit = metaData.value_limit
 
         const tempHistoryRequest = await moonrakerClient.send({'method': 'server.temperature_store'})
 
