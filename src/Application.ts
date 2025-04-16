@@ -133,7 +133,6 @@ async function init() {
     logEmpty()
     logCustom(`After inviting the bot. Please DM the bot to complete the setup.`.black.bgGreen)
     logNotice(setupUser)
-    //baguette baguette croissant fsd
 }
 
 export function reloadCache() {
