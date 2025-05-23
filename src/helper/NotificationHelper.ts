@@ -47,7 +47,7 @@ export class NotificationHelper {
         if (!embed) return
 
         console.log(validTitles.includes(embed.title))
-        console.log(validTitles.includes(embed.data))
+        console.log(validTitles.includes(embed.data.title))
 
         if (
             validTitles.includes(embed.title) ||
