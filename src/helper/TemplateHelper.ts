@@ -265,7 +265,9 @@ export class TemplateHelper {
     }
 
     public async parsePlaceholder(input: string, providedPlaceholders = null) {
-        const placeholders = input.matchAll(/(\${).*?}/g)
+        let placeholders = input.matchAll(/(\${).*?}/g)
+
+        console.log(placeholders)
         this.parsedPlaceholders = []
 
         if (placeholders !== null) {
