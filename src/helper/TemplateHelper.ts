@@ -441,6 +441,8 @@ export class TemplateHelper {
     private async parseImage(imageID: string, messageObjectData: any) {
         const metadataHelper = new MetadataHelper()
 
+        if(!imageID) return
+
         if (typeof imageID === 'undefined') {
             return
         }
