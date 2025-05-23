@@ -33,27 +33,22 @@ export class NotificationHelper {
 
         const messages = await channel.messages.fetch({limit: 1})
         const lastMessage = messages.first()
+        const validTitles = [
+            this.locale.embeds.printjob_printing.title,
+            this.locale.embeds.notification.title
+        ]
 
         console.log(lastMessage.embeds[0])
-        console.log(this.locale.embeds.printjob_printing.title)
-        console.log(this.locale.embeds.notification.title)
+        console.log(validTitles)
 
-        if (typeof this.locale === 'undefined') {
-            return
-        }
-        if (lastMessage.author.id !== getEntry("discord_client").clientId) {
-            return
-        }
-        if (lastMessage.embeds.length === 0) {
-            return
-        }
-        if (typeof (lastMessage.embeds[0]) === 'undefined') {
-            return
-        }
-        if (lastMessage.embeds[0].title !== this.locale.embeds.printjob_printing.title &&
-            lastMessage.embeds[0].title !== this.locale.embeds.notification.title) {
-            return
-        }
+        if (typeof this.locale === 'undefined') return
+        if (lastMessage.author.id !== getEntry("discord_client").clientId) return
+        if (lastMessage.embeds.length === 0) return
+
+        const embed = lastMessage.embeds[0]
+
+        if (!embed) return
+        if (!validTitles.includes(embed.title)) return
 
         try {
             await lastMessage.delete()
