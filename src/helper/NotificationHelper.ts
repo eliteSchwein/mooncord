@@ -27,7 +27,6 @@ export class NotificationHelper {
     }
 
     public async removeOldStatus(channel: TextChannel) {
-        console.log('DELETUS MAXIMUS?????')
         if (typeof channel.messages === 'undefined') {
             return
         }
@@ -90,6 +89,8 @@ export class NotificationHelper {
             const user = await this.discordClient.getClient().users.fetch(userId)
 
             const channel = user.dmChannel
+
+            console.log(channel)
 
             if (channel === null) {
                 await user.send(message)
