@@ -6,6 +6,7 @@ import {DiscordClient} from "../clients/DiscordClient"
 import {LocaleHelper} from "./LocaleHelper"
 import {logWarn} from "./LoggerHelper";
 import {ConfigHelper} from "./ConfigHelper";
+import {getEntry} from "../utils/CacheUtil";
 
 export class NotificationHelper {
     protected databaseUtil = app.getDatabase()
@@ -36,7 +37,7 @@ export class NotificationHelper {
         if (typeof this.locale === 'undefined') {
             return
         }
-        if (lastMessage.author.id !== this.discordClient.getClient().user.id) {
+        if (lastMessage.author.id !== getEntry("discord_client").clientId) {
             return
         }
         if (lastMessage.embeds.length === 0) {

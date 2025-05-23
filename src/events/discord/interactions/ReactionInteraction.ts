@@ -23,6 +23,7 @@ import {NotificationHandler} from "./handlers/NotificationHandler";
 import {ClearAttachmentsHandler} from "./handlers/ClearAttachmentsHandler";
 import {WaitMessageHandler} from "./handlers/WaitMessageHandler";
 import {ConfigHelper} from "../../../helper/ConfigHelper";
+import {getEntry} from "../../../utils/CacheUtil";
 
 export class ReactionInteraction {
     protected config = new ConfigHelper()
@@ -39,7 +40,7 @@ export class ReactionInteraction {
             return
         }
 
-        if (message.author.id !== interaction.client.user.id) {
+        if (message.author.id !== getEntry("discord_client").clientId) {
             return
         }
 

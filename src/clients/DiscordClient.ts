@@ -3,7 +3,7 @@ import {ActivityType, Client, GatewayIntentBits, Options, Partials} from 'discor
 import {getDatabase} from '../Application'
 import {ConfigHelper} from '../helper/ConfigHelper'
 import {logEmpty, logRegular, logSuccess} from '../helper/LoggerHelper'
-import {dump, findValue, getEntry, setData} from '../utils/CacheUtil'
+import {dump, findValue, getEntry, setData, updateData} from '../utils/CacheUtil'
 import {DiscordCommandGenerator} from "../generator/DiscordCommandGenerator";
 import {DiscordInputGenerator} from '../generator/DiscordInputGenerator'
 import {InteractionHandler} from "../events/discord/InteractionHandler";
@@ -112,6 +112,13 @@ export class DiscordClient {
 
         await this.discordClient.login(config.getDiscordToken())
 
+        setData('discord_client', {
+            'readySince': Date.now() / 1000,
+            'applicationId': this.discordClient.application.id,
+            'clientId': this.discordClient.user.id,
+            'event_count': this.discordClient['_eventsCount']
+        })
+
         await this.registerCommands()
 
         await this.registerEvents()
@@ -123,10 +130,7 @@ export class DiscordClient {
         await database.updateDatabaseEntry('invite_url', inviteUrl)
 
         setData('invite_url', inviteUrl)
-        setData('discord_client', {
-            'readySince': Date.now() / 1000,
-            'applicationId': this.discordClient.application.id,
-            'clientId': this.discordClient.user.id,
+        updateData('discord_client', {
             'event_count': this.discordClient['_eventsCount']
         })
 

@@ -48,7 +48,7 @@ export class DiscordCommandGenerator {
         mergeDeep(commandStructure, customCommandStructure)
 
         logRegular('get current commands...')
-        const currentCommands = await rest.get(Routes.applicationCommands(App.getDiscordClient().getClient().user.id))
+        const currentCommands = await rest.get(Routes.applicationCommands(getEntry("discord_client").clientId))
         const commandKeys = []
 
         for (const commandIndex in commandStructure) {
@@ -79,7 +79,7 @@ export class DiscordCommandGenerator {
         for (const currentCommand of currentCommands) {
             if (!commandKeys.includes(currentCommand.name)) {
                 logRegular(`Unregister Command ${currentCommand.name}...`)
-                const deleteUrl = `${Routes.applicationCommands(App.getDiscordClient().getClient().user.id)}/${currentCommand.id}`;
+                const deleteUrl = `${Routes.applicationCommands(getEntry("discord_client").clientId)}/${currentCommand.id}`;
 
                 new Promise(async (resolve, reject) => {
                     try {

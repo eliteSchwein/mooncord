@@ -10,7 +10,7 @@ export class VerifyHandler {
 
     public constructor(discordClient: Client) {
         discordClient.on("messageCreate", async message => {
-            if (message.author.id === discordClient.user.id) {
+            if (message.author.id === getEntry("discord_client").clientId) {
                 return
             }
 
