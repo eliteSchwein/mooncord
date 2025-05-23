@@ -133,6 +133,8 @@ export class StatusHelper {
             overridePlaceholders['thumbnail'] = 'none'
         }
 
+        console.log(overridePlaceholders)
+
         const statusEmbed = await this.embedHelper.generateEmbed(statusMeta.embed_id, overridePlaceholders)
 
         if (this.discordClient === null)
