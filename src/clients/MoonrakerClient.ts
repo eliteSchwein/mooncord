@@ -97,6 +97,7 @@ export class MoonrakerClient {
         fileListHelper.retrieveFiles('gcodes', 'gcode_files')
         fileListHelper.retrieveFiles('logs', 'log_files')
         fileListHelper.retrieveFiles('timelapse', 'timelapse_files', /(.*\.mp4)/g)
+        fileListHelper.retrieveFiles('timelapse', 'timelapse_thumbnails', /(.*\.jpg)/g)
 
         const subscriptionObjects: any = {
             'webhooks.state': null,
