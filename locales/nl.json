@@ -534,6 +534,9 @@
         "clear_file": {
             "label": "Wis bestand"
         },
+        "printjob_reprint": {
+            "label": "Bestand herdrukken"
+        },
         "toggle_timelapse": {
             "label": "Timelapse ${isMatching:timelapse_settings.enabled:true:active:inactive}"
         },

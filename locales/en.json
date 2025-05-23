@@ -524,6 +524,9 @@
         "clear_file": {
             "label": "Clear File"
         },
+        "printjob_reprint": {
+            "label": "Reprint File"
+        },
         "toggle_timelapse": {
             "label": "Timelapse ${isMatching:timelapse_settings.enabled:true:active:inactive}"
         },
