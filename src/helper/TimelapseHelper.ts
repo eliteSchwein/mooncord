@@ -28,6 +28,8 @@ export class TimelapseHelper {
 
         const thumbnailUrl = encodeURI(`${restUrl}/server/files/timelapse/${timelapseName.replace('.mp4', '.jpg')}`)
 
+        console.log(thumbnailUrl)
+
         let thumbnail: Buffer
         try {
             const metadataHelper = new MetadataHelper()
