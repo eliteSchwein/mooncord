@@ -27,6 +27,7 @@ export class NotificationHelper {
     }
 
     public async removeOldStatus(channel: TextChannel) {
+        console.log('DELETUS MAXIMUS?????')
         if (typeof channel.messages === 'undefined') {
             return
         }
@@ -45,9 +46,6 @@ export class NotificationHelper {
         const embed = lastMessage.embeds[0]
 
         if (!embed) return
-
-        console.log(channel)
-        console.log(lastMessage)
 
         if (
             validTitles.includes(embed.title) ||
