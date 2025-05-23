@@ -8,6 +8,7 @@ import {parseData} from "../utils/InputUtil";
 import {formatDate, formatPercent, formatReduce, formatTime, formatTimestamp, limitToMax} from "../utils/FormatUtil";
 import {get} from "lodash";
 import {ImageHelper} from "./ImageHelper";
+import {TimelapseHelper} from "./TimelapseHelper";
 
 export function isObject(item) {
     return (item && typeof item === 'object' && !Array.isArray(item));
@@ -97,7 +98,15 @@ export async function parseFunctionPlaceholders(fragments) {
 
             return (isValid) ? parseData(fragments[3]) : parseData(fragments[4])
         case "thumbnail":
-            const thumbnailBuffer = await metadataHelper.getThumbnail(fragments[1], true, fragments[2] === 'small') as Buffer
+            let thumbnailBuffer = Buffer.from("")
+
+            if(fragments[2] === "thumbnail") {
+                const timelapseHelper = new TimelapseHelper()
+
+                thumbnailBuffer = await timelapseHelper.getThumbnail(fragments[1])
+            } else {
+                thumbnailBuffer = await metadataHelper.getThumbnail(fragments[1], true, fragments[2] === 'small') as Buffer
+            }
             const thumbnailBase64 = `data:image/png;base64,${thumbnailBuffer.toString("base64")}`
 
             thumbnailBuffer.fill(0)

@@ -75,6 +75,7 @@ export class MoonrakerClient {
     }
 
     public async sendInitCommands() {
+        const config = new ConfigHelper()
         logRegular('Send Initial Commands...')
 
         this.getCacheData({"method": "machine.update.status", "params": {"refresh": false}}, 'updates')
@@ -97,7 +98,6 @@ export class MoonrakerClient {
         fileListHelper.retrieveFiles('gcodes', 'gcode_files')
         fileListHelper.retrieveFiles('logs', 'log_files')
         fileListHelper.retrieveFiles('timelapse', 'timelapse_files', /(.*\.mp4)/g)
-        fileListHelper.retrieveFiles('timelapse', 'timelapse_thumbnails', /(.*\.jpg)/g)
 
         const subscriptionObjects: any = {
             'webhooks.state': null,
@@ -138,6 +138,7 @@ export class MoonrakerClient {
         }
 
         setData('moonraker_client', {
+            'rest_url': config.getMoonrakerUrl(),
             'url': this.websocket.underlyingWebsocket.url,
             'readySince': Date.now() / 1000,
             'event_count': this.websocket.underlyingWebsocket['_eventsCount']

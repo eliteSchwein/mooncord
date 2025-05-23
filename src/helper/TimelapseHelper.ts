@@ -1,7 +1,7 @@
 'use strict'
 
 import path, {resolve} from "path";
-import {logNotice, logRegular, logSuccess} from "./LoggerHelper";
+import {logEmpty, logError, logNotice, logRegular, logSuccess} from "./LoggerHelper";
 import {createWriteStream, statSync, unlinkSync} from "fs";
 import {waitUntil} from "async-wait-until";
 import {ConfigHelper} from "./ConfigHelper";
@@ -11,9 +11,42 @@ import {DiscordInputGenerator} from "../generator/DiscordInputGenerator";
 import {TemplateHelper} from "./TemplateHelper";
 import {getEntry} from "../utils/CacheUtil";
 import {AttachmentBuilder} from "discord.js";
+import {fileFromSync} from "node-fetch";
+import StackTrace from "stacktrace-js";
+import {MetadataHelper} from "./MetadataHelper";
 
 export class TimelapseHelper {
     protected timelapseFile = {}
+
+    public async getThumbnail(timelapseName: string) {
+        const config = new ConfigHelper()
+
+        const placeholderPath = path.resolve(__dirname, `../assets/icon-sets/${config.getIconSet()}/thumbnail_not_found.png`)
+        const placeholder = Buffer.from(await fileFromSync(placeholderPath).arrayBuffer())
+
+        const restUrl = getEntry('moonraker_client').rest_url
+
+        const thumbnailUrl = encodeURI(`${restUrl}/server/files/${timelapseName.replace('.mp4', '.jpg')}`)
+
+        let thumbnail: Buffer
+        try {
+            const metadataHelper = new MetadataHelper()
+            thumbnail = await metadataHelper.getBuffer(thumbnailUrl)
+            logRegular(`retrieved Timelapse Thumbnail ${timelapseName}`)
+        } catch (error) {
+            const trace = await StackTrace.get()
+            logEmpty()
+            logError('Thumbnail Error:')
+            logError(`Url: ${thumbnailUrl}`)
+            logError(JSON.stringify(error, Object.getOwnPropertyNames(error)))
+            if (config.traceOnWebErrors()) {
+                logError(trace)
+            }
+            return placeholder
+        }
+
+        return thumbnail
+    }
 
     public async downloadTimelapse(filename: string, timelapseMessage: string) {
         logRegular(`Downloading Timelapse ${filename}`)

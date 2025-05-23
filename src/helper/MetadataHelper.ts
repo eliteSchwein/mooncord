@@ -161,7 +161,7 @@ export class MetadataHelper {
         return new AttachmentBuilder(thumbnail, {name: 'thumbnail.png'})
     }
 
-    private async getBuffer(url: string) {
+    public async getBuffer(url: string) {
         const response = await axios.get(url,
             {
                 responseType: 'arraybuffer',
