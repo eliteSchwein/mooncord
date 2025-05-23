@@ -100,18 +100,26 @@ export async function parseFunctionPlaceholders(fragments) {
         case "thumbnail":
             let thumbnailBuffer = Buffer.from("")
 
-            if(fragments[2] === "timelapse") {
+            if (fragments[2] === "timelapse") {
                 const timelapseHelper = new TimelapseHelper()
-
                 thumbnailBuffer = await timelapseHelper.getThumbnail(fragments[1])
             } else {
                 thumbnailBuffer = await metadataHelper.getThumbnail(fragments[1], true, fragments[2] === 'small') as Buffer
             }
-            const thumbnailBase64 = `data:image/png;base64,${thumbnailBuffer.toString("base64")}`
+
+            let mimeType = "image/png";
+            if (thumbnailBuffer.subarray(0, 3).equals(Buffer.from([0xFF, 0xD8, 0xFF]))) {
+                mimeType = "image/jpeg"
+            } else if (thumbnailBuffer.subarray(0, 8).equals(Buffer.from([0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A]))) {
+                mimeType = "image/png"
+            }
+
+            const thumbnailBase64 = `data:${mimeType};base64,${thumbnailBuffer.toString("base64")}`
 
             thumbnailBuffer.fill(0)
 
             return thumbnailBase64
+
         case "image":
             const imageHelper = new ImageHelper()
 
