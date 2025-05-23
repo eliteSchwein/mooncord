@@ -111,6 +111,8 @@ export class TemplateHelper {
 
         const messageObjectData = JSON.parse(messageObjectRaw)
 
+        console.log(messageObjectData)
+
         const inputGenerator = new DiscordInputGenerator()
 
         const thumbnail = await this.parseImage(messageObjectData.thumbnail, messageObjectData)
