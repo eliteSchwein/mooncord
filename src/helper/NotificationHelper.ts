@@ -88,7 +88,7 @@ export class NotificationHelper {
         for (const userId of this.notifyList) {
             const user = await this.discordClient.getClient().users.fetch(userId)
 
-            const channel = user.dmChannel
+            const channel = await user.createDM()
 
             console.log(channel)
             console.log(user)
