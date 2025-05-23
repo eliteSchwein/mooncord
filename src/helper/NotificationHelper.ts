@@ -91,6 +91,7 @@ export class NotificationHelper {
             const channel = user.dmChannel
 
             console.log(channel)
+            console.log(user)
 
             if (channel === null) {
                 await user.send(message)
