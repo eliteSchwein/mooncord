@@ -34,7 +34,7 @@ export class StatusHelper {
         let progress = stateCache.display_status.progress.toFixed(2)
         if(isNaN(progress)) progress = 0
 
-        const overridePlaceholders = {}
+        const overrideValues = {}
 
         if (typeof serverInfo === 'undefined')
             return
@@ -129,11 +129,11 @@ export class StatusHelper {
             status !== 'printing' && !this.notificationHelper.isEmbedBlocked(statusMeta.embed_id)
 
         if (!postEmbed) {
-            overridePlaceholders['image'] = 'none'
-            overridePlaceholders['thumbnail'] = 'none'
+            overrideValues['image'] = 'none'
+            overrideValues['thumbnail'] = 'none'
         }
 
-        const statusEmbed = await this.embedHelper.generateEmbed(statusMeta.embed_id, overridePlaceholders)
+        const statusEmbed = await this.embedHelper.generateEmbed(statusMeta.embed_id, null, null, overrideValues)
 
         if (this.discordClient === null)
             this.discordClient = app.getDiscordClient()

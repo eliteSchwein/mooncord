@@ -342,9 +342,6 @@ export class TemplateHelper {
             }
         }
 
-        console.log(providedPlaceholders)
-        console.log(placeholderId)
-
         if (providedPlaceholders !== null) {
             const providedParser = providedPlaceholders[placeholderId]
             if (typeof providedParser !== 'undefined') {
