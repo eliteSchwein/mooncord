@@ -34,6 +34,8 @@ export class NotificationHelper {
         const messages = await channel.messages.fetch({limit: 1})
         const lastMessage = messages.first()
 
+        console.log(lastMessage)
+
         if (typeof this.locale === 'undefined') {
             return
         }
@@ -124,6 +126,7 @@ export class NotificationHelper {
 
     private async broadcastChannels(channels, message) {
         for (let channel of channels) {
+            console.log(channel)
             if (channel.constructor.name === 'Array') {
                 channel = channel[1]
             }
