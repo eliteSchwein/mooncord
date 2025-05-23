@@ -26,7 +26,7 @@ export class TimelapseHelper {
 
         const restUrl = getEntry('moonraker_client').rest_url
 
-        const thumbnailUrl = encodeURI(`${restUrl}/server/files/${timelapseName.replace('.mp4', '.jpg')}`)
+        const thumbnailUrl = encodeURI(`${restUrl}/server/files/timelapse/${timelapseName.replace('.mp4', '.jpg')}`)
 
         let thumbnail: Buffer
         try {
