@@ -40,6 +40,9 @@ export class NotificationHelper {
 
         if (typeof this.locale === 'undefined') return
         if (!lastMessage) return
+
+        console.log(lastMessage)
+
         if (lastMessage.author.id !== getEntry("discord_client").clientId) return
         if (lastMessage.embeds.length === 0) return
 
