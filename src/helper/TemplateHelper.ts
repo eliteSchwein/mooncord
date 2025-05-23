@@ -265,13 +265,7 @@ export class TemplateHelper {
     }
 
     public async parsePlaceholder(input: string, providedPlaceholders = null) {
-        let placeholders = input.matchAll(/(\${).*?}/g)
-
-
-        for (const placeholder of placeholders) {
-            console.log(placeholder)
-        }
-        console.log(placeholders)
+        const placeholders = input.matchAll(/(\${).*?}/g)
         this.parsedPlaceholders = []
 
         if (placeholders !== null) {
@@ -347,6 +341,9 @@ export class TemplateHelper {
                 'double_dash': true
             }
         }
+
+        console.log(providedPlaceholders)
+        console.log(placeholderId)
 
         if (providedPlaceholders !== null) {
             const providedParser = providedPlaceholders[placeholderId]
