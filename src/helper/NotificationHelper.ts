@@ -30,6 +30,7 @@ export class NotificationHelper {
         if (typeof channel.messages === 'undefined') {
             return
         }
+        if (typeof this.locale === 'undefined') return
 
         const messages = await channel.messages.fetch({limit: 1})
         const lastMessage = messages.first()
@@ -38,11 +39,7 @@ export class NotificationHelper {
             this.locale.embeds.notification.title
         ]
 
-        if (typeof this.locale === 'undefined') return
         if (!lastMessage) return
-
-        console.log(lastMessage)
-
         if (lastMessage.author.id !== getEntry("discord_client").clientId) return
         if (lastMessage.embeds.length === 0) return
 
@@ -93,9 +90,6 @@ export class NotificationHelper {
             const user = await this.discordClient.getClient().users.fetch(userId)
 
             const channel = await user.createDM()
-
-            console.log(channel)
-            console.log(user)
 
             if (channel === null) {
                 await user.send(message)
