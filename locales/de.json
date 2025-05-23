@@ -111,7 +111,6 @@
         },
         "timelapse_files": {
             "title": "Zeitraffer Dateien",
-            "description": "${page_entries}",
             "footer": "Seite ${pages}"
         },
         "info": {

@@ -111,7 +111,6 @@
         },
         "timelapse_files": {
             "title": "Timelapse Files",
-            "description": "${page_entries}",
             "footer": "Page ${pages}"
         },
         "info": {

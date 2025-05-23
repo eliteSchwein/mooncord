@@ -111,7 +111,6 @@
         },
         "timelapse_files": {
             "title": "Tijdsverloopbestanden",
-            "description": "${page_entries}",
             "footer": "Pagina ${pages}"
         },
         "info": {

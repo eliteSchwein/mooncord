@@ -100,7 +100,7 @@ export async function parseFunctionPlaceholders(fragments) {
         case "thumbnail":
             let thumbnailBuffer = Buffer.from("")
 
-            if(fragments[2] === "thumbnail") {
+            if(fragments[2] === "timelapse") {
                 const timelapseHelper = new TimelapseHelper()
 
                 thumbnailBuffer = await timelapseHelper.getThumbnail(fragments[1])
