@@ -38,9 +38,6 @@ export class NotificationHelper {
             this.locale.embeds.notification.title
         ]
 
-        console.log(lastMessage.embeds[0])
-        console.log(validTitles)
-
         if (typeof this.locale === 'undefined') return
         if (lastMessage.author.id !== getEntry("discord_client").clientId) return
         if (lastMessage.embeds.length === 0) return
@@ -48,13 +45,20 @@ export class NotificationHelper {
         const embed = lastMessage.embeds[0]
 
         if (!embed) return
-        if (!validTitles.includes(embed.title)) return
 
-        try {
-            await lastMessage.delete()
-        } catch (error) {
-            logWarn('deleting old message failed:')
-            logWarn(JSON.stringify(error, Object.getOwnPropertyNames(error)))
+        console.log(validTitles.includes(embed.title))
+        console.log(validTitles.includes(embed.data))
+
+        if (
+            validTitles.includes(embed.title) ||
+            validTitles.includes(embed.data.title)
+        ) {
+            try {
+                await lastMessage.delete()
+            } catch (error) {
+                logWarn('deleting old message failed:')
+                logWarn(JSON.stringify(error, Object.getOwnPropertyNames(error)))
+            }
         }
     }
 
