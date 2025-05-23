@@ -7,6 +7,7 @@ import {PermissionHelper} from "../../helper/PermissionHelper";
 import {EmbedHelper} from "../../helper/EmbedHelper";
 import {MetadataHelper} from "../../helper/MetadataHelper";
 import {uploadAttachment} from "../../utils/FileUtil";
+import {getEntry} from "../../utils/CacheUtil";
 
 export class GCodeUploadHandler {
     public constructor(discordClient: Client) {
