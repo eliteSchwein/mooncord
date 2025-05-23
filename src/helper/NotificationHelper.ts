@@ -98,7 +98,7 @@ export class NotificationHelper {
                 return
             }
 
-            await this.broadcastChannels([user.dmChannel], message)
+            await this.broadcastChannels([channel], message)
         }
     }
 
