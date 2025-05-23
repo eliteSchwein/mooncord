@@ -444,14 +444,10 @@ export class TemplateHelper {
         console.log(imageID)
 
         if(!imageID) return
+        if (typeof imageID === 'undefined') return
+        if(imageID === 'none') return
 
-        if (typeof imageID === 'undefined') {
-            return
-        }
-
-        if (imageID.startsWith('http')) {
-            return imageID
-        }
+        if (imageID.startsWith('http')) return imageID
 
         if (imageID === 'placeholder') {
             return new AttachmentBuilder(
@@ -460,33 +456,16 @@ export class TemplateHelper {
             )
         }
 
-        if (imageID === 'webcam') {
-            return new WebcamHelper().retrieveWebcam()
-        }
+        if (imageID === 'webcam') return new WebcamHelper().retrieveWebcam()
 
-        if (imageID === 'placeholderWebcam') {
-            return new WebcamHelper().getFallbackImage()
-        }
+        if (imageID === 'placeholderWebcam') return new WebcamHelper().getFallbackImage()
 
-        if (imageID === 'thumbnail') {
-            return metadataHelper.getThumbnail(findValue('state.print_stats.filename'))
-        }
+        if (imageID === 'thumbnail') return metadataHelper.getThumbnail(findValue('state.print_stats.filename'))
 
-        if (imageID === 'tempGraph') {
-            return await new TempHistoryGraph().renderGraph()
-        }
-
-        if (imageID === 'historyGraph') {
-            return await new HistoryGraph().renderGraph()
-        }
-
-        if (imageID === 'excludeGraph') {
-            return await new ExcludeGraph().renderGraph()
-        }
-
-        if (imageID === 'pageGraph') {
-            return await new PageListGraph().renderGraph(messageObjectData)
-        }
+        if (imageID === 'tempGraph') return await new TempHistoryGraph().renderGraph()
+        if (imageID === 'historyGraph') return await new HistoryGraph().renderGraph()
+        if (imageID === 'excludeGraph') return await new ExcludeGraph().renderGraph()
+        if (imageID === 'pageGraph') return await new PageListGraph().renderGraph(messageObjectData)
 
         const iconSet = new ConfigHelper().getIconSet()
 
