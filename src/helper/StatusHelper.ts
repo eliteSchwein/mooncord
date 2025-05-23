@@ -129,7 +129,7 @@ export class StatusHelper {
             status !== 'printing' && !this.notificationHelper.isEmbedBlocked(statusMeta.embed_id)
 
         if (!postEmbed)
-            overridePlaceholders['image'] = 'placeholder'
+            overridePlaceholders['image'] = undefined
 
         const statusEmbed = await this.embedHelper.generateEmbed(statusMeta.embed_id, overridePlaceholders)
 
