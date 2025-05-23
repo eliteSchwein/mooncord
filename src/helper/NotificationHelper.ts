@@ -35,6 +35,9 @@ export class NotificationHelper {
         const lastMessage = messages.first()
 
         console.log(lastMessage.embeds[0])
+        console.log(this.locale)
+        console.log(this.locale.embeds.printjob_printing.title)
+        console.log(this.locale.embeds.notification.title)
 
         if (typeof this.locale === 'undefined') {
             return
