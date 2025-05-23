@@ -63,6 +63,7 @@ export class DownloadLogSelection extends BaseSelection {
         } catch (error) {
             if (typeof error.code !== 'undefined') {
                 logError(`${logFile} Log Download failed: ${error.config.url}: ${error.code}`)
+                logError(JSON.stringify(error, Object.getOwnPropertyNames(error)))
                 return this.locale.messages.errors.log_failed
                     .replace(/(\${service})/g, logFile)
                     .replace(/(\${reason})/g, `${error.code}`)

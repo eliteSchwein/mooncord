@@ -143,12 +143,11 @@ export class MetadataHelper {
             thumbnail = await this.getBuffer(thumbnailURL)
             logRegular(`retrieved ${small ? 'small ': ''}Thumbnail for ${filename}`)
         } catch (error) {
-            const reason = error as string
             const trace = await StackTrace.get()
             logEmpty()
             logError('Thumbnail Error:')
             logError(`Url: ${thumbnailURL}`)
-            logError(`Error: ${reason}`)
+            logError(JSON.stringify(error, Object.getOwnPropertyNames(error)))
             if (configHelper.traceOnWebErrors()) {
                 logError(trace)
             }

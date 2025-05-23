@@ -52,8 +52,9 @@ export class NotificationHelper {
 
         try {
             await lastMessage.delete()
-        } catch {
-            return
+        } catch (error) {
+            logWarn('deleting old message failed:')
+            logWarn(JSON.stringify(error, Object.getOwnPropertyNames(error)))
         }
     }
 

@@ -63,6 +63,7 @@ export class DownloadConfig extends BaseSelection {
         } catch (error) {
             if (typeof error.code !== 'undefined') {
                 logError(`${config} Config Download failed: ${error.config.url}: ${error.code}`)
+                logError(JSON.stringify(error, Object.getOwnPropertyNames(error)))
                 return this.locale.messages.errors.config_failed
                     .replace(/(\${config})/g, config)
                     .replace(/(\${reason})/g, `${error.code}`)

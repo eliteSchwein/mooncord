@@ -167,9 +167,9 @@ export class MoonrakerClient {
         new Promise(async (resolve, reject) => {
             try {
                 await this.send(message, timeout)
-            } catch (e) {
-                logError(`An Error occurred while sending a Websocket Request`)
-                logError(`Reason: ${e}`)
+            } catch (error) {
+                logError(`An Error occurred while sending a Websocket Request:`)
+                logError(JSON.stringify(error, Object.getOwnPropertyNames(error)))
                 logError(`Websocket Request: ${JSON.stringify(message, null, 4)}`)
             }
         })

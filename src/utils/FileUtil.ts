@@ -50,7 +50,7 @@ export async function uploadAttachment(attachment: Attachment, fileRoot = 'gcode
         return true
     } catch (error) {
         logError(`Upload for ${attachment.name} failed:`)
-        logError(error)
+        logError(JSON.stringify(error, Object.getOwnPropertyNames(error)))
         return false
     }
 }

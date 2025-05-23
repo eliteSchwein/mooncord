@@ -165,7 +165,6 @@ export class WebcamHelper {
 
             return new AttachmentBuilder(buffer, {name: "snapshot.png"})
         } catch (error) {
-            const reason = error as string
             const trace = await StackTrace.get()
 
             let url = 'not configured'
@@ -176,7 +175,7 @@ export class WebcamHelper {
             logEmpty()
             logError('Webcam Error:')
             logError(`Url: ${url}`)
-            logError(`Error: ${reason}`)
+            logError(JSON.stringify(error, Object.getOwnPropertyNames(error)))
             if (configHelper.traceOnWebErrors()) {
                 logError(trace)
             }
@@ -230,7 +229,7 @@ export class WebcamHelper {
                             new ConfigHelper().getGcodeExecuteTimeout() * 1000
                         )
                 } catch (error) {
-                    logError(error)
+                    logError(JSON.stringify(error, Object.getOwnPropertyNames(error)))
                 }
             }
             if (execute.key.toLowerCase() === 'website_post') {

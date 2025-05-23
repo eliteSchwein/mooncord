@@ -34,7 +34,7 @@ export class APIKeyHelper {
             logEmpty()
             logError('Token Error:')
             logError(`Url: ${url}/access/oneshot_token`)
-            logError(`Error: ${reason}`)
+            logError(JSON.stringify(error, Object.getOwnPropertyNames(error)))
             if (config.traceOnWebErrors()) {
                 logError(trace)
             }

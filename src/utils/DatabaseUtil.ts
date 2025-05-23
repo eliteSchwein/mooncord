@@ -87,6 +87,7 @@ export class DatabaseUtil {
 
             if(this.currentRetry > this.retryLimit) {
                 logError(`Couldn't retrieve data from database, stopping MoonCord now!`)
+                logError(JSON.stringify(error, Object.getOwnPropertyNames(error)))
                 process.exit(5)
             }
 

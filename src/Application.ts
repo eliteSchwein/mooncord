@@ -84,7 +84,8 @@ async function init() {
         await discordClient.connect()
         await waitUntil(() => discordClient.isConnected(), {timeout: 30_000, intervalBetweenAttempts: 500})
     } catch (error) {
-        logError(`couldn't load ${currentInitState} in Time! Reason: ${util.format(error)}`)
+        logError(`couldn't load ${currentInitState} in Time!`)
+        logError(JSON.stringify(error, Object.getOwnPropertyNames(error)))
     }
 
     logRegular('Register Scheduler...')

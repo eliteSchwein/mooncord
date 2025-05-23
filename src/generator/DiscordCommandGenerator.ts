@@ -67,9 +67,9 @@ export class DiscordCommandGenerator {
             new Promise(async (resolve, reject) => {
                 try {
                     await App.getDiscordClient().getClient().application?.commands?.create(command)
-                } catch (e) {
+                } catch (error) {
                     logError(`An Error occured while registering the command ${command.name}`)
-                    logError(`Reason: ${e}`)
+                    logError(JSON.stringify(error, Object.getOwnPropertyNames(error)))
                     logError(`Command Data: ${JSON.stringify(command, null, 4)}`)
                 }
             })
@@ -84,9 +84,9 @@ export class DiscordCommandGenerator {
                 new Promise(async (resolve, reject) => {
                     try {
                         await rest.delete(<RouteLike>deleteUrl)
-                    } catch (e) {
+                    } catch (error) {
                         logError(`An Error occured while unregistering the command ${currentCommand.name}`)
-                        logError(`Reason: ${e}`)
+                        logError(JSON.stringify(error, Object.getOwnPropertyNames(error)))
                         logError(`Command Data: ${JSON.stringify(currentCommand, null, 4)}`)
                     }
                 })
