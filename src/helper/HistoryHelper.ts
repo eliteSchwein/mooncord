@@ -83,6 +83,8 @@ export class HistoryHelper {
         setData('history', cache)
 
         this.jobListResult = []
+
+        return cache
     }
 
     public getPrintJobs() {
@@ -116,7 +118,7 @@ export class HistoryHelper {
         return printStats
     }
 
-    public parseFields(printStats = this.getPrintStats()) {
+    public async parseFields(printStats = this.getPrintStats()) {
         const chartConfigSection = getIcons()
         const locale = new LocaleHelper().getLocale()
         const fields = []

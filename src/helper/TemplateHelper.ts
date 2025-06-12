@@ -90,6 +90,20 @@ export class TemplateHelper {
 
         const unformattedData = await this.parseRawTemplate(type, id)
 
+        const fetchedData = {}
+
+        if(unformattedData.fetch) {
+            for(const toFetcch of unformattedData.fetch) {
+                switch(toFetcch) {
+                    case "history":
+                        fetchedData["history"] = await (new HistoryHelper()).parseData()
+                        break
+                }
+            }
+        }
+
+        mergeDeep(providedPlaceholders, fetchedData)
+
         if (providedFields !== null) {
             mergeDeep(unformattedData, {field: providedFields})
         }
@@ -318,7 +332,8 @@ export class TemplateHelper {
         }
 
         if (partials.includes('print_history')) {
-            field = [...field, ...new HistoryHelper().parseFields()]
+            const newFields = await (new HistoryHelper()).parseFields()
+            field = [...field, ...newFields]
         }
 
         if (partials.includes('power_devices')) {

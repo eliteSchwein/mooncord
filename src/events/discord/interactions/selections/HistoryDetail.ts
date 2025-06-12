@@ -45,7 +45,7 @@ export class HistoryDetail extends BaseSelection {
 
         embed.setThumbnail(`attachment://${thumbnail.name}`)
         embed.setImage(`attachment://${graph.name}`)
-        embed.addFields(historyHelper.parseFields(jobStats))
+        embed.addFields(await historyHelper.parseFields(jobStats))
 
         embedData.embed.embeds = [embed]
         embedData.embed['files'] = [thumbnail, graph]
