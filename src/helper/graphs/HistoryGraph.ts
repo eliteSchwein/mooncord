@@ -9,7 +9,10 @@ import BaseGraph from "./BaseGraph";
 export default class HistoryGraph extends BaseGraph{
     filename = 'historyGraph.png'
 
-    public async renderGraph(printStats = new HistoryHelper().getPrintStats()) {
+    public async renderGraph(printStats = undefined) {
+        if(!printStats) {
+            printStats = await (new HistoryHelper()).getPrintStats()
+        }
         const icons = getIcons()
         const svgHelper = new SvgHelper()
         const graphData = []

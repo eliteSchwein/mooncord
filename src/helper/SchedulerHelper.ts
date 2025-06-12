@@ -2,7 +2,7 @@
 
 import {MoonrakerClient} from "../clients/MoonrakerClient";
 import {ConfigHelper} from "./ConfigHelper";
-import {findValue, getEntry, setData, updateData} from "../utils/CacheUtil";
+import {findValue, getEntry, purgeOldCacheEntries, setData, updateData} from "../utils/CacheUtil";
 import {StatusHelper} from "./StatusHelper";
 import {UsageHelper} from "./UsageHelper";
 import {clearInterval} from "timers";
@@ -66,6 +66,7 @@ export class SchedulerHelper {
             this.promptHelper.purgePrompt()
             this.metadataHelper.purgeMetaData()
             this.imageHelper.purgeCachedImages()
+            purgeOldCacheEntries()
 
             await this.tempHelper.notifyHeaterTargetNotifications()
 

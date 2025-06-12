@@ -60,10 +60,6 @@ const cacheData: any = {
     temps: {
         colors: {}
     },
-    history: {
-        total: {},
-        jobs: {}
-    },
     execute: {
         running: false,
         to_execute_command: '',
@@ -245,4 +241,21 @@ async function writeDump() {
         flag: 'w+'
     })
     logSuccess('Dumped Cache!')
+}
+
+export function purgeOldCacheEntries() {
+    const toPurgeEntries = ["history"]
+    const currentDate = Date.now() / 1000
+
+    for(const toPurgeEntry of toPurgeEntries) {
+        if(!cacheData[toPurgeEntry]) continue
+        if(cacheData[toPurgeEntry].expires_at > currentDate) continue
+
+        delete cacheData[toPurgeEntry]
+    }
+}
+
+export function getNewExpireAtDate(offset: number = 60) {
+    const currentDate = Date.now() / 1000
+    return currentDate + offset
 }

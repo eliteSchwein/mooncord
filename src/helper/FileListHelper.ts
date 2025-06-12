@@ -4,6 +4,7 @@ import {getEntry, setData} from "../utils/CacheUtil";
 import {logRegular} from "./LoggerHelper";
 import {getMoonrakerClient} from "../Application";
 import {getIcons} from "./DataHelper";
+import {HistoryHelper} from "./HistoryHelper";
 
 export class FileListHelper {
     public retrieveFiles(root: string, cacheKey: string, filter?: RegExp) {
@@ -19,6 +20,8 @@ export class FileListHelper {
             if (result === null || result === undefined) {
                 return
             }
+
+            const historyHelper = new HistoryHelper()
 
             result.sort((a, b) => (a.modified < b.modified) ? 1 : -1)
 
@@ -39,7 +42,7 @@ export class FileListHelper {
 
             if (root === 'gcodes') {
                 const tempResult = []
-                const historyCache = getEntry('history')
+                const historyCache = await historyHelper.getCache()
 
                 if (historyCache === undefined || historyCache.jobs === undefined) {
                     for (const resultPartial of result) {

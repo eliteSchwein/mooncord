@@ -11,7 +11,7 @@ export class HistoryDetail extends BaseSelection {
 
     async handleSelection(interaction: StringSelectMenuInteraction) {
         const jobId = interaction.values[0]
-        const jobs = getEntry('history').jobs.jobs
+        const jobs = (await new HistoryHelper().getCache()).jobs.jobs
         const historyGraph = new HistoryGraph()
         const historyHelper = new HistoryHelper()
         const similarJobs = {}

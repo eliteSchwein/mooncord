@@ -1,7 +1,7 @@
 'use strict'
 
 import {getMoonrakerClient} from "../Application";
-import {getEntry, setData} from "../utils/CacheUtil";
+import {getEntry, getNewExpireAtDate, setData} from "../utils/CacheUtil";
 import {logRegular} from "./LoggerHelper";
 import {LocaleHelper} from "./LocaleHelper";
 import {getIcons} from "./DataHelper";
@@ -10,13 +10,23 @@ export class HistoryHelper {
     protected moonrakerClient = getMoonrakerClient()
     protected jobListResult = []
 
-    public getPrintJobStats() {
-        const cache = getEntry('history')
+    public async getPrintJobStats() {
+       const cache = await this.getCache()
 
         return {
             printTotals: cache.total,
             printJobs: cache.jobs
         }
+    }
+
+    public async getCache() {
+        let cache = getEntry('history')
+
+        if (!cache) {
+            cache = await this.parseData()
+        }
+
+        return cache
     }
 
     private async parsePartialJobList(start: number, totalLimit: number) {
@@ -67,7 +77,11 @@ export class HistoryHelper {
 
         await Promise.all(promises)
 
-        const cache = getEntry('history')
+        const cache = {
+            total: undefined,
+            jobs: undefined,
+            expires_at: undefined
+        }
 
         jobListResult.jobs = this.jobListResult
 
@@ -79,6 +93,7 @@ export class HistoryHelper {
 
         cache.total = printTotalRequest.result
         cache.jobs = jobListResult
+        cache.expires_at = getNewExpireAtDate(15)
 
         setData('history', cache)
 
@@ -87,16 +102,16 @@ export class HistoryHelper {
         return cache
     }
 
-    public getPrintJobs() {
-        return this.getPrintJobStats().printJobs
+    public async getPrintJobs() {
+        return (await this.getPrintJobStats()).printJobs
     }
 
-    public getPrintTotals() {
-        return this.getPrintJobStats().printTotals
+    public async getPrintTotals() {
+        return (await this.getPrintJobStats()).printTotals
     }
 
-    public getPrintStats() {
-        const printJobs = this.getPrintJobs()
+    public async getPrintStats() {
+        const printJobs = await this.getPrintJobs()
 
         const printStats = {
             count: printJobs.count,
@@ -118,7 +133,10 @@ export class HistoryHelper {
         return printStats
     }
 
-    public async parseFields(printStats = this.getPrintStats()) {
+    public async parseFields(printStats = undefined) {
+        if(!printStats) {
+            printStats = await this.getPrintStats()
+        }
         const chartConfigSection = getIcons()
         const locale = new LocaleHelper().getLocale()
         const fields = []

@@ -12,6 +12,7 @@ import {logEmpty, logError, logRegular} from "./LoggerHelper"
 import {AttachmentBuilder} from "discord.js";
 import {fileFromSync} from "node-fetch";
 import {formatTime} from "../utils/FormatUtil";
+import {HistoryHelper} from "./HistoryHelper";
 
 export class MetadataHelper {
     public purgeMetaData() {
@@ -52,7 +53,7 @@ export class MetadataHelper {
 
         metaData.result.estimated_time = formatTime(metaData.result.estimated_time)
 
-        const historyCache = getEntry('history')
+        const historyCache = await (new HistoryHelper()).getCache()
         const jobs = historyCache.jobs.jobs
 
         if (historyCache && historyCache.jobs) {

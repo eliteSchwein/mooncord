@@ -18,7 +18,7 @@ export default class HistoryCommand extends BaseCommand {
             return
         }
 
-        const printStats = historyHelper.getPrintStats()
+        const printStats = await historyHelper.getPrintStats()
 
         if (printStats.count === 0) {
             await interaction.editReply(this.locale.messages.errors.no_history
