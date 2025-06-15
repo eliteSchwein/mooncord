@@ -96,7 +96,7 @@ export class TemplateHelper {
             for(const toFetcch of unformattedData.fetch) {
                 switch(toFetcch) {
                     case "history":
-                        fetchedData["history"] = await (new HistoryHelper()).parseData()
+                        fetchedData["history"] = await (new HistoryHelper()).getCache()
                         break
                 }
             }
