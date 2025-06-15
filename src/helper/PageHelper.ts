@@ -16,33 +16,35 @@ export class PageHelper {
     protected embeds = []
     protected cacheKey: string | undefined = undefined
     protected pageLocale: any
+    protected embedData: any
 
     public constructor(pageId: string) {
-        const embedData = this.config.getEntriesByFilter(new RegExp(`^embed ${pageId}`, 'g'))[0]
+        this.embedData = this.config.getEntriesByFilter(new RegExp(`^embed ${pageId}`, 'g'))[0]
 
-        if(embedData.fetch) {
-            for(const toFetch of embedData.fetch) {
-                switch(toFetch) {
-                    case "history":
-                        void (new HistoryHelper()).getCache()
-                        break
-                }
-            }
+        if (this.embedData && this.embedData.page_embed_entries) {
+            this.embeds = this.embedData.page_embed_entries
+        }
+        if (this.embedData && this.embedData.page_cache_key) {
+            this.cacheKey = this.embedData.page_cache_key
         }
 
-        if (embedData && embedData.page_embed_entries) {
-            this.embeds = embedData.page_embed_entries
-        }
-        if (embedData && embedData.page_cache_key) {
-            this.cacheKey = embedData.page_cache_key
-        }
-
-        this.data = this.getValuesForPageId(pageId)
         this.pageLocale = new LocaleHelper().getLocale().pages[pageId]
         this.embedId = pageId
     }
 
     public async getPage(pageUp: boolean, currentPage: number) {
+        if(this.embedData.fetch) {
+            for(const toFetch of this.embedData.fetch) {
+                switch(toFetch) {
+                    case "history":
+                        await (new HistoryHelper()).getCache()
+                        break
+                }
+            }
+        }
+
+        this.data = this.getValuesForPageId(this.embedId)
+
         const page = this.getNewPage(pageUp, currentPage)
         if (this.embeds.length > 0 && page.calcPage < this.embeds.length) {
             const embedId = this.embeds[page.calcPage]
