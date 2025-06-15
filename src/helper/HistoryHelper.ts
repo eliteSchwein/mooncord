@@ -50,7 +50,7 @@ export class HistoryHelper {
     }
 
     public async parseData() {
-        logRegular('Retrieve history data...')
+        logRegular('fetch history data...')
         const totalLimit = 25
         const printTotalRequest = await this.moonrakerClient.send({"method": "server.history.totals"})
 
@@ -93,7 +93,7 @@ export class HistoryHelper {
 
         cache.total = printTotalRequest.result
         cache.jobs = jobListResult
-        cache.expires_at = getNewExpireAtDate(15)
+        cache.expires_at = getNewExpireAtDate()
 
         setData('history', cache)
 
