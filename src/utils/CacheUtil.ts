@@ -9,6 +9,7 @@ import {get} from 'lodash'
 import {LocaleHelper} from "../helper/LocaleHelper";
 import {ConfigHelper} from "../helper/ConfigHelper";
 import {MCUHelper} from "../helper/MCUHelper";
+import {HistoryHelper} from "../helper/HistoryHelper";
 
 const cacheData: any = {
     websocket: {
@@ -258,4 +259,25 @@ export function purgeOldCacheEntries() {
 export function getNewExpireAtDate(offset: number = 60) {
     const currentDate = Date.now() / 1000
     return currentDate + offset
+}
+
+export async function fetchCaches(data: any = {}, overwriteData = false) {
+    if(!data.fetch) return data
+
+    const fetchedData = {}
+
+    for(const toFetch of data.fetch) {
+        switch(toFetch) {
+            case "history":
+                fetchedData["history"] = await (new HistoryHelper()).getCache()
+                break
+        }
+    }
+
+    if(overwriteData) {
+        mergeDeep(data, fetchedData)
+        return data
+    }
+
+    return fetchedData
 }

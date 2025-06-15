@@ -2,7 +2,7 @@
 
 import {ConfigHelper} from "./ConfigHelper";
 import {DiscordInputGenerator} from "../generator/DiscordInputGenerator";
-import {findValue, getEntry} from "../utils/CacheUtil";
+import {fetchCaches, findValue, getEntry} from "../utils/CacheUtil";
 import {mergeDeep, parseFunctionPlaceholders} from "./DataHelper";
 import {TempHelper} from "./TempHelper";
 import {VersionHelper} from "./VersionHelper";
@@ -90,16 +90,10 @@ export class TemplateHelper {
 
         const unformattedData = await this.parseRawTemplate(type, id)
 
-        const fetchedData = {}
+        let fetchedData: any = {}
 
         if(unformattedData.fetch) {
-            for(const toFetch of unformattedData.fetch) {
-                switch(toFetch) {
-                    case "history":
-                        fetchedData["history"] = await (new HistoryHelper()).getCache()
-                        break
-                }
-            }
+            fetchedData = await fetchCaches(unformattedData)
         }
 
         mergeDeep(providedPlaceholders, fetchedData)

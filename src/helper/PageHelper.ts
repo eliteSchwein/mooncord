@@ -3,7 +3,7 @@
 import {ConfigHelper} from "./ConfigHelper";
 import {LocaleHelper} from "./LocaleHelper";
 import {parsePageData} from "./DataHelper";
-import {findValue} from "../utils/CacheUtil";
+import {fetchCaches, findValue} from "../utils/CacheUtil";
 import {EmbedHelper} from "./EmbedHelper";
 import {TemplateHelper} from "./TemplateHelper";
 import {HistoryHelper} from "./HistoryHelper";
@@ -34,13 +34,7 @@ export class PageHelper {
 
     public async getPage(pageUp: boolean, currentPage: number) {
         if(this.embedData.fetch) {
-            for(const toFetch of this.embedData.fetch) {
-                switch(toFetch) {
-                    case "history":
-                        await (new HistoryHelper()).getCache()
-                        break
-                }
-            }
+            await fetchCaches(this.embedData)
         }
 
         this.data = this.getValuesForPageId(this.embedId)
