@@ -93,11 +93,10 @@ export class TemplateHelper {
         const fetchedData = {}
 
         if(unformattedData.fetch) {
-            for(const toFetcch of unformattedData.fetch) {
-                switch(toFetcch) {
+            for(const toFetch of unformattedData.fetch) {
+                switch(toFetch) {
                     case "history":
                         fetchedData["history"] = await (new HistoryHelper()).getCache()
-                        console.log(fetchedData["history"])
                         break
                 }
             }

@@ -6,6 +6,7 @@ import {parsePageData} from "./DataHelper";
 import {findValue} from "../utils/CacheUtil";
 import {EmbedHelper} from "./EmbedHelper";
 import {TemplateHelper} from "./TemplateHelper";
+import {HistoryHelper} from "./HistoryHelper";
 
 export class PageHelper {
     protected config = new ConfigHelper()
@@ -18,6 +19,16 @@ export class PageHelper {
 
     public constructor(pageId: string) {
         const embedData = this.config.getEntriesByFilter(new RegExp(`^embed ${pageId}`, 'g'))[0]
+
+        if(embedData.fetch) {
+            for(const toFetch of embedData.fetch) {
+                switch(toFetch) {
+                    case "history":
+                        void (new HistoryHelper()).getCache()
+                        break
+                }
+            }
+        }
 
         if (embedData && embedData.page_embed_entries) {
             this.embeds = embedData.page_embed_entries
