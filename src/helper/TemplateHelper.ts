@@ -97,6 +97,7 @@ export class TemplateHelper {
                 switch(toFetcch) {
                     case "history":
                         fetchedData["history"] = await (new HistoryHelper()).getCache()
+                        console.log(fetchedData["history"])
                         break
                 }
             }
