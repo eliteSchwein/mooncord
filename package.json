@@ -26,10 +26,10 @@
   },
   "homepage": "https://github.com/eliteSchwein/mooncord#readme",
   "devDependencies": {
-    "@discordjs/rest": "^2.5.0",
+    "@discordjs/rest": "^2.5.1",
     "@types/fluent-ffmpeg": "^2.1.27",
     "@types/gm": "^1.25.4",
-    "@types/node": "^24.0.1",
+    "@types/node": "^24.0.4",
     "@types/readline-sync": "^1.4.8",
     "async-wait-until": "2.0.27",
     "axios": "^1.10.0",
@@ -56,7 +56,7 @@
   },
   "dependencies": {
     "@resvg/resvg-js": "^2.6.2",
-    "discord.js": "^14.19.3",
+    "discord.js": "^14.21.0",
     "sharp": "^0.34.2"
   }
 }
