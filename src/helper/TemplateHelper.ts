@@ -24,6 +24,9 @@ import {LocaleHelper} from "./LocaleHelper";
 
 export class TemplateHelper {
     protected parsedPlaceholders = []
+    protected localeHelper = new LocaleHelper();
+    protected locales = this.localeHelper.getLocale()
+    protected syntaxLocales = this.localeHelper.getSyntaxLocale()
 
     public async parseRawTemplate(type: string, id: string) {
         const unformattedData = Object.assign({}, getEntry(`${type}s`)[id])
@@ -75,7 +78,8 @@ export class TemplateHelper {
 
     public async parseTemplate(type: string, id: string, providedPlaceholders = null, providedFields = null, providedValues = null) {
         let messageObject = null
-        const localeHelper = new LocaleHelper()
+
+        if(providedPlaceholders === null) {providedPlaceholders = {}}
 
         switch (type) {
             case 'modal':
@@ -99,8 +103,7 @@ export class TemplateHelper {
         }
 
         mergeDeep(providedPlaceholders, fetchedData)
-
-        mergeDeep(providedPlaceholders, localeHelper.loadLocales())
+        mergeDeep(providedPlaceholders, {'locale': this.locales, 'syntax_locale': this.syntaxLocales})
 
         if (providedFields !== null) {
             mergeDeep(unformattedData, {field: providedFields})
@@ -345,6 +348,20 @@ export class TemplateHelper {
         const placeholderId = placeholder
             .replace(/(\${)/g, '')
             .replace(/}/g, '')
+
+        if(placeholderId.startsWith("locale")) {
+            return {
+                'content': `${get(this.locales, placeholderId.replace('locale.', ''))}`,
+                'double_dash': true
+            }
+        }
+
+        if(placeholderId.startsWith("syntax_locale")) {
+            return {
+                'content': `${get(this.syntaxLocales, placeholderId.replace('syntax_locale.', ''))}`,
+                'double_dash': true
+            }
+        }
 
         if (placeholderId === 'current_timestamp') {
             return {

@@ -3,6 +3,7 @@
 import {Message, User} from "discord.js";
 import {findValue} from "../../../../utils/CacheUtil";
 import BaseHandler from "../abstracts/BaseHandler";
+import {get} from "lodash";
 
 export class WaitMessageHandler extends BaseHandler {
     async isValid(message: Message, user: User, data, interaction = null) {
@@ -25,7 +26,7 @@ export class WaitMessageHandler extends BaseHandler {
                 .replace(/(\${)/g, '')
                 .replace(/}/g, '')
 
-            newMessage = findValue(placeholderId)
+            newMessage = this.localeHelper.getMessageById(placeholderId)
         }
 
         newMessage = newMessage

@@ -6,6 +6,7 @@ import path from "path";
 import {getEntry, setData, updateData} from "../utils/CacheUtil";
 import {ConfigHelper} from "./ConfigHelper";
 import {logRegular} from "./LoggerHelper";
+import {get} from "lodash";
 
 export class LocaleHelper {
     public constructor() {
@@ -42,6 +43,16 @@ export class LocaleHelper {
 
     public getModals() {
         return this.getLocale().modals
+    }
+
+    public getMessageById(placeholderId: string) {
+        if(placeholderId.startsWith("locale")) {
+            return `${get(this.getLocale(), placeholderId.replace('locale.', ''))}`
+        }
+
+        if(placeholderId.startsWith("syntax_locale")) {
+            return `${get(this.getSyntaxLocale(), placeholderId.replace('syntax_locale.', ''))}`
+        }
     }
 
     public getSystemComponents() {

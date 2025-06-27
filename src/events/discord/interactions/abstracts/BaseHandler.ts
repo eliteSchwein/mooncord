@@ -33,6 +33,10 @@ export default class BaseHandler {
         }
 
         await this.handleHandler(message, user, data, interaction)
+
+        delete this.locale
+        delete this.syntaxLocale
+        delete this.localeHelper
     }
 
     async isValid(message: Message, user: User, data, interaction = null) {

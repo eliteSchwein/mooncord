@@ -25,7 +25,7 @@ export class MessageHandler extends BaseHandler {
                 .replace(/(\${)/g, '')
                 .replace(/}/g, '')
 
-            newMessage = findValue(placeholderId)
+            newMessage = this.localeHelper.getMessageById(placeholderId)
         }
 
         newMessage = newMessage
