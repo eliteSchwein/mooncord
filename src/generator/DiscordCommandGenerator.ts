@@ -23,11 +23,16 @@ import {RouteLike} from "@discordjs/rest";
 
 export class DiscordCommandGenerator {
     protected config = new ConfigHelper()
+    protected localeHelper = new LocaleHelper()
+    protected locales: any = {}
+    protected syntaxLocales: any = {}
 
     public constructor() {
         const commandStructureFile = readFileSync(path.resolve(__dirname, '../src/meta/command_structure.json'))
         const commandStructure = JSON.parse(commandStructureFile.toString('utf8'))
         const customCommandStructure = this.getCustomCommandStructure()
+        this.locales = Object.assign({}, this.localeHelper.getLocale())
+        this.syntaxLocales = Object.assign({}, this.localeHelper.getSyntaxLocale())
         mergeDeep(commandStructure, customCommandStructure)
 
         setData('command_structure', commandStructure)
@@ -118,9 +123,9 @@ export class DiscordCommandGenerator {
     }
 
     private buildCommand(command: string) {
-        const localeHelper = new LocaleHelper()
-        const messageLocale = Object.assign({}, localeHelper.getLocale().commands[command])
-        const syntaxLocale = Object.assign({}, localeHelper.getSyntaxLocale().commands[command])
+        const messageLocale = this.locales.commands[command]
+        const syntaxLocale = this.syntaxLocales.commands[command]
+
         const commandStructure = getEntry('command_structure')
 
         const builder = {
@@ -234,7 +239,7 @@ export class DiscordCommandGenerator {
                 continue
             }
             const customCommandDescription = (customCommandData.description === null)
-                ? new LocaleHelper().getLocale().messages.errors.custom_command_descript
+                ? this.locales.messages.errors.custom_command_descript
                 : customCommandData.description
 
             customCommands[name] = {

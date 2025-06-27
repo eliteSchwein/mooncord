@@ -91,9 +91,10 @@ export function findValue(key: string) {
 }
 
 export function getHeaterArguments() {
+    const locale = new LocaleHelper().getLocale()
     const heaters = cacheData.state.heaters.available_heaters
     const options = {}
-    let {heater} = cacheData.locale.commands.preheat.options.manual.options
+    let {heater} = locale.commands.preheat.options.manual.options
 
     if (typeof heater === 'undefined') {
         heater = {'description': '${heater}'}
