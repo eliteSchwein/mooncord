@@ -20,6 +20,7 @@ import {logWarn} from "./LoggerHelper";
 import {AttachmentBuilder, EmbedBuilder, ModalBuilder} from "discord.js";
 import {get} from "lodash";
 import PageListGraph from "./graphs/PageListGraph";
+import {LocaleHelper} from "./LocaleHelper";
 
 export class TemplateHelper {
     protected parsedPlaceholders = []
@@ -74,6 +75,7 @@ export class TemplateHelper {
 
     public async parseTemplate(type: string, id: string, providedPlaceholders = null, providedFields = null, providedValues = null) {
         let messageObject = null
+        const localeHelper = new LocaleHelper()
 
         switch (type) {
             case 'modal':
@@ -97,6 +99,8 @@ export class TemplateHelper {
         }
 
         mergeDeep(providedPlaceholders, fetchedData)
+
+        mergeDeep(providedPlaceholders, localeHelper.loadLocales())
 
         if (providedFields !== null) {
             mergeDeep(unformattedData, {field: providedFields})

@@ -13,16 +13,15 @@ export class LocaleHelper {
 
     public loadCache() {
         logRegular("load Locale Cache...")
-        this.loadFallback()
         this.loadLocales()
     }
 
     public getLocale() {
-        return getEntry('locale')
+        return this.loadLocales().locale
     }
 
     public getSyntaxLocale() {
-        return getEntry('syntax_locale')
+        return this.loadLocales().syntax_locale
     }
 
     public getNoPermission(username: string) {
@@ -65,22 +64,25 @@ export class LocaleHelper {
         return components
     }
 
-    private loadLocales() {
+    public loadLocales() {
         const localeConfig = new ConfigHelper().getLocale()
         const localePath = path.resolve(__dirname, `../locales/${localeConfig.locale}.json`)
         const syntaxLocalePath = path.resolve(__dirname, `../locales/${localeConfig.syntax}.json`)
 
-        const localeRaw = readFileSync(localePath, {encoding: 'utf8'})
-        const syntaxLocaleRaw = readFileSync(syntaxLocalePath, {encoding: 'utf8'})
+        const fallbackLocaleRaw =readFileSync(path.resolve(__dirname, '../locales/en.json'), {encoding: 'utf8'})
 
-        updateData('locale', JSON.parse(localeRaw))
-        updateData('syntax_locale', JSON.parse(syntaxLocaleRaw))
-    }
+        let localeRaw = readFileSync(localePath, {encoding: 'utf8'})
+        let syntaxLocaleRaw = readFileSync(syntaxLocalePath, {encoding: 'utf8'})
 
-    private loadFallback() {
-        const fallbackLocaleRaw = readFileSync(path.resolve(__dirname, '../locales/en.json'), {encoding: 'utf8'})
+        if(!localeRaw) localeRaw = fallbackLocaleRaw
+        if(!syntaxLocaleRaw) syntaxLocaleRaw = fallbackLocaleRaw
 
-        setData('locale', JSON.parse(fallbackLocaleRaw))
-        setData('syntax_locale', JSON.parse(fallbackLocaleRaw))
+        //updateData('locale', JSON.parse(localeRaw))
+        //updateData('syntax_locale', JSON.parse(syntaxLocaleRaw))
+
+        return {
+            locale: JSON.parse(localeRaw),
+            syntax_locale: JSON.parse(syntaxLocaleRaw),
+        }
     }
 }
