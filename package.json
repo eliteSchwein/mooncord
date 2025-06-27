@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "migrateJson": "node src/migration/ConfigMigration.js",
-    "start": "node --max-old-space-size=64 --expose-gc dist/index.js",
-    "debugstart": "node --inspect=0.0.0.0:3000 --max-old-space-size=64 --trace_gc --expose-gc --trace-deprecation --trace-warnings --trace-uncaught --track-heap-objects dist/index.js",
+    "start": "node --max-old-space-size=64 --expose-gc --gc-global --max-semi-space-size=1 --semi-space-growth-factor=0 dist/index.js",
+    "debugstart": "node --inspect=0.0.0.0:3000 --max-old-space-size=64 --trace_gc --expose-gc --trace-deprecation --trace-warnings --trace-uncaught --track-heap-objects --gc-global --max-semi-space-size=1 --semi-space-growth-factor=0 dist/index.js",
     "checkcodestyle": "npx eslint ./**",
     "autofixcodestyle": "npx eslint ./** --fix",
     "ncu": "ncu",
