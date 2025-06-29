@@ -1,58 +1,33 @@
 import {findValue, updateData} from "../utils/CacheUtil";
-import {readFileSync} from "fs";
+import {existsSync, mkdirSync, readFileSync} from "fs";
 import path from "path";
 import {logRegular} from "./LoggerHelper";
+import * as os from "node:os";
+import {createHash} from "node:crypto";
+import {writeFileSync} from "node:fs";
 
 export class ImageHelper {
-    public purgeCachedImages() {
-        const parsedImagesCache = findValue('images.parsed')
+    public parseImage(imagePath: string): string {
+        const tmpPath = `${os.tmpdir()}/mooncordImages`
 
-        if(Object.keys(parsedImagesCache).length === 0) return
-
-        const currentDate = Date.now() / 1000
-
-        for(const imagePath in parsedImagesCache) {
-            const parsedImage = parsedImagesCache[imagePath]
-            if(parsedImage.expires_at > currentDate)
-                continue
-
-            delete parsedImagesCache[imagePath]
+        if (!existsSync(tmpPath)) {
+            mkdirSync(tmpPath, { recursive: true });
         }
 
-        updateData('images', {parsed: parsedImagesCache})
-    }
+        const imageHash = createHash('md5').update(imagePath).digest('hex')
+        const tmpImagePath = `${tmpPath}/${imageHash}`
 
-    public parseImage(imagePath: string): string {
-        const parsedImagesCache = findValue('images.parsed')
-
-        const currentDate = Date.now() / 1000
-        const newExpireDate = currentDate + 60
-
-        let parsedImage = parsedImagesCache[imagePath]
-
-        if(parsedImage && parsedImage.expires_at > currentDate) {
-            parsedImage.expires_at = newExpireDate
-
-            parsedImagesCache[imagePath] = parsedImage
-
-            updateData('images', {parsed: parsedImagesCache})
-
-            return parsedImage.value
+        if (existsSync(tmpImagePath)) {
+            return readFileSync(tmpImagePath, 'utf-8');
         }
 
         logRegular(`convert ${imagePath} to base64`)
 
         const rawImage = readFileSync(path.resolve(__dirname, `../assets/${imagePath}`))
+        const image = `data:image/png;base64,${rawImage.toString("base64")}`
 
-        parsedImage = {
-            value: `data:image/png;base64,${rawImage.toString("base64")}`,
-            expires_at: newExpireDate,
-        }
+        writeFileSync(tmpImagePath, image)
 
-        parsedImagesCache[imagePath] = parsedImage
-
-        updateData('images', {parsed: parsedImagesCache})
-
-        return parsedImage.value
+        return image
     }
 }
