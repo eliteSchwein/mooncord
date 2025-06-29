@@ -38,10 +38,6 @@ export default class BaseModal {
         }
 
         await this.handleModal(interaction)
-
-        delete this.locale
-        delete this.syntaxLocale
-        delete this.localeHelper
     }
 
     // here we handle the modal.

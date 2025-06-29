@@ -175,7 +175,6 @@ function initCache() {
         configHelper.loadCache()
     }
 
-    localeHelper.loadCache()
     embedHelper.loadCache()
     modalHelper.loadCache()
     promptHelper.loadCache()

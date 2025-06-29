@@ -39,10 +39,6 @@ export default class BaseCommand {
         }
 
         await this.handleCommand(interaction)
-
-        delete this.locale
-        delete this.syntaxLocale
-        delete this.localeHelper
     }
 
     // here we handle the command. what did you expect?

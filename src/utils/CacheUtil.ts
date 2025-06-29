@@ -246,15 +246,20 @@ async function writeDump() {
 }
 
 export function purgeOldCacheEntries() {
-    const toPurgeEntries = ["history"]
+    const toPurgeEntries = ["history", "locale"]
     const currentDate = Date.now() / 1000
+    let hasDeleted = false
 
     for(const toPurgeEntry of toPurgeEntries) {
         if(!cacheData[toPurgeEntry]) continue
         if(cacheData[toPurgeEntry].expires_at > currentDate) continue
 
         delete cacheData[toPurgeEntry]
+        hasDeleted = true
     }
+
+    if (global.gc && hasDeleted)
+        global.gc()
 }
 
 export function getNewExpireAtDate(offset: number = 60) {

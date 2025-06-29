@@ -38,10 +38,6 @@ export default class BaseSelection {
         }
 
         await this.handleSelection(interaction)
-
-        delete this.locale
-        delete this.syntaxLocale
-        delete this.localeHelper
     }
 
     // you select something and this will get triggert, what else?

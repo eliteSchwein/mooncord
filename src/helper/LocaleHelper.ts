@@ -3,20 +3,12 @@
 import {readFileSync} from 'fs'
 
 import path from "path";
-import {getEntry, setData, updateData} from "../utils/CacheUtil";
+import {getEntry, getNewExpireAtDate, setData, updateData} from "../utils/CacheUtil";
 import {ConfigHelper} from "./ConfigHelper";
 import {logRegular} from "./LoggerHelper";
 import {get} from "lodash";
 
 export class LocaleHelper {
-    public constructor() {
-    }
-
-    public loadCache() {
-        logRegular("load Locale Cache...")
-        this.loadLocales()
-    }
-
     public getLocale() {
         return this.loadLocales().locale
     }
@@ -76,6 +68,12 @@ export class LocaleHelper {
     }
 
     public loadLocales() {
+        const localeCache = getEntry('locale')
+
+        if(localeCache) {
+            return localeCache
+        }
+
         const localeConfig = new ConfigHelper().getLocale()
         const localePath = path.resolve(__dirname, `../locales/${localeConfig.locale}.json`)
         const syntaxLocalePath = path.resolve(__dirname, `../locales/${localeConfig.syntax}.json`)
@@ -91,9 +89,16 @@ export class LocaleHelper {
         //updateData('locale', JSON.parse(localeRaw))
         //updateData('syntax_locale', JSON.parse(syntaxLocaleRaw))
 
-        return {
+        const response = {
             locale: JSON.parse(localeRaw),
             syntax_locale: JSON.parse(syntaxLocaleRaw),
+            expires_at: undefined
         }
+
+        response.expires_at = getNewExpireAtDate()
+
+        setData('locale', response)
+
+        return response
     }
 }
