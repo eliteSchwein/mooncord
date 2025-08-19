@@ -40,7 +40,6 @@ logSuccess(`Starting ${packageConfig.name} ${packageConfig.version}...`)
 const configHelper = new ConfigHelper()
 configHelper.loadCache()
 
-const localeHelper = new LocaleHelper()
 const embedHelper = new EmbedHelper()
 const modalHelper = new ModalHelper()
 
