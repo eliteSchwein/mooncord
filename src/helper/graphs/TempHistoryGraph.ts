@@ -28,11 +28,12 @@ export default class TempHistoryGraph extends BaseGraph{
 
         logRegular('render temp chart...')
 
-        const tempHistoryRequest = await moonrakerClient.send({'method': 'server.temperature_store'})
+        const tempHistoryRequest = await moonrakerClient.send({'method': 'server.temperature_store', 'params': {'include_monitors': true}})
 
         if (typeof tempHistoryRequest.error !== 'undefined') {
             return
         }
+
         const resHeight = 600
         const offsetHeight = resHeight - 30
 
@@ -42,11 +43,12 @@ export default class TempHistoryGraph extends BaseGraph{
         const lines = []
 
         for (const sensorIndex in tempHistoryRequest.result) {
-            const sensorLabel = sensorIndex.replace(/(temperature_sensor )|(temperature_fan )|(heater_generic )/g, '')
+            let sensorIndexSplit = sensorIndex.split(' ')
 
-            if (sensor !== undefined && sensorLabel !== sensor) {
-                continue
-            }
+            const sensorLabel = (sensorIndexSplit.length > 1) ? sensorIndexSplit[1] : sensorIndexSplit[0]
+
+            if (sensor !== undefined && sensorLabel !== sensor) continue
+            if(!tempCache.colors[sensorIndex]) continue
 
             const sensorData = tempHistoryRequest.result[sensorIndex]
             const color = tempCache.colors[sensorIndex].color

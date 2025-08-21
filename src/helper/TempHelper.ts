@@ -15,16 +15,26 @@ export class TempHelper {
         const cache = getEntry('state')
         logRegular("Generate Sensor Colors...")
 
+        const temperatureSensors = []
+
+        for(const firstEntryIndex in cache.heaters) {
+            const firstEntry = cache.heaters[firstEntryIndex]
+            for(const tempEntry of firstEntry) {
+                const cacheSplit = tempEntry.split(' ')
+                if(cacheSplit.length > 1 && cacheSplit[1].startsWith('_')) continue
+
+                temperatureSensors.push(tempEntry)
+            }
+        }
+
+        setData('temperature_sensors', temperatureSensors)
+
         const colorCache = {}
-        const temperatureSensors = temp_meta.temperature_sensors
         const colors = new TempHistoryGraph().getColors()
         let colorIndex = 0
 
         for (const cacheKey in cache) {
-            const cacheKeySplit = cacheKey.split(' ')
-            const keySearch = cacheKeySplit[0].replace(/\d/g, '')
-
-            if (!temperatureSensors.includes(keySearch)) {
+            if (!temperatureSensors.includes(cacheKey)) {
                 continue
             }
 
@@ -50,7 +60,17 @@ export class TempHelper {
             "fields": [],
             "cache_ids": []
         }
-        let supportedSensors = temp_meta.supported_sensors
+        let supportedSensors = temp_meta.supported_sensors.splice(0)
+
+        const temperatureSensors = getEntry('temperature_sensors')
+
+        for(const sensor of temperatureSensors) {
+            const sensorSplit = sensor.split(" ")
+
+            if(supportedSensors.includes(sensorSplit[0])) continue
+
+            supportedSensors.push(sensorSplit[0])
+        }
 
         if (minimal) {
             supportedSensors = temp_meta.minimal_supported_sensors
@@ -82,15 +102,23 @@ export class TempHelper {
         const cacheData = this.parseCacheFields(key)
         const configHelper = new ConfigHelper()
 
+        const temperatureSensors = getEntry('temperature_sensors')
+
         if (typeof allias !== 'undefined') {
             key = allias
         }
 
-        const mappingData = temp_meta[key]
+        let mappingData = temp_meta[key]
+        if(!mappingData) {
+            mappingData = temp_meta["temperature_sensor"]
+        }
         const fields = []
         const cacheIds = []
 
         for (const cacheKey in cacheData) {
+            const cacheSplit = cacheKey.split(' ')
+            if(cacheSplit.length > 1 && cacheSplit[1].startsWith('_')) continue
+
             const title = this.parseFieldTitle(cacheKey)
             let icon = configHelper.getIcons(new RegExp(`${mappingData.icon}`, 'g'))[0].icon
 
@@ -101,7 +129,7 @@ export class TempHelper {
             }
 
             if (typeof cacheData[cacheKey].temperature !== 'undefined' &&
-                temp_meta.temperature_sensors.includes(key) &&
+                temperatureSensors.includes(cacheKey) &&
                 !hideColor) {
 
                 mappingData.fields.color = {
@@ -341,7 +369,11 @@ export class TempHelper {
             key = key.substring(1)
         }
 
-        return key
+        const keySplit = key.split(' ')
+
+        if(keySplit.length > 1) return keySplit[1]
+
+        return keySplit[0]
     }
 
     private parseCacheFields(key) {
@@ -350,7 +382,10 @@ export class TempHelper {
 
         for (const cacheKey in cache) {
             const cacheKeySplit = cacheKey.split(' ')
-            const keySearch = cacheKeySplit[0].replace(/\d/g, '')
+            const keySearch = cacheKeySplit[0]
+            const secondaryKey  = cacheKeySplit[1]
+
+            if(secondaryKey && secondaryKey.startsWith('_')) continue
 
             if (keySearch === key) {
                 result[cacheKey] = cache[cacheKey]
