@@ -142,6 +142,7 @@ export class TempHelper {
                 if (this.isCold(cacheData[cacheKey].temperature)) {
                     icon = configHelper.getIcons(new RegExp(`${temp_meta.cold_meta.icon}`, 'g'))[0].icon
                     keyData.name = `${icon} ${this.parseFieldTitle(cacheKey)}`
+                    console.log(keyData)
                 }
             }
 
@@ -150,6 +151,7 @@ export class TempHelper {
                 if (this.isSlowFan(cacheData[cacheKey].speed)) {
                     icon = configHelper.getIcons(new RegExp(`${temp_meta.slow_fan_meta.icon}`, 'g'))[0].icon
                     keyData.name = `${icon} ${this.parseFieldTitle(cacheKey)}`
+                    console.log(keyData)
                 }
             }
 
@@ -182,7 +184,6 @@ export class TempHelper {
                 keyData.value = `${keyData.value}\n\`${fieldData.label}\` ${cacheData[cacheKey][fieldKey]}${fieldData.suffix}`
 
             }
-            console.log(keyData)
 
             fields.push(keyData)
             cacheIds.push(cacheData[cacheKey])
