@@ -360,17 +360,17 @@ export class TempHelper {
     }
 
     private parseFieldTitle(key: string) {
-        const hideList = temp_meta.hide_types
+        const hideList = temp_meta.hide_types;
 
-        hideList.some(hideType => key = key.replace(hideType, ''))
+        hideList.forEach(hideType => {
+            const regex = new RegExp(hideType, 'g');
+            key = key.replace(regex, '');
+        });
 
-        if (key.startsWith(' ')) {
-            key = key.substring(1)
-        }
+        key = key.trim();
 
-        console.log(key)
-
-        return key
+        console.log(key);
+        return key;
     }
 
     private parseCacheFields(key) {
