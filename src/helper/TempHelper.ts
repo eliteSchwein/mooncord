@@ -369,7 +369,6 @@ export class TempHelper {
 
         key = key.trim();
 
-        console.log(key);
         return key;
     }
 
