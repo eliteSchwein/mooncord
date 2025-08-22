@@ -116,7 +116,6 @@ export class TempHelper {
         const cacheIds = []
 
         for (const cacheKey in cacheData) {
-            console.log(cacheKey)
             const cacheSplit = cacheKey.split(' ')
             if(cacheSplit.length > 1 && cacheSplit[1].startsWith('_')) continue
 
@@ -183,6 +182,7 @@ export class TempHelper {
                 keyData.value = `${keyData.value}\n\`${fieldData.label}\` ${cacheData[cacheKey][fieldKey]}${fieldData.suffix}`
 
             }
+            console.log(keyData)
 
             fields.push(keyData)
             cacheIds.push(cacheData[cacheKey])
