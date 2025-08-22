@@ -119,11 +119,10 @@ export class TempHelper {
             const cacheSplit = cacheKey.split(' ')
             if(cacheSplit.length > 1 && cacheSplit[1].startsWith('_')) continue
 
-            const title = this.parseFieldTitle(cacheKey)
             let icon = configHelper.getIcons(new RegExp(`${mappingData.icon}`, 'g'))[0].icon
 
             const keyData = {
-                name: `${icon} ${title}`,
+                name: `${icon} ${this.parseFieldTitle(cacheKey)}`,
                 value: '',
                 inline: true
             }
@@ -369,11 +368,7 @@ export class TempHelper {
             key = key.substring(1)
         }
 
-        const keySplit = key.split(' ')
-
-        if(keySplit.length > 1) return keySplit[1]
-
-        return keySplit[0]
+        return key
     }
 
     private parseCacheFields(key) {
