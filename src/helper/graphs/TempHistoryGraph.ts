@@ -64,7 +64,7 @@ export default class TempHistoryGraph extends BaseGraph{
             }
 
             rawLines.push({
-                label: sensorLabel,
+                label: sensorIndex,
                 temperatures: sensorData.temperatures,
                 targets: sensorData.targets,
                 powers: sensorData.powers,
