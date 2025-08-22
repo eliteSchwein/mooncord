@@ -52,6 +52,10 @@ export class DatabaseUtil {
 
         const databaseNamespaces = (await this.fetchDatabaseNamespaces()).result.namespaces
 
+        if(!databaseNamespaces) {
+            return true
+        }
+
         return databaseNamespaces.includes("mooncord")
     }
 
