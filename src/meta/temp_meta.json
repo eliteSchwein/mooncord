@@ -24,6 +24,7 @@
   "hide_types": [
     "temperature_sensor",
     "temperature_fan",
+    "heater_fan",
     "controller_fan",
     "fan_generic"
   ],

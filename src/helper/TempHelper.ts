@@ -127,8 +127,6 @@ export class TempHelper {
                 inline: true
             }
 
-            console.log(keyData)
-
             if (typeof cacheData[cacheKey].temperature !== 'undefined' &&
                 temperatureSensors.includes(cacheKey) &&
                 !hideColor) {
