@@ -360,7 +360,6 @@ export class TempHelper {
     }
 
     private parseFieldTitle(key: string) {
-        console.log(key)
         const hideList = temp_meta.hide_types
 
         hideList.some(hideType => key = key.replace(hideType, ''))
@@ -368,6 +367,8 @@ export class TempHelper {
         if (key.startsWith(' ')) {
             key = key.substring(1)
         }
+
+        console.log(key)
 
         return key
     }
