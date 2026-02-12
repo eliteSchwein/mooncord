@@ -207,7 +207,7 @@ export class WebcamHelper {
     }
 
     private async executePostProcess(config) {
-        if (!config.enable || config.execute.length === 0) {
+        if (!config.enable || !config.execute || config.execute.length === 0) {
             return
         }
 
