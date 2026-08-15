@@ -27,6 +27,8 @@ import {WebcamHelper} from "../helper/WebcamHelper";
 import {updateAllRestEndpoints} from "../helper/RestApiHelper";
 
 const requests: any = {}
+const pending = new Set<number>()
+let requestCounter = 0
 let messageHandler: MessageHandler
 
 export class MoonrakerClient {
@@ -178,16 +180,23 @@ export class MoonrakerClient {
     }
 
     public async send(message, timeout = 10_000) {
-        const id = Math.floor(Math.random() * 100_000) + 1
+        const id = (requestCounter = (requestCounter % 1_000_000_000) + 1)
 
         message.id = id
         message.jsonrpc = '2.0'
 
-        this.websocket.send(JSON.stringify(message))
+        pending.add(id)
 
-        await waitUntil(() => typeof requests[id] !== 'undefined', {timeout, intervalBetweenAttempts: 500})
+        try {
+            this.websocket.send(JSON.stringify(message))
 
-        return requests[id]
+            await waitUntil(() => typeof requests[id] !== 'undefined', {timeout, intervalBetweenAttempts: 500})
+
+            return requests[id]
+        } finally {
+            pending.delete(id)
+            delete requests[id]
+        }
     }
 
     public isReady() {
@@ -329,6 +338,10 @@ export class MoonrakerClient {
                 return
             }
             if (typeof (messageData.id) === 'undefined') {
+                return
+            }
+
+            if (!pending.has(messageData.id)) {
                 return
             }
 
